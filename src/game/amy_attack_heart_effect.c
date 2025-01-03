@@ -177,7 +177,7 @@ void Task_AmyAttackHeartEffect(void)
 
             if (r2 != (u16)-1) {
                 u16 old106 = hearts->unk106;
-                hearts->unk106 += gPlayer.unk90->s.animSpeed;
+                hearts->unk106 += gPlayer.spriteInfoBody->s.animSpeed;
 
                 if (old106 >= r2) {
                     u32 v;
@@ -270,7 +270,7 @@ void sub_8015E28(u16 p0)
         s->animCursor = 0;
         s->qAnimDelay = 0;
         s->prevVariant = -1;
-        s->animSpeed = gPlayer.unk90->s.animSpeed;
+        s->animSpeed = gPlayer.spriteInfoBody->s.animSpeed;
         s->palId = 0;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 

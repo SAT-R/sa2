@@ -576,8 +576,8 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     gUnknown_030054E0 = 0;
 
     InitNewInputCounters();
-    AllocateCharacterStageGfx(p, p->unk90);
-    AllocateCharacterMidAirGfx(p, p->unk94);
+    AllocateCharacterStageGfx(p, p->spriteInfoBody);
+    AllocateCharacterMidAirGfx(p, p->spriteInfoLimbs);
 }
 
 void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
@@ -684,8 +684,8 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 
     p->unk98 = 0;
     p->checkpointTime = 0;
-    p->unk90 = &gUnknown_03005AF0;
-    p->unk94 = &gUnknown_03005AA0;
+    p->spriteInfoBody = &gUnknown_03005AF0;
+    p->spriteInfoLimbs = &gUnknown_03005AA0;
 }
 
 void InitializePlayer(Player *p)
@@ -3204,10 +3204,10 @@ void Task_PlayerHandleDeath(void)
             gPlayer.moveState = 0;
             gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
 
-            gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-            gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+            gPlayer.spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+            gPlayer.spriteInfoLimbs->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.spriteInfoLimbs->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
 
             gCamera.unk50 &= ~0x3;
             if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
@@ -3246,8 +3246,8 @@ void Task_PlayerDied(void)
 {
     Player *p = &gPlayer;
 
-    PlayerSpriteInfo *psi1 = gPlayer.unk90;
-    PlayerSpriteInfo *psi2 = gPlayer.unk94;
+    PlayerSpriteInfo *psi1 = gPlayer.spriteInfoBody;
+    PlayerSpriteInfo *psi2 = gPlayer.spriteInfoLimbs;
 
     if (DeadPlayerLeftScreen(&gPlayer, &gCamera, gPlayer.y)) {
         player_0_Task *gt = TASK_DATA(gCurTask);
@@ -3294,9 +3294,9 @@ void Task_PlayerMain(void)
         sub_80232D0(p);
     }
 
-    sub_802486C(p, p->unk90);
-    sub_8024B10(p, p->unk90);
-    sub_8024F74(p, p->unk94);
+    sub_802486C(p, p->spriteInfoBody);
+    sub_8024B10(p, p->spriteInfoBody);
+    sub_8024F74(p, p->spriteInfoLimbs);
 
     if (p->charState != CHARSTATE_HIT_AIR && p->timerInvulnerability > 0) {
         p->timerInvulnerability--;
@@ -3339,8 +3339,8 @@ void Task_PlayerMain(void)
             gStageFlags |= STAGE_FLAG__ACT_START;
         }
 
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         p->unk80 = 0x100;
         p->unk82 = 0x100;
 
@@ -3557,7 +3557,7 @@ void sub_802460C(Player *p)
 
 void sub_80246DC(Player *p)
 {
-    Sprite *s = &p->unk90->s;
+    Sprite *s = &p->spriteInfoBody->s;
     u16 charState = p->charState;
     u32 anim = p->anim;
     u32 variant = p->variant;
@@ -3882,7 +3882,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     }
 
     send->unk8 &= ~0x30;
-    send->unk8 |= ((gPlayer.unk90->s.frameFlags & 0x3000) >> 8);
+    send->unk8 |= ((gPlayer.spriteInfoBody->s.frameFlags & 0x3000) >> 8);
     if (p->layer != 0) {
         send->unk8 |= 0x80;
     } else {
@@ -4077,7 +4077,7 @@ void Player_8025548(Player *p)
 {
     if (!Player_TryCrouchOrSpinAttack(p) && !Player_TryJump(p)
         && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !Player_TryAttack(p))) {
-        if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+        if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
             PLAYERFN_SET(Player_TouchGround);
         }
 
@@ -4105,7 +4105,7 @@ void Player_8025548(Player *p)
 
 void Player_Taunt(Player *p)
 {
-    Sprite *s = &p->unk90->s;
+    Sprite *s = &p->spriteInfoBody->s;
     u16 characterAnim = GET_CHARACTER_ANIM(p);
 
     if (!Player_TryCrouchOrSpinAttack(p) && !Player_TryJump(p) && !Player_TryAttack(p)) {
@@ -4113,7 +4113,7 @@ void Player_Taunt(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 0)) {
                 p->variant = 1;
-                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_UP) {
             PLAYERFN_SET(Player_TouchGround);
@@ -4147,7 +4147,7 @@ void Player_Taunt(Player *p)
 
 void Player_Crouch(Player *p)
 {
-    Sprite *s = &p->unk90->s;
+    Sprite *s = &p->spriteInfoBody->s;
     u16 characterAnim = GET_CHARACTER_ANIM(p);
 
     if (!Player_TryInitSpindash(p) && !Player_TryJump(p) && !Player_TryAttack(p)) {
@@ -4155,7 +4155,7 @@ void Player_Crouch(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 0)) {
                 p->variant = 1;
-                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_DOWN) {
             PLAYERFN_SET(Player_TouchGround);
@@ -4199,7 +4199,7 @@ void Player_8025A0C(Player *p)
     if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
     } else {
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->charState = CHARSTATE_SPIN_ATTACK;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -4346,7 +4346,7 @@ void Player_InitJump(Player *p)
         }
     }
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
 
@@ -4413,7 +4413,7 @@ void Player_8025F84(Player *p)
 
     p->unk70 = TRUE;
 
-    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
+    p->spriteInfoBody->s.frameFlags &= ~MOVESTATE_4000;
     m4aSongNumStart(SE_JUMP);
 
     PLAYERFN_SET_AND_CALL(Player_Jumping, p);
@@ -4440,7 +4440,7 @@ void Player_8026060(Player *p)
     p->unk70 = TRUE;
     p->unk6E = 1;
 
-    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
+    p->spriteInfoBody->s.frameFlags &= ~MOVESTATE_4000;
 
     p->rotation = 0;
 
@@ -4468,7 +4468,7 @@ void Player_802611C(Player *p)
     p->unk70 = TRUE;
     p->unk6E = 0;
 
-    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
+    p->spriteInfoBody->s.frameFlags &= ~MOVESTATE_4000;
 
     p->rotation = 0;
 
@@ -4522,7 +4522,7 @@ void Player_InitSpindash(Player *p)
 
 void Player_Spindash(Player *p)
 {
-    Sprite *s = &p->unk90->s;
+    Sprite *s = &p->spriteInfoBody->s;
     u16 cAnim = GET_CHARACTER_ANIM(p);
 
     if (!(p->heldInput & DPAD_DOWN)) {
@@ -4667,8 +4667,8 @@ void sub_802669C(Player *p)
     p->layer = 0;
     p->rotation = 0;
 
-    p->unk90->s.frameFlags &= ~(MOVESTATE_2000 | MOVESTATE_1000);
-    p->unk90->s.frameFlags |= MOVESTATE_1000;
+    p->spriteInfoBody->s.frameFlags &= ~(MOVESTATE_2000 | MOVESTATE_1000);
+    p->spriteInfoBody->s.frameFlags |= MOVESTATE_1000;
 
     p->itemEffect |= PLAYER_ITEM_EFFECT__TELEPORT;
 
@@ -4719,8 +4719,8 @@ void Player_InitGrinding(Player *p)
 void Player_DoGrinding(Player *p)
 {
     if (Player_TryJump(p)) {
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
         p->layer = 1;
 
@@ -4752,8 +4752,8 @@ void Player_DoGrinding(Player *p)
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_FALLING_VULNERABLE_B;
 
-            p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-            p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+            p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
             p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
             p->layer = 1;
 
@@ -4779,8 +4779,8 @@ void Player_80269C0(Player *p)
 
     p->charState = CHARSTATE_WALK_A;
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->layer = 1;
 
@@ -4811,8 +4811,8 @@ void Player_GrindRailEndAir(Player *p)
     if (p->moveState & MOVESTATE_40)
         p->speedAirY /= 2;
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->layer = 1;
 
@@ -4946,8 +4946,8 @@ void Player_8026E24(Player *p)
         } break;
     }
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     p->layer = 0;
 
     m4aSongNumStart(SE_SPIN);
@@ -4960,7 +4960,7 @@ void Player_8026F10(Player *p)
     if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide_inline(p);
     } else {
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->charState = CHARSTATE_SPIN_ATTACK;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -5148,7 +5148,7 @@ void Player_InitReachedGoal(Player *p)
             } else {
                 p->charState = CHARSTATE_WALK_A;
 
-                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
                 p->moveState &= ~MOVESTATE_IGNORE_INPUT;
 
@@ -5168,7 +5168,7 @@ void Player_GoalSlowdown(Player *p)
     if (((p->speedGroundX >= Q(2.0)) && (p->frameInput & DPAD_LEFT)) || (playerX2 > 0x579)) {
         p->charState = CHARSTATE_GOAL_BRAKE_A;
 
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
         m4aSongNumStart(SE_LONG_BRAKE);
         PLAYERFN_SET_AND_CALL(Player_GoalBrake, p);
@@ -5209,7 +5209,7 @@ void Player_GoalBrake(Player *p)
     Player_CameraShift_inline(p);
 
     if (cAnim == SA2_CHAR_ANIM_GOAL_BRAKE) {
-        if ((p->variant == 0) && (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 0) && (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->charState = CHARSTATE_GOAL_BRAKE_B;
         }
 
@@ -5237,7 +5237,7 @@ void Player_GoalBrake(Player *p)
             }
         }
 
-        if ((p->variant == 2) && (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 2) && (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             Player_InitVictoryPoseTransition(p);
             return;
         }
@@ -5622,7 +5622,7 @@ void Player_InitDefaultTrick(Player *p)
 #endif
 
     p->charState = sTrickDirToCharstate[dir];
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
     m4aSongNumStart(SE_TAILS_CREAM_STOP_N_SLAM);
@@ -5632,7 +5632,7 @@ void Player_InitDefaultTrick(Player *p)
 
 void Player_WindupDefaultTrick(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         u32 dir = p->unk5B;
         u16 character = p->character;
         p->variant++;
@@ -5777,7 +5777,7 @@ void Player_8028D74(Player *p)
         }
     }
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(Player_8029074, p);
@@ -6713,11 +6713,11 @@ void TaskDestructor_Player(struct Task *t)
     gPlayer.spriteTask = NULL;
 
     if (gPlayer.unk60) {
-        VramFree(gPlayer.unk90->s.graphics.dest);
+        VramFree(gPlayer.spriteInfoBody->s.graphics.dest);
     }
 
     if (gPlayer.character == CHARACTER_CREAM || gPlayer.character == CHARACTER_TAILS) {
-        VramFree(gPlayer.unk94->s.graphics.dest);
+        VramFree(gPlayer.spriteInfoLimbs->s.graphics.dest);
     }
 }
 
@@ -6843,7 +6843,7 @@ void Player_802A3C4(Player *p)
 {
     sub_8027EF0(p);
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         PLAYERFN_SET(Player_8025A0C);
 }
 
@@ -6921,7 +6921,7 @@ void Player_802A5C4(Player *p)
         p->charState = CHARSTATE_TURN_SLOW;
     }
 
-    p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
+    p->spriteInfoBody->s.frameFlags &= ~(MOVESTATE_4000);
 
     p->speedGroundX = 0;
     p->moveState ^= MOVESTATE_FACING_LEFT;
@@ -6933,7 +6933,7 @@ void Player_InitTaunt(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
-    p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
+    p->spriteInfoBody->s.frameFlags &= ~(MOVESTATE_4000);
 
     p->charState = CHARSTATE_TAUNT;
 
@@ -6972,8 +6972,8 @@ void sub_802A660(Player *p)
 
 void sub_802A6C0(Player *p)
 {
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->layer = 0x1;
 

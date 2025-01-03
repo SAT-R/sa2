@@ -174,7 +174,7 @@ void Player_SonicAmy_InitSkidAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
@@ -211,7 +211,7 @@ void Player_SonicAmy_WindupSkidAttack(Player *p)
 
     sub_8029C84(p);
 
-    if (p->unk90->s.frameFlags & MOVESTATE_4000) {
+    if (p->spriteInfoBody->s.frameFlags & MOVESTATE_4000) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
@@ -281,7 +281,7 @@ void Player_SonicAmy_InitStopNSlam(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->isBoosting = FALSE;
     p->charState = CHARSTATE_TRICK_DOWN;
@@ -393,7 +393,7 @@ void Player_SonicForwardThrust(Player *p)
     m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
 
     p->unk6E = 0;
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(Player_80261D8, p);
@@ -422,7 +422,7 @@ void Player_Sonic_InitHomingAttack(Player *p)
     p->unk70 = FALSE;
     p->unk71 = 0;
     p->unk6E = 0;
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
     p->unk72 = GBA_FRAMES_PER_SECOND;
 
@@ -448,7 +448,7 @@ void Player_801225C(Player *p)
     p->unk70 = TRUE;
     p->unk71 = 0;
     p->unk6E = 0;
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(Player_80261D8, p);
@@ -503,7 +503,7 @@ void Player_UpdateHomingPosition(s32 qX, s32 qY)
 
 void Player_80123D0(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         PLAYERFN_SET(Player_TouchGround);
     }
 
@@ -514,7 +514,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
 {
     sub_80283C4(p);
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->variant++;
 
         p->speedAirY = Q(2.0);
@@ -590,7 +590,7 @@ void Player_Cream_InitChaoAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -618,7 +618,7 @@ void UpdateCreamFlying(Player *p)
             || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
             p->charState = CHARSTATE_CREAM_FLYING_TURNING;
         } else if (p->charState == CHARSTATE_CREAM_FLYING_TURNING) {
-            if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+            if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                 p->charState = CHARSTATE_CREAM_FLYING;
             }
         } else {
@@ -710,7 +710,7 @@ void Player_Cream_Flying(Player *p)
 
 void Player_Cream_ChaoAttack(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_WALK_A;
             p->transition = PLTRANS_PT5;
@@ -726,7 +726,7 @@ void Player_Cream_InitStepAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -741,7 +741,7 @@ void Player_Cream_InitChaoRollingAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -756,7 +756,7 @@ void Player_Cream_InitMidAirChaoAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -769,7 +769,7 @@ void Player_Cream_InitMidAirChaoAttack(Player *p)
 
 void Player_Cream_StepAttack(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
@@ -784,7 +784,7 @@ void Player_Cream_StepAttack(Player *p)
 // Mid-Air: Down-B
 void Player_Cream_ChaoRollingAttack(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM)) && p->variant == 0) {
             p->variant++;
         }
@@ -851,7 +851,7 @@ void Player_Tails_InitUnusedJump(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_TAILS_ANIM_19;
 
@@ -880,7 +880,7 @@ void sub_8012B44(Player *p)
             || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
             p->charState = CHARSTATE_TAILS_FLYING_TURNING;
         } else if ((p->charState == CHARSTATE_TAILS_FLYING_TURNING)) {
-            if ((p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER))
+            if ((p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER))
                 p->charState = CHARSTATE_TAILS_FLYING;
         } else {
             p->charState = CHARSTATE_TAILS_FLYING;
@@ -970,7 +970,7 @@ void Player_Tails_InitTailSwipe(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_BOOSTLESS_ATTACK;
 
@@ -1001,7 +1001,7 @@ void Player_Tails_TailSwipe(Player *p)
 
     sub_8029C84(p);
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         PLAYERFN_SET(Player_TouchGround);
     }
 
@@ -1049,7 +1049,7 @@ void Player_Knuckles_InitPunch(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_BOOSTLESS_ATTACK;
 
@@ -1083,7 +1083,7 @@ void Player_Knuckles_PunchLeft(Player *p)
         p->speedGroundX = speed;
     }
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
@@ -1121,7 +1121,7 @@ void Player_Knuckles_PunchRight(Player *p)
         p->speedGroundX = speed;
     }
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
@@ -1137,7 +1137,7 @@ void Player_Knuckles_InitSpiralAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_BOOST_ATTACK;
 
@@ -1807,7 +1807,7 @@ void Player_8013B6C(Player *p)
 {
     sub_8029C84(p);
 
-    if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if ((p->spriteInfoBody->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
@@ -1836,7 +1836,7 @@ void Player_Knuckles_FallAfterGlide(Player *p)
 
 void Player_Knuckles_GlideSoftLanding(Player *p)
 {
-    if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if ((p->spriteInfoBody->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->transition = PLTRANS_TOUCH_GROUND;
     }
 
@@ -1932,7 +1932,7 @@ void Player_Knuckles_InitDrillClaw(Player *p)
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_KNUCKLES_DRILL_CLAW_INIT;
 
@@ -1961,7 +1961,7 @@ void Player_Knuckles_WindupDrillClaw(Player *p)
 {
     sub_80283C4(p);
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->charState = CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN;
         p->speedAirX = Q(0.0);
         p->speedAirY = Q(1.0);
@@ -1996,14 +1996,14 @@ void Player_8013E34(Player *p)
     p->speedAirX = 0;
     p->speedAirY = 0;
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
 void Player_Knuckles_ClimbPullUpEdge(Player *p)
 {
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->rotation = 0;
 
         if (GRAVITY_IS_INVERTED) {
@@ -2058,7 +2058,7 @@ void Player_Amy_InitHammerAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     p->charState = CHARSTATE_BOOSTLESS_ATTACK;
 
@@ -2086,7 +2086,7 @@ void Player_Amy_HammerAttack(Player *p)
         p->speedGroundX = speed;
     }
 
-    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         PLAYERFN_SET(Player_TouchGround);
     }
 

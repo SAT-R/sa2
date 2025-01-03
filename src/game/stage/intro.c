@@ -256,8 +256,8 @@ struct Task *SetupStageIntro(void)
     gStageFlags |= STAGE_FLAG__ACT_START;
     gStageFlags |= STAGE_FLAG__100;
 
-    gPlayer.unk90->s.frameFlags |= SPRITE_FLAG_MASK_18;
-    gPlayer.unk94->s.frameFlags |= SPRITE_FLAG_MASK_18;
+    gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG_MASK_18;
+    gPlayer.spriteInfoLimbs->s.frameFlags |= SPRITE_FLAG_MASK_18;
 
     gActiveBossTask = NULL;
 
@@ -540,13 +540,13 @@ static void Task_IntroControllerMain(void)
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
         p->unk6C = TRUE;
-        p->unk90->s.frameFlags |= MOVESTATE_40000;
-        p->unk94->s.frameFlags |= MOVESTATE_40000;
+        p->spriteInfoBody->s.frameFlags |= MOVESTATE_40000;
+        p->spriteInfoLimbs->s.frameFlags |= MOVESTATE_40000;
 
         if (IS_MULTI_PLAYER) {
-            p->unk90->s.palId = SIO_MULTI_CNT->id;
+            p->spriteInfoBody->s.palId = SIO_MULTI_CNT->id;
         } else {
-            p->unk90->s.palId = 0;
+            p->spriteInfoBody->s.palId = 0;
         }
     }
 

@@ -163,11 +163,8 @@ typedef struct Player_ {
     /* 0x88 */ s8 unk88;
     /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
-    /* 0x90 */ PlayerSpriteInfo *unk90;
-
-    // TODO: Only used for Cream/Tails?
-    //       Alternatively, some of the following data might be a union
-    /* 0x94 */ PlayerSpriteInfo *unk94;
+    /* 0x90 */ PlayerSpriteInfo *spriteInfoBody; // for character sprites
+    /* 0x94 */ PlayerSpriteInfo *spriteInfoLimbs; // SpriteInfo for Tails' tails / Cream's ears, when rolling
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99[15];
     /* 0xA8 */ u8 unkA8;

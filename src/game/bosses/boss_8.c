@@ -1183,7 +1183,7 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
         return result;
     } else {
         s32 r0, r1;
-        Sprite *s = &gPlayer.unk90->s;
+        Sprite *s = &gPlayer.spriteInfoBody->s;
 
         r5 = sp04 + sl;
         r4 = ip + r7;
@@ -1260,7 +1260,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", static bool8 su
 
     {
         s32 r0, r1;
-        Sprite *s = &gPlayer.unk90->s;
+        Sprite *s = &gPlayer.spriteInfoBody->s;
 
         r6 = boss->qPos.x + boss->qUnk18[arm].x;
         r4 = r6 + gUnknown_080D8888[arm][0];

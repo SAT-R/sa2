@@ -157,7 +157,7 @@ void Task_Item_Shield_Normal(void)
         item->s.y = screenY;
 
         item->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        item->s.frameFlags |= gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
+        item->s.frameFlags |= gPlayer.spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
 
         UpdateSpriteAnimation(&item->s);
 
@@ -205,7 +205,7 @@ void Task_Item_Shield_Magnetic(void)
             item->s.y = screenY;
 
             item->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-            item->s.frameFlags |= gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
+            item->s.frameFlags |= gPlayer.spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
         } else {
             return;
         }
@@ -245,7 +245,7 @@ void Task_802ABC8(void)
 
             screenY = I(gPlayer.y);
 
-            r2 = gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
+            r2 = gPlayer.spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
         }
 
         s->x = screenX - cam->x;
@@ -288,7 +288,7 @@ void Task_Item_Invincibility(void)
         // _0802ACE4
         x = I(gPlayer.x) + gPlayer.unk7C;
         y = I(gPlayer.y);
-        priority = gPlayer.unk90->s.frameFlags;
+        priority = gPlayer.spriteInfoBody->s.frameFlags;
     }
     // _0802AD02
     priority &= SPRITE_FLAG_MASK_PRIORITY;

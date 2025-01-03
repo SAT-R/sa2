@@ -128,7 +128,7 @@ static void Task_8056230(void)
     ENEMY_UPDATE_POSITION(madillo, s, pos.x, pos.y);
 
     p = &gPlayer;
-    s2 = &p->unk90->s;
+    s2 = &p->spriteInfoBody->s;
 
     if ((s2->hitboxes[0].index != -1)) {
         if (HB_COLLISION(pos.x, pos.y, s->hitboxes[0], I(p->x), I(p->y), s2->hitboxes[0])) {

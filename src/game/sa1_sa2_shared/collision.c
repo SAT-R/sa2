@@ -92,7 +92,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 
 bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
 {
-    PlayerSpriteInfo *psi = p->unk90;
+    PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (!IS_ALIVE(p)) {
@@ -116,7 +116,7 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
 
 bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
-    PlayerSpriteInfo *psi = p->unk90;
+    PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (!IS_ALIVE(p)) {
@@ -167,7 +167,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 // (92.68%) https://decomp.me/scratch/CcZm5
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/collision__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
-    PlayerSpriteInfo *psi = gPlayer.unk90;
+    PlayerSpriteInfo *psi = gPlayer.spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
     EnemyBase *eb;
     u32 movestate;
@@ -271,7 +271,7 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
 
     if (HITBOX_IS_ACTIVE(s->hitboxes[0])) {
         p = &gPlayer;
-        sprPlayer = &p->unk90->s;
+        sprPlayer = &p->spriteInfoBody->s;
 
         if ((!PLAYER_IS_ALIVE) || !HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0])) {
             return result;
@@ -291,7 +291,7 @@ bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
     bool32 result = FALSE;
 
     Player *p = &gPlayer;
-    PlayerSpriteInfo *psi = p->unk90;
+    PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && (HITBOX_IS_ACTIVE(s->hitboxes[0]))) {
@@ -305,7 +305,7 @@ bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
 
 bool32 sub_800CA20(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
-    PlayerSpriteInfo *psi = p->unk90;
+    PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (IS_ALIVE(p) && (HITBOX_IS_ACTIVE(s->hitboxes[hbIndex]) && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0]))) {
@@ -361,8 +361,8 @@ bool32 sub_800CBA4(Player *p)
         p->moveState &= ~MOVESTATE_1000000;
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
 
-        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     }
 
     if (!(p->moveState & MOVESTATE_1000000)) {

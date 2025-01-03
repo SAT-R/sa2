@@ -76,7 +76,7 @@ static void sub_8072650(void)
         }
     }
 
-    if (gPlayer.unk90->s.frameFlags & 0x4000) {
+    if (gPlayer.spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         sub_80727F4(windUpStick);
     }
 }

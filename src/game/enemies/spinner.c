@@ -67,7 +67,7 @@ void Task_EnemySpinner(void)
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         Player *p = &gPlayer;
-        Sprite *s2 = &p->unk90->s;
+        Sprite *s2 = &p->spriteInfoBody->s;
 
         if ((s2->hitboxes[0].index != HITBOX_STATE_INACTIVE) && (s->hitboxes[1].index != HITBOX_STATE_INACTIVE)) {
             if (HB_COLLISION(pos.x, pos.y, s->hitboxes[1], I(p->x), I(p->y), s2->hitboxes[0])) {

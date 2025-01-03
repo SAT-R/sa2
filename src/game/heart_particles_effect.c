@@ -79,8 +79,8 @@ static void sub_8086A88(void)
 
     for (i = 0; i < NUM_HEARTS; i++) {
         s = &unk998->sprites[i];
-        s->x = gPlayer.unk90->s.x;
-        s->y = gPlayer.unk90->s.y;
+        s->x = gPlayer.spriteInfoBody->s.x;
+        s->y = gPlayer.spriteInfoBody->s.y;
     }
 
     {
