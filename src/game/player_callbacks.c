@@ -3,7 +3,6 @@
 #include "lib/m4a/m4a.h"
 #include "malloc_vram.h"
 
-
 #include "game/amy_attack_heart_effect.h"
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/collision.h"

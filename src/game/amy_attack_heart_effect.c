@@ -260,10 +260,10 @@ void sub_8015E28(u16 p0)
         s->graphics.dest = VramMalloc(4);
         s->oamFlags = SPRITE_OAM_ORDER(16);
         s->graphics.size = 0;
-#if(GAME == GAME_SA1)
+#if (GAME == GAME_SA1)
         // TODO: Unify name!
         s->graphics.anim = SA1_ANIM_HEART;
-#elif(GAME == GAME_SA2)
+#elif (GAME == GAME_SA2)
         s->graphics.anim = SA2_ANIM_HEART;
 #endif
         s->variant = 0;
