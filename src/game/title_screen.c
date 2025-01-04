@@ -2,27 +2,29 @@
 #include "core.h"
 #include "flags.h"
 #include "global.h"
+#include "malloc_vram.h"
 #include "core.h"
-#include "lib/m4a/m4a.h"
+#include "trig.h"
 #include "task.h"
 #include "sprite.h"
-#include "game/save.h"
-#include "game/stage/screen_fade.h"
+#include "lib/m4a/m4a.h"
 #include "input_recorder.h"
-#include "game/math.h"
-#include "game/math.h"
-#include "game/options_screen.h"
-#include "game/stage/stage.h"
-#include "game/time_attack/lobby.h"
-#include "constants/zones.h"
-#include "data/recordings.h"
-#include "trig.h"
 #include "game/backgrounds.h"
-#include "game/multiplayer/mode_select.h"
 #include "game/character_select.h"
-#include "malloc_vram.h"
-#include "game/time_attack/mode_select.h"
+#include "game/math.h"
+#include "game/multiplayer/mode_select.h"
+#include "game/options_screen.h"
+#include "data/recordings.h"
 #include "game/sa1_sa2_shared/demo_manager.h"
+#include "game/save.h"
+#include "game/stage/stage.h"
+#include "game/stage/screen_fade.h"
+#include "game/time_attack/lobby.h"
+#include "game/time_attack/mode_select.h"
+#if (GAME == GAME_SA1)
+#include "constants/songs.h"
+#endif
+#include "constants/zones.h"
 
 #include "game/assets/compressed/roms.h"
 
@@ -1729,44 +1731,53 @@ static void Task_LensFlareAnim(void)
     };
 }
 
-#define TinyChaoGardenConfig ((u32 *)(EWRAM_START + 0x8))
-
+#include "../chao_garden/include/language.h"
+#include "../chao_garden/include/program_params.h"
 static void LoadTinyChaoGarden(void)
 {
     u32 chaoGardenLang;
-    u32 unk374 = gLoadedSaveGame->score;
+#if (GAME == GAME_SA2)
+    u32 score = gLoadedSaveGame->score;
 
     switch (gLoadedSaveGame->language) {
         case LANG_JAPANESE:
-            chaoGardenLang = 0;
+            chaoGardenLang = TCGLANG_JAPANESE;
             break;
         case LANG_GERMAN:
-            chaoGardenLang = 3;
+            chaoGardenLang = TCGLANG_GERMAN;
             break;
         case LANG_FRENCH:
-            chaoGardenLang = 2;
+            chaoGardenLang = TCGLANG_FRENCH;
             break;
         case LANG_SPANISH:
-            chaoGardenLang = 4;
+            chaoGardenLang = TCGLANG_SPANISH;
             break;
         case LANG_ENGLISH:
         case LANG_ITALIAN:
-            chaoGardenLang = 1;
+            chaoGardenLang = TCGLANG_ENGLISH;
             break;
         default:
             chaoGardenLang = gLoadedSaveGame->language & 1;
             break;
     }
+#endif
 
     gFlags |= FLAGS_8000;
+#if (GAME == GAME_SA1)
+    m4aSongNumStop(MUS_CHARACTER_SELECTION);
+#else
     m4aMPlayAllStop();
+#endif
     m4aSoundVSyncOff();
     LZ77UnCompWram(gMultiBootProgram_TinyChaoGarden, (void *)EWRAM_START);
 
-    // TODO: what is going on here, doesn't work as a struct
-    // TODO: what's unk374
-    TinyChaoGardenConfig[0] = unk374;
+#if (GAME == GAME_SA1)
+    TinyChaoGardenConfig[0] = gLoadedSaveGame.score;
+    TinyChaoGardenConfig[1] = gLoadedSaveGame.language;
+#elif (GAME == GAME_SA2)
+    TinyChaoGardenConfig[0] = score;
     TinyChaoGardenConfig[1] = chaoGardenLang;
+#endif
     // sessionId?
     TinyChaoGardenConfig[2] = ((Random() + gFrameCount) << 8) + Random();
     SoftResetExram(0);

@@ -110,17 +110,17 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.y = QS(mpp->pos.y - (s8)mpp->unk58[0]);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
                         gPlayer.moveState = prevMoveState;
-                        gPlayer.unk90->s.frameFlags &= ~0x3000;
-                        gPlayer.unk90->s.frameFlags |= 0x2000;
+                        SPRITE_FLAG_CLEAR(&gPlayer.spriteInfoBody->s, PRIORITY);
+                        SPRITE_FLAG_SET_VALUE(&gPlayer.spriteInfoBody->s, PRIORITY, 2);
 
-                        gPlayer.unk94->s.frameFlags &= ~0x3000;
-                        gPlayer.unk94->s.frameFlags |= 0x2000;
+                        SPRITE_FLAG_CLEAR(&gPlayer.spriteInfoLimbs->s, PRIORITY);
+                        SPRITE_FLAG_SET_VALUE(&gPlayer.spriteInfoLimbs->s, PRIORITY, 2);
 
                         gCamera.unk50 &= ~3;
                         gPlayer.layer = (mpp->unk54 >> 7) & 1;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
-                        gPlayer.timerInvulnerability = 120;
+                        gPlayer.timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
                         gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
                         gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
                         m4aSongNumStart(SE_218);
@@ -135,7 +135,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__10;
 
-                    gPlayer.timerSpeedup = 600;
+                    gPlayer.timerSpeedup = ZONE_TIME_TO_INT(0, 10);
                     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);

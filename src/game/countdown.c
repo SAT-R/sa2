@@ -178,9 +178,9 @@ void sub_8036168(void)
         gPlayer.unk6C = 1;
 
         if (IS_MULTI_PLAYER) {
-            gPlayer.unk90->s.palId = (SIO_MULTI_CNT)->id;
+            gPlayer.spriteInfoBody->s.palId = (SIO_MULTI_CNT)->id;
         } else {
-            gPlayer.unk90->s.palId = 0;
+            gPlayer.spriteInfoBody->s.palId = 0;
         }
     }
 }

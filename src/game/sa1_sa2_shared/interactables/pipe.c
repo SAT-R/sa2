@@ -97,8 +97,8 @@ static void Task_Pipe_End(void)
         && ((screenY + 24) >= I(gPlayer.y)) && (gPlayer.moveState & MOVESTATE_80000)) {
         gPlayer.moveState &= ~(MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_IN_AIR);
 
-        gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits
-        gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+        gPlayer.spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits
+        gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
 
         gPlayer.layer = PLAYER_LAYER__FRONT;
         if (me->exitOnBackLayer) {

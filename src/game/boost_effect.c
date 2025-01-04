@@ -55,7 +55,7 @@ void sub_801561C(void)
     AnimId oldPlayerAnim = gPlayer.anim;
     u16 oldPlayerVariant = gPlayer.variant;
     u32 oldPlayerMovestate = gPlayer.moveState;
-    PlayerSpriteInfo *unk5A70 = gPlayer.unk90;
+    PlayerSpriteInfo *unk5A70 = gPlayer.spriteInfoBody;
     u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
     u32 oldPlayerUnk10 = unk5A70->s.frameFlags;
     u16 r6 = unk5A70->transform.rotation;
@@ -96,9 +96,9 @@ void sub_80156D0(void)
     sPlayerStateBuffer[i].anim = p->anim;
     sPlayerStateBuffer[i].variant = p->variant;
     sPlayerStateBuffer[i].moveState = oldMovestate;
-    sPlayerStateBuffer[i].animSpeed = p->unk90->s.animSpeed;
-    sPlayerStateBuffer[i].flags = p->unk90->s.frameFlags;
-    sPlayerStateBuffer[i].unkC = p->unk90->transform.rotation;
+    sPlayerStateBuffer[i].animSpeed = p->spriteInfoBody->s.animSpeed;
+    sPlayerStateBuffer[i].flags = p->spriteInfoBody->s.frameFlags;
+    sPlayerStateBuffer[i].unkC = p->spriteInfoBody->transform.rotation;
 }
 
 void sub_8015750(void)

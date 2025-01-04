@@ -780,7 +780,7 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
     }
 
     if (distance < 600) {
-        Sprite *s = &gPlayer.unk90->s;
+        Sprite *s = &gPlayer.spriteInfoBody->s;
         if (!PLAYER_IS_ALIVE || s->hitboxes[1].index == -1) {
             sub_800CBA4(&gPlayer);
             return 0;

@@ -3,14 +3,15 @@
 #include "malloc_vram.h"
 #include "task.h"
 
-#include "game/sa1_sa2_shared/globals.h"
-
-#include "game/stage/player.h"
-#include "game/stage/camera.h"
 #include "game/amy_attack_heart_effect.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/stage/camera.h"
+#include "game/stage/player.h"
 
 #include "constants/animations.h"
+#if (GAME == GAME_SA2)
 #include "constants/char_states.h"
+#endif
 
 typedef struct {
     /* 0x00 */ s32 x;
@@ -23,17 +24,22 @@ typedef struct {
 typedef struct {
     /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_SPRITE_COUNT];
     /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_SPRITE_COUNT];
+#if (GAME == GAME_SA1)
+    /* 0x100 */ s8 unk100;
+    /* 0x101 */ s8 kind;
+#elif (GAME == GAME_SA2)
     /* 0x100 */ u16 unk100;
     /* 0x102 */ u16 unk102;
     /* 0x104 */ u16 kind;
+#endif
     /* 0x106 */ u16 unk106;
     /* 0x108 */ u16 unk108;
     /* 0x10A */ u16 unk10A;
 } AmyAtkHearts; /* size: 0x10C */
 
-void Task_8015CE4(void);
+void Task_AmyAttackHeartEffect(void);
 void sub_8015E28(u16);
-void TaskDestructor_8015FF0(struct Task *);
+void TaskDestructor_AmyAttackHeartEffect(struct Task *);
 
 ALIGNED(4)
 const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
@@ -79,7 +85,11 @@ const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
     },
 };
 
-void CreateAmyAttackHeartEffect(u16 kind)
+#if (GAME == GAME_SA1)
+extern void CreateAmyAttackHeartEffect(void)
+#elif (GAME == GAME_SA2)
+extern void CreateAmyAttackHeartEffect(u16 kind)
+#endif
 {
     u8 i;
 
@@ -91,11 +101,19 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
+#if (GAME == GAME_SA2)
     if ((gPlayer.charState == CHARSTATE_BOOSTLESS_ATTACK) || (gPlayer.charState == CHARSTATE_SOME_ATTACK)
-        || (gPlayer.charState == CHARSTATE_TRICK_DOWN)) {
-        struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
+        || (gPlayer.charState == CHARSTATE_TRICK_DOWN))
+#endif
+    {
+        struct Task *t = TaskCreate(Task_AmyAttackHeartEffect, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_AmyAttackHeartEffect);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
+        // TODO: Remove magic nums!
+#if (GAME == GAME_SA1)
+        hearts->unk100 = gPlayer.charState;
+        hearts->kind = gPlayer.charState - 87;
+#elif (GAME == GAME_SA2)
         hearts->unk100 = sCharStateAnimInfo[gPlayer.charState][0];
         hearts->unk102 = sCharStateAnimInfo[gPlayer.charState][1];
 
@@ -104,6 +122,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
         }
 
         hearts->kind = kind;
+#endif
         hearts->unk106 = 0;
         hearts->unk108 = 0;
         hearts->unk10A = 0;
@@ -116,7 +135,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
 
 // NOTE: Fakematch
 // (99.97%) https://decomp.me/scratch/Z3oDP
-void Task_8015CE4(void)
+void Task_AmyAttackHeartEffect(void)
 {
 #ifndef NON_MATCHING
     register struct Task *t asm("r2") = gCurTask;
@@ -127,7 +146,12 @@ void Task_8015CE4(void)
     u8 i;
 
     // TODO: Fix horrible cast!
-    if ((!PLAYER_IS_ALIVE) || ((*(u32 *)&hearts->unk100 != *(u32 *)&gPlayer.anim) && (*(u32 *)&gPlayer.anim != 0x0001019F))) {
+#if (GAME == GAME_SA1)
+    if (hearts->unk100 != gPlayer.charState)
+#else
+    if ((!PLAYER_IS_ALIVE) || ((*(u32 *)&hearts->unk100 != *(u32 *)&gPlayer.anim) && (*(u32 *)&gPlayer.anim != 0x0001019F)))
+#endif
+    {
         TaskDestroy(t);
         return;
     } else {
@@ -153,7 +177,7 @@ void Task_8015CE4(void)
 
             if (r2 != (u16)-1) {
                 u16 old106 = hearts->unk106;
-                hearts->unk106 += gPlayer.unk90->s.animSpeed;
+                hearts->unk106 += gPlayer.spriteInfoBody->s.animSpeed;
 
                 if (old106 >= r2) {
                     u32 v;
@@ -173,7 +197,11 @@ void Task_8015CE4(void)
                 if (hearts->params[i].count != 0) {
                     Sprite *s;
                     s32 x, y;
+#if (GAME == GAME_SA1)
+                    u16 camX, camY;
+#elif (GAME == GAME_SA2)
                     s32 camX, camY;
+#endif
 #ifndef NON_MATCHING
                     register s32 index asm("r0") = i;
                     index *= sizeof(Sprite);
@@ -232,24 +260,31 @@ void sub_8015E28(u16 p0)
         s->graphics.dest = VramMalloc(4);
         s->oamFlags = SPRITE_OAM_ORDER(16);
         s->graphics.size = 0;
+#if (GAME == GAME_SA1)
+        // TODO: Unify name!
+        s->graphics.anim = SA1_ANIM_HEART;
+#elif (GAME == GAME_SA2)
         s->graphics.anim = SA2_ANIM_HEART;
+#endif
         s->variant = 0;
         s->animCursor = 0;
         s->qAnimDelay = 0;
         s->prevVariant = -1;
-        s->animSpeed = gPlayer.unk90->s.animSpeed;
+        s->animSpeed = gPlayer.spriteInfoBody->s.animSpeed;
         s->palId = 0;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
+#if (GAME == GAME_SA2)
         if (GRAVITY_IS_INVERTED) {
             SPRITE_FLAG_SET(s, Y_FLIP);
         } else {
             SPRITE_FLAG_SET_VALUE(s, PRIORITY, 2);
         }
+#endif
     }
 }
 
-void TaskDestructor_8015FF0(struct Task *t)
+void TaskDestructor_AmyAttackHeartEffect(struct Task *t)
 {
     AmyAtkHearts *hearts = TASK_DATA(t);
 

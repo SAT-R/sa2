@@ -1,21 +1,7 @@
-.include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-@ These are all multiplayer-only, but there is one procedure (sub_800DF38)
-@ of collision code behind this that is not MP-exclusive.
-@
-@ Either everything gets merged into collision.c, which seems like the best approach,
-@ or we have a main collision.c and a collision_mp.c, the latter of which contains SP-called code.
-
-@ Called by: player_mp_actor.s
-	thumb_func_start sub_800D0A0
-sub_800D0A0: @ 0x0800D0A0
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1283,3 +1269,5 @@ _0800DA38:
 	bx r1
 	.align 2, 0
 _0800DA48: .4byte gPlayer
+
+.syntax divided

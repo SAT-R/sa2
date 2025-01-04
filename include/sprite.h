@@ -198,10 +198,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u16 rotation;
 
-    // TODO:
-    //     The names "width" and "height" appear to be inaccurate.
-    //     Maybe "scaleX" and "scaleY" would be more fitting?
-    //     It's 0x100 or Q_8_8(1.0) for 1x, Q_8_8(2.0) for 2x, etc.
+    // TODO: Rename to SA1/SA3 version! (width / height -> scaleX / scaleY)
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 x;

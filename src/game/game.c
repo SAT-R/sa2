@@ -49,7 +49,7 @@ void GameInit(void)
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
 
-    gUnknown_030059D0.t = NULL;
+    gDustEffectBrakingTask.t = NULL;
     gWater.t = NULL;
 
     gUnknown_0300543C = 0;
@@ -58,11 +58,15 @@ void GameInit(void)
     gSmallAirBubbleCount = 0;
     gDemoPlayCounter = 0;
     // TODO: resolve this
-    gUnknown_030054E4 = 0;
+    gDestroySpotlights = 0;
 
     for (i = 0; i < 4; i++) {
         gMultiplayerPlayerTasks[i] = NULL;
     }
+
+#if (GAME == GAME_SA1)
+    gTask_03006240 = 0;
+#endif
 
     for (i = 0; i < 4; i++) {
         gMultiplayerCharacters[i] = 0;

@@ -492,7 +492,7 @@ END_NONMATCH
 
 void sub_8016D20(void)
 {
-    Sprite *sprPlayer = &gPlayer.unk90->s;
+    Sprite *sprPlayer = &gPlayer.spriteInfoBody->s;
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
     SpriteTransform *transform = &mpp->transform;
@@ -649,7 +649,7 @@ void sub_801707C(void)
     s32 result;
     u8 unusedByte;
 
-    playerSprite = &gPlayer.unk90->s;
+    playerSprite = &gPlayer.spriteInfoBody->s;
     someBool = FALSE;
     mpp = TASK_DATA(gCurTask);
     s = &mpp->s;
@@ -891,7 +891,7 @@ void sub_8017670(void)
     s32 result;
     u8 unusedByte;
 
-    playerSprite = &gPlayer.unk90->s;
+    playerSprite = &gPlayer.spriteInfoBody->s;
     mpp = TASK_DATA(gCurTask);
     s = &mpp->s;
     moveStateVal = (gPlayer.moveState >> 5) & 1;
@@ -1308,7 +1308,7 @@ void sub_8018120(void)
 
 bool32 sub_80181E0(void)
 {
-    Sprite *sprPlayer = &gPlayer.unk90->s;
+    Sprite *sprPlayer = &gPlayer.spriteInfoBody->s;
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
 
@@ -1351,7 +1351,7 @@ bool32 sub_8018300(void)
     Sprite *s, *sprPlayer;
     u32 val;
 
-    sprPlayer = &gPlayer.unk90->s;
+    sprPlayer = &gPlayer.spriteInfoBody->s;
     mpp = TASK_DATA(gCurTask);
     s = &mpp->s;
 
@@ -1480,7 +1480,7 @@ bool32 sub_8018300(void)
 
 void Task_HandleLaunchPlayer(void)
 {
-    PlayerSpriteInfo *psi = gPlayer.unk90;
+    PlayerSpriteInfo *psi = gPlayer.spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (sprPlayer->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {

@@ -16,9 +16,63 @@
 
 #define TIME_RECORDS_PER_COURSE 3
 
+#if (GAME == GAME_SA1)
+typedef u8 PlayerNameChar;
+typedef u32 TimeRecord;
+#elif (GAME == GAME_SA2)
+typedef u16 PlayerNameChar;
+typedef u16 TimeRecord;
+#endif
+
+#if (GAME == GAME_SA1)
+struct TimeRecords {
+    TimeRecord table[NUM_CHARACTERS][NUM_LEVEL_IDS][TIME_RECORDS_PER_COURSE];
+};
+
 struct MultiplayerScore {
     u32 playerId;
-    u16 playerName[MAX_PLAYER_NAME_LENGTH];
+    // TODO/NOTE: Only 6 chars are displayed, but the string is treated 8-char wide
+    PlayerNameChar playerName[MAX_PLAYER_NAME_LENGTH + 2];
+
+    u8 wins;
+    u8 losses;
+    u8 draws;
+};
+
+#define NUM_TIME_RECORD_ROWS (NUM_CHARACTERS * NUM_LEVEL_IDS * TIME_RECORDS_PER_COURSE)
+
+typedef struct SaveGame {
+    /* 0x000 */ u8 filler0[0x4];
+    /* 0x004 */ s32 unk4;
+    /* 0x008 */ u16 unk8[4];
+    /* 0x010 */ PlayerNameChar playerName[MAX_PLAYER_NAME_LENGTH];
+    /* 0x016 */ u8 unk16;
+    /* 0x017 */ u8 unk17;
+    /* 0x018 */ u8 unk18;
+    /* 0x019 */ u8 unk19;
+    /* 0x01A */ u8 language;
+    /* 0x01B */ u8 unk1B;
+    /* 0x01C */ u8 unk1C;
+    /* 0x020 */ struct TimeRecords timeRecords;
+    /* 0x2AC */ struct MultiplayerScore multiplayerScores[NUM_MULTIPLAYER_SCORES];
+    /* 0x420 */ u32 unk420;
+    /* 0x424 */ u8 filler424[0x4];
+    /* 0x428 */ u32 score;
+    /* 0x42C */ u8 filler42C[0x4];
+} SaveGame; /* 0x430 */
+
+// NOTE: Not a pointer in SA1!
+extern struct SaveGame gLoadedSaveGame;
+#elif (GAME == GAME_SA2)
+struct TimeRecords {
+    TimeRecord table[NUM_CHARACTERS][NUM_TIME_ATTACK_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
+};
+
+#define NUM_TIME_RECORD_ROWS (NUM_TIME_ATTACK_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE)
+
+struct MultiplayerScore {
+    u32 playerId;
+    PlayerNameChar playerName[MAX_PLAYER_NAME_LENGTH];
 
     bool8 slotFilled;
 
@@ -27,14 +81,7 @@ struct MultiplayerScore {
     u8 draws;
 };
 
-struct TimeRecords {
-    // TODO: s16?
-    u16 table[NUM_CHARACTERS][NUM_COURSE_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
-};
-
-#define NUM_TIME_RECORD_ROWS (NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE)
-
-struct SaveGame {
+typedef struct SaveGame {
     /* 0x000 */ u32 id;
 
     /* 0x004 */ u8 difficultyLevel;
@@ -65,13 +112,14 @@ struct SaveGame {
     /* 0x034 */ struct TimeRecords timeRecords;
     /* 0x2AC */ struct MultiplayerScore multiplayerScores[NUM_MULTIPLAYER_SCORES];
     /* 0x374 */ u32 score;
-};
+} SaveGame;
+
+extern struct SaveGame *gLoadedSaveGame;
+#endif
 
 #define MULTIPLAYER_RESULT_WIN  0
 #define MULTIPLAYER_RESULT_LOSS 1
 #define MULTIPLAYER_RESULT_DRAW 2
-
-extern struct SaveGame *gLoadedSaveGame;
 
 void InsertMultiplayerProfile(u32 playerId, u16 *name);
 void RecordOwnMultiplayerResult(s16 result);

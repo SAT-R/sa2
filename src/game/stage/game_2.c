@@ -171,7 +171,7 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
     }
 }
 
-void sub_801F488(void)
+void CreateGrindEffect2(void)
 {
     Player *p = &gPlayer;
     if ((gStageTime & 0x7) == 0) {
@@ -201,7 +201,7 @@ void sub_801F488(void)
         ts = TASK_DATA(t);
         s = &ts->s;
         s->graphics.dest = VramMalloc(20);
-        s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
+        s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
         s->variant = 0;
         s->oamFlags = SPRITE_OAM_ORDER(8);
         s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
@@ -223,7 +223,7 @@ struct Task *sub_801F568(s16 x, s16 y)
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(20);
-    s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
+    s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
     s->variant = 0;
     s->oamFlags = SPRITE_OAM_ORDER(8);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 1);

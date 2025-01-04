@@ -258,7 +258,7 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
         p = &gPlayer;
 
-        hb = &p->unk90->s.hitboxes[0];
+        hb = &p->spriteInfoBody->s.hitboxes[0];
         if (ring->unkC <= sp0C && (p->charState != SA2_CHAR_ANIM_20 || p->timerInvulnerability == 0) && IS_ALIVE(p)) {
             struct Rect8 *rect = (struct Rect8 *)&hb->left;
             if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
@@ -374,7 +374,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
 
         p = &gPlayer;
 
-        hb = &p->unk90->s.hitboxes[0];
+        hb = &p->spriteInfoBody->s.hitboxes[0];
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && IS_ALIVE(p)) {
             struct Rect8 *rect = (struct Rect8 *)&hb->left;
             if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
@@ -496,9 +496,9 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_Flipped
         p = &gPlayer;
 
 #if USE_HITBOX_RECT
-        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+        hb = (HitboxRect *)&p->spriteInfoBody->s.hitboxes[0].left;
 #else
-        hb = &p->unk90->s.hitboxes[0];
+        hb = &p->spriteInfoBody->s.hitboxes[0];
 #endif
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_ALT_LEFT(p, hb)) && (HB_ALT_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -622,9 +622,9 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
         p = &gPlayer;
 
 #if USE_HITBOX_RECT
-        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+        hb = (HitboxRect *)&p->spriteInfoBody->s.hitboxes[0].left;
 #else
-        hb = &p->unk90->s.hitboxes[0];
+        hb = &p->spriteInfoBody->s.hitboxes[0];
 #endif
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_ALT_LEFT(p, hb)) && (HB_ALT_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -751,9 +751,9 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
         p = &gPlayer;
 
 #if USE_HITBOX_RECT
-        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+        hb = (HitboxRect *)&p->spriteInfoBody->s.hitboxes[0].left;
 #else
-        hb = &p->unk90->s.hitboxes[0];
+        hb = &p->spriteInfoBody->s.hitboxes[0];
 #endif
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_ALT_LEFT(p, hb)) && (HB_ALT_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))

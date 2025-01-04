@@ -68,6 +68,7 @@ tools/agbcc
 reports
 .vscode/*.log
 .vs/
+*.pdb
 *.gbapal
 *.lz
 *.rl

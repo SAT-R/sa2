@@ -120,13 +120,9 @@ SECTIONS
         src/game/sa1_sa2_shared/collect_ring_effect.o(.text);
         src/game/sa1_sa2_shared/item_box.o(.text);
         src/game/sa1_sa2_shared/dust_cloud.o(.text);
-        src/game/sa1_sa2_shared/ring.o(.text);
+        src/game/sa1_sa2_shared/magnetic_ring.o(.text);
         src/game/sa1_sa2_shared/music_manager.o(.text);
         src/game/sa1_sa2_shared/collision.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/collision_mp.o(.text);
-#endif
-        src/game/sa1_sa2_shared/collision_1.o(.text);
         src/game/sa1_sa2_shared/input_buffer.o(.text);
         src/game/sa1_sa2_shared/interactables/spring.o(.text);
         src/game/sa1_sa2_shared/interactables/platform.o(.text);
@@ -180,7 +176,7 @@ SECTIONS
         src/game/stage/game_2.o(.text);
         src/game/stage/dust_effect_braking.o(.text);
         src/game/stage/dust_effect_spindash.o(.text);
-        src/game/stage/spark_effect.o(.text);
+        src/game/stage/grind_effect_1.o(.text);
         src/game/stage/rings_scatter.o(.text);
 
         /* player */
