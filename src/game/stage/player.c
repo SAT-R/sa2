@@ -4767,10 +4767,8 @@ void Player_DoGrinding(Player *p)
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
             m4aSongNumStop(SE_GRINDING);
             PLAYERFN_SET(Player_Jumping);
-        } else {
-            if (IS_SINGLE_PLAYER) {
-                sub_801F488();
-            }
+        } else if (IS_SINGLE_PLAYER) {
+            CreateGrindEffect2();
         }
     }
 }

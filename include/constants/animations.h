@@ -497,7 +497,7 @@
 #define SA2_ANIM_SPINDASH_DUST_EFFECT     846
 #define SA2_ANIM_SPINDASH_DUST_EFFECT_BIG 847
 #define SA2_ANIM_SMALL_DUST_PARTICLE      848
-#define SA2_ANIM_SPARK_EFFECT             849 // Grinding particles
+#define SA2_ANIM_GRIND_EFFECT             849 // Grinding particles
 #define SA2_ANIM_SHIELD_NORMAL            850
 #define SA2_ANIM_SHIELD_MAGNETIC          851
 #define SA2_ANIM_INVINCIBILITY            852

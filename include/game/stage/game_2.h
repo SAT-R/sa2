@@ -23,7 +23,7 @@ typedef struct {
 extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
-void sub_801F488(void);
+void CreateGrindEffect2(void);
 
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
 void Task_801F214(void);

@@ -176,7 +176,7 @@ SECTIONS
         src/game/stage/game_2.o(.text);
         src/game/stage/dust_effect_braking.o(.text);
         src/game/stage/dust_effect_spindash.o(.text);
-        src/game/stage/spark_effect.o(.text);
+        src/game/stage/grind_effect_1.o(.text);
         src/game/stage/rings_scatter.o(.text);
 
         /* player */

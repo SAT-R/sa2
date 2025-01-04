@@ -9,21 +9,23 @@
 
 typedef struct {
     Sprite s;
-} SparkEffect;
+} GrindEffect;
 
-void Task_SparkEffect(void);
-void TaskDestructor_SparkEffect(struct Task *);
+void Task_GrindEffect(void);
+void TaskDestructor_GrindEffect(struct Task *);
 
-// NOTE: This effect appears to be unused
-struct Task *CreateSparkEffect()
+// NOTE: This effect is unused in SA2.
+//       It is the code for SA1's Grind effect
+
+struct Task *CreateGrindEffect()
 {
-    struct Task *t = TaskCreate(Task_SparkEffect, sizeof(SparkEffect), 0x2001, 0, TaskDestructor_SparkEffect);
+    struct Task *t = TaskCreate(Task_GrindEffect, sizeof(GrindEffect), 0x2001, 0, TaskDestructor_GrindEffect);
 
-    SparkEffect *spark = TASK_DATA(t);
+    GrindEffect *spark = TASK_DATA(t);
     Sprite *s = &spark->s;
     s->graphics.dest = VramMalloc(20);
     s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
+    s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
     s->variant = 0;
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(8);
@@ -35,7 +37,7 @@ struct Task *CreateSparkEffect()
     return t;
 }
 
-void Task_SparkEffect(void)
+void Task_GrindEffect(void)
 {
     Player *p = &gPlayer;
 
@@ -43,7 +45,7 @@ void Task_SparkEffect(void)
         TaskDestroy(gCurTask);
         return;
     } else if ((p->anim == SA2_CHAR_ANIM_55) && (p->variant == 0)) {
-        SparkEffect *spark = TASK_DATA(gCurTask);
+        GrindEffect *spark = TASK_DATA(gCurTask);
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;
         s->x = I(p->x) - cam->x;
@@ -60,8 +62,8 @@ void Task_SparkEffect(void)
     }
 }
 
-void TaskDestructor_SparkEffect(struct Task *t)
+void TaskDestructor_GrindEffect(struct Task *t)
 {
-    SparkEffect *spark = TASK_DATA(t);
+    GrindEffect *spark = TASK_DATA(t);
     VramFree(spark->s.graphics.dest);
 }
