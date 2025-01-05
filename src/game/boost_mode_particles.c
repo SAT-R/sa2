@@ -57,7 +57,7 @@ void CreateBoostModeParticles(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
 
-    SeedRng(gPlayer.x, gCamera.x);
+    SeedRng(gPlayer.qWorldX, gCamera.x);
 
     for (i = 0; i < 16; i++) {
         u8 temp1;
@@ -116,14 +116,14 @@ void sub_8089E54(void)
         particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
         particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
         s = &particles->unk0;
-        s->x = I(gPlayer.x) - gCamera.x + (particles->unk62[i][0] >> 8);
-        s->y = I(gPlayer.y) - gCamera.y + (particles->unk62[i][1] >> 8);
+        s->x = I(gPlayer.qWorldX) - gCamera.x + (particles->unk62[i][0] >> 8);
+        s->y = I(gPlayer.qWorldY) - gCamera.y + (particles->unk62[i][1] >> 8);
         DisplaySprite(s);
     }
 
     if (particles->unk60++ > 8) {
         s->variant = 1;
-        SeedRng(gPlayer.x, gCamera.x);
+        SeedRng(gPlayer.qWorldX, gCamera.x);
 
         for (i = 0; i < 16; i++) {
             u8 temp;
@@ -178,13 +178,13 @@ void sub_808A0A4(void)
     for (i = 0; i < 8; i++) {
         s = &particles->unk0;
         if (particles->unk60 & 1) {
-            s->x = (I(gPlayer.x) - gCamera.x) + (particles->unk62[i][0] >> 8);
-            s->y = (I(gPlayer.y) - gCamera.y) + (particles->unk62[i][1] >> 8);
+            s->x = (I(gPlayer.qWorldX) - gCamera.x) + (particles->unk62[i][0] >> 8);
+            s->y = (I(gPlayer.qWorldY) - gCamera.y) + (particles->unk62[i][1] >> 8);
             UpdateSpriteAnimation(s);
 
         } else {
-            s->x = (I(gPlayer.x) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
-            s->y = (I(gPlayer.y) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
+            s->x = (I(gPlayer.qWorldX) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
+            s->y = (I(gPlayer.qWorldY) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
         }
         DisplaySprite(s);
     }

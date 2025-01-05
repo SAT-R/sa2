@@ -149,7 +149,7 @@ static void Task_PlatformThinMain(void)
         u32 temp2 = sub_800CCB8(s, x, y, player);
         if (temp2 & 0xC0000) {
             if (sub_80111F0(s, x, y, player) & 0xC0000) {
-                player->x += (s16)(temp2 & 0xFF00);
+                player->qWorldX += (s16)(temp2 & 0xFF00);
                 player->speedAirX = 0;
             }
         }
@@ -168,7 +168,7 @@ static void Task_PlatformThinMain(void)
                         something = TRUE;
                         break;
                     }
-                    player->y += (s16)(temp2 << 8);
+                    player->qWorldY += (s16)(temp2 << 8);
                     player->speedAirY = 0;
                     break;
                 case CHARACTER_SONIC:
@@ -181,7 +181,7 @@ static void Task_PlatformThinMain(void)
                     }
                 }
                 default:
-                    player->y += (s16)(temp2 << 8);
+                    player->qWorldY += (s16)(temp2 << 8);
                     player->speedAirY = 0;
                     break;
             }

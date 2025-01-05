@@ -1117,12 +1117,12 @@ void sub_8044784(EggSaucer *boss)
 
     UpdateScreenFade(fade);
 
-    y = I(gPlayer.y);
+    y = I(gPlayer.qWorldY);
     y += 0x13;
     y -= (I(boss->y) + ((SIN(boss->gunDiskAngle) * 5) >> 11));
     x = ({
         s32 temp3;
-        x = (I(gPlayer.x));
+        x = (I(gPlayer.qWorldX));
         temp3 = x + 2;
         temp3 - (I(boss->x) + ((COS(boss->gunDiskAngle) * 5) >> 11));
     });
@@ -1283,8 +1283,8 @@ static void sub_8044CBC(EggSaucer *boss)
         x += 2;
         y -= 0x11;
 
-        x = I(gPlayer.x) - x;
-        y = I(gPlayer.y) - y;
+        x = I(gPlayer.qWorldX) - x;
+        y = I(gPlayer.qWorldY) - y;
         boss->unk32 = sub_8004418(y, x);
     }
 
@@ -1435,8 +1435,8 @@ static void sub_8044FE4(EggSaucer *boss)
         x += 2;
         y -= 0x11;
 
-        x = I(gPlayer.x) - x;
-        y = I(gPlayer.y) - y;
+        x = I(gPlayer.qWorldX) - x;
+        y = I(gPlayer.qWorldY) - y;
         boss->unk32 = sub_8004418(y, x);
     }
 

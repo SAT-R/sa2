@@ -108,8 +108,8 @@ static bool32 AlivePlayerIsInToggle(Sprite_GravityToggle *toggle)
         screenLeft = (toggle->x + toggle->left) - gCamera.x;
         screenTop = (toggle->y + toggle->top) - gCamera.y;
 
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.qWorldX) - gCamera.x;
+        playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         if ((screenLeft <= playerX) && ((screenLeft + toggle->width) >= playerX) && (screenTop <= playerY)
             && ((screenTop + toggle->height) >= playerY)) {

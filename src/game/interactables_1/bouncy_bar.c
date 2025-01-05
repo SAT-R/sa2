@@ -89,7 +89,7 @@ void Task_BouncyBarIdle(void)
     s->y = screenY - gCamera.y;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1) && (gPlayer.speedAirY > 0)
-        && (I(gPlayer.y) + 4) < screenY) {
+        && (I(gPlayer.qWorldY) + 4) < screenY) {
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.transition = PLTRANS_PT5;
 
@@ -101,7 +101,7 @@ void Task_BouncyBarIdle(void)
         bar->unk3D = (bar->unk3C * 5) + 10;
         bar->unk3E = gUnknown_080D94E8[bar->unk3C];
 
-        bar->unk40 = screenX - I(gPlayer.x) >= 0 ? screenX - I(gPlayer.x) : I(gPlayer.x) - screenX;
+        bar->unk40 = screenX - I(gPlayer.qWorldX) >= 0 ? screenX - I(gPlayer.qWorldX) : I(gPlayer.qWorldX) - screenX;
 
         gCurTask->main = Task_BouncyBarLaunch;
         gPlayer.moveState |= MOVESTATE_400000;
@@ -138,7 +138,7 @@ void Task_BouncyBarLaunch(void)
     if (bar->unk3D != 0) {
         s8 temp;
         bar->unk3D--;
-        gPlayer.y += bar->unk40 * bar->unk3E;
+        gPlayer.qWorldY += bar->unk40 * bar->unk3E;
         gPlayer.speedAirY = 0;
 
         if (bar->unk3D == 0) {

@@ -72,7 +72,7 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX, u16 spri
 
 void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 {
-    if ((sprite->someX < Q(sprite->posX + sprite->unk8)) && (gPlayer.x > Q(sprite->posX + sprite->unkC))) {
+    if ((sprite->someX < Q(sprite->posX + sprite->unk8)) && (gPlayer.qWorldX > Q(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
             u16 timeDiff;
             u16 prevRingCount;
@@ -125,13 +125,13 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
             sprite->unk1C = 1;
             sprite->timer = gCheckpointTime;
         }
-        sprite->someX = gPlayer.x;
-    } else if ((sprite->someX > Q(sprite->posX + sprite->unkC)) && (gPlayer.x < Q(sprite->posX + sprite->unk8))) {
+        sprite->someX = gPlayer.qWorldX;
+    } else if ((sprite->someX > Q(sprite->posX + sprite->unkC)) && (gPlayer.qWorldX < Q(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
             sprite->unk18--;
         }
 
-        sprite->someX = gPlayer.x;
+        sprite->someX = gPlayer.qWorldX;
     }
 
     gCurTask->main = Task_80806F4;
@@ -144,8 +144,8 @@ bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
     spriteX = sprite->posX - gCamera.x;
     spriteY = sprite->posY - gCamera.y;
 
-    playerX = I(gPlayer.x) - gCamera.x;
-    playerY = I(gPlayer.y) - gCamera.y;
+    playerX = I(gPlayer.qWorldX) - gCamera.x;
+    playerY = I(gPlayer.qWorldY) - gCamera.y;
 
     if ((spriteX + sprite->unk8 <= playerX) && (playerX <= spriteX + sprite->unkC) && (spriteY + sprite->unkA <= playerY)
         && (playerY <= spriteY + sprite->unkE)) {
@@ -160,17 +160,17 @@ void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
     if (sprite->unk1C != 0) {
         s32 xValue, yValue;
 
-        if ((gPlayer.x < Q(240)) && (gPlayer.y < Q(288))) {
+        if ((gPlayer.qWorldX < Q(240)) && (gPlayer.qWorldY < Q(288))) {
             xValue = Q(1440);
             yValue = Q(864);
-        } else if ((gPlayer.x > Q(1680)) && (gPlayer.y > Q(864))) {
+        } else if ((gPlayer.qWorldX > Q(1680)) && (gPlayer.qWorldY > Q(864))) {
             xValue = Q(-1440);
             yValue = Q(-864);
         } else {
             return;
         }
-        gPlayer.x += xValue;
-        gPlayer.y += yValue;
+        gPlayer.qWorldX += xValue;
+        gPlayer.qWorldY += yValue;
 
         xValue = I(xValue);
         yValue = I(yValue);
@@ -210,7 +210,7 @@ void Task_80806F4(void)
     if (sub_808055C(sprite)) {
         sub_808073C(sprite);
     } else {
-        sprite->someX = gPlayer.x;
+        sprite->someX = gPlayer.qWorldX;
     }
     sub_80805D0(sprite);
 }

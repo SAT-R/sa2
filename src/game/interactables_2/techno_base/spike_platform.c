@@ -166,22 +166,22 @@ static u32 sub_807AE60(Sprite_IA78 *ia78)
         u32 temp = sub_800CCB8(s, ia78->unk3C, ia78->unk40, &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = 0;
                 return 2;
             }
             if (temp & 0x40000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = 0;
                 return 1;
             }
             if (temp & 0x80000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = 0;
                 return 3;
             }
             if (temp & 0x20000) {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = 0;
                 return 4;
             }

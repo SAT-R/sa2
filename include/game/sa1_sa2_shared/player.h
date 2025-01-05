@@ -76,8 +76,8 @@ typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
     /* 0x04 */ u16 unk4;
 
-    /* 0x08 */ s32 x;
-    /* 0x0C */ s32 y;
+    /* 0x08 */ s32 qWorldX;
+    /* 0x0C */ s32 qWorldY;
 
     /* 0x10 */ s16 speedAirX; // Q_8_8
     /* 0x12 */ s16 speedAirY; // Q_8_8

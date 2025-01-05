@@ -106,14 +106,14 @@ static void Task_Ramp(void)
             if (((r1 & 0x80000) && (ramp->unk3C & 2) && (player->speedAirX > -1))
                 || ((r1 & 0x40000) && (!(ramp->unk3C & 2)) && (player->speedAirX < 1))) {
 
-                player->x += (s16)(r1 & 0xFF00);
+                player->qWorldX += (s16)(r1 & 0xFF00);
 
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             } else if (!(ramp->unk3C & 2)) {
                 s32 hbLeft = screenX + s->hitboxes[0].left;
                 s32 hbWidth = s->hitboxes[0].right - s->hitboxes[0].left;
-                s32 halfWidth = I(player->x) - hbLeft;
+                s32 halfWidth = I(player->qWorldX) - hbLeft;
                 if (halfWidth > 0) {
                     if (halfWidth > hbWidth) {
                         if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))) {
@@ -124,7 +124,7 @@ static void Task_Ramp(void)
                         player->moveState &= ~MOVESTATE_8;
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
-                        s32 playerMiddleY = I(player->y) + player->spriteOffsetY - screenY;
+                        s32 playerMiddleY = I(player->qWorldY) + player->spriteOffsetY - screenY;
                         s32 temp6 = I(s->hitboxes[0].top * (Q(halfWidth) / hbWidth));
 
                         if (playerMiddleY >= temp6) {
@@ -138,7 +138,7 @@ static void Task_Ramp(void)
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
-                                player->y += Q(temp6 - playerMiddleY);
+                                player->qWorldY += Q(temp6 - playerMiddleY);
                                 player->rotation = 0;
 
                                 player->moveState |= MOVESTATE_8;
@@ -156,12 +156,12 @@ static void Task_Ramp(void)
             }
         } else {
             if (var) {
-                if (((ramp->unk3C & 2) != 0 && I(player->x) < s->x) || ((ramp->unk3C & 2) == 0 && I(player->x) > s->x)) {
+                if (((ramp->unk3C & 2) != 0 && I(player->qWorldX) < s->x) || ((ramp->unk3C & 2) == 0 && I(player->qWorldX) > s->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR) && player->speedGroundX > Q(4)) {
                         player->transition = PLTRANS_RAMP_AND_DASHRING;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
-                } else if (((ramp->unk3C & 2) != 0 && I(player->x) > s->x) || ((ramp->unk3C & 2) == 0 && I(player->x) < s->x)) {
+                } else if (((ramp->unk3C & 2) != 0 && I(player->qWorldX) > s->x) || ((ramp->unk3C & 2) == 0 && I(player->qWorldX) < s->x)) {
                     player->moveState &= ~MOVESTATE_8;
                     player->unk3C = NULL;
                 }

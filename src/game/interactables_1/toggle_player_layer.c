@@ -36,8 +36,8 @@ static void Task_MapEntity_Toggle_PlayerLayer(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if ((screenX <= I(gPlayer.x)) && (screenX + (me->width * TILE_WIDTH) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
-        && (screenY + (me->height * TILE_WIDTH) >= I(gPlayer.y))) {
+    if ((screenX <= I(gPlayer.qWorldX)) && (screenX + (me->width * TILE_WIDTH) >= I(gPlayer.qWorldX)) && (screenY <= I(gPlayer.qWorldY))
+        && (screenY + (me->height * TILE_WIDTH) >= I(gPlayer.qWorldY))) {
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.

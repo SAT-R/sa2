@@ -222,8 +222,8 @@ static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
     } else {
         s16 x = I(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
         s16 y = I(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
-        s16 playerX = (I(gPlayer.x) - gCamera.x);
-        s16 playerY = (I(gPlayer.y) - gCamera.y);
+        s16 playerX = (I(gPlayer.qWorldX) - gCamera.x);
+        s16 playerY = (I(gPlayer.qWorldY) - gCamera.y);
         s16 dX = x - playerX;
         s16 dY = y - playerY;
         if (dX * dX + dY * dY <= (16 * 16)) {
@@ -301,11 +301,11 @@ static void sub_807F7D0(Sprite_FlyingHandle *flyingHandle)
     u32 r1 = player->moveState & MOVESTATE_FACING_LEFT;
 #endif
     if (r1) {
-        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) + Q(4.0);
-        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
+        player->qWorldX = (flyingHandle->unk44 + flyingHandle->unk4C) + Q(4.0);
+        player->qWorldY = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
     } else {
-        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) - Q(4.0);
-        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
+        player->qWorldX = (flyingHandle->unk44 + flyingHandle->unk4C) - Q(4.0);
+        player->qWorldY = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
     }
 }
 

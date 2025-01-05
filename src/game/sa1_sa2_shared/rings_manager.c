@@ -36,11 +36,11 @@ void TaskDestructor_8007F1C(struct Task *);
               && RECT_BOTTOM(mp->pos.y, rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 #define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I((p)->x), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I((p)->x), rect))                     \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I((p)->x), rect) && RECT_RIGHT(I((p)->x), rect) >= (ringIntX - TILE_WIDTH)))                \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I((p)->y), rect) && ringIntY >= RECT_TOP(I((p)->y), rect))                            \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I((p)->y), rect)                                                                   \
-              && RECT_BOTTOM(I((p)->y), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I((p)->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect))         \
+      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect) && RECT_RIGHT(I((p)->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))    \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I((p)->qWorldY), rect) && ringIntY >= RECT_TOP(I((p)->qWorldY), rect))                \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I((p)->qWorldY), rect)                                                             \
+              && RECT_BOTTOM(I((p)->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     zone1_act1_rings,
@@ -172,7 +172,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
             }
 
             // _08007FE4
-            SuperSonicGetPos(&gPlayer.x, &gPlayer.y);
+            SuperSonicGetPos(&gPlayer.qWorldX, &gPlayer.qWorldY);
             rect[0] = -10;
             rect[1] = -10;
             rect[2] = +10;
@@ -190,10 +190,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
         regions_x = (u16)*rings++;
         regions_y = (u16)*rings++;
 
-        sl = (Q_24_8_TO_INT(gPlayer.y) + rect[1]) >> 8;
-        while (((sl <= (((Q_24_8_TO_INT(gPlayer.y) + rect[3]) + 8)) >> 8)) && (sl < regions_y)) {
-            sb = ((Q_24_8_TO_INT(gPlayer.x) + rect[0] - 8) >> 8);
-            while ((sb <= ((Q_24_8_TO_INT(gPlayer.x) + rect[2] + 16) >> 8)) && sb < regions_x) {
+        sl = (Q_24_8_TO_INT(gPlayer.qWorldY) + rect[1]) >> 8;
+        while (((sl <= (((Q_24_8_TO_INT(gPlayer.qWorldY) + rect[3]) + 8)) >> 8)) && (sl < regions_y)) {
+            sb = ((Q_24_8_TO_INT(gPlayer.qWorldX) + rect[0] - 8) >> 8);
+            while ((sb <= ((Q_24_8_TO_INT(gPlayer.qWorldX) + rect[2] + 16) >> 8)) && sb < regions_x) {
                 u32 offset = *(u32 *)((u8 *)rings + ((regions_x * sl) * sizeof(u32)) + (sb * sizeof(u32)));
 
                 if (offset) {
@@ -318,8 +318,9 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
                                 if (((u32)(rx - gCamera.x) + TILE_WIDTH) > (DISPLAY_WIDTH + 2 * TILE_WIDTH) || (((ry - gCamera.y)) < 0)
                                     || (((ry - gCamera.y) - 2 * TILE_WIDTH) > DISPLAY_HEIGHT)) {
                                     meRing++;
-                                } else if (((rx - 64) <= Q_24_8_TO_INT(gPlayer.x)) && ((rx + 64) >= Q_24_8_TO_INT(gPlayer.x))
-                                           && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.y)) && ((ry + 56 >= Q_24_8_TO_INT(gPlayer.y)))) {
+                                } else if (((rx - 64) <= Q_24_8_TO_INT(gPlayer.qWorldX)) && ((rx + 64) >= Q_24_8_TO_INT(gPlayer.qWorldX))
+                                           && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.qWorldY))
+                                           && ((ry + 56 >= Q_24_8_TO_INT(gPlayer.qWorldY)))) {
                                     CreateMagneticRing(rx, ry);
                                     meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                     meRing++;

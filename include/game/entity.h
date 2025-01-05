@@ -129,7 +129,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 #define ENEMY_UPDATE_POSITION_STATIC(_enemy, _sprite, _posX, _posY) ENEMY_UPDATE_POSITION_RAW(_enemy, _sprite, _posX, _posY, 0, 0)
 
 #define ENEMY_TURN_TO_PLAYER(_posX, s)                                                                                                     \
-    if (gPlayer.x < _posX) {                                                                                                               \
+    if (gPlayer.qWorldX < _posX) {                                                                                                         \
         SPRITE_FLAG_CLEAR(s, X_FLIP);                                                                                                      \
     } else {                                                                                                                               \
         SPRITE_FLAG_SET(s, X_FLIP);                                                                                                        \

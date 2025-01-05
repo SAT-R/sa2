@@ -108,12 +108,12 @@ static void Task_PhysicsMain(void)
     }
 
     sub_806FAA0();
-    stage->cameraX = player->x;
-    stage->cameraY = player->y;
+    stage->cameraX = player->q16WorldX;
+    stage->cameraY = player->q16WorldY;
     stage->cameraBearing = player->bearing;
 
-    gBgScrollRegs[2][1] = -Q_16_16_TO_INT(player->y);
-    gBgScrollRegs[2][0] = -Q_16_16_TO_INT(player->x);
+    gBgScrollRegs[2][1] = -Q_16_16_TO_INT(player->q16WorldY);
+    gBgScrollRegs[2][0] = -Q_16_16_TO_INT(player->q16WorldX);
 }
 
 void HandleMovementControls(UNUSED u32 unused)
@@ -197,8 +197,8 @@ void HandleMovementControls(UNUSED u32 unused)
     {
         s32 dX = (sin * speed) >> 10;
         s32 dY = (cos * speed) >> 10;
-        player->x -= dX;
-        player->y -= dY;
+        player->q16WorldX -= dX;
+        player->q16WorldY -= dY;
     }
 }
 
@@ -290,8 +290,8 @@ void sub_806F154(void)
     HandleRotationControls();
     HandleBoost2();
 
-    player->x += player->unkD0;
-    player->y += player->unkD4;
+    player->q16WorldX += player->unkD0;
+    player->q16WorldY += player->unkD4;
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
@@ -344,8 +344,8 @@ static void PlayerStatePhysics_SlowToStop(void)
     {
         s32 temp2 = I(sin * speed) >> 2;
         s32 temp3 = I(cos * speed) >> 2;
-        player->x -= temp2;
-        player->y -= temp3;
+        player->q16WorldX -= temp2;
+        player->q16WorldY -= temp3;
     }
 
     if (speed == 0) {
@@ -390,20 +390,20 @@ void sub_806F3C4(void)
     struct SpecialStagePhysics *physics = TASK_DATA(gCurTask);
     struct SpecialStagePlayer *player = TASK_DATA(physics->stage->playerTask);
 
-    if (player->x <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
-        player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
+    if (player->q16WorldX <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
+        player->q16WorldX = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->x >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
-        player->x = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
+    if (player->q16WorldX >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
+        player->q16WorldX = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->y <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
-        player->y = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
+    if (player->q16WorldY <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
+        player->q16WorldY = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
     }
 
-    if (player->y >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
-        player->y = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
+    if (player->q16WorldY >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
+        player->q16WorldY = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
     }
 
     physics->animFrame++;
@@ -429,8 +429,8 @@ void sub_806F468(void)
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
     const struct UNK_8C87904 *worldElements = gUnknown_08C87904[stage->zone];
 
-    s16 playerX = Q_16_16_TO_INT(player->x);
-    s16 playerY = Q_16_16_TO_INT(player->y);
+    s16 playerX = Q_16_16_TO_INT(player->q16WorldX);
+    s16 playerY = Q_16_16_TO_INT(player->q16WorldY);
 
     while (worldElements->type != -1) {
         if (playerX >= worldElements->x && playerX < (worldElements->x + worldElements->width)) {
@@ -482,8 +482,8 @@ static void HandleBoost1(void)
     {
         s32 temp1 = (sin * speed) >> 10;
         s32 temp2 = (cos * speed) >> 10;
-        player->x -= temp1;
-        player->y -= temp2;
+        player->q16WorldX -= temp1;
+        player->q16WorldY -= temp2;
     }
 }
 
@@ -510,8 +510,8 @@ void HandleBoost2(void)
     {
         s32 temp1 = (sin * c8) >> 10;
         s32 temp2 = (cos * c8) >> 10;
-        player->x -= temp1;
-        player->y -= temp2;
+        player->q16WorldX -= temp1;
+        player->q16WorldY -= temp2;
     }
 }
 
@@ -533,8 +533,8 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
 
     u16 bearing = -player->bearing & 0x3FF;
 
-    f_dX = guardRobo->x - player->x;
-    f_dY = guardRobo->y - player->y;
+    f_dX = guardRobo->x - player->q16WorldX;
+    f_dY = guardRobo->y - player->q16WorldY;
     dX = f_dX >> 0x10;
     dY = f_dY >> 0x10;
 
@@ -673,8 +673,8 @@ void sub_806F944(struct SpecialStage *stage)
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
     struct SpecialStageGuardRobo *guardRobo = TASK_DATA(stage->guardRoboTask);
 
-    s32 playerX = player->x;
-    s32 playerY = player->y;
+    s32 playerX = player->q16WorldX;
+    s32 playerY = player->q16WorldY;
     s32 guardRoboX = guardRobo->x;
     s32 guardRoboY = guardRobo->y;
 
@@ -726,20 +726,20 @@ void sub_806FAA0(void)
     struct SpecialStagePhysics *physics = TASK_DATA(gCurTask);
     struct SpecialStagePlayer *player = TASK_DATA(physics->stage->playerTask);
 
-    if (player->x < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
-        player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
+    if (player->q16WorldX < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
+        player->q16WorldX = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->x > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
-        player->x = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
+    if (player->q16WorldX > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
+        player->q16WorldX = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->y < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
-        player->y = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
+    if (player->q16WorldY < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
+        player->q16WorldY = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
     }
 
-    if (player->y > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
-        player->y = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
+    if (player->q16WorldY > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
+        player->q16WorldY = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
     }
 }
 

@@ -399,7 +399,7 @@ static void sub_8041B44(AeroEgg *boss)
 
         if (PLAYER_IS_ALIVE) {
             if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == 1) {
-                if (I(gPlayer.y) > worldY) {
+                if (I(gPlayer.qWorldY) > worldY) {
                     sub_8042774(boss);
                     sub_800CBA4(&gPlayer);
                 } else {

@@ -239,8 +239,8 @@ void sub_8015E28(u16 p0)
     if (i < ARRAY_COUNT(hearts->params)) {
         Sprite *s = &hearts->sprHearts[i];
         hearts->params[i].count = 0xFF;
-        hearts->params[i].x = gPlayer.x;
-        hearts->params[i].y = gPlayer.y;
+        hearts->params[i].x = gPlayer.qWorldX;
+        hearts->params[i].y = gPlayer.qWorldY;
 
         if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
             hearts->params[i].x -= sHeartOffsets[hearts->kind][p0][1] << 8;

@@ -363,8 +363,8 @@ static void sub_803A8E4(EggHammerTankII *boss)
             r0 = ((boss->unk54[0][5] * SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) >> 0x17));
             pos.y = r2 + r0;
 
-            pos.x -= I(gPlayer.x);
-            pos.y -= I(gPlayer.y);
+            pos.x -= I(gPlayer.qWorldX);
+            pos.y -= I(gPlayer.qWorldY);
             if ((SQUARE(pos.x) + SQUARE(pos.y)) < 0x1A4) {
                 sub_803CBFC(boss);
                 sub_800CBA4(&gPlayer);
@@ -432,11 +432,11 @@ static void sub_803AA40(void)
         if (IS_FINAL_STAGE(gCurrentLevel) && (boss->unkA8 == 0x22)) {
             s32 x, y;
 
-            x = gUnknown_080D6DE4[0][0] - I(gPlayer.x);
-            y = gUnknown_080D6DE4[0][1] - I(gPlayer.y);
+            x = gUnknown_080D6DE4[0][0] - I(gPlayer.qWorldX);
+            y = gUnknown_080D6DE4[0][1] - I(gPlayer.qWorldY);
 
-            gPlayer.x += QS(x);
-            gPlayer.y += QS(y);
+            gPlayer.qWorldX += QS(x);
+            gPlayer.qWorldY += QS(y);
 
             gCamera.x += x;
             gCamera.y += y;

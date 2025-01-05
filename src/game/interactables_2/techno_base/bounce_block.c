@@ -113,11 +113,11 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
     u16 temp3, temp4;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        temp1 = I(gPlayer.x);
+        temp1 = I(gPlayer.qWorldX);
         temp1 += 24;
         temp1 -= noteBlock->unk3C;
 
-        temp2 = I(gPlayer.y);
+        temp2 = I(gPlayer.qWorldY);
         temp2 += 16;
         temp2 -= noteBlock->unk40;
 
@@ -133,25 +133,25 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
             }
 
             if (temp & 0x10000) {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0xC0;
             } else if (temp & 0x40000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x80;
             } else if (temp & 0x80000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0;
             } else {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_PT5;

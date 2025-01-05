@@ -393,7 +393,7 @@ void InitCamera(u32 level)
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            SuperSonicGetPos(&player->x, &player->y);
+            SuperSonicGetPos(&player->qWorldX, &player->qWorldY);
             gBossCameraClampYLower = gBossCameraYClamps[ZONE_FINAL + 1][0];
             gBossCameraClampYUpper = gBossCameraYClamps[ZONE_FINAL + 1][1];
             camera->x = 600;
@@ -402,18 +402,18 @@ void InitCamera(u32 level)
             camera->y = 0;
             camera->unk64 = -4;
         } else {
-            camera->x = I(player->x);
+            camera->x = I(player->qWorldX);
             // TODO: Handle boss camera restrictions for large screen sizes
             // for now we use the original GBA values as otherwise the boss
             // goes off the screen (not sure why yet)
-            camera->unk10 = I(player->x) - (2 * 240);
-            camera->y = I(player->y) - ((DISPLAY_HEIGHT / 2) + 4);
+            camera->unk10 = I(player->qWorldX) - (2 * 240);
+            camera->y = I(player->qWorldY) - ((DISPLAY_HEIGHT / 2) + 4);
             camera->unk14 = camera->y;
             camera->unk64 = player->spriteOffsetY - 4;
         }
     } else {
-        camera->x = I(player->x) - (DISPLAY_WIDTH / 2);
-        camera->y = I(player->y) - ((DISPLAY_HEIGHT / 2) + 4);
+        camera->x = I(player->qWorldX) - (DISPLAY_WIDTH / 2);
+        camera->y = I(player->qWorldY) - ((DISPLAY_HEIGHT / 2) + 4);
 
         if (camera->x < 0) {
             camera->x = 0;
@@ -481,7 +481,7 @@ void UpdateCamera(void)
         }
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            SuperSonicGetPos(&player->x, &player->y);
+            SuperSonicGetPos(&player->qWorldX, &player->qWorldY);
         }
 
         camera->unk10 += BOSS_CAM_FRAME_DELTA_PIXELS;
@@ -493,12 +493,12 @@ void UpdateCamera(void)
 // So we need to emulate that behaviour on some specific
 // levels
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
-        if (newX + (DISPLAY_WIDTH_FOR_BOSS_TAS + 1) < I(player->x)) {
+        if (newX + (DISPLAY_WIDTH_FOR_BOSS_TAS + 1) < I(player->qWorldX)) {
 #else
-        if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
+        if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->qWorldX)) {
 #endif
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
-                s32 playerScreenX = I(player->x);
+                s32 playerScreenX = I(player->qWorldX);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
                 playerScreenX -= DISPLAY_WIDTH_FOR_BOSS_TAS;
 #else
@@ -511,8 +511,8 @@ void UpdateCamera(void)
             }
         } else {
             camera->shiftX = 0;
-            if ((newX + 96) > I(player->x)) {
-                newX = I(player->x);
+            if ((newX + 96) > I(player->qWorldX)) {
+                newX = I(player->qWorldX);
                 newX -= 96;
                 if (newX < camera->unk10) {
                     newX = camera->unk10;
@@ -520,7 +520,7 @@ void UpdateCamera(void)
             }
         }
 
-        playerY = I(player->y);
+        playerY = I(player->qWorldY);
         delta = playerY - newY;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             if (delta <= 48) {
@@ -554,7 +554,7 @@ void UpdateCamera(void)
         } else {
             if (!(camera->unk50 & 1)) {
                 s16 airSpeedX = player->speedAirX;
-                camera->unk10 = I(player->x) + camera->shiftX - (DISPLAY_WIDTH / 2);
+                camera->unk10 = I(player->qWorldX) + camera->shiftX - (DISPLAY_WIDTH / 2);
                 camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);
             }
@@ -580,7 +580,7 @@ void UpdateCamera(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14 = I(player->y) + camera->shiftY - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
+                camera->unk14 = I(player->qWorldY) + camera->shiftY - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
             }
         }
 

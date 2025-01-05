@@ -761,13 +761,13 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
     dX = QS(Div(boss->qWorldX, 256) - 8);
     x = dX + ((COS(boss->cannonAngle) * 5) >> 3);
 
-    dX = x - gPlayer.x;
+    dX = x - gPlayer.qWorldX;
     dX = I(dX);
 
     dY = QS(Div(boss->qWorldY, 256) - 22);
     y = dY + ((SIN(boss->cannonAngle) * 5) >> 3);
 
-    dY = y - gPlayer.y;
+    dY = y - gPlayer.qWorldY;
     dY = I(dY);
 
     distance = (SQUARE(dY) + SQUARE(dX));

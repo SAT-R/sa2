@@ -21,10 +21,11 @@
 #define MAX_SCATTERING_RINGS_COUNT_MP 16
 
 #define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->x), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->x), rect))                         \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->x), rect) && RECT_RIGHT(I(p->x), rect) >= (ringIntX - TILE_WIDTH)))                    \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->y), rect) && ringIntY >= RECT_TOP(I(p->y), rect))                                \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->y), rect) && RECT_BOTTOM(I(p->y), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect))             \
+      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect) && RECT_RIGHT(I(p->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))        \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->qWorldY), rect) && ringIntY >= RECT_TOP(I(p->qWorldY), rect))                    \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->qWorldY), rect)                                                               \
+              && RECT_BOTTOM(I(p->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 typedef struct {
     /* 0x00 */ s32 x;
@@ -208,13 +209,13 @@ typedef struct {
     /* 0x03 */ s8 bottom;
 } HitboxRect;
 
-// TODO: Use improved version of these globally!
-#define HB_ALT_LEFT(p, hb)   (I((p)->x) + (hb)->left)
+// TODO: Use improved version of these globaly!
+#define HB_ALT_LEFT(p, hb)   (I((p)->qWorldX) + (hb)->left)
 #define HB_ALT_WIDTH(hb)     ((hb)->right - (hb)->left)
-#define HB_ALT_RIGHT(p, hb)  (I((p)->x) + HB_ALT_WIDTH(hb))
-#define HB_ALT_TOP(p, hb)    (I((p)->y) + (hb)->top)
+#define HB_ALT_RIGHT(p, hb)  (I((p)->qWorldX) + HB_ALT_WIDTH(hb))
+#define HB_ALT_TOP(p, hb)    (I((p)->qWorldY) + (hb)->top)
 #define HB_ALT_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
-#define HB_ALT_BOTTOM(p, hb) (I((p)->y) + HB_ALT_HEIGHT(hb))
+#define HB_ALT_BOTTOM(p, hb) (I((p)->qWorldY) + HB_ALT_HEIGHT(hb))
 
 void RingsScatterSingleplayer_FlippedGravity(void)
 {

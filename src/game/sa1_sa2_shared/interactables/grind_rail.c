@@ -36,7 +36,7 @@ static void Task_GrindRail(void)
 {
     Player *p = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? I(p->y) - p->spriteOffsetY : I(p->y) + p->spriteOffsetY;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(p->qWorldY) - p->spriteOffsetY : I(p->qWorldY) + p->spriteOffsetY;
 
     s16 x, y;
 
@@ -56,8 +56,8 @@ static void Task_GrindRail(void)
 
     if (!(p->moveState & MOVESTATE_DEAD)) {
         // TODO: create a collision macro for entity data
-        if (((x + (me->d.sData[0] * TILE_WIDTH)) <= I(p->x)
-             && ((x + (me->d.sData[0] * TILE_WIDTH)) + (me->d.uData[2] * TILE_WIDTH) >= I(p->x)))
+        if (((x + (me->d.sData[0] * TILE_WIDTH)) <= I(p->qWorldX)
+             && ((x + (me->d.sData[0] * TILE_WIDTH)) + (me->d.uData[2] * TILE_WIDTH) >= I(p->qWorldX)))
             && (y + (me->d.sData[1] * TILE_WIDTH) <= r7 && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= r7)) {
             bool32 r6 = FALSE;
 
@@ -72,7 +72,7 @@ static void Task_GrindRail(void)
             if ((p->speedAirY >= 0) && r6 && !(kind & RAIL_KIND_80)) {
                 if ((p->moveState & MOVESTATE_1000000)) {
                     if ((!(kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
-                         && (I(p->x) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
+                         && (I(p->qWorldX) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
                              || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))))) {
                         if ((kind & RAIL_KIND_2)) {
                             p->transition = PLTRANS_GRIND_RAIL_END_AIR;
@@ -82,7 +82,7 @@ static void Task_GrindRail(void)
                         }
                         *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) |= RAIL_KIND_80;
                     } else if ((kind & RAIL_KIND_1) && !(p->moveState & MOVESTATE_FACING_LEFT)
-                               && (I(p->x) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
+                               && (I(p->qWorldX) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
                                    || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2)))) {
                         if ((kind & RAIL_KIND_2)) {
                             p->transition = PLTRANS_GRIND_RAIL_END_AIR;
@@ -92,9 +92,10 @@ static void Task_GrindRail(void)
                         *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) |= RAIL_KIND_80;
                     }
                 } else if (((kind & RAIL_KIND_1)
-                            && Q_24_8_TO_INT(p->x) < (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))
+                            && Q_24_8_TO_INT(p->qWorldX) < (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))
                            || (!(kind & RAIL_KIND_1)
-                               && Q_24_8_TO_INT(p->x) > (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))) {
+                               && Q_24_8_TO_INT(p->qWorldX)
+                                   > (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))) {
                     p->transition = PLTRANS_GRINDING;
                     p->unk6E = 0;
 
@@ -140,13 +141,14 @@ static void Task_GrindRail_Air(void)
     y = TO_WORLD_POS(me->y, regionY);
 
     if (!(p->moveState & MOVESTATE_DEAD)) {
-        if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(p->x) && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(p->x)))
-            && (y + (me->d.sData[1] * TILE_WIDTH) <= I(p->y)
-                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(p->y))) {
+        if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(p->qWorldX)
+             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(p->qWorldX)))
+            && (y + (me->d.sData[1] * TILE_WIDTH) <= I(p->qWorldY)
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(p->qWorldY))) {
 
             if ((p->moveState & MOVESTATE_1000000)) {
                 if (((kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
-                     && (I(p->x) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
+                     && (I(p->qWorldX) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
                          || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))))) {
                     if ((kind & RAIL_KIND_2)) {
                         p->transition = PLTRANS_GRIND_RAIL_END_AIR;
@@ -154,7 +156,7 @@ static void Task_GrindRail_Air(void)
                     } else
                         p->transition = PLTRANS_GRIND_RAIL_END_GROUND;
                 } else if (!(kind & RAIL_KIND_1) && !(p->moveState & MOVESTATE_FACING_LEFT)
-                           && (I(p->x) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
+                           && (I(p->qWorldX) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
                                || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2)))) {
                     if ((kind & RAIL_KIND_2)) {
                         p->transition = PLTRANS_GRIND_RAIL_END_AIR;

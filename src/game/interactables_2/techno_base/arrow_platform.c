@@ -181,8 +181,8 @@ static void sub_807A560(void)
 static void sub_807A688(Sprite_IA75 *ia75)
 {
     Sprite *s;
-    ia75->unk7C = gPlayer.x - (Q(ia75->x) + ia75->unk74);
-    ia75->unk80 = gPlayer.y - (Q(ia75->y) + ia75->unk78);
+    ia75->unk7C = gPlayer.qWorldX - (Q(ia75->x) + ia75->unk74);
+    ia75->unk80 = gPlayer.qWorldY - (Q(ia75->y) + ia75->unk78);
 
     gPlayer.transition = PLTRANS_TOUCH_GROUND;
     gPlayer.charState = CHARSTATE_IDLE;
@@ -309,26 +309,26 @@ static u32 sub_807A99C(Sprite_IA75 *ia75)
         u32 temp = sub_800CCB8(&ia75->s2, ia75->x + I(ia75->unk74), ia75->y + I(ia75->unk78), &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = 0;
                 return 2;
             }
             if (temp & 0x40000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = 0;
                 gPlayer.speedGroundX = 0;
                 gPlayer.moveState |= MOVESTATE_20;
                 return 1;
             }
             if (temp & 0x80000) {
-                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.qWorldX += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = 0;
                 gPlayer.speedGroundX = 0;
                 gPlayer.moveState |= MOVESTATE_20;
                 return 3;
             }
             if (temp & 0x20000) {
-                gPlayer.y += Q_8_8(temp);
+                gPlayer.qWorldY += Q_8_8(temp);
                 gPlayer.speedAirY = 0;
                 return 4;
             }
@@ -383,8 +383,8 @@ static void sub_807AB04(struct Task *t)
 static void sub_807AB18(Sprite_IA75 *ia75)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.x = ia75->unk7C + Q(ia75->x) + ia75->unk74;
-    gPlayer.y = ia75->unk80 + Q(ia75->y) + ia75->unk78;
+    gPlayer.qWorldX = ia75->unk7C + Q(ia75->x) + ia75->unk74;
+    gPlayer.qWorldY = ia75->unk80 + Q(ia75->y) + ia75->unk78;
     sub_807A99C(ia75);
 }
 

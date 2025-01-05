@@ -105,7 +105,7 @@ void Task_BulletBuzzerMain(void)
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(bbuzzer, me, s);
-    value = sub_8004418(I(gPlayer.y) - pos.y, I(gPlayer.x) - pos.x);
+    value = sub_8004418(I(gPlayer.qWorldY) - pos.y, I(gPlayer.qWorldX) - pos.x);
 
     if (bbuzzer->unk5E == 0) {
         if (((u16)(value - 86) < 84 && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)

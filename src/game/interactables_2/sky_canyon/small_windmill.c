@@ -103,8 +103,8 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
     }
 
     windmill->rotation = windmill->rotationTarget;
-    gPlayer.x = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
-    gPlayer.y = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
+    gPlayer.qWorldX = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+    gPlayer.qWorldY = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
 
     switch (windmill->initialTouchAngle) {
         case 1:
@@ -187,8 +187,8 @@ static bool32 RotateWindmill(Sprite_SmallWindmill *windmill)
     }
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.x = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
-        gPlayer.y = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
+        gPlayer.qWorldX = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+        gPlayer.qWorldY = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
     }
 
     return windmill->rotation == windmill->rotationTarget;
@@ -199,8 +199,8 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
     if (PLAYER_IS_ALIVE) {
         s16 x = windmill->x - gCamera.x;
         s16 y = windmill->y - gCamera.y;
-        s16 playerX = I(gPlayer.x) - gCamera.x;
-        s16 playerY = I(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.qWorldX) - gCamera.x;
+        s16 playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         s16 dX = (x - playerX);
         s16 dY = (y - playerY);

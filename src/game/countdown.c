@@ -22,13 +22,13 @@
 #if !PLATFORM_GBA && ALIGN_DIGITS_HORIZONTALLY
 #define DIGITS_X (DISPLAY_WIDTH / 2)
 #else
-#define DIGITS_X ((I(gPlayer.x) - gCamera.x) + 24)
+#define DIGITS_X ((I(gPlayer.qWorldX) - gCamera.x) + 24)
 #endif
 
 #if !PLATFORM_GBA && ALIGN_DIGITS_VERTICALLY
 #define DIGITS_Y (DISPLAY_HEIGHT / 2)
 #else
-#define DIGITS_Y ((I(gPlayer.y) - gCamera.y) - 24)
+#define DIGITS_Y ((I(gPlayer.qWorldY) - gCamera.y) - 24)
 #endif
 
 struct CourseStartCountdown {
@@ -140,8 +140,8 @@ void sub_8036168(void)
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->machineScreenX = I(gPlayer.x);
-        countdown->machineScreenY = I(gPlayer.y);
+        countdown->machineScreenX = I(gPlayer.qWorldX);
+        countdown->machineScreenY = I(gPlayer.qWorldY);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -157,8 +157,8 @@ void sub_8036168(void)
     }
 
     s = &countdown->sprMachine;
-    s->x = I(gPlayer.x) - gCamera.x;
-    s->y = I(gPlayer.y) - gCamera.y;
+    s->x = I(gPlayer.qWorldX) - gCamera.x;
+    s->y = I(gPlayer.qWorldY) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 

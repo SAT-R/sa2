@@ -78,8 +78,8 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     SpriteTransform *transform;
     s32 temp;
 
-    ts->x = p->x - Q(cam->x);
-    ts->y = p->y - Q(cam->y);
+    ts->x = p->qWorldX - Q(cam->x);
+    ts->y = p->qWorldY - Q(cam->y);
     ts->unk8 = 0;
     ts->unkA = 0x120;
     ts->unk10 = 0;
@@ -169,7 +169,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
             if (!(p->moveState & MOVESTATE_FACING_LEFT))
                 randX = -randX;
 
-            SpawnAirBubbles(p->x - randX, p->y - randY, p->speedAirX, ((u32)PseudoRandom32() & 0x100) >> 8);
+            SpawnAirBubbles(p->qWorldX - randX, p->qWorldY - randY, p->speedAirX, ((u32)PseudoRandom32() & 0x100) >> 8);
 
             result = TRUE;
         }
@@ -250,7 +250,7 @@ static void Task_SpawnBubblesAfterDrowning(void)
 
                 r3 = ((u32)PseudoRandom32() & 0x100) >> 8;
 
-                SpawnAirBubbles(p->x + r1, p->y + r2 - 0xC00, 0, r3);
+                SpawnAirBubbles(p->qWorldX + r1, p->qWorldY + r2 - 0xC00, 0, r3);
             } while (r4-- != 0);
         }
     }

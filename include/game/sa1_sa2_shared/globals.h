@@ -181,6 +181,17 @@ extern struct InputCounters gNewInputCounters[32];
 
 extern u8 gUnknown_030055D8;
 
+#if (GAME == GAME_SA1)
+#define LIVES_BOUND_CHECK(lives) (lives)
+#else
+#define LIVES_BOUND_CHECK(lives)                                                                                                           \
+    ({                                                                                                                                     \
+        if ((lives) > 255)                                                                                                                 \
+            (lives) = 255;                                                                                                                 \
+        (lives);                                                                                                                           \
+    })
+#endif
+
 #define INCREMENT_SCORE_A(incVal)                                                                                                          \
     {                                                                                                                                      \
         s32 divResA, divResB;                                                                                                              \
@@ -194,11 +205,7 @@ extern u8 gUnknown_030055D8;
             u16 lives = divResA - divResB;                                                                                                 \
             lives += gNumLives;                                                                                                            \
                                                                                                                                            \
-            gNumLives = ({                                                                                                                 \
-                if (lives > 255)                                                                                                           \
-                    lives = 255;                                                                                                           \
-                lives;                                                                                                                     \
-            });                                                                                                                            \
+            gNumLives = LIVES_BOUND_CHECK(lives);                                                                                          \
         }                                                                                                                                  \
     }
 
@@ -245,11 +252,7 @@ extern u8 gUnknown_030055D8;
             u16 lives = divResA - divResB;                                                                                                 \
             lives += gNumLives;                                                                                                            \
                                                                                                                                            \
-            gNumLives = ({                                                                                                                 \
-                if (lives > 255)                                                                                                           \
-                    lives = 255;                                                                                                           \
-                lives;                                                                                                                     \
-            });                                                                                                                            \
+            gNumLives = LIVES_BOUND_CHECK(lives);                                                                                          \
                                                                                                                                            \
             gUnknown_030054A8.unk3 = 16;                                                                                                   \
         }                                                                                                                                  \
@@ -268,11 +271,7 @@ extern u8 gUnknown_030055D8;
             if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                                                       \
                 u16 lives = gNumLives + 1;                                                                                                 \
                                                                                                                                            \
-                gNumLives = ({                                                                                                             \
-                    if (lives > 255)                                                                                                       \
-                        lives = 255;                                                                                                       \
-                    lives;                                                                                                                 \
-                });                                                                                                                        \
+                gNumLives = LIVES_BOUND_CHECK(lives);                                                                                      \
                                                                                                                                            \
                 gUnknown_030054A8.unk3 = 16;                                                                                               \
             }                                                                                                                              \
@@ -293,11 +292,7 @@ extern u8 gUnknown_030055D8;
             if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                                                       \
                 u16 lives = gNumLives + 1;                                                                                                 \
                                                                                                                                            \
-                gNumLives = ({                                                                                                             \
-                    if (lives > 255)                                                                                                       \
-                        lives = 255;                                                                                                       \
-                    lives;                                                                                                                 \
-                });                                                                                                                        \
+                gNumLives = LIVES_BOUND_CHECK(lives);                                                                                      \
                                                                                                                                            \
                 gUnknown_030054A8.unk3 = 16;                                                                                               \
             }                                                                                                                              \

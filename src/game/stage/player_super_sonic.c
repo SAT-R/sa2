@@ -61,8 +61,8 @@ static void SuperSonicInitPlayer(void)
 {
     Player *p = &gPlayer;
     p->unk4 = 0;
-    p->x = 0;
-    p->y = 0;
+    p->qWorldX = 0;
+    p->qWorldY = 0;
     p->speedAirX = 0;
     p->speedAirY = 0;
     p->speedGroundX = 0;

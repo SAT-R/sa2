@@ -935,8 +935,8 @@ bool32 sub_8077840(Sprite_Pipe_Horn *pipe)
         screenX = pipe->posX - gCamera.x;
         screenY = pipe->posY - gCamera.y;
 
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.qWorldX) - gCamera.x;
+        playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         screenX -= playerX;
         screenY -= playerY;
@@ -1045,8 +1045,8 @@ void TaskDestructor_Pipe(struct Task *t) { }
 
 void sub_8077AAC(Sprite_Pipe_Horn *horn)
 {
-    gPlayer.x = horn->x2;
-    gPlayer.y = horn->y2;
+    gPlayer.qWorldX = horn->x2;
+    gPlayer.qWorldY = horn->y2;
 }
 
 void sub_8077ABC(void)
@@ -1104,8 +1104,8 @@ bool32 sub_8077B98(Sprite_Pipe_Horn *horn)
         screenX = horn->posX - gCamera.x;
         screenY = horn->posY - gCamera.y;
 
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.qWorldX) - gCamera.x;
+        playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         screenX -= playerX;
         screenY -= playerY;
@@ -1155,8 +1155,8 @@ void sub_8077C3C(Sprite_Pipe_Horn *horn)
 
 void sub_8077CA0(Sprite_Pipe_Horn *horn)
 {
-    gPlayer.x = horn->x2;
-    gPlayer.y = horn->y2;
+    gPlayer.qWorldX = horn->x2;
+    gPlayer.qWorldY = horn->y2;
 }
 
 bool32 sub_8077CB0(Sprite_Pipe_Horn *horn)

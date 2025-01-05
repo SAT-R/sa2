@@ -172,10 +172,10 @@ void sub_806DC98(void)
     const struct UNK_8C878E8 **unk78E8_vals = gUnknown_08C878E8[stage->zone];
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
-    s32 playerX = Q_16_16_TO_INT(player->x);
-    s32 playerY = Q_16_16_TO_INT(player->y);
+    s32 playerX = Q_16_16_TO_INT(player->q16WorldX);
+    s32 playerY = Q_16_16_TO_INT(player->q16WorldY);
     s32 val3 = player->unkB0 >> 4;
-    u32 cell = ((Q_16_16_TO_INT(player->x) >> 7) * SPECIAL_STAGE_ZONE_SIZE) + (Q_16_16_TO_INT(player->y) >> 7);
+    u32 cell = ((Q_16_16_TO_INT(player->q16WorldX) >> 7) * SPECIAL_STAGE_ZONE_SIZE) + (Q_16_16_TO_INT(player->q16WorldY) >> 7);
     const struct UNK_8C878E8 *object = unk78E8_vals[cell];
 
     while (object->id != -1) {
@@ -263,8 +263,8 @@ void sub_806DEA4(void)
         unkDEA4_1->unk0 = 0;
     }
 
-    stageZoneX = Q_16_16_TO_INT(player->x) >> 7;
-    stageZoneY = Q_16_16_TO_INT(player->y) >> 7;
+    stageZoneX = Q_16_16_TO_INT(player->q16WorldX) >> 7;
+    stageZoneY = Q_16_16_TO_INT(player->q16WorldY) >> 7;
     cell = (stageZoneX * 8) + stageZoneY;
 
     unk78E8_val = unk78E8_vals[cell];
@@ -438,8 +438,8 @@ static void AnimateRingsLost(struct SpecialStage *stage, s16 numLost)
     struct SpecialStageCollectables *collectables = TASK_DATA(stage->collectablesTask);
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
-    s32 x = player->x;
-    s32 y = player->y;
+    s32 x = player->q16WorldX;
+    s32 y = player->q16WorldY;
     s32 unkB0 = player->unkB0;
     s16 temp;
 

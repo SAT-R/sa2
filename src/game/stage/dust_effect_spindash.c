@@ -27,7 +27,11 @@ struct Task *CreateSpindashDustEffect()
     Sprite *s = &sde->s;
     s->graphics.dest = VramMalloc(20);
     s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
+#if (GAME == GAME_SA1)
+    GET_SPRITE_ANIM(s) = SA1_ANIM_SPINDASH_DUST_EFFECT;
+#elif (GAME == GAME_SA2)
+    GET_SPRITE_ANIM(s) = SA2_ANIM_SPINDASH_DUST_EFFECT;
+#endif
     s->variant = 0;
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(8);
@@ -53,7 +57,11 @@ void Task_SpindashDustEffect(void)
         Sprite *s = &sde->s;
 
         if (p->spindashAccel > Q(2.0)) {
-            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT_BIG;
+#if (GAME == GAME_SA1)
+            GET_SPRITE_ANIM(s) = SA1_ANIM_SPINDASH_DUST_EFFECT_BIG;
+#elif (GAME == GAME_SA2)
+            GET_SPRITE_ANIM(s) = SA2_ANIM_SPINDASH_DUST_EFFECT_BIG;
+#endif
             s->variant = 0;
             s->prevVariant = -1;
             gCurTask->main = Task_SpindashDustEffectBig;
@@ -66,14 +74,17 @@ void Task_SpindashDustEffect(void)
             offY = -offY;
         }
 
+#if (GAME == GAME_SA2)
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->pos.x - cam->x);
             s->y = ((mpp->pos.y + offY) - cam->y);
-        } else {
-            s->x = I(p->x) - cam->x;
-            s->y = (I(p->y) + offY) - cam->y;
+        } else
+#endif
+        {
+            s->x = I(p->qWorldX) - cam->x;
+            s->y = (I(p->qWorldY) + offY) - cam->y;
         }
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
@@ -107,7 +118,11 @@ void Task_SpindashDustEffectBig(void)
         Sprite *s = &sde->s;
 
         if (p->spindashAccel <= Q(2.0)) {
-            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
+#if (GAME == GAME_SA1)
+            GET_SPRITE_ANIM(s) = SA1_ANIM_SPINDASH_DUST_EFFECT;
+#elif (GAME == GAME_SA2)
+            GET_SPRITE_ANIM(s) = SA2_ANIM_SPINDASH_DUST_EFFECT;
+#endif
             s->variant = 0;
             s->prevVariant = -1;
             gCurTask->main = Task_SpindashDustEffect;
@@ -120,14 +135,17 @@ void Task_SpindashDustEffectBig(void)
             offY = -offY;
         }
 
+#if (GAME == GAME_SA2)
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->pos.x - cam->x);
             s->y = ((mpp->pos.y + offY) - cam->y);
-        } else {
-            s->x = I(p->x) - cam->x;
-            s->y = (I(p->y) + offY) - cam->y;
+        } else
+#endif
+        {
+            s->x = I(p->qWorldX) - cam->x;
+            s->y = (I(p->qWorldY) + offY) - cam->y;
         }
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {

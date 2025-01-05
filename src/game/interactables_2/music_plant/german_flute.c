@@ -76,35 +76,35 @@ static void sub_8076928(void)
         posX = Q(flute->posX);
         posY = Q(flute->posY) + Q(24);
 
-        if (gPlayer.x != posX) {
-            if (gPlayer.x > posX) {
-                gPlayer.x -= Q(0.5);
+        if (gPlayer.qWorldX != posX) {
+            if (gPlayer.qWorldX > posX) {
+                gPlayer.qWorldX -= Q(0.5);
 
-                if (gPlayer.x < posX) {
-                    gPlayer.x = posX;
+                if (gPlayer.qWorldX < posX) {
+                    gPlayer.qWorldX = posX;
                 }
 
             } else {
-                gPlayer.x += Q(0.5);
+                gPlayer.qWorldX += Q(0.5);
 
-                if (gPlayer.x > posX) {
-                    gPlayer.x = posX;
+                if (gPlayer.qWorldX > posX) {
+                    gPlayer.qWorldX = posX;
                 }
             }
         }
 
-        if (ABS(gPlayer.x - posX) <= Q(8)) {
-            if (gPlayer.y != posY) {
+        if (ABS(gPlayer.qWorldX - posX) <= Q(8)) {
+            if (gPlayer.qWorldY != posY) {
                 gPlayer.speedAirY += Q(1. / 6.);
-                gPlayer.y += gPlayer.speedAirY;
+                gPlayer.qWorldY += gPlayer.speedAirY;
 
-                if (gPlayer.y > posY) {
-                    gPlayer.y = posY;
+                if (gPlayer.qWorldY > posY) {
+                    gPlayer.qWorldY = posY;
                 }
             }
         }
 
-        if ((gPlayer.x == posX) && (gPlayer.y == posY)) {
+        if ((gPlayer.qWorldX == posX) && (gPlayer.qWorldY == posY)) {
             sub_8076C58(flute);
         }
     }
@@ -124,14 +124,14 @@ static void sub_80769E0(void)
         sub_8076D08(flute);
     }
 
-    gPlayer.y += gPlayer.speedAirY;
+    gPlayer.qWorldY += gPlayer.speedAirY;
     gPlayer.speedAirY += Q(1. / 6.);
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(I(gPlayer.y) - gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.layer, -8, sub_801EC3C);
+    res = sub_801F100(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, -8, sub_801EC3C);
 
     if (res < 0) {
-        gPlayer.y -= Q(res);
+        gPlayer.qWorldY -= Q(res);
     }
 
     if (gPlayer.speedAirY >= 0) {
@@ -153,33 +153,33 @@ static void Task_8076A6C(void)
         sub_8076D08(flute);
     }
 
-    gPlayer.x -= flute->unk8;
-    gPlayer.y -= flute->unkA;
+    gPlayer.qWorldX -= flute->unk8;
+    gPlayer.qWorldY -= flute->unkA;
     flute->unk8 = 0;
 
     flute->unkA = Q_2_14_TO_Q_24_8(SIN((u8)flute->timer * 4)) * 8;
-    r1 = gPlayer.x;
-    gPlayer.y += flute->unkA;
+    r1 = gPlayer.qWorldX;
+    gPlayer.qWorldY += flute->unkA;
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(I(gPlayer.y) - gPlayer.spriteOffsetY, I(r1), gPlayer.layer, -8, sub_801EC3C);
+    res = sub_801F100(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, I(r1), gPlayer.layer, -8, sub_801EC3C);
     if (res < 0) {
-        gPlayer.y -= Q(res);
+        gPlayer.qWorldY -= Q(res);
     }
 
     flute->timer++;
 
     if (gPlayer.heldInput & 0x10) {
-        gPlayer.x += Q(0.5);
+        gPlayer.qWorldX += Q(0.5);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
     if (gPlayer.heldInput & 0x20) {
-        gPlayer.x -= Q(0.5);
+        gPlayer.qWorldX -= Q(0.5);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     }
 
-    if ((Q(flute->posX) - Q(16) > gPlayer.x) || (Q(flute->posX) + Q(16) < gPlayer.x)) {
+    if ((Q(flute->posX) - Q(16) > gPlayer.qWorldX) || (Q(flute->posX) + Q(16) < gPlayer.qWorldX)) {
         sub_8076C88(flute);
     }
 
@@ -203,7 +203,7 @@ static void sub_8076B84(Sprite_GermanFlute *flute)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    gPlayer.y = Q(flute->posY - 8);
+    gPlayer.qWorldY = Q(flute->posY - 8);
     gCurTask->main = sub_8076928;
 }
 
@@ -223,8 +223,8 @@ static bool32 sub_8076BE4(Sprite_GermanFlute *flute)
         pos2Y = (gCamera.y + 16);
         screenY = posY - pos2Y;
 
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.qWorldX) - gCamera.x;
+        playerY = I(gPlayer.qWorldY) - gCamera.y;
         if ((screenX <= playerX) && (playerX < (screenX + 40))) {
 
             if ((screenY <= playerY) && (playerY < screenY + 32)) {

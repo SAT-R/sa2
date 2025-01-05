@@ -78,8 +78,8 @@ void Task_801F214(void)
                             ts->x = mpp->pos.x;
                             ts->y = mpp->pos.y;
                         } else {
-                            ts->x = I(gPlayer.x);
-                            ts->y = I(gPlayer.y);
+                            ts->x = I(gPlayer.qWorldX);
+                            ts->y = I(gPlayer.qWorldY);
                         }
                     } break;
 
@@ -190,8 +190,8 @@ void CreateGrindEffect2(void)
         x = I(yInverted * SIN_24_8(p->rotation * 4));
         y = I(yInverted * COS_24_8(p->rotation * 4));
 
-        x2 = I(p->x);
-        y2 = I(p->y);
+        x2 = I(p->qWorldX);
+        y2 = I(p->qWorldY);
 
         x2 -= x;
         y2 += y;

@@ -133,12 +133,12 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
+        if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
             gPlayer.transition = PLTRANS_REACHED_GOAL;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
-    } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
+    } else if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
         gPlayer.transition = PLTRANS_REACHED_GOAL;
         gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__ACT_START;
         gStageGoalX = x;
@@ -158,7 +158,7 @@ static void Task_StageGoalToggleMain(void)
             if (extraScore != 0) {
                 INCREMENT_SCORE(extraScore);
 
-                CreateStageGoalBonusPointsAnim(I(gPlayer.x), I(gPlayer.y), extraScore);
+                CreateStageGoalBonusPointsAnim(I(gPlayer.qWorldX), I(gPlayer.qWorldY), extraScore);
             }
         }
 

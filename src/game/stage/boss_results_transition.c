@@ -99,12 +99,12 @@ void Task_802EE78(void)
             u32 x, y;
 
             x = gUnknown_080D6DE4[sri->unk11][0];
-            x -= I(gPlayer.x);
+            x -= I(gPlayer.qWorldX);
             y = gUnknown_080D6DE4[sri->unk11][1];
-            y -= I(gPlayer.y);
+            y -= I(gPlayer.qWorldY);
 
-            gPlayer.x += Q(x);
-            gPlayer.y += Q(y);
+            gPlayer.qWorldX += Q(x);
+            gPlayer.qWorldY += Q(y);
 
             gCamera.x += x;
             gCamera.y += y;
