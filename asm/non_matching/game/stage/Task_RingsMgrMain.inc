@@ -339,7 +339,7 @@ _08008166:
 	movs r0, #0xff
 _080081A4:
 	strb r0, [r1]
-	ldr r1, _080082BC @ =gUnknown_030054A8
+	ldr r1, _080082BC @ =gMusicManagerState
 	movs r0, #0x10
 	strb r0, [r1, #3]
 _080081AC:
@@ -475,7 +475,7 @@ _080082AC: .4byte gPlayer + 0x8
 _080082B0: .4byte gRingCount
 _080082B4: .4byte gGameMode
 _080082B8: .4byte gNumLives
-_080082BC: .4byte gUnknown_030054A8
+_080082BC: .4byte gMusicManagerState
 _080082C0: .4byte 0x04000128
 _080082C4: .4byte gMultiplayerPlayerTasks
 _080082C8: .4byte IWRAM_START + 0x52

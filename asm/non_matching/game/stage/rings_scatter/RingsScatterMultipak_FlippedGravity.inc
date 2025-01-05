@@ -181,7 +181,7 @@ _08020620:
 	movs r0, #0xff
 _0802066A:
 	strb r0, [r1]
-	ldr r1, _080206BC @ =gUnknown_030054A8
+	ldr r1, _080206BC @ =gMusicManagerState
 	movs r0, #0x10
 	strb r0, [r1, #3]
 _08020672:
@@ -215,7 +215,7 @@ _080206AC: .4byte gRingCount
 _080206B0: .4byte gCurrentLevel
 _080206B4: .4byte gGameMode
 _080206B8: .4byte gNumLives
-_080206BC: .4byte gUnknown_030054A8
+_080206BC: .4byte gMusicManagerState
 _080206C0:
 	adds r3, r5, #0
 	adds r3, #0x14
