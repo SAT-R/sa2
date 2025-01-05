@@ -442,8 +442,8 @@ void InitCamera(u32 level)
     camera->unk50 = 0;
     camera->unk52 = 0;
     camera->unk54 = 0;
-    camera->unk60 = 0;
-    camera->unk62 = 0;
+    camera->shakeOffsetX = 0;
+    camera->shakeOffsetY = 0;
 
     camera->movementTask = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
 
@@ -545,8 +545,8 @@ void UpdateCamera(void)
 
         newX = newX + camera->shiftX;
         newY = newY + camera->shiftY;
-        newX += camera->unk60;
-        newY += camera->unk62;
+        newX += camera->shakeOffsetX;
+        newY += camera->shakeOffsetY;
 
     } else {
         if (camera->unk40 != 0) {
@@ -626,8 +626,8 @@ void UpdateCamera(void)
         // maybe a macro, these values are already clamped
         newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
         newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);
-        newX = newX + camera->unk60;
-        newY = newY + camera->unk62;
+        newX = newX + camera->shakeOffsetX;
+        newY = newY + camera->shakeOffsetY;
     }
 
     camera->x = newX;

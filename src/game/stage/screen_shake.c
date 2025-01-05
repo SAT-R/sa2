@@ -53,10 +53,10 @@ void Task_ScreenShake(void)
 
         if (!(shake->flags & 0x20) || ((gStageTime % 2u) == 0)) {
             if (shake->flags & SCREENSHAKE_HORIZONTAL) {
-                cam->unk60 = r2;
+                cam->shakeOffsetX = r2;
             }
             if (shake->flags & SCREENSHAKE_VERTICAL) {
-                cam->unk62 = r2;
+                cam->shakeOffsetY = r2;
             }
         }
 
@@ -92,10 +92,10 @@ static void TaskDestructor_ScreenShake(struct Task *t)
     struct Camera *cam = &gCamera;
 
     if (shake->flags & SCREENSHAKE_HORIZONTAL) {
-        cam->unk60 = 0;
+        cam->shakeOffsetX = 0;
     }
 
     if (shake->flags & SCREENSHAKE_VERTICAL) {
-        cam->unk62 = 0;
+        cam->shakeOffsetY = 0;
     }
 }
