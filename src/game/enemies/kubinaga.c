@@ -365,8 +365,8 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
 
     sub_800C84C(sHead, pos.x, pos.y);
 
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = sHead->x;
     transform->y = sHead->y;
     k->unkBC = transform->rotation;

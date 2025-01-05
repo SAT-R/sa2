@@ -132,8 +132,8 @@ static void sub_808616C(void)
 
     transform = &itemBox->transform;
     transform->rotation = 0;
-    transform->width = 0x100;
-    transform->height = 0;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = 0;
     transform->x = 0;
     transform->y = 0;
     gCurTask->main = sub_808623C;
@@ -176,14 +176,14 @@ static void sub_808623C(void)
     transform->x = itemBox->x - gCamera.x;
     transform->y = itemBox->y - gCamera.y;
 
-    transform->height += 8;
+    transform->qScaleY += 8;
 
-    if (transform->height >= 0x100) {
+    if (transform->qScaleY >= 0x100) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
         itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        transform->height = 0x100;
+        transform->qScaleY = Q(1);
         itemBox->iconOffsetY = Q(0.0);
         gCurTask->main = sub_80865E4;
 
@@ -229,14 +229,14 @@ static void sub_808636C(void)
     transform->x = itemBox->x - gCamera.x;
     transform->y = itemBox->y - gCamera.y;
 
-    transform->height -= 8;
+    transform->qScaleY -= 8;
 
-    if (transform->height < 1) {
+    if (transform->qScaleY < 1) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
         itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        transform->height = 0x100;
+        transform->qScaleY = Q(1);
         gCurTask->main = sub_808673C;
 
         sub_808673C_inline();
@@ -408,8 +408,8 @@ static inline void sub_808679C_inline(void)
 
     transform = &itemBox->transform;
     transform->rotation = 0;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = 0;
     transform->y = 0;
     gCurTask->main = sub_808636C;
@@ -425,8 +425,8 @@ static void sub_808679C(void)
 
     transform = &itemBox->transform;
     transform->rotation = 0;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = 0;
     transform->y = 0;
     gCurTask->main = sub_808636C;

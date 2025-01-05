@@ -566,8 +566,8 @@ static void Render(EggGoRound *boss)
         if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2) && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
             transform->rotation = I(boss->platformRotation);
-            transform->width = 0x100;
-            transform->height = 0x100;
+            transform->qScaleX = Q(1);
+            transform->qScaleY = Q(1);
             transform->x = s->x;
             transform->y = s->y;
 
@@ -637,8 +637,8 @@ static void sub_804655C(EggGoRound *boss, u8 val)
         if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2) && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
             transform->rotation = I(boss->platformRotation);
-            transform->width = 0x100;
-            transform->height = 0x100;
+            transform->qScaleX = Q(1);
+            transform->qScaleY = Q(1);
             transform->x = s->x;
             transform->y = s->y;
 

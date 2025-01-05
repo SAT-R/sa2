@@ -311,8 +311,8 @@ void CreateFinalEndingLandingCutScene(void)
         s->hitboxes[0].index = -1;
 
         transform->rotation = 0;
-        transform->width = scene->unk340;
-        transform->height = scene->unk340;
+        transform->qScaleX = scene->unk340;
+        transform->qScaleY = scene->unk340;
         transform->x = s->x;
         transform->y = s->y;
 
@@ -730,8 +730,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
 
-        transform->width = scene->unk340;
-        transform->height = scene->unk340;
+        transform->qScaleX = scene->unk340;
+        transform->qScaleY = scene->unk340;
         transform->x = s->x;
         transform->y = s->y;
         TransformSprite(s, transform);

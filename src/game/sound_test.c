@@ -363,10 +363,10 @@ static void SoundTestScreenCreateUI(struct Task *t)
     // Transforms static circle
     for (i = 0; i < 4; i++) {
         transforms[i].rotation = DEG_TO_SIN(90) * i;
-        transforms[i].width = 0x100;
-        transforms[i].height = 0x100;
-        transforms[i].x = 0x4C;
-        transforms[i].y = 0x5A;
+        transforms[i].qScaleX = Q(1);
+        transforms[i].qScaleY = Q(1);
+        transforms[i].x = 76;
+        transforms[i].y = 90;
     }
 
     transforms[1].x--;
@@ -662,7 +662,7 @@ static void SoundTestScreenRenderUI(void)
     for (i = 0; i < 4; i++) {
         if (sprCream->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].rotation = DEG_TO_SIN(90) * i;
-            speakerConeEffects[i].height = speakerConeEffects[i].width = soundTestScreen->speakerSize + 0x100;
+            speakerConeEffects[i].qScaleY = speakerConeEffects[i].qScaleX = soundTestScreen->speakerSize + 0x100;
         }
 
         TransformSprite(&speakerConeElement[i], &speakerConeEffects[i]);

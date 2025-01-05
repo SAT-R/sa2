@@ -607,8 +607,8 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
             if (cs->unk4 & 0x1) {
                 transform.rotation = cs->unk14;
-                transform.width = +Q(1);
-                transform.height = +Q(1);
+                transform.qScaleX = +Q(1);
+                transform.qScaleY = +Q(1);
 
                 transform.x = cs->s->x;
                 transform.y = cs->s->y;

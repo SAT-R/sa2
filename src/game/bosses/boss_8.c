@@ -1750,8 +1750,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
         = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
-    tf->width = Q(1);
-    tf->height = Q(1);
+    tf->qScaleX = Q(1);
+    tf->qScaleY = Q(1);
     tf->x = s->x;
     tf->y = s->y;
 
@@ -1773,8 +1773,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
                          | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
-        tf->width = Q(1);
-        tf->height = Q(1);
+        tf->qScaleX = Q(1);
+        tf->qScaleY = Q(1);
         tf->x = s->x;
         tf->y = s->y;
 
@@ -1837,8 +1837,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
         = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
-    tf->width = Q(1);
-    tf->height = Q(1);
+    tf->qScaleX = Q(1);
+    tf->qScaleY = Q(1);
     tf->x = s->x;
     tf->y = s->y;
 
@@ -1864,8 +1864,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
                          | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
-        tf->width = Q(1);
-        tf->height = Q(1);
+        tf->qScaleX = Q(1);
+        tf->qScaleY = Q(1);
         tf->x = s->x;
         tf->y = s->y;
 

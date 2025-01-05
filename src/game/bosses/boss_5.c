@@ -594,8 +594,8 @@ void sub_80438C4(EggSaucer *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
@@ -768,8 +768,8 @@ void sub_8043E2C(EggSaucer *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
-        transform->width = 256;
-        transform->height = 256;
+        transform->qScaleX = 256;
+        transform->qScaleY = 256;
         transform->x = s->x;
         transform->y = s->y;
         TransformSprite(s, transform);

@@ -123,8 +123,8 @@ static void Task_WindmillMain(void)
             s->x = screenX + ((COS(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
             s->y = screenY + ((SIN(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
             transform->rotation = CLAMP_SIN_PERIOD(sinPeriod);
-            transform->width = 256;
-            transform->height = 256;
+            transform->qScaleX = 256;
+            transform->qScaleY = 256;
             transform->x = s->x;
             transform->y = s->y;
 

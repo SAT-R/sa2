@@ -578,8 +578,8 @@ static void sub_803AC2C(EggHammerTankII *boss)
         transform->rotation += 10;
     }
 
-    transform->width = 256;
-    transform->height = 256;
+    transform->qScaleX = 256;
+    transform->qScaleY = 256;
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
@@ -1391,8 +1391,8 @@ static void sub_803C198(EggHammerTankII *boss)
         unkB4->unkE4 = 2;
     } else {
         transform->rotation = unkB4->unk2D8;
-        transform->width = 256;
-        transform->height = 256;
+        transform->qScaleX = 256;
+        transform->qScaleY = 256;
         transform->x = s->x;
         transform->y = s->y;
         TransformSprite(s, transform);

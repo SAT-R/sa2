@@ -619,8 +619,8 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->hitboxes[1].index = -1;
 
     param2->transform.rotation = 0;
-    param2->transform.width = +Q(1);
-    param2->transform.height = +Q(1);
+    param2->transform.qScaleX = +Q(1);
+    param2->transform.qScaleY = +Q(1);
     param2->transform.x = 0;
     param2->transform.y = 0;
 }
@@ -661,8 +661,8 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
 
     extraSprite->transform.rotation = 0;
-    extraSprite->transform.width = +Q(1);
-    extraSprite->transform.height = +Q(1);
+    extraSprite->transform.qScaleX = +Q(1);
+    extraSprite->transform.qScaleY = +Q(1);
     extraSprite->transform.x = 0;
     extraSprite->transform.y = 0;
 }
@@ -3740,30 +3740,30 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
     ({                                                                                                                                     \
         s32 x, y;                                                                                                                          \
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
-            psi->transform.width = -Q(1.0);                                                                                                \
+            psi->transform.qScaleX = -Q(1.0);                                                                                              \
         } else {                                                                                                                           \
-            psi->transform.width = +Q(1.0);                                                                                                \
+            psi->transform.qScaleX = +Q(1.0);                                                                                              \
         }                                                                                                                                  \
         if (GRAVITY_IS_INVERTED) {                                                                                                         \
-            psi->transform.width = -psi->transform.width;                                                                                  \
+            psi->transform.qScaleX = -psi->transform.qScaleX;                                                                              \
         }                                                                                                                                  \
                                                                                                                                            \
-        if (psi->transform.width < 0) {                                                                                                    \
+        if (psi->transform.qScaleX < 0) {                                                                                                  \
             psi->transform.x--;                                                                                                            \
         }                                                                                                                                  \
                                                                                                                                            \
         if (GRAVITY_IS_INVERTED) {                                                                                                         \
-            psi->transform.height = Q(1.0);                                                                                                \
+            psi->transform.qScaleY = Q(1.0);                                                                                               \
             /* requires double clamp to match */                                                                                           \
-            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(-Q(1.0) - (psi->transform.rotation + psi->transform.height)));     \
+            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(-Q(1.0) - (psi->transform.rotation + psi->transform.qScaleY)));    \
         } else {                                                                                                                           \
-            psi->transform.height = Q(1.0);                                                                                                \
+            psi->transform.qScaleY = Q(1.0);                                                                                               \
         }                                                                                                                                  \
                                                                                                                                            \
-        x = I(psi->transform.width * p->unk80);                                                                                            \
-        y = I(psi->transform.height * p->unk82);                                                                                           \
-        psi->transform.width = x;                                                                                                          \
-        psi->transform.height = y;                                                                                                         \
+        x = I(psi->transform.qScaleX * p->unk80);                                                                                          \
+        y = I(psi->transform.qScaleY * p->unk82);                                                                                          \
+        psi->transform.qScaleX = x;                                                                                                        \
+        psi->transform.qScaleY = y;                                                                                                        \
         UpdateSpriteAnimation(s);                                                                                                          \
     })
 

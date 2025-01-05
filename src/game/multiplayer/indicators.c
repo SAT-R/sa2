@@ -58,8 +58,8 @@ void CreateOpponentPositionIndicator(u8 sid)
 
     spr->graphics.anim = SA2_ANIM_INDICATOR_SONIC;
     spr->variant = 0;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->rotation = 0;
 }
 
@@ -170,18 +170,18 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc", void 
     }
 
     if (opponentDistSq > 0x06000000) {
-        transform->width = 0x40;
-        transform->height = 0x40;
+        transform->qScaleX = Q(0.25);
+        transform->qScaleY = Q(0.25);
     } else if (opponentDistSq < 0x10000) {
-        transform->width = 0x1E0;
-        transform->height = 0x1E0;
+        transform->qScaleX = Q(1.875);
+        transform->qScaleY = Q(1.875);
         asm(""); // TEMP
     } else {
         // _080196C0
         s32 dist = (0x06000000 - opponentDistSq) >> 16;
         s32 scale = Div(dist * 0x1A0, 0x5FF) + 0x40;
-        transform->width = scale;
-        transform->height = scale;
+        transform->qScaleX = scale;
+        transform->qScaleY = scale;
     }
     // _080196DC
 

@@ -1098,7 +1098,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     u8 i;
     u16 x;
     Sprite *s;
-    SpriteTransform *transformOptions;
+    SpriteTransform *transform;
 
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
@@ -1127,22 +1127,22 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         }
     }
     s = &characterScreen->selectedCarouselBlob;
-    transformOptions = &characterScreen->selectedBlobTransform;
+    transform = &characterScreen->selectedBlobTransform;
 
     s->x = 101;
     s->y = 79;
     s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     s->prevVariant = -1;
 
-    transformOptions->rotation = 0;
-    transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-    transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-    transformOptions->x = s->x;
-    transformOptions->y = s->y;
+    transform->rotation = 0;
+    transform->qScaleX = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+    transform->qScaleY = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+    transform->x = s->x;
+    transform->y = s->y;
 
     s->frameFlags = gUnknown_030054B8++ | 0x60;
     UpdateSpriteAnimation(s);
-    TransformSprite(s, transformOptions);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
@@ -1209,37 +1209,37 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextLeft;
-    transformOptions = &characterScreen->characterTitleLeftTransform;
+    transform = &characterScreen->characterTitleLeftTransform;
 
     s->x = 0x28;
     s->y = 0x4F;
 
-    transformOptions->rotation = 0;
-    transformOptions->width = 0x100;
-    transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->x = s->x;
-    transformOptions->y = s->y;
+    transform->rotation = 0;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1) - ((0x10 - characterScreen->animFrame) * 0xF);
+    transform->x = s->x;
+    transform->y = s->y;
 
     s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    TransformSprite(s, transformOptions);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
-    transformOptions = &characterScreen->characterTitleRightTransform;
+    transform = &characterScreen->characterTitleRightTransform;
 
     s->x = 0x28;
     s->y = 0x4F;
 
-    transformOptions->rotation = 0;
-    transformOptions->width = 0x100;
-    transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->x = s->x;
-    transformOptions->y = s->y;
+    transform->rotation = 0;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1) - ((0x10 - characterScreen->animFrame) * 0xF);
+    transform->x = s->x;
+    transform->y = s->y;
 
     s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    TransformSprite(s, transformOptions);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     s = &characterScreen->scrollUpArrow;
@@ -1255,7 +1255,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     u8 i;
     s8 somethinga;
     Sprite *s;
-    SpriteTransform *transformOptions;
+    SpriteTransform *transform;
 
     s8 lang = gLoadedSaveGame->language - 1;
 
@@ -1367,22 +1367,22 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     if (characterScreen->unk3C4 > 9) {
         s = &characterScreen->selectedCarouselBlob;
-        transformOptions = &characterScreen->selectedBlobTransform;
+        transform = &characterScreen->selectedBlobTransform;
 
         s->x = 0x65;
         s->y = 0x4F;
         s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
-        transformOptions->rotation = 0;
-        transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-        transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-        transformOptions->x = s->x;
-        transformOptions->y = s->y;
+        transform->rotation = 0;
+        transform->qScaleX = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transform->qScaleY = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transform->x = s->x;
+        transform->y = s->y;
 
         s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        TransformSprite(s, transformOptions);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -1451,20 +1451,20 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextLeft;
-    transformOptions = &characterScreen->characterTitleLeftTransform;
+    transform = &characterScreen->characterTitleLeftTransform;
     s->x = 40;
     s->y = 79;
 
     if (c < 8) {
-        transformOptions->rotation = 0;
-        transformOptions->width = 0x100;
-        transformOptions->height = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->x = s->x;
-        transformOptions->y = s->y;
+        transform->rotation = 0;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1) - ((8 - c) * 0x1E);
+        transform->x = s->x;
+        transform->y = s->y;
 
         s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        TransformSprite(s, transformOptions);
+        TransformSprite(s, transform);
     } else {
         s->frameFlags = 0;
     }
@@ -1472,20 +1472,20 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
-    transformOptions = &characterScreen->characterTitleRightTransform;
+    transform = &characterScreen->characterTitleRightTransform;
     s->x = 40;
     s->y = 79;
 
     if (c < 8) {
-        transformOptions->rotation = 0;
-        transformOptions->width = 0x100;
-        transformOptions->height = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->x = s->x;
-        transformOptions->y = s->y;
+        transform->rotation = 0;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1) - ((8 - c) * 0x1E);
+        transform->x = s->x;
+        transform->y = s->y;
 
         s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        TransformSprite(s, transformOptions);
+        TransformSprite(s, transform);
     } else {
         s->frameFlags = 0;
     }
@@ -1503,7 +1503,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
 static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 {
-    SpriteTransform *transformOptions;
+    SpriteTransform *transform;
     Sprite *s, *element2, *element3;
     u8 i;
     if (characterScreen->amyUnlocked) {
@@ -1535,22 +1535,22 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 
     if (characterScreen->cursorAnimFrame > 0) {
         s = &characterScreen->selectedCarouselBlob;
-        transformOptions = &characterScreen->selectedBlobTransform;
+        transform = &characterScreen->selectedBlobTransform;
 
         s->x = 101;
         s->y = 79;
         s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
-        transformOptions->rotation = 0;
-        transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-        transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
-        transformOptions->x = s->x;
-        transformOptions->y = s->y;
+        transform->rotation = 0;
+        transform->qScaleX = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transform->qScaleY = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transform->x = s->x;
+        transform->y = s->y;
 
         s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        TransformSprite(s, transformOptions);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
     UpdateSpriteAnimation(&characterScreen->characterSprite);

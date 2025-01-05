@@ -436,8 +436,8 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
         transform->rotation = boss->cannonAngle;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
 
@@ -686,8 +686,8 @@ static bool8 RenderCannon(EggBomberTank *boss)
     s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation = boss->cannonAngle;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);

@@ -210,7 +210,7 @@ void CreateBoostEffectTasks(void)
             s->x = 0;
             s->y = 0;
 
-            actions->transform.height = +Q(1);
+            actions->transform.qScaleY = +Q(1);
         }
 
         if (s->palId != 0) {
@@ -269,15 +269,15 @@ void Task_80159C8(void)
                 s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
-                    transform->width = +Q(1);
+                    transform->qScaleX = +Q(1);
                 } else {
-                    transform->width = -Q(1);
+                    transform->qScaleX = -Q(1);
                 }
 
                 actions->plState.moveState &= MOVESTATE_80000000;
 
                 if (actions->plState.moveState) {
-                    transform->width = -transform->width;
+                    transform->qScaleX = -transform->qScaleX;
                 }
 
                 TransformSprite(s, transform);

@@ -1682,7 +1682,7 @@ static void CreateLensFlareAnimation(void)
         s->frameFlags = i | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
 
         transform->rotation = 0;
-        transform->height = transform->width = posX * 2 + 0xB0;
+        transform->qScaleY = transform->qScaleX = posX * 2 + 0xB0;
         transform->x = lensFlare->posSequenceX[i];
         transform->y = lensFlare->posSequenceY[i];
 

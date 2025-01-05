@@ -42,14 +42,14 @@ static void Task_DrowningCountdown(void)
     r2 = ((ts->unk10 + 1) << 3);
     r2 = MIN(r2, 0x100);
 
-    transform->width = r2;
-    transform->height = r2;
+    transform->qScaleX = r2;
+    transform->qScaleY = r2;
 
     if (ts->unk14 & 0x1)
-        transform->width = -r2;
+        transform->qScaleX = -r2;
 
     if (ts->unk14 & 0x2)
-        transform->height = -transform->height;
+        transform->qScaleY = -transform->qScaleY;
 
     if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32) || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
         || (ts->unk10 > 0x80)) {
@@ -95,8 +95,8 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 
     transform = &ts->transform;
     transform->rotation = 0;
-    transform->width = 0;
-    transform->height = 0;
+    transform->qScaleX = 0;
+    transform->qScaleY = 0;
     transform->x = 0;
     transform->y = 0;
 
@@ -145,8 +145,8 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
         s->oamFlags = SPRITE_OAM_ORDER(9);
 
         transform->rotation = 0;
-        transform->width = 0;
-        transform->height = 0;
+        transform->qScaleX = 0;
+        transform->qScaleY = 0;
         transform->x = 0;
         transform->y = 0;
 
@@ -199,14 +199,14 @@ static void Task_SpawnAirBubbles(void)
     r2 = ((unk10 + 1) << 4);
     r2 = MIN(r2, 0x100);
 
-    transform->width = r2;
-    transform->height = r2;
+    transform->qScaleX = r2;
+    transform->qScaleY = r2;
 
     if (ts->unk14 & 0x1)
-        transform->width = -r2;
+        transform->qScaleX = -r2;
 
     if (ts->unk14 & 0x2)
-        transform->height = -transform->height;
+        transform->qScaleY = -transform->qScaleY;
 
     if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32) || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
         || (gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0) || (I(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {

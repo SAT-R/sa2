@@ -119,7 +119,7 @@ void CreateMultiplayerPlayer(u8 id)
     s->x = 0;
     s->y = 0;
 
-    mpp->transform.height = 256;
+    mpp->transform.qScaleY = 256;
     s->graphics.anim = gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
 
     if (mpp->unk56 != SIO_MULTI_CNT->id) {
@@ -409,13 +409,13 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
         s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE;
         if (mpp->unk54 & 2) {
-            transform->width = -256;
+            transform->qScaleX = -256;
         } else {
-            transform->width = +256;
+            transform->qScaleX = +256;
         }
 
         if (mpp->unk54 & 8) {
-            transform->width = -transform->width;
+            transform->qScaleX = -transform->qScaleX;
         }
         TransformSprite(s, transform);
     } else {

@@ -197,10 +197,8 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u16 rotation;
-
-    // TODO: Rename to SA1/SA3 version! (width / height -> scaleX / scaleY)
-    /* 0x02 */ s16 width;
-    /* 0x04 */ s16 height;
+    /* 0x02 */ s16 qScaleX;
+    /* 0x04 */ s16 qScaleY;
     /* 0x06 */ s16 x;
     /* 0x08 */ s16 y;
 } SpriteTransform; /* size 0xA */
