@@ -691,10 +691,10 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 void InitializePlayer(Player *p)
 {
 #ifndef NON_MATCHING
-    register u8 *u99_r6 asm("r6");
+    register s8 *u99_r6 asm("r6");
     register s8 *unk60 asm("r4");
 #else
-    u8 *u99_r6;
+    s8 *u99_r6;
     s8 *unk60;
 #endif
     s8 *character;

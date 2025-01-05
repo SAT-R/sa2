@@ -584,6 +584,7 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0.inc",
          u32 sub_800D0A0(Sprite *s, s16 param1, s16 param2, s16 param3, s16 param4, u8 param5, u32 param6))
 {
+    return 0;
 }
 END_NONMATCH
 

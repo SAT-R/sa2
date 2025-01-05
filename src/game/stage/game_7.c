@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "trig.h"
+#include "flags.h"
+#include "game/stage/game_7.h"
 
 void sub_802DBC0(u8 p0, u16 p1)
 {
@@ -632,6 +634,286 @@ void sub_802E384(s16 *p0, u16 pairCount)
 
             xVal2 += r4;
             l++;
+        }
+    }
+}
+
+NONMATCH("asm/non_matching/game/stage/sub_802E49C.inc", void sub_802E49C(s16 *tmp8, s32 length)) { }
+END_NONMATCH
+
+void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
+{
+    s32 r6, r7, r1;
+
+    s16 temp, r3, sl = 0;
+    s16 tmp8[7][2];
+
+    s16 limitY2, limitX2;
+    s16 limitX1, limitY1;
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN0H;
+    gFlags |= FLAGS_4;
+
+    if (x > 0 && x < DISPLAY_WIDTH && y < DISPLAY_HEIGHT && x > 0) {
+        u16 i;
+#ifndef NON_MATCHING
+        s32 r8;
+#endif
+        if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+            DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
+        } else {
+            DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
+        }
+
+        r1 = CLAMP_SIN_PERIOD(a - Q(1));
+        r6 = (COS(r1) * b) >> 15;
+#ifndef NON_MATCHING
+        {
+            register void *r1_2 asm("r1") = (r1 * 2) + ((void *)gSineTable);
+            r8 = *(s16 *)r1_2;
+            r7 = (r8 * b) >> 15;
+        }
+#else
+        r7 = (COS(r1) * b) >> 15;
+#endif
+
+        tmp8[1][0] = x + r6;
+        tmp8[1][1] = y + r7;
+        tmp8[0][0] = (x - r6);
+        tmp8[0][1] = (y - r7);
+
+        r6 = (COS(a) * d) >> 14;
+        r7 = (SIN(a) * d) >> 14;
+
+        tmp8[1][0] += r6;
+        tmp8[1][1] += r7;
+
+        tmp8[0][0] += r6;
+        tmp8[0][1] += r7;
+
+        limitX1 = tmp8[1][0];
+        limitY1 = tmp8[1][1];
+        limitX2 = tmp8[0][0];
+        limitY2 = tmp8[0][1];
+
+        r6 = (COS(r1) * c) >> 15;
+#ifndef NON_MATCHING
+        r7 = (r8 * c) >> 15;
+#else
+        r7 = (SIN(r1) * c) >> 15;
+#endif
+
+        tmp8[2][0] = x + r6;
+        tmp8[2][1] = y + r7;
+        tmp8[3][0] = x - r6;
+        tmp8[3][1] = y - r7;
+
+        r6 = (COS(a) * 15) >> 2;
+        r7 = SIN(a) >> 6;
+
+        if (r6 != 0) {
+            if (r7 != 0) {
+                r6 = Div(r6, r7);
+            } else {
+                r6 = Q(DISPLAY_WIDTH);
+            }
+        }
+
+        r1 = Q(limitX1);
+
+        if (a < Q(2)) {
+            for (i = limitY1; i < (DISPLAY_HEIGHT - 1); i++) {
+                r1 += r6;
+                sl = I(r1);
+                if (sl >= DISPLAY_WIDTH) {
+                    sl = DISPLAY_WIDTH;
+                    break;
+                }
+
+                if (sl < 0) {
+                    sl = 0;
+                    break;
+                }
+            }
+        } else {
+            for (i = limitY1; i != 0; i--) {
+                r1 -= r6;
+                sl = r1 >> 8;
+                if (sl >= DISPLAY_WIDTH) {
+                    sl = DISPLAY_WIDTH;
+                    break;
+                }
+
+                if (sl < 0) {
+                    sl = 0;
+                    break;
+                }
+            }
+        }
+
+        tmp8[4][0] = sl;
+        tmp8[4][1] = i;
+
+        r1 = Q(limitX2);
+
+        if (a < Q(2)) {
+            for (i = limitY2; i < (DISPLAY_HEIGHT - 1); i++) {
+                r1 += r6;
+                sl = I(r1);
+                if (sl >= DISPLAY_WIDTH) {
+                    sl = DISPLAY_WIDTH;
+                    break;
+                }
+
+                if (sl < 0) {
+                    sl = 0;
+                    break;
+                }
+            }
+        } else {
+            for (i = limitY2; i != 0; i--) {
+                r1 -= r6;
+                sl = I(r1);
+                if (sl >= DISPLAY_WIDTH) {
+                    sl = DISPLAY_WIDTH;
+                    break;
+                }
+
+                if (sl < 0) {
+                    sl = 0;
+                    break;
+                }
+            }
+        }
+        tmp8[5][0] = sl;
+        tmp8[5][1] = i;
+
+        temp = tmp8[5][0];
+        if (tmp8[5][0] != tmp8[4][0] && tmp8[5][1] != tmp8[4][1]) {
+            if (tmp8[4][0] == 0) {
+                tmp8[6][0] = tmp8[4][0];
+                tmp8[6][1] = tmp8[5][1];
+            } else {
+                if (tmp8[5][0] != 0 && tmp8[4][0] == DISPLAY_WIDTH) {
+                    tmp8[6][0] = tmp8[4][0];
+                    tmp8[6][1] = tmp8[5][1];
+                } else {
+                    tmp8[6][0] = temp;
+                    tmp8[6][1] = tmp8[4][1];
+                }
+            }
+            sub_802E49C(tmp8[0], 7);
+        } else {
+            sub_802E49C(tmp8[0], 6);
+        }
+    } else {
+
+        if ((b / 2) == 0) {
+            if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
+            } else {
+                DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
+            }
+            return;
+        }
+
+        if (a > Q(1) && a < Q(3) && x >= DISPLAY_WIDTH) {
+            r7 = (SIN(a) * (x - DISPLAY_WIDTH)) >> 14;
+            r7 += y;
+
+            if (r7 > 0 && r7 < DISPLAY_HEIGHT) {
+                s16 r3, r4;
+                r3 = DISPLAY_WIDTH + 1;
+                if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                    DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
+                } else {
+                    DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
+                }
+
+                r4 = r7 - (b / 2);
+                if (r4 < 0) {
+                    r4 = 0;
+                } else if (r4 > DISPLAY_HEIGHT) {
+                    r4 = DISPLAY_HEIGHT;
+                }
+                sub_802DF18(r4, a);
+
+                r4 = r7 + (b / 2);
+                if (r4 < 0) {
+                    r4 = 0;
+                } else if (r4 > DISPLAY_HEIGHT) {
+                    r4 = DISPLAY_HEIGHT;
+                }
+                sub_802DDC4(r4, a);
+                return;
+            }
+        }
+
+        if (a > Q(2)) {
+            if (y >= DISPLAY_HEIGHT) {
+                s16 r3, r4;
+                r6 = (COS(a) * (y - DISPLAY_HEIGHT)) >> 14;
+                r6 += x;
+
+                if (r6 > 0 && r6 < DISPLAY_WIDTH) {
+                    r3 = DISPLAY_WIDTH + 1;
+                    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                        DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
+                    } else {
+                        DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
+                    }
+
+                    r4 = r6 - (b / 2);
+                    if (r4 < 0) {
+                        r4 = 0;
+                    } else if (r4 > DISPLAY_WIDTH) {
+                        r4 = DISPLAY_WIDTH;
+                    }
+                    sub_802E0D4(r4 << 8, a);
+
+                    r4 = r6 + (b / 2);
+                    if (r4 < 0) {
+                        r4 = 0;
+                    } else if (r4 > DISPLAY_WIDTH) {
+                        r4 = DISPLAY_WIDTH;
+                    }
+                    sub_802E044(Q(r4), a);
+                    return;
+                }
+            }
+        }
+
+        if (a <= Q(2)) {
+            if (y < 0) {
+                s16 r3, r4;
+                r6 = (COS(a) * (y - DISPLAY_HEIGHT)) >> 14;
+                r6 += x;
+                if (r6 > 0 && r6 < DISPLAY_WIDTH) {
+                    r3 = DISPLAY_WIDTH + 1;
+                    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                        DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
+                    } else {
+                        DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
+                    }
+
+                    r4 = r6 - (b / 2);
+                    if (r4 < 0) {
+                        r4 = 0;
+                    } else if (r4 > DISPLAY_WIDTH) {
+                        r4 = DISPLAY_WIDTH;
+                    }
+                    sub_802E1EC(Q(r4), a);
+
+                    r4 = r6 + (b / 2);
+                    if (r4 < 0) {
+                        r4 = 0;
+                    } else if (r4 > DISPLAY_WIDTH) {
+                        r4 = DISPLAY_WIDTH;
+                    }
+                    sub_802E164(Q(r4), a);
+                }
+            }
         }
     }
 }

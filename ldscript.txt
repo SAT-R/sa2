@@ -140,12 +140,14 @@ SECTIONS
         src/game/cheese.o(.text);
         src/game/boost_effect.o(.text);
         src/game/amy_attack_heart_effect.o(.text);
+
         src/game/multiplayer/mp_player.o(.text);
         src/game/multiplayer/unknown_task.o(.text);
         src/game/multiplayer/player_unk_1.o(.text);
         src/game/multiplayer/indicators.o(.text);
         src/game/multiplayer/finish.o(.text);
         src/game/multiplayer/player_unk_2.o(.text);
+
         src/game/game.o(.text);
         src/game/dummy_task.o(.text);
     
@@ -178,31 +180,23 @@ SECTIONS
         src/game/stage/dust_effect_spindash.o(.text);
         src/game/stage/grind_effect_1.o(.text);
         src/game/stage/rings_scatter.o(.text);
-
-        /* player */
         src/game/stage/player.o(.text);
-
         src/game/stage/item_tasks.o(.text);
         src/game/stage/underwater_effects.o(.text);
         src/game/stage/screen_shake.o(.text);
         src/game/stage/player_controls.o(.text);
-    
         src/game/stage/player_super_sonic.o(.text);
         src/game/stage/ui.o(.text);
         src/game/stage/debug_text_printer.o(.text);
         src/game/stage/screen_fade.o(.text);
         src/game/stage/trapped_animals.o(.text);
         src/game/stage/game_7.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/game_7.o(.text);
-#endif
         src/game/stage/boss_results_transition.o(.text);
         src/game/stage/intro.o(.text);
         src/game/stage/results.o(.text);
 
         src/game/character_select.o(.text);
         src/game/course_select.o(.text);
-
         src/game/countdown.o(.text);
         src/game/game_over.o(.text);
 
@@ -219,6 +213,7 @@ SECTIONS
         src/game/bosses/boss_7.o(.text);
         src/game/bosses/boss_8.o(.text);
         src/game/bosses/boss_9.o(.text);
+
         src/game/enemies/projectiles.o(.text);
         src/game/enemies/mon.o(.text);
         src/game/enemies/gohla.o(.text);
