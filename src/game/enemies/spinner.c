@@ -70,7 +70,7 @@ void Task_EnemySpinner(void)
         Sprite *s2 = &p->spriteInfoBody->s;
 
         if ((s2->hitboxes[0].index != HITBOX_STATE_INACTIVE) && (s->hitboxes[1].index != HITBOX_STATE_INACTIVE)) {
-            if (HB_COLLISION(pos.x, pos.y, s->hitboxes[1], I(p->x), I(p->y), s2->hitboxes[0])) {
+            if (HB_COLLISION(pos.x, pos.y, s->hitboxes[1], I(p->qWorldX), I(p->qWorldY), s2->hitboxes[0])) {
                 if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
                     sub_800CBA4(p);
                 }

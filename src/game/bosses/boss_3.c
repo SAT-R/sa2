@@ -1230,7 +1230,7 @@ void sub_80408C4(EggTotem *totem)
             if (ptr->unk0 == 60 && ptr->unk2 == 0 && ptr->unk4 == 0) {
 
                 if ((u16)t3c->unkE == 60) {
-                    if (gPlayer.y < t3c->qWorldY) {
+                    if (gPlayer.qWorldY < t3c->qWorldY) {
                         t3c->unk15 = 1;
                     } else {
                         t3c->unk15 = 0;
@@ -1312,8 +1312,8 @@ void sub_8040A00(EggTotem *totem)
             coll = sub_800CCB8(s, x, y, p);
 
             if ((p->moveState & MOVESTATE_8) && (coll & COLL_FLAG_10000)) {
-                p->x += t3c->qUnk8 + Q(5);
-                p->y += Q(2) + (s16)Q(coll);
+                p->qWorldX += t3c->qUnk8 + Q(5);
+                p->qWorldY += Q(2) + (s16)Q(coll);
 
                 if (!r7) {
                     p->speedAirX -= Q(5);
@@ -1397,7 +1397,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
                         lives;
                     });
 
-                    gUnknown_030054A8.unk3 = 16;
+                    gMusicManagerState.unk3 = 16;
                 }
             }
 #else
@@ -1452,7 +1452,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
                         lives;
                     });
 
-                    gUnknown_030054A8.unk3 = 16;
+                    gMusicManagerState.unk3 = 16;
                 }
             }
 #else
@@ -1505,7 +1505,7 @@ void sub_8040D74(EggTotem *totem)
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->lives == 4)) {
-            gUnknown_030054A8.unk1 = 17;
+            gMusicManagerState.unk1 = 17;
         }
     }
 }
@@ -1705,7 +1705,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     bullet->qScreenX = qX - Q(gCamera.x);
     bullet->qScreenY = qY - Q(gCamera.y);
 
-    sinIndex = sub_8004418(I(gPlayer.y) - I(qY), I(gPlayer.x) - I(qX));
+    sinIndex = sub_8004418(I(gPlayer.qWorldY) - I(qY), I(gPlayer.qWorldX) - I(qX));
     bullet->qDX = ((COS(sinIndex) * qSpeed) >> 14);
     bullet->qDX += BOSS_VELOCITY_X;
     bullet->qDY = ((SIN(sinIndex) * qSpeed) >> 14);

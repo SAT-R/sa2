@@ -149,7 +149,7 @@ static void Task_PlatformThinMain(void)
         u32 temp2 = sub_800CCB8(s, x, y, player);
         if (temp2 & 0xC0000) {
             if (sub_80111F0(s, x, y, player) & 0xC0000) {
-                player->x += (s16)(temp2 & 0xFF00);
+                player->qWorldX += (s16)(temp2 & 0xFF00);
                 player->speedAirX = 0;
             }
         }
@@ -168,7 +168,7 @@ static void Task_PlatformThinMain(void)
                         something = TRUE;
                         break;
                     }
-                    player->y += (s16)(temp2 << 8);
+                    player->qWorldY += (s16)(temp2 << 8);
                     player->speedAirY = 0;
                     break;
                 case CHARACTER_SONIC:
@@ -181,7 +181,7 @@ static void Task_PlatformThinMain(void)
                     }
                 }
                 default:
-                    player->y += (s16)(temp2 << 8);
+                    player->qWorldY += (s16)(temp2 << 8);
                     player->speedAirY = 0;
                     break;
             }
@@ -247,8 +247,8 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreak
 
         // Init transform
         transform->rotation = 0;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = x;
         transform->y = y;
 
@@ -343,12 +343,12 @@ static void Task_PlatformBreakParticlesMain(void)
 
     transform->x -= platform->unkF0 * 2;
 
-    width = transform->width + 8;
+    width = transform->qScaleX + 8;
     if (width > 0x200) {
         width = 0x200;
     }
-    transform->width = width;
-    transform->height = width;
+    transform->qScaleX = width;
+    transform->qScaleY = width;
     transform->rotation -= 0x2A;
 
     s->frameFlags &= ~0x1F;
@@ -373,8 +373,8 @@ static void Task_PlatformBreakParticlesMain(void)
 
     transform->x += platform->unkF0;
 
-    transform->width = width;
-    transform->height = width;
+    transform->qScaleX = width;
+    transform->qScaleY = width;
     transform->rotation += 0x2A;
 
     s->frameFlags &= ~0x1F;
@@ -398,8 +398,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y -= gCamera.y;
     transform->x += platform->unkF0 * 2;
 
-    transform->width = width;
-    transform->height = width;
+    transform->qScaleX = width;
+    transform->qScaleY = width;
     transform->rotation += 0xE;
 
     s->frameFlags &= ~0x1F;
@@ -423,8 +423,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y -= gCamera.y;
     transform->x -= platform->unkF0;
 
-    transform->width = width;
-    transform->height = width;
+    transform->qScaleX = width;
+    transform->qScaleY = width;
     transform->rotation -= 0xE;
 
     s->frameFlags &= ~0x1F;

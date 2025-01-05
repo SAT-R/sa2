@@ -74,7 +74,7 @@
 #define SA2_CHAR_ANIM_52                                     52
 #define SA2_CHAR_ANIM_53                                     53
 #define SA2_CHAR_ANIM_54                                     54
-#define SA2_CHAR_ANIM_55                                     55
+#define SA2_CHAR_ANIM_GRINDING                               55
 #define SA2_CHAR_ANIM_56                                     56
 #define SA2_CHAR_ANIM_57                                     57
 #define SA2_CHAR_ANIM_IN_WHIRLWIND                           58

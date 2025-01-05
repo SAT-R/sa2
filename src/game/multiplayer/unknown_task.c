@@ -106,8 +106,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     u32 prevMoveState = gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);
-                        gPlayer.x = QS(mpp->pos.x);
-                        gPlayer.y = QS(mpp->pos.y - (s8)mpp->unk58[0]);
+                        gPlayer.qWorldX = QS(mpp->pos.x);
+                        gPlayer.qWorldY = QS(mpp->pos.y - (s8)mpp->unk58[0]);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
                         gPlayer.moveState = prevMoveState;
                         SPRITE_FLAG_CLEAR(&gPlayer.spriteInfoBody->s, PRIORITY);
@@ -121,8 +121,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
-                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
-                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
+                        gCamera.x = (I(gPlayer.qWorldX) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
+                        gCamera.y = (I(gPlayer.qWorldY) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
                         m4aSongNumStart(SE_218);
                     }
                 }

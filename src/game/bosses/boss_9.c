@@ -2589,8 +2589,8 @@ void sub_80501D4(TA53Boss *boss)
                           | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
@@ -2612,8 +2612,8 @@ void sub_80501D4(TA53Boss *boss)
                       | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
@@ -2711,8 +2711,8 @@ void sub_80505B8(TA53Boss *boss)
                           | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
@@ -2734,8 +2734,8 @@ void sub_80505B8(TA53Boss *boss)
                       | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);

@@ -149,7 +149,7 @@ static void sub_8054224(void)
             koura->unk58 = NEGATE(koura->unk58);
         }
 
-        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x < QS(pos.x)) || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x > QS(pos.x))) {
+        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.qWorldX < QS(pos.x)) || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.qWorldX > QS(pos.x))) {
             gCurTask->main = sub_805462C;
             s->graphics.anim = gUnknown_080D8F38[5][0];
             s->variant = gUnknown_080D8F38[5][1];

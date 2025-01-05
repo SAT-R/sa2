@@ -125,8 +125,8 @@ static bool32 sub_807C424(Sprite_IA85 *ia85)
 
     temp = ia85->unk3C - gCamera.x;
     temp3 = ia85->unk40 - gCamera.y;
-    temp2 = I(gPlayer.x) - gCamera.x;
-    temp4 = I(gPlayer.y) - gCamera.y;
+    temp2 = I(gPlayer.qWorldX) - gCamera.x;
+    temp4 = I(gPlayer.qWorldY) - gCamera.y;
     if (temp - 0x14 <= temp2 && temp + 0x14 >= temp2) {
         if (temp3 - 0xC <= temp4 && temp3 + 0xC >= temp4) {
             return 1;

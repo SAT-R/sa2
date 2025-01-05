@@ -304,8 +304,8 @@ static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
         someX = I(launcher->unk54) - gCamera.x;
         someY = I(launcher->unk58) - gCamera.y;
 
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.qWorldX) - gCamera.x;
+        playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         if ((someX - 2 * TILE_WIDTH <= playerX) && (someX + 2 * TILE_WIDTH >= playerX) && (someY - 2 * TILE_WIDTH <= playerY)
             && (someY + 2 * TILE_WIDTH >= playerY))
@@ -389,23 +389,23 @@ static void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher)
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
-                gPlayer.x = launcher->unk54 - Q(8);
-                gPlayer.y = launcher->unk58 - Q(16);
+                gPlayer.qWorldX = launcher->unk54 - Q(8);
+                gPlayer.qWorldY = launcher->unk58 - Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
-                gPlayer.x = launcher->unk54 + Q(8);
-                gPlayer.y = launcher->unk58 - Q(16);
+                gPlayer.qWorldX = launcher->unk54 + Q(8);
+                gPlayer.qWorldY = launcher->unk58 - Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-                gPlayer.x = launcher->unk54 - Q(8);
-                gPlayer.y = launcher->unk58 + Q(16);
+                gPlayer.qWorldX = launcher->unk54 - Q(8);
+                gPlayer.qWorldY = launcher->unk58 + Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-                gPlayer.x = launcher->unk54 + Q(8);
-                gPlayer.y = launcher->unk58 + Q(16);
+                gPlayer.qWorldX = launcher->unk54 + Q(8);
+                gPlayer.qWorldY = launcher->unk58 + Q(16);
             } break;
         }
     }

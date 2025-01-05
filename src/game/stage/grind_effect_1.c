@@ -6,6 +6,7 @@
 #include "task.h"
 
 #include "constants/animations.h"
+#include "constants/anim_sizes.h"
 
 typedef struct {
     Sprite s;
@@ -23,9 +24,15 @@ struct Task *CreateGrindEffect()
 
     GrindEffect *spark = TASK_DATA(t);
     Sprite *s = &spark->s;
-    s->graphics.dest = VramMalloc(20);
+#if (GAME == GAME_SA1)
+    s->graphics.dest = ALLOC_TILES(SA1_ANIM_GRIND_EFFECT);
+    s->graphics.size = 0;
+    s->graphics.anim = SA1_ANIM_GRIND_EFFECT;
+#elif (GAME == GAME_SA2)
+    s->graphics.dest = ALLOC_TILES(SA2_ANIM_GRIND_EFFECT);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
+#endif
     s->variant = 0;
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(8);
@@ -44,12 +51,16 @@ void Task_GrindEffect(void)
     if (p->spriteTask == NULL || !(p->moveState & MOVESTATE_1000000)) {
         TaskDestroy(gCurTask);
         return;
-    } else if ((p->anim == SA2_CHAR_ANIM_55) && (p->variant == 0)) {
+#if (GAME == GAME_SA1)
+    } else if ((p->anim == SA1_CHAR_ANIM_GRINDING) && (p->variant == 1)) {
+#elif (GAME == GAME_SA2)
+    } else if ((p->anim == SA2_CHAR_ANIM_GRINDING) && (p->variant == 0)) {
+#endif
         GrindEffect *spark = TASK_DATA(gCurTask);
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;
-        s->x = I(p->x) - cam->x;
-        s->y = (I(p->y) + p->spriteOffsetY) - cam->y;
+        s->x = I(p->qWorldX) - cam->x;
+        s->y = (I(p->qWorldY) + p->spriteOffsetY) - cam->y;
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
             s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;

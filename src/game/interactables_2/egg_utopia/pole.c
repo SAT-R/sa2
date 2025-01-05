@@ -78,9 +78,9 @@ static void Task_807EA8C(void)
     }
 
     if (GRAVITY_IS_INVERTED) {
-        gPlayer.y -= Q(1);
+        gPlayer.qWorldY -= Q(1);
     } else {
-        gPlayer.y += Q(1);
+        gPlayer.qWorldY += Q(1);
     }
 
     if (gPlayer.frameInput & gPlayerControls.jump) {
@@ -133,8 +133,8 @@ static bool32 PlayerTouchesPole(Sprite_Pole *pole)
 
     poleScreenX = (pole->worldX + pole->left) - gCamera.x;
     poleScreenY = (pole->worldY + pole->top) - gCamera.y;
-    playerScreenX = I(gPlayer.x) - gCamera.x;
-    playerScreenY = I(gPlayer.y) - gCamera.y;
+    playerScreenX = I(gPlayer.qWorldX) - gCamera.x;
+    playerScreenY = I(gPlayer.qWorldY) - gCamera.y;
 
     if (poleScreenX <= playerScreenX && poleScreenX + pole->width >= playerScreenX) {
         if (poleScreenY <= playerScreenY && poleScreenY + pole->height >= playerScreenY) {
@@ -186,7 +186,7 @@ static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
 {
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.charState = CHARSTATE_POLE;
-    gPlayer.x = Q(pole->middleX);
+    gPlayer.qWorldX = Q(pole->middleX);
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;

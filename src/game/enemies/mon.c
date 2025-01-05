@@ -86,8 +86,8 @@ static void Task_MonMain(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2)) && (gPlayer.y > mon->y - Q(50))
-            && (gPlayer.y < mon->y + Q(50))) {
+        if ((gPlayer.qWorldX > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.qWorldX < mon->x + Q(DISPLAY_WIDTH / 2))
+            && (gPlayer.qWorldY > mon->y - Q(50)) && (gPlayer.qWorldY < mon->y + Q(50))) {
             gCurTask->main = Task_Mon_2;
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 2;
@@ -183,8 +183,8 @@ static void Task_Mon_4(void)
         Player_UpdateHomingPosition(mon->x, mon->y);
 
         if (UpdateSpriteAnimation(s) == 0) {
-            if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2)) && (gPlayer.y > mon->y - Q(50))
-                && (gPlayer.y < mon->y + Q(50))) {
+            if ((gPlayer.qWorldX > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.qWorldX < mon->x + Q(DISPLAY_WIDTH / 2))
+                && (gPlayer.qWorldY > mon->y - Q(50)) && (gPlayer.qWorldY < mon->y + Q(50))) {
 
                 ENEMY_TURN_TO_PLAYER(mon->x, s);
 

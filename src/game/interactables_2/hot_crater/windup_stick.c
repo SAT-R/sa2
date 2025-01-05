@@ -65,13 +65,13 @@ static void sub_8072650(void)
     if ((u8)(windUpStick->unk10 - 1) < 2) {
         if (gPlayer.heldInput & 0x10) {
             if (sub_8072A28(windUpStick)) {
-                gPlayer.x += 0x80;
+                gPlayer.qWorldX += 0x80;
             }
         }
 
         if (gPlayer.heldInput & 0x20) {
             if (sub_80729F4(windUpStick)) {
-                gPlayer.x -= 0x80;
+                gPlayer.qWorldX -= 0x80;
             }
         }
     }
@@ -92,7 +92,7 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
     windUpStick->unk12 = (gUnknown_03005AF0.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;
     gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
-    gPlayer.y = Q(windUpStick->unk4 + 3);
+    gPlayer.qWorldY = Q(windUpStick->unk4 + 3);
 
     switch (windUpStick->unk10) {
         case 1:
@@ -143,11 +143,11 @@ static void sub_80727F4(Sprite_WindUpStick *windUpStick)
     switch (windUpStick->unk10) {
         case 1:
         case 3:
-            gPlayer.y = Q(windUpStick->unk4 + windUpStick->unkA);
+            gPlayer.qWorldY = Q(windUpStick->unk4 + windUpStick->unkA);
             break;
         case 2:
         case 4:
-            gPlayer.y = Q(windUpStick->unk4 + windUpStick->unkE);
+            gPlayer.qWorldY = Q(windUpStick->unk4 + windUpStick->unkE);
             break;
     }
 
@@ -181,8 +181,8 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
     if (PLAYER_IS_ALIVE) {
         s16 posX = windUpStick->unk0 - gCamera.x;
         s16 posY = windUpStick->unk4 - gCamera.y;
-        s16 playerX = I(gPlayer.x) - gCamera.x;
-        s16 playerY = I(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.qWorldX) - gCamera.x;
+        s16 playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         if ((posX + windUpStick->unk8) <= playerX && (posX + windUpStick->unk8) + (windUpStick->unkC - windUpStick->unk8) >= playerX) {
             if (posY + windUpStick->unkA <= playerY && (posY + windUpStick->unkA) + (windUpStick->unkE - windUpStick->unkA) >= playerY) {
@@ -239,7 +239,7 @@ bool32 sub_80729F4(Sprite_WindUpStick *windUpStick)
         x -= camX;
     });
 
-    s16 r0 = I(gPlayer.x) - gCamera.x;
+    s16 r0 = I(gPlayer.qWorldX) - gCamera.x;
     return r1 < r0;
 }
 
@@ -253,7 +253,7 @@ bool32 sub_8072A28(Sprite_WindUpStick *windUpStick)
         x -= camX;
     });
 
-    s16 r0 = I(gPlayer.x) - gCamera.x;
+    s16 r0 = I(gPlayer.qWorldX) - gCamera.x;
     return r1 > r0;
 }
 

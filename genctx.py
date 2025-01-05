@@ -62,6 +62,9 @@ ts = TopologicalSorter(depends_on)
 print_order = tuple(ts.static_order())
 
 with open('ctx.c', 'w') as context:
+    # Since the context is only used for matching anyway, auto-insert
+    context.write("#define PLATFORM_GBA 1\n\n")
+
     for header in print_order:
         exclude = False
         for e in excluded:
@@ -72,5 +75,3 @@ with open('ctx.c', 'w') as context:
         if not exclude:
             print(header)
             context.write(data[header])
-
-    

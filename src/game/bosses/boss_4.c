@@ -399,7 +399,7 @@ static void sub_8041B44(AeroEgg *boss)
 
         if (PLAYER_IS_ALIVE) {
             if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == 1) {
-                if (I(gPlayer.y) > worldY) {
+                if (I(gPlayer.qWorldY) > worldY) {
                     sub_8042774(boss);
                     sub_800CBA4(&gPlayer);
                 } else {
@@ -728,7 +728,7 @@ static bool32 sub_80423EC(AeroEgg *boss)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         if (boss->main.lives == 4) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     }
 

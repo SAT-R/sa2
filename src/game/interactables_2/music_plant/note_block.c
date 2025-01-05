@@ -258,9 +258,9 @@ bool32 sub_8075D98(Sprite_NoteBlock *block)
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (block->unk4B != 0)) {
         s32 posX, posY;
         u16 otherX, otherY;
-        posX = I(gPlayer.x) + 16;
+        posX = I(gPlayer.qWorldX) + 16;
         posX -= block->posX;
-        posY = I(gPlayer.y) + 24;
+        posY = I(gPlayer.qWorldY) + 24;
         posY -= block->posY;
 
         otherY = posY;

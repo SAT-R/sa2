@@ -607,8 +607,8 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
             if (cs->unk4 & 0x1) {
                 transform.rotation = cs->unk14;
-                transform.width = +Q(1);
-                transform.height = +Q(1);
+                transform.qScaleX = +Q(1);
+                transform.qScaleY = +Q(1);
 
                 transform.x = cs->s->x;
                 transform.y = cs->s->y;
@@ -628,8 +628,8 @@ static bool32 sub_807432C(Sprite_HCCrane *crane)
         if ((gPlayer.moveState & MOVESTATE_IN_AIR) && (gPlayer.speedAirY > 0)) {
             s16 screenX = I(crane->cs[7].screenX);
             s16 screenY = I(crane->cs[7].screenY);
-            s16 playerX = I(gPlayer.x) - gCamera.x;
-            s16 playerY = I(gPlayer.y) - gCamera.y;
+            s16 playerX = I(gPlayer.qWorldX) - gCamera.x;
+            s16 playerY = I(gPlayer.qWorldY) - gCamera.y;
 
             if (((screenX - 24) <= playerX) && ((screenX + 24) >= playerX) && ((screenY - 24) <= playerY) && ((screenY + 24) >= playerY)) {
                 return TRUE;
@@ -733,12 +733,12 @@ static bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
 static void sub_8074550(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (crane->unk1B8.unk0 != 0)) {
-        gPlayer.y = crane->cs[8].screenY + Q(gCamera.y + 24);
+        gPlayer.qWorldY = crane->cs[8].screenY + Q(gCamera.y + 24);
 
         if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-            gPlayer.x = crane->cs[8].screenX + Q(gCamera.x + 6);
+            gPlayer.qWorldX = crane->cs[8].screenX + Q(gCamera.x + 6);
         } else {
-            gPlayer.x = crane->cs[8].screenX + Q(gCamera.x - 6);
+            gPlayer.qWorldX = crane->cs[8].screenX + Q(gCamera.x - 6);
         }
     }
 }

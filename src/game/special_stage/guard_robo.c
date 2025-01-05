@@ -129,8 +129,8 @@ void sub_80710B0(void)
     s32 cos = COS(angle);
 
     s32 dX, dY;
-    dX = player->x - guardRobo->x;
-    dY = player->y - guardRobo->y;
+    dX = player->q16WorldX - guardRobo->x;
+    dY = player->q16WorldY - guardRobo->y;
 
     bearingToPlayer = (sin >> 8) * (dY >> 8) + (cos >> 6) * (dX >> 8);
     // required for match, probably wrong
@@ -170,8 +170,8 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
 
     s16 guardRoboX = Q_16_16_TO_INT(guardRobo->x);
     s16 guardRoboY = Q_16_16_TO_INT(guardRobo->y);
-    s16 playerX = Q_16_16_TO_INT(player->x);
-    s16 playerY = Q_16_16_TO_INT(player->y);
+    s16 playerX = Q_16_16_TO_INT(player->q16WorldX);
+    s16 playerY = Q_16_16_TO_INT(player->q16WorldY);
     s16 unkB0 = player->unkB0 >> 8;
     s16 state = player->state;
 

@@ -91,28 +91,28 @@ static void Task_BuzzerMain(void)
          --buzzer->unk68 == 0
 #endif
          )
-        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C) && I(gPlayer.x) < pos.x && I(gPlayer.y) > pos.y
-        && I(gPlayer.y) < (pos.y + 0x50)) {
+        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.qWorldX) > (pos.x - 0x3C) && I(gPlayer.qWorldX) < pos.x
+        && I(gPlayer.qWorldY) > pos.y && I(gPlayer.qWorldY) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
         s->variant = 1;
         s->prevVariant = -1;
-        buzzer->unk5C = gPlayer.y;
-        buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
-        buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
-    } else if (buzzer->unk68 == 0 && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
-               && I(gPlayer.y) > pos.y && I(gPlayer.y) < (pos.y + 0x50)) {
+        buzzer->unk5C = gPlayer.qWorldY;
+        buzzer->unk64 = Div(gPlayer.qWorldX - QS(pos.x), 0x20);
+        buzzer->unk66 = Div(gPlayer.qWorldY - QS(pos.y), 0x20);
+    } else if (buzzer->unk68 == 0 && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.qWorldX) > pos.x
+               && I(gPlayer.qWorldX) < (pos.x + 0x3C) && I(gPlayer.qWorldY) > pos.y && I(gPlayer.qWorldY) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
         s->variant = 1;
         s->prevVariant = -1;
-        buzzer->unk5C = gPlayer.y;
+        buzzer->unk5C = gPlayer.qWorldY;
 
         // Wtf
-        buzzer->unk64 = Div(QS(pos.x) - gPlayer.x, 0x20);
-        buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
+        buzzer->unk64 = Div(QS(pos.x) - gPlayer.qWorldX, 0x20);
+        buzzer->unk64 = Div(gPlayer.qWorldX - QS(pos.x), 0x20);
 
-        buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
+        buzzer->unk66 = Div(gPlayer.qWorldY - QS(pos.y), 0x20);
     } else {
 #ifndef NON_MATCHING
     lab:

@@ -303,7 +303,7 @@ static void Task_BomberTankCannonReload(void)
         INCREMENT_SCORE_B(500);
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     }
 
@@ -436,8 +436,8 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
         transform->rotation = boss->cannonAngle;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
 
@@ -686,8 +686,8 @@ static bool8 RenderCannon(EggBomberTank *boss)
     s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation = boss->cannonAngle;
-    transform->width = 0x100;
-    transform->height = 0x100;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
@@ -726,7 +726,7 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
         INCREMENT_SCORE_B(500);
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     } else {
         if (boss->timer == 0) {
@@ -761,13 +761,13 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
     dX = QS(Div(boss->qWorldX, 256) - 8);
     x = dX + ((COS(boss->cannonAngle) * 5) >> 3);
 
-    dX = x - gPlayer.x;
+    dX = x - gPlayer.qWorldX;
     dX = I(dX);
 
     dY = QS(Div(boss->qWorldY, 256) - 22);
     y = dY + ((SIN(boss->cannonAngle) * 5) >> 3);
 
-    dY = y - gPlayer.y;
+    dY = y - gPlayer.qWorldY;
     dY = I(dY);
 
     distance = (SQUARE(dY) + SQUARE(dX));

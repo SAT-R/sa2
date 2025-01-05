@@ -103,9 +103,9 @@ static bool32 sub_807B1F0(Sprite_LightGlobe *globe)
     r2 -= gCamera.y;
     r2 += I(globe->unk46);
 
-    r0 = I(gPlayer.x);
+    r0 = I(gPlayer.qWorldX);
     r0 -= gCamera.x;
-    r1 = I(gPlayer.y);
+    r1 = I(gPlayer.qWorldY);
     r1 -= gCamera.y;
 
     r3_16 = r3;

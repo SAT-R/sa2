@@ -9,7 +9,7 @@
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/stage/game_2.h"
+#include "game/stage/grind_effect_2.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
@@ -182,7 +182,7 @@ static void Task_StageWaterTask(void)
     u8 unk2_2;
 #endif
 
-    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) && (I(gPlayer.x) > 6665) && (I(gPlayer.x) <= 10650)) {
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) && (I(gPlayer.qWorldX) > 6665) && (I(gPlayer.qWorldX) <= 10650)) {
         water->isActive = TRUE;
     } else {
         water->isActive = FALSE;
@@ -273,7 +273,7 @@ static void Task_RunOnWaterEffect(void)
         return;
     }
 
-    effect->x = I(p->x);
+    effect->x = I(p->qWorldX);
     effect->y = gWater.currentWaterLevel;
 
     s->x = effect->x - gCamera.x;

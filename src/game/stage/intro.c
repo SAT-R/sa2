@@ -856,8 +856,8 @@ static void StageIntroUpdateIcons(void)
     }
 
     transform->rotation = 0;
-    transform->width = sineVal;
-    transform->height = Q(1.0);
+    transform->qScaleX = sineVal;
+    transform->qScaleY = Q(1.0);
     transform->x = s->x;
     transform->y = s->y;
 

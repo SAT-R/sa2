@@ -6,7 +6,7 @@
 #include "game/amy_attack_heart_effect.h"
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/collision.h"
-#include "game/stage/game_2.h"
+#include "game/stage/grind_effect_2.h"
 #include "game/stage/dust_effect_braking.h"
 #include "game/stage/player_controls.h"
 #include "game/boost_effect.h"
@@ -228,7 +228,7 @@ void Player_SonicAmy_WindupSkidAttack(Player *p)
                     p->speedGroundX = +Q(4.0);
                 }
             } else {
-                Player_SonicAmy_InitSkidAttackGfxTask(I(p->x), I(p->y), 0);
+                Player_SonicAmy_InitSkidAttackGfxTask(I(p->qWorldX), I(p->qWorldY), 0);
             }
 
             p->unk72 = 32;
@@ -459,8 +459,8 @@ void Player_UpdateHomingPosition(s32 qX, s32 qY)
     s32 vecTargetX, vecTargetY;
     s32 sqTargetX, sqTargetY, sqDistance;
 
-    vecTargetX = I(gPlayer.x - qX);
-    vecTargetY = I(gPlayer.y - qY);
+    vecTargetX = I(gPlayer.qWorldX - qX);
+    vecTargetY = I(gPlayer.qWorldY - qY);
     sqTargetX = vecTargetX * vecTargetX;
     sqTargetY = vecTargetY * vecTargetY;
     sqDistance = sqTargetX + sqTargetY; // c^2 = a^2 + b^2
@@ -521,7 +521,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
         PLAYERFN_SET(Player_SonicAmy_StopNSlam);
 
         if (p->character == CHARACTER_SONIC) {
-            Player_Sonic_Bound(I(p->x), I(p->y));
+            Player_Sonic_Bound(I(p->qWorldX), I(p->qWorldY));
         } else if (p->character == CHARACTER_AMY) {
             CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_STOP_N_SLAM);
         }
@@ -679,8 +679,8 @@ void Player_Cream_Flying(Player *p)
         p->speedAirY += Q(PLAYER_FLYING_END_GRAVITY);
     }
 
-    if (p->y < Q(gCamera.minY)) {
-        p->y = Q(gCamera.minY);
+    if (p->qWorldY < Q(gCamera.minY)) {
+        p->qWorldY = Q(gCamera.minY);
 
         if (p->speedAirY < 0)
             p->speedAirY = 0;
@@ -935,8 +935,8 @@ void Player_Tails_8012C2C(Player *p)
         p->speedAirY += Q(PLAYER_FLYING_END_GRAVITY);
     }
 
-    if (p->y < Q(gCamera.minY)) {
-        p->y = Q(gCamera.minY);
+    if (p->qWorldY < Q(gCamera.minY)) {
+        p->qWorldY = Q(gCamera.minY);
 
         if (p->speedAirY < 0)
             p->speedAirY = 0;
@@ -978,7 +978,7 @@ void Player_Tails_InitTailSwipe(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    sub_80129DC(I(p->x), I(p->y));
+    sub_80129DC(I(p->qWorldX), I(p->qWorldY));
 
     m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
 
@@ -1145,7 +1145,7 @@ void Player_Knuckles_InitSpiralAttack(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    sub_8012DF8(I(p->x), I(p->y), 0);
+    sub_8012DF8(I(p->qWorldX), I(p->qWorldY), 0);
 
     p->unk72 = 32;
 
@@ -1261,11 +1261,11 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                         u16 gravInv = GRAVITY_IS_INVERTED;
                         if (gravInv) {
                             s32 playerBottomX;
-                            s32 playerBottomY = I(p->y);
+                            s32 playerBottomY = I(p->qWorldY);
                             playerBottomY -= 1;
                             playerBottomY -= p->spriteOffsetY;
 
-                            playerBottomX = I(p->x);
+                            playerBottomX = I(p->qWorldX);
                             playerBottomX -= 1;
                             playerBottomX -= p->spriteOffsetX;
 
@@ -1279,11 +1279,11 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                             }
                         } else {
                             s32 playerBottomX;
-                            s32 playerBottomY = I(p->y);
+                            s32 playerBottomY = I(p->qWorldY);
                             playerBottomY += 1;
                             playerBottomY += p->spriteOffsetY;
 
-                            playerBottomX = I(p->x);
+                            playerBottomX = I(p->qWorldX);
                             playerBottomX -= 1;
                             playerBottomX -= p->spriteOffsetX;
 
@@ -1297,7 +1297,7 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                             }
                         }
 
-                        p->x -= Q(result);
+                        p->qWorldX -= Q(result);
                     }
                 } else {
                     p->moveState &= ~MOVESTATE_FACING_LEFT;
@@ -1313,11 +1313,11 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                     } else if (result != 0) {
                         if (!GRAVITY_IS_INVERTED) {
                             s32 playerBottomX;
-                            s32 playerBottomY = I(p->y);
+                            s32 playerBottomY = I(p->qWorldY);
                             playerBottomY += 1;
                             playerBottomY += p->spriteOffsetY;
 
-                            playerBottomX = I(p->x);
+                            playerBottomX = I(p->qWorldX);
                             playerBottomX += 1;
                             playerBottomX += p->spriteOffsetX;
 
@@ -1330,7 +1330,7 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                                 return;
                             }
                         }
-                        p->x += Q(result);
+                        p->qWorldX += Q(result);
                     }
                 }
 
@@ -1416,7 +1416,7 @@ void Player_Knuckles_GlideHardLandingUpdateAnim(Player *p)
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
-        CreateBrakingDustEffect(I(p->x), I(p->y) + offsetY);
+        CreateBrakingDustEffect(I(p->qWorldX), I(p->qWorldY) + offsetY);
     }
 
     sub_8022838(p);
@@ -1428,7 +1428,7 @@ void Player_Knuckles_GlideHardLandingUpdateAnim(Player *p)
             res = -res;
         }
 
-        p->y += Q(res);
+        p->qWorldY += Q(res);
         p->rotation = rot;
     } else if (!(p->moveState & MOVESTATE_8)) {
         PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
@@ -1470,7 +1470,7 @@ void sub_80135BC(Player *p)
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
-        p->y += Q(offsetY);
+        p->qWorldY += Q(offsetY);
     }
 
     sub_8022318(p);
@@ -1488,11 +1488,11 @@ s32 sub_8013644(Player *p)
         s32 pX;
         s32 pY;
 
-        pX = I(p->x);
+        pX = I(p->qWorldX);
         pX -= 2;
         pX -= p->spriteOffsetX;
 
-        pY = I(p->y);
+        pY = I(p->qWorldY);
 
         result = sub_801E4E4(pX, pY, p->layer, -8, &rot, sub_801ED24);
 
@@ -1504,11 +1504,11 @@ s32 sub_8013644(Player *p)
     } else {
         s32 pX;
         s32 pY;
-        pX = I(p->x);
+        pX = I(p->qWorldX);
         pX += 2;
         pX += p->spriteOffsetX;
 
-        pY = I(p->y);
+        pY = I(p->qWorldY);
 
         result = sub_801E4E4(pX, pY, p->layer, +8, &rot, sub_801ED24);
 
@@ -1548,9 +1548,9 @@ void Player_Knuckles_Climb_80136E8(Player *p)
                 offsetY = -offsetY;
             }
 
-            p->y -= offsetY;
+            p->qWorldY -= offsetY;
             r2 = sub_8013644(p);
-            p->y += offsetY;
+            p->qWorldY += offsetY;
 
             if (r2 > 2) {
                 Player_Knuckles_InitClimbPullUpEdge(p);
@@ -1580,13 +1580,13 @@ void Player_Knuckles_Climb_80136E8(Player *p)
                     offsetY = -offsetY;
                 }
 
-                p->y -= offsetY;
+                p->qWorldY -= offsetY;
                 r2 = sub_8029AC0(p, &rot, NULL);
-                p->y += offsetY;
+                p->qWorldY += offsetY;
 
                 if (r2 < 0) {
                     p->charState = CHARSTATE_KNUCKLES_CLIMB_B;
-                    p->y -= Q(r2);
+                    p->qWorldY -= Q(r2);
                 } else {
                     s32 speed;
                     p->charState = CHARSTATE_KNUCKLES_CLIMB_B;
@@ -1604,9 +1604,9 @@ void Player_Knuckles_Climb_80136E8(Player *p)
                 offsetY = -offsetY;
             }
 
-            p->y += offsetY;
+            p->qWorldY += offsetY;
             r2 = sub_8013644(p);
-            p->y -= offsetY;
+            p->qWorldY -= offsetY;
 
             if (r2 > 0) {
                 sub_8013CA0(p);
@@ -1621,9 +1621,9 @@ void Player_Knuckles_Climb_80136E8(Player *p)
 
             if (r2 < 0) {
                 if (GRAVITY_IS_INVERTED) {
-                    p->y -= Q(r2);
+                    p->qWorldY -= Q(r2);
                 } else {
-                    p->y += Q(r2);
+                    p->qWorldY += Q(r2);
                 }
 
                 p->rotation = rot;
@@ -1656,7 +1656,7 @@ void Player_Knuckles_Climb_80136E8(Player *p)
         if (!(p->heldInput & (DPAD_DOWN | DPAD_UP))) {
             r2 = sub_8029B0C(p, &rot, NULL);
             if (r2 < 0) {
-                p->y += Q(r2);
+                p->qWorldY += Q(r2);
                 p->rotation = rot;
 
                 p->speedGroundX = 0;
@@ -1864,9 +1864,9 @@ void Player_Knuckles_InitClimbPullUpEdge(Player *p)
     p->charState = CHARSTATE_KNUCKLES_CLIMB_D;
 
     if (GRAVITY_IS_INVERTED) {
-        p->y += Q(p->spriteOffsetY);
+        p->qWorldY += Q(p->spriteOffsetY);
     } else {
-        p->y -= Q(p->spriteOffsetY);
+        p->qWorldY -= Q(p->spriteOffsetY);
     }
 
     PLAYERFN_SET(Player_Knuckles_ClimbPullUpEdge);
@@ -1966,7 +1966,7 @@ void Player_Knuckles_WindupDrillClaw(Player *p)
         p->speedAirX = Q(0.0);
         p->speedAirY = Q(1.0);
 
-        sub_8012DF8(I(p->x), I(p->y), 1);
+        sub_8012DF8(I(p->qWorldX), I(p->qWorldY), 1);
 
         PLAYERFN_SET_AND_CALL(Player_Knuckles_DrillClaw, p);
     }
@@ -2007,15 +2007,15 @@ void Player_Knuckles_ClimbPullUpEdge(Player *p)
         p->rotation = 0;
 
         if (GRAVITY_IS_INVERTED) {
-            p->y += Q(p->spriteOffsetY);
+            p->qWorldY += Q(p->spriteOffsetY);
         } else {
-            p->y -= Q(p->spriteOffsetY);
+            p->qWorldY -= Q(p->spriteOffsetY);
         }
 
         if (p->moveState & MOVESTATE_FACING_LEFT) {
-            p->x -= Q(16.0);
+            p->qWorldX -= Q(16.0);
         } else {
-            p->x += Q(16.0);
+            p->qWorldX += Q(16.0);
         }
 
         PLAYERFN_CALL(Player_TouchGround, p);

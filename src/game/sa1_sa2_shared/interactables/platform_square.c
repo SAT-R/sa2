@@ -165,41 +165,42 @@ static void Task_Platform_Square(void)
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
         s32 res, temp, temp2;
-        p->x += deltaX;
+        p->qWorldX += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
-            p->y += deltaY + Q(1.0);
+            p->qWorldY += deltaY + Q(1.0);
         } else {
-            p->y += deltaY - Q(2.0);
+            p->qWorldY += deltaY - Q(2.0);
         }
 
-        res = sub_801F100(I(gPlayer.y) + gPlayer.spriteOffsetY, I(gPlayer.x) + gPlayer.spriteOffsetX, gPlayer.layer, +8, sub_801EC3C);
+        res = sub_801F100(I(gPlayer.qWorldY) + gPlayer.spriteOffsetY, I(gPlayer.qWorldX) + gPlayer.spriteOffsetX, gPlayer.layer, +8,
+                          sub_801EC3C);
         if (res < 0) {
-            gPlayer.y += Q(res);
+            gPlayer.qWorldY += Q(res);
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
             p->unk3C = NULL;
         }
 
-        temp = I(p->x) + 2;
-        res = sub_801F100(temp + p->spriteOffsetX, I(p->y), p->layer, +8, sub_801EB44);
+        temp = I(p->qWorldX) + 2;
+        res = sub_801F100(temp + p->spriteOffsetX, I(p->qWorldY), p->layer, +8, sub_801EB44);
 
         if (res < 0) {
-            p->x += Q(res);
+            p->qWorldX += Q(res);
         }
 
-        temp2 = I(p->x) - 2;
-        res = sub_801F100(temp2 - p->spriteOffsetX, I(p->y), p->layer, -8, sub_801EB44);
+        temp2 = I(p->qWorldX) - 2;
+        res = sub_801F100(temp2 - p->spriteOffsetX, I(p->qWorldY), p->layer, -8, sub_801EB44);
 
         if (res < 0) {
-            p->x -= Q(res);
+            p->qWorldX -= Q(res);
         }
 
-        res = sub_801F100(I(p->y) + p->spriteOffsetY, I(p->x) - p->spriteOffsetX, p->layer, +8, sub_801EC3C);
+        res = sub_801F100(I(p->qWorldY) + p->spriteOffsetY, I(p->qWorldX) - p->spriteOffsetX, p->layer, +8, sub_801EC3C);
 
         if (res < 0) {
-            p->y += Q(res);
+            p->qWorldY += Q(res);
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
@@ -223,7 +224,7 @@ static void Task_Platform_Square(void)
                 p->transition = PLTRANS_PT4;
             }
 
-            p->y += Q_8_8(result);
+            p->qWorldY += Q_8_8(result);
 
             if (result & 0x20000) {
                 if (p->speedAirY <= 0)
@@ -236,7 +237,7 @@ static void Task_Platform_Square(void)
                     p->speedAirY = 0;
                 }
 
-                res = sub_801F100(I(p->y) + p->spriteOffsetY, I(p->x), p->layer, 8, sub_801EC3C);
+                res = sub_801F100(I(p->qWorldY) + p->spriteOffsetY, I(p->qWorldX), p->layer, 8, sub_801EC3C);
 
                 if ((res < 0) && (deltaY > 0)) {
                     Platform_Square_KillPlayer();
@@ -245,7 +246,7 @@ static void Task_Platform_Square(void)
 
             if (result & 0x10000) {
                 if (GRAVITY_IS_INVERTED) {
-                    p->y -= Q_8_8(result);
+                    p->qWorldY -= Q_8_8(result);
                     s->hitboxes[0].left += 16;
                     s->hitboxes[0].right -= 16;
 
@@ -254,18 +255,18 @@ static void Task_Platform_Square(void)
                     s->hitboxes[0].left -= 16;
                     s->hitboxes[0].right += 16;
 
-                    p->y += Q_8_8(result);
+                    p->qWorldY += Q_8_8(result);
                     p->moveState = movStateCopy;
 
                     if (otherRes & 0xC0000) {
                         s32 tempXX = (s16)(otherRes & 0xFF00);
                         s16 value = tempXX;
                         if (value < 0) {
-                            p->x += -Q(16.0) + value;
+                            p->qWorldX += -Q(16.0) + value;
                         }
 
                         if (value > 0) {
-                            p->x += +Q(16.0) + value;
+                            p->qWorldX += +Q(16.0) + value;
                         }
 
                         p->speedAirX = 0;
@@ -273,28 +274,28 @@ static void Task_Platform_Square(void)
                     }
 
                     if (otherRes & 0x10000) {
-                        s32 newRes = sub_801F100(I(p->y) - p->spriteOffsetY, I(p->x), p->layer, -8, sub_801EC3C);
+                        s32 newRes = sub_801F100(I(p->qWorldY) - p->spriteOffsetY, I(p->qWorldX), p->layer, -8, sub_801EC3C);
 
                         if (newRes < 0) {
                             if (deltaY < 0) {
                                 Platform_Square_KillPlayer();
                             } else {
-                                p->y -= Q_8_8(result);
+                                p->qWorldY -= Q_8_8(result);
                                 p->speedGroundX = 0;
                             }
                         } else {
-                            p->y -= Q_8_8(result);
+                            p->qWorldY -= Q_8_8(result);
                             p->speedGroundX = 0;
                             p->speedAirX = 0;
                             p->speedAirY = 0;
                         }
                     } else {
-                        p->y -= Q_8_8(result);
+                        p->qWorldY -= Q_8_8(result);
                     }
                 } else {
                     s32 newRes;
                     p->speedAirY = 0;
-                    newRes = sub_801F100(I(p->y) - p->spriteOffsetY, I(p->x), p->layer, -8, sub_801EC3C);
+                    newRes = sub_801F100(I(p->qWorldY) - p->spriteOffsetY, I(p->qWorldX), p->layer, -8, sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
                         Platform_Square_KillPlayer();
@@ -306,20 +307,20 @@ static void Task_Platform_Square(void)
         if ((result & 0xC0000) && !(p->moveState & MOVESTATE_8) && !(p->unk3C == s)) {
             s32 tempXX = (s16)(result & 0xFF00);
             s16 tempX = tempXX;
-            p->x += tempX;
+            p->qWorldX += tempX;
             p->speedAirX = 0;
             p->speedGroundX = 0;
 
             if (result & 0x40000) {
-                s32 tempXVal = I(p->x) + 2;
-                if (sub_801F100(tempXVal + p->spriteOffsetX, I(p->y), p->layer, -8, sub_801EB44) < 0) {
+                s32 tempXVal = I(p->qWorldX) + 2;
+                if (sub_801F100(tempXVal + p->spriteOffsetX, I(p->qWorldY), p->layer, -8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }
 
             if (result & 0x80000) {
-                s32 tempXVal = I(p->x) - 2;
-                if (sub_801F100(tempXVal - p->spriteOffsetX, I(p->y), p->layer, +8, sub_801EB44) < 0) {
+                s32 tempXVal = I(p->qWorldX) - 2;
+                if (sub_801F100(tempXVal - p->spriteOffsetX, I(p->qWorldY), p->layer, +8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }

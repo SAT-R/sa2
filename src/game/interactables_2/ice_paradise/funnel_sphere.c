@@ -79,11 +79,11 @@ static void sub_8077F7C(void)
 
         r4 = (0x20 - r7) * 0x40;
         r4 = I(r4 * SIN_24_8(MUL_4(r6)));
-        gPlayer.y = funnelSphere->unkC + r4;
+        gPlayer.qWorldY = funnelSphere->unkC + r4;
 
         r4 = r7 * 2;
         r4 = I(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
-        gPlayer.x = funnelSphere->unk8 + r4;
+        gPlayer.qWorldX = funnelSphere->unk8 + r4;
 
         r4 = r6;
         if (r4 > 0x80) {
@@ -111,11 +111,11 @@ static void sub_8077F7C(void)
         r7 = funnelSphere->y - I(funnelSphere->unkC);
         r4 = (0x20 - r7) * 0x40;
         r4 = I(-(r4 * SIN_24_8(MUL_4(r6))));
-        gPlayer.y = funnelSphere->unkC + r4;
+        gPlayer.qWorldY = funnelSphere->unkC + r4;
 
         r4 = r7 * 2;
         r4 = I(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
-        gPlayer.x = funnelSphere->unk8 + r4;
+        gPlayer.qWorldX = funnelSphere->unk8 + r4;
 
         r4 = r6;
         if (r4 < 0x80) {
@@ -221,8 +221,8 @@ static bool32 sub_80783A4(Sprite_FunnelSphere *funnelSphere)
     } else {
         s16 x = funnelSphere->x - gCamera.x;
         s16 y = funnelSphere->y - gCamera.y;
-        s16 playerX = (I(gPlayer.x) - gCamera.x);
-        s16 playerY = (I(gPlayer.y) - gCamera.y);
+        s16 playerX = (I(gPlayer.qWorldX) - gCamera.x);
+        s16 playerY = (I(gPlayer.qWorldY) - gCamera.y);
         s16 dX = x - playerX;
         s16 dY = y - playerY;
         if (dX * dX + dY * dY <= (12 * 12)) {
@@ -253,19 +253,19 @@ static void sub_807844C(void)
     }
 
     if (gPlayer.speedAirX < 0x300) {
-        gPlayer.x += 0x300;
+        gPlayer.qWorldX += 0x300;
     } else {
-        gPlayer.x += gPlayer.speedAirX;
+        gPlayer.qWorldX += gPlayer.speedAirX;
     }
 
-    if (I(gPlayer.x) >= funnelSphere->x + 0x20) {
+    if (I(gPlayer.qWorldX) >= funnelSphere->x + 0x20) {
         sub_80784B0(funnelSphere);
     }
 }
 
 static void sub_80784B0(Sprite_FunnelSphere *funnelSphere)
 {
-    gPlayer.x = Q(funnelSphere->x + 0x20);
+    gPlayer.qWorldX = Q(funnelSphere->x + 0x20);
     funnelSphere->unk10 = 0x200;
     funnelSphere->unk8 = Q(funnelSphere->x + 0x40);
     funnelSphere->unkC = Q(funnelSphere->y);
@@ -327,8 +327,8 @@ static void sub_8078634(void)
         return;
     }
 
-    gPlayer.y += gPlayer.speedAirY;
-    y = funnelSphere->y - I(gPlayer.y);
+    gPlayer.qWorldY += gPlayer.speedAirY;
+    y = funnelSphere->y - I(gPlayer.qWorldY);
 
     if (abs(y) >= 72) {
         sub_8078254(funnelSphere);

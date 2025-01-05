@@ -279,7 +279,7 @@ static void sub_805FBA0(void)
         gravityInverted = GRAVITY_IS_INVERTED;
         if (gravityInverted) {
             if (r4 & 0x10000) {
-                gPlayer.y += (r4 << 24) >> 16;
+                gPlayer.qWorldY += (r4 << 24) >> 16;
                 gPlayer.speedAirY = 0;
                 gPlayer.moveState &= (~MOVESTATE_8);
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
@@ -289,7 +289,7 @@ static void sub_805FBA0(void)
 
             if (r4 & 0x20000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
-                    gPlayer.y += (r4 << 24) >> 16;
+                    gPlayer.qWorldY += (r4 << 24) >> 16;
                     gPlayer.speedAirY = 0;
                     gPlayer.moveState |= MOVESTATE_8;
                     gPlayer.moveState &= ~MOVESTATE_IN_AIR;
@@ -300,13 +300,13 @@ static void sub_805FBA0(void)
             // _0805FCC8
             if (r4 & 0x10000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
-                    gPlayer.y += (r4 << 24) >> 16;
+                    gPlayer.qWorldY += (r4 << 24) >> 16;
                     gPlayer.speedAirY = gravityInverted; // Q_8_8(0.5) instead?
                 }
             }
 
             if (r4 & 0x20000) {
-                gPlayer.y += (r4 << 24) >> 16;
+                gPlayer.qWorldY += (r4 << 24) >> 16;
                 gPlayer.speedAirY = Q_8_8(0);
             }
         }
@@ -319,7 +319,7 @@ static void sub_805FBA0(void)
             register u16 iaIndex asm("r0");
 #endif
             gPlayer.moveState |= MOVESTATE_20;
-            gPlayer.x += (s16)((u32)r4 & 0xFF00);
+            gPlayer.qWorldX += (s16)((u32)r4 & 0xFF00);
             gPlayer.speedAirX = 0;
             gPlayer.speedGroundX = 0;
 
@@ -338,7 +338,7 @@ static void sub_805FBA0(void)
                 register u16 iaIndex asm("r0");
 #endif
                 gPlayer.moveState |= MOVESTATE_20;
-                gPlayer.x += (s16)((u32)r4 & 0xFF00);
+                gPlayer.qWorldX += (s16)((u32)r4 & 0xFF00);
                 gPlayer.speedAirX = 0;
                 gPlayer.speedGroundX = 0;
 
@@ -533,9 +533,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
             }
 
             if (!GRAVITY_IS_INVERTED) {
-                player->y = Q(screenY + s->hitboxes[0].top - sp00[3]);
+                player->qWorldY = Q(screenY + s->hitboxes[0].top - sp00[3]);
             } else {
-                player->y = Q(screenY + s->hitboxes[0].bottom + sp00[3]);
+                player->qWorldY = Q(screenY + s->hitboxes[0].bottom + sp00[3]);
             }
 
             if (sub_800CBA4(player)) {
@@ -572,7 +572,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
+                        player->qWorldY = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -589,7 +589,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                         flags = sub_8060D08(s, screenX, screenY, player);
 
                         if (flags & 0x10000) {
-                            player->y += Q_8_8(flags);
+                            player->qWorldY += Q_8_8(flags);
                             player->speedAirY = 0;
 
                             // _080603BC
@@ -618,7 +618,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
             } else if (flags & 0x0C0000) {
                 // _08060404
                 player->moveState |= MOVESTATE_20;
-                player->x += (s16)(flags & 0xFF00);
+                player->qWorldX += (s16)(flags & 0xFF00);
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             }
@@ -643,7 +643,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
-                player->y = Q((screenY + s->hitboxes[0].bottom) + player->spriteOffsetY + 1);
+                player->qWorldY = Q((screenY + s->hitboxes[0].bottom) + player->spriteOffsetY + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -653,7 +653,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                 }
             } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
-                player->y = Q((screenY + s->hitboxes[0].top) - player->spriteOffsetY - 1);
+                player->qWorldY = Q((screenY + s->hitboxes[0].top) - player->spriteOffsetY - 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -663,7 +663,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                 }
             } else if (flags & 0xC0000) {
                 player->moveState |= MOVESTATE_20;
-                player->x += (s16)(flags & 0xFF00);
+                player->qWorldX += (s16)(flags & 0xFF00);
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             }
@@ -745,9 +745,9 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                     s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
 
                     if (!GRAVITY_IS_INVERTED) {
-                        player->y = Q((screenY + s->hitboxes[0].top) - sp00[3]);
+                        player->qWorldY = Q((screenY + s->hitboxes[0].top) - sp00[3]);
                     } else {
-                        player->y = Q((screenY + s->hitboxes[0].bottom) + sp00[3]);
+                        player->qWorldY = Q((screenY + s->hitboxes[0].bottom) + sp00[3]);
                     }
                     if (sub_800CBA4(player)) {
                         m4aSongNumStart(SE_SPIKES);
@@ -768,7 +768,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                         }
                     } else if (flags & 0xC0000) {
                         player->moveState |= MOVESTATE_20;
-                        player->x += (s16)(flags & 0xFF00);
+                        player->qWorldX += (s16)(flags & 0xFF00);
                         player->speedAirX = 0;
                         player->speedGroundX = 0;
                     }
@@ -785,7 +785,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                         return TRUE;
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
-                    player->y = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
+                    player->qWorldY = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
                     player->unk3C = s;
@@ -797,7 +797,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                     }
                 } else if (flags & 0xC0000) {
                     player->moveState |= MOVESTATE_20;
-                    player->x += (s16)(flags & 0xFF00);
+                    player->qWorldX += (s16)(flags & 0xFF00);
                     player->speedAirX = 0;
                     player->speedGroundX = 0;
                 }
@@ -912,9 +912,9 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                 s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
 
                 if (!GRAVITY_IS_INVERTED) {
-                    player->y = Q(s->hitboxes[0].bottom + screenY - sp00[1]);
+                    player->qWorldY = Q(s->hitboxes[0].bottom + screenY - sp00[1]);
                 } else {
-                    player->y = Q(s->hitboxes[0].top + screenY + sp00[1]);
+                    player->qWorldY = Q(s->hitboxes[0].top + screenY + sp00[1]);
                 }
                 if (!sub_800CBA4(player)) {
                     return TRUE;

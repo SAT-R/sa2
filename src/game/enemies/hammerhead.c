@@ -88,14 +88,14 @@ static void Task_Hammerhead(void)
     }
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
-        p->y += 0x100;
-        p->y += ip;
+        p->qWorldY += 0x100;
+        p->qWorldY += ip;
     }
     if (!(p->moveState & MOVESTATE_400000)) {
         s32 flags = sub_800CCB8(s, posX, posY + I(hammerhead->unk48), p);
 
         if (flags & 0x10000) {
-            p->y += (flags << 24) >> 16;
+            p->qWorldY += (flags << 24) >> 16;
         }
     }
 

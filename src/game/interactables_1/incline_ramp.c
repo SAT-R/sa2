@@ -29,8 +29,9 @@ static void Task_InclineRamp(void)
     screenY = TO_WORLD_POS(me->y, ramp->base.regionX);
 
     moveState = gPlayer.moveState;
-    if (!(moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x)) && ((screenX + me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x))
-        && (screenY <= I(gPlayer.y)) && ((screenY + me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y)) && (!(moveState & MOVESTATE_IN_AIR))) {
+    if (!(moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.qWorldX)) && ((screenX + me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.qWorldX))
+        && (screenY <= I(gPlayer.qWorldY)) && ((screenY + me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.qWorldY))
+        && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == me->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.id) == 0) {
             if (gPlayer.speedAirX > Q(4)) {

@@ -52,7 +52,6 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
             s->variant = 0;
             s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(X_FLIP, 1));
         } else {
-            // _0801F668
             s->graphics.dest = ((void *)OBJ_VRAM0 + 0x2300);
             s->graphics.anim = SA2_ANIM_SMALL_DUST_PARTICLE;
             s->variant = 0;

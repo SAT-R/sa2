@@ -105,12 +105,12 @@ static void sub_807E384(Sprite_Cannon *cannon)
     m4aSongNumStart(SE_SPIN_ATTACK);
 
     if (cannon->unk68 == 0) {
-        gPlayer.x = Q(cannon->x + 40);
-        gPlayer.y = Q(cannon->y);
+        gPlayer.qWorldX = Q(cannon->x + 40);
+        gPlayer.qWorldY = Q(cannon->y);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     } else {
-        gPlayer.x = Q(cannon->x - 40);
-        gPlayer.y = Q(cannon->y);
+        gPlayer.qWorldX = Q(cannon->x - 40);
+        gPlayer.qWorldY = Q(cannon->y);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
@@ -128,8 +128,8 @@ static void sub_807E408(Sprite_Cannon *cannon)
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.transition = PLTRANS_PT5;
 
-        gPlayer.x += COS_24_8(cannon->unk6A) * 0x20;
-        gPlayer.y += SIN_24_8(cannon->unk6A) * 0x20;
+        gPlayer.qWorldX += COS_24_8(cannon->unk6A) * 0x20;
+        gPlayer.qWorldY += SIN_24_8(cannon->unk6A) * 0x20;
         gPlayer.speedAirX = COS_24_8(cannon->unk6A) * 0xF;
         gPlayer.speedAirY = SIN_24_8(cannon->unk6A) * 0xF;
 
@@ -151,17 +151,17 @@ static bool32 sub_807E4E4(Sprite_Cannon *cannon)
     u8 temp = 0;
     s32 val = Q(cannon->x);
 
-    if (gPlayer.x > val) {
-        gPlayer.x -= Q(1);
+    if (gPlayer.qWorldX > val) {
+        gPlayer.qWorldX -= Q(1);
 
-        if (gPlayer.x < val) {
-            gPlayer.x = val;
+        if (gPlayer.qWorldX < val) {
+            gPlayer.qWorldX = val;
         }
-    } else if (gPlayer.x < val) {
-        gPlayer.x += Q(1);
+    } else if (gPlayer.qWorldX < val) {
+        gPlayer.qWorldX += Q(1);
 
-        if (gPlayer.x > val) {
-            gPlayer.x = val;
+        if (gPlayer.qWorldX > val) {
+            gPlayer.qWorldX = val;
         }
 
     } else {
@@ -170,17 +170,17 @@ static bool32 sub_807E4E4(Sprite_Cannon *cannon)
 
     val = Q(cannon->y);
 
-    if (gPlayer.y > val) {
-        gPlayer.y -= Q(1);
+    if (gPlayer.qWorldY > val) {
+        gPlayer.qWorldY -= Q(1);
 
-        if (gPlayer.y < val) {
-            gPlayer.y = val;
+        if (gPlayer.qWorldY < val) {
+            gPlayer.qWorldY = val;
         }
-    } else if (gPlayer.y < val) {
-        gPlayer.y += Q(1);
+    } else if (gPlayer.qWorldY < val) {
+        gPlayer.qWorldY += Q(1);
 
-        if (gPlayer.y > val) {
-            gPlayer.y = val;
+        if (gPlayer.qWorldY > val) {
+            gPlayer.qWorldY = val;
         }
 
     } else {
@@ -238,8 +238,8 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     s->y = cannon->y - gCamera.y;
 
     transform.rotation = cannon->unk6A;
-    transform.width = +Q(1);
-    transform.height = +Q(1);
+    transform.qScaleX = +Q(1);
+    transform.qScaleY = +Q(1);
     transform.x = s->x;
     transform.y = s->y;
 
@@ -277,8 +277,8 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", sta
 
     x = r3->x - gCamera.x;
     y = r3->y - gCamera.y;
-    playerX = I(gPlayer.x) - gCamera.x;
-    playerY = I(gPlayer.y) - gCamera.y;
+    playerX = I(gPlayer.qWorldX) - gCamera.x;
+    playerY = I(gPlayer.qWorldY) - gCamera.y;
 
     // gUnknown_03005AF0.s.hitboxes[0] s-<hitboxes[0]
     if (HB_COLLISION(playerX, playerY, s2->hitboxes[0], x, y, gUnknown_03005AF0.s.hitboxes[0])) {

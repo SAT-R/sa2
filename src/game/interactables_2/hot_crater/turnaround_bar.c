@@ -69,13 +69,13 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     Player_ClearMovestate_IsInScriptedSequence();
 
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.y -= turnAroundBar->unk44;
+    gPlayer.qWorldY -= turnAroundBar->unk44;
 
     if (gPlayer.speedGroundX > 0) {
-        gPlayer.x = Q(turnAroundBar->x - 6);
+        gPlayer.qWorldX = Q(turnAroundBar->x - 6);
         gPlayer.speedGroundX += Q_8_8(1.25);
     } else {
-        gPlayer.x = Q(turnAroundBar->x + 6);
+        gPlayer.qWorldX = Q(turnAroundBar->x + 6);
         gPlayer.speedGroundX -= Q_8_8(1.25);
     }
 
@@ -100,8 +100,8 @@ static u32 sub_8073520(Sprite_TurnAroundBar *turnAroundBar)
 
     temp = turnAroundBar->x - gCamera.x;
     temp3 = turnAroundBar->y + -gCamera.y;
-    temp2 = I(gPlayer.x) - gCamera.x;
-    temp4 = I(gPlayer.y) - gCamera.y;
+    temp2 = I(gPlayer.qWorldX) - gCamera.x;
+    temp4 = I(gPlayer.qWorldY) - gCamera.y;
     if (temp - 6 <= temp2 && temp + 6 >= temp2) {
         if (temp3 - 32 <= temp4 && temp3 >= temp4) {
             if (abs(gPlayer.speedGroundX) < Q_8_8(4)) {
@@ -168,9 +168,9 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
-    turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.y;
-    gPlayer.x = Q(turnAroundBar->x);
-    gPlayer.y = Q(turnAroundBar->y);
+    turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.qWorldY;
+    gPlayer.qWorldX = Q(turnAroundBar->x);
+    gPlayer.qWorldY = Q(turnAroundBar->y);
     gPlayer.charState = CHARSTATE_TURNAROUND_BAR;
 
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;

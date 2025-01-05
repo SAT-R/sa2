@@ -8,12 +8,15 @@ typedef struct {
     u16 pal[32][16];
 } WaterData;
 
-// Seems to be belonging to water effect
 typedef struct {
+#if (GAME == GAME_SA1)
+    /* 0x00*/ u8 filler0[2];
+#elif (GAME == GAME_SA2)
     /* 0x00 */ bool8 isActive;
     /* 0x01 */ u8 unk1;
     /* 0x02 */ u8 unk2;
     /* 0x03 */ u8 unk3;
+#endif
     /* 0x04 */ s16 currentWaterLevel;
     /* 0x06 */ s16 targetWaterLevel;
     /* 0x08 */ u32 unk8;

@@ -142,8 +142,8 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     u8 angle;
     u16 r6;
     s16 vecPlayerToNoteX, vecPlayerToNoteY;
-    vecPlayerToNoteX = I(gPlayer.x) - note->posX;
-    vecPlayerToNoteY = I(gPlayer.y) - note->posY;
+    vecPlayerToNoteX = I(gPlayer.qWorldX) - note->posX;
+    vecPlayerToNoteY = I(gPlayer.qWorldY) - note->posY;
 
     r6 = sub_8085530(vecPlayerToNoteX, vecPlayerToNoteY);
 
@@ -183,8 +183,8 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s16 distanceX, distanceY;
 
-        distanceX = ABS(note->posX - I(gPlayer.x));
-        distanceY = ABS(note->posY - I(gPlayer.y));
+        distanceX = ABS(note->posX - I(gPlayer.qWorldX));
+        distanceY = ABS(note->posY - I(gPlayer.qWorldY));
 
         if (MAX(distanceX, distanceY) < 25) {
             if ((distanceX * distanceX + distanceY * distanceY) <= (24 * 24)) {

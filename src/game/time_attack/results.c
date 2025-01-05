@@ -237,8 +237,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
 
-    resultsCutScene->transform.width = 0;
-    resultsCutScene->transform.height = +Q(1);
+    resultsCutScene->transform.qScaleX = 0;
+    resultsCutScene->transform.qScaleY = +Q(1);
     resultsCutScene->transform.x = (DISPLAY_WIDTH / 2);
     resultsCutScene->transform.y = (DISPLAY_HEIGHT / 2) + 40;
     resultsCutScene->transform.rotation = 0;
@@ -260,7 +260,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
-    gUnknown_030054A8.unk0 = 0xFF;
+    gMusicManagerState.unk0 = 0xFF;
 
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
         gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS;
@@ -327,7 +327,7 @@ static void AnimateResults(void)
             if (resultsCutScene->rank > 0) {
                 // medal
                 s = &resultsCutScene->base.sprScores[1];
-                resultsCutScene->transform.width = COS_24_8(I((u16)resultsCutScene->medalSpin) * 4);
+                resultsCutScene->transform.qScaleX = COS_24_8(I((u16)resultsCutScene->medalSpin) * 4);
                 resultsCutScene->medalSpin += resultsCutScene->medalSpinSpeed;
 
                 if (resultsCutScene->medalSpin == 0) {
@@ -338,8 +338,8 @@ static void AnimateResults(void)
                     }
                 }
 
-                if (resultsCutScene->transform.width == 0) {
-                    resultsCutScene->transform.width = Q(0.0625);
+                if (resultsCutScene->transform.qScaleX == 0) {
+                    resultsCutScene->transform.qScaleX = Q(0.0625);
                 }
                 TransformSprite(s, &resultsCutScene->transform);
                 DisplaySprite(s);

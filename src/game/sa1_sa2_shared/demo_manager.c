@@ -113,7 +113,7 @@ void Task_DemoManagerMain(void)
         gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         gBldRegs.bldY = 0;
 
-        gUnknown_030054A8.unk0 = 0xFF;
+        gMusicManagerState.unk0 = 0xFF;
         CreateMusicFadeoutTask(64);
     } else if (gCheckpointTime > (u32)ZONE_TIME_TO_INT(0, 24.5)) {
         dm->playerPressedStart = FALSE;
@@ -123,7 +123,7 @@ void Task_DemoManagerMain(void)
         gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         gBldRegs.bldY = 0;
 
-        gUnknown_030054A8.unk0 = 0xFF;
+        gMusicManagerState.unk0 = 0xFF;
         CreateMusicFadeoutTask(64);
     }
 
@@ -204,7 +204,7 @@ void CreateMusicFadeoutTask(u16 factor)
     DemoMusicFadeout *mf = TASK_DATA(t);
     mf->volume = 0x100;
     mf->unk2 = (s32)mf->volume / factor;
-    gUnknown_030054A8.unk0 = 0xFF;
+    gMusicManagerState.unk0 = 0xFF;
 }
 
 void Task_DemoManagerMusicFadeout(void)

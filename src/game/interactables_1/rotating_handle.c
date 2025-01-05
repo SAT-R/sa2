@@ -102,7 +102,7 @@ static void Task_Idle(void)
 
         if (gPlayer.speedAirX > 0) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-            if (I(gPlayer.y) > y) {
+            if (I(gPlayer.qWorldY) > y) {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_A;
                 rotatingHandle->unk40 = 0;
@@ -113,7 +113,7 @@ static void Task_Idle(void)
             }
         } else {
             gPlayer.moveState |= 1;
-            if (I(gPlayer.y) > y) {
+            if (I(gPlayer.qWorldY) > y) {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_A;
                 rotatingHandle->unk40 = 2;
@@ -124,8 +124,8 @@ static void Task_Idle(void)
             }
         }
 
-        gPlayer.x = Q(x);
-        gPlayer.y = Q(y);
+        gPlayer.qWorldX = Q(x);
+        gPlayer.qWorldY = Q(y);
         gPlayer.variant = 0;
         gPlayer.unk6C = 1;
         m4aSongNumStart(SE_SPEED_BOOSTER);
@@ -192,23 +192,23 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
             case 0:
                 temp2 = (0x20 - temp) & cycle;
                 sin = SIN(temp);
-                gPlayer.x += sin >> 1;
+                gPlayer.qWorldX += sin >> 1;
                 cos = COS(temp);
-                gPlayer.y += cos >> 1;
+                gPlayer.qWorldY += cos >> 1;
                 break;
             case 1:
                 temp2 = (temp + 0x20) & cycle;
                 sin = SIN(temp);
-                gPlayer.x += sin >> 1;
+                gPlayer.qWorldX += sin >> 1;
                 cos = COS(temp);
-                gPlayer.y -= cos >> 1;
+                gPlayer.qWorldY -= cos >> 1;
                 break;
             case 2:
                 temp2 = (temp + 0x1E0) & cycle;
                 sin = SIN(temp);
-                gPlayer.x -= sin >> 1;
+                gPlayer.qWorldX -= sin >> 1;
                 cos = COS(temp);
-                gPlayer.y += cos >> 1;
+                gPlayer.qWorldY += cos >> 1;
 
                 break;
             case 3: {
@@ -219,9 +219,9 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
 #endif
                 temp2 = (r1 - temp) & cycle;
                 sin = SIN(temp);
-                gPlayer.x -= sin >> 1;
+                gPlayer.qWorldX -= sin >> 1;
                 cos = COS(temp);
-                gPlayer.y -= cos >> 1;
+                gPlayer.qWorldY -= cos >> 1;
                 break;
             }
             default:
@@ -253,8 +253,8 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
         s->prevVariant = -1;
         gPlayer.variant = r2;
         gPlayer.unk6C = 1;
-        gPlayer.x = Q(x);
-        gPlayer.y = Q(y);
+        gPlayer.qWorldX = Q(x);
+        gPlayer.qWorldY = Q(y);
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = 0;
     }

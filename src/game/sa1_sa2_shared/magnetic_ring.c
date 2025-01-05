@@ -14,10 +14,11 @@
 #include "constants/zones.h"
 
 #define PLAYER_TOUCHING_RING_HB(p, hb, ringIntX, ringIntY)                                                                                 \
-    ((((ringIntX - TILE_WIDTH) <= HB_LEFT(I(p.x), hb) && (ringIntX + TILE_WIDTH) >= HB_LEFT(I(p.x), hb))                                   \
-      || ((ringIntX - TILE_WIDTH) >= HB_LEFT(I(p.x), hb) && HB_RIGHT(I(p.x), hb) >= (ringIntX - TILE_WIDTH)))                              \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= HB_TOP(I(p.y), hb) && ringIntY >= HB_TOP(I(p.y), hb))                                          \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= HB_TOP(I(p.y), hb) && HB_BOTTOM(I(p.y), hb) >= (ringIntY - (TILE_WIDTH * 2))))))
+    ((((ringIntX - TILE_WIDTH) <= HB_LEFT(I(p.qWorldX), hb) && (ringIntX + TILE_WIDTH) >= HB_LEFT(I(p.qWorldX), hb))                       \
+      || ((ringIntX - TILE_WIDTH) >= HB_LEFT(I(p.qWorldX), hb) && HB_RIGHT(I(p.qWorldX), hb) >= (ringIntX - TILE_WIDTH)))                  \
+     && ((                                                                                                                                 \
+         ((ringIntY - (TILE_WIDTH * 2)) <= HB_TOP(I(p.qWorldY), hb) && ringIntY >= HB_TOP(I(p.qWorldY), hb))                               \
+         || ((ringIntY - (TILE_WIDTH * 2)) >= HB_TOP(I(p.qWorldY), hb) && HB_BOTTOM(I(p.qWorldY), hb) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 typedef struct {
     Sprite s;
@@ -55,8 +56,8 @@ void Task_MagneticRing(void)
 {
     StageRing *ring = TASK_DATA(gCurTask);
     Player *p = &gPlayer;
-    s32 ringToPlayerX = I(p->x) - (u16)ring->s.x;
-    s32 ringToPlayerY = I(p->y) - (u16)ring->s.y;
+    s32 ringToPlayerX = I(p->qWorldX) - (u16)ring->s.x;
+    s32 ringToPlayerY = I(p->qWorldY) - (u16)ring->s.y;
 
     s16 sinVal = sub_8004418(ringToPlayerY, ringToPlayerX);
     s16 ringX, ringY;

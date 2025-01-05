@@ -61,8 +61,8 @@ static void SuperSonicInitPlayer(void)
 {
     Player *p = &gPlayer;
     p->unk4 = 0;
-    p->x = 0;
-    p->y = 0;
+    p->qWorldX = 0;
+    p->qWorldY = 0;
     p->speedAirX = 0;
     p->speedAirY = 0;
     p->speedGroundX = 0;
@@ -439,8 +439,8 @@ static void sub_802BE1C(struct SuperSonic *sonic)
 
     if (sonic->flags & SUPER_FLAG__4) {
         transform->rotation = (COS((sonic->unkC * 20) & ONE_CYCLE) >> 4) & ONE_CYCLE;
-        transform->width = Q(1.0);
-        transform->height = Q(1.0);
+        transform->qScaleX = Q(1.0);
+        transform->qScaleY = Q(1.0);
         transform->x = spr->x;
         transform->y = spr->y;
         TransformSprite(spr, transform);

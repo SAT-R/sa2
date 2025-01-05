@@ -22,13 +22,13 @@
 #if !PLATFORM_GBA && ALIGN_DIGITS_HORIZONTALLY
 #define DIGITS_X (DISPLAY_WIDTH / 2)
 #else
-#define DIGITS_X ((I(gPlayer.x) - gCamera.x) + 24)
+#define DIGITS_X ((I(gPlayer.qWorldX) - gCamera.x) + 24)
 #endif
 
 #if !PLATFORM_GBA && ALIGN_DIGITS_VERTICALLY
 #define DIGITS_Y (DISPLAY_HEIGHT / 2)
 #else
-#define DIGITS_Y ((I(gPlayer.y) - gCamera.y) - 24)
+#define DIGITS_Y ((I(gPlayer.qWorldY) - gCamera.y) - 24)
 #endif
 
 struct CourseStartCountdown {
@@ -140,8 +140,8 @@ void sub_8036168(void)
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->machineScreenX = I(gPlayer.x);
-        countdown->machineScreenY = I(gPlayer.y);
+        countdown->machineScreenX = I(gPlayer.qWorldX);
+        countdown->machineScreenY = I(gPlayer.qWorldY);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -157,8 +157,8 @@ void sub_8036168(void)
     }
 
     s = &countdown->sprMachine;
-    s->x = I(gPlayer.x) - gCamera.x;
-    s->y = I(gPlayer.y) - gCamera.y;
+    s->x = I(gPlayer.qWorldX) - gCamera.x;
+    s->y = I(gPlayer.qWorldY) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
@@ -253,7 +253,7 @@ void sub_8036524(void)
 {
     struct RaceStartMessage *startMessage = TASK_DATA(gCurTask);
     Sprite *s, *element2;
-    SpriteTransform *transformConfig;
+    SpriteTransform *transform;
     s16 unk78;
     startMessage->unk78--;
 
@@ -263,47 +263,47 @@ void sub_8036524(void)
     }
 
     s = &startMessage->unk0;
-    transformConfig = &startMessage->unk30;
+    transform = &startMessage->unk30;
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
     s->frameFlags = gUnknown_030054B8++ | 0x60;
-    transformConfig->rotation = 0;
+    transform->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
-        transformConfig->width = 0x200 - startMessage->unk78 * 0x10;
-        transformConfig->height = (startMessage->unk78 + 1) * 0x10;
+        transform->qScaleX = Q(2) - startMessage->unk78 * 0x10;
+        transform->qScaleY = (startMessage->unk78 + 1) * 0x10;
     } else {
-        transformConfig->width = 0x100;
-        transformConfig->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
     }
 
-    transformConfig->x = s->x;
-    transformConfig->y = s->y;
+    transform->x = s->x;
+    transform->y = s->y;
     UpdateSpriteAnimation(s);
-    TransformSprite(s, transformConfig);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     s = &startMessage->unk3C;
-    transformConfig = &startMessage->unk6C;
+    transform = &startMessage->unk6C;
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
     s->frameFlags = gUnknown_030054B8++ | 0x60;
-    transformConfig->rotation = 0;
+    transform->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
-        transformConfig->width = 0x200 - startMessage->unk78 * 0x10;
-        transformConfig->height = (startMessage->unk78 + 1) * 0x10;
+        transform->qScaleX = Q(2) - startMessage->unk78 * 0x10;
+        transform->qScaleY = (startMessage->unk78 + 1) * 0x10;
     } else {
-        transformConfig->width = 0x100;
-        transformConfig->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
     }
 
-    transformConfig->x = s->x;
-    transformConfig->y = s->y;
+    transform->x = s->x;
+    transform->y = s->y;
     UpdateSpriteAnimation(s);
-    TransformSprite(s, transformConfig);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 

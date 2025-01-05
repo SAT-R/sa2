@@ -209,10 +209,10 @@ void CreateBossRunManager(u8 bossIndex)
         gPlayer.speedGroundX = Q(5);
 
         // ???
-        x = gUnknown_080D87E6[bossIndex - 1][0] - I(gPlayer.x);
-        y = gUnknown_080D87E6[bossIndex][1] - I(gPlayer.y);
-        gPlayer.x += Q(x);
-        gPlayer.y += Q(y);
+        x = gUnknown_080D87E6[bossIndex - 1][0] - I(gPlayer.qWorldX);
+        y = gUnknown_080D87E6[bossIndex][1] - I(gPlayer.qWorldY);
+        gPlayer.qWorldX += Q(x);
+        gPlayer.qWorldY += Q(y);
 
         gCamera.x += x - 120;
         gCamera.y += y - 120;
@@ -248,14 +248,14 @@ static void Task_BossRunManagerMain(void)
         if (manager->bossIndex == 6) {
             gBossCameraClampYLower = gBossCameraYClamps[7][0];
             gBossCameraClampYUpper = gBossCameraYClamps[7][1];
-            if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 30)) {
+            if (gPlayer.qWorldX < Q(42960) && gPlayer.qWorldX > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                 gPlayer.speedGroundX = Q(5);
                 gPlayer.frameInput = 0;
                 gPlayer.heldInput = 0;
                 gPlayer.rotation = 0;
-                if (I(gPlayer.x) - 120 != gCamera.x) {
-                    if (I(gPlayer.x) - 120 > gCamera.x) {
+                if (I(gPlayer.qWorldX) - 120 != gCamera.x) {
+                    if (I(gPlayer.qWorldX) - 120 > gCamera.x) {
                         gCamera.unk20++;
                         gCamera.x++;
                         gCamera.unk10++;
@@ -265,14 +265,14 @@ static void Task_BossRunManagerMain(void)
                         gCamera.unk10--;
                     }
                 }
-            } else if (gPlayer.x < Q(42700) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 20)) {
+            } else if (gPlayer.qWorldX < Q(42700) && gPlayer.qWorldX > Q(gUnknown_080D8808[6][0] + 20)) {
                 if (gActiveBossTask == NULL && !(gStageFlags & STAGE_FLAG__100)) {
                     gPlayer.checkpointTime = gCourseTime;
                     CreateZoneBoss(7);
                     gStageFlags &= ~STAGE_FLAG__2;
                 }
             } else {
-                r5 = gPlayer.x;
+                r5 = gPlayer.qWorldX;
                 if (r5 > Q(42960)) {
                     gPlayer.moveState &= ~MOVESTATE_GOAL_REACHED;
                     gPlayer.speedGroundX = 0;
@@ -287,7 +287,7 @@ static void Task_BossRunManagerMain(void)
                             r4 = gUnknown_080D8808[manager->bossIndex][1];
                             r6 = Q(r4);
                             r0 = r5 + r6;
-                            gPlayer.x = r0;
+                            gPlayer.qWorldX = r0;
                             gUnknown_030054FC = r6;
                             sub_8039F50(r6, manager->bossIndex);
                             gBossRingsShallRespawn = 1;
@@ -311,10 +311,10 @@ static void Task_BossRunManagerMain(void)
             }
 
             if (gUnknown_080D8808[manager->bossIndex][0] >= 0 && gActiveBossTask != NULL
-                && gPlayer.x >= Q(gUnknown_080D8808[manager->bossIndex][0])) {
+                && gPlayer.qWorldX >= Q(gUnknown_080D8808[manager->bossIndex][0])) {
                 r4 = gUnknown_080D8808[manager->bossIndex][1];
                 r5 = Q(r4);
-                gPlayer.x += r5;
+                gPlayer.qWorldX += r5;
                 gUnknown_030054FC = r5;
                 sub_8039F50(r5, manager->bossIndex);
                 gBossRingsShallRespawn = 1;
@@ -410,7 +410,7 @@ static void Task_SuperEggRoboZTowersMain(void)
         sTowerStateCallbacks[towers->unk15A[i]](towers, i);
     }
 
-    if (I(gPlayer.y) < 133) {
+    if (I(gPlayer.qWorldY) < 133) {
         sub_800CBA4(&gPlayer);
     }
 
@@ -453,10 +453,10 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == prop) {
-        gPlayer.y += Q(1);
-        gPlayer.y += preY;
+        gPlayer.qWorldY += Q(1);
+        gPlayer.qWorldY += preY;
         if (towers->unk15E == 1) {
-            gPlayer.x += Q(1);
+            gPlayer.qWorldX += Q(1);
         }
     }
 
@@ -464,7 +464,7 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
         u32 result = sub_800CCB8(prop, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
-            gPlayer.y += Q(result << 0x10) >> 0x10;
+            gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
         }
     }
 
@@ -495,7 +495,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
     if (!(gPlayer.moveState & MOVESTATE_400000)) {
         s32 result = sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
-            gPlayer.y -= Q(8);
+            gPlayer.qWorldY -= Q(8);
             gPlayer.speedAirY = -Q(3.5);
             gPlayer.charState = CHARSTATE_HIT_AIR;
             gPlayer.transition = PLTRANS_PT6;
@@ -568,10 +568,10 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + Q(1);
+        gPlayer.qWorldY += preY + Q(1);
 
         if (towers->unk15E == 1) {
-            gPlayer.x += Q(1);
+            gPlayer.qWorldX += Q(1);
         }
     }
 
@@ -579,7 +579,7 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
-            gPlayer.y += Q(result << 0x10) >> 0x10;
+            gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
         }
     }
 
@@ -618,10 +618,10 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + Q(1);
+        gPlayer.qWorldY += preY + Q(1);
 
         if (towers->unk15E == 1) {
-            gPlayer.x += Q(1);
+            gPlayer.qWorldX += Q(1);
         }
     }
 
@@ -629,7 +629,7 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
-            gPlayer.y += Q(result << 0x10) >> 0x10;
+            gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
         }
     }
 
@@ -671,10 +671,10 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + Q(2);
+        gPlayer.qWorldY += preY + Q(2);
 
         if (towers->unk15E == 1) {
-            gPlayer.x += Q(1);
+            gPlayer.qWorldX += Q(1);
         }
     }
 
@@ -682,7 +682,7 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
-            gPlayer.y += Q(result << 0x10) >> 0x10;
+            gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
         }
     }
 
@@ -830,7 +830,7 @@ void CreateSuperEggRoboZ(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 3);
-    gUnknown_030054A8.unk6 = 200;
+    gMusicManagerState.fadeoutSpeed = 200;
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
 
@@ -876,8 +876,8 @@ static void Task_804A9D8(void)
 
         m4aSongNumStart(SE_260);
 
-        gUnknown_030054A8.unk0 = 0;
-        gUnknown_030054A8.unk1 = 18;
+        gMusicManagerState.unk0 = 0;
+        gMusicManagerState.unk1 = 18;
         gCamera.minX = 42820;
         boss->unkB = 0;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
@@ -908,7 +908,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Ta
     sub_804C830(boss);
     sub_804CA70(boss);
 
-    if ((I(gPlayer.y) > 184) && (I(gPlayer.x) >= 43034)) {
+    if ((I(gPlayer.qWorldY) > 184) && (I(gPlayer.qWorldX) >= 43034)) {
         sub_800CBA4(&gPlayer);
 
         speed = gPlayer.speedAirX;
@@ -923,7 +923,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Ta
     }
     // _0804ABC0
 
-    if (I(gPlayer.x) >= 43088) {
+    if (I(gPlayer.qWorldX) >= 43088) {
         sub_800CBA4(&gPlayer);
 
         speed = gPlayer.speedAirX;
@@ -1165,8 +1165,8 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
     r3 = SIN(boss->rotation[arm]);
     r4 += (r3 * 190) >> 9;
 
-    r5 = (gPlayer.x - r5) >> 8;
-    r4 = (gPlayer.y - r4) >> 8;
+    r5 = (gPlayer.qWorldX - r5) >> 8;
+    r4 = (gPlayer.qWorldY - r4) >> 8;
 
     r5 = SQUARE(r5);
     r4 = SQUARE(r4);
@@ -1198,8 +1198,8 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
         }
 
         if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-            r5 = I(gPlayer.x - r6);
-            r4 = I(gPlayer.y - r7);
+            r5 = I(gPlayer.qWorldX - r6);
+            r4 = I(gPlayer.qWorldY - r7);
 
             r5 = SQUARE(r5);
             r4 = SQUARE(r4);
@@ -1273,8 +1273,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", static bool8 su
         }
 
         if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-            r5 = I(gPlayer.x - r6);
-            r4 = I(gPlayer.y - r7);
+            r5 = I(gPlayer.qWorldX - r6);
+            r4 = I(gPlayer.qWorldY - r7);
 
             r5 = SQUARE(r5);
             r4 = SQUARE(r4);
@@ -1354,7 +1354,7 @@ static void sub_804B594(SuperEggRoboZ *boss, u8 arm)
     pos.x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
     pos.y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
-    angle = sub_8004418(I(gPlayer.y - pos.y), I(gPlayer.x - pos.x));
+    angle = sub_8004418(I(gPlayer.qWorldY - pos.y), I(gPlayer.qWorldX - pos.x));
 
     if (angle != boss->rotation[arm]) {
         if (angle < boss->rotation[arm]) {
@@ -1750,8 +1750,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
         = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
-    tf->width = Q(1);
-    tf->height = Q(1);
+    tf->qScaleX = Q(1);
+    tf->qScaleY = Q(1);
     tf->x = s->x;
     tf->y = s->y;
 
@@ -1773,8 +1773,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
                          | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
-        tf->width = Q(1);
-        tf->height = Q(1);
+        tf->qScaleX = Q(1);
+        tf->qScaleY = Q(1);
         tf->x = s->x;
         tf->y = s->y;
 
@@ -1837,8 +1837,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
         = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
-    tf->width = Q(1);
-    tf->height = Q(1);
+    tf->qScaleX = Q(1);
+    tf->qScaleY = Q(1);
     tf->x = s->x;
     tf->y = s->y;
 
@@ -1864,8 +1864,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
                          | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
-        tf->width = Q(1);
-        tf->height = Q(1);
+        tf->qScaleX = Q(1);
+        tf->qScaleY = Q(1);
         tf->x = s->x;
         tf->y = s->y;
 
@@ -1930,7 +1930,7 @@ static void Boss8_HitCockpit(SuperEggRoboZ *boss)
     }
 
     if (boss->livesCockpit == 3) {
-        gUnknown_030054A8.unk1 = 19;
+        gMusicManagerState.unk1 = 19;
     }
 
     if (boss->livesCockpit == 0) {
@@ -2065,7 +2065,7 @@ static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
 {
     Vec2_32 pos = { boss->qPos.x + Q(190), boss->qPos.y + Q(40) };
 
-    if ((I(gPlayer.y) < pos.x) && (gPlayer.y >= (pos.y - qP1)) && (gPlayer.y <= (qP1 + pos.y))) {
+    if ((I(gPlayer.qWorldY) < pos.x) && (gPlayer.qWorldY >= (pos.y - qP1)) && (gPlayer.qWorldY <= (qP1 + pos.y))) {
         sub_800CBA4(&gPlayer);
     }
 }

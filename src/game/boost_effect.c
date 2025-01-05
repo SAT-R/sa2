@@ -103,8 +103,8 @@ void sub_80156D0(void)
 
 void sub_8015750(void)
 {
-    s32 playerX = gPlayer.x;
-    s32 playerY = gPlayer.y;
+    s32 playerX = gPlayer.qWorldX;
+    s32 playerY = gPlayer.qWorldY;
     s16 i;
 
     for (i = 0; i < (s32)ARRAY_COUNT(sPlayerPosBuffer); i++) {
@@ -121,8 +121,8 @@ void sub_8015790(void)
 
     INC_BE_INDEX(sPlayerPosBuffer);
     index = sPlayerPosBufferIndex;
-    sPlayerPosBuffer[index].x = gPlayer.x;
-    sPlayerPosBuffer[index].y = gPlayer.y;
+    sPlayerPosBuffer[index].x = gPlayer.qWorldX;
+    sPlayerPosBuffer[index].y = gPlayer.qWorldY;
 }
 
 void GetPreviousPlayerPos(Vec2_32 *pos, u8 pastFrameDelta)
@@ -210,7 +210,7 @@ void CreateBoostEffectTasks(void)
             s->x = 0;
             s->y = 0;
 
-            actions->transform.height = +Q(1);
+            actions->transform.qScaleY = +Q(1);
         }
 
         if (s->palId != 0) {
@@ -269,15 +269,15 @@ void Task_80159C8(void)
                 s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
-                    transform->width = +Q(1);
+                    transform->qScaleX = +Q(1);
                 } else {
-                    transform->width = -Q(1);
+                    transform->qScaleX = -Q(1);
                 }
 
                 actions->plState.moveState &= MOVESTATE_80000000;
 
                 if (actions->plState.moveState) {
-                    transform->width = -transform->width;
+                    transform->qScaleX = -transform->qScaleX;
                 }
 
                 TransformSprite(s, transform);

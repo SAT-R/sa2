@@ -197,12 +197,12 @@ void Task_800E89C(void)
     s->y = posY - gCamera.y + I(platform->unk44);
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
-        p->x += deltaX;
+        p->qWorldX += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
-            p->y += deltaY + Q(1.0);
+            p->qWorldY += deltaY + Q(1.0);
         } else {
-            p->y += deltaY - Q(2.0);
+            p->qWorldY += deltaY - Q(2.0);
         }
     }
 
@@ -213,7 +213,7 @@ void Task_800E89C(void)
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x10000) {
-            p->y += Q_8_8(result);
+            p->qWorldY += Q_8_8(result);
         }
     }
 
@@ -318,7 +318,7 @@ void Task_800EC58(void)
     result = sub_800CCB8(s, posX, posY, p);
 
     if (result & 0x10000) {
-        p->y += Q_8_8(result);
+        p->qWorldY += Q_8_8(result);
         gCurTask->main = Task_800EDF8;
         platform->unk3C = 30;
     }
@@ -377,7 +377,7 @@ void Task_800EDF8(void)
     result = sub_800CCB8(s, posX, posY, p);
 
     if (result & 0x10000) {
-        p->y += Q_8_8(result);
+        p->qWorldY += Q_8_8(result);
     }
 
     if ((IS_MULTI_PLAYER) && ((s8)me->x == -3)) {
@@ -462,8 +462,8 @@ void Task_800EFD0(void)
                 gPlayer.moveState &= ~MOVESTATE_8;
                 gPlayer.speedAirY = platform->unk4A;
             } else {
-                gPlayer.x += platform->unk48;
-                gPlayer.y += Q(1.0) + platform->unk4A;
+                gPlayer.qWorldX += platform->unk48;
+                gPlayer.qWorldY += Q(1.0) + platform->unk4A;
             }
         }
     }
@@ -471,7 +471,7 @@ void Task_800EFD0(void)
     if (platform->unk3C < 32) {
         result = sub_800CCB8(s, posX, posY + I(platform->unk44), &gPlayer);
         if (result & 0x10000) {
-            gPlayer.y += Q_8_8(result);
+            gPlayer.qWorldY += Q_8_8(result);
         }
     }
 

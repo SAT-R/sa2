@@ -96,8 +96,8 @@ void CreateCheese(Player *player)
         cheese = TASK_DATA(t);
         s = &cheese->s;
         gCheese = cheese;
-        cheese->posX = gPlayer.x;
-        cheese->posY = gPlayer.y;
+        cheese->posX = gPlayer.qWorldX;
+        cheese->posY = gPlayer.qWorldY;
     } else {
         MultiplayerPlayer *mpp = NULL;
         u8 i;
@@ -1045,8 +1045,8 @@ bool8 sub_8015118(Cheese *cheese)
             sub_8014EFC(cheese, 0, 0x10, 0);
         }
     } else {
-        unk54->unk54 = gPlayer.x;
-        unk54->unk58 = gPlayer.y;
+        unk54->unk54 = gPlayer.qWorldX;
+        unk54->unk58 = gPlayer.qWorldY;
         unk54->unk5C = gPlayer.speedAirX;
         unk54->unk5E = gPlayer.speedAirY;
         unk54->unk68 = &gPlayer.spriteInfoBody->s;

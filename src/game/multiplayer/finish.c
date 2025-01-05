@@ -161,7 +161,7 @@ void sub_8019F08(void)
         return;
     }
 
-    gUnknown_030054A8.unk0 = 0xFF;
+    gMusicManagerState.unk0 = 0xFF;
     gLoadedSaveGame->score += (s16)gRingCount;
 
     if (gCourseTime <= MAX_COURSE_TIME) {

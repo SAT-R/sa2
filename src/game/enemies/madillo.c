@@ -83,9 +83,9 @@ static void Task_MadilloMain(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    if (Q(pos.y - 50) < gPlayer.y) {
-        if (Q(pos.y + 50) > gPlayer.y) {
-            if (((QS(pos.x)) > gPlayer.x) && (Q(pos.x - 120) < (gPlayer.x))) {
+    if (Q(pos.y - 50) < gPlayer.qWorldY) {
+        if (Q(pos.y + 50) > gPlayer.qWorldY) {
+            if (((QS(pos.x)) > gPlayer.qWorldX) && (Q(pos.x - 120) < (gPlayer.qWorldX))) {
                 if (I(madillo->offsetX) > me->d.sData[0] * TILE_WIDTH) {
                     gCurTask->main = Task_8056230;
                     s->graphics.anim = SA2_ANIM_MADILLO;
@@ -93,7 +93,7 @@ static void Task_MadilloMain(void)
                     s->prevVariant = -1;
                     SPRITE_FLAG_CLEAR(s, X_FLIP);
                 }
-            } else if (Q(pos.x + 120) > gPlayer.x) {
+            } else if (Q(pos.x + 120) > gPlayer.qWorldX) {
                 if (I(madillo->offsetX) < (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH) {
                     gCurTask->main = Task_8056230;
                     s->graphics.anim = SA2_ANIM_MADILLO;
@@ -131,7 +131,7 @@ static void Task_8056230(void)
     s2 = &p->spriteInfoBody->s;
 
     if ((s2->hitboxes[0].index != -1)) {
-        if (HB_COLLISION(pos.x, pos.y, s->hitboxes[0], I(p->x), I(p->y), s2->hitboxes[0])) {
+        if (HB_COLLISION(pos.x, pos.y, s->hitboxes[0], I(p->qWorldX), I(p->qWorldY), s2->hitboxes[0])) {
             if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
                 sub_800CBA4(p);
             }

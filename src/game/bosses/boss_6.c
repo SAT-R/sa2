@@ -348,7 +348,7 @@ static void sub_8045E78(EggGoRound *boss)
 
         if (Mod(boss->unk22, 30) == 0) {
             u8 i;
-            u16 targetAngle = sub_8004418(I(gPlayer.y - boss->y), I(gPlayer.x - boss->x));
+            u16 targetAngle = sub_8004418(I(gPlayer.qWorldY - boss->y), I(gPlayer.qWorldX - boss->x));
 
             for (i = 0; i < NUM_PROJECTILES; i++) {
                 ProjectilePosition *projPos = &boss->projectilePositions[i];
@@ -566,8 +566,8 @@ static void Render(EggGoRound *boss)
         if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2) && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
             transform->rotation = I(boss->platformRotation);
-            transform->width = 0x100;
-            transform->height = 0x100;
+            transform->qScaleX = Q(1);
+            transform->qScaleY = Q(1);
             transform->x = s->x;
             transform->y = s->y;
 
@@ -637,8 +637,8 @@ static void sub_804655C(EggGoRound *boss, u8 val)
         if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2) && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
             transform->rotation = I(boss->platformRotation);
-            transform->width = 0x100;
-            transform->height = 0x100;
+            transform->qScaleX = Q(1);
+            transform->qScaleY = Q(1);
             transform->x = s->x;
             transform->y = s->y;
 
@@ -853,9 +853,9 @@ static void sub_8046C28(EggGoRound *boss)
                         return;
                     }
 
-                    gPlayer.y += Q(2) + Q_8_8(val);
+                    gPlayer.qWorldY += Q(2) + Q_8_8(val);
                     if (boss->prevPlatformXPositions[i] != 0) {
-                        gPlayer.x += Q(x - (boss->prevPlatformXPositions[i]));
+                        gPlayer.qWorldX += Q(x - (boss->prevPlatformXPositions[i]));
                     }
                 } else if (someBool) {
                     gPlayer.moveState &= ~MOVESTATE_8;
@@ -1120,7 +1120,7 @@ bool32 HandleHit(EggGoRound *boss)
     }
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && boss->health == 4) {
-        gUnknown_030054A8.unk1 = 0x11;
+        gMusicManagerState.unk1 = 0x11;
     }
 
     return result;
@@ -1185,9 +1185,9 @@ static void HandleCollisions(EggGoRound *boss)
     Player_UpdateHomingPosition(boss->x, boss->y);
 
     if (sub_800C320(s, x, y, 1, &gPlayer) != 0) {
-        if (gPlayer.x > boss->x) {
+        if (gPlayer.qWorldX > boss->x) {
             gPlayer.speedAirX += Q(2.25);
-            gPlayer.x += Q(2);
+            gPlayer.qWorldX += Q(2);
         }
 
         gPlayer.speedAirY += Q(2);

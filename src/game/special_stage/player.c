@@ -73,8 +73,8 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     player = TASK_DATA(t);
     player->unk0 = stage;
     player->unk4 = NULL;
-    player->x = Q_16_16(gUnknown_080DF9D8[lang][0]);
-    player->y = Q_16_16(gUnknown_080DF9D8[lang][1]);
+    player->q16WorldX = Q_16_16(gUnknown_080DF9D8[lang][0]);
+    player->q16WorldY = Q_16_16(gUnknown_080DF9D8[lang][1]);
 
     player->unkB0 = 0;
     player->bearing = gUnknown_080DF9D8[lang][2];

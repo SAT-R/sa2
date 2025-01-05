@@ -133,7 +133,7 @@ void sub_8075F58(void)
     }
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.y = ((gs->posY - 16) << 8) + gs->elements[2][1];
+        gPlayer.qWorldY = ((gs->posY - 16) << 8) + gs->elements[2][1];
         gPlayer.rotation = 0x40;
     }
 
@@ -244,8 +244,8 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
     if (PLAYER_IS_ALIVE && gPlayer.speedAirY > 0) {
         s16 screenX = gs->posX - gCamera.x;
         s16 screenY = gs->posY - gCamera.y;
-        s16 playerX = I(gPlayer.x) - gCamera.x;
-        s16 playerY = I(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.qWorldX) - gCamera.x;
+        s16 playerY = I(gPlayer.qWorldY) - gCamera.y;
 
         if ((screenX <= playerX) && ((screenX + GUITARSTR_WIDTH_PX) >= playerX) && ((screenY - 9) <= playerY)
             && ((screenY + 9) >= playerY)) {
@@ -305,17 +305,17 @@ void sub_80762BC(Sprite_GuitarString *gs)
 void sub_80762E0(Sprite_GuitarString *gs)
 {
     if (PLAYER_IS_ALIVE) {
-        if (gPlayer.x != LOCAL_GUITARSTR_MARGIN) {
-            if (gPlayer.x > LOCAL_GUITARSTR_MARGIN) {
-                gPlayer.x -= Q(0.5);
+        if (gPlayer.qWorldX != LOCAL_GUITARSTR_MARGIN) {
+            if (gPlayer.qWorldX > LOCAL_GUITARSTR_MARGIN) {
+                gPlayer.qWorldX -= Q(0.5);
 
-                if (gPlayer.x < LOCAL_GUITARSTR_MARGIN)
-                    gPlayer.x = LOCAL_GUITARSTR_MARGIN;
+                if (gPlayer.qWorldX < LOCAL_GUITARSTR_MARGIN)
+                    gPlayer.qWorldX = LOCAL_GUITARSTR_MARGIN;
             } else {
-                gPlayer.x += Q(0.5);
+                gPlayer.qWorldX += Q(0.5);
 
-                if (gPlayer.x > LOCAL_GUITARSTR_MARGIN)
-                    gPlayer.x = LOCAL_GUITARSTR_MARGIN;
+                if (gPlayer.qWorldX > LOCAL_GUITARSTR_MARGIN)
+                    gPlayer.qWorldX = LOCAL_GUITARSTR_MARGIN;
             }
         }
     }

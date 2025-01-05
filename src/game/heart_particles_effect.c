@@ -166,8 +166,8 @@ static void sub_8086BE8(u8 i)
     Sprite *s;
     HeartParticles *unk998 = TASK_DATA(gCurTask);
 
-    unk998->unkC4[i] = gPlayer.x;
-    unk998->unkD4[i] = gPlayer.y;
+    unk998->unkC4[i] = gPlayer.qWorldX;
+    unk998->unkD4[i] = gPlayer.qWorldY;
 
     if (i == 1) {
         unk998->unkD4[1] += 0x800;

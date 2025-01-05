@@ -594,8 +594,8 @@ void sub_80438C4(EggSaucer *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
-        transform->width = 0x100;
-        transform->height = 0x100;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
@@ -768,8 +768,8 @@ void sub_8043E2C(EggSaucer *boss)
         s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
-        transform->width = 256;
-        transform->height = 256;
+        transform->qScaleX = 256;
+        transform->qScaleY = 256;
         transform->x = s->x;
         transform->y = s->y;
         TransformSprite(s, transform);
@@ -1117,12 +1117,12 @@ void sub_8044784(EggSaucer *boss)
 
     UpdateScreenFade(fade);
 
-    y = I(gPlayer.y);
+    y = I(gPlayer.qWorldY);
     y += 0x13;
     y -= (I(boss->y) + ((SIN(boss->gunDiskAngle) * 5) >> 11));
     x = ({
         s32 temp3;
-        x = (I(gPlayer.x));
+        x = (I(gPlayer.qWorldX));
         temp3 = x + 2;
         temp3 - (I(boss->x) + ((COS(boss->gunDiskAngle) * 5) >> 11));
     });
@@ -1283,8 +1283,8 @@ static void sub_8044CBC(EggSaucer *boss)
         x += 2;
         y -= 0x11;
 
-        x = I(gPlayer.x) - x;
-        y = I(gPlayer.y) - y;
+        x = I(gPlayer.qWorldX) - x;
+        y = I(gPlayer.qWorldY) - y;
         boss->unk32 = sub_8004418(y, x);
     }
 
@@ -1435,8 +1435,8 @@ static void sub_8044FE4(EggSaucer *boss)
         x += 2;
         y -= 0x11;
 
-        x = I(gPlayer.x) - x;
-        y = I(gPlayer.y) - y;
+        x = I(gPlayer.qWorldX) - x;
+        y = I(gPlayer.qWorldY) - y;
         boss->unk32 = sub_8004418(y, x);
     }
 
@@ -1617,7 +1617,7 @@ void sub_8045368(EggSaucer *boss)
     s->prevVariant = -1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && boss->health == 4) {
-        gUnknown_030054A8.unk1 = 0x11;
+        gMusicManagerState.unk1 = 0x11;
     }
 }
 
