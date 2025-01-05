@@ -4,6 +4,12 @@
 #include "core.h"
 #include "tilemap.h"
 
+#if (GAME == GAME_SA1)
+typedef s16 CamCoord;
+#else
+typedef s32 CamCoord;
+#endif
+
 // TODO: Move TILE_WIDTH into "include/tilemap.h"
 #define TILE_WIDTH              8
 #define CAM_REGION_WIDTH        256
