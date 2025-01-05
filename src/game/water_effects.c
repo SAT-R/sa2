@@ -9,7 +9,7 @@
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/stage/game_2.h"
+#include "game/stage/grind_effect_2.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"

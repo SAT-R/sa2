@@ -6,7 +6,7 @@
 
 #include "game/sa1_sa2_shared/globals.h"
 
-#include "game/stage/game_2.h"
+#include "game/stage/grind_effect_2.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/underwater_effects.h"
