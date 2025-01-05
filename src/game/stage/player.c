@@ -3013,7 +3013,7 @@ void sub_8023878(Player *p)
             switch (p->secondsUntilDrown--) {
                 case 11:
                     if (p->unk60 == 0) {
-                        gUnknown_030054A8.unk4 = 16;
+                        gMusicManagerState.unk4 = 16;
                     }
                     break;
                 case 12:

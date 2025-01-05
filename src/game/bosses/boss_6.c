@@ -1120,7 +1120,7 @@ bool32 HandleHit(EggGoRound *boss)
     }
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && boss->health == 4) {
-        gUnknown_030054A8.unk1 = 0x11;
+        gMusicManagerState.unk1 = 0x11;
     }
 
     return result;

@@ -5,11 +5,11 @@
 
 #include "constants/characters.h"
 
-// TODO(Jace): gUnknown_080D5254 is used in sakit/music_manager.c, with a different type.
+// TODO(Jace): gUnkMusicMgrData is used in sakit/music_manager.c, with a different type.
 //             That doesn't make any sense...
-// const u8 gUnknown_080D5254[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00,
+// const u8 gUnkMusicMgrData[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00,
 // 0xF0, 0x08, 0x10, 0xF0, 0x01 };
-extern const u8 gUnknown_080D5254[];
+extern const u8 gUnkMusicMgrData[];
 const u8 gUnknown_080D5262[] = {
     0x04, // r6
     0x01, // r8
@@ -31,7 +31,7 @@ const u8 gUnknown_080D52D2[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F,
 
 const u8 *gUnknown_08c87098_unused[64] = { 0 };
 
-const u8 *unk_8C87198[3] = { gUnknown_080D5254, gUnknown_080D5262, INPUTBUF_NULL_PTR };
+const u8 *unk_8C87198[3] = { gUnkMusicMgrData, gUnknown_080D5262, INPUTBUF_NULL_PTR };
 
 const u8 *unk_8C871A4[3] = { gUnknown_080D5270, gUnknown_080D527E, INPUTBUF_NULL_PTR };
 

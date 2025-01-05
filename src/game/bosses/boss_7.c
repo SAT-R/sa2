@@ -935,7 +935,7 @@ static void sub_8048D78(EggFrog *boss)
     s->prevVariant = -1;
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && boss->unk14 == 4) {
-        gUnknown_030054A8.unk1 = 0x11;
+        gMusicManagerState.unk1 = 0x11;
     }
 }
 

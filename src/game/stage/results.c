@@ -263,7 +263,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         UpdateSpriteAnimation(s);
     }
 
-    gUnknown_030054A8.unk0 |= -1;
+    gMusicManagerState.unk0 |= -1;
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
         m4aSongNumStart(MUS_FINAL_CLEAR);

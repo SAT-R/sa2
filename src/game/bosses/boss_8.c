@@ -830,7 +830,7 @@ void CreateSuperEggRoboZ(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 3);
-    gUnknown_030054A8.unk6 = 200;
+    gMusicManagerState.fadeoutSpeed = 200;
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
 
@@ -876,8 +876,8 @@ static void Task_804A9D8(void)
 
         m4aSongNumStart(SE_260);
 
-        gUnknown_030054A8.unk0 = 0;
-        gUnknown_030054A8.unk1 = 18;
+        gMusicManagerState.unk0 = 0;
+        gMusicManagerState.unk1 = 18;
         gCamera.minX = 42820;
         boss->unkB = 0;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
@@ -1930,7 +1930,7 @@ static void Boss8_HitCockpit(SuperEggRoboZ *boss)
     }
 
     if (boss->livesCockpit == 3) {
-        gUnknown_030054A8.unk1 = 19;
+        gMusicManagerState.unk1 = 19;
     }
 
     if (boss->livesCockpit == 0) {

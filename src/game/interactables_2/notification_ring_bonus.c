@@ -106,7 +106,7 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
                     else
                         gNumLives = lives;
 
-                    gUnknown_030054A8.unk3 = 0x10;
+                    gMusicManagerState.unk3 = 0x10;
                 }
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

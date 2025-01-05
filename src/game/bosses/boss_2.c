@@ -303,7 +303,7 @@ static void Task_BomberTankCannonReload(void)
         INCREMENT_SCORE_B(500);
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     }
 
@@ -726,7 +726,7 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
         INCREMENT_SCORE_B(500);
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     } else {
         if (boss->timer == 0) {

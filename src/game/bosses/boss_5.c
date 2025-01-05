@@ -1617,7 +1617,7 @@ void sub_8045368(EggSaucer *boss)
     s->prevVariant = -1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && boss->health == 4) {
-        gUnknown_030054A8.unk1 = 0x11;
+        gMusicManagerState.unk1 = 0x11;
     }
 }
 

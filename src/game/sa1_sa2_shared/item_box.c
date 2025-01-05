@@ -168,7 +168,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
                 }                                                                                                                          \
                 gNumLives = newLives;                                                                                                      \
                                                                                                                                            \
-                gUnknown_030054A8.unk3 = 16;                                                                                               \
+                gMusicManagerState.unk3 = 16;                                                                                              \
             }                                                                                                                              \
         }                                                                                                                                  \
                                                                                                                                            \
@@ -195,7 +195,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
             gNumLives = newLives;
 
-            gUnknown_030054A8.unk3 = 16;
+            gMusicManagerState.unk3 = 16;
         } break;
 
         case ITEM__SHIELD: {
@@ -228,7 +228,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             if (IS_SINGLE_PLAYER || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__INVINCIBILITY;
                 CreateItemTask_Invincibility(gPlayer.unk60);
-                gUnknown_030054A8.unk2 = 16;
+                gMusicManagerState.unk2 = 16;
             }
         } break;
 

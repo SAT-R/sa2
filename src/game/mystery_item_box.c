@@ -293,7 +293,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             if (!IS_EXTRA_STAGE(gCurrentLevel)) {
                 if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == GAME_MODE_SINGLE_PLAYER) {
                     gNumLives = MIN(gNumLives + 1, 255u);
-                    gUnknown_030054A8.unk3 = 0x10;
+                    gMusicManagerState.unk3 = 0x10;
                 }
             }
 

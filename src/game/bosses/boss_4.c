@@ -728,7 +728,7 @@ static bool32 sub_80423EC(AeroEgg *boss)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         if (boss->main.lives == 4) {
-            gUnknown_030054A8.unk1 = 0x11;
+            gMusicManagerState.unk1 = 0x11;
         }
     }
 

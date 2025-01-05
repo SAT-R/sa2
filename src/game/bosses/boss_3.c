@@ -1397,7 +1397,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
                         lives;
                     });
 
-                    gUnknown_030054A8.unk3 = 16;
+                    gMusicManagerState.unk3 = 16;
                 }
             }
 #else
@@ -1452,7 +1452,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
                         lives;
                     });
 
-                    gUnknown_030054A8.unk3 = 16;
+                    gMusicManagerState.unk3 = 16;
                 }
             }
 #else
@@ -1505,7 +1505,7 @@ void sub_8040D74(EggTotem *totem)
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->lives == 4)) {
-            gUnknown_030054A8.unk1 = 17;
+            gMusicManagerState.unk1 = 17;
         }
     }
 }
