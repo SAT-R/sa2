@@ -512,7 +512,7 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 sdl: ; @$(MAKE) PLATFORM=sdl
 
-sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
+sdl_win32:
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386

@@ -82,10 +82,12 @@ sa2.gba: OK
 ```
 
 **Build the port**
-On windows: `make sdl_win32`
+On Windows: `make sdl_win32`
 On Linux and MacOS: `make sdl`
 
 **NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build `make ... -j<number of CPU cores>`
+
+**NOTE**: When building for Windows, you'll need to [download](https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip) and extract SDL2 to the `ext` folder in the root of the repo before building. You can use `make SDL2.dll` to do this for you.
 
 ### Code formatting
 

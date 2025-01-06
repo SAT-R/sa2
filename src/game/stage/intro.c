@@ -256,8 +256,15 @@ struct Task *SetupStageIntro(void)
     gStageFlags |= STAGE_FLAG__ACT_START;
     gStageFlags |= STAGE_FLAG__100;
 
-    gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG_MASK_18;
-    gPlayer.spriteInfoLimbs->s.frameFlags |= SPRITE_FLAG_MASK_18;
+    // These are null when super sonic
+#ifdef BUG_FIX
+    if (gPlayer.spriteInfoBody)
+#endif
+        gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG_MASK_18;
+#ifdef BUG_FIX
+    if (gPlayer.spriteInfoLimbs)
+#endif
+        gPlayer.spriteInfoLimbs->s.frameFlags |= SPRITE_FLAG_MASK_18;
 
     gActiveBossTask = NULL;
 
