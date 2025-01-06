@@ -128,6 +128,11 @@ jobs:
         run: |
           sudo apt update && sudo apt install xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
   
+      - name: Install SDL for win32
+        if: ${{ matrix.platform == 'win32' }}
+        run: |
+          make SDL2.dll
+  
       - name: ${{ matrix.platform }}
         run: |
           make -j${nproc} ${{ matrix.platform }}

@@ -238,14 +238,13 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
 }
 END_NONMATCH
 
-// (98.95%) https://decomp.me/scratch/7KDXI
-// (only register alloc issues, logic works as intended)
-NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc", void Zone7BgUpdate_Outside(s32 x, s32 y))
+void Zone7BgUpdate_Outside(s32 x, s32 y)
 {
     u16 *lineShiftX;
     u8 frameCount;
     int_vcount i;
     u16 sp[32];
+    u32 stageTime;
 
     gDispCnt &= ~DISPCNT_BG3_ON;
     gDispCnt |= DISPCNT_BG0_ON;
@@ -256,16 +255,22 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc", voi
     gUnknown_03002A80 = 2;
     lineShiftX = (u16 *)gBgOffsetsHBlank;
 
-#ifndef NON_MATCHING
-    frameCount = ((gStageTime >> 3) & 0x1F);
+    stageTime = gStageTime;
+    frameCount = ((stageTime >> 3) & 0x1F);
     if (frameCount >= 16) {
-        frameCount = 31 - frameCount;
-        asm("" ::"r"(frameCount));
-    }
+        // Likely some sort of debug log
+#ifndef NON_MATCHING
+        register u32 r1 asm("r1");
+        register u8 r0 asm("r0");
+        r0 = 31 - frameCount;
+        asm("" ::"r"(r0));
+        r1 = r0;
+        asm("" ::"r"(r1));
 #endif
+    }
 
     for (i = 0; i < ARRAY_COUNT(sp); i++) {
-        sp[i] = 0xFF & (I(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime) + gUnknown_080D5C62[(i & 0x7)][1]);
+        sp[i] = 0xFF & (I(gUnknown_080D5C62[(i & 0x7)][0] * stageTime) + gUnknown_080D5C62[(i & 0x7)][1]);
     }
 
     {
@@ -275,17 +280,17 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc", voi
 
         for (i = 0; i < DISPLAY_HEIGHT / 2; i++) {
             sinVal = SIN_24_8(((gStageTime * 4) + i * 2) & ONE_CYCLE) >> 3;
-            cosVal = (COS_24_8(((i * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
-            value = cosVal + sinVal;
-            *lineShiftX++ = (value + sp[(i & 0x1F)]) & 0xFF;
+            value = (COS_24_8(((i * scrollSpeed) >> 5) & ONE_CYCLE) >> 4) + sinVal;
+            value = (value + sp[(i & 0x1F)]) & 0xFF;
+            *lineShiftX++ = value;
         }
 
         for (; i < DISPLAY_HEIGHT - 1; i++) {
             sinVal = SIN_24_8(((gStageTime << 2) + i * 2) & ONE_CYCLE) >> 3;
             cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
             value = cosVal + sinVal;
-            *lineShiftX++ = (value + sp[(i & 0x1F)]) & 0xFF;
+            value = (value + sp[(i & 0x1F)]) & 0xFF;
+            *lineShiftX++ = value;
         }
     }
 }
-END_NONMATCH
