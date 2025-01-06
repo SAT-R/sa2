@@ -1118,8 +1118,26 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", static void sub
                         r4 = ((116 - boss->unk12) >> 2) + ((rand % 8u) + 30);
                     }
                     // _0804B096
-
+#ifndef NON_MATCHING
+                    // Doesn't yet work :/
+                    asm("ldrh r0, [%3, #0x10]\n"
+                        "mov r1, %0\n"
+                        "lsl r3, r1, #0x10\n"
+                        "asr r3, r3, #0x10\n"
+                        "add r1, %1, #1\n"
+                        "lsl r1, r1, #0x10\n"
+                        "asr r1, r1, #0x10\n"
+                        "str r1, [sp]\n"
+                        "movs r1, #0x20\n"
+                        "str r1, [sp, #4]\n"
+                        "add r1, %2, #0\n"
+                        "movs r2, #6\n"
+                        "bl sub_802E784\n"
+                        :
+                        : "r"(r8), "r"(r6), "r"(r4), "r"(boss));
+#else
                     sub_802E784(boss->unk10, r4, 6, r8, r6 + 1, 32);
+#endif
 
                     boss->fade.brightness = Q(32) - (boss->unk12 * 91);
                     UpdateScreenFade(&boss->fade);

@@ -22,7 +22,7 @@
 	adds r0, r7, #0
 	bl sub_804AE40
 	ldr r5, _0804AC48 @ =sArmFuncs
-	ldr r1, _0804AC4C @ =IWRAM_START + 0x3C
+	ldr r1, _0804AC4C @ =0x03000000 + 0x3C
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #2
@@ -31,7 +31,7 @@
 	adds r0, r7, #0
 	movs r1, #0
 	bl _call_via_r2
-	ldr r2, _0804AC50 @ =IWRAM_START + 0x3D
+	ldr r2, _0804AC50 @ =0x03000000 + 0x3D
 	adds r4, r4, r2
 	ldrb r0, [r4]
 	lsls r0, r0, #2
@@ -142,8 +142,8 @@ _0804ABF2:
 	.align 2, 0
 _0804AC44: .4byte gCurTask
 _0804AC48: .4byte sArmFuncs
-_0804AC4C: .4byte IWRAM_START + 0x3C
-_0804AC50: .4byte IWRAM_START + 0x3D
+_0804AC4C: .4byte 0x03000000 + 0x3C
+_0804AC50: .4byte 0x03000000 + 0x3D
 _0804AC54: .4byte gPlayer
 _0804AC58: .4byte 0x0000A819
 _0804AC5C: .4byte 0x0000A84F

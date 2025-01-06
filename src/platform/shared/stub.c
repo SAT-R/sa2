@@ -2,7 +2,6 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "game/bosses/boss_5.h" // sub_802E784
 
 void *ewram_end = 0;
 void *iwram_end = 0;

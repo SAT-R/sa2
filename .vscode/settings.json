@@ -352,7 +352,8 @@
     "shared.h": "c",
     "mp2k_common.h": "c",
     "cgb_tables.h": "c",
-    "stdint.h": "c"
+    "stdint.h": "c",
+    "boss_5.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

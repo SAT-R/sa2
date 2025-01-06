@@ -257,9 +257,7 @@ void sub_802DDC4(u8 p0, u16 p1)
     }
 }
 
-// (98.53%) https://decomp.me/scratch/khvum
-// (98.53%) https://decomp.me/scratch/aNJxr
-NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, u16 p1))
+void sub_802DF18(u8 p0, u16 p1)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r2;
@@ -300,20 +298,30 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
                 *bgOffsets++;
             }
 
-            for (j = p0; j < DISPLAY_HEIGHT; j++) {
-                u32 val;
+#ifndef NON_MATCHING
+            i = p0;
+            if (i < DISPLAY_HEIGHT) {
+                do {
+#else
+            for (i = p0; i < DISPLAY_HEIGHT; i++) {
+#endif
+                    u32 val;
 
-                r7 += r3;
-                val = r7;
+                    r7 += r3;
+                    val = r7;
 
-                val = (val << 8) >> 16;
+                    val = (val << 8) >> 16;
 
-                if (val > DISPLAY_WIDTH)
-                    return;
+                    if (val > DISPLAY_WIDTH)
+                        return;
 
-                *bgOffsets++;
-                *bgOffsets = DISPLAY_WIDTH - val;
-                *bgOffsets++;
+                    *bgOffsets++;
+                    *bgOffsets = DISPLAY_WIDTH - val;
+                    *bgOffsets++;
+#ifndef NON_MATCHING
+                    i++;
+                } while (i < DISPLAY_HEIGHT);
+#endif
             }
         } else {
             bgOffsets += p0 * sizeof(u16);
@@ -333,7 +341,6 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
         }
     }
 }
-END_NONMATCH
 
 void sub_802E044(s32 p0, u16 p1)
 {
