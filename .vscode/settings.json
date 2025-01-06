@@ -353,7 +353,8 @@
     "mp2k_common.h": "c",
     "cgb_tables.h": "c",
     "stdint.h": "c",
-    "boss_5.h": "c"
+    "boss_5.h": "c",
+    "boss_9.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
