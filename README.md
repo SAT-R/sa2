@@ -20,16 +20,20 @@ It so far builds the following ROMs:
 * [**sa2_europe.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0900) `sha1: b0f64bdca097f2de8f05ac4c8caea2b80c5faeb1` (Europe) (En,Ja,Fr,De,Es,It)
 * [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It) (:warning: Work in Progress)
 
+The repo also builds the following:
+* **sa2.sdl** `make sdl` (Linux/MacOS SDL 64bit port)
+* **sa2.sdl_win32.exe** `make sdl_win32` (Windows SDL 32bit port)
+* **sa2.win32.exe** `make win32` (Win32 native port, not functional)
+
 ### Current state
 
-- :tada: The build is shiftable! You can make any code or asset additions/modifications you like, and most aspects of the game will continue to function.
-- Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
-- All libraries decompiled to C or referenced from `agbcc`
-- Most aspects of the game, including all interactables, have been decompiled to matching C code. Most have not been fully documented, but major functions are.
+- :tada: The build is 100% from C files with [~80 functions which currently don't match](./asm/non_matching)
+- All assembly code extracted, disassembled, and decompiled by hand to their C equivilent
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
-- All sprite animation frames have been extracted to PNGs and are used to build the matching rom
-- Most tilemaps (backgrounds) have been documented and had their tiles extracted
-
+- All sprite animation frames have been [extracted to PNGs and are used to build the matching rom](./graphics/obj_tiles)
+- All tilemaps (backgrounds) have been documented and [had their tiles extracted](./data/tilemaps)
+- The game compiles to a widescreen port (*426x240*) for multiple platforms
+- The "sub games" (Chao Garden and Collect The Rings) have been disassembled but not yet decompiled
 
 ### Community
 
@@ -39,7 +43,7 @@ Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping ou
 
 **Dev container**
 
-If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup. This requires docker is installed on your system. Once running, skip to *Build the rom*
+If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup. This requires docker is installed on your system. Once running, skip to *Build the GBA rom*
 
 **Install system requirements** *(without dev container)*
  
@@ -48,15 +52,21 @@ On Linux systems
 sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
 ```
 
-On MacOS and Windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)
+On MacOS install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM) (if building for GBA) and
 
-***Install `agbcc` into the repo***
+```
+brew install libpng sdl2 mingw-w64
+```
 
-Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
+On windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)
 
-Inside the `agbcc` repo and run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
+***Install `agbcc` into the repo (skip if not compiling for the GBA)***
 
-**Build the rom**
+Clone the [agbcc](https://github.com/sa2/agbcc) repo into another folder
+
+Inside the `agbcc` folder, run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
+
+**Build the GBA rom**
 
 On Linux and MacOS, run `make` in the root of the repo to build.
 
@@ -71,7 +81,11 @@ If the rom built successfully you will see this output
 sa2.gba: OK
 ```
 
-**NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build `make -j<number>`
+**Build the port**
+On windows: `make sdl_win32`
+On Linux and MacOS: `make sdl`
+
+**NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build `make ... -j<number of CPU cores>`
 
 ### Code formatting
 
@@ -90,7 +104,7 @@ To format code run `make format`
 
 - Shout out to [@froggestspirit](https://github.com/froggestspirit) for the drive to set this project up
 - Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds decompilation
-- [JaceCear](https://github.com/JaceCear) for his dedication to understanding the internals of the graphics engine and writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter), as well as massive effort in contributing towards the decompilation process
+- [JaceCear](https://github.com/JaceCear) for his dedication to understanding the internals of the graphics engine and writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter), as well as massive effort in contributing towards the decompilation process as well as creating the PC ports
 - [Pokemon Reverse Engineering Team](https://github.com/pret) for their help with the project, and tooling for GBA decompilations
 - [Kermalis](https://github.com/Kermalis) for [their tool](https://github.com/Kermalis/VGMusicStudio) which was used to dump the game midis
 - [琪姬](https://github.com/laqieer) for their exellent work [documenting](https://github.com/FireEmblemUniverse/fireemblem8u/pull/137) all the quirks of matching midis
