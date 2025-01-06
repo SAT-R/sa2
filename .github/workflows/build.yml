@@ -136,3 +136,26 @@ jobs:
       - name: ${{ matrix.platform }}
         run: |
           make -j${nproc} ${{ matrix.platform }}
+
+  level_editor:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    runs-on: ubuntu-22.04
+    name: Level editor (BriBaSA)
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+
+      - name: Install deps
+        run: |
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev
+  
+      - name: Build
+        run: |
+          make -j${nproc} bribasa
