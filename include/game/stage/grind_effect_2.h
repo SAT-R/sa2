@@ -15,10 +15,10 @@ typedef struct {
     /* 0x14 */ u16 unk14;
     /* 0x16 */ AnimId playerAnim;
     /* 0x18 */ u16 playerVariant;
-    /* 0x1A */ u8 unk1A;
+    /* 0x1A */ u8 mpPlayerID;
     /* 0x1C */ Sprite s;
     /* 0x4C */ SpriteTransform transform;
-} TaskStrc_801F15C; /* size: 0x58 */
+} MultiplayerSpriteTask; /* size: 0x58 */
 
 extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
