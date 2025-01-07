@@ -5582,7 +5582,7 @@ void sub_8028478(Player *p)
 struct Task *sub_8028640(s32 x, s32 y, s32 p2)
 {
     struct Task *t;
-    TaskStrc_801F15C *taskStrc;
+    MultiplayerSpriteTask *taskStrc;
     Sprite *s;
 
     u16 p2_ = p2;

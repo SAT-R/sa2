@@ -96,7 +96,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 
 struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
 {
-    TaskStrc_801F15C *ts;
+    MultiplayerSpriteTask *ts;
     struct Task *t;
     Sprite *s;
 
@@ -816,7 +816,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         result = NULL;
     } else {
         struct Task *t;
-        TaskStrc_801F15C *ts;
+        MultiplayerSpriteTask *ts;
         Sprite *s;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
         ts = TASK_DATA(t);
@@ -1017,7 +1017,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
     if (IS_MULTI_PLAYER) {
         result = NULL;
     } else {
-        TaskStrc_801F15C *ts;
+        MultiplayerSpriteTask *ts;
         Sprite *s;
         struct Task *t;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);

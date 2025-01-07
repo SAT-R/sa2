@@ -1651,7 +1651,7 @@ static void sub_804C080(SuperEggRoboZ *boss)
         info.unk4 = 0;
 
         CreateBossParticleStatic(&info, &boss->unkC);
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
         m4aMPlayImmInit(&gMPlayInfo_SE3);
     }
 
@@ -2061,7 +2061,7 @@ static void Task_ShowResultsAndDelete(void)
     UpdateScreenFade(&boss->fade);
 
     CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
-    m4aSongNumStop(SE_144);
+    m4aSongNumStop(SE_EXPLOSION);
     m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, 0xFF);
     TaskDestroy(gCurTask);
 }

@@ -348,7 +348,7 @@ static void Task_TransitionToEscapeSequence(void)
     rand = PseudoRandom32();
 
     if (Mod(gStageTime + rand, 0x11) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (x < 50) {
@@ -999,7 +999,7 @@ static void Task_StartBossDestruction(void)
 
     rand = PseudoRandom32();
     if (Mod(gStageTime + rand, 21) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     boss->timer--;
@@ -1023,7 +1023,7 @@ static void Task_WaitForBossOffScreen(void)
     rand = PseudoRandom32();
 
     if (Mod(gStageTime + rand, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (x < -200) {

@@ -4,11 +4,12 @@
 #include <string.h>
 
 #include "global.h"
-#include "task.h"
 #include "sprite.h"
+#include "task.h"
 #include "tilemap.h"
-#include "animation_commands.h"
 #include "input_recorder.h"
+#include "data/sprite_data.h"
+#include "animation_commands.h"
 
 struct MultiSioData_0_0 {
     // id

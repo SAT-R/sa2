@@ -292,7 +292,7 @@ static void Task_RunOnWaterEffect(void)
 struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
     struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TASK_DATA(t);
+    MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(12);

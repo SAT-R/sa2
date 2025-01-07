@@ -71,6 +71,7 @@
 
 /* 67 - 101: Dummies */
 
+// TODO: Many soundeffect IDs are shared between SA! and SA2!
 #define SE_RING                    102
 #define SE_SHIFT                   103
 #define SE_SUCCESS                 104
@@ -113,7 +114,7 @@
 #define SE_STAGE_RESULT_COUNTER_DONE 141
 #define SE_PAUSE_SCREEN              142
 #define SE_143                       143
-#define SE_144                       144 // explosion?
+#define SE_EXPLOSION                 144
 #define SE_145                       145
 #define SE_146                       146
 #define SE_SPIN                      147

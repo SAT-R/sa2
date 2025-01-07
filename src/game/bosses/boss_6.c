@@ -437,7 +437,7 @@ static void Task_DestructionCutScene1(void)
     EggGoRound *boss = TASK_DATA(gCurTask);
     s32 idx;
     if (Mod(gStageTime, 21) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (boss->timer >= 64) {
@@ -472,7 +472,7 @@ static void Task_DestructionCutScene2(void)
     EggGoRound *boss = TASK_DATA(gCurTask);
     s32 idx;
     if (Mod(gStageTime, 17) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
     idx = CLAMP_SIN_PERIOD(boss->timer * 256);
     boss->linkRotOffset = SIN(idx) >> 12;
@@ -503,7 +503,7 @@ static void Task_DestructionCutScene3(void)
     sub_8047138(boss);
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (boss->destructionProps.unk1C1 == 0 && (I(destruction->cabin.x) - gCamera.x) < 50) {
@@ -919,7 +919,7 @@ static void sub_8046F00(EggGoRound *boss)
             return;
         }
 
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
 
         for (i = 0; i < NUM_PLATFORMS; i++) {
             u8 j;
