@@ -4,13 +4,11 @@
 #include "malloc_vram.h"
 #include "task.h"
 
-#include "game/sa1_sa2_shared/globals.h"
 #include "game/boost_effect.h"
-
+#include "game/sa1_sa2_shared/globals.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/stage/grind_effect_2.h"
-
+#include "game/stage/mp_sprite_task.h"
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
 

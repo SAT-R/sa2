@@ -21,8 +21,8 @@
 #include "game/stage/collision.h"
 #include "game/stage/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
-#include "game/stage/grind_effect_2.h"
 #include "game/stage/item_tasks.h"
+#include "game/stage/mp_sprite_task.h"
 #include "game/stage/player.h"
 #include "game/stage/player_controls.h"
 #include "game/stage/player_super_sonic.h"

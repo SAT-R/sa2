@@ -5,12 +5,10 @@
 #include "trig.h"
 
 #include "game/sa1_sa2_shared/globals.h"
-
-#include "game/stage/grind_effect_2.h"
-#include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/mp_sprite_task.h"
+#include "game/stage/player.h"
 #include "game/stage/underwater_effects.h"
-
 #include "game/water_effects.h"
 
 #include "constants/animations.h"
