@@ -104,7 +104,7 @@ struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
         return NULL;
     }
 
-    t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+    t = CreateMultiplayerSpriteTask(x, y, 0xE8, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     ts = TASK_DATA(t);
 
     switch (p2) {
@@ -818,7 +818,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         struct Task *t;
         MultiplayerSpriteTask *ts;
         Sprite *s;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+        t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
@@ -1020,7 +1020,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         MultiplayerSpriteTask *ts;
         Sprite *s;
         struct Task *t;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+        t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
 
         ts->playerAnim = sCharStateAnimInfo[gPlayer.charState][0];

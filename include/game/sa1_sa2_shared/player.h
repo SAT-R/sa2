@@ -68,6 +68,23 @@ typedef struct {
 #define PLAYER_LAYER__MASK  0x01
 #define PLAYER_LAYER__80    0x80
 
+#define PLAYER_1 0
+#define PLAYER_2 1
+#define PLAYER_3 2
+#define PLAYER_4 3
+
+#if (GAME == GAME_SA1)
+#define GET_SP_PLAYER_V0(index) ((index == 0) ? &gPlayer : &gPartner)
+#define GET_SP_PLAYER_V1(index) ((index != 0) ? &gPartner : &gPlayer)
+#elif (GAME == GAME_SA2)
+// NOTE: Ignores index, in SA2 you only ever have 1 player char in single player mode
+#define GET_SP_PLAYER_V0(index) (&gPlayer)
+#define GET_SP_PLAYER_V1(index) (&gPlayer)
+#elif (GAME == GAME_SA3)
+#define GET_SP_PLAYER_V0(index) ((index == PLAYER_1) ? &gPlayers[gStageData.playerIndex] : &gPlayers[p->charFlags.partnerIndex])
+#define GET_SP_PLAYER_V1(index) ((index != PLAYER_1) ? &gPlayers[p->charFlags.partnerIndex] : &gPlayers[gStageData.playerIndex])
+#endif
+
 // Declared beforehand because it's used inside Player struct
 struct Player_;
 typedef void (*PlayerCallback)(struct Player_ *);

@@ -5587,7 +5587,7 @@ struct Task *sub_8028640(s32 x, s32 y, s32 p2)
 
     u16 p2_ = p2;
 
-    t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+    t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
 
     taskStrc = TASK_DATA(t);
     taskStrc->playerAnim = gPlayer.anim;

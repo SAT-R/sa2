@@ -291,7 +291,7 @@ static void Task_RunOnWaterEffect(void)
 
 struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
-    struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
+    struct Task *t = CreateMultiplayerSpriteTask(x, y, 0x10, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 

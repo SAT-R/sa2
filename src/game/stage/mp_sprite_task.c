@@ -25,7 +25,7 @@ const u16 sAnimData_StageGoalScoreBonus[][3] = {
 
 #if (GAME == GAME_SA2)
 // This function was reordered in SA2, it exists twice in this file!
-struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
+struct Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
 {
     struct Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
 
@@ -57,11 +57,7 @@ struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, Task
 }
 #endif
 
-#if (GAME == GAME_SA1)
-void sa2__Task_801F214(void)
-#elif (GAME == GAME_SA2)
-void Task_801F214(void)
-#endif
+void Task_UpdateMpSpriteTaskSprite(void)
 {
     MultiplayerSpriteTask *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
@@ -104,11 +100,7 @@ void Task_801F214(void)
                         ts->y = mpp->pos.y;
 #endif
                     } else {
-#if (GAME == GAME_SA1)
-                        Player *p = ((id != 0) ? &gPartner : &gPlayer);
-#elif (GAME == GAME_SA2)
-                        Player *p = &gPlayer;
-#endif
+                        Player *p = GET_SP_PLAYER_V1(id);
 
                         ts->x = I(p->qWorldX);
                         ts->y = I(p->qWorldY);
@@ -166,7 +158,8 @@ void Task_801F214(void)
 
 #if (GAME == GAME_SA1)
 // This function was reordered in SA2, it exists twice in this file!
-struct Task *sa2__sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
+// TODO: Rename CreateMultiplayerSpriteTask ?
+struct Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
 {
     struct Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
 
@@ -207,7 +200,7 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
         struct Task *t;
         MultiplayerSpriteTask *ts;
         Sprite *s;
-        t = sub_801F15C(x, y, 32, 0, Task_801F214, TaskDestructor_801F550);
+        t = CreateMultiplayerSpriteTask(x, y, 32, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
 
         switch (score) {
@@ -242,13 +235,25 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
     }
 }
 
+static inline struct Task *CreateGrindfEffect2Sprite_inline(s16 x, s16 y)
+{
+    struct Task *t = CreateMultiplayerSpriteTask(x, y, 192, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    MultiplayerSpriteTask *ts = TASK_DATA(t);
+    Sprite *s = &ts->s;
+
+    s->graphics.dest = VramMalloc(20);
+    s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
+    s->variant = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(8);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
+
+    return t;
+}
+
 void CreateGrindEffect2(void)
 {
     Player *p = &gPlayer;
     if ((gStageTime & 0x7) == 0) {
-        struct Task *t;
-        MultiplayerSpriteTask *ts;
-        Sprite *s;
         s32 x, y;
         s32 x2, y2;
 
@@ -267,24 +272,12 @@ void CreateGrindEffect2(void)
         x2 -= x;
         y2 += y;
 
-        t = sub_801F15C(x2, y2, 192, 0, Task_801F214, TaskDestructor_801F550);
-
-        ts = TASK_DATA(t);
-        s = &ts->s;
-        s->graphics.dest = VramMalloc(20);
-        s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
-        s->variant = 0;
-        s->oamFlags = SPRITE_OAM_ORDER(8);
-        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
+        CreateGrindfEffect2Sprite_inline(x2, y2);
     }
 }
-#endif
+#endif // (GAME == GAME_SA2)
 
-#if (GAME == GAME_SA1)
-void sa2__TaskDestructor_801F550(struct Task *t)
-#else
-void TaskDestructor_801F550(struct Task *t)
-#endif
+void TaskDestructor_MultiplayerSpriteTask(struct Task *t)
 {
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
@@ -293,18 +286,5 @@ void TaskDestructor_801F550(struct Task *t)
 }
 
 #if (GAME == GAME_SA2)
-struct Task *sub_801F568(s16 x, s16 y)
-{
-    struct Task *t = sub_801F15C(x, y, 192, 0, Task_801F214, TaskDestructor_801F550);
-    MultiplayerSpriteTask *ts = TASK_DATA(t);
-    Sprite *s = &ts->s;
-
-    s->graphics.dest = VramMalloc(20);
-    s->graphics.anim = SA2_ANIM_GRIND_EFFECT;
-    s->variant = 0;
-    s->oamFlags = SPRITE_OAM_ORDER(8);
-    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
-
-    return t;
-}
+struct Task *CreateGrindfEffect2Sprite(s16 x, s16 y) { return CreateGrindfEffect2Sprite_inline(x, y); }
 #endif

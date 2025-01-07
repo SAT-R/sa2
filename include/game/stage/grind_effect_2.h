@@ -20,12 +20,12 @@ typedef struct {
     /* 0x4C */ SpriteTransform transform;
 } MultiplayerSpriteTask; /* size: 0x58 */
 
-extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
-extern void TaskDestructor_801F550(struct Task *);
+extern struct Task *CreateMultiplayerSpriteTask(s16, s16, u8, s8, TaskMain, TaskDestructor);
+extern void TaskDestructor_MultiplayerSpriteTask(struct Task *);
 
 void CreateGrindEffect2(void);
 
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
-void Task_801F214(void);
+void Task_UpdateMpSpriteTaskSprite(void);
 
 #endif // GUARD_GAME_2_H
