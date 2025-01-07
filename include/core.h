@@ -8,7 +8,6 @@
 #include "task.h"
 #include "tilemap.h"
 #include "input_recorder.h"
-#include "data/sprite_data.h"
 #include "animation_commands.h"
 
 struct MultiSioData_0_0 {
