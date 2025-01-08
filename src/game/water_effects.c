@@ -4,13 +4,11 @@
 #include "malloc_vram.h"
 #include "task.h"
 
-#include "game/sa1_sa2_shared/globals.h"
 #include "game/boost_effect.h"
-
+#include "game/sa1_sa2_shared/globals.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/stage/grind_effect_2.h"
-
+#include "game/stage/mp_sprite_task.h"
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
 
@@ -291,8 +289,8 @@ static void Task_RunOnWaterEffect(void)
 
 struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
-    struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TASK_DATA(t);
+    struct Task *t = CreateMultiplayerSpriteTask(x, y, 0x10, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(12);

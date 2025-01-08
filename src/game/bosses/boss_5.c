@@ -466,7 +466,7 @@ void sub_80435BC(void)
     }
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)

@@ -21,8 +21,8 @@
 #include "game/stage/collision.h"
 #include "game/stage/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
-#include "game/stage/grind_effect_2.h"
 #include "game/stage/item_tasks.h"
+#include "game/stage/mp_sprite_task.h"
 #include "game/stage/player.h"
 #include "game/stage/player_controls.h"
 #include "game/stage/player_super_sonic.h"
@@ -5582,12 +5582,12 @@ void sub_8028478(Player *p)
 struct Task *sub_8028640(s32 x, s32 y, s32 p2)
 {
     struct Task *t;
-    TaskStrc_801F15C *taskStrc;
+    MultiplayerSpriteTask *taskStrc;
     Sprite *s;
 
     u16 p2_ = p2;
 
-    t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+    t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
 
     taskStrc = TASK_DATA(t);
     taskStrc->playerAnim = gPlayer.anim;

@@ -1403,7 +1403,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 #else
             INCREMENT_SCORE(500);
 #endif
-            m4aSongNumStart(SE_144);
+            m4aSongNumStart(SE_EXPLOSION);
         } else {
             // _08040C5C
             m4aSongNumStart(SE_143);
@@ -1459,7 +1459,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
             INCREMENT_SCORE(500);
 #endif
 
-            m4aSongNumStart(SE_144);
+            m4aSongNumStart(SE_EXPLOSION);
 
             Collision_AdjustPlayerSpeed(&gPlayer);
             gCheeseTarget.task->unk15 = 0;
@@ -1621,7 +1621,7 @@ void Task_8041138(void)
     EggTotem *totem = TASK_DATA(gCurTask);
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (totem->sprTails.graphics.dest != NULL) {
@@ -1646,7 +1646,7 @@ void Task_80411CC(void)
     EggTotem *totem = TASK_DATA(gCurTask);
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     sub_803FF44(totem);

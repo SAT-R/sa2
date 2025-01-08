@@ -397,7 +397,7 @@ static void sub_8047F0C(void)
     sub_804931C(boss);
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (Mod(gStageTime, 7) == 0 && boss->unk65 == 0) {
@@ -1289,7 +1289,7 @@ static void sub_8049658(void)
 
     if (!((val - 1) % 4)) {
         s32 x, y;
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
         x = bomb->x + Q(gCamera.x);
         y = bomb->y + Q(gCamera.y);
         sub_80496FC(bomb->boss, x, y, bomb->gravityInverted);

@@ -249,7 +249,7 @@ static void Task_AeroEggExploding(void)
     sub_8041D34(boss);
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if (sub->unk6C == 0) {

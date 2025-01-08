@@ -6,8 +6,8 @@
 #include "game/amy_attack_heart_effect.h"
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/collision.h"
-#include "game/stage/grind_effect_2.h"
 #include "game/stage/dust_effect_braking.h"
+#include "game/stage/mp_sprite_task.h"
 #include "game/stage/player_controls.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks.h"
@@ -96,7 +96,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 
 struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
 {
-    TaskStrc_801F15C *ts;
+    MultiplayerSpriteTask *ts;
     struct Task *t;
     Sprite *s;
 
@@ -104,7 +104,7 @@ struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
         return NULL;
     }
 
-    t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+    t = CreateMultiplayerSpriteTask(x, y, 0xE8, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     ts = TASK_DATA(t);
 
     switch (p2) {
@@ -816,9 +816,9 @@ struct Task *sub_80129DC(s32 x, s32 y)
         result = NULL;
     } else {
         struct Task *t;
-        TaskStrc_801F15C *ts;
+        MultiplayerSpriteTask *ts;
         Sprite *s;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+        t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
@@ -1017,10 +1017,10 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
     if (IS_MULTI_PLAYER) {
         result = NULL;
     } else {
-        TaskStrc_801F15C *ts;
+        MultiplayerSpriteTask *ts;
         Sprite *s;
         struct Task *t;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+        t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.unk60, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
 
         ts->playerAnim = sCharStateAnimInfo[gPlayer.charState][0];

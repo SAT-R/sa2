@@ -1049,7 +1049,7 @@ static void UpdateExplosion(TA53Boss *boss)
     ExplosionPartsInfo info;
 
     if (Mod(gStageTime, 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     if ((gStageTime % 4u) == 0) {

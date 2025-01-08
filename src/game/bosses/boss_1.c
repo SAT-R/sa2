@@ -1206,7 +1206,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 
     if (Mod(boss->unkA8 + PseudoRandom32(), 13) == 0) {
-        m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_EXPLOSION);
     }
 
     s = &boss->body;
