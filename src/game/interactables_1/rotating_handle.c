@@ -144,7 +144,7 @@ static void Task_Idle(void)
     DisplaySprite(s);
 }
 
-// (95.57%) https://decomp.me/scratch/RaPDV
+// (95.52%) https://decomp.me/scratch/RaPDV
 NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void Task_Rotating())
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);

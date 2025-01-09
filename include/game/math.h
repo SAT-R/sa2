@@ -68,6 +68,7 @@ s16 sub_808558C(u16 a, u16 b, u8 c);
 u32 sub_80855C0(s32 a, s32 b, s32 c, u8 d);
 s32 sub_8085698(s32 a, s32 b, s32 c, u8 d, u8 e);
 s32 sub_8085654(s32, s32, s32, u8, u8);
+s16 sub_8085968(s16 *unk28, u16 param1);
 
 // used by boss 7
 u16 sub_80859F4(s16 *, u16);

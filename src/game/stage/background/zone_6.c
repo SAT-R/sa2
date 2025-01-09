@@ -109,15 +109,17 @@ void CreateStageBg_Zone6_Boss(void)
 }
 
 // (82.58%) https://decomp.me/scratch/tB3Bs
-NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D24C(u8 p0, s32 p1, u8 p2))
+// (85.82%) https://decomp.me/scratch/pNyvP
+NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D24C(u8 p0, s16 p1, u8 p2))
 {
     s16 r6;
     u16 *hOffsets;
-    s16 stageTime;
+    s32 stageTime;
     s32 stageTime2;
     s16 i;
     s16 r4;
     s32 sl;
+    s32 p1_2;
 
     gFlags |= FLAGS_4;
 
@@ -134,13 +136,10 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     stageTime = (gStageTime & 0x3FF);
     stageTime2 = ((gStageTime >> 1) & 0x3FF);
 
-#ifndef NON_MATCHING
-    p1 = (p1 * 2) + HALVE(p1);
-#else
-    p1 = (p1 * 2) + (p1 >> 2);
-#endif
+    // p1 *= 2.5
 
-    r6 = (DISPLAY_HEIGHT - 1) - p1;
+    p1_2 = p1;
+    r6 = (DISPLAY_HEIGHT - 1) - ((p1_2 * 2) + (p1_2 >> 1));
 
     if (r6 > (DISPLAY_HEIGHT - 1)) {
         r6 = (DISPLAY_HEIGHT - 1);
@@ -149,7 +148,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     if (p2 != 0) {
         s16 r2;
         // _0801D2CA
-        gBldRegs.bldAlpha = BLDALPHA_BLEND(16, (16 - (p1 >> 4)));
+        gBldRegs.bldAlpha = BLDALPHA_BLEND(16, (16 - (p1_2 >> 4)));
 
         for (r4 = 0; r4 < r6; r4++) {
             *hOffsets++ = 0;
@@ -159,7 +158,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
 
         while (r4 < (DISPLAY_HEIGHT - 1)) {
             // _0801D31C
-            s32 sin = SIN_24_8((r4 * 16 + stageTime2 + stageTime) & ONE_CYCLE) >> 1;
+            s32 sin = SIN_24_8(CLAMP_SIN_PERIOD(r4 * 16 + stageTime2 + stageTime)) >> 1;
             sin++;
             sin = (sin)-r4 * 2;
             *hOffsets++ = sin & 0xFF;
@@ -170,7 +169,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
                 *hOffsets++ = r0 & 0xFE;
             } else {
                 // _0801D3A0
-                s32 sin = (SIN_24_8((stageTime + r4 * 4) & ONE_CYCLE) >> 1) + 1;
+                s32 sin = (SIN_24_8(CLAMP_SIN_PERIOD(stageTime + r4 * 4)) >> 1) + 1;
                 sin = sin - r4;
                 *hOffsets++ = (stageTime2 + sin) & 0xFF;
             }
@@ -179,30 +178,29 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
         }
     } else {
         // _0801D3D6
-        gBldRegs.bldAlpha = BLDALPHA_BLEND(16, (16 - (p1 * 2)));
+        gBldRegs.bldAlpha = BLDALPHA_BLEND(16, (16 - (p1_2 >> 5)));
         r4 = 0;
 
-        if (r6 > 0) {
-            // _0801D3FC
-            for (; r4 < r6; r4++) {
-                s32 sin = SIN_24_8((r4 * 16 + stageTime2 + stageTime) & ONE_CYCLE) >> 1;
-                sin = (sin + 1) - r4 * 2;
-                *hOffsets++ = sin & 0xFF;
+        // _0801D3FC
+        for (; r4 < r6; r4++) {
+            s32 sin = SIN_24_8(CLAMP_SIN_PERIOD(r4 * 16 + stageTime2 + stageTime)) >> 1;
+            sin += 1;
+            sin = sin - r4 * 2;
+            *hOffsets++ = sin & 0xFF;
 
-                sin = SIN_24_8(((r4 * 4 + stageTime2) & ONE_CYCLE)) >> 1;
-                sin++;
-                sin = (sin)-r4 * 2;
-                *hOffsets++ = (stageTime2 + sin) & 0xFF;
-            }
+            sin = SIN_24_8((CLAMP_SIN_PERIOD(stageTime2 + r4 * 4))) >> 1;
+            sin++;
+            sin = (sin)-r4 * 2;
+            *hOffsets++ = (stageTime2 + sin) & 0xFF;
         }
+
         // _0801D44C
 
         while (r4 < (DISPLAY_HEIGHT - 1)) {
             *hOffsets++ = 0;
 
             if ((r4 - 15) < r6) {
-                s32 r0 = (((r4 - r6) - 15) << 3);
-                *hOffsets++ = (r0 - (r4 - 1)) & 0xFF;
+                *hOffsets++ = ((((r4 - r6) - 15) << 3) - (r4 - 1)) & 0xFF;
             } else {
                 *hOffsets++ = ((-r4 + 1) & 0xFF);
             }
@@ -228,7 +226,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
         b = (p0 * gUnknown_080D5C02[1][i][2]) >> 4;
         b &= 0x1F;
 
-        gBgPalette[(15 * 16) + i] = ((b << 10) + (g << 5) + (r << 0));
+        gBgPalette[15 * 16 + i] = ((b << 10) + (g << 5) + (r << 0));
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
