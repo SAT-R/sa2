@@ -139,7 +139,7 @@ def main():
         # https://shields.io/endpoint
         print(json.dumps({
             "schemaVersion": 1,
-            "label": "progress",
+            "label": "progress" if not args.matching else "matching",
             "message": f"{src_percent:.3g}%",
             "color": 'yellow',
         }))

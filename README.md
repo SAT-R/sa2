@@ -1,11 +1,14 @@
 # Sonic Advance 2
-[![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Contributors][contributors-badge]][contributors-link] [![Discord][discord-badge]][discord-link]
+[![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Decompilation Matching Progress][matching-progress-badge]][matching-progress-link] [![Contributors][contributors-badge]][contributors-link] [![Discord][discord-badge]][discord-link]
 
 [ci-status-link]: https://github.com/SAT-R/sa2/actions/workflows/build.yml
 [ci-badge]: https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg
 
 [progress-link]: https://github.com/SAT-R/sa2
 [progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json
+
+[matching-progress-link]: https://github.com/SAT-R/sa2
+[matching-progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json
 
 [contributors-link]: https://github.com/SAT-R/sa2/graphs/contributors
 [contributors-badge]: https://img.shields.io/github/contributors/SAT-R/sa2
