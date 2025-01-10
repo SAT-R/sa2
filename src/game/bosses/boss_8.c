@@ -102,7 +102,7 @@ static void TaskDestructor_SuperEggRoboZMain(struct Task *);
 static void Task_BossRunManagerMain(void);
 static void TaskDestructor_BossRunManager(struct Task *);
 
-static void Task_804AB24(void);
+void Task_804AB24(void);
 static void Task_804AD68(void);
 static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm);
 static void sub_804B43C(SuperEggRoboZ *boss, u8 p1);
@@ -110,10 +110,10 @@ static void sub_804B594(SuperEggRoboZ *boss, u8 p1);
 static void sub_804B734(SuperEggRoboZ *boss, u8 p1);
 static void sub_804B984(SuperEggRoboZ *boss, u8 p1);
 static void sub_804BAC0(SuperEggRoboZ *boss, u8 p1);
-static void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
+void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
 static void sub_804BE6C(SuperEggRoboZ *boss, u8 p1);
 static void sub_804C080(SuperEggRoboZ *boss);
-static void sub_804C240(SuperEggRoboZ *boss, u8 p1);
+void sub_804C240(SuperEggRoboZ *boss, u8 p1);
 static void sub_804C3AC(SuperEggRoboZ *boss);
 static void sub_804C5B8(SuperEggRoboZ *boss);
 static void sub_804C830(SuperEggRoboZ *boss);
@@ -121,7 +121,7 @@ static void sub_804CA08(SuperEggRoboZ *boss);
 static void sub_804CA70(SuperEggRoboZ *boss);
 static void Task_ShowResultsAndDelete(void);
 static void sub_804CC98(SuperEggRoboZ *boss);
-static void sub_804AE40(SuperEggRoboZ *boss);
+void sub_804AE40(SuperEggRoboZ *boss);
 static void Boss8_HitCockpit(SuperEggRoboZ *boss);
 static void sub_804C8F4(SuperEggRoboZ *boss);
 static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1);
@@ -891,7 +891,7 @@ static void Task_804A9D8(void)
 }
 
 // (99.89%) https://decomp.me/scratch/kiah8
-NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Task_804AB24(void))
+NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", void Task_804AB24(void))
 {
     s32 speed;
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
@@ -1020,7 +1020,7 @@ static void Task_804AD68(void)
 // (95.06%) https://decomp.me/scratch/of4k0
 // (98.77%) https://decomp.me/scratch/Kzx1m
 // (99.59%) https://decomp.me/scratch/IzRyM
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", static void sub_804AE40(SuperEggRoboZ *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", void sub_804AE40(SuperEggRoboZ *boss))
 {
     Sprite *s;
 
@@ -1260,7 +1260,7 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 //     ...
 // }
 // (93.51%) https://decomp.me/scratch/ecqNB
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", static bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
 {
     u8 result = 0;
     s32 sp04, ip;
@@ -1518,7 +1518,7 @@ static void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
 }
 
 // (81.31%) https://decomp.me/scratch/432q4
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", static void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 speed0;
@@ -1683,7 +1683,7 @@ static void sub_804C080(SuperEggRoboZ *boss)
 }
 
 // (87.37%) https://decomp.me/scratch/98Mjg
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc", static void sub_804C240(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc", void sub_804C240(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 x, y;

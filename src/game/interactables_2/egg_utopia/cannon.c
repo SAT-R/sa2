@@ -255,7 +255,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 // (68.07%) https://decomp.me/scratch/TDVLh
 // (72.09%) https://decomp.me/scratch/sgt5z
 // (87.28%) https://decomp.me/scratch/pAFRx
-NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", static bool32 sub_807E66C(Sprite_Cannon *cannon))
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
     s16 x;
     s16 y;

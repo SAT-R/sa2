@@ -227,9 +227,9 @@ typedef struct {
 } IntroActLetters; /* size: 0xC4 */
 
 static void Task_IntroControllerMain(void);
-static void Task_802F9F8(void);
+void Task_802F9F8(void);
 static void Task_IntroColorAnimation(void);
-static void Task_IntroZoneNameAndIconAnimations(void);
+void Task_IntroZoneNameAndIconAnimations(void);
 static void Task_IntroActLettersAnimations(void);
 static void Task_UpdateStageLoadingScreen(void);
 static void TaskDestructor_IntroController(struct Task *);

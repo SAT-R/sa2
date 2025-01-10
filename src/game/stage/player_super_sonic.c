@@ -32,7 +32,7 @@ static void sub_802C8A0(struct SuperSonic *sonic);
 static void sub_802C8EC(struct SuperSonic *);
 static void sub_802C92C(struct SuperSonic *sonic);
 static void sub_802C9B0(struct SuperSonic *sonic);
-static void sub_802BCCC(struct SuperSonic *sonic);
+void sub_802BCCC(struct SuperSonic *sonic);
 static u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
 static void sub_802C058(struct SuperSonic *sonic);
 static void sub_802C988(struct SuperSonic *sonic);
@@ -343,7 +343,7 @@ static void Task_802BC10(void)
 }
 
 // (99.25%) https://decomp.me/scratch/2dbbE
-NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", static void sub_802BCCC(struct SuperSonic *sonic))
+NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", void sub_802BCCC(struct SuperSonic *sonic))
 {
     s32 ssx, ssx2;
     u8 i;
