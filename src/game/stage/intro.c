@@ -547,13 +547,26 @@ static void Task_IntroControllerMain(void)
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
         p->unk6C = TRUE;
-        p->spriteInfoBody->s.frameFlags |= MOVESTATE_40000;
-        p->spriteInfoLimbs->s.frameFlags |= MOVESTATE_40000;
 
-        if (IS_MULTI_PLAYER) {
-            p->spriteInfoBody->s.palId = SIO_MULTI_CNT->id;
-        } else {
-            p->spriteInfoBody->s.palId = 0;
+        // These are null when super sonic
+#ifdef BUG_FIX
+        if (p->spriteInfoBody != NULL)
+#endif
+        {
+            p->spriteInfoBody->s.frameFlags |= MOVESTATE_40000;
+
+#ifdef BUG_FIX
+            if (p->spriteInfoLimbs != NULL)
+#endif
+            {
+                p->spriteInfoLimbs->s.frameFlags |= MOVESTATE_40000;
+            }
+
+            if (IS_MULTI_PLAYER) {
+                p->spriteInfoBody->s.palId = SIO_MULTI_CNT->id;
+            } else {
+                p->spriteInfoBody->s.palId = 0;
+            }
         }
     }
 
