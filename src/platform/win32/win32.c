@@ -3,6 +3,14 @@
 
 #include "global.h"
 #include "core.h"
+#include "gba/io_reg.h"
+
+#if (RENDERER == RENDERER_OPENGL)
+#include <GL/gl.h>
+#include "platform/shared/opengl.h"
+#endif
+
+#include "platform/shared/input.h"
 
 extern void GameInit(void);
 
@@ -10,6 +18,10 @@ DWORD WINAPI GameThread(void *pThreadParam);
 LRESULT CALLBACK Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 static void Win32_ProcessPendingMessages(HWND window);
 static RECT Win32_GetWindowDimension(HWND Window);
+
+#if (RENDERER == RENDERER_OPENGL)
+static void Win32_InitOpenGL(HWND window);
+#endif
 
 static u16 ALIGNED(8) sImageBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {
     RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN,
@@ -19,6 +31,7 @@ static BITMAPINFO sBMInfo = { 0 };
 static bool32 sRunning = TRUE;
 static HWND sWindowHandle = 0;
 static HDC sDeviceContext = 0;
+static u16 sInputKeys = 0;
 
 #define ENABLE_RESIZE TRUE
 
@@ -79,6 +92,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
         if (sWindowHandle) {
             sDeviceContext = GetDC(sWindowHandle);
 
+#if (RENDERER == RENDERER_OPENGL)
+            Win32_InitOpenGL(sWindowHandle);
+#endif
+
             sBMInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
             sBMInfo.bmiHeader.biWidth = DISPLAY_WIDTH;
             sBMInfo.bmiHeader.biHeight = -DISPLAY_HEIGHT; // negative biHeight: bottom->down image
@@ -90,6 +107,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
             sBMInfo.bmiHeader.biYPelsPerMeter = 0;
             sBMInfo.bmiHeader.biClrUsed = 0;
             sBMInfo.bmiHeader.biClrImportant = 0;
+
+            timeBeginPeriod(1);
 
             Win32_ProcessPendingMessages(sWindowHandle);
 
@@ -105,12 +124,18 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
 
 #if 01
             REG_KEYINPUT &= ~START_BUTTON;
-            // while (sRunning)
-            {
+            while (sRunning) {
+                memset(sImageBuffer, 0, sizeof(sImageBuffer));
+
                 gFlags |= 0x4000;
                 EngineMainLoop();
-                REG_KEYINPUT ^= (A_BUTTON | START_BUTTON);
-                REG_KEYINPUT |= (DPAD_RIGHT);
+                //    REG_KEYINPUT ^= (A_BUTTON | START_BUTTON);
+
+                // NOTE: This is an OR because sInputKeys can get set
+                //       through keyboard events.
+                sInputKeys |= GetXInputKeys();
+
+                REG_KEYINPUT = ~sInputKeys;
             }
 #else
             HANDLE GameThreadHandle = CreateThread(NULL, 0, GameThread, NULL, 0, &threadId);
@@ -134,10 +159,50 @@ DWORD WINAPI GameThread(void *pThreadParam)
     }
 }
 
+#if (RENDERER == RENDERER_OPENGL)
+// From "Handmade Hero 235 - Initializing OpenGL on Windows"
+// https://www.youtube.com/watch?v=5Klc9RZPG7M
+static void Win32_InitOpenGL(HWND window)
+{
+    HDC deviceContext = GetDC(window);
+
+    PIXELFORMATDESCRIPTOR desiredPixelFormat = {};
+    PIXELFORMATDESCRIPTOR suggestedPixelFormat;
+
+    // TODO: Find out if double-buffering is necessary for us!
+    desiredPixelFormat.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    desiredPixelFormat.nVersion = 1;
+    desiredPixelFormat.dwFlags = (PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER);
+    desiredPixelFormat.cColorBits = 24;
+    desiredPixelFormat.cAlphaBits = 8;
+    desiredPixelFormat.iLayerType = PFD_MAIN_PLANE;
+
+    int suggestedPixelFormatIndex = ChoosePixelFormat(deviceContext, &desiredPixelFormat);
+    DescribePixelFormat(deviceContext, suggestedPixelFormatIndex, sizeof(PIXELFORMATDESCRIPTOR), &suggestedPixelFormat);
+    SetPixelFormat(deviceContext, suggestedPixelFormatIndex, &suggestedPixelFormat);
+
+    // RC = "Rendering Context"
+    HGLRC openGLRC = wglCreateContext(deviceContext);
+
+    if (wglMakeCurrent(deviceContext, openGLRC)) {
+        OpenGL_OnInit();
+    } else {
+        // LOG fail
+    }
+
+    ReleaseDC(window, deviceContext);
+}
+#endif
+
 static void Win32_DisplayBufferInWindow(HDC deviceContext, int windowWidth, int windowHeight)
 {
+#if (RENDERER == RENDERER_OPENGL)
+    OpenGL_Render(sImageBuffer, windowWidth, windowHeight);
+    SwapBuffers(deviceContext);
+#else
     StretchDIBits(deviceContext, 0, 0, windowWidth, windowHeight, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, sImageBuffer, &sBMInfo,
                   DIB_RGB_COLORS, SRCCOPY);
+#endif
 }
 
 LRESULT CALLBACK Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
@@ -179,11 +244,66 @@ LRESULT CALLBACK Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, 
     return result;
 }
 
+static u16 Win32_KeyboardKeyToGameKey(char key)
+{
+    switch (key) {
+        case 'C': {
+            return A_BUTTON;
+        } break;
+
+        case 'X': {
+            return B_BUTTON;
+        } break;
+
+        case VK_RETURN: {
+            return START_BUTTON;
+        } break;
+
+        case VK_BACK: {
+            return SELECT_BUTTON;
+        } break;
+
+        case VK_LEFT: {
+            return DPAD_LEFT;
+        } break;
+
+        case VK_UP: {
+            return DPAD_UP;
+        } break;
+
+        case VK_RIGHT: {
+            return DPAD_RIGHT;
+        } break;
+
+        case VK_DOWN: {
+            return DPAD_DOWN;
+        } break;
+
+        case 'S': {
+            return L_BUTTON;
+        } break;
+
+        case 'D': {
+            return R_BUTTON;
+        } break;
+    }
+
+    return 0;
+}
+
 static void Win32_ProcessPendingMessages(HWND window)
 {
     MSG message;
     while (PeekMessage(&message, 0, 0, 0, PM_REMOVE)) {
         switch (message.message) {
+            case WM_KEYUP: {
+                sInputKeys &= ~Win32_KeyboardKeyToGameKey(message.wParam);
+            } break;
+
+            case WM_KEYDOWN: {
+                sInputKeys |= Win32_KeyboardKeyToGameKey(message.wParam);
+            } break;
+
             case WM_QUIT: {
                 printf("Closing");
                 sRunning = FALSE;
@@ -197,19 +317,131 @@ static void Win32_ProcessPendingMessages(HWND window)
     }
 }
 
+// Converts GBA -> Win32 RGB value
+#define RGB_SHIFT(value) (((value >> 10) & 0x1F) | (value & 0x3E0) | (((value & 0x1F) << 10)))
+
+void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
+{
+    if (sprite->graphics.src == NULL)
+        return;
+
+#if (RENDERER == RENDERER_OPENGL)
+        // TEMP - Currently the display buffer gets drawn in software, but we should load the assets as a textures and let OpenGL render
+        // everything
+        //  OpenGL_DisplaySprite(sprite, oamPaletteNum);
+        //  return;
+#endif
+
+    const SpriteOffset *dims = sprite->dimensions;
+
+    bool32 xFlip = SPRITE_FLAG_GET(sprite, X_FLIP);
+    bool32 yFlip = SPRITE_FLAG_GET(sprite, Y_FLIP);
+
+    // printf("Sprite: %d\n", sprite->graphics.anim);
+
+    s32 x, y, sprWidth, sprHeight;
+
+    x = sprite->x;
+    y = sprite->y;
+
+    {
+        // TEMP - from sprite.c
+        sprWidth = dims->width;
+        sprHeight = dims->height;
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+                x -= dims->width / 2;
+                y -= dims->height / 2;
+                sprWidth *= 2;
+                sprHeight *= 2;
+            }
+        } else {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
+                y -= sprHeight - dims->offsetY;
+            } else {
+                y -= dims->offsetY;
+            }
+
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+                x -= sprWidth - dims->offsetX;
+            } else {
+                x -= dims->offsetX;
+            }
+        }
+    }
+
+    s32 tempX = x;
+    s32 tempY = y;
+
+    u16 widthInTiles = dims->width >> 3;
+
+    for (int frameY = 0; frameY < dims->height; frameY++) {
+        s32 finalY = (tempY + frameY);
+
+        if (finalY < 0)
+            continue;
+
+        if (finalY >= DISPLAY_HEIGHT)
+            break;
+
+        for (int frameX = 0; frameX < dims->width; frameX++) {
+
+            s32 finalX = (tempX + frameX);
+
+            if (finalX < 0)
+                continue;
+
+            if (finalX >= DISPLAY_WIDTH)
+                break;
+
+            int bufferPixelIndex = finalY * DISPLAY_WIDTH + finalX;
+            int imagePixelIndex = frameY * dims->width + frameX;
+
+            if (bufferPixelIndex >= 0 && bufferPixelIndex < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
+                u16 *pal = &PLTT[oamPaletteNum * 16 + (BG_PLTT_SIZE / 2)];
+                u16 tileNumX = (frameX >> 3);
+                u16 tileNumY = (frameY >> 3);
+                u16 tileNum = tileNumY * widthInTiles + tileNumX;
+                u32 offset = tileNum * TILE_SIZE_4BPP;
+
+                u8 *tile = &((u8 *)sprite->graphics.src)[offset];
+
+                u8 colorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7));
+
+                bool8 doShift = (colorIndex & 1);
+                u8 colorId = tile[colorIndex >> 1] & (0xF << (doShift * 4));
+                colorId >>= doShift * 4;
+                if (colorId != 0)
+                    sImageBuffer[bufferPixelIndex] = RGB_SHIFT(pal[colorId]);
+            }
+        }
+    }
+}
+
 void VBlankIntrWait()
 {
-    while (sRunning) {
+    // while (sRunning)
+    {
         // NOTE: This wouldn't work here with multiple threads, because PeekMessage()
         //       only gets messages in the thread the specified window was created in.
         Win32_ProcessPendingMessages(sWindowHandle);
         RECT clientRect;
         GetClientRect(sWindowHandle, &clientRect);
-        Win32_DisplayBufferInWindow(sDeviceContext, clientRect.right - clientRect.left, clientRect.bottom - clientRect.top);
-        Sleep(16);
         static u8 test = 0;
+
         sImageBuffer[test++] = RGB_BLACK;
         sImageBuffer[test] = RGB_GREEN;
+        Win32_DisplayBufferInWindow(sDeviceContext, clientRect.right - clientRect.left, clientRect.bottom - clientRect.top);
+
+        // TODO: Remove Sleep, use high-resolution timer instead!
+        Sleep(10);
+
+#if (RENDERER == RENDERER_OPENGL)
+        // TODO: Don't do this here!!!
+        // This should be called in src/platform/shared/opengl.c
+        glClearColor(0.0, 0.0, 0.0, 0.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+#endif
     }
 }
 

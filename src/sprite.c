@@ -7,6 +7,11 @@
 #include "lib/m4a/m4a.h"
 #include "data/sprite_data.h"
 #include "animation_commands.h"
+#include "platform/platform.h"
+
+#if !PLATFORM_GBA && !PLATFORM_SDL
+extern void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum);
+#endif
 
 extern const AnimationCommandFunc animCmdTable[];
 
@@ -533,6 +538,7 @@ void DisplaySprite(Sprite *sprite)
     const u16 *oamData;
 
     if (sprite->dimensions != (void *)-1) {
+
         const SpriteOffset *sprDims = sprite->dimensions;
 
         sprite->numSubFrames = sprDims->numSubframes;
@@ -592,6 +598,15 @@ void DisplaySprite(Sprite *sprite)
                 oam->all.attr0 &= 0xFE00;
 
                 oam->all.attr2 += sprite->palId << 12;
+
+#if !PLATFORM_GBA && !PLATFORM_SDL
+                // TEMP
+                // Quick hack for getting output in OpenGL test
+                // The whole function call should be replaced by this!
+                Platform_DisplaySprite(sprite, oam->split.paletteNum);
+                return;
+#endif
+
                 if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
                     oam->all.attr0 |= 0x100;
                     if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
@@ -799,7 +814,7 @@ void CopyOamBufferToOam(void)
     u8 i = 0;
     s32 r3;
 
-    for (r3 = 0; r3 < 32; r3++) {
+    for (r3 = 0; r3 < (s32)ARRAY_COUNT(gUnknown_03001850); r3++) {
         s8 index = gUnknown_03001850[r3];
 
         while (index != -1) {
