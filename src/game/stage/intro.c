@@ -256,7 +256,7 @@ struct Task *SetupStageIntro(void)
     gStageFlags |= STAGE_FLAG__ACT_START;
     gStageFlags |= STAGE_FLAG__100;
 
-    // These are null when super sonic
+    // NOTE: null when Super Sonic
 #ifdef BUG_FIX
     if (gPlayer.spriteInfoBody)
 #endif
@@ -548,7 +548,7 @@ static void Task_IntroControllerMain(void)
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
         p->unk6C = TRUE;
 
-        // These are null when super sonic
+        // NOTE: null when Super Sonic
 #ifdef BUG_FIX
         if (p->spriteInfoBody != NULL)
 #endif
