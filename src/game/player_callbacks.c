@@ -603,14 +603,8 @@ void Player_Sonic_DropDash(Player *p)
     }
 
     // Get Speed
-    s32 baseVelocity = p->speedGroundX;
-    if (baseVelocity < 0) {
-        baseVelocity = -baseVelocity;
-    }
-
-    baseVelocity /= 4;
-
-    s32 speed = 8 + p->dropdashAccel + baseVelocity;
+    s32 baseVelocity = ABS(p->speedGroundX / 4);
+    s32 speed = Q(8.0) + p->dropdashAccel + baseVelocity;
 
     // Get Direction
     if (p->heldInput & DPAD_SIDEWAYS) {
