@@ -6848,7 +6848,7 @@ void Player_802A3B8(Player *p) { Player_DoGenericPhysics(p); }
 
 void Player_802A3C4(Player *p)
 {
-    Player_DoGenericPhysicsWithInput(p);
+    Player_DoGenericPhysicsWithAirInput(p);
 
     if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         PLAYERFN_SET(Player_SpinAttack);
