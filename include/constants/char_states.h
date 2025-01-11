@@ -125,5 +125,6 @@
 #define CHARSTATE_UNUSED_N                    113
 #define CHARSTATE_AMY_MID_AIR_HAMMER_SWIRL    114 // might be SA1 version?
 #define CHARSTATE_COUNT                       115
+#define CHARSTATE_SONIC_DROPDASH_CHARGE       116
 
 #endif // GUARD_SA2_CHAR_STATES_H
