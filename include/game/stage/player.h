@@ -26,7 +26,7 @@ void sub_80232D0(Player *);
 void sub_8023610(Player *);
 void Player_TouchGround(Player *p);
 void Player_80261D8(Player *p);
-void sub_8027EF0(Player *p);
+void Player_DoGenericPhysicsWithInput(Player *p);
 void sub_8028204(Player *p);
 void sub_80282EC(Player *p);
 void sub_80283C4(Player *p);

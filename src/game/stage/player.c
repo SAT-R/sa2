@@ -68,7 +68,7 @@ void Player_8026BCC(Player *);
 
 s32 sub_8029BB8(Player *p, u8 *p1, s32 *out);
 
-void Player_8025A0C(Player *p);
+void Player_SpinAttack(Player *p);
 
 void Player_Idle(Player *);
 void Player_8025AB8(Player *);
@@ -3385,7 +3385,7 @@ void CallPlayerTransition(Player *p)
                 PLAYERFN_SET(Player_TouchGround);
             } break;
             case PLTRANS_PT2 - 1: {
-                PLAYERFN_SET(Player_8025A0C);
+                PLAYERFN_SET(Player_SpinAttack);
             } break;
             case PLTRANS_INIT_JUMP - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
@@ -4194,7 +4194,7 @@ void Player_Crouch(Player *p)
     }
 }
 
-void Player_8025A0C(Player *p)
+void Player_SpinAttack(Player *p)
 {
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((p->moveState & MOVESTATE_IN_AIR)) {
@@ -4547,7 +4547,7 @@ void Player_Spindash(Player *p)
 
         p->speedGroundX = speed;
 
-        gPlayer.callback = Player_8025A0C;
+        gPlayer.callback = Player_SpinAttack;
 
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
@@ -5461,7 +5461,8 @@ void Player_8027D3C(Player *p)
     }
 }
 
-void sub_8027EF0(Player *p)
+// Generic function for movement and collision, has aerial input, used in character aerial/landing states
+void Player_DoGenericPhysicsWithAirInput(Player *p)
 {
     if (p->moveState & MOVESTATE_IN_AIR) {
         sub_8023610(p);
@@ -5485,7 +5486,8 @@ void sub_8027EF0(Player *p)
     }
 }
 
-void sub_802808C(Player *p)
+// Generic function for movement and collision that doesn't allow player influence
+void Player_DoGenericPhysics(Player *p)
 {
     if (p->moveState & MOVESTATE_IN_AIR) {
         sub_80232D0(p);
@@ -6746,7 +6748,7 @@ bool32 Player_TryCrouchOrSpinAttack(Player *p)
             return TRUE;
         } else if (((u16)(p->speedGroundX + (Q(0.5) - 1)) > Q(1.0) - 2)
                    && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
-            PLAYERFN_SET(Player_8025A0C);
+            PLAYERFN_SET(Player_SpinAttack);
             m4aSongNumStart(SE_SPIN_ATTACK);
             return TRUE;
         }
@@ -6799,7 +6801,7 @@ void Player_802A258(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
         if (p->moveState & MOVESTATE_4)
-            Player_8025A0C(p);
+            Player_SpinAttack(p);
         else
             Player_TouchGround(p);
     } else {
@@ -6846,10 +6848,10 @@ void Player_802A3B8(Player *p) { sub_802808C(p); }
 
 void Player_802A3C4(Player *p)
 {
-    sub_8027EF0(p);
+    Player_DoGenericPhysicsWithInput(p);
 
     if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
-        PLAYERFN_SET(Player_8025A0C);
+        PLAYERFN_SET(Player_SpinAttack);
 }
 
 void Player_CameraShift(Player *p) { Player_CameraShift_inline(p); }
