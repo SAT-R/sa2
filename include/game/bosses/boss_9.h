@@ -36,7 +36,7 @@ typedef struct TA53_unk1C {
     /* 0x0C */ s16 unkC[4];
     /* 0x14 */ u16 unk14;
     /* 0x16 */ u16 unk16;
-    /* 0x18 */ s32 unk18;
+    /* 0x18 */ u32 unk18;
     /* 0x1C */ s16 **unk1C;
 
     // Maybe a direction vector?

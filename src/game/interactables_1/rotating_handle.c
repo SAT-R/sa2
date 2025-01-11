@@ -32,7 +32,7 @@ typedef struct {
 
 static void Task_AfterJump(void);
 static void Task_Idle(void);
-static void Task_Rotating(void);
+void Task_Rotating(void);
 
 void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -144,8 +144,8 @@ static void Task_Idle(void)
     DisplaySprite(s);
 }
 
-// (95.57%) https://decomp.me/scratch/RaPDV
-NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void Task_Rotating())
+// (95.52%) https://decomp.me/scratch/RaPDV
+NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Rotating())
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;

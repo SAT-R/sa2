@@ -84,6 +84,7 @@ jobs:
           python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
           python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
           python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
+          python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa2-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
           cp sa2.map gh-pages/maps/${GITHUB_SHA}.map
 

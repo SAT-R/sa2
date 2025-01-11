@@ -2363,18 +2363,23 @@ void sub_804FF9C(struct TA53_unk654 *unk654)
     sub_804F5BC(unk654);
 }
 
-#if 01
-// (97.04%) https://decomp.me/scratch/dsxMM
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050030.inc", bool8 sub_8050030(struct TA53_unk48 *unk48))
+bool8 sub_8050030(struct TA53_unk48 *unk48)
 {
-    u8 r3, i;
-    u32 r2;
+
     s16 **ip = unk48->unk34;
-    s16 *r4 = (s16 *)&unk48->unk4;
-    u16 *unk3A = &unk48->unk3A[0];
+    s16 *r4 = unk48->unk4;
+    u16 *unk3A = unk48->unk3A;
     u16 sb = unk48->unk2E;
+
     bool8 result = FALSE;
+
     u32 r7;
+    u8 r3, i;
+#ifndef NON_MATCHING
+    register u32 r2 asm("r2");
+#else
+    u32 r2;
+#endif
 
     r2 = (unk48->unk30 >> 12);
     r3 = r2 + 1;
@@ -2382,31 +2387,35 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050030.inc", bool8 sub_80500
     if (r3 > 7) {
         result = TRUE;
     }
-    r3 &= 0x7;
 
-    r7 = (unk48->unk30 & 0xFFF);
-    r2 &= 0x7;
+#ifndef NON_MATCHING
+    {
+        register u32 r0 asm("r0");
+        u32 r1;
+        r1 = 7;
+        r0 = 7;
+        asm("" ::"r"(r1));
+        asm("" ::"r"(r0));
+        r3 &= r0;
 
-    if (r2 != (((unk48->unk30 - unk48->unk2C) >> 12) & 0x7)) {
-        s16 *pData;
-        s16 *newR4;
-        i = 0;
-        newR4 = r4;
+        r7 = (unk48->unk30 & 4095);
+        r2 &= r1;
+    }
+#else
+    r3 &= 7;
+    r7 = (unk48->unk30 & 4095);
+    r2 &= 7;
+#endif
 
-        for (; i < 5; i++) {
-            // _08050080
-            r4[0] = r4[1];
-            r4++;
-            r4[0] = r4[1];
-            r4++;
-            r4[0] = r4[1];
-            r4++;
-
-            pData = *ip++;
-            *r4++ = pData[r3];
+    if (r2 != (((unk48->unk30 - unk48->unk2C) >> 12) & 7)) {
+        for (i = 0; i < 5; i++) {
+            (r4++)[0] = r4[1];
+            (r4++)[0] = r4[1];
+            (r4++)[0] = r4[1];
+            (r4++)[0] = (*ip++)[r3];
         }
 
-        r4 = newR4;
+        r4 = unk48->unk4;
     }
 
     for (i = 0; i < 5; i++) {
@@ -2418,55 +2427,64 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050030.inc", bool8 sub_80500
 
     return result;
 }
-END_NONMATCH
-#endif
 
-// (97.13%) https://decomp.me/scratch/ymnVO
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc", bool8 sub_8050104(struct TA53_unk1C *unk1C))
+bool8 sub_8050104(struct TA53_unk1C *unk1C)
 {
-    u8 r3, i;
-    u32 r2;
     s16 **ip = unk1C->unk1C;
-    s16 *r4 = (s16 *)&unk1C->unk4;
-    u16 *unk3A = (void *)&unk1C->unk20;
+    s16 *r4 = unk1C->unk4;
+    s16 *unk3A = &unk1C->unk20;
     u16 sb = unk1C->unk16;
     bool8 result = FALSE;
-    u16 r7;
 
-    r2 = ((u32)unk1C->unk18 >> 12);
+    u16 r7;
+    u8 r3, i;
+
+#ifndef NON_MATCHING
+    register u32 r2 asm("r2");
+#else
+    u32 r2;
+#endif
+
+    r2 = unk1C->unk18 >> 12;
     r3 = r2 + 1;
 
     if (r3 > 7) {
         result = TRUE;
     }
-    r3 &= 0x7;
 
-    r7 = (unk1C->unk18 & 0xFFF);
-    r2 &= 0x7;
+#ifndef NON_MATCHING
+    {
 
-    if (r2 != (((u32)(unk1C->unk18 - unk1C->unk14) >> 12) & 0x7)) {
-        s16 *pData;
-        s16 *newR4;
-        i = 0;
-        newR4 = r4;
+        register u32 r0 asm("r0");
+        u32 r1;
+        r1 = 7;
+        r0 = 7;
+        asm("" ::"r"(r1));
+        asm("" ::"r"(r0));
+        r3 &= r0;
 
-        for (; i < 2; i++) {
-            r4[0] = r4[1];
-            r4++;
-            r4[0] = r4[1];
-            r4++;
-            r4[0] = r4[1];
-            r4++;
+        r7 = (unk1C->unk18 & 4095);
+        r2 &= r1;
+    }
+#else
+    r3 &= 7;
+    r7 = (unk1C->unk18 & 4095);
+    r2 &= 7;
+#endif
 
-            pData = *ip++;
-            *r4++ = pData[r3];
+    if (r2 != (((u32)(unk1C->unk18 - unk1C->unk14) >> 12) & 7)) {
+        for (i = 0; i < 2; i++) {
+            (r4++)[0] = r4[1];
+            (r4++)[0] = r4[1];
+            (r4++)[0] = r4[1];
+            (r4++)[0] = (*ip++)[r3];
         }
 
-        r4 = newR4;
+        r4 = unk1C->unk4;
     }
 
     for (i = 0; i < 2; i++) {
-        *unk3A++ = sub_80859F4(&r4[i * 4], r7);
+        *unk3A++ = sub_8085968(&r4[i * 4], r7);
     }
 
     unk1C->unk14 = I((unk1C->unk14 - sb) * 250) + sb;
@@ -2474,7 +2492,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc", bool8 sub_80501
 
     return result;
 }
-END_NONMATCH
 
 void sub_80501D4(TA53Boss *boss)
 {

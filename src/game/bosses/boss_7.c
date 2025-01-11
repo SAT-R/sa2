@@ -87,7 +87,7 @@ static void sub_8048654(EggFrog *);
 static void sub_8048F44(void);
 static void sub_8048D78(EggFrog *);
 static void sub_804928C(EggFrog *);
-static bool8 sub_8048C7C(EggFrog *);
+bool8 sub_8048C7C(EggFrog *);
 static void sub_80493F8(EggFrog *, s32 x, s32 y, u8);
 static void sub_804920C(EggFrog *);
 static void sub_80494EC(void);
@@ -842,7 +842,7 @@ static void sub_8048BF0(EggFrog *boss)
 
 // https://decomp.me/scratch/aDy46
 // 98.5%, some register hacks get it very close. All instructions match
-NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc", static bool8 sub_8048C7C(EggFrog *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc", bool8 sub_8048C7C(EggFrog *boss))
 {
     const u16 **unk60 = (void *)boss->unk60;
     s16 *unk28 = boss->unk28;

@@ -116,9 +116,9 @@ static void Task_AeroEggBombHitGround(void);
 static void sub_8041B44(AeroEgg *boss);
 static void sub_8041880(AeroEgg *boss);
 static void sub_8041A08(AeroEgg *boss);
-static void sub_8041D34(AeroEgg *boss);
+void sub_8041D34(AeroEgg *boss);
 static void AeroEgg_CreateBombIfReady(AeroEgg *boss);
-static void AeroEgg_InitPartsDefeated(AeroEgg *boss);
+void AeroEgg_InitPartsDefeated(AeroEgg *boss);
 static bool32 sub_80423EC(AeroEgg *boss);
 static void sub_80424EC(AeroEgg *boss);
 static void sub_8042560(AeroEgg *boss);
@@ -485,7 +485,7 @@ static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 }
 
 // (93.54%) https://decomp.me/scratch/PPILk
-NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", static void sub_8041D34(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     s32 res;
@@ -619,7 +619,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", static void sub
 END_NONMATCH
 
 // (99.64%) https://decomp.me/scratch/WJcpn
-NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc", static void AeroEgg_InitPartsDefeated(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc", void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
     Sprite *s;
     AeroEggSub *sub = &boss->sub;

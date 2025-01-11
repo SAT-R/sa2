@@ -49,7 +49,7 @@ static void TaskDestructor_PlatformThin(struct Task *);
 static void Task_PlatformBreakParticlesMain(void);
 static void TaskDestructor_PlatformBreakParticles(struct Task *);
 
-static void CreatePlatformBreakParticles(s16, s16);
+void CreatePlatformBreakParticles(s16, s16);
 static u32 sub_80111F0(Sprite *, s32, s32, Player *);
 
 static const ALIGNED(4) u16 sPlatformThinAnimations[][3] = {
@@ -211,7 +211,7 @@ static void Task_PlatformThinMain(void)
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreakParticles.inc",
-         static void CreatePlatformBreakParticles(s16 x, s16 y))
+         void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     Platform_D1C *platform = TASK_DATA(t);
