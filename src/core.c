@@ -720,7 +720,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
-#if (RENDERER != RENDERER_OPENGL)
+#if (RENDERER == RENDERER_SOFTWARE)
                         DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), COPY_CHUNK_SIZE);
 #endif
                         graphics->size -= COPY_CHUNK_SIZE;
@@ -735,7 +735,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
-#if (RENDERER != RENDERER_OPENGL)
+#if (RENDERER == RENDERER_SOFTWARE)
                         DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), graphics->size);
 #endif
                     }
