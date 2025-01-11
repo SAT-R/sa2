@@ -88,7 +88,7 @@ def parse_map(non_matching_funcs):
                 if len(arr) == 2 and arr[1] != '':  # It is actually a symbol
 
                     if prev_symbol in non_matching_funcs:
-                        non_matching_funcs.remove(prev_symbol)
+                        # non_matching_funcs.remove(prev_symbol)
                         # Calculate the length for non matching function
                         non_matching += int(arr[0], 16) - prev_addr
 
