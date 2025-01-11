@@ -11,7 +11,6 @@
 #include "game/stage/player_controls.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks.h"
-#include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
 
 #include "game/stage/collision.h"
 #include "game/stage/player.h"
@@ -573,68 +572,13 @@ void Player_Sonic_HomingAttack(Player *p)
     }
 }
 
-void Player_Sonic_InitDropDash(Player *p)
-{
-    // Enter the drop dash charge state
-    p->charState = CHARSTATE_SONIC_DROPDASH_CHARGE;
-    p->dropdashAccel = Q(0);
-    PLAYERFN_SET_AND_CALL(Player_Sonic_DropDashCharge, p);
-    m4aSongNumStart(SE_SPIN_ATTACK);
-}
-
-void Player_Sonic_DropDashCharge(Player *p)
-{
-    // Increment Dropdash accelleration
-    p->dropdashAccel = MAX(p->dropdashAccel + Q(0.2), Q(4));
-
-    sub_8027EF0(p);
-
-    if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        Player_Sonic_DropDash(p);
-    }
-}
-
-void Player_Sonic_DropDash(Player *p)
-{
-
-    // Check if drop dash is doable
-    if (!(p->heldInput & gPlayerControls.jump) || !(p->charState == CHARSTATE_SONIC_DROPDASH_CHARGE)) {
-        return;
-    }
-
-    // Get Speed
-    s32 baseVelocity = p->speedGroundX;
-    if (baseVelocity < 0) {
-        baseVelocity = -baseVelocity;
-    }
-
-    baseVelocity /= 4;
-
-    s32 speed = 8 + p->dropdashAccel + baseVelocity;
-
-    // Get Direction
-    if (p->heldInput & DPAD_SIDEWAYS) {
-        speed = (p->heldInput & DPAD_LEFT ? -speed : speed);
-    } else if (!(gPlayer.spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_X_FLIP))
-        speed = -speed;
-
-    // set state to roll
-    PLAYERFN_SET(Player_8025A0C);
-
-    // Set Speed and roll state
-    m4aSongNumStart(SE_SPIN_DASH_RELEASE);
-    CreateSpindashDustEffect();
-    p->speedGroundX = speed;
-    p->dropdashAccel = 0;
-}
-
 bool32 Player_Sonic_TryForwardThrust(Player *p)
 {
     if (p->character == CHARACTER_SONIC) {
-        // if (p->unk71 == 1) {
-        Player_SonicForwardThrust(p);
-        return TRUE;
-        // }
+        if (p->unk71 == 1) {
+            Player_SonicForwardThrust(p);
+            return TRUE;
+        }
     }
 
     return FALSE;

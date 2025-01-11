@@ -335,7 +335,6 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_UNUSED_J] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_UNUSED_K] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_UNUSED_L] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_SONIC_DROPDASH_CHARGE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SONIC_FORWARD_THRUST] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SONIC_CATCHING_CREAM] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_37, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SONIC_CAUGHT_CREAM] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_37, CHARACTER_SHARED_ANIM), 1 },
@@ -4371,7 +4370,7 @@ void Player_Jumping(Player *p)
 
     if (p->moveState & MOVESTATE_100) {
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-            if (Player_TryMidAirAction(p))
+            if (Player_Sonic_TryForwardThrust(p) || Player_TryMidAirAction(p))
                 return;
 
         // Caps the jump force if the player lets go of the jump button
@@ -4491,7 +4490,7 @@ void Player_80261D8(Player *p)
         sub_8023610(p);
 
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->moveState & MOVESTATE_100)) {
-            if (Player_TryMidAirAction(p))
+            if (Player_Sonic_TryForwardThrust(p) || Player_TryMidAirAction(p))
                 return;
         }
     }
@@ -6071,9 +6070,16 @@ bool32 Player_TryMidAirAction(Player *p)
         if (p->frameInput & gPlayerControls.jump) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
-                    // return Player_Sonic_TryForwardThrust(p);
-                    Player_Sonic_InitDropDash(p);
-                    return TRUE;
+                    if (!IS_BOSS_STAGE(gCurrentLevel) && gHomingTarget.squarePlayerDistance < SQUARE(128)) {
+                        Player_Sonic_InitHomingAttack(p);
+                        return TRUE;
+                    } else {
+                        p->moveState |= MOVESTATE_20000000;
+                        p->charState = CHARSTATE_SOME_ATTACK;
+                        Player_SonicAmy_InitSkidAttackGfxTask(I(p->qWorldX), I(p->qWorldY), 1);
+                        song = SE_SONIC_INSTA_SHIELD;
+                        goto Player_TryMidAirAction_PlaySfx;
+                    }
                 } break;
 
                 case CHARACTER_CREAM: {
@@ -6107,15 +6113,6 @@ bool32 Player_TryMidAirAction(Player *p)
                     // TODO / BUG?
                     // there's no return TRUE; for Amy
                 } break;
-            }
-        }
-
-        if (p->frameInput & gPlayerControls.trick) {
-            switch (p->character) {
-                case CHARACTER_SONIC: {
-                    Player_Sonic_TryForwardThrust(p);
-                    return TRUE;
-                }
             }
         }
     }

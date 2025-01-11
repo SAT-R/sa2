@@ -112,7 +112,6 @@ typedef struct Player_ {
     /* 0x24 */ u8 rotation;
     /* 0x25 */ u8 unk25;
     /* 0x26 */ s16 spindashAccel;
-    s16 dropdashAccel;
     /* 0x28 */ u8 unk28;
     /* 0x29 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
