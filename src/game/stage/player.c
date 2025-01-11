@@ -6844,7 +6844,7 @@ void Player_InitDashRing(Player *p)
 
 void Player_InitIceSlide(Player *p) { Player_InitIceSlide_inline(p); }
 
-void Player_802A3B8(Player *p) { sub_802808C(p); }
+void Player_802A3B8(Player *p) { Player_DoGenericPhysics(p); }
 
 void Player_802A3C4(Player *p)
 {
