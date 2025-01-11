@@ -88,6 +88,11 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
     s32 j;
     u16 k;
 
+#if (RENDERER == RENDERER_OPENGL)
+    // TEMP
+    return TRUE;
+#endif
+
     while (gBackgroundsCopyQueueCursor != gBackgroundsCopyQueueIndex) {
         Background *bg;
 
@@ -626,6 +631,7 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
+#if (RENDERER == RENDERER_SOFTWARE)
     Tilemap *tilemap = gTilemapsRef[bg->tilemapId];
     if (tilemap->animFrameCount > 0) {
         if (tilemap->animDelay <= ++bg->animDelayCounter) {
@@ -660,6 +666,7 @@ void UpdateBgAnimationTiles(Background *bg)
             }
         }
     }
+#endif
 }
 
 // Differences to UpdateSpriteAnimation:
@@ -845,6 +852,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
     return TRUE;
 #endif
 
+#if (RENDERER == RENDERER_SOFTWARE)
     if (gUnknown_03005390 != 0) {
         OamDataShort oam;
         s32 r5;
@@ -983,6 +991,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 
         gUnknown_03005390 = 0;
     }
+#endif
 
     return TRUE;
 }

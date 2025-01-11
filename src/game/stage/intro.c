@@ -256,7 +256,7 @@ struct Task *SetupStageIntro(void)
     gStageFlags |= STAGE_FLAG__ACT_START;
     gStageFlags |= STAGE_FLAG__100;
 
-    // These are null when super sonic
+    // NOTE: null when Super Sonic
 #ifdef BUG_FIX
     if (gPlayer.spriteInfoBody)
 #endif
@@ -547,13 +547,26 @@ static void Task_IntroControllerMain(void)
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
         p->unk6C = TRUE;
-        p->spriteInfoBody->s.frameFlags |= MOVESTATE_40000;
-        p->spriteInfoLimbs->s.frameFlags |= MOVESTATE_40000;
 
-        if (IS_MULTI_PLAYER) {
-            p->spriteInfoBody->s.palId = SIO_MULTI_CNT->id;
-        } else {
-            p->spriteInfoBody->s.palId = 0;
+        // NOTE: null when Super Sonic
+#ifdef BUG_FIX
+        if (p->spriteInfoBody != NULL)
+#endif
+        {
+            p->spriteInfoBody->s.frameFlags |= MOVESTATE_40000;
+
+#ifdef BUG_FIX
+            if (p->spriteInfoLimbs != NULL)
+#endif
+            {
+                p->spriteInfoLimbs->s.frameFlags |= MOVESTATE_40000;
+            }
+
+            if (IS_MULTI_PLAYER) {
+                p->spriteInfoBody->s.palId = SIO_MULTI_CNT->id;
+            } else {
+                p->spriteInfoBody->s.palId = 0;
+            }
         }
     }
 
