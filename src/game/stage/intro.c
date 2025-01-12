@@ -165,23 +165,115 @@ static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
     = { [CHARACTER_SONIC] = 40, [CHARACTER_CREAM] = 55, [CHARACTER_TAILS] = 52, [CHARACTER_KNUCKLES] = 40, [CHARACTER_AMY] = 40 };
 
 // Each byte represents one RGB channel (0-31)
-static const u8 gUnknown_080D6FF5[][3] = {
-    { 0x00, 0x17, 0x06 }, { 0x16, 0x16, 0x16 }, { 0x00, 0x04, 0x13 }, { 0x00, 0x08, 0x1D }, { 0x00, 0x00, 0x0C }, { 0x00, 0x13, 0x00 },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x02 }, { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 },
-    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E }, { 0x00, 0x13, 0x1F }, { 0x00, 0x19, 0x14 }, { 0x19, 0x19, 0x19 },
-    { 0x1F, 0x0B, 0x00 }, { 0x1F, 0x12, 0x00 }, { 0x19, 0x05, 0x00 }, { 0x1C, 0x0B, 0x00 }, { 0x13, 0x00, 0x00 }, { 0x1F, 0x1C, 0x17 },
-    { 0x1D, 0x18, 0x10 }, { 0x13, 0x0F, 0x08 }, { 0x1F, 0x1E, 0x00 }, { 0x08, 0x11, 0x1F }, { 0x02, 0x02, 0x02 }, { 0x1F, 0x1F, 0x1F },
-    { 0x0E, 0x0E, 0x0E }, { 0x1F, 0x00, 0x1F }, { 0x00, 0x17, 0x06 }, { 0x1F, 0x00, 0x1F }, { 0x1D, 0x11, 0x04 }, { 0x1F, 0x17, 0x04 },
-    { 0x17, 0x0A, 0x02 }, { 0x15, 0x19, 0x1B }, { 0x00, 0x13, 0x1F }, { 0x04, 0x08, 0x1F }, { 0x13, 0x13, 0x13 }, { 0x0E, 0x0E, 0x0E },
-    { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 }, { 0x02, 0x02, 0x02 }, { 0x1F, 0x1F, 0x1F }, { 0x1F, 0x00, 0x1F }, { 0x1F, 0x00, 0x1F },
-    { 0x00, 0x16, 0x14 }, { 0x16, 0x16, 0x16 }, { 0x17, 0x00, 0x00 }, { 0x1F, 0x04, 0x00 }, { 0x0E, 0x00, 0x00 }, { 0x04, 0x08, 0x1F },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x15, 0x0A }, { 0x00, 0x15, 0x02 }, { 0x0E, 0x1F, 0x00 },
-    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E }, { 0x1F, 0x13, 0x00 }, { 0x00, 0x17, 0x06 }, { 0x15, 0x19, 0x1B },
-    { 0x1D, 0x08, 0x13 }, { 0x1F, 0x13, 0x17 }, { 0x17, 0x04, 0x0A }, { 0x00, 0x15, 0x00 }, { 0x0E, 0x0E, 0x0E }, { 0x13, 0x13, 0x13 },
-    { 0x13, 0x0A, 0x00 }, { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 }, { 0x1F, 0x00, 0x00 }, { 0x00, 0x00, 0x00 }, { 0x1F, 0x1F, 0x1F },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1F, 0x00 }, { 0x00, 0x12, 0x0B }, { 0x04, 0x06, 0x0A }, { 0x00, 0x1F, 0x00 }, { 0x1F, 0x1F, 0x1F },
-    { 0x14, 0x1F, 0x1F }, { 0x10, 0x1C, 0x1E }, { 0x0C, 0x18, 0x19 }, { 0x09, 0x14, 0x15 }, { 0x00, 0x0E, 0x10 }, { 0x00, 0x1F, 0x00 },
-    { 0x1F, 0x16, 0x18 }, { 0x1F, 0x0A, 0x10 }, { 0x1F, 0x1E, 0x00 }, { 0x19, 0x18, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x00, 0x00 },
+static const u8 gUnknown_080D6FF5[NUM_CHARACTERS + 1][16][3] = {
+    {
+        { 0x00, 0x17, 0x06 },
+        { 0x16, 0x16, 0x16 },
+        { 0x00, 0x04, 0x13 },
+        { 0x00, 0x08, 0x1D },
+        { 0x00, 0x00, 0x0C },
+        { 0x00, 0x13, 0x00 },
+        { 0x1F, 0x1F, 0x13 },
+        { 0x1F, 0x1B, 0x00 },
+        { 0x13, 0x0A, 0x02 },
+        { 0x1F, 0x15, 0x0A },
+        { 0x15, 0x00, 0x00 },
+        { 0x1F, 0x04, 0x04 },
+        { 0x04, 0x04, 0x04 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x0E, 0x0E, 0x0E },
+        { 0x00, 0x13, 0x1F },
+    },
+    {
+        { 0x00, 0x19, 0x14 },
+        { 0x19, 0x19, 0x19 },
+        { 0x1F, 0x0B, 0x00 },
+        { 0x1F, 0x12, 0x00 },
+        { 0x19, 0x05, 0x00 },
+        { 0x1C, 0x0B, 0x00 },
+        { 0x13, 0x00, 0x00 },
+        { 0x1F, 0x1C, 0x17 },
+        { 0x1D, 0x18, 0x10 },
+        { 0x13, 0x0F, 0x08 },
+        { 0x1F, 0x1E, 0x00 },
+        { 0x08, 0x11, 0x1F },
+        { 0x02, 0x02, 0x02 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x0E, 0x0E, 0x0E },
+        { 0x1F, 0x00, 0x1F },
+    },
+    {
+        { 0x00, 0x17, 0x06 },
+        { 0x1F, 0x00, 0x1F },
+        { 0x1D, 0x11, 0x04 },
+        { 0x1F, 0x17, 0x04 },
+        { 0x17, 0x0A, 0x02 },
+        { 0x15, 0x19, 0x1B },
+        { 0x00, 0x13, 0x1F },
+        { 0x04, 0x08, 0x1F },
+        { 0x13, 0x13, 0x13 },
+        { 0x0E, 0x0E, 0x0E },
+        { 0x15, 0x00, 0x00 },
+        { 0x1F, 0x04, 0x04 },
+        { 0x02, 0x02, 0x02 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x1F, 0x00, 0x1F },
+        { 0x1F, 0x00, 0x1F },
+    },
+    {
+        { 0x00, 0x16, 0x14 },
+        { 0x16, 0x16, 0x16 },
+        { 0x17, 0x00, 0x00 },
+        { 0x1F, 0x04, 0x00 },
+        { 0x0E, 0x00, 0x00 },
+        { 0x04, 0x08, 0x1F },
+        { 0x1F, 0x1F, 0x13 },
+        { 0x1F, 0x1B, 0x00 },
+        { 0x13, 0x0A, 0x00 },
+        { 0x1F, 0x15, 0x0A },
+        { 0x00, 0x15, 0x02 },
+        { 0x0E, 0x1F, 0x00 },
+        { 0x04, 0x04, 0x04 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x0E, 0x0E, 0x0E },
+        { 0x1F, 0x13, 0x00 },
+    },
+    {
+        { 0x00, 0x17, 0x06 },
+        { 0x15, 0x19, 0x1B },
+        { 0x1D, 0x08, 0x13 },
+        { 0x1F, 0x13, 0x17 },
+        { 0x17, 0x04, 0x0A },
+        { 0x00, 0x15, 0x00 },
+        { 0x0E, 0x0E, 0x0E },
+        { 0x13, 0x13, 0x13 },
+        { 0x13, 0x0A, 0x00 },
+        { 0x1F, 0x15, 0x0A },
+        { 0x15, 0x00, 0x00 },
+        { 0x1F, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x1F, 0x1F, 0x13 },
+        { 0x1F, 0x1F, 0x00 },
+    },
+    {
+        { 0x00, 0x12, 0x0B },
+        { 0x04, 0x06, 0x0A },
+        { 0x00, 0x1F, 0x00 },
+        { 0x1F, 0x1F, 0x1F },
+        { 0x14, 0x1F, 0x1F },
+        { 0x10, 0x1C, 0x1E },
+        { 0x0C, 0x18, 0x19 },
+        { 0x09, 0x14, 0x15 },
+        { 0x00, 0x0E, 0x10 },
+        { 0x00, 0x1F, 0x00 },
+        { 0x1F, 0x16, 0x18 },
+        { 0x1F, 0x0A, 0x10 },
+        { 0x1F, 0x1E, 0x00 },
+        { 0x19, 0x18, 0x00 },
+        { 0x13, 0x0A, 0x00 },
+        { 0x1F, 0x00, 0x00 },
+    },
 };
 
 const u16 sZoneLoadingCharacterColors[NUM_CHARACTERS] = {
@@ -608,14 +700,14 @@ static void Task_IntroControllerMain(void)
     }
 }
 
-// (85.25%) https://decomp.me/scratch/zMdSN
-NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8(void))
+void Task_802F9F8(void)
 {
     IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
     IntroController *controller = introBackgrounds->controller; // sp00
     ScreenFade *fade = &introBackgrounds->fade;
     s32 frameCounter = controller->counter;
     u8 i;
+    u8 r, g, b;
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
 
@@ -635,51 +727,47 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         if (IS_SINGLE_PLAYER) {
             // _0802FA4C+8
             for (i = 0; i < 16; i++) {
-                const u8 *colors = &gUnknown_080D6FF5[0][0];
-                s32 index = (gSelectedCharacter * 16) + i;
-                u8 r = (gUnknown_080D6FF5[index][0] * frameCounter) / 16u;
-                u8 g = ((gUnknown_080D6FF5[index][1] * frameCounter) / 16u);
-                u8 b = ((gUnknown_080D6FF5[index][2] * frameCounter) / 16u);
+                r = gUnknown_080D6FF5[gSelectedCharacter][i][0];
+                r = (r * frameCounter) / 16u;
+                g = ((gUnknown_080D6FF5[gSelectedCharacter][i][1] * frameCounter) / 16u);
+                b = ((gUnknown_080D6FF5[gSelectedCharacter][i][2] * frameCounter) / 16u);
 
-                gObjPalette[i] = RGB16(r, g, b);
+                gObjPalette[i] = RGB16_REV(r, g, b);
 
                 if (gCheese != NULL) {
-                    r = (gUnknown_080D6FF5[index + 80][0] * frameCounter) / 16u;
-                    g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
-                    b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
+                    r = gUnknown_080D6FF5[5][i][0];
+                    r = (r * frameCounter) / 16u;
+                    g = ((gUnknown_080D6FF5[5][i][1] * frameCounter) / 16u);
+                    b = ((gUnknown_080D6FF5[5][i][2] * frameCounter) / 16u);
 
-                    gObjPalette[i + 0xE0] = RGB16(r, g, b);
+                    gObjPalette[14 * 16 + i] = RGB16_REV(r, g, b);
                 }
             }
         } else {
             // _0802FB28
             u8 sid;
-            for (sid = 0; sid < MULTI_SIO_PLAYERS_MAX; sid++) {
-                if ((gMultiplayerConnections >> sid) & 0x1) {
-                    for (i = 0; i < 16; i++) {
-                        s32 index = (sid * 48) + i * 3;
-                        u8 r = (gUnknown_080D6FF5[index][0] * frameCounter) / 16u;
-                        u8 g = ((gUnknown_080D6FF5[index][1] * frameCounter) / 16u);
-                        u8 b = ((gUnknown_080D6FF5[index][2] * frameCounter) / 16u);
 
-                        gObjPalette[i] = RGB16(r, g, b);
+            for (sid = 0; sid < MULTI_SIO_PLAYERS_MAX; sid++) {
+                if (GetBit(gMultiplayerConnections, sid)) {
+                    for (i = 0; i < 16; i++) {
+                        r = gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][0];
+                        r = (r * frameCounter) / 16u;
+                        g = ((gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][1] * frameCounter) / 16u);
+                        b = ((gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][2] * frameCounter) / 16u);
+
+                        gObjPalette[sid * 16 + i] = RGB16_REV(r, g, b);
                     }
                 }
             }
-        }
-        if (gCheese != NULL) {
-            for (i = 0; i < 16; i++) {
-                s32 index;
-                u8 r, b, g;
-                {
-                    const u8 *colors = &gUnknown_080D6FF5[0][0];
-                    index = (0 * 48) + i;
-                    colors = &gUnknown_080D6FF5[index + 80][0];
-                    r = (colors[0] * frameCounter) / 16u;
-                    g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
-                    b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
 
-                    gObjPalette[i + 0xE0] = RGB16(r, g, b);
+            if (gCheese != NULL) {
+                for (i = 0; i < 16; i++) {
+                    r = gUnknown_080D6FF5[5][i][0];
+                    r = (r * frameCounter) / 16u;
+                    g = ((gUnknown_080D6FF5[5][i][1] * frameCounter) / 16u);
+                    b = ((gUnknown_080D6FF5[5][i][2] * frameCounter) / 16u);
+
+                    gObjPalette[14 * 16 + i] = RGB16_REV(r, g, b);
                 }
             }
         }
@@ -729,8 +817,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
             gBldRegs.bldCnt
                 = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2);
-            gBldRegs.bldAlpha = BLDALPHA_BLEND(4, 4);
-            // Bug: this shouldn't be set any large than 31, possibly copy and paste from the above line?
+            gBldRegs.bldAlpha = 1028;
 #ifdef BUG_FIX
             gBldRegs.bldY = SCREEN_FADE_BLEND_MAX;
 #else
@@ -739,10 +826,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         }
 
         TaskDestroy(gCurTask);
-        return;
     }
 }
-END_NONMATCH
 
 static void Task_IntroColorAnimation(void)
 {
@@ -891,7 +976,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
     IntroUI *introUI = TASK_DATA(gCurTask);
     u32 counter = introUI->controller->counter;
     Sprite *s;
-    u8 sp08;
+    u8 r2;
     s32 sl;
     u32 i;
 
@@ -927,7 +1012,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
 
         if (counter <= 12) {
             s->x = 254 - (((counter * 75) << 6) >> 8);
-            s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((counter * 123) << 3) >> 8);
+            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((counter * 123) << 3) >> 8);
+
         } else if (counter <= 100) {
             // _08030078
             s->x = 254 - (((13 * 75) << 6) >> 8) + 13;
@@ -939,9 +1025,6 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
             s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((innerCount * 123) << 3) >> 8);
         }
         // _080300AE
-        i = 0;
-        sp08 = counter;
-
         for (i = 0; i < ARRAY_COUNT(introUI->sprZoneName); i++) {
             s = &introUI->sprZoneName[i];
 
@@ -964,6 +1047,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         }
         // _08030134+8
 
+        r2 = counter;
         for (i = 0; i < ARRAY_COUNT(introUI->sprUnlockedIcons); i++) {
             // _08030170
             u32 lastIconIndex = ((ARRAY_COUNT(introUI->sprUnlockedIcons) - 1) - i);
@@ -972,28 +1056,26 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
                 + lastIconIndex * 17;
             s->y = -22;
 
-            if (sp08 < 50) {
-                if (sp08 >= i * 2) {
+            if (r2 < 50) {
+                if (r2 >= i * 2) {
                     if (!(i & 0x1)) {
-                        if (sp08 < 5) {
-                            s->y = (sp08 * 10 - 22) - i * 20;
+                        if (r2 + (i * -2) < 5) {
+                            s->y = ((r2 * 10) - 22) + (i * -0x14);
                         } else {
                             s->y = 20;
-                            asm(""); // TEMP?
+                            asm("");
                         }
                     } else {
                         // _080301B2
-                        u32 yVal = (sp08 - i * 2);
-                        if (yVal < 5) {
-                            s->y = (yVal * 6) - 22;
+                        if ((r2 + (i * -2)) < 5) {
+                            s->y = ((r2 + (i * -2)) * 6) - 22;
                         } else {
-                            // _080301C2
                             s->y = 12;
-                            asm(""); // TEMP
+                            asm("");
                         }
                     }
                 }
-            } else if (counter < 100) {
+            } else if (r2 < 100) {
                 // _080301C8+4
                 if (!(i & 0x1)) {
                     s->y = 20;
@@ -1003,9 +1085,10 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
             } else {
                 // _080301E0
                 if (!(i & 0x1)) {
-                    s->y = 20 - (counter - 100) * 6;
+                    s->y = 20 - (r2 - 100) * 6;
+
                 } else {
-                    s->y = 12 - (counter - 100) * 6;
+                    s->y = 12 - (r2 - 100) * 6;
                 }
             }
         }
