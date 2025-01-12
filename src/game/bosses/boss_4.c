@@ -618,14 +618,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D3
 }
 END_NONMATCH
 
-// (99.64%) https://decomp.me/scratch/WJcpn
-NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc", void AeroEgg_InitPartsDefeated(AeroEgg *boss))
+void AeroEgg_InitPartsDefeated(AeroEgg *boss)
 {
     Sprite *s;
     AeroEggSub *sub = &boss->sub;
+    u8 i;
 
     sub->unk00 = 0;
-
     sub->unk68 = 0;
     sub->unk69 = 0;
     sub->unk6A = 0x30;
@@ -646,36 +645,40 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc", void Aero
     sub->tailTip.dy = Q(0.00);
     sub->tailTip.status = 0;
 
-    {
-        u8 i;
-        for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
-            u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
-            s32 bossX, bossY;
-            s32 sinV, cosV;
+    for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+        s32 xVal, yVal;
+        s32 sinV, cosV;
+        s32 bossX, bossY;
 
-            bossX = I(boss->main.qWorldX);
-            period = (period + 500) & ONE_CYCLE;
-            cosV = (COS(period) * 17);
-            cosV *= (i + 1);
-            cosV >>= 14;
-            bossX += cosV;
+        u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
 
-            bossY = I(boss->main.qWorldY);
-            sinV = (SIN(period) * 17);
-            sinV *= (i + 1);
-            sinV >>= 14;
-            sinV += 0x14;
-            bossY += sinV;
+        bossX = I(boss->main.qWorldX);
+        cosV = (COS((period + 500) & ONE_CYCLE) * 17);
+        cosV *= (i + 1);
+        cosV >>= 14;
+        bossX += cosV;
 
-            sub->tail[i].x = Q(bossX);
-            sub->tail[i].y = Q(bossY);
-            sub->tail[i].dx = Q(5.75);
-            sub->tail[i].dy = 0;
+        bossY = I(boss->main.qWorldY);
+        sinV = (SIN((period + 500) & ONE_CYCLE) * 17);
+        sinV *= (i + 1);
+        sinV >>= 14;
+        sinV += 20;
+        bossY += sinV;
+
+        sub->tail[i].x = Q_24_8(bossX);
+        sub->tail[i].y = Q_24_8(bossY);
+        sub->tail[i].dx = Q_24_8(5.75);
+        sub->tail[i].dy = 0;
+        // The scope is actually required to make it match,
+        // we are gonna assume there was an if here or something
+#ifndef NON_MATCHING
+        if (1)
+#endif
+        {
             sub->tail[i].status = 0;
         }
     }
 }
-END_NONMATCH
 
 static void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 {
