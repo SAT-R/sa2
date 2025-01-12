@@ -115,7 +115,7 @@ bool32 Player_TryCrouchOrSpinAttack(Player *);
 bool32 Player_TryInitSpindash(Player *);
 void Player_InitCrouch(Player *);
 void Player_InitIceSlide(Player *);
-void Player_802A3B8(Player *);
+void PlayerFn_Cmd_HandlePhysics(Player *);
 void Player_802A3C4(Player *);
 void Player_CameraShift(Player *);
 void Player_InitSpecialStageTransition(Player *);
@@ -4957,7 +4957,7 @@ void Player_8026E24(Player *p)
 
     m4aSongNumStart(SE_SPIN);
 
-    PLAYERFN_SET_AND_CALL(Player_802A3B8, p);
+    PLAYERFN_SET_AND_CALL(PlayerFn_Cmd_HandlePhysics, p);
 }
 
 void Player_8026F10(Player *p)
@@ -5462,7 +5462,7 @@ void Player_8027D3C(Player *p)
 }
 
 // Generic function for movement and collision, has aerial input, used in character aerial/landing states
-void Player_DoGenericPhysicsWithAirInput(Player *p)
+void Player_HandlePhysicsWithAirInput(Player *p)
 {
     if (p->moveState & MOVESTATE_IN_AIR) {
         sub_8023610(p);
@@ -5487,7 +5487,7 @@ void Player_DoGenericPhysicsWithAirInput(Player *p)
 }
 
 // Generic function for movement and collision that doesn't allow player influence
-void Player_DoGenericPhysics(Player *p)
+void Player_HandlePhysics(Player *p)
 {
     if (p->moveState & MOVESTATE_IN_AIR) {
         sub_80232D0(p);
@@ -6844,11 +6844,11 @@ void Player_InitDashRing(Player *p)
 
 void Player_InitIceSlide(Player *p) { Player_InitIceSlide_inline(p); }
 
-void Player_802A3B8(Player *p) { Player_DoGenericPhysics(p); }
+void PlayerFn_Cmd_HandlePhysics(Player *p) { Player_HandlePhysics(p); }
 
 void Player_802A3C4(Player *p)
 {
-    Player_DoGenericPhysicsWithAirInput(p);
+    Player_HandlePhysicsWithAirInput(p);
 
     if (p->spriteInfoBody->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         PLAYERFN_SET(Player_SpinAttack);
