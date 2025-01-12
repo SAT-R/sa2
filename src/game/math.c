@@ -3,8 +3,6 @@
 
 #include "trig.h"
 
-struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1);
-
 typedef struct {
     s16 unk0;
     s16 unk2;
@@ -21,12 +19,6 @@ typedef struct {
     u32 unk1C;
 } UNK_8085D14;
 
-// Only used in here
-u32 gRngPrevValue = 0;
-u32 gRngValue = 0;
-
-const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
-
 typedef struct {
     void *unk0;
     void *start;
@@ -34,7 +26,15 @@ typedef struct {
     void *unkC;
 } UNK_8085DEC;
 
-bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target);
+// Only used in here
+u32 gRngPrevValue = 0;
+u32 gRngValue = 0;
+
+struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1);
+static bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target);
+void sub_8084B54(struct UNK_8085F1C_1 *, u16, u16, u16);
+
+const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
 
 #define RAND_CONST 0x37119371;
 
@@ -47,8 +47,8 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/math/unused_sub_8083504.inc", void sub_8083504()) { }
 END_NONMATCH
 
-// TODO: match this
-NONMATCH("asm/non_matching/game/math/sub_80835E0.inc", void sub_80835E0(struct UNK_8085F1C *p2, s32 *b)) { }
+// This is used in this file, but it's not used by the game
+NONMATCH("asm/non_matching/game/math/unused_sub_80835E0.inc", void sub_80835E0(struct UNK_8085F1C *p2, s32 *b)) { }
 END_NONMATCH
 
 NONMATCH("asm/non_matching/game/math/unused_sub_80836BC.inc", void sub_80836BC()) { }
@@ -72,8 +72,8 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/math/unused_sub_8083B10.inc", void sub_8083B10()) { }
 END_NONMATCH
 
-// TODO: match this
-NONMATCH("asm/non_matching/game/math/sub_8083B88.inc",
+// This is used in this file, but it's not used by the game
+NONMATCH("asm/non_matching/game/math/unused_sub_8083B88.inc",
          void sub_8083B88(struct UNK_8085F1C_1 *a, struct UNK_8085F1C_1 *b, struct UNK_8085F1C_1 *c))
 {
 }
@@ -109,8 +109,8 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/math/unused_sub_8084A24.inc", void sub_8084A24()) { }
 END_NONMATCH
 
-// TODO: match this
-NONMATCH("asm/non_matching/game/math/sub_8084B54.inc", void sub_8084B54(struct UNK_8085F1C_1 *a, u16 b, u16 c, u16 d)) { }
+// This is used in this file, but it's not used by the game
+NONMATCH("asm/non_matching/game/math/unused_sub_8084B54.inc", void sub_8084B54(struct UNK_8085F1C_1 *a, u16 b, u16 c, u16 d)) { }
 END_NONMATCH
 
 NONMATCH("asm/non_matching/game/math/unused_sub_8084C70.inc", void sub_8084C70()) { }
@@ -125,48 +125,45 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/math/unused_sub_80851E0.inc", void sub_80851E0()) { }
 END_NONMATCH
 
-NONMATCH("asm/non_matching/game/math/unused_sub_8085314.inc", void sub_8085314()) { }
+NONMATCH("asm/non_matching/game/math/unused_sub_8085314.inc", void sub_8085314(struct UNK_8085F1C_1 *p1, struct UNK_8085F1C_1 *p2))
+{
+    // Incomplete
+    s32 unk0 = p2->unk0 * 2;
+    s32 unk2 = p2->unk2[0] * 2;
+    s32 unk4 = p2->unk2[1] * 2;
+    s32 temp0 = (p2->unk2[0] * unk2 * 0x40) >> 0x10;
+    s32 temp1 = (p2->unk2[1] * unk4 * 0x40) >> 0x10;
+
+    s16 temp2, temp3, temp4, temp5, temp6;
+
+    p1->unk14 = 0;
+    p1->unk2[0] = 0x400 - (temp0 + temp1);
+
+    temp2 = (p2->unk2[2] * unk4 * 0x40) >> 0x10;
+    temp3 = (p2->unk0 * unk2 * 0x40) >> 0x10;
+
+    p1->unk2[1] = temp3 - temp2;
+
+    temp4 = (p2->unk0 * unk4 * 0x40) >> 0x10;
+    temp5 = (p2->unk2[2] * unk2 * 0x40) >> 0x10;
+
+    p1->unk2[2] = temp4 + temp5;
+    p1->unk2[3] = temp3 + temp2;
+
+    temp3 = (p2->unk0 * unk0 * 0x40) >> 0x10;
+    p1->unk2[4] = 0x400 - (temp1 + temp3);
+
+    temp1 = (p2->unk2[2] * unk0 * 0x40) >> 0x10;
+    temp6 = (p2->unk2[0] * unk4 * 0x40) >> 0x10;
+
+    p1->unk2[5] = temp6 - temp1;
+    p1->unk2[6] = temp4 - temp5;
+    p1->unk2[7] = temp6 + temp1;
+    p1->unk2[8] = 0x400 - (temp3 + temp0);
+    p1->unk1C = p1->unk14;
+    p1->unk18 = p1->unk14;
+}
 END_NONMATCH
-
-// void sub_8085314(struct UNK_8085F1C_1 *p1, struct UNK_8085F1C_1 *p2)
-// {
-//     s32 unk0 = p2->unk0 * 2;
-//     s32 unk2 = p2->unk2[0] * 2;
-//     s32 unk4 = p2->unk2[1] * 2;
-//     s32 temp0 = (p2->unk2[0] * unk2 * 0x40) >> 0x10;
-//     s32 temp1 = (p2->unk2[1] * unk4 * 0x40) >> 0x10;
-
-//     s16 temp2, temp3, temp4, temp5, temp6;
-
-//     p1->unk14 = 0;
-//     p1->unk2[0] = 0x400 - (temp0 + temp1);
-
-//     temp2 = (p2->unk2[2] * unk4 * 0x40) >> 0x10;
-//     temp3 = (p2->unk0 * unk2 * 0x40) >> 0x10;
-
-//     p1->unk2[1] = temp3 - temp2;
-
-//     temp4 = (p2->unk0 * unk4 * 0x40) >> 0x10;
-//     temp5 = (p2->unk2[2] * unk2 * 0x40) >> 0x10;
-
-//     p1->unk2[2] = temp4 + temp5;
-//     p1->unk2[3] = temp3 + temp2;
-
-//     temp3 = (p2->unk0 * unk0 * 0x40) >> 0x10;
-//     p1->unk2[4] = 0x400 - (temp1 + temp3);
-
-//     temp1 = (p2->unk2[2] * unk0 * 0x40) >> 0x10;
-//     temp6 = (p2->unk2[0] * unk4 * 0x40) >> 0x10;
-
-//     p1->unk2[5] = temp6 - temp1;
-//     p1->unk2[6] = temp4 - temp5;
-//     p1->unk2[7] = temp6 + temp1;
-//     p1->unk2[8] = 0x400 - (temp3 + temp0);
-//     p1->unk1C = p1->unk14;
-//     p1->unk18 = p1->unk14;
-// }
-
-void sub_8084B54(struct UNK_8085F1C_1 *, u16, u16, u16);
 
 struct UNK_8085F1C_1 *sub_80853F8(struct UNK_8085F1C *p1)
 {
@@ -284,7 +281,7 @@ u32 sub_80855C0(s32 a, s32 b, s32 c, u8 d)
     return a - (e >> d);
 }
 
-u16 sub_80855F8(u16 r7, u16 r2, u8 r6, s16 r5, u8 r4)
+UNUSED u16 sub_80855F8(u16 r7, u16 r2, u8 r6, s16 r5, u8 r4)
 {
     u16 r2_2 = r2;
     u32 r3 = (1 << r6);
@@ -322,19 +319,19 @@ s32 sub_8085698(s32 a, s32 b, s32 c, u8 d, u8 e)
     return b;
 }
 
-s32 sub_80856DC(s32 a, s32 b, s32 c) { return (a * 7 + b * 6 - c) / 12; }
+UNUSED s32 sub_80856DC(s32 a, s32 b, s32 c) { return (a * 7 + b * 6 - c) / 12; }
 
-s32 sub_80856F8(s32 a, s32 b, s32 c) { return ((b * 6 - a) + c * 7) / 12; }
+UNUSED s32 sub_80856F8(s32 a, s32 b, s32 c) { return ((b * 6 - a) + c * 7) / 12; }
 
-s32 sub_8085714(s32 a, s32 b, s32 c) { return ((a + b * 8) - c) >> 3; }
+UNUSED s32 sub_8085714(s32 a, s32 b, s32 c) { return ((a + b * 8) - c) >> 3; }
 
-s32 sub_8085720(s32 a, s32 b, s32 c) { return ((b * 8 - a) + c) >> 3; }
+UNUSED s32 sub_8085720(s32 a, s32 b, s32 c) { return ((b * 8 - a) + c) >> 3; }
 
-s32 sub_808572C(s32 a, s32 b, s32 c, s32 d, u32 e, u8 f) { return ((s64)(b - a) * (s64)((1 << f) - c)) >> f; }
+UNUSED s32 sub_808572C(s32 a, s32 b, s32 c, s32 d, u32 e, u8 f) { return ((s64)(b - a) * (s64)((1 << f) - c)) >> f; }
 
-s32 sub_8085758(s32 a, s32 b) { return b - a; }
+UNUSED s32 sub_8085758(s32 a, s32 b) { return b - a; }
 
-s32 sub_808575C(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+UNUSED s32 sub_808575C(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
 {
     a = c - a;
     a += a >> 1;
@@ -342,10 +339,10 @@ s32 sub_808575C(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
     return ((s64)(a) * ((1 << g) - d)) >> g;
 }
 
-s32 sub_8085798(s32 a, s32 b, s32 c) { return ((c - a) + ((c - a) >> 1)) - (b >> 1); }
+UNUSED s32 sub_8085798(s32 a, s32 b, s32 c) { return ((c - a) + ((c - a) >> 1)) - (b >> 1); }
 
 // same as sub_808575C
-s32 sub_80857A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+UNUSED s32 sub_80857A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
 {
     a = c - a;
     a += a >> 1;
@@ -353,9 +350,9 @@ s32 sub_80857A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
     return ((s64)(a) * ((1 << g) - d)) >> g;
 }
 
-s32 sub_80857E0(s32 a, s32 b, s32 c) { return ((c - a) + ((c - a) >> 1)) - (b >> 1); }
+UNUSED s32 sub_80857E0(s32 a, s32 b, s32 c) { return ((c - a) + ((c - a) >> 1)) - (b >> 1); }
 
-s32 sub_80857EC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+UNUSED s32 sub_80857EC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
 {
     s32 h = ((s64)(b - a) * (s64)(f + (1 << g))) >> g;
     s64 i = ((s64)(c - b) * (s64)((1 << g) - f)) >> g;
@@ -364,7 +361,7 @@ s32 sub_80857EC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
     return ((s64)(j + h64) * (s64)((1 << g) - d)) >> g;
 }
 
-s32 sub_80858A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+UNUSED s32 sub_80858A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
 {
     s32 h = ((s64)(b - a) * (s64)(f + (1 << g))) >> g;
     s64 i = ((s64)(c - b) * (s64)((1 << g) - f)) >> g;
@@ -373,7 +370,7 @@ s32 sub_80858A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
     return ((s64)(j + h64) * (s64)((1 << g) - d)) >> g;
 }
 
-s32 sub_808595C(s32 a, s32 b, s32 c)
+UNUSED s32 sub_808595C(s32 a, s32 b, s32 c)
 {
     s32 e = (b - a);
     s32 f = (c - b);
@@ -439,7 +436,7 @@ s16 sub_80B1560(s16 *param0, u16 param1)
 }
 #endif
 
-void sub_8085A88(UNK_8085D14 *p1)
+UNUSED void sub_8085A88(UNK_8085D14 *p1)
 {
     p1->unk0 = 0;
     p1->unk2 = 0x400;
@@ -449,7 +446,7 @@ void sub_8085A88(UNK_8085D14 *p1)
     *(u32 *)&p1->unkC = 0;
 }
 
-void sub_8085A9C(UNK_8085D14 *p1, u8 p2)
+UNUSED void sub_8085A9C(UNK_8085D14 *p1, u8 p2)
 {
     u16 dist = Sqrt(SQUARE(p1->unk0) + SQUARE(p1->unk2) + SQUARE(p1->unk4));
     u32 thing = (p2 << 1);
@@ -459,13 +456,13 @@ void sub_8085A9C(UNK_8085D14 *p1, u8 p2)
     p1->unk4 = (div * p1->unk4) >> p2;
 }
 
-s32 sub_8085B00(UNK_8085D14 *p1, UNK_8085D14 *p2, u8 p4)
+UNUSED s32 sub_8085B00(UNK_8085D14 *p1, UNK_8085D14 *p2, u8 p4)
 {
     u32 something = p4;
     return ((p1->unk0 * p2->unk0) + (p1->unk2 * p2->unk2) + (p1->unk4 * p2->unk4)) >> p4;
 }
 
-void sub_8085B34(UNK_8085D14 *p1, UNK_8085D14 *p2, UNK_8085D14 *p3, u8 p4)
+UNUSED void sub_8085B34(UNK_8085D14 *p1, UNK_8085D14 *p2, UNK_8085D14 *p3, u8 p4)
 {
     u32 something = p4;
     p3->unk0 = ((p1->unk2 * p2->unk4) - (p1->unk4 * p2->unk2)) >> something;
@@ -473,7 +470,7 @@ void sub_8085B34(UNK_8085D14 *p1, UNK_8085D14 *p2, UNK_8085D14 *p3, u8 p4)
     p3->unk4 = ((p1->unk0 * p2->unk2) - (p1->unk2 * p2->unk0)) >> something;
 }
 
-void sub_8085B90(UNK_8085D14 *p1)
+UNUSED void sub_8085B90(UNK_8085D14 *p1)
 {
     p1->unk4 = 0;
     p1->unk2 = 0;
@@ -482,14 +479,14 @@ void sub_8085B90(UNK_8085D14 *p1)
     p1->unk6 = 0x400;
 }
 
-void sub_8085BA0(UNK_8085D14 *p1)
+UNUSED void sub_8085BA0(UNK_8085D14 *p1)
 {
     p1->unk0 = -p1->unk0;
     p1->unk2 = -p1->unk2;
     p1->unk4 = -p1->unk4;
 }
 
-void sub_8085BB4(UNK_8085D14 *p1, u16 rad)
+UNUSED void sub_8085BB4(UNK_8085D14 *p1, u16 rad)
 {
     s32 sin;
     rad = rad >> 1;
@@ -500,7 +497,7 @@ void sub_8085BB4(UNK_8085D14 *p1, u16 rad)
     p1->unk6 = COS(rad) >> 4;
 }
 
-void sub_8085BEC(UNK_8085D14 *p1, u16 rad)
+UNUSED void sub_8085BEC(UNK_8085D14 *p1, u16 rad)
 {
     s32 sin;
     rad = rad >> 1;
@@ -511,7 +508,7 @@ void sub_8085BEC(UNK_8085D14 *p1, u16 rad)
     p1->unk6 = COS(rad) >> 4;
 }
 
-void sub_8085C24(UNK_8085D14 *p1, u16 rad)
+UNUSED void sub_8085C24(UNK_8085D14 *p1, u16 rad)
 {
     s32 sin;
     rad = rad >> 1;
@@ -522,7 +519,7 @@ void sub_8085C24(UNK_8085D14 *p1, u16 rad)
     p1->unk6 = COS(rad) >> 4;
 }
 
-void sub_8085C5C(UNK_8085D14 *p1, u16 rad, UNK_8085D14 *p3)
+UNUSED void sub_8085C5C(UNK_8085D14 *p1, u16 rad, UNK_8085D14 *p3)
 {
     s32 sin;
     rad = rad >> 1;
@@ -533,7 +530,7 @@ void sub_8085C5C(UNK_8085D14 *p1, u16 rad, UNK_8085D14 *p3)
     p1->unk6 = COS(rad) >> 4;
 }
 
-void sub_8085CA8(UNK_8085D14 *p1)
+UNUSED void sub_8085CA8(UNK_8085D14 *p1)
 {
     u8 i;
     UNK_8085D14 *curr = p1;
@@ -550,7 +547,7 @@ void sub_8085CA8(UNK_8085D14 *p1)
     }
 }
 
-void sub_8085CC0(UNK_8085D14 *p1)
+UNUSED void sub_8085CC0(UNK_8085D14 *p1)
 {
     u8 i;
     UNK_8085D14 *curr = p1;
@@ -570,7 +567,7 @@ void sub_8085CC0(UNK_8085D14 *p1)
     curr->unk2 = 0x400;
 }
 
-void sub_8085CE4(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
+UNUSED void sub_8085CE4(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
 {
     u8 i;
     UNK_8085D14 *curr = p1;
@@ -594,7 +591,7 @@ void sub_8085CE4(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
     p1->unk1C = p4;
 }
 
-void sub_8085D14(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
+UNUSED void sub_8085D14(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
 {
     u8 i;
     UNK_8085D14 *curr = p1;
@@ -618,7 +615,7 @@ void sub_8085D14(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
     p1->unk12 = p4;
 }
 
-void sub_8085D44(UNK_8085DEC *thing)
+UNUSED void sub_8085D44(UNK_8085DEC *thing)
 {
     thing->unk0 = NULL;
     thing->start = NULL;
@@ -626,7 +623,7 @@ void sub_8085D44(UNK_8085DEC *thing)
     thing->unkC = NULL;
 }
 
-UNK_8085DEC *sub_8085D50(UNK_8085DEC *thing)
+UNUSED UNK_8085DEC *sub_8085D50(UNK_8085DEC *thing)
 {
     while (thing->unk0 != NULL) {
         thing = thing->unk0;
@@ -635,14 +632,14 @@ UNK_8085DEC *sub_8085D50(UNK_8085DEC *thing)
     return thing;
 }
 
-void sub_8085D64(UNK_8085DEC *thing)
+UNUSED void sub_8085D64(UNK_8085DEC *thing)
 {
     if (thing->unk0 != NULL) {
         sub_8085D98(thing->unk0, thing);
     }
 }
 
-void sub_8085D78(UNK_8085DEC *thing, UNK_8085DEC *target)
+UNUSED void sub_8085D78(UNK_8085DEC *thing, UNK_8085DEC *target)
 {
     if (target->unk0 != NULL) {
         sub_8085D98(target->unk0, target);
@@ -652,7 +649,7 @@ void sub_8085D78(UNK_8085DEC *thing, UNK_8085DEC *target)
     thing->start = target;
 }
 
-bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target)
+static bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target)
 {
     UNK_8085DEC *curr = thing->start;
     UNK_8085DEC *prev = NULL;
@@ -676,7 +673,7 @@ bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target)
     return FALSE;
 }
 
-u16 sub_8085DD0(UNK_8085DEC *thing)
+UNUSED u16 sub_8085DD0(UNK_8085DEC *thing)
 {
     u16 num = 0;
     thing = thing->start;
@@ -688,7 +685,7 @@ u16 sub_8085DD0(UNK_8085DEC *thing)
     return num;
 }
 
-UNK_8085DEC *sub_8085DEC(UNK_8085DEC *thing, u16 num)
+UNUSED UNK_8085DEC *sub_8085DEC(UNK_8085DEC *thing, u16 num)
 {
     thing = thing->start;
     while (thing != NULL && num != 0) {
@@ -705,7 +702,6 @@ UNUSED void sub_8085E24(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2) { memcpy
 
 UNUSED void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
 {
-
     memcpy(p2, &p1->unk10, 0x10);
 
     while (p1 = p1->unk0, p1 != NULL) {
@@ -713,7 +709,7 @@ UNUSED void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
     }
 }
 
-void sub_8085E64(struct UNK_8085F1C *p1)
+UNUSED void sub_8085E64(struct UNK_8085F1C *p1)
 {
     u8 i;
     struct UNK_8085F1C_1 *curr;
@@ -738,7 +734,7 @@ void sub_8085E64(struct UNK_8085F1C *p1)
     p1->unkC |= 1;
 }
 
-void sub_8085E94(struct UNK_8085F1C *p1)
+UNUSED void sub_8085E94(struct UNK_8085F1C *p1)
 {
     p1->unk10 = 1;
     p1->unk58 = 0;
@@ -752,7 +748,7 @@ void sub_8085E94(struct UNK_8085F1C *p1)
     p1->unk5C = 0x400;
 }
 
-struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1)
+UNUSED struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1)
 {
     struct UNK_8085F1C_1 *sub = NULL;
 
@@ -776,7 +772,7 @@ struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1)
     return &p1->unk14;
 }
 
-struct UNK_8085F1C_1 *sub_8085F1C(struct UNK_8085F1C *p1)
+UNUSED struct UNK_8085F1C_1 *sub_8085F1C(struct UNK_8085F1C *p1)
 {
     struct UNK_8085F1C_1 *sub = NULL;
 
@@ -802,7 +798,7 @@ struct UNK_8085F1C_1 *sub_8085F1C(struct UNK_8085F1C *p1)
     return &p1->unk14;
 }
 
-void sub_8085F84(void)
+UNUSED void sub_8085F84(void)
 {
     // unused
 }
