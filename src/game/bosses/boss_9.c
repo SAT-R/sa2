@@ -1337,62 +1337,76 @@ void sub_804E15C(struct TA53_unk48 *unk48)
     }
 }
 
-// (89.56%) https://decomp.me/scratch/sGKWf
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc", void sub_804E4CC(struct TA53_unk48 *unk48))
+void sub_804E4CC(struct TA53_unk48 *unk48)
 {
-    u16 r2;
-
-    s32 r5;
+#ifndef NON_MATCHING
+    register s32 r1 asm("r1");
+#else
+    s32 r1;
+#endif
+    s32 r3;
+    u32 r5;
+    u16 r6, r2;
     u8 i, c;
+    u8 r, g, b;
 
     sub_8050030(unk48);
 
-    r5 = unk48->unk30 & 0xFFF;
-    r2 = unk48->unk30 >> 12;
+    r1 = unk48->unk30 & 0xFFF;
+    r3 = r1;
+    r5 = r3;
 
+    r2 = unk48->unk30 >> 12;
     if (r2 == 4) {
         unk48->unk30 &= 0xFFF;
         unk48->callback = gUnknown_080D8D6C[0].callback;
         unk48->unk34 = gUnknown_080D8D6C[0].data;
         unk48->unk2E = gUnknown_080D8D6C[0].unk8;
-    } else if (r2 == 3) {
+        return;
+    }
+
+    if (r2 == 3) {
         // _0804E50C+0x4
         gDispCnt &= ~DISPCNT_BG1_ON;
 
+        r6 = r3;
         for (c = 0; c < 16; c++) {
-            s32 r = ((sRGB_080D8E20[3][c][0] * r5) >> 12) & 0x1F;
-            s32 g = ((sRGB_080D8E20[3][c][1] * r5) >> 12) & 0x1F;
-            s32 b = ((sRGB_080D8E20[3][c][2] * r5) >> 12) & 0x1F;
+            r = sRGB_080D8E20[3][c][0];
+            r = ((r * r6) >> 12) & 0x1F;
+            g = sRGB_080D8E20[3][c][1];
+            g = ((g * r6) >> 12) & 0x1F;
+            b = sRGB_080D8E20[3][c][2];
+            b = ((b * r6) >> 12) & 0x1F;
 
-            gObjPalette[8 * 16 + c] = RGB16_REV(r, g, b);
-            gBgPalette[8 * 16 + c] = RGB16_REV(r, g, b);
+            gObjPalette[c + 8 * 16] = RGB16_REV(r, g, b);
+            gBgPalette[c] = RGB16_REV(r, g, b);
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         unk48->unk4C = 0;
-    } else if ((r2 == 2) && ((u32)r5 > 0xE00)) {
-        // __0804E5BC
-        u16 r6;
+        return;
+    }
 
+    if ((r2 == 2) && (r5 > 0xE00)) {
         gDispCnt |= DISPCNT_BG1_ON;
-
         r6 = 0xFFF - r5;
-
         for (i = 0; i < ARRAY_COUNT(sRGB_080D8E20) - 1; i++) {
             for (c = 0; c < ARRAY_COUNT(sRGB_080D8E20[0]); c++) {
-                s32 r = ((sRGB_080D8E20[i][c][0] * r6) >> 9) & 0x1F;
-                s32 g = ((sRGB_080D8E20[i][c][1] * r6) >> 9) & 0x1F;
-                s32 b = ((sRGB_080D8E20[i][c][2] * r6) >> 9) & 0x1F;
-
-                gBgPalette[((7 + i) * 16) + c] = RGB16_REV(r, g, b);
+                r = sRGB_080D8E20[i][c][0];
+                r = ((r * r6) >> 9) & 0x1F;
+                g = sRGB_080D8E20[i][c][1];
+                g = ((g * r6) >> 9) & 0x1F;
+                b = sRGB_080D8E20[i][c][2];
+                b = ((b * r6) >> 9) & 0x1F;
+                gBgPalette[0x70 + c + (i * 16)] = RGB16_REV(r, g, b);
             }
         }
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 }
-END_NONMATCH
 
 void sub_804E66C(struct TA53_unk98 *unk98)
 {

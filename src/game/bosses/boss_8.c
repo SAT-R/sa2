@@ -891,11 +891,12 @@ static void Task_804A9D8(void)
 }
 
 // (99.89%) https://decomp.me/scratch/kiah8
-NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", void Task_804AB24(void))
+void Task_804AB24(void)
 {
     s32 speed;
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
     ScreenFade *fade = &boss->fade;
+    Player *p;
 
     sub_804CC98(boss);
     sub_804CA08(boss);
@@ -908,34 +909,67 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", void Task_804A
     sub_804C830(boss);
     sub_804CA70(boss);
 
-    if ((I(gPlayer.qWorldY) > 184) && (I(gPlayer.qWorldX) >= 43034)) {
-        sub_800CBA4(&gPlayer);
-
-        speed = gPlayer.speedAirX;
+    // TODO: maybe these are macros or inline functions?
+    p = &gPlayer;
+    if ((I(p->qWorldY) > 184) && (I(p->qWorldX) >= 43034)) {
+        sub_800CBA4(p);
+        // These are just hacks to make the read use the right register
+        // if we use c it uses r2 on some of these
+#ifndef NON_MATCHING
+        asm("mov r1, %2\n"
+            "ldrsh %0, [%1, r1]"
+            : "=r"(speed)
+            : "r"(p), "I"(offsetof(Player, speedAirX)));
+#else
+        speed = p->speedAirX;
+#endif
         if (speed > 0) {
-            gPlayer.speedAirX = -speed;
+            speed = -speed;
+            p->speedAirX = speed;
         }
 
-        speed = gPlayer.speedGroundX;
+#ifndef NON_MATCHING
+        asm("mov r1, %2\n"
+            "ldrsh %0, [%1, r1]"
+            : "=r"(speed)
+            : "r"(p), "I"(offsetof(Player, speedGroundX)));
+#else
+        speed = p->speedGroundX;
+#endif
         if (speed > 0) {
-            gPlayer.speedGroundX = -speed;
+            p->speedGroundX = -speed;
         }
     }
     // _0804ABC0
 
-    if (I(gPlayer.qWorldX) >= 43088) {
-        sub_800CBA4(&gPlayer);
-
-        speed = gPlayer.speedAirX;
+    p = &gPlayer;
+    if (I(p->qWorldX) >= 43088) {
+        sub_800CBA4(p);
+#ifndef NON_MATCHING
+        asm("mov r1, %2\n"
+            "ldrsh %0, [%1, r1]"
+            : "=r"(speed)
+            : "r"(p), "I"(offsetof(Player, speedAirX)));
+#else
+        speed = p->speedAirX;
+#endif
         if (speed > 0) {
-            gPlayer.speedAirX = -speed;
+            p->speedAirX = -speed;
         }
 
-        speed = gPlayer.speedGroundX;
+#ifndef NON_MATCHING
+        asm("mov r1, %2\n"
+            "ldrsh %0, [%1, r1]"
+            : "=r"(speed)
+            : "r"(p), "I"(offsetof(Player, speedGroundX)));
+#else
+        speed = p->speedGroundX;
+#endif
         if (speed > 0) {
-            gPlayer.speedGroundX = -speed;
+            p->speedGroundX = -speed;
         }
     }
+
     // _0804ABF2
 
     if (boss->livesCockpit == 0) {
@@ -989,7 +1023,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", void Task_804A
         }
     }
 }
-END_NONMATCH
 
 static void Task_804AD68(void)
 {
@@ -1255,81 +1288,72 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
     return result;
 }
 
-// Copy-paste of sub_804B0EC() aside from code above:
-// if (gSelectedCharacter != CHARACTER_SONIC) {
-//     ...
-// }
-// (93.51%) https://decomp.me/scratch/ecqNB
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm)
 {
     u8 result = 0;
-    s32 sp04, ip;
-    s32 r3;
-    s32 r4;
-    s32 r5;
-    s32 r6;
-    s32 r7;
-    s32 sl;
+    s32 x, y;
+    s32 r6, r0;
+    Sprite *s;
 
     if (boss->unk3E[arm] > 0) {
         return result;
     }
-    // _0804B314
 
-    {
-        s32 r0, r1;
-        Sprite *s = &gPlayer.spriteInfoBody->s;
+    s = &gPlayer.spriteInfoBody->s;
 
-        r6 = boss->qPos.x + boss->qUnk18[arm].x;
-        r4 = r6 + gUnknown_080D8888[arm][0];
+#ifndef NON_MATCHING
+    // unused lines required for match
+    // maybe they had a calculation here they just forgot about
+    r0 = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+    r6 = boss->qPos.x + boss->qUnk18[arm].x;
+    r0 = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
+#endif
 
-        r5 = boss->qPos.y + boss->qUnk18[arm].y;
-        r5 = r5 + gUnknown_080D8888[arm][1];
+    x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+    y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
-        if (gSelectedCharacter != CHARACTER_SONIC) {
-            Player_UpdateHomingPosition(r4, r5);
+    if (gSelectedCharacter != CHARACTER_SONIC) {
+        Player_UpdateHomingPosition(x, y);
+    }
+
+    if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+        r6 = I(gPlayer.qWorldX - x);
+        r0 = I(gPlayer.qWorldY - y);
+
+        r6 = SQUARE(r6);
+        r0 = SQUARE(r0);
+        if ((r6 + r0) < 376) {
+            s32 speed;
+            result = sub_804C9B4(boss, arm);
+
+            speed = -gPlayer.speedAirX;
+            gPlayer.speedAirX = speed;
+
+            speed = -gPlayer.speedAirY;
+            gPlayer.speedAirY = speed;
+
+            speed = -gPlayer.speedGroundX;
+            gPlayer.speedGroundX = speed;
+
+            return result;
         }
+    }
 
-        if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-            r5 = I(gPlayer.qWorldX - r6);
-            r4 = I(gPlayer.qWorldY - r7);
+    if ((gCheese != NULL) && HITBOX_IS_ACTIVE(gCheese->reserved)) {
+        x -= gCheese->posX;
+        x = (x) >> 8;
+        y -= gCheese->posY;
+        y = (y) >> 8;
 
-            r5 = SQUARE(r5);
-            r4 = SQUARE(r4);
-            if ((r5 + r4) < 376) {
-                s32 speed;
-                result = sub_804C9B4(boss, arm);
+        if ((SQUARE(x) + SQUARE(y)) < 376) {
+            result = sub_804C9B4(boss, arm);
 
-                speed = -gPlayer.speedAirX;
-                gPlayer.speedAirX = speed;
-
-                speed = -gPlayer.speedAirY;
-                gPlayer.speedAirY = speed;
-
-                speed = -gPlayer.speedGroundX;
-                gPlayer.speedGroundX = speed;
-
-                return result;
-            }
-        }
-
-        if ((gCheese != NULL) && HITBOX_IS_ACTIVE(gCheese->reserved)) {
-            r6 -= gCheese->posX;
-            r6 = (r6) >> 8;
-            r7 -= gCheese->posY;
-            r7 = (r7) >> 8;
-
-            if ((SQUARE(r6) + SQUARE(r7)) < 376) {
-                result = sub_804C9B4(boss, arm);
-
-                gCheeseTarget.task->unk15 = 0;
-            }
+            gCheeseTarget.task->unk15 = 0;
         }
     }
 
     return result;
 }
-END_NONMATCH
 
 static void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
 {
