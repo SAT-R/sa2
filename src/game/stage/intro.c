@@ -319,9 +319,9 @@ typedef struct {
 } IntroActLetters; /* size: 0xC4 */
 
 static void Task_IntroControllerMain(void);
-void Task_802F9F8(void);
+static void Task_802F9F8(void);
 static void Task_IntroColorAnimation(void);
-void Task_IntroZoneNameAndIconAnimations(void);
+static void Task_IntroZoneNameAndIconAnimations(void);
 static void Task_IntroActLettersAnimations(void);
 static void Task_UpdateStageLoadingScreen(void);
 static void TaskDestructor_IntroController(struct Task *);
@@ -700,7 +700,7 @@ static void Task_IntroControllerMain(void)
     }
 }
 
-void Task_802F9F8(void)
+static void Task_802F9F8(void)
 {
     IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
     IntroController *controller = introBackgrounds->controller; // sp00
@@ -970,21 +970,23 @@ static void StageIntroUpdateIcons(void)
     DisplaySprite(s);
 }
 
-// (88.38%) https://decomp.me/scratch/HozxE
-NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
+static inline int InlineIconsCalc(u8 arg0, int arg1) { return (arg0 * arg1) - 22; }
+
+static void Task_IntroZoneNameAndIconAnimations(void)
 {
     IntroUI *introUI = TASK_DATA(gCurTask);
     u32 counter = introUI->controller->counter;
     Sprite *s;
-    u8 r2;
-    s32 sl;
     u32 i;
+    u8 counterByte;
 
     if (counter - 10 > 124) {
         if (counter >= 200) {
             TaskDestroy(gCurTask);
             return;
-        } else if (counter >= 150) {
+        }
+
+        if (counter >= 150) {
             // _0802FFD2
             s = &introUI->sprCharacterLogo;
 
@@ -1004,132 +1006,144 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }
-    } else {
-        // _0803004E
-        counter -= 9;
+        return;
+    }
 
-        s = &introUI->sprCharacterLogo;
+    // _0803004E
+    counter -= 9;
+
+    s = &introUI->sprCharacterLogo;
+
+    if (counter <= 12) {
+        s->x = 254 - (((counter * 75) << 6) >> 8);
+        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((counter * 123) << 3) >> 8);
+
+    } else if (counter <= 100) {
+        // _08030078
+        s->x = 254 - (((13 * 75) << 6) >> 8) + 13;
+        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((13 * 123) << 3) >> 8) + 2;
+    } else {
+        // _08030086
+        u32 innerCount = counter - (100 - 12);
+        s->x = 254 - (((innerCount * 75) << 6) >> 8);
+        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((innerCount * 123) << 3) >> 8);
+    }
+
+    // _080300AE
+    for (i = 0; i < ARRAY_COUNT(introUI->sprZoneName); i++) {
+        s = &introUI->sprZoneName[i];
 
         if (counter <= 12) {
-            s->x = 254 - (((counter * 75) << 6) >> 8);
+            s->x = 284 - (((counter * 75) << 6) >> 8);
             s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((counter * 123) << 3) >> 8);
-
         } else if (counter <= 100) {
-            // _08030078
-            s->x = 254 - (((13 * 75) << 6) >> 8) + 13;
-            s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((13 * 123) << 3) >> 8) + 2;
+            s->x = 284 - (((13 * 75) << 6) >> 8) + 13;
+            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((13 * 123) << 3) >> 8) + 2;
         } else {
-            // _08030086
-            u32 innerCount = counter - (100 - 12);
-            s->x = 254 - (((innerCount * 75) << 6) >> 8);
-            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((innerCount * 123) << 3) >> 8);
+            s->x = 284 - ((((counter - (100 - 12)) * 75) << 6) >> 8);
+            s->y = ((DISPLAY_HEIGHT / 2) + 47) - ((((counter - (100 - 12)) * 123) << 3) >> 8);
         }
-        // _080300AE
-        for (i = 0; i < ARRAY_COUNT(introUI->sprZoneName); i++) {
-            s = &introUI->sprZoneName[i];
+        // _0803012A
 
-            if (counter <= 12) {
-                s->x = 284 - (((counter * 75) << 6) >> 8);
-                s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((counter * 123) << 3) >> 8);
-            } else if (counter <= 100) {
-                s->x = 284 - (((13 * 75) << 6) >> 8) + 13;
-                s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((13 * 123) << 3) >> 8) + 2;
-            } else {
-                s->x = 284 - ((((counter - (100 - 12)) * 75) << 6) >> 8);
-                s->y = ((DISPLAY_HEIGHT / 2) + 47) - ((((counter - (100 - 12)) * 123) << 3) >> 8);
-            }
-            // _0803012A
-
-            // TODO: This looks like a programmer added a @HACK here?
-            if (i == 3) {
-                s->x -= 24;
-            }
+        // TODO: This looks like a programmer added a @HACK here?
+        if (i == 3) {
+            s->x -= 24;
         }
-        // _08030134+8
+    }
+    // _08030134+8
 
-        r2 = counter;
-        for (i = 0; i < ARRAY_COUNT(introUI->sprUnlockedIcons); i++) {
-            // _08030170
-            u32 lastIconIndex = ((ARRAY_COUNT(introUI->sprUnlockedIcons) - 1) - i);
-            s = &introUI->sprUnlockedIcons[lastIconIndex];
-            s->x = (DISPLAY_WIDTH - (ARRAY_COUNT(introUI->sprUnlockedIcons) * 17) - ((ARRAY_COUNT(introUI->sprUnlockedIcons) + 1) * 2))
-                + lastIconIndex * 17;
-            s->y = -22;
+    counterByte = counter;
+    for (i = 0; i < ARRAY_COUNT(introUI->sprUnlockedIcons); i++) {
+        s32 x, y;
+// _08030170
+#ifndef NON_MATCHING
+        register u32 lastIconIndex asm("r0");
+#else
+        u32 lastIconIndex;
+#endif
+        lastIconIndex = ((ARRAY_COUNT(introUI->sprUnlockedIcons) - 1) - i);
+        s = &introUI->sprUnlockedIcons[lastIconIndex];
 
-            if (r2 < 50) {
-                if (r2 >= i * 2) {
-                    if (!(i & 0x1)) {
-                        if (r2 + (i * -2) < 5) {
-                            s->y = ((r2 * 10) - 22) + (i * -0x14);
-                        } else {
-                            s->y = 20;
-                            asm("");
-                        }
+        x = (DISPLAY_WIDTH - (ARRAY_COUNT(introUI->sprUnlockedIcons) * 17) - ((ARRAY_COUNT(introUI->sprUnlockedIcons) + 1) * 2))
+            + lastIconIndex * 17;
+        s->x = x;
+
+        y = -22;
+        s->y = y;
+
+        if (counterByte < 50) {
+            if (counterByte >= i * 2) {
+                if (!(i & 1)) {
+                    s32 offset = i * -20;
+                    if (counterByte + (i * -2) < 5) {
+                        s->y = InlineIconsCalc(counterByte, 10) + offset;
                     } else {
-                        // _080301B2
-                        if ((r2 + (i * -2)) < 5) {
-                            s->y = ((r2 + (i * -2)) * 6) - 22;
-                        } else {
-                            s->y = 12;
-                            asm("");
-                        }
+                        s->y = 20;
+                    }
+                } else {
+                    // _080301B2
+                    if ((counterByte + (i * -2)) < 5) {
+                        s->y = ((counterByte + (i * -2)) * 6) - 22;
+                    } else {
+                        s->y = 12;
                     }
                 }
-            } else if (r2 < 100) {
-                // _080301C8+4
-                if (!(i & 0x1)) {
-                    s->y = 20;
-                } else {
-                    s->y = 12;
-                }
+            }
+        } else if (counter < 100) {
+            // _080301C8+4
+            if (!(i & 1)) {
+                s->y = 20;
             } else {
-                // _080301E0
-                if (!(i & 0x1)) {
-                    s->y = 20 - (r2 - 100) * 6;
+                s->y = 12;
+            }
+        } else {
+            // _080301E0
+            if (!(i & 1)) {
+                s->y = 20 - (counter - 100) * 6;
 
-                } else {
-                    s->y = 12 - (r2 - 100) * 6;
-                }
+            } else {
+                s->y = 12 - (counter - 100) * 6;
             }
         }
-
-        /* Loading Wheel */
-        s = &introUI->sprLoadingWheel;
-        s->x = 36;
-
-        if (counter <= 16) {
-            s->y = -48;
-        } else if (counter <= 25) {
-            u8 xw = counter - 16;
-            s->y = (xw * 8) - 40;
-        } else if (counter <= 100) {
-            s->y = 32;
-        } else {
-            s->y = 32 - ((u8)(counter - 100) * 8u);
-        }
-
-        // _08030240
-        /* Loading Wheel Icon */
-        s = &introUI->sprLoadingWheelIcon;
-
-        s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
-        s->x = 35;
-
-        if (counter <= 16) {
-            s->y = -49;
-        } else if (counter <= 25) {
-            s->y = ((u8)(counter - 16) * 8u) - 41;
-        } else if (counter <= 100) {
-            s->x = 35;
-            s->y = 32;
-        } else {
-            s->y = 32 - ((u8)(counter - 100) * 8u);
-        }
-
-        StageIntroUpdateIcons();
     }
+
+    /* Loading Wheel */
+    s = &introUI->sprLoadingWheel;
+    s->x = 36;
+
+    if (counter <= 16) {
+        s->y = -48;
+    } else if (counter <= 25) {
+        counterByte = counter - 16;
+        s->y = (counterByte * 8) - 40;
+    } else if (counter <= 100) {
+        s->y = 32;
+    } else {
+        counterByte = counter - 100;
+        s->y = 32 - (counterByte * 8);
+    }
+
+    // _08030240
+    /* Loading Wheel Icon */
+    s = &introUI->sprLoadingWheelIcon;
+    s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+    s->x = 35;
+
+    if (counter <= 16) {
+        s->y = -49;
+    } else if (counter <= 25) {
+        counterByte = counter - 16;
+        s->y = (counterByte * 8) - 41;
+    } else if (counter <= 100) {
+        s->x = 35;
+        s->y = 32;
+    } else {
+        counterByte = counter - 100;
+        s->y = 32 - (counterByte * 8);
+    }
+
+    StageIntroUpdateIcons();
 }
-END_NONMATCH
 
 static inline void sub_8030488_inline()
 {
