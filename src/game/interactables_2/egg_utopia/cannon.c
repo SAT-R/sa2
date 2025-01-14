@@ -262,7 +262,11 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", boo
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
     s16 playerX, playerY;
+#ifndef NON_MATCHING
     register Sprite_Cannon *r3 asm("r3") = cannon;
+#else
+    Sprite_Cannon *r3 = cannon;
+#endif
     Sprite *s2 = &r3->sprite2;
     if (!PLAYER_IS_ALIVE) {
         return 0;

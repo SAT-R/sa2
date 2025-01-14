@@ -30,4 +30,14 @@
 #define TAS_TESTING                 0
 #define TAS_TESTING_WIDESCREEN_HACK 1
 
+#define RENDERER_SOFTWARE 0
+#define RENDERER_OPENGL   1
+#define RENDERER_COUNT    2
+#if PLATFORM_WIN32 && !PLATFORM_SDL
+// TODO: Only win32 for now
+#define RENDERER RENDERER_OPENGL
+#else
+#define RENDERER RENDERER_SOFTWARE
+#endif
+
 #endif // GUARD_SA2_CONFIG_H
