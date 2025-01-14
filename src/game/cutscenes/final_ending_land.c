@@ -169,7 +169,7 @@ void CreateFinalEndingLandingCutScene(void)
     scene->unk33D = 0;
     scene->unk33E = 0;
 
-    if (gSelectedCharacter == 1) {
+    if (gSelectedCharacter == CHARACTER_CREAM) {
         scene->unk33B = 1;
     } else {
         scene->unk33B = 0;
@@ -206,7 +206,7 @@ void CreateFinalEndingLandingCutScene(void)
     fade->brightness = Q_8_8(0);
     fade->speed = Q(1.0);
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    if (gSelectedCharacter == 1) {
+    if (gSelectedCharacter == CHARACTER_CREAM) {
         {
             Sprite *s;
             s = &scene->unk110;
@@ -604,7 +604,8 @@ void sub_80934B8(struct FinalEndingLandCutScene *scene)
         scene->unk5E0[0][1] = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100;
         scene->unk5E0[0][0] = 0x7800;
     } else {
-        if ((gSelectedCharacter == 1 && scene->unk338 == 5) || (gSelectedCharacter != 1 && scene->unk338 == 4)) {
+        if ((gSelectedCharacter == CHARACTER_CREAM && scene->unk338 == 5)
+            || (gSelectedCharacter != CHARACTER_CREAM && scene->unk338 == 4)) {
             if (scene->unk342 & 1) {
                 if (scene->unk33E < 0x23) {
                     scene->unk33E++;
@@ -703,17 +704,17 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
 
     transform = &scene->transform;
 
-    if ((gSelectedCharacter == 1 && scene->unk338 < 5) || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
+    if ((gSelectedCharacter == CHARACTER_CREAM && scene->unk338 < 5) || (gSelectedCharacter != CHARACTER_CREAM && scene->unk338 < 4)) {
         s = &scene->unk80;
 
         if (scene->unk338 < 3) {
             s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].anim;
             s->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].variant;
-        } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
+        } else if (gSelectedCharacter == CHARACTER_CREAM && scene->unk338 < 5) {
             s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].anim;
             s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].variant;
 
-        } else if (gSelectedCharacter == 1) {
+        } else if (gSelectedCharacter == CHARACTER_CREAM) {
             s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338] + gSelectedCharacter].anim;
             s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338] + gSelectedCharacter].variant;
         } else {
@@ -724,7 +725,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->y = scene->unk5E0[0][1] >> 8;
     }
 
-    if ((gSelectedCharacter != 1 && scene->unk338 == 4) || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
+    if ((gSelectedCharacter != CHARACTER_CREAM && scene->unk338 == 4) || (gSelectedCharacter == CHARACTER_CREAM && scene->unk338 == 5)) {
         s = &scene->unkB0;
 
         s->x = scene->unk5E0[0][0] >> 8;
@@ -737,12 +738,18 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         TransformSprite(s, transform);
     }
 
-    UpdateSpriteAnimation(s);
-    DisplaySprite(s);
+#ifdef BUG_FIX
+    // s is NULL when trying to display the "Congratulations!" character art.
+    if (s != NULL)
+#endif
+    {
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
 
-    if ((gSelectedCharacter != 1 && scene->unk338 > 4) || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
+    if ((gSelectedCharacter != CHARACTER_CREAM && scene->unk338 > 4) || (gSelectedCharacter == CHARACTER_CREAM && scene->unk338 > 5)) {
         s = &scene->unkE0;
-        if (gSelectedCharacter != 1) {
+        if (gSelectedCharacter != CHARACTER_CREAM) {
             s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].anim;
             s->variant = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].variant;
         } else {
@@ -828,7 +835,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         }
     }
 
-    if ((gSelectedCharacter == 1 && scene->unk338 > 5) || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
+    if ((gSelectedCharacter == CHARACTER_CREAM && scene->unk338 > 5) || (gSelectedCharacter != CHARACTER_CREAM && scene->unk338 > 4)) {
         s = &scene->unk200;
         s->graphics.anim = gUnknown_080E17A4[41].anim;
         s->variant = gUnknown_080E17A4[41].variant;
@@ -846,7 +853,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         DisplaySprite(s);
     }
 
-    if (gSelectedCharacter == 1) {
+    if (gSelectedCharacter == CHARACTER_CREAM) {
         s = &scene->unk110;
         s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].anim;
         s->variant = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].variant;
@@ -950,7 +957,7 @@ void sub_8094044(struct FinalEndingLandCutScene *scene)
 
 void sub_8094060(struct FinalEndingLandCutScene *scene)
 {
-    if ((gSelectedCharacter != 1 && scene->unk338 == 5) || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+    if ((gSelectedCharacter != CHARACTER_CREAM && scene->unk338 == 5) || (gSelectedCharacter == CHARACTER_CREAM && scene->unk338 == 6)) {
         scene->unk5E0[3][0] = 0x78;
         if (scene->unk5E0[3][1] > 0x8200) {
             scene->unk5E0[3][1] -= 0x300;
@@ -960,7 +967,7 @@ void sub_8094060(struct FinalEndingLandCutScene *scene)
 
 void sub_80940BC(struct FinalEndingLandCutScene *scene)
 {
-    if ((gSelectedCharacter != 1 && scene->unk338 == 5) || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+    if ((gSelectedCharacter != CHARACTER_CREAM && scene->unk338 == 5) || (gSelectedCharacter == CHARACTER_CREAM && scene->unk338 == 6)) {
         scene->unk5E0[4][0] = 0x78;
         if (scene->unk5E0[4][1] > 0x9600) {
             scene->unk5E0[4][1] -= 0x300;
