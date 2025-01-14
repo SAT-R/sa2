@@ -578,8 +578,16 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             yPos *= bg->mapWidth;
 
                             { // _0800355C
-                                s32 metatileIndex = *(&bg->metatileMap[yPos] + sp24) * bg->xTiles * bg->yTiles;
+                                s32 metatileIndex;
                                 s32 otherVal;
+                                s32 mtIndex = *(&bg->metatileMap[yPos] + sp24);
+#if NON_MATCHING
+                                // TEMP: Crash-Fix
+                                if (mtIndex >= 1024) {
+                                    mtIndex = 0;
+                                }
+#endif
+                                metatileIndex = mtIndex * bg->xTiles * bg->yTiles;
 
                                 otherVal = new_r4 * bg->xTiles;
                                 otherVal += sp28;
