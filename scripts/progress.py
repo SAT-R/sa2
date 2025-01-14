@@ -17,7 +17,7 @@ def collect_non_matching_funcs():
                     for i in range(len(lines)):
                         line = lines[i]
                         if "NONMATCH" in line:
-                            # if "unused"  in line.lower():
+                            # if "unused_"  in line.lower():
                             #     continue
                             matcher = r'(NONMATCH|ASM_FUNC)\(".*",\W*\w*\W*(\w*).*\)'
                             match = re.findall(matcher, line)
