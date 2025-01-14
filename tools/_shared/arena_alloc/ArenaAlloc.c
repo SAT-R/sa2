@@ -34,7 +34,7 @@ static void memArenaExpand(MemArena *arena, s32 numNewArenas);
 // you'll be left with a downcast signed 32 bit value, even in 64bit mode
 //   Behaviour in:  VS Compiler v14.34.31937.0
 u64 GetGigabytes(u64 num) {
-    return num*1024*1024*1024;
+    return num*1024*1024;
 }
 
 static void *memArenaVirtualAlloc(void* baseAddress, size_t size) {
