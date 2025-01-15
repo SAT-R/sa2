@@ -60,10 +60,19 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
 // TODO: SpecialStageCollectables_UNK874 is probably it's own type
 bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874, struct SpecialStage *stage)
 {
-    struct SpecialStageWorld *world = TASK_DATA(stage->worldTask);
+    struct SpecialStageWorld *world;
     s32 r9;
     s32 r4;
     s16 val2, val;
+
+#ifdef BUG_FIX
+    // worldTask can sometimes be NULL when directly calling Special Stage code
+    if (stage->worldTask == NULL) {
+        return FALSE;
+    }
+#endif
+
+    world = TASK_DATA(stage->worldTask);
 
     {
         u16 deg = -stage->cameraBearing & 0x3FF;
@@ -181,14 +190,14 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
+void sub_806CEC4(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
     background->layoutVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->tilemapId = assetId;
+    background->tilemapId = tilemapId;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
