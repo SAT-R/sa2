@@ -130,10 +130,10 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
 static void SetupIntroScreenRegisters(void)
 {
-    gDispCnt = 0x1641;
-    gBgCntRegs[1] = 0x703;
-    gBgCntRegs[2] = 0xD086;
-    gBldRegs.bldCnt = 0xAF;
+    gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
+    gBgCntRegs[1] = (BGCNT_TXT256x256 | BGCNT_16COLOR | BGCNT_PRIORITY(3) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(7));
+    gBgCntRegs[2] = (BGCNT_TXT512x512 | BGCNT_256COLOR | BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(16));
+    gBldRegs.bldCnt = BLDCNT_EFFECT_LIGHTEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
     gBldRegs.bldY = 0x10;
 
     gBgScrollRegs[1][0] = 0;
@@ -716,7 +716,7 @@ static void Task_ShowIntroScreen(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
     SetupIntroScreenRegisters();
-    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, 0x78, 0x50, 0, 0, 0);
+    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, (DISPLAY_WIDTH / 2), (DISPLAY_HEIGHT / 2), 0, 0, 0);
 
     stage->state = 1;
     m4aSongNumStart(MUS_SPECIAL_STAGE_INTRO);
