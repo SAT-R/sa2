@@ -3,9 +3,34 @@
 #
 include config.mk
 
-ROOT_DIR := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
+# TODO: compile songs to C so that we can work around this.
+#
+# MacOS refuses to link the songs data because some pointers
+# are not aligned. The music player code reads pointers from raw
+# bytes, so they don't need to be aligned. But this is a simple
+# work around which tells the compiler not to care. Once we are
+# compiling the songs to C, we can cast the pointers to integers
+# which means the linker will not
+export MACOSX_DEPLOYMENT_TARGET := 11
+
+MAKEFLAGS += --no-print-directory
+
+# Clear the default suffixes
+.SUFFIXES:
+# Don't delete intermediate files
+.SECONDARY:
+# Delete files that weren't built properly
+.DELETE_ON_ERROR:
+# Secondary expansion is required for dependency variables in object rules.
+.SECONDEXPANSION:
+
+# Quotes must remain to ensure that paths with spaces are respected
+ROOT_DIR := "$(shell dirname "$(realpath $(firstword $(MAKEFILE_LIST)))")"
 OS       := $(shell uname)
 
+### TOOLCHAIN ###
+
+# GBA
 ifeq ($(PLATFORM),gba)
   TOOLCHAIN := $(DEVKITARM)
   COMPARE ?= 0
@@ -28,6 +53,7 @@ ifeq ($(PLATFORM),gba)
   endif
 
   PREFIX := arm-none-eabi-
+# x86
 else ifeq ($(CPU_ARCH),i386)
   ifeq ($(PLATFORM),sdl_win32)
     TOOLCHAIN := /usr/x86_64-w64-mingw32/
@@ -37,6 +63,7 @@ else ifeq ($(CPU_ARCH),i386)
     PREFIX := x86_64-w64-mingw32-
   endif
 else
+# Native
   ifneq ($(PLATFORM),sdl)
     $(error Unsupported CPU arch for platform '$(CPU_ARCH)', '$(PLATFORM)')
   endif
@@ -49,7 +76,6 @@ else
 EXE :=
 endif
 
-#### Tools ####
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
@@ -68,6 +94,7 @@ AS 		  := $(PREFIX)as
 
 FORMAT    := clang-format-13
 
+### TOOLS ###
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
 EPOS 	  := tools/entity_positions/epos$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
@@ -84,19 +111,111 @@ TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils tools/BriBaSA
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
+### DEPS ###
+
+SDL_MINGW_PKG     := $(ROOT_DIR)/ext/SDL2-2.30.3/x86_64-w64-mingw32
+SDL_MINGW_INCLUDE := $(SDL_MINGW_PKG)/include/SDL2
+SDL_MINGW_SDL_DLL := $(SDL_MINGW_PKG)/bin/SDL2.dll
+SDL_MINGW_LIB     := $(SDL_MINGW_PKG)/lib
+SDL_MINGW_FLAGS   := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
+SDL_MINGW_LIBS    := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
+
+LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/libagbsyscall -lagbsyscall
+
+### FILES ###
+
+OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
+ifeq ($(PLATFORM),gba)
+ROM      := $(BUILD_NAME).gba
+ELF      := $(ROM:.gba=.elf)
+MAP      := $(ROM:.gba=.map)
+else ifeq ($(PLATFORM),sdl)
+ROM      := $(BUILD_NAME).sdl
+ELF      := $(ROM).elf
+MAP      := $(ROM).map
+else
+ROM      := $(BUILD_NAME).$(PLATFORM).exe
+ELF      := $(ROM:.exe=.elf)
+MAP      := $(ROM:.exe=.map)
+endif
+
+ASM_SUBDIR = asm
+
+ifeq ($(CPU_ARCH),arm)
+ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
+else
+ASM_BUILDDIR =
+endif
+
+C_SUBDIR = src
+C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
+
+DATA_ASM_SUBDIR = data
+DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
+
+SONG_SUBDIR = sound/songs
+SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
+
+SOUND_ASM_SUBDIR = sound
+SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
+
+MID_SUBDIR = sound/songs/midi
+MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
+
+SAMPLE_SUBDIR = sound/direct_sound_samples
+
+OBJ_TILES_4BPP_SUBDIR = graphics/obj_tiles/4bpp
+TILESETS_SUBDIR = graphics/tilesets/
+
+ifeq ($(PLATFORM),gba)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
+else ifeq ($(PLATFORM),sdl)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),sdl_win32)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),win32)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
+else
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
+endif
+C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
+ifeq ($(PLATFORM),gba)
+C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
+C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
+ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
+else
+# Don't include asm sources on non-gba platforms
+ASM_SRCS :=
+endif
+
+ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
+
+DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
+DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
+
+SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
+SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
+
+MID_SRCS := $(wildcard $(MID_SUBDIR)/*.mid)
+MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
+
+SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
+SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
+
+OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
+
+FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
+FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
+
+### COMPILER FLAGS ###
+
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
-
-SDL_MINGW_PKG          :=  ext/SDL2-2.30.3/x86_64-w64-mingw32
-SDL_MINGW_INCLUDE      := $(SDL_MINGW_PKG)/include/SDL2
-SDL_MINGW_BIN          := $(SDL_MINGW_PKG)/bin
-SDL_MINGW_SDL_DLL      := $(SDL_MINGW_PKG)/bin/SDL2.dll
-SDL_MINGW_LIB          := $(SDL_MINGW_PKG)/lib
-SDL_MINGW_LINKER_FLAGS := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
-SDL_MINGW_FLAGS        := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
@@ -166,33 +285,41 @@ else
   CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
 endif
 
-# TODO: compile songs to C so that we can work around this
-# MacOS refuses to link the songs data because some pointers
-# are not aligned. This is a simple work around which tells
-# the compiler not to care. Once we are compiling the songs
-# to C, we can cast the pointers to integers to make the linker
-# care less
-ifeq ($(OS), Darwin)
-  LINKER_MAP_FLAGS = -Wl,-map, "$(ROOT_DIR)/$(MAP)"
-  ifneq ($(PLATFORM), gba)
-   export MACOSX_DEPLOYMENT_TARGET := 11
-  endif
+### LINKER FLAGS ###
+
+# GBA
+ifeq ($(PLATFORM),gba)
+    MAP_FLAG := -Map
+# Native
+else ifeq ($(PLATFORM),sdl)
+    ifeq ($(OS), Darwin)
+        MAP_FLAG := -Wl,-map,
+    else
+        MAP_FLAG := -Xlinker -Map=
+    endif
+# Win32
 else
-  LINKER_MAP_FLAGS = -Xlinker -Map="$(ROOT_DIR)/$(MAP)"
+    MAP_FLAG := -Xlinker -Map=
 endif
 
-# Clear the default suffixes
-.SUFFIXES:
-# Don't delete intermediate files
-.SECONDARY:
-# Delete files that weren't built properly
-.DELETE_ON_ERROR:
+# Libs
+ifeq ($(PLATFORM),gba)
+    LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
+else ifeq ($(PLATFORM),sdl)
+    LIBS := $(shell sdl2-config --cflags --libs)
+else ifeq ($(PLATFORM),sdl_win32)
+    LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(SDL_MINGW_LIBS)
+else ifeq ($(PLATFORM), win32)
+    LIBS := -mwin32 -lkernel32 -lwinmm -lgdi32 -lxinput -lopengl32 $(LIBABGSYSCALL_LIBS)
+endif
 
-# Secondary expansion is required for dependency variables in object rules.
-.SECONDEXPANSION:
+#### MAIN TARGETS ####
 
 # these commands will run regardless of deps being completed
 .PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
+
+# Ensure required directories exist
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
 # a special command which ensures that stdout and stderr
 # get printed instead of output into the makefile
@@ -212,142 +339,22 @@ else
 NODEP ?= 1
 endif
 
-#### Files ####
-OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
 ifeq ($(PLATFORM),gba)
-ROM      := $(BUILD_NAME).gba
-ELF      := $(ROM:.gba=.elf)
-MAP      := $(ROM:.gba=.map)
-else ifeq ($(PLATFORM),sdl)
-ROM      := $(BUILD_NAME).sdl
-ELF      := $(ROM).elf
-MAP      := $(ROM).map
-else
-ROM      := $(BUILD_NAME).$(PLATFORM).exe
-ELF      := $(ROM:.exe=.elf)
-MAP      := $(ROM:.exe=.map)
-endif
-
-ASM_SUBDIR = asm
-
-ifeq ($(CPU_ARCH),arm)
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
-else
-ASM_BUILDDIR =
-endif
-
-C_SUBDIR = src
-C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
-
-DATA_ASM_SUBDIR = data
-DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
-
-SONG_SUBDIR = sound/songs
-SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
-
-SOUND_ASM_SUBDIR = sound
-SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
-
-MID_SUBDIR = sound/songs/midi
-MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
-
-SAMPLE_SUBDIR = sound/direct_sound_samples
-
-OBJ_TILES_4BPP_SUBDIR = graphics/obj_tiles/4bpp
-TILESETS_SUBDIR = graphics/tilesets/
-
-
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
-
-ifeq ($(PLATFORM),gba)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
-else ifeq ($(PLATFORM),sdl)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
-else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
-else ifeq ($(PLATFORM),win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
-else
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
-endif
-C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
-
-ifeq ($(PLATFORM),gba)
-C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
-C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
-ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
-else
-# Don't include asm sources on non-gba platforms
-ASM_SRCS :=
-endif
-
-ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
-
-DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
-DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
-
-SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
-SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
-
-MID_SRCS := $(wildcard $(MID_SUBDIR)/*.mid)
-MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
-
-SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
-SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
-
-OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
-OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
-
-# Use the old compiler for m4a, as it was prebuilt and statically linked
-# to the original codebase
-$(C_BUILDDIR)/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
-
-# Use `-O1` for agb_flash libs, as these were also prebuilt
-ifeq ($(PLATFORM),gba)
-$(C_BUILDDIR)/lib/agb_flash/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
-$(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
-endif
-
-MAKEFLAGS += --no-print-directory
-
 all: compare
 
-#### win32 deps ####
+compare: rom
+	$(SHA1) $(BUILD_NAME).sha1
 
-$(SDL_MINGW_LIB):
-	@mkdir -p ext
-	cd ext && wget -qO- https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip | bsdtar -xvf-
-
-SDL2.dll: $(SDL_MINGW_LIB)
-	cp $(SDL_MINGW_SDL_DLL) SDL2.dll
-
-#### Main Targets ####
+else
+all: rom
+endif
 
 rom: $(ROM)
 
-FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
-FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
-
-format:
-	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
-	@$(FORMAT) -i --verbose -style=file $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
-
-check_format:
-	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
-	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
-
 tools: $(TOOLDIRS)
-
-$(TOOLDIRS): tool_libs
-	@$(MAKE) -C $@
 
 tool_libs:
 	@$(MAKE) -C tools/_shared
-
-compare: rom
-ifeq ($(PLATFORM),gba)
-	$(SHA1) $(BUILD_NAME).sha1
-endif
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
@@ -374,6 +381,17 @@ ifeq ($(PLATFORM), GBA)
 	$(MAKE) tidy PLATFORM=sdl
 endif
 
+japan: ; @$(MAKE) GAME_REGION=JAPAN
+
+europe: ; @$(MAKE) GAME_REGION=EUROPE
+
+
+sdl: ; @$(MAKE) PLATFORM=sdl
+
+sdl_win32:
+	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
+
+win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### Recipes ####
 
@@ -418,26 +436,15 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 %.bin: %.aif ; $(AIF) $< $@
 
-PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
-
-# -P disables line markers
-$(PROCESSED_LDSCRIPT): $(LDSCRIPT)
-	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
-
-$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
+$(ELF): $(OBJS) libagbsyscall
 ifeq ($(PLATFORM),gba)
-	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
-	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
+	@echo "$(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(MAP) <objects> <lib> -o $@"
+	@$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(OBJ_DIR)/$(LDSCRIPT)
+	@cd $(OBJ_DIR) && $(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(ROOT_DIR)/$(MAP) $(OBJS_REL) $(LIBS) -o $(ROOT_DIR)/$@
 else
-	@echo Outputting $(ROOT_DIR)/$@
+	@echo "$(CC1) $(MAP_FLAG)$(MAP) <objects> <lib> -o $@"
 	@touch $(ROOT_DIR)/$(MAP)
-ifeq ($(PLATFORM),sdl)
-	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) $(LINKER_MAP_FLAGS) -o $(ROOT_DIR)/$@
-else ifeq ($(PLATFORM),sdl_win32)
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
-else
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -lgdi32 -lwinmm -lxinput -lopengl32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
-endif
+	@cd $(OBJ_DIR) && $(CC1) $(MAP_FLAG)$(ROOT_DIR)/$(MAP) $(OBJS_REL) $(LIBS) -o $(ROOT_DIR)/$@
 endif
 
 $(ROM): $(ELF)
@@ -453,11 +460,21 @@ ifeq ($(CREATE_PDB),1)
 endif
 endif
 
+# Scan the C dependencies to determine if headers have changed
 ifeq ($(NODEP),1)
 $(OBJ_DIR)/src/%.o: c_dep :=
 else
 $(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
 $(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=) 2>/dev/null)
+endif
+
+ifeq ($(PLATFORM),gba)
+# Use the old compiler for m4a, as it was prebuilt and statically linked
+# to the original codebase
+$(C_BUILDDIR)/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
+# Use `-O1` for agb_flash libs, as these were also prebuilt
+$(C_BUILDDIR)/lib/agb_flash/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
 # Build c sources, and ensure alignment
@@ -471,25 +488,13 @@ ifeq ($(PLATFORM), gba)
 endif
 	@$(AS) $(ASFLAGS) $(OBJ_DIR)/$*.s -o $@
 
-# Build arm asm sources
-ifeq ($(CPU_ARCH),arm)
-ifeq ($(NODEP),1)
-$(ASM_BUILDDIR)/%.o: asm_dep :=
-else
-$(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
-endif
-
 # rule for sources from the src dir (parts of libraries)
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
-# rule for rest of asm directory
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
-	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
-endif
 
+# Scan the ASM data dependencies to determine if any .inc files have changed
 ifeq ($(NODEP),1)
 $(DATA_ASM_BUILDDIR)/%.o: data_dep :=
 else
@@ -504,18 +509,7 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
-
-japan: ; @$(MAKE) GAME_REGION=JAPAN
-
-europe: ; @$(MAKE) GAME_REGION=EUROPE
-
-
-sdl: ; @$(MAKE) PLATFORM=sdl
-
-sdl_win32:
-	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
-
-win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
+### SUB-PROGRAMS ###
 
 chao_garden/mb_chao_garden.gba: 
 ifeq ($(PLATFORM), gba)
@@ -568,3 +562,25 @@ libagbsyscall:
 
 bribasa:
 	@$(MAKE) -C tools/BriBaSA_ex
+
+$(TOOLDIRS): tool_libs
+	@$(MAKE) -C $@
+
+### DEPS INSTALL COMMANDS ###
+
+$(SDL_MINGW_LIB):
+	@mkdir -p ext
+	cd ext && wget -qO- https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip | bsdtar -xvf-
+
+SDL2.dll: $(SDL_MINGW_LIB)
+	cp $(SDL_MINGW_SDL_DLL) SDL2.dll
+
+### FORMATTER ###
+
+format:
+	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
+	@$(FORMAT) -i --verbose -style=file $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
+
+check_format:
+	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
+	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)

@@ -83,15 +83,11 @@ SECTIONS
 	ALIGN(4)
 	{
         /* bootstrap */
-#if (PLATFORM_GBA == 1)
         src/rom_header.o(.text);
         src/crt0.o(.text);
-#endif
 
         /* engine */
-#if (CPU_ARCH_ARM == 1)
         src/multi_sio_asm.o(.text);
-#endif
         src/multi_sio.o(.text);
         src/multi_boot.o(.text);
         src/sio32_multi_load.o(.text);
@@ -354,15 +350,12 @@ SECTIONS
 #endif
 
         /* libs */
-#if (CPU_ARCH_ARM == 1)
         src/lib/m4a/m4a0.o(.text);
-#endif
         src/lib/m4a/m4a.o(.text);
         src/lib/agb_flash/agb_flash.o(.text);
         src/lib/agb_flash/agb_flash_512k.o(.text);
         src/lib/agb_flash/agb_flash_le_512k.o(.text);
         src/lib/agb_flash/agb_flash_mx_512k.o(.text);
-#if (PLATFORM_GBA == 1)
         *libagbsyscall.a:ArcTan2.o(.text);
         *libagbsyscall.a:CpuFastSet.o(.text);
         *libagbsyscall.a:CpuSet.o(.text);
@@ -375,9 +368,6 @@ SECTIONS
         *libagbsyscall.a:Sqrt.o(.text);
         *libagbsyscall.a:VBlankIntrWait.o(.text);
         *libagbsyscall.a:SoftResetExram.o(.text);
-#else
-        *libagbsyscall.a(.text);
-#endif
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_divdi3.o(.text);
@@ -820,10 +810,7 @@ SECTIONS
         src/data/recordings.o(.rodata);
         data/multiboot_collect_rings.o(.rodata);
         data/multiboot_subgame_loader.o(.rodata);
-        
-#if (CPU_ARCH_ARM == 1)
         data/build_info.o(.rodata);
-#endif
 	} = 0
 
     /* DWARF debug sections.
