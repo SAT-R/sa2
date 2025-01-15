@@ -69,7 +69,11 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 
     t = TaskCreate(sub_808EBC4, sizeof(struct CreditsCutScene), 0x3100, 0, TaskDestroy_CreditsCutScene);
 
-    // BUG: assigning to null pointer
+#ifdef BUG_FIX
+    // Prevent 'scene' from being nullpointer when accessed
+    scene = TASK_DATA(t);
+#endif
+
     scene->unk52 = 0;
 
     scene = TASK_DATA(t);
