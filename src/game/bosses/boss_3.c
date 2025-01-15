@@ -773,13 +773,11 @@ void sub_803FB88(EggTotem *totem)
     totem->qWorldY = res;
 }
 
-// (91.19%) https://decomp.me/scratch/29ZCq
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC14(EggTotem *totem))
+void sub_803FC14(EggTotem *totem)
 {
-    u8 i;
+    u8 i, j;
     ExplosionPartsInfo info;
     s32 divRes;
-    s32 v;
 
     for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
         totem->qWheelPos[i].x += totem->unk24[i][0];
@@ -796,12 +794,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
         info.spawnY = ((I(totem->qUnk94) - gCamera.y) + (rnd % 32u)) - 75;
 
         info.velocity = 0;
-
-        rnd = PseudoRandom32();
-        info.rotation = 1000 - (rnd % 64u);
-
-        rnd = PseudoRandom32();
-        info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd % 512u);
+        info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
         info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
@@ -816,12 +810,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
         info.spawnX = (I(totem->qUnk9C) - gCamera.x) + (rnd % 64u) - 31;
 
         rnd = PseudoRandom32();
-        info.spawnY = ((I(totem->qUnkA0) - gCamera.y) + (rnd % 32u)) - 75;
+        info.spawnY = ((I(totem->qUnkA0) - gCamera.y) + (rnd % 32u)) - 0x10;
 
         info.velocity = 0;
-        info.rotation = 1000 - (PseudoRandom32() % 64u);
+        info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
 
-        info.speed = BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u);
+        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
         info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
@@ -844,15 +838,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
             // _0803FE10
 
             // TODO: Check loop values
-            for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
                 s32 rnd = PseudoRandom32();
                 info.spawnX = ((I(t3c->qWorldX) - gCamera.x) + (rnd % 64u)) - 31;
-
                 rnd = PseudoRandom32();
                 info.spawnY = ((I(t3c->qWorldY) - gCamera.y) + (rnd % 8u)) - 3;
                 info.velocity = 0;
-                info.rotation = 1000 - (PseudoRandom32() % 64u);
-                info.speed = BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u);
+                info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+                info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - Q(1.5) - (PseudoRandom32() % 512u); });
                 info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                 info.anim = SA2_ANIM_EXPLOSION;
                 info.variant = 0;
@@ -868,6 +861,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
 
         divRes = sub_801F100(I(t3c->qWorldY) + 3, I(t3c->qWorldX), 1, +8, sub_801EC3C);
         if (divRes < 0) {
+            s32 v;
             t3c->qWorldY += Q(divRes);
 
             // t3c->qUnkA * 7./10.;
@@ -880,7 +874,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
         }
     }
 }
-END_NONMATCH
 
 // (81.46%) https://decomp.me/scratch/gT3he
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF44(EggTotem *totem))
