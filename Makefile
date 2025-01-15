@@ -299,6 +299,7 @@ else ifeq ($(PLATFORM),sdl)
     else
         MAP_FLAG := -Xlinker -Map=
     endif
+# Win32
 else
     MAP_FLAG := -Xlinker -Map=
 endif
@@ -309,18 +310,9 @@ ifeq ($(PLATFORM),gba)
 else ifeq ($(PLATFORM),sdl)
     LIBS := $(shell sdl2-config --cflags --libs)
 else ifeq ($(PLATFORM),sdl_win32)
-    LIBS := -mwin32 -lmingw32 $(SDL_MINGW_LIBS) -lwinmm -lkernel32 -lxinput
+    LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(SDL_MINGW_LIBS)
 else ifeq ($(PLATFORM), win32)
-    LIBS := -mwin32 -lkernel32 -lgdi32 -lwinmm -lxinput -lopengl32 $(LIBABGSYSCALL_LIBS)
-endif
-
-ifeq ($(OS), Darwin)
-  MAP_FLAGS = -Wl,-map, "$(ROOT_DIR)/$(MAP)"
-  ifneq ($(PLATFORM), gba)
-   export MACOSX_DEPLOYMENT_TARGET := 11
-  endif
-else
-  MAP_FLAGS = -Xlinker -Map="$(ROOT_DIR)/$(MAP)"
+    LIBS := -mwin32 -lkernel32 -lwinmm -lgdi32 -lxinput -lopengl32 $(LIBABGSYSCALL_LIBS)
 endif
 
 #### MAIN TARGETS ####
@@ -349,22 +341,22 @@ else
 NODEP ?= 1
 endif
 
+ifeq ($(PLATFORM),gba)
 all: compare
+
+compare: rom
+	$(SHA1) $(BUILD_NAME).sha1
+
+else
+all: rom
+endif
 
 rom: $(ROM)
 
 tools: $(TOOLDIRS)
 
-$(TOOLDIRS): tool_libs
-	@$(MAKE) -C $@
-
 tool_libs:
 	@$(MAKE) -C tools/_shared
-
-compare: rom
-ifeq ($(PLATFORM),gba)
-	$(SHA1) $(BUILD_NAME).sha1
-endif
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
@@ -391,6 +383,17 @@ ifeq ($(PLATFORM), GBA)
 	$(MAKE) tidy PLATFORM=sdl
 endif
 
+japan: ; @$(MAKE) GAME_REGION=JAPAN
+
+europe: ; @$(MAKE) GAME_REGION=EUROPE
+
+
+sdl: ; @$(MAKE) PLATFORM=sdl
+
+sdl_win32:
+	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
+
+win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### Recipes ####
 
@@ -435,14 +438,11 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 %.bin: %.aif ; $(AIF) $< $@
 
-# -P disables line markers which cause issues with the linker script
-$(PROCESSED_LDSCRIPT): $(LDSCRIPT)
-	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
-
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(MAP) <objects> <lib> -o $@"
-	@cd $(OBJ_DIR) && $(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(ROOT_DIR)/$(MAP) $(OBJS_REL) $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
+	@$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
+	@cd $(OBJ_DIR) && $(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(ROOT_DIR)/$(MAP) $(OBJS_REL) $(LIBS) -o $(ROOT_DIR)/$@
 else
 	@echo "$(CC1) $(MAP_FLAG)$(MAP) <objects> <lib> -o $@"
 	@touch $(ROOT_DIR)/$(MAP)
@@ -462,6 +462,7 @@ ifeq ($(CREATE_PDB),1)
 endif
 endif
 
+# Scan the C dependencies to determine if headers have changed
 ifeq ($(NODEP),1)
 $(OBJ_DIR)/src/%.o: c_dep :=
 else
@@ -469,12 +470,11 @@ $(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
 $(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=) 2>/dev/null)
 endif
 
+ifeq ($(PLATFORM),gba)
 # Use the old compiler for m4a, as it was prebuilt and statically linked
 # to the original codebase
 $(C_BUILDDIR)/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
-
 # Use `-O1` for agb_flash libs, as these were also prebuilt
-ifeq ($(PLATFORM),gba)
 $(C_BUILDDIR)/lib/agb_flash/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 $(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
@@ -495,6 +495,8 @@ $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
+
+# Scan the ASM data dependencies to determine if any .inc files have changed
 ifeq ($(NODEP),1)
 $(DATA_ASM_BUILDDIR)/%.o: data_dep :=
 else
@@ -508,18 +510,6 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
-
-japan: ; @$(MAKE) GAME_REGION=JAPAN
-
-europe: ; @$(MAKE) GAME_REGION=EUROPE
-
-
-sdl: ; @$(MAKE) PLATFORM=sdl
-
-sdl_win32:
-	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
-
-win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 ### SUB-PROGRAMS ###
 
@@ -575,6 +565,8 @@ libagbsyscall:
 bribasa:
 	@$(MAKE) -C tools/BriBaSA_ex
 
+$(TOOLDIRS): tool_libs
+	@$(MAKE) -C $@
 
 ### DEPS INSTALL COMMANDS ###
 
