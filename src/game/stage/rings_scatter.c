@@ -300,7 +300,8 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
         ring->velY -= sp08;
 
-        if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < 256 && screenY > -8 && screenY < (DISPLAY_HEIGHT + TILE_WIDTH)) {
+        if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < (DISPLAY_WIDTH + (TILE_WIDTH * 2)) && screenY > -TILE_WIDTH
+            && screenY < (DISPLAY_HEIGHT + TILE_WIDTH)) {
             if (ring->unkC >= 32 || (gStageTime & 0x2) == 0) {
                 if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                     s->oamBaseIndex = 0xFF;
@@ -413,7 +414,8 @@ void RingsScatterSingleplayer_NormalGravity(void)
 
         ring->velY += sp08;
 
-        if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < 256 && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
+        if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < (DISPLAY_WIDTH + (TILE_WIDTH * 2)) && (screenY > -TILE_WIDTH)
+            && (screenY < (DISPLAY_HEIGHT + TILE_WIDTH))) {
             if (ring->unkC >= 32 || ((gStageTime & 0x2) == 0)) {
                 if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                     s->oamBaseIndex = 0xFF;

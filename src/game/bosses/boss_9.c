@@ -1203,14 +1203,13 @@ void sub_804E078(struct TA53_unk48 *unk48)
     unk48->unk38 &= ONE_CYCLE;
 }
 
-// (94.10%) https://decomp.me/scratch/rjfvR
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc", void sub_804E15C(struct TA53_unk48 *unk48))
+void sub_804E15C(struct TA53_unk48 *unk48)
 {
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk558 *unk558 = &boss->unk558;
     TA53_unk1C *unk1C = &boss->unk1C;
-    Vec2_32 qSonicPos;
-    u8 i;
+    s32 sonicX, sonicY;
+    u8 sp14, i;
 
     if (sub_8050030(unk48) != 0) {
         unk48->unk30 &= 0xFFF;
@@ -1225,173 +1224,189 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc", void sub_804E15
         gBldRegs.bldCnt = 0;
         gBldRegs.bldAlpha = 0;
         gBldRegs.bldY = 0;
-    } else {
-        u8 sp14 = (unk48->unk30 >> 12);
+        return;
+    }
 
-        if (sp14 > 2) {
-            // _0804E1EC
-            s32 index;
-            s32 sb = unk1C->qPos.x + Q(unk1C->unk20);
-            s32 r8 = unk1C->qPos.y + Q(unk1C->unk22);
-            s32 r5 = (I(unk48->qPos44.x) + unk48->unk3A[0]) & ONE_CYCLE;
-            s32 r6;
+    sp14 = (unk48->unk30 >> 12);
+    if (sp14 > 2) {
+        // _0804E1EC
+        s32 sb = unk1C->qPos.x + Q(unk1C->unk20);
+        s32 r8 = unk1C->qPos.y + Q(unk1C->unk22);
 
-            sb += ((COS(r5) * gUnknown_080D89A5[0]) >> 6);
-            r8 += ((SIN(r5) * gUnknown_080D89A5[0]) >> 6);
+        s32 r4, r5 = CLAMP_SIN_PERIOD(I(unk48->qPos44.x) + unk48->unk3A[0]);
+        u16 r6;
 
-            r5 += 0x8C;
+        sb += ((COS(r5) * gUnknown_080D89A5[0]) >> 6);
+        r8 += ((SIN(r5) * gUnknown_080D89A5[0]) >> 6);
 
-            index = (r5 - Q(1)) & ONE_CYCLE;
-            sb += (COS(index) >> 2);
-            r8 += (SIN(index) >> 2);
+        r5 += 0x8C;
 
-            for (i = 0; i < 3; i++) {
-                // _0804E278
-                r5 = (r5 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+        sb += ({
+            s32 val = COS((r5 - Q(1)) & ONE_CYCLE);
+            val >> 2;
+        });
+        r8 += ({
+            s32 val = SIN((r5 - Q(1)) & ONE_CYCLE);
+            val >> 2;
+        });
 
-                sb += ((COS(r5) * gUnknown_080D89A5[i + 1]) >> 6);
-                r8 += ((SIN(r5) * gUnknown_080D89A5[i + 1]) >> 6);
+        for (i = 0; i < 3; i++) {
+            // _0804E278
+            r5 += unk48->unk3A[i + 1];
+            r5 &= ONE_CYCLE;
+
+            sb += ((COS(r5) * gUnknown_080D89A5[i + 1]) >> 6);
+            r8 += ((SIN(r5) * gUnknown_080D89A5[i + 1]) >> 6);
+        }
+
+        sb += ((COS(r5) * gUnknown_080D89A5[4]) >> 6);
+        r8 += ((SIN(r5) * gUnknown_080D89A5[4]) >> 6);
+
+        r5 += unk48->unk42;
+        r5 &= ONE_CYCLE;
+
+        if (sp14 > 5) {
+            // _0804E2EE
+
+            if ((gMPlayTable[2].info->songHeader != gSongTable[SE_269].header) && (sp14 == 6)) {
+                m4aSongNumStart(SE_269);
             }
+            // _0804E30A
 
-            sb += ((COS(r5) * gUnknown_080D89A5[4]) >> 6);
-            r8 += ((SIN(r5) * gUnknown_080D89A5[4]) >> 6);
+            SuperSonicGetPos(&sonicX, &sonicY);
 
-            r5 = (r5 + unk48->unk42) & ONE_CYCLE;
+            r5 += unk48->unk38;
+            r6 = CLAMP_SIN_PERIOD(r5);
 
-            if (sp14 > 5) {
-                // _0804E2EE
+            r5 = (u16)sub_8004418(I(sonicY - r8), I(sonicX - sb));
 
-                // TODO: Type
-                u16 result;
-                s32 r4;
-                u16 r1;
-                s32 x, y;
+            if ((r6 < (r5 + 0x10)) && (r6 > (r5 - 0x10))) {
+                sub_802BB54();
+                unk558->callback = sub_804F1EC;
+            }
+            // _0804E350
 
-                if ((gMPlayTable[2].info->songHeader != gSongTable[SE_269].header) && (sp14 == 6)) {
-                    m4aSongNumStart(SE_269);
-                }
-                // _0804E30A
+            gDispCnt |= DISPCNT_WIN0_ON;
+            gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_HEIGHT);
+            gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_WIDTH);
+            gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
+            gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
+            gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
 
-                SuperSonicGetPos(&qSonicPos.x, &qSonicPos.y);
+            r5 = 8;
+            gBldRegs.bldAlpha = BLDALPHA_BLEND(r5, 0);
+            gBldRegs.bldY = r5;
 
-                r6 = (r5 + unk48->unk38) & ONE_CYCLE;
+            // NOTE: Why would you call Mod() for % 8? *sigh*
+            r4 = (s8)Mod(PseudoRandom32(), 8);
+            if (r4 < 0) {
+                r4 = -r4;
+            }
+            // _0804E39A
 
-                result = sub_8004418(I(qSonicPos.y - r8), I(qSonicPos.x - sb));
+            sb += ((COS(r6) * gUnknown_080D89A5[5]) >> 6);
+            r8 += ((SIN(r6) * gUnknown_080D89A5[5]) >> 6);
 
-                if ((r6 < (result + 0x10)) && (r6 > (result - 0x10))) {
-                    sub_802BB54();
-                    unk558->callback = sub_804F1EC;
-                }
-                // _0804E350
+            sub_802E784(r6, (26 - (s8)r4), 16, (I(sb) - gCamera.x), (I(r8) - gCamera.y), r5);
+        } else {
+            u32 p0;
+            // _0804E43C
+            sub_802C704(8, &sonicX, &sonicY);
 
-                gDispCnt |= DISPCNT_WIN0_ON;
-                gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_HEIGHT);
-                gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_WIDTH);
-                gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
-                gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
-                gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
-                gBldRegs.bldAlpha = BLDALPHA_BLEND(8, 0);
-                gBldRegs.bldY = 8;
-
-                // NOTE: Why would you call Mod() for % 8? *sigh*
-                r4 = (s8)Mod(PseudoRandom32(), 8);
-                if (r4 < 0) {
-                    r4 = -r4;
-                }
-                // _0804E39A
-
-                sb += ((COS(r6) * gUnknown_080D89A5[5]) >> 6);
-                r8 += ((SIN(r6) * gUnknown_080D89A5[5]) >> 6);
-
-                r1 = (26 - (s8)r4);
-
-                sub_802E784(r6, r1, 16, (I(sb) - gCamera.x), (I(r8) - gCamera.y), r5);
-            } else {
-                u16 result;
-                u32 p0;
-                // _0804E43C
-                sub_802C704(8, &qSonicPos.x, &qSonicPos.y);
-
-                result = sub_8004418(I(qSonicPos.y - r8), I(qSonicPos.x - sb));
-                if (sub_808558C((r5 + unk48->unk38) & ONE_CYCLE, result, 10) < 0) {
-                    if (unk48->unk38 > 512) {
-                        if (unk48->unk38 > 0x380)
-                            unk48->unk38 -= 4;
-                    } else {
+            r6 = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+            p0 = r5;
+            p0 += unk48->unk38;
+            if (sub_808558C(p0 & ONE_CYCLE, r6, 10) < 0) {
+                if (unk48->unk38 > 512) {
+                    if (unk48->unk38 > 0x380)
                         unk48->unk38 -= 4;
-                    }
                 } else {
-                    if (unk48->unk38 < 512) {
-                        if (unk48->unk38 < 128)
-                            unk48->unk38 += 4;
-                    } else {
-                        unk48->unk38 += 4;
-                    }
+                    unk48->unk38 -= 4;
                 }
-
-                unk48->unk38 &= ONE_CYCLE;
+            } else {
+                if (unk48->unk38 < 512) {
+                    if (unk48->unk38 < 128)
+                        unk48->unk38 += 4;
+                } else {
+                    unk48->unk38 += 4;
+                }
             }
+
+            unk48->unk38 &= ONE_CYCLE;
         }
     }
 }
-END_NONMATCH
 
-// (89.56%) https://decomp.me/scratch/sGKWf
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc", void sub_804E4CC(struct TA53_unk48 *unk48))
+void sub_804E4CC(struct TA53_unk48 *unk48)
 {
-    u16 r2;
-
-    s32 r5;
+#ifndef NON_MATCHING
+    register s32 r1 asm("r1");
+#else
+    s32 r1;
+#endif
+    s32 r3;
+    u32 r5;
+    u16 r6, r2;
     u8 i, c;
+    u8 r, g, b;
 
     sub_8050030(unk48);
 
-    r5 = unk48->unk30 & 0xFFF;
-    r2 = unk48->unk30 >> 12;
+    r1 = unk48->unk30 & 0xFFF;
+    r3 = r1;
+    r5 = r3;
 
+    r2 = unk48->unk30 >> 12;
     if (r2 == 4) {
         unk48->unk30 &= 0xFFF;
         unk48->callback = gUnknown_080D8D6C[0].callback;
         unk48->unk34 = gUnknown_080D8D6C[0].data;
         unk48->unk2E = gUnknown_080D8D6C[0].unk8;
-    } else if (r2 == 3) {
+        return;
+    }
+
+    if (r2 == 3) {
         // _0804E50C+0x4
         gDispCnt &= ~DISPCNT_BG1_ON;
 
+        r6 = r3;
         for (c = 0; c < 16; c++) {
-            s32 r = ((sRGB_080D8E20[3][c][0] * r5) >> 12) & 0x1F;
-            s32 g = ((sRGB_080D8E20[3][c][1] * r5) >> 12) & 0x1F;
-            s32 b = ((sRGB_080D8E20[3][c][2] * r5) >> 12) & 0x1F;
+            r = sRGB_080D8E20[3][c][0];
+            r = ((r * r6) >> 12) & 0x1F;
+            g = sRGB_080D8E20[3][c][1];
+            g = ((g * r6) >> 12) & 0x1F;
+            b = sRGB_080D8E20[3][c][2];
+            b = ((b * r6) >> 12) & 0x1F;
 
-            gObjPalette[8 * 16 + c] = RGB16_REV(r, g, b);
-            gBgPalette[8 * 16 + c] = RGB16_REV(r, g, b);
+            gObjPalette[c + 8 * 16] = RGB16_REV(r, g, b);
+            gBgPalette[c] = RGB16_REV(r, g, b);
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         unk48->unk4C = 0;
-    } else if ((r2 == 2) && ((u32)r5 > 0xE00)) {
-        // __0804E5BC
-        u16 r6;
+        return;
+    }
 
+    if ((r2 == 2) && (r5 > 0xE00)) {
         gDispCnt |= DISPCNT_BG1_ON;
-
         r6 = 0xFFF - r5;
-
         for (i = 0; i < ARRAY_COUNT(sRGB_080D8E20) - 1; i++) {
             for (c = 0; c < ARRAY_COUNT(sRGB_080D8E20[0]); c++) {
-                s32 r = ((sRGB_080D8E20[i][c][0] * r6) >> 9) & 0x1F;
-                s32 g = ((sRGB_080D8E20[i][c][1] * r6) >> 9) & 0x1F;
-                s32 b = ((sRGB_080D8E20[i][c][2] * r6) >> 9) & 0x1F;
-
-                gBgPalette[((7 + i) * 16) + c] = RGB16_REV(r, g, b);
+                r = sRGB_080D8E20[i][c][0];
+                r = ((r * r6) >> 9) & 0x1F;
+                g = sRGB_080D8E20[i][c][1];
+                g = ((g * r6) >> 9) & 0x1F;
+                b = sRGB_080D8E20[i][c][2];
+                b = ((b * r6) >> 9) & 0x1F;
+                gBgPalette[0x70 + c + (i * 16)] = RGB16_REV(r, g, b);
             }
         }
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 }
-END_NONMATCH
 
 void sub_804E66C(struct TA53_unk98 *unk98)
 {
@@ -2409,10 +2424,14 @@ bool8 sub_8050030(struct TA53_unk48 *unk48)
 
     if (r2 != (((unk48->unk30 - unk48->unk2C) >> 12) & 7)) {
         for (i = 0; i < 5; i++) {
-            (r4++)[0] = r4[1];
-            (r4++)[0] = r4[1];
-            (r4++)[0] = r4[1];
-            (r4++)[0] = (*ip++)[r3];
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = (*ip++)[r3];
+            r4++;
         }
 
         r4 = unk48->unk4;
@@ -2474,10 +2493,14 @@ bool8 sub_8050104(struct TA53_unk1C *unk1C)
 
     if (r2 != (((u32)(unk1C->unk18 - unk1C->unk14) >> 12) & 7)) {
         for (i = 0; i < 2; i++) {
-            (r4++)[0] = r4[1];
-            (r4++)[0] = r4[1];
-            (r4++)[0] = r4[1];
-            (r4++)[0] = (*ip++)[r3];
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = r4[1];
+            r4++;
+            r4[0] = (*ip++)[r3];
+            r4++;
         }
 
         r4 = unk1C->unk4;

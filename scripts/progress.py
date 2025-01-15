@@ -17,7 +17,7 @@ def collect_non_matching_funcs():
                     for i in range(len(lines)):
                         line = lines[i]
                         if "NONMATCH" in line:
-                            # if "unused"  in line.lower():
+                            # if "unused_"  in line.lower():
                             #     continue
                             matcher = r'(NONMATCH|ASM_FUNC)\(".*",\W*\w*\W*(\w*).*\)'
                             match = re.findall(matcher, line)
@@ -88,7 +88,7 @@ def parse_map(non_matching_funcs):
                 if len(arr) == 2 and arr[1] != '':  # It is actually a symbol
 
                     if prev_symbol in non_matching_funcs:
-                        non_matching_funcs.remove(prev_symbol)
+                        # non_matching_funcs.remove(prev_symbol)
                         # Calculate the length for non matching function
                         non_matching += int(arr[0], 16) - prev_addr
 
