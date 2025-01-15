@@ -9,7 +9,7 @@
 #include <xinput.h>
 #endif
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "global.h"
 #include "core.h"
