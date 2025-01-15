@@ -5,11 +5,16 @@
 
 #include "constants/characters.h"
 
-// TODO(Jace): gUnkMusicMgrData is used in sakit/music_manager.c, with a different type.
-//             That doesn't make any sense...
-// const u8 gUnkMusicMgrData[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00,
-// 0xF0, 0x08, 0x10, 0xF0, 0x01 };
+// Trick input patterns
+
+// In the original rom this data was somehow transferred to `music_manager.c` and the pointer
+// referenced from there. However, this data definitely relates to this file and in advance 2
+// the `gUnkMusicMgrData` is never used
+#ifndef NON_MATCHING
 extern const u8 gUnkMusicMgrData[];
+#else
+static const u8 pat1[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x01 };
+#endif
 const u8 gUnknown_080D5262[] = {
     0x04, // r6
     0x01, // r8
@@ -31,7 +36,11 @@ const u8 gUnknown_080D52D2[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F,
 
 const u8 *gUnknown_08c87098_unused[64] = { 0 };
 
+#ifndef NON_MATCHING
 const u8 *unk_8C87198[3] = { gUnkMusicMgrData, gUnknown_080D5262, INPUTBUF_NULL_PTR };
+#else
+const u8 *unk_8C87198[3] = { pat1, gUnknown_080D5262, INPUTBUF_NULL_PTR };
+#endif
 
 const u8 *unk_8C871A4[3] = { gUnknown_080D5270, gUnknown_080D527E, INPUTBUF_NULL_PTR };
 

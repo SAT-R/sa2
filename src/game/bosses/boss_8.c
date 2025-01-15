@@ -877,7 +877,7 @@ static void Task_804A9D8(void)
         m4aSongNumStart(SE_260);
 
         gMusicManagerState.unk0 = 0;
-        gMusicManagerState.unk1 = 18;
+        gMusicManagerState.unk1 = 0x12;
         gCamera.minX = 42820;
         boss->unkB = 0;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
@@ -1972,11 +1972,13 @@ static void Boss8_HitCockpit(SuperEggRoboZ *boss)
     }
 
     if (boss->livesCockpit == 3) {
-        gMusicManagerState.unk1 = 19;
+        gMusicManagerState.unk1 = 0x10 | 0x3;
     }
 
     if (boss->livesCockpit == 0) {
-        INCREMENT_SCORE_C(1000);
+        INCREMENT_SCORE_A(1000)
+        // Stops the music?
+        gMusicManagerState.unk1 = 0x10 | 0x20;
     }
 
     boss->unkB = 64;

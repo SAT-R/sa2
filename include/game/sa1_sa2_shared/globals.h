@@ -235,10 +235,6 @@ extern u8 gUnknown_030055D8;
 
 #define INCREMENT_SCORE_B(incVal) INCREMENT_SCORE_B_BASE(incVal, 16)
 
-#define INCREMENT_SCORE_C(incVal)                                                                                                          \
-    INCREMENT_SCORE_A(incVal)                                                                                                              \
-    gMusicManagerState.unk1 = 48;
-
 #define INCREMENT_SCORE(incVal)                                                                                                            \
     {                                                                                                                                      \
         s32 divResA, divResB;                                                                                                              \

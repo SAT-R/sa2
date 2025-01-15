@@ -1498,7 +1498,7 @@ void sub_8040D74(EggTotem *totem)
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->lives == 4)) {
-            gMusicManagerState.unk1 = 17;
+            gMusicManagerState.unk1 = 0x11;
         }
     }
 }

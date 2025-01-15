@@ -868,7 +868,7 @@ static void sub_803B6AC(EggHammerTankII *boss)
     }
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && boss->unkB0 == 4) {
-        gMusicManagerState.unk1 = 17;
+        gMusicManagerState.unk1 = 0x11;
     }
 }
 

@@ -83,7 +83,13 @@ const u16 gLevelSongs[] = {
 #if (GAME == GAME_SA1)
 const u16 gUnkMusicMgrData[7] = { 0x001D, 0x001E, 0x001F, 0x0020, 0x0031, 0x0032, 0x0019 };
 #elif (GAME == GAME_SA2)
-const u16 gUnkMusicMgrData[7] = { SE_260, 0xF000, 0x1008, 0x8F0, 0xF000, 0x1008, 0x1F0 };
+// This data is unrelated to this module in SA2 but has been linked in here by some
+// compilation quirk, see it's actual usage in input_buffer.c
+#ifndef NON_MATCHING
+const u16 gUnkMusicMgrData[7] = { 0x0104, 0xF000, 0x1008, 0x08F0, 0xF000, 0x1008, 0x01F0 };
+#else
+const u16 gUnkMusicMgrData[0] = {};
+#endif
 #endif
 
 #if (GAME == GAME_SA1)
@@ -103,7 +109,7 @@ void Task_StageMusicManager(void)
 
     if ((gMusicManagerState.unk0 == 0) && PLAYER_IS_ALIVE) {
 #if (GAME == GAME_SA2)
-        if ((gMusicManagerState.unk1 & 0xF0) == 0x30) {
+        if ((gMusicManagerState.unk1 & (0x10 | 0x20 | 0x40 | 0x80)) == (0x10 | 0x20)) {
             MPlayStop(&gMPlayInfo_BGM);
 
             gMusicManagerState.unk0 = 0xFF;
@@ -144,17 +150,17 @@ void Task_StageMusicManager(void)
             gMusicManagerState.unk3 = 0;
             SET_UNK5(1);
             m4aSongNumStart(MUS_1_UP);
-        } else if ((gMusicManagerState.unk1 & 0xF0) == 0x10) {
-            u32 unk1 = (gMusicManagerState.unk1 &= 0x0F);
+        } else if ((gMusicManagerState.unk1 & (0x10 | 0x20 | 0x40 | 0x80)) == 0x10) {
+            u32 offset = (gMusicManagerState.unk1 &= 0x0F);
 
 #if (GAME == GAME_SA1)
             m4aSongNumStart(gUnkMusicMgrData[gMusicManagerState.unk1]);
             gMusicManagerState.unk1 |= 0x20;
 #else
-            m4aSongNumStart(gLevelSongs[gCurrentLevel + unk1]);
+            m4aSongNumStart(gLevelSongs[gCurrentLevel + offset]);
 #endif
 #if (GAME == GAME_SA1)
-        } else if ((gMusicManagerState.unk1 & 0xF0) == 0x30) {
+        } else if ((gMusicManagerState.unk1 & (0x10 | 0x20 | 0x40 | 0x80)) == 0x30) {
             gMusicManagerState.unk1 &= 0xF;
             m4aSongNumStop(gUnkMusicMgrData[gMusicManagerState.unk1]);
 
@@ -167,7 +173,7 @@ void Task_StageMusicManager(void)
             gMusicManagerState.unk1 = 0;
 #endif
         } else if (((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK) == 0) || (gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE)) {
-            if ((gMusicManagerState.unk1 & 0xF0) == 0x20) {
+            if ((gMusicManagerState.unk1 & (0x10 | 0x20 | 0x40 | 0x80)) == 0x20) {
 #if (GAME == GAME_SA1)
                 m4aSongNumStart(gUnkMusicMgrData[gMusicManagerState.unk1 & 0xF]);
 #else
