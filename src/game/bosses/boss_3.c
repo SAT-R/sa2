@@ -183,7 +183,7 @@ const u8 *const gUnknown_080D7ED4[] = {
     &gUnknown_080D7EA0[12 * 3], &gUnknown_080D7EA0[13 * 3 + 0x2], &gUnknown_080D7EA0[14 * 3 + 0x4],
 };
 
-const u8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
+const s8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
 
 const s16 gUnknown_080D7F14[2][16] = {
     INCBIN_U16("graphics/boss_3_a.gbapal"),
@@ -875,37 +875,28 @@ void sub_803FC14(EggTotem *totem)
     }
 }
 
-// (81.46%) https://decomp.me/scratch/gT3he
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF44(EggTotem *totem))
+void sub_803FF44(EggTotem *totem)
 {
     u8 i, j;
-    s32 res;
-    s16 divRes;
+    register s32 res;
     ExplosionPartsInfo info; // sp04 -> sp24
 
     if (totem->unk38 == 0) {
-        s32 x, y;
-
         // _0803FF9A
         for (i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
-            totem->unk24[i][1] += 0x20;
+            totem->unk24[i][1] += Q(0.125);
             totem->qWheelPos[i].x += totem->unk24[i][0];
             totem->qWheelPos[i].y += totem->unk24[i][1];
 
-            y = I(totem->qWheelPos[i].y);
-            y += gUnknown_080D7F10[i];
-            y -= 1;
-            x = I(totem->qWheelPos[i].x);
-            res = sub_801F100(y, x, 1, +8, sub_801EC3C);
+            res = sub_801F100(I(totem->qWheelPos[i].y) + gUnknown_080D7F10[i] - 1, I(totem->qWheelPos[i].x), 1, +8, sub_801EC3C);
 
             if (res < 0) {
                 // __minRes
                 totem->qWheelPos[i].y += Q(res);
 
-                divRes = Div(-(totem->unk24[i][1] * 80), 100);
-                totem->unk24[i][1] = divRes;
+                totem->unk24[i][1] = Div(-(totem->unk24[i][1] * 80), 100);
 
-                if (divRes > -Q(1.0)) {
+                if (totem->unk24[i][1] > -Q(1.0)) {
                     totem->unk24[i][1] = 0;
                 }
 
@@ -922,19 +913,16 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
         totem->qUnk9C += totem->qUnkA4;
         totem->qUnkA0 += totem->qUnkA6;
 
-        y = I(totem->qUnkA0) - 8;
-        x = I(totem->qUnk9C);
-        res = sub_801F100(y, x, 1, +8, sub_801EC3C);
+        res = sub_801F100(I(totem->qUnkA0) - 8, I(totem->qUnk9C), 1, +8, sub_801EC3C);
 
         if (res < 0) {
             totem->qUnkA0 += Q(res);
 
-            divRes = Div(-(totem->qUnkA6 * 80), 100);
-            totem->qUnkA6 = divRes;
+            totem->qUnkA6 = Div(-(totem->qUnkA6 * 80), 100);
 
-            if (divRes > -Q(1.0)) {
+            if (totem->qUnkA6 > -Q(1.0)) {
                 totem->qUnkA6 = 0;
-            } else if (divRes < -Q(1.4375)) {
+            } else if (totem->qUnkA6 < -Q(1.4375)) {
                 CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);
             }
 
@@ -954,12 +942,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
             info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 64u) - 45;
 
             info.velocity = 0;
-
-            rnd32 = PseudoRandom32();
-            info.rotation = 1000 - (rnd32 % 64u);
-
-            rnd32 = PseudoRandom32();
-            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -975,7 +959,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
         }
 
         totem->qUnk9C += totem->qUnkA4;
-        totem->qUnk9A += 0x20;
+        totem->qUnk9A += Q(0.125);
         totem->qUnk90 += totem->qUnk98;
         totem->qUnk94 += totem->qUnk9A;
 
@@ -983,8 +967,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
 
         if (res < 0) {
             // _08040256
-            if (totem->unk38-- == 0) {
-                for (i = 0; i < 9; i++) {
+            if (--totem->unk38 == 0) {
+                for (j = 0; j < 9; j++) {
                     s32 rnd32 = PseudoRandom32();
                     info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
 
@@ -993,11 +977,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
 
                     info.velocity = 0;
 
-                    rnd32 = PseudoRandom32();
-                    info.rotation = 1000 - (rnd32 % 64u);
-
-                    rnd32 = PseudoRandom32();
-                    info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+                    info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+                    info.speed = ({ Q(6.0) - (PseudoRandom32() % 512u); });
                     info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                     info.anim = SA2_ANIM_EXPLOSION;
                     info.variant = 0;
@@ -1012,11 +993,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
             }
             // _0804033E
 
-            totem->qUnk94 += res;
+            totem->qUnk94 += Q(res);
 
             // totem->qUnk9A *= 0.60
-            divRes = Div(-(totem->qUnk9A * 60), 100);
-            totem->qUnk9A = divRes;
+            totem->qUnk9A = Div(-(totem->qUnk9A * 60), 100);
         }
         // _08040360
 
@@ -1029,11 +1009,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
 
             info.velocity = 0;
 
-            rnd32 = PseudoRandom32();
-            info.rotation = 1000 - (rnd32 % 64u);
-
-            rnd32 = PseudoRandom32();
-            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -1052,11 +1029,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
 
             info.velocity = 0;
 
-            rnd32 = PseudoRandom32();
-            info.rotation = 1000 - (rnd32 % 64u);
-
-            rnd32 = PseudoRandom32();
-            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -1071,7 +1045,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
         Totem3C *t3c = &totem->unk3C[i];
 
         if (t3c->unk18 == 0) {
-            totem->unkA += 0x20;
+            t3c->qUnkA += Q(0.125);
         } else if (--t3c->unk18 == 0) {
             for (j = 0; j < 4; j++) {
                 s32 rnd32 = PseudoRandom32();
@@ -1082,11 +1056,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
 
                 info.velocity = 0;
 
-                rnd32 = PseudoRandom32();
-                info.rotation = 1000 - (rnd32 % 64u);
-
-                rnd32 = PseudoRandom32();
-                info.speed = Q(4.0) - (rnd32 % 512u);
+                info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+                info.speed = ({ Q(4.0) - (PseudoRandom32() % 512u); });
                 info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                 info.anim = SA2_ANIM_EXPLOSION;
                 info.variant = 0;
@@ -1113,9 +1084,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
             }
         }
     }
-    // _08040608 - return;
 }
-END_NONMATCH
 
 void sub_804063C(EggTotem *totem)
 {
