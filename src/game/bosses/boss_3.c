@@ -878,7 +878,7 @@ void sub_803FC14(EggTotem *totem)
 void sub_803FF44(EggTotem *totem)
 {
     u8 i, j;
-    register s32 res;
+    s32 res;
     ExplosionPartsInfo info; // sp04 -> sp24
 
     if (totem->unk38 == 0) {
