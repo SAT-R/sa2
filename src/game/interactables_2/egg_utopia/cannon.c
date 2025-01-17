@@ -285,7 +285,7 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", boo
     playerY = I(gPlayer.qWorldY) - gCamera.y;
 
     // gUnknown_03005AF0.s.hitboxes[0] s-<hitboxes[0]
-    if (HB_COLLISION(playerX, playerY, s2->hitboxes[0], x, y, gUnknown_03005AF0.s.hitboxes[0])) {
+    if (HB_COLLISION(x, y, s2->hitboxes[0], playerX, playerY, gUnknown_03005AF0.s.hitboxes[0])) {
         return 1;
     }
 
