@@ -155,7 +155,7 @@ void CreateExtraEndingFallCutScene(void)
     scene->unk37E = 0;
     scene->unk380 = 5;
     scene->unk38E = 3;
-    scene->unk392 = 0xA0;
+    scene->unk392 = 160;
     scene->unk394 = 0;
     scene->unk396 = 0;
 

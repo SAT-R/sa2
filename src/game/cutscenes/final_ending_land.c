@@ -165,7 +165,7 @@ void CreateFinalEndingLandingCutScene(void)
     scene->unk348 = 0;
     scene->unk340 = 0x100;
     scene->unk34A = 0x32;
-    scene->unk344 = 0xF0;
+    scene->unk344 = 240;
     scene->unk33D = 0;
     scene->unk33E = 0;
 

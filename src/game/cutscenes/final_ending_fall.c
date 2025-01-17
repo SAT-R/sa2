@@ -146,7 +146,7 @@ void CreateFinalEndingFallCutScene(void)
     scene->unk470 = 0;
     scene->unk364 = 0;
     scene->unk474 = 0;
-    scene->unk36E = 0xA0;
+    scene->unk36E = 160;
     scene->unk36C = 200;
     scene->unk363 = 0;
     scene->unk370 = 0;
@@ -421,8 +421,8 @@ void sub_8091CB0(void)
 
     if ((scene->unk35C & 1) == 0 && scene->unk35C < 10) {
         gDispCnt |= 0x2000;
-        gWinRegs[0] = 0xA0;
-        gWinRegs[2] = 0xF0;
+        gWinRegs[0] = DISPLAY_HEIGHT;
+        gWinRegs[2] = DISPLAY_WIDTH;
         gWinRegs[4] |= 0x3F;
         gWinRegs[5] |= 0x1F;
         gBldRegs.bldCnt = 0x3FBF;
@@ -434,8 +434,8 @@ void sub_8091CB0(void)
         }
     } else if (scene->unk35C < 10) {
         gDispCnt |= 0x2000;
-        gWinRegs[0] = 0xA0;
-        gWinRegs[2] = 0xF0;
+        gWinRegs[0] = DISPLAY_HEIGHT;
+        gWinRegs[2] = DISPLAY_WIDTH;
         gWinRegs[4] |= 0x3F;
         gWinRegs[5] |= 0x1F;
         gBldRegs.bldCnt = 0x3FBF;
@@ -448,7 +448,7 @@ void sub_8091CB0(void)
         sub_80928C8(scene);
         gDispCnt |= 0x2000;
         gWinRegs[0] = WIN_RANGE(0, DISPLAY_HEIGHT);
-        gWinRegs[2] = 0xF0;
+        gWinRegs[2] = WIN_RANGE(0, DISPLAY_WIDTH);
         gWinRegs[4] |= 0x3F;
         gWinRegs[5] |= 0x1F;
         gBldRegs.bldCnt = 0x3FBF;
@@ -495,8 +495,8 @@ void sub_8091E60(void)
     } else {
         if (gBldRegs.bldY < 0x10) {
             gDispCnt |= 0x2000;
-            gWinRegs[0] = 0xA0;
-            gWinRegs[2] = 0xF0;
+            gWinRegs[0] = WIN_RANGE(0, DISPLAY_HEIGHT);
+            gWinRegs[2] = WIN_RANGE(0, DISPLAY_WIDTH);
             gWinRegs[4] |= 0x3F;
             gWinRegs[5] |= 0x1F;
             gBldRegs.bldCnt = 0x3FBF;

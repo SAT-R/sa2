@@ -31,8 +31,8 @@ struct SpecialStage {
     Background unk48;
     ScreenFade fade;
     s32 unk94[DISPLAY_HEIGHT][2];
-    s32 cameraX;
-    s32 cameraY;
+    s32 qCameraX;
+    s32 qCameraY;
     s32 unk59C;
 
     u16 cameraBearing;

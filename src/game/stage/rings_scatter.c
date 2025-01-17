@@ -382,7 +382,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
             if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
                 CreateCollectRingEffect(ip, ringIntY);
 
-                INCREMENT_RINGS2(1);
+                INCREMENT_RINGS(1);
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (gRingCount > 255) {
@@ -639,7 +639,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
 
             CreateCollectRingEffect(ringIntX, ringIntY);
 
-            INCREMENT_RINGS2(1);
+            INCREMENT_RINGS(1);
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                 if (gRingCount > 255) {
@@ -768,7 +768,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
 
             CreateCollectRingEffect(ringIntX, ringIntY);
 
-            INCREMENT_RINGS2(1);
+            INCREMENT_RINGS(1);
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                 if (gRingCount > 255) {

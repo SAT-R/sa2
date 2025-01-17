@@ -508,8 +508,8 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
         gDispCnt |= 0x4000;
         gBldRegs.bldCnt = 0xBF;
         gBldRegs.bldY = 0x10 - sequence->animFrame;
-        gWinRegs[1] = 0xF0;
-        gWinRegs[3] = 0xA0;
+        gWinRegs[1] = DISPLAY_WIDTH;
+        gWinRegs[3] = DISPLAY_HEIGHT;
         gWinRegs[4] = 0xFF00;
         gWinRegs[5] = 0xFF;
     }
@@ -546,8 +546,8 @@ void Task_DisplaySonicSonicArtworkAndDestroyTask(void)
     if (sequence->animFrame < 117 && gBldRegs.bldY != 0) {
         gBldRegs.bldCnt = 0xbf;
         gBldRegs.bldY--;
-        gWinRegs[1] = 0xf0;
-        gWinRegs[3] = 0xa0;
+        gWinRegs[1] = DISPLAY_WIDTH;
+        gWinRegs[3] = DISPLAY_HEIGHT;
         gWinRegs[4] = 0xff00;
         gWinRegs[5] = 0xff;
     }
@@ -748,14 +748,14 @@ void sub_803796C(void)
     IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
-    if (actor->animFrame < 0x135) {
-        if (actor->animFrame == 0xF0) {
+    if (actor->animFrame < 309) {
+        if (actor->animFrame == 240) {
             CreateOrbitingEmeraldsSequence();
             m4aSongNumStart(MUS_EXTRA_DEMO_2);
         }
 
-        if ((actor->y >> 8) > 0x9C) {
-            actor->y -= 0x18;
+        if (I(actor->y) > 156) {
+            actor->y -= 24;
         }
     }
 
@@ -910,8 +910,8 @@ void sub_8037F68(void)
 
     gDispCnt |= 0x4000;
     gBldRegs.bldCnt = 0xFF;
-    gWinRegs[1] = 0xf0;
-    gWinRegs[3] = 0xa0;
+    gWinRegs[1] = DISPLAY_WIDTH;
+    gWinRegs[3] = DISPLAY_HEIGHT;
     gWinRegs[4] = 0xff00;
     gWinRegs[5] = 0xff;
 

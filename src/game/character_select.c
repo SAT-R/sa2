@@ -516,7 +516,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < 16; i++) {
-        gObjPalette[i + 0xf0] = 0;
+        gObjPalette[i + 240] = 0;
     }
 
     gFlags |= 0x2;
@@ -1146,12 +1146,12 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
-        i = 0xA0;
+        i = 160; // DISPLAY_HEIGHT
     } else {
         i = ((0x10 - characterScreen->animFrame) * 0x14);
     }
     s = &characterScreen->screenTitleText;
-    s->x = i + 0xF0;
+    s->x = i + 240; // DISPLAY_WIDTH
     s->y = 0x10;
     DisplaySprite(s);
 

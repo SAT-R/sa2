@@ -40,7 +40,7 @@ void CreateExtraEndingSlidesCutScene(void)
     t = TaskCreate(sub_8091590, sizeof(struct ExtraEndingCutSceneSlides), 0x3100, 0, sub_8091680);
     scene = TASK_DATA(t);
 
-    scene->unk4C = 0xF0;
+    scene->unk4C = 240;
 
     fade = &scene->unk40;
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -103,7 +103,7 @@ void sub_8091608(void)
     if (scene->unk4C != 0) {
         scene->unk4C--;
     } else {
-        scene->unk4C = 0xF0;
+        scene->unk4C = 240;
         gCurTask->main = sub_80915CC;
     }
 }

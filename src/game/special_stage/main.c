@@ -67,8 +67,8 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
     t = TaskCreate(Task_ShowIntroScreen, sizeof(struct SpecialStage), 0x2000, 0, SpecialStageOnDestroy);
     stage = TASK_DATA(t);
-    stage->cameraX = Q_16_16(256);
-    stage->cameraY = Q_16_16(256);
+    stage->qCameraX = Q_16_16(256);
+    stage->qCameraY = Q_16_16(256);
     stage->unk59C = 0;
 
     stage->cameraBearing = 512;
@@ -110,12 +110,13 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;
 
-    stage->unk5CA = 120;
-    stage->unk5CC = 140;
-    stage->unk5CE = 64;
+    stage->unk5CA = DISPLAY_WIDTH / 2; // originX
+    stage->unk5CC = 140; // camera height?
+    stage->unk5CE = 64; // scale
 
-    stage->unk5D0 = 40;
-    stage->unk5D1 = 60;
+    stage->unk5D0 = 40; // perspective scale?
+
+    stage->unk5D1 = 60; // horizon (pixels)
 
     // wtf, all this stuff is const
     target = 49;
@@ -519,7 +520,7 @@ void sub_806C49C(void)
         fade->window = 0;
         fade->flags = 1;
         fade->brightness = Q_8_8(0);
-        fade->speed = 0x40;
+        fade->speed = 64;
         fade->bldAlpha = 0;
         fade->bldCnt = 0xBF;
 
@@ -588,7 +589,6 @@ void sub_806C6A4(void)
 
     stage->animFrame++;
     if (stage->animFrame > 119) {
-        s32 temp2, temp3, temp4;
         s32 temp = stage->finalScore;
 
         if (stage->playerTask != NULL) {
@@ -601,22 +601,7 @@ void sub_806C6A4(void)
             stage->uiTask = NULL;
         }
 
-        temp4 = gLevelScore;
-        gLevelScore += temp;
-
-        temp2 = Div(gLevelScore, 50000);
-        temp3 = Div(temp4, 50000);
-
-        if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
-            u16 temp5 = (temp2 - temp3);
-            temp5 += gNumLives;
-
-            if (temp5 > 0xFF) {
-                temp5 = 0xFF;
-            }
-
-            gNumLives = temp5;
-        }
+        INCREMENT_SCORE_A(temp);
 
         gLoadedSaveGame->score += stage->rings;
 

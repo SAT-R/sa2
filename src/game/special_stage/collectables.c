@@ -35,7 +35,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *, struct UNK_806DEA4 *);
 void sub_806E1AC(s16, struct UNK_806DEA4 *);
 
 const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
-    [ZONE_1] = 0x130, [ZONE_2] = 0x128, [ZONE_3] = 0x110, [ZONE_4] = 0x128, [ZONE_5] = 0x143, [ZONE_6] = 0x11C, [ZONE_7] = 0x10B,
+    [ZONE_1] = 304, [ZONE_2] = 296, [ZONE_3] = 272, [ZONE_4] = 296, [ZONE_5] = 323, [ZONE_6] = 284, [ZONE_7] = 267,
 };
 
 void SpecialStageHandleCollectRings(struct SpecialStage *stage, s16 num)
@@ -117,7 +117,7 @@ void Task_InitObjects(void)
     collectables->animFrame = 0;
 
     sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 1, 0);
-    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 0x10, 0x372, 0x3000, 0x14, 0x14, 0xe, 0, 0);
+    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 16, 0x372, 0x3000, 0x14, 0x14, 0xe, 0, 0);
     sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 0x14, 0x1e, 0xf, 1, 0);
     sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 6, 0);
     sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 5, 0);
@@ -354,7 +354,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8, struct UNK_806DEA4 *
                     s16 min;
                     struct UNK_806DEA4 *unkDEA4;
 
-                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10; i++, unkDEA4++) {
+                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 16; i++, unkDEA4++) {
                         if (unkDEA4->unk4 < min) {
                             min = unkDEA4->unk4;
                             found = unkDEA4;
@@ -394,7 +394,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = unkDEA4->unk2;
         element1->y = unkDEA4->unk4 - unkDEA4->unk6;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     } else {
         s16 x, y;
         Sprite *reference;
@@ -406,8 +406,8 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             memcpy(element2, &collectables->unk64, sizeof(Sprite));
             element2->frameFlags = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
-            element2->y = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
-            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(14) : SPRITE_OAM_ORDER(7);
+            element2->y = ((13 - ((120 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
+            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(14) : SPRITE_OAM_ORDER(7);
             sub_806CD68(element2);
 
             reference = unkDEA4->unk0 == 1 ? &collectables->unk34 : &collectables->unkC4;
@@ -418,7 +418,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = x;
         element1->y = y;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     }
 
     sub_806CD68(element1);
@@ -538,13 +538,13 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
 
         *unk7B4 = collectables->unk34;
 
-        unk7B4->frameFlags = (index + 0x10) | 0x1060 | 0xC0000;
+        unk7B4->frameFlags = (index + 16) | 0x1060 | 0xC0000;
         unk7B4->x = screenX;
         unk7B4->y = screenY;
         unk7B4->oamFlags = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
         sub_806CD68(unk7B4);
 
-        affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;
+        affine = &gOamBuffer[(index + 16) * 4].all.affineParam;
         *affine = new_unkCB84.unkC;
         affine += 4;
         *affine = new_unkCB84.unkE;

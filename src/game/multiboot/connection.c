@@ -639,6 +639,6 @@ bool32 sub_8081E38(struct SinglePakConnectScreen *connectScreen, u16 id)
 
 void sub_8081E90(struct SinglePakConnectScreen *connectScreen)
 {
-    u8 val = (connectScreen->unkE4 * 0xA0) / 0x12000;
-    gWinRegs[0] = (val + 0x28) | 0x2800;
+    u8 val = (connectScreen->unkE4 * DISPLAY_HEIGHT) / 0x12000;
+    gWinRegs[0] = (val + 40) | 0x2800;
 }

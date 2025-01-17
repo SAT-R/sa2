@@ -75,11 +75,11 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
     world = TASK_DATA(stage->worldTask);
 
     {
-        u16 deg = -stage->cameraBearing & 0x3FF;
+        u16 deg = -stage->cameraBearing & ONE_CYCLE;
         s32 r2 = SIN(deg) * 4;
         s32 r5 = COS(deg) * 4;
-        s32 temp_r4 = (-unk874->unk0 + stage->cameraX);
-        s32 r3 = (-unk874->unk4 + stage->cameraY);
+        s32 temp_r4 = (-unk874->unk0 + stage->qCameraX);
+        s32 r3 = (-unk874->unk4 + stage->qCameraY);
         r9 = ((I(r2) * I(r3)) + (I(r5) * I(temp_r4))) >> 2;
         r4 = ((I(-r2) * I(temp_r4)) + (I(r5) * I(r3))) >> 1;
     }
@@ -97,7 +97,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
     val = stage->unk5D3;
 
     while (val2 != 0) {
-        if (val >= 160) {
+        if (val >= DISPLAY_HEIGHT) {
             val -= val2 >> 1;
         } else if (val < stage->unk5D1) {
             val += val2 >> 1;
@@ -121,7 +121,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
         }
         a->unkA = val;
         a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
-        a->unk8 = (0x78 - ((r9 * 0x87) / r8));
+        a->unk8 = (120 - ((r9 * 135) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
             a->unk6 = (((unk874->unk8 * 8) / world->unkC[val]) * 9) >> 2;
@@ -129,7 +129,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
             a->unk6 = 0;
         }
 
-        a->unkC = world->unkC[val] >> 8;
+        a->unkC = I(world->unkC[val]);
         a->unk12 = a->unkC;
 
         a->unk10 = 0;
@@ -217,7 +217,7 @@ s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)
 {
     s16 result = 0;
 
-    while (spriteConfig->anim != 0xFFFF) {
+    while (spriteConfig->anim != (u16)-1) {
         if (result < spriteConfig->unk4) {
             result = spriteConfig->unk4;
         }

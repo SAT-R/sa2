@@ -295,7 +295,7 @@ void sub_806D4E4(void)
     sub_806D7D0(unk8, player->animSpeed >> 1, stage->unk5CC, unkC4);
 }
 
-void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c4)
+void sub_806D548(Sprite *s, void *vram, s16 y, u8 b, const struct UNK_80DF670 *c4)
 {
     u32 frameFlags = SPRITE_FLAG(PRIORITY, 1);
     if (c4->unk7 & 1) {
@@ -311,7 +311,7 @@ void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c
     s->graphics.anim = c4->anim;
     s->frameFlags = frameFlags;
     s->x = (DISPLAY_WIDTH / 2);
-    s->y = a;
+    s->y = y;
     s->oamFlags = SPRITE_OAM_ORDER(b);
     s->qAnimDelay = 0;
     s->prevAnim = -1;

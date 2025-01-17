@@ -108,8 +108,8 @@ static void Task_PhysicsMain(void)
     }
 
     sub_806FAA0();
-    stage->cameraX = player->q16WorldX;
-    stage->cameraY = player->q16WorldY;
+    stage->qCameraX = player->q16WorldX;
+    stage->qCameraY = player->q16WorldY;
     stage->cameraBearing = player->bearing;
 
     gBgScrollRegs[2][1] = -Q_16_16_TO_INT(player->q16WorldY);

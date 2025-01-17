@@ -104,7 +104,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene = TASK_DATA(t);
 
     scene->unkBC = 0;
-    scene->unkC0 = 0xF0;
+    scene->unkC0 = 240;
     scene->unkBD = 0;
     scene->unkBF = 0xFF;
     scene->unkBE = 0;
@@ -296,7 +296,7 @@ void sub_8094530(void)
     if (scene->unkC0 != 0) {
         scene->unkC0--;
     } else {
-        scene->unkC0 = 0xB4;
+        scene->unkC0 = 180;
         gCurTask->main = sub_80944EC;
     }
 }

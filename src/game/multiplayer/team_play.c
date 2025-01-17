@@ -256,12 +256,12 @@ static void sub_805CB34(void)
     gWinRegs[5] = 0x3F;
     gBldRegs.bldCnt = 0x3F48;
     gBldRegs.bldAlpha = 0x810;
-    gWinRegs[2] = 0xA0;
+    gWinRegs[2] = DISPLAY_HEIGHT;
 
-    if (gBgScrollRegs[1][1] < 0xA0) {
+    if (gBgScrollRegs[1][1] < DISPLAY_HEIGHT) {
         gBgScrollRegs[1][1] += 4;
     } else {
-        gBgScrollRegs[1][1] = 0xA0;
+        gBgScrollRegs[1][1] = DISPLAY_HEIGHT;
         gCurTask->main = sub_805CC34;
     }
 

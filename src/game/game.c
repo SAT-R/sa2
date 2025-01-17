@@ -29,7 +29,7 @@
 #endif
 
 #include "data/sprite_tables.h"
-
+void CreateSpecialStage(s16 selectedCharacter, s16 level);
 void GameInit(void)
 {
     u32 i;

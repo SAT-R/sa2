@@ -101,10 +101,7 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) && (Div(gRingCount, 100) != Div(prevRingCount, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                     u32 lives = gNumLives + 1;
-                    if (lives > 255)
-                        gNumLives = 255;
-                    else
-                        gNumLives = lives;
+                    SET_LIVES_B(lives);
 
                     gMusicManagerState.unk3 = 0x10;
                 }
