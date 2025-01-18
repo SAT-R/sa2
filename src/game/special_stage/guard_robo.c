@@ -64,7 +64,7 @@ void Task_GuardRoboMain(void)
 {
     struct SpecialStageCollectables_UNK874_2 unk874;
     struct UNK_806CB84 unkCBB4;
-    u8 temp;
+    u8 order;
     u16 *oam;
     bool16 visible;
 
@@ -85,7 +85,7 @@ void Task_GuardRoboMain(void)
     unk874.unk10 = 0;
     unk874.unk12 = 0x1D;
 
-    visible = sub_806CB84(&unkCBB4, &unk874, guardRobo->stage);
+    visible = SpecialStageCalcEntityScreenPosition(&unkCBB4, &unk874, guardRobo->stage);
     if (visible) {
         u16 angle;
 
@@ -97,15 +97,16 @@ void Task_GuardRoboMain(void)
         oam += 4;
         *oam = unkCBB4.unk12;
 
-        angle = ((guardRobo->bearing - stage->cameraBearing) + 64) & 0x3FF;
-        if (unkCBB4.screenY < (stage->unk5CC - 0x3C)) {
-            temp = 0xC;
+        angle = ((guardRobo->bearing - stage->cameraRotX) + 64) & ONE_CYCLE;
+        // Is behind player
+        if (unkCBB4.screenY < (stage->cameraHeight - 60)) {
+            order = 12;
         } else {
-            temp = 5;
+            order = 5;
         }
 
         if (stage->paused == FALSE) {
-            RenderGuardRobo(&guardRobo->sprite, unkCBB4.screenX, unkCBB4.screenY, temp, &guardRobo->sprites[angle >> 7]);
+            RenderGuardRobo(&guardRobo->sprite, unkCBB4.screenX, unkCBB4.screenY, order, &guardRobo->sprites[angle >> 7]);
         }
 
         if (guardRobo->state != 2 || !(guardRobo->animFrame & 2) || stage->paused != 0) {
@@ -124,7 +125,7 @@ void sub_80710B0(void)
 
     s32 temp3, bearingToPlayer;
 
-    u16 angle = (-guardRobo->bearing & 0x3FF);
+    u16 angle = (-guardRobo->bearing & ONE_CYCLE);
     s32 sin = SIN(angle) * 4;
     s32 cos = COS(angle);
 
@@ -138,11 +139,11 @@ void sub_80710B0(void)
     temp3 = (-sin >> 8) * sin4 + (cos >> 6) * (dY >> 8);
 
     if (bearingToPlayer > 0) {
-        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & 0x3FF;
+        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & ONE_CYCLE;
     } else if (bearingToPlayer < 0) {
-        guardRobo->bearing = (guardRobo->bearing + guardRobo->rotateSpeed) & 0x3FF;
+        guardRobo->bearing = (guardRobo->bearing + guardRobo->rotateSpeed) & ONE_CYCLE;
     } else if (temp3 < 0) {
-        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & 0x3FF;
+        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & ONE_CYCLE;
     }
 
     angle = guardRobo->bearing;
@@ -185,6 +186,10 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
         case 0xE:
             return;
     }
+
+#ifdef NON_MATCHING
+    return;
+#endif
 
     if ((guardRoboX - 5) < playerX && (guardRoboX + 5) > playerX) {
         if (((guardRoboY)-5) < playerY && (guardRoboY + 5) > playerY) {
@@ -320,7 +325,7 @@ void sub_80714F4(struct SpecialStageGuardRobo *guardRobo)
     }
 }
 
-static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 b, const struct UNK_80DF670 *spriteConfig)
+static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 order, const struct UNK_80DF670 *spriteConfig)
 {
     u32 flags = 0x107F;
     if (spriteConfig->unk7 & 1) {
@@ -335,7 +340,7 @@ static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 b, const struct UNK_80DF
     s->frameFlags = flags;
     s->x = x;
     s->y = y;
-    s->oamFlags = SPRITE_OAM_ORDER(b);
+    s->oamFlags = SPRITE_OAM_ORDER(order);
     s->variant = spriteConfig->variant;
     s->animSpeed = spriteConfig->animSpeed;
     UpdateSpriteAnimation(s);

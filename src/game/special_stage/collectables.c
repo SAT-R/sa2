@@ -339,7 +339,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8, struct UNK_806DEA4 *
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
             new_unk874.unk12 = 5;
-            if (sub_806CB84(&new_unkCB84, &new_unk874, collectables->stage)) {
+            if (SpecialStageCalcEntityScreenPosition(&new_unkCB84, &new_unk874, collectables->stage)) {
                 if (result < 16) {
                     memcpy(&unkDEA4Arr[result], &new_unkCB84, sizeof(new_unkCB84));
 
@@ -394,7 +394,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = unkDEA4->unk2;
         element1->y = unkDEA4->unk4 - unkDEA4->unk6;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->cameraHeight - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     } else {
         s16 x, y;
         Sprite *reference;
@@ -407,7 +407,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             element2->frameFlags = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
             element2->y = ((13 - ((120 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
-            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(14) : SPRITE_OAM_ORDER(7);
+            element2->oamFlags = (unkDEA4->unk4 < (stage->cameraHeight - 15)) ? SPRITE_OAM_ORDER(14) : SPRITE_OAM_ORDER(7);
             sub_806CD68(element2);
 
             reference = unkDEA4->unk0 == 1 ? &collectables->unk34 : &collectables->unkC4;
@@ -418,7 +418,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = x;
         element1->y = y;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->cameraHeight - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     }
 
     sub_806CD68(element1);
@@ -530,7 +530,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
     new_unk874.unk10 = 0;
     new_unk874.unk12 = 5;
 
-    visible = sub_806CB84(&new_unkCB84, &new_unk874, collectables->stage);
+    visible = SpecialStageCalcEntityScreenPosition(&new_unkCB84, &new_unk874, collectables->stage);
     if (visible) {
         s32 screenX = new_unkCB84.screenX;
         s32 unk4 = new_unkCB84.screenY;
@@ -541,7 +541,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
         unk7B4->frameFlags = (index + 16) | 0x1060 | 0xC0000;
         unk7B4->x = screenX;
         unk7B4->y = screenY;
-        unk7B4->oamFlags = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
+        unk7B4->oamFlags = (new_unkCB84.screenY < (stage->cameraHeight - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
         sub_806CD68(unk7B4);
 
         affine = &gOamBuffer[(index + 16) * 4].all.affineParam;

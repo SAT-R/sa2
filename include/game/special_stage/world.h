@@ -6,11 +6,14 @@
 
 struct SpecialStageWorld {
     struct SpecialStage *stage;
-    void *unk4; // size 0xA00
+    void *bgTransforms; // size 0xA00
+
+    // unused
     void *unk8; // size 0x280
-    s32 *unkC; // size 0x280
-    Background unk10;
-    Background unk50;
+
+    s32 *qPerspectiveTable; // size 0x280
+    Background background;
+    Background floor;
     Sprite unk90[11];
 }; /* size 0x2A0 */
 

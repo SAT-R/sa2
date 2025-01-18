@@ -18,6 +18,7 @@
 #include "constants/zones.h"
 
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
 #define MAX_POINTS 99900
 
@@ -46,7 +47,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     struct Task *t;
     struct SpecialStage *stage;
 
-    s16 zone, character, temp, i, target;
+    s16 zone, character, temp, i, viewDistance;
 
     m4aMPlayAllStop();
 
@@ -67,11 +68,11 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
     t = TaskCreate(Task_ShowIntroScreen, sizeof(struct SpecialStage), 0x2000, 0, SpecialStageOnDestroy);
     stage = TASK_DATA(t);
-    stage->qCameraX = Q_16_16(256);
-    stage->qCameraY = Q_16_16(256);
+    stage->q16CameraX = Q_16_16(256);
+    stage->q16CameraY = Q_16_16(256);
     stage->unk59C = 0;
 
-    stage->cameraBearing = 512;
+    stage->cameraRotX = 512;
 
     if (character <= CHARACTER_AMY) {
         stage->character = character;
@@ -110,23 +111,25 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;
 
-    stage->unk5CA = DISPLAY_WIDTH / 2; // originX
-    stage->unk5CC = 140; // camera height?
-    stage->unk5CE = 64; // scale
+    stage->cameraOriginX = DISPLAY_WIDTH / 2;
+    stage->cameraHeight = 140;
+    stage->worldScale = 64; // scale
 
-    stage->unk5D0 = 40; // perspective scale?
+    stage->cameraPitch = 40; // lower = towards the ground, higher = towards the horizon
 
-    stage->unk5D1 = 60; // horizon (pixels)
+    stage->horizonHeight = 60; // horizon (pixels)
 
-    // wtf, all this stuff is const
-    target = 49;
-    stage->unk5D2 = target;
+    // This value is 49 on the GBA
+    // - (horizonHeight / 2) - 1 is just a guess
+    viewDistance = (DISPLAY_HEIGHT / 2) - (60 / 2) - 1;
+    stage->viewDistance = viewDistance;
 
-    for (i = 1; i < stage->unk5D2; i *= 2)
+    // Round up to the nearest power of 2
+    for (i = 1; i < stage->viewDistance; i *= 2)
         ;
 
-    stage->unk5D2 = i;
-    stage->unk5D3 = (((DISPLAY_HEIGHT - 1) - stage->unk5D1) >> 1) + stage->unk5D1;
+    stage->viewDistance = i;
+    stage->unk5D3 = (((DISPLAY_HEIGHT - 1) - stage->horizonHeight) >> 1) + stage->horizonHeight;
 }
 
 static void SetupIntroScreenRegisters(void)
@@ -347,7 +350,7 @@ void Task_FadeToResultScreen(void)
         stage->uiTask = NULL;
     }
 
-    sub_806CEC4(&stage->unk48, 0, 7, 0x8B, 0x20, 0x20, 0, 1, 0, 0);
+    SpecialStageDrawBackground(&stage->unk48, 0, 7, TM_TILEMAP_139, 0x20, 0x20, 0, 1, 0, 0);
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
     gDispCnt = 0x1240;

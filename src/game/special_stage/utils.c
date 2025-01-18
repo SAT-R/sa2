@@ -10,6 +10,7 @@
 void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;
 
+// Copied from `options.c` so contains some of that submenu logic
 void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId)
 {
     Sprite newObj;
@@ -58,7 +59,8 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
 }
 
 // TODO: SpecialStageCollectables_UNK874 is probably it's own type
-bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874, struct SpecialStage *stage)
+bool16 SpecialStageCalcEntityScreenPosition(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874,
+                                            struct SpecialStage *stage)
 {
     struct SpecialStageWorld *world;
     s32 r9;
@@ -75,31 +77,31 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
     world = TASK_DATA(stage->worldTask);
 
     {
-        u16 deg = -stage->cameraBearing & ONE_CYCLE;
+        u16 deg = -stage->cameraRotX & ONE_CYCLE;
         s32 r2 = SIN(deg) * 4;
         s32 r5 = COS(deg) * 4;
-        s32 temp_r4 = (-unk874->unk0 + stage->qCameraX);
-        s32 r3 = (-unk874->unk4 + stage->qCameraY);
+        s32 temp_r4 = (-unk874->unk0 + stage->q16CameraX);
+        s32 r3 = (-unk874->unk4 + stage->q16CameraY);
         r9 = ((I(r2) * I(r3)) + (I(r5) * I(temp_r4))) >> 2;
         r4 = ((I(-r2) * I(temp_r4)) + (I(r5) * I(r3))) >> 1;
     }
 
     {
         s32 unk590 = stage->unk94[DISPLAY_HEIGHT - 1][1];
-        s32 unk94 = stage->unk94[stage->unk5D1][1];
+        s32 unk94 = stage->unk94[stage->horizonHeight][1];
 
         if (r4 <= unk590 || r4 >= unk94) {
             return FALSE;
         }
     }
 
-    val2 = stage->unk5D2;
+    val2 = stage->viewDistance;
     val = stage->unk5D3;
 
     while (val2 != 0) {
         if (val >= DISPLAY_HEIGHT) {
             val -= val2 >> 1;
-        } else if (val < stage->unk5D1) {
+        } else if (val < stage->horizonHeight) {
             val += val2 >> 1;
         } else if (stage->unk94[val][1] > r4) {
             val += val2 >> 1;
@@ -120,17 +122,17 @@ bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874
             return FALSE;
         }
         a->unkA = val;
-        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
-        a->unk8 = (120 - ((r9 * 135) / r8));
+        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->qPerspectiveTable[val]);
+        a->unk8 = ((DISPLAY_WIDTH / 2) - ((r9 * ((DISPLAY_WIDTH / 2) + 15)) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
-            a->unk6 = (((unk874->unk8 * 8) / world->unkC[val]) * 9) >> 2;
+            a->unk6 = (((unk874->unk8 * 8) / world->qPerspectiveTable[val]) * 9) >> 2;
         } else {
             a->unk6 = 0;
         }
 
-        a->unkC = I(world->unkC[val]);
-        a->unk12 = a->unkC;
+        a->unkC = I(world->qPerspectiveTable[val]); // scaleX?
+        a->unk12 = a->unkC; // scaleY?
 
         a->unk10 = 0;
         a->unkE = 0;
@@ -190,7 +192,8 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
+void SpecialStageDrawBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX,
+                                u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
@@ -218,8 +221,8 @@ s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)
     s16 result = 0;
 
     while (spriteConfig->anim != (u16)-1) {
-        if (result < spriteConfig->unk4) {
-            result = spriteConfig->unk4;
+        if (result < spriteConfig->size) {
+            result = spriteConfig->size;
         }
         spriteConfig++;
     }

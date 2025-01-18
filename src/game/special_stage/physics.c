@@ -108,9 +108,9 @@ static void Task_PhysicsMain(void)
     }
 
     sub_806FAA0();
-    stage->qCameraX = player->q16WorldX;
-    stage->qCameraY = player->q16WorldY;
-    stage->cameraBearing = player->bearing;
+    stage->q16CameraX = player->q16WorldX;
+    stage->q16CameraY = player->q16WorldY;
+    stage->cameraRotX = player->bearing;
 
     gBgScrollRegs[2][1] = -Q_16_16_TO_INT(player->q16WorldY);
     gBgScrollRegs[2][0] = -Q_16_16_TO_INT(player->q16WorldX);
@@ -218,7 +218,7 @@ void HandleRotationControls(void)
         }
 
         player->bearing = bearing;
-        player->bearing &= 0x3FF;
+        player->bearing &= ONE_CYCLE;
     }
 }
 

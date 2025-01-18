@@ -31,11 +31,11 @@ struct SpecialStage {
     Background unk48;
     ScreenFade fade;
     s32 unk94[DISPLAY_HEIGHT][2];
-    s32 qCameraX;
-    s32 qCameraY;
+    s32 q16CameraX;
+    s32 q16CameraY;
     s32 unk59C;
 
-    u16 cameraBearing;
+    u16 cameraRotX;
     s16 animFrame;
 
     s16 rings;
@@ -75,12 +75,12 @@ struct SpecialStage {
     s8 unk5C7;
     s8 unk5C8;
 
-    s16 unk5CA;
-    s16 unk5CC;
-    u16 unk5CE;
-    u8 unk5D0;
-    u8 unk5D1;
-    u8 unk5D2;
+    s16 cameraOriginX;
+    s16 cameraHeight;
+    u16 worldScale;
+    u8 cameraPitch;
+    u8 horizonHeight;
+    u8 viewDistance;
     u8 unk5D3;
     void *screenVram;
 }; /* size 0x5D8 */

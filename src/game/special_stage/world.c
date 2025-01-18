@@ -9,9 +9,11 @@
 #include "lib/m4a/m4a.h"
 #include "game/save.h"
 #include "trig.h"
+#include "flags.h"
 #include "malloc_ewram.h"
 #include "constants/zones.h"
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
 void sub_806EA04(void);
 void sub_806E7C0(struct SpecialStageWorld *world);
@@ -73,37 +75,31 @@ const struct UNK_8C87920 gUnknown_080DF6EC[] = {
     { 914, 0 },
 };
 
-static const s16 gUnknown_080DF768[7] = {
-    154, 156, 158, 160, 162, 164, 166,
-};
-static const s16 gUnknown_080DF776[7] = {
-    153, 155, 157, 159, 161, 163, 165,
-};
-
-static const s16 gUnknown_080DF784[8] = {
-    0, 256, 0, 0, 0, 256, 0, 256,
-};
-
 struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
 {
-    s16 unkF768[7];
-    s16 unkF776[7];
+
     struct Task *t;
     struct SpecialStageWorld *world;
 
-    memcpy(unkF768, gUnknown_080DF768, sizeof(gUnknown_080DF768));
-    memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
+    s16 skys[7] = {
+        TM_SPECIAL_STAGE_1_BG, TM_SPECIAL_STAGE_2_BG, TM_SPECIAL_STAGE_3_BG, TM_SPECIAL_STAGE_4_BG,
+        TM_SPECIAL_STAGE_5_BG, TM_SPECIAL_STAGE_6_BG, TM_SPECIAL_STAGE_7_BG,
+    };
+    s16 floors[7] = {
+        TM_SPECIAL_STAGE_1, TM_SPECIAL_STAGE_2, TM_SPECIAL_STAGE_3, TM_SPECIAL_STAGE_4,
+        TM_SPECIAL_STAGE_5, TM_SPECIAL_STAGE_6, TM_SPECIAL_STAGE_7,
+    };
 
     t = TaskCreate(sub_806EA04, sizeof(struct SpecialStageWorld), 0x8000, 0, sub_806EBF4);
     world = TASK_DATA(t);
     world->stage = stage;
 
-    world->unk4 = NULL;
+    world->bgTransforms = NULL;
     world->unk8 = NULL;
-    world->unkC = NULL;
+    world->qPerspectiveTable = NULL;
 
-    sub_806CEC4(&world->unk10, 1, 0x10, unkF776[stage->zone], 0x80, 0x80, 0, 2, 0, 0);
-    sub_806CEC4(&world->unk50, 0, 7, unkF768[stage->zone], 0x20, 0x20, 0, 1, 0, 0);
+    SpecialStageDrawBackground(&world->background, 1, 16, floors[stage->zone], 0x80, 0x80, 0, 2, 0, 0);
+    SpecialStageDrawBackground(&world->floor, 0, 7, skys[stage->zone], 0x20, 0x20, 0, 1, 0, 0);
 
     sub_806E7C0(world);
 
@@ -114,18 +110,17 @@ void sub_806E7C0(struct SpecialStageWorld *world)
 {
     s16 i;
     struct SpecialStage *stage = world->stage;
-    s32 temp = Q_16_16((stage->unk5CC - stage->unk5D0));
+    s32 temp = Q_16_16(stage->cameraHeight - stage->cameraPitch);
 
-    s16 unkF784[8];
-    s16 unk5CE;
+    s16 worldScale;
     s32 *unk94;
     s32 *unk8;
     s16 *unk4;
     s32 *unkC;
 
-    world->unkC = EwramMalloc(DISPLAY_HEIGHT * sizeof(s32));
-    for (i = 0, unkC = world->unkC; i < DISPLAY_HEIGHT; i++, unkC++) {
-        s32 temp2 = (i - stage->unk5D0);
+    world->qPerspectiveTable = EwramMalloc(DISPLAY_HEIGHT * sizeof(s32));
+    for (i = 0, unkC = world->qPerspectiveTable; i < DISPLAY_HEIGHT; i++, unkC++) {
+        s32 temp2 = (i - stage->cameraPitch);
         if (temp2 == 0) {
             *unkC = 0;
         } else {
@@ -133,9 +128,10 @@ void sub_806E7C0(struct SpecialStageWorld *world)
         }
     }
 
-    world->unk8 = EwramMalloc(DISPLAY_HEIGHT * sizeof(int_vcount) * 4);
+    // unused, these values are also always 0
+    world->unk8 = EwramMalloc(DISPLAY_HEIGHT * sizeof(s32));
     for (i = 0, unk8 = world->unk8; i < DISPLAY_HEIGHT; i++, unk8++) {
-        s32 temp2 = (i - stage->unk5D0);
+        s32 temp2 = (i - stage->cameraPitch);
         if (temp == 0) {
             *unk8 = 0;
         } else {
@@ -143,26 +139,37 @@ void sub_806E7C0(struct SpecialStageWorld *world)
         }
     }
 
-    unk94 = &stage->unk94[stage->unk5D1][0];
-    unk5CE = stage->unk5CE;
-    for (i = stage->unk5D1; i < DISPLAY_HEIGHT; i++) {
-        s32 temp2 = I(world->unkC[i] * unk5CE);
-        s32 temp3 = (-stage->unk5CA * temp2);
-        s32 temp4 = (((i - stage->unk5CC) * temp2));
-        *unk94++ = I(-(temp3 << 1)) * unk5CE;
-        *unk94++ = I(-(temp4 << 2)) * unk5CE;
+    unk94 = &stage->unk94[stage->horizonHeight][0];
+    worldScale = stage->worldScale;
+    for (i = stage->horizonHeight; i < DISPLAY_HEIGHT; i++) {
+        s32 temp2 = I(world->qPerspectiveTable[i] * worldScale);
+        s32 temp3 = (-stage->cameraOriginX * temp2);
+        s32 temp4 = (((i - stage->cameraHeight) * temp2));
+        *unk94++ = I(-(temp3 << 1)) * worldScale;
+        *unk94++ = I(-(temp4 << 2)) * worldScale;
     }
 
-    world->unk4 = EwramMalloc(DISPLAY_HEIGHT * sizeof(int_vcount) * 16);
-    gBgOffsetsHBlank = world->unk4;
-    gUnknown_03004D54 = world->unk4;
-    gUnknown_030022C0 = world->unk4;
-    unk4 = world->unk4;
+    world->bgTransforms = EwramMalloc(DISPLAY_HEIGHT * sizeof(BgAffineReg));
+    gBgOffsetsHBlank = world->bgTransforms;
+    gUnknown_03004D54 = world->bgTransforms;
+    gUnknown_030022C0 = world->bgTransforms;
+    unk4 = world->bgTransforms;
 
-    memcpy(unkF784, gUnknown_080DF784, sizeof(gUnknown_080DF784));
-    for (i = 0; i < DISPLAY_HEIGHT; i++, unk4 += ARRAY_COUNT(unkF784)) {
-        memcpy(unk4, unkF784, sizeof(unkF784));
-        *(unk4 + 2) = i << 8;
+    {
+        const s16 template[] = {
+            0, // PA
+            256, // PB
+            0, // PC,
+            0, // PD,
+
+            0,   256, // x
+
+            0,   256, // y
+        };
+        for (i = 0; i < DISPLAY_HEIGHT; i++, unk4 += 8) {
+            memcpy(unk4, template, sizeof(BgAffineReg));
+            ((BgAffineReg *)unk4)->pc = Q(i);
+        }
     }
 
     sub_806E94C(world);
@@ -200,48 +207,59 @@ void sub_806EA04(void)
 {
     struct SpecialStageWorld *world = TASK_DATA(gCurTask);
     struct SpecialStage *stage = world->stage;
-    s32 sin1, sin2;
-    s16 unk5CE;
+    s32 sin, cos;
+    s16 worldScale;
     s32 unk5A0;
     s16 i;
     s16 *unk1884;
-    gUnknown_03002A80 = 0x10;
+
+    gUnknown_03002A80 = sizeof(BgAffineReg);
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
-    gBgOffsetsHBlank = world->unk4;
+    gBgOffsetsHBlank = world->bgTransforms;
 
-    unk5A0 = stage->cameraBearing;
-    sin1 = SIN(unk5A0) * 4;
-    sin2 = COS(unk5A0) * 4;
+    unk5A0 = stage->cameraRotX;
+    sin = SIN(unk5A0) * 4;
+    cos = COS(unk5A0) * 4;
 
-    unk5CE = stage->unk5CE;
-    gFlags |= 4;
+    worldScale = stage->worldScale;
+    gFlags |= FLAGS_4;
 
-    i = stage->unk5D1;
-    unk1884 = gBgOffsetsHBlank + (stage->unk5D1 * 16);
+    i = stage->horizonHeight;
+    unk1884 = gBgOffsetsHBlank + (stage->horizonHeight * sizeof(BgAffineReg));
 
     for (; i < DISPLAY_HEIGHT; i++) {
-        s32 *footer;
-        s32 temp = world->unkC[i] * unk5CE;
+        s32 *pos;
+        s32 temp = world->qPerspectiveTable[i] * worldScale;
         s32 temp2 = I(temp);
 
         s32 temp4, temp5;
-        s32 temp6, temp7;
-        temp4 = (0 - stage->unk5CA) * temp2;
-        temp5 = (i - stage->unk5CC) * temp2 * 2;
+        s32 x, y;
+        temp4 = (0 - stage->cameraOriginX) * temp2;
+        temp5 = (i - stage->cameraHeight) * temp2 * 2;
 
-        *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
-        *unk1884++ = (Q_16_16_TO_INT(temp) * sin1) >> 0x10;
-        *unk1884++ = (Q_16_16_TO_INT(temp) * -sin1) >> 0x10;
-        *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PA
+        // HACK: in SDL we don't handle these PB and PD values properly
+#if PLATFORM_SDL
+        *unk1884++ = 0;
+#else
+        *unk1884++ = (Q_16_16_TO_INT(temp) * sin) >> 0x10; // BG2PB
+#endif
 
-        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2) + stage->qCameraX;
-        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2) + stage->qCameraY;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * -sin) >> 0x10; // BG2PC
+#if PLATFORM_SDL
+        *unk1884++ = 0;
+#else
+        *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PD
+#endif
 
-        footer = (s32 *)unk1884;
-        *footer++ = I(temp6);
-        *footer++ = I(temp7);
+        x = (Q_16_16_TO_INT(temp5) * sin) + (Q_16_16_TO_INT(temp4) * cos) + stage->q16CameraX;
+        y = (Q_16_16_TO_INT(temp4) * -sin) + (Q_16_16_TO_INT(temp5) * cos) + stage->q16CameraY;
 
-        unk1884 += 4;
+        pos = (s32 *)unk1884;
+        *pos++ = I(x); // x
+        *pos++ = I(y); // y
+
+        unk1884 = ((void *)unk1884) + sizeof(s32) * 2;
     }
 
     sub_806EB74();
@@ -255,9 +273,9 @@ void sub_806EB74(void)
     u8 *level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
     // Huh?
-    u8 *temp = (u8 *)&stage->cameraBearing;
-    gBgScrollRegs[1][0] = -*temp;
-    gBgScrollRegs[1][1] = 0x30;
+    u8 *rot = (u8 *)&stage->cameraRotX;
+    gBgScrollRegs[1][0] = -*rot;
+    gBgScrollRegs[1][1] = 48;
 
     if (stage->paused != TRUE) {
         for (i = 0; i < num; i++) {
@@ -277,11 +295,11 @@ void sub_806EBF4(struct Task *t)
         EwramFree(world->unk8);
     }
 
-    if (world->unkC != NULL) {
-        EwramFree(world->unkC);
+    if (world->qPerspectiveTable != NULL) {
+        EwramFree(world->qPerspectiveTable);
     }
 
-    if (world->unk4 != NULL) {
-        EwramFree(world->unk4);
+    if (world->bgTransforms != NULL) {
+        EwramFree(world->bgTransforms);
     }
 }

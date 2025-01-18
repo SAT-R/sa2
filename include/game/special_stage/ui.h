@@ -12,12 +12,12 @@ struct SpecialStageUI {
     Sprite timeTens;
     Sprite timeUnits;
     Sprite ringsHundredsDigit;
-    Sprite ringsTENS_DIGIT;
-    Sprite ringsUNITS_DIGIT;
+    Sprite ringsTensDigit;
+    Sprite ringsUnitsDigit;
     Sprite unk154;
     Sprite ringsTargetHundredsDigit;
-    Sprite ringsTargetTENS_DIGIT;
-    Sprite ringsTargetUNITS_DIGIT;
+    Sprite ringsTargetTensDigit;
+    Sprite ringsTargetUnitsDigit;
     Sprite multiplier;
     Sprite unk244;
     Sprite pauseMenu;

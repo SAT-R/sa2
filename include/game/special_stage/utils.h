@@ -15,8 +15,9 @@ extern void *gUnknown_03005B5C;
 #define RENDER_TARGET_SUB_MENU 1
 
 void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 palId);
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY);
-bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874, struct SpecialStage *stage);
+void SpecialStageDrawBackground(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY);
+bool16 SpecialStageCalcEntityScreenPosition(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874,
+                                            struct SpecialStage *stage);
 void sub_806CD68(Sprite *element);
 void InitSpecialStageScreenVram(void);
 s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig);
