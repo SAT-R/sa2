@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 
     ReadSaveFile("sa2.sav");
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
@@ -232,6 +232,8 @@ int main(int argc, char **argv)
     return 0;
 }
 
+bool newFrameRequested = FALSE;
+
 // Every GBA frame we process the SDL events and render the number of times
 // SDL requires us to for vsync. When we need another frame we break out of
 // the loop via a return
@@ -244,19 +246,27 @@ void VBlankIntrWait(void)
 
         if (!paused || stepOneFrame) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
-            double deltaTime = 0;
 
-            curGameTime = SDL_GetPerformanceCounter();
-            if (stepOneFrame) {
-                deltaTime = dt;
+            // Hack to emulate the behaviour of threaded sdl
+            // it will not add any new values to the accumulator
+            // when a new frame was requested within a frame cycle
+            if (!newFrameRequested) {
+                double deltaTime = 0;
+
+                curGameTime = SDL_GetPerformanceCounter();
+                if (stepOneFrame) {
+                    deltaTime = dt;
+                } else {
+                    deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+                    if (deltaTime > (dt * 5))
+                        deltaTime = dt * 5;
+                }
+                lastGameTime = curGameTime;
+
+                accumulator += deltaTime;
             } else {
-                deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
-                if (deltaTime > (dt * 5))
-                    deltaTime = dt * 5;
+                newFrameRequested = FALSE;
             }
-            lastGameTime = curGameTime;
-
-            accumulator += deltaTime;
 
             while (accumulator >= dt) {
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
@@ -276,7 +286,7 @@ void VBlankIntrWait(void)
 
                     accumulator -= dt;
                 } else {
-                    // Get another frame
+                    newFrameRequested = TRUE;
                     return;
                 }
             }
@@ -298,6 +308,7 @@ void VBlankIntrWait(void)
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
+
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
@@ -1120,6 +1131,7 @@ static void RenderRotScaleBGScanline(int bgNum, uint16_t control, uint16_t x, ui
 
     s32 currentX = getBgX(bgNum);
     s32 currentY = getBgY(bgNum);
+
     // sign extend 28 bit number
     currentX = ((currentX & (1 << 27)) ? currentX | 0xF0000000 : currentX);
     currentY = ((currentY & (1 << 27)) ? currentY | 0xF0000000 : currentY);

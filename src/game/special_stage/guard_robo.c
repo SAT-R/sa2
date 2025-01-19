@@ -203,7 +203,7 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
             if ((state > 3 && state < 6) || state == 9) {
                 guardRobo->animFrame = guardRobo->unk54;
                 guardRobo->state = 2;
-                sub_806F944(stage);
+                HandleRoboPlayerCollision(stage);
                 player->state = 10;
                 m4aSongNumStart(SE_275);
             } else if (stage->rings == 0 && player->unkB6 == 0) {

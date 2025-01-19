@@ -105,8 +105,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     stage->ringsTargetTens = Div(stage->ringsTarget, 10) - (stage->ringsTargetHundreds * 10);
     stage->ringsTargetUnits = Mod(stage->ringsTarget, 10);
 
-    stage->targetReached = 0;
-    stage->targetReached = 0;
+    stage->targetReached = FALSE;
     stage->pauseMenuCursor = 0;
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;

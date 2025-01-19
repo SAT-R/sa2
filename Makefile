@@ -10,7 +10,7 @@ include config.mk
 # bytes, so they don't need to be aligned. But this is a simple
 # work around which tells the compiler not to care. Once we are
 # compiling the songs to C, we can cast the pointers to integers
-# which means the linker will not
+# which means the linker will not notice
 export MACOSX_DEPLOYMENT_TARGET := 11
 
 MAKEFLAGS += --no-print-directory
@@ -223,7 +223,8 @@ CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 ifeq ($(PLATFORM),gba)
 	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
 	CC1FLAGS += -fhex-asm
-else 
+else
+	CC1FLAGS += -Wstrict-overflow=1
 	ifeq ($(PLATFORM),sdl)
 		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)

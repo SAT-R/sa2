@@ -136,8 +136,8 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     if (stage->unk5B7 == FALSE) {
         player->speed = 0;
         player->rotateSpeed = 6;
-        player->unkD0 = 0x10000;
-        player->unkD4 = 0x10000;
+        player->q16SpeedX = 0x10000;
+        player->q16SpeedY = 0x10000;
         player->acceleration = 40;
         player->coastResistence = -43;
         player->deceleration = -350;
@@ -158,8 +158,8 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     } else {
         player->speed = 0;
         player->rotateSpeed = 0;
-        player->unkD0 = 0xC00;
-        player->unkD4 = 0x7FFF;
+        player->q16SpeedX = 0xC00;
+        player->q16SpeedY = 0x7FFF;
         player->acceleration = 256;
         player->coastResistence = 0x800;
     }

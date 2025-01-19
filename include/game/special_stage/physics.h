@@ -11,6 +11,6 @@ struct SpecialStagePhysics {
 }; /* size 8 */
 
 struct Task *CreateSpecialStagePhysics(struct SpecialStage *);
-void sub_806F944(struct SpecialStage *stage);
+void HandleRoboPlayerCollision(struct SpecialStage *stage);
 
 #endif

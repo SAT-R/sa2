@@ -26,7 +26,7 @@ struct UNK_806DEA4 {
 
 static void AnimateRingsLost(struct SpecialStage *stage, s16);
 void sub_806DB48(void);
-void sub_806DC98(void);
+void HandleCollectableCollision(void);
 bool16 sub_806DE10(void);
 void sub_806E4FC(struct SpecialStage *stage);
 void sub_806E584(s16, struct SpecialStageCollectables_UNK874 *);
@@ -140,7 +140,7 @@ void sub_806DB48(void)
         UpdateSpriteAnimation(&collectables->unk94);
         UpdateSpriteAnimation(&collectables->unkC4);
 
-        sub_806DC98();
+        HandleCollectableCollision();
 
         if (sub_806DE10() == FALSE && stage->state != 7) {
             stage->state = 6;
@@ -165,7 +165,7 @@ void sub_806DB48(void)
     sub_806DEA4();
 }
 
-void sub_806DC98(void)
+void HandleCollectableCollision(void)
 {
     struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
