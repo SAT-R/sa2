@@ -98,10 +98,14 @@ static void Task_PhysicsMain(void)
 
         sub_80047A0(arrowAngle, 256, 256, 30);
 
-        if (stage->paused == FALSE) {
+        if (stage->paused == FALSE)
             UpdateSpriteAnimation(&player->roboArrow);
-        }
-        DisplaySprite(&player->roboArrow);
+
+#if PORTABLE
+        // Added so the arrow doesn't appear above the pause menu
+        if (stage->paused == FALSE)
+#endif
+            DisplaySprite(&player->roboArrow);
     }
 
     sub_806FAA0();
@@ -287,12 +291,12 @@ void sub_806F154(void)
     HandleRotationControls();
     HandleBoost2();
 
-    player->q16WorldX += player->unkD0;
-    player->q16WorldY += player->unkD4;
+    player->q16WorldX += player->q16SpeedX;
+    player->q16WorldY += player->q16SpeedY;
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
-        player->speed = 0x2000;
+        player->speed = Q(32);
         player->unkB0 = 0;
         player->state = 1;
     }
@@ -523,17 +527,17 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     u32 temp1;
     u32 temp2;
     u16 temp3;
-    s32 f_dX;
-    s32 f_dY;
+    s32 qDx;
+    s32 qDy;
     s16 dX;
     s16 dY;
 
     u16 angle = -player->bearing & ONE_CYCLE;
 
-    f_dX = guardRobo->x - player->q16WorldX;
-    f_dY = guardRobo->y - player->q16WorldY;
-    dX = f_dX >> 0x10;
-    dY = f_dY >> 0x10;
+    qDx = guardRobo->x - player->q16WorldX;
+    qDy = guardRobo->y - player->q16WorldY;
+    dX = qDx >> 0x10;
+    dY = qDy >> 0x10;
 
     if (dX > -16 && dX < 16 && dY > -16 && dY < 16) {
         temp1 = 12;
@@ -559,33 +563,33 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     player->roboArrow.graphics.anim = gUnknown_080DF794[temp2].anim;
 
     temp3 = temp1;
-    f_dX >>= temp3;
-    f_dY >>= temp3;
+    qDx >>= temp3;
+    qDy >>= temp3;
 
     sin = SIN(angle);
     cos = COS(angle);
 
     {
-        s32 sin5 = sin * f_dY;
-        s32 sin6 = cos * f_dX;
-        s32 sin3 = -sin * f_dX;
-        s32 sin4 = cos * f_dY;
+        s32 sin5 = sin * qDy;
+        s32 sin6 = cos * qDx;
+        s32 sin3 = -sin * qDx;
+        s32 sin4 = cos * qDy;
 
-        f_dX = sin5 + sin6;
-        f_dY = sin3 + sin4;
+        qDx = sin5 + sin6;
+        qDy = sin3 + sin4;
     }
 
     for (i = 256; i > 0; i >>= 1) {
         sin = SIN(angle) >> 6;
         cos = COS(angle) >> 6;
 
-        if ((sin * f_dY + cos * f_dX) > 0) {
+        if ((sin * qDy + cos * qDx) > 0) {
             angle = (angle + i) & ONE_CYCLE;
         } else {
-            if ((sin * f_dY + cos * f_dX) >= 0) {
-                s32 a = -sin * f_dX;
-                s32 b = cos * f_dY;
-                b = a + cos * f_dY;
+            if ((sin * qDy + cos * qDx) >= 0) {
+                s32 a = -sin * qDx;
+                s32 b = cos * qDy;
+                b = a + cos * qDy;
                 if (b >= 0) {
                     return (angle + 512) & ONE_CYCLE;
                 }
@@ -598,7 +602,7 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     return angle;
 }
 
-s16 sub_806F84C(s32 dX, s32 dY)
+s16 CalcRoboCollision(s32 dX, s32 dY)
 {
     u32 r2, r3;
     u16 r1, r3_2;
@@ -617,7 +621,7 @@ s16 sub_806F84C(s32 dX, s32 dY)
     }
 
     while (r4 > 0) {
-        r4 *= 2;
+        r4 <<= 1;
         i++;
     };
 
@@ -665,7 +669,7 @@ struct Task *CreateSpecialStagePhysics(struct SpecialStage *stage)
     return t;
 }
 
-void sub_806F944(struct SpecialStage *stage)
+void HandleRoboPlayerCollision(struct SpecialStage *stage)
 {
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
     struct SpecialStageGuardRobo *guardRobo = TASK_DATA(stage->guardRoboTask);
@@ -675,9 +679,9 @@ void sub_806F944(struct SpecialStage *stage)
     s32 guardRoboX = guardRobo->x;
     s32 guardRoboY = guardRobo->y;
 
-    s16 result = sub_806F84C((playerX - guardRoboX) >> 4, (playerY - guardRoboY) >> 4);
-    player->unkD0 = ((playerX - guardRoboX) * 32) / result;
-    player->unkD4 = ((playerY - guardRoboY) * 32) / result;
+    s16 result = CalcRoboCollision((playerX - guardRoboX) >> 4, (playerY - guardRoboY) >> 4);
+    player->q16SpeedX = ((playerX - guardRoboX) * 32) / result;
+    player->q16SpeedY = ((playerY - guardRoboY) * 32) / result;
 
     player->unkB8 = 768;
 }
