@@ -399,8 +399,8 @@ void Platform_QueueAudio(const void *data, uint32_t bytesCount)
         SDL_ClearQueuedAudio(1);
     }
 
-    // SDL_QueueAudio(1, data, bytesCount);
-    //  printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
+    SDL_QueueAudio(1, data, bytesCount);
+    // printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
 }
 
 void ProcessSDLEvents(void)
