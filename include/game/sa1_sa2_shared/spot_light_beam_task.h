@@ -12,6 +12,6 @@ typedef struct {
     u8 unkB;
 } StageUnkTask; /* size: 0xC */
 
-struct Task *CreateStageUnknownTask(void);
+struct Task *CreateSpotlightBeamTask(void);
 
 #endif // GUARD_STAGE_UNK_TASK_H
