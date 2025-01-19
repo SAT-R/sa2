@@ -116,15 +116,15 @@ void Task_InitObjects(void)
 
     collectables->animFrame = 0;
 
-    sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 1, 0);
-    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 16, 0x372, 0x3000, 0x14, 0x14, 0xe, 0, 0);
-    sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 0x14, 0x1e, 0xf, 1, 0);
-    sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 6, 0);
-    sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 5, 0);
-    sub_806CA88(&collectables->unkF4[0], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 0, 0);
-    sub_806CA88(&collectables->unkF4[1], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 1, 0);
-    sub_806CA88(&collectables->unkF4[2], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 2, 0);
-    sub_806CA88(&collectables->unkF4[3], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 3, 0);
+    sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 20, 20, 0xe, 1, 0);
+    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 16, 0x372, 0x3000, 20, 20, 0xe, 0, 0);
+    sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 20, 0x1e, 0xf, 1, 0);
+    sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 20, 20, 0xe, 6, 0);
+    sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 20, 20, 0xe, 5, 0);
+    sub_806CA88(&collectables->unkF4[0], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 20, 20, 0xe, 0, 0);
+    sub_806CA88(&collectables->unkF4[1], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 20, 20, 0xe, 1, 0);
+    sub_806CA88(&collectables->unkF4[2], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 20, 20, 0xe, 2, 0);
+    sub_806CA88(&collectables->unkF4[3], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 20, 20, 0xe, 3, 0);
 
     gCurTask->main = sub_806DB48;
 }

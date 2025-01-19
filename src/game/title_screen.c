@@ -21,6 +21,12 @@
 #include "game/stage/screen_fade.h"
 #include "game/time_attack/lobby.h"
 #include "game/time_attack/mode_select.h"
+
+// Temp hack to allow playing the special stages from the chao garden
+#if PORTABLE
+#include "game/sa1_sa2_shared/unused_level_select.h"
+#endif
+
 #if (GAME == GAME_SA1)
 #include "constants/songs.h"
 #endif
@@ -1278,7 +1284,11 @@ static void Task_HandleTitleScreenExit(void)
                 CreateOptionsScreen(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
+#if PORTABLE
+                CreateUnusedLevelSelect();
+#else
                 LoadTinyChaoGarden();
+#endif
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;

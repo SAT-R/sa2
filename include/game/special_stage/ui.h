@@ -19,7 +19,7 @@ struct SpecialStageUI {
     Sprite ringsTargetTensDigit;
     Sprite ringsTargetUnitsDigit;
     Sprite multiplier;
-    Sprite unk244;
+    Sprite startText;
     Sprite pauseMenu;
     void *unk2A4;
     s8 unk2A8;

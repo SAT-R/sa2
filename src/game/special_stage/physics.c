@@ -45,20 +45,17 @@ static const struct UNK_8C87920_SWAPPED gUnknown_080DF794[3] = {
 
 typedef void (*PlayerStatePhysicsHandler)(void);
 
-static PlayerStatePhysicsHandler const sPlayerStatePhysicsHandlers[18] = {
-    NULL,        sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806EFB4, sub_806F034,
-    sub_806F3C4, sub_806F36C, sub_806F9E4, sub_806F0C4, sub_806F154, sub_806F1E8, PlayerStatePhysics_SlowToStop,
-    sub_806FB00, sub_806F300, sub_806F300, NULL,
-};
-
 static void Task_PhysicsMain(void)
 {
     struct SpecialStagePhysics *physics = TASK_DATA(gCurTask);
     struct SpecialStage *stage = physics->stage;
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
-    PlayerStatePhysicsHandler stateHandlers[18];
-    memcpy(stateHandlers, sPlayerStatePhysicsHandlers, sizeof(sPlayerStatePhysicsHandlers));
+    PlayerStatePhysicsHandler stateHandlers[] = {
+        NULL,        sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806EFB4, sub_806F034,
+        sub_806F3C4, sub_806F36C, sub_806F9E4, sub_806F0C4, sub_806F154, sub_806F1E8, PlayerStatePhysics_SlowToStop,
+        sub_806FB00, sub_806F300, sub_806F300, NULL,
+    };
 
     switch (stage->state) {
         case 4:
@@ -87,8 +84,8 @@ static void Task_PhysicsMain(void)
         screenX = sin * 20;
         screenY = cos * 20;
 
-        screenX = Q_16_16_TO_INT(screenX) + 112;
-        screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120;
+        screenX = Q_16_16_TO_INT(screenX) + (DISPLAY_WIDTH / 2) - 8;
+        screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120; // Same Y as player
 
         player->roboArrow.x = screenX;
         player->roboArrow.y = screenY;
@@ -531,7 +528,7 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     s16 dX;
     s16 dY;
 
-    u16 bearing = -player->bearing & 0x3FF;
+    u16 angle = -player->bearing & ONE_CYCLE;
 
     f_dX = guardRobo->x - player->q16WorldX;
     f_dY = guardRobo->y - player->q16WorldY;
@@ -539,12 +536,12 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     dY = f_dY >> 0x10;
 
     if (dX > -16 && dX < 16 && dY > -16 && dY < 16) {
-        temp1 = 0xC;
+        temp1 = 12;
     } else {
         if (dX > -256 && dX < 256 && dY > -256 && dY < 256) {
-            temp1 = 0x10;
+            temp1 = 16;
         } else {
-            temp1 = 0x14;
+            temp1 = 20;
         }
     }
 
@@ -565,8 +562,8 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     f_dX >>= temp3;
     f_dY >>= temp3;
 
-    sin = SIN(bearing);
-    cos = COS(bearing);
+    sin = SIN(angle);
+    cos = COS(angle);
 
     {
         s32 sin5 = sin * f_dY;
@@ -579,26 +576,26 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     }
 
     for (i = 256; i > 0; i >>= 1) {
-        sin = SIN(bearing) >> 6;
-        cos = COS(bearing) >> 6;
+        sin = SIN(angle) >> 6;
+        cos = COS(angle) >> 6;
 
         if ((sin * f_dY + cos * f_dX) > 0) {
-            bearing = (bearing + i) & 0x3FF;
+            angle = (angle + i) & ONE_CYCLE;
         } else {
             if ((sin * f_dY + cos * f_dX) >= 0) {
                 s32 a = -sin * f_dX;
                 s32 b = cos * f_dY;
                 b = a + cos * f_dY;
                 if (b >= 0) {
-                    return (bearing + 0x200) & 0x3FF;
+                    return (angle + 512) & ONE_CYCLE;
                 }
                 break;
             }
-            bearing = (bearing - i) & 0x3FF;
+            angle = (angle - i) & ONE_CYCLE;
         }
     }
 
-    return bearing;
+    return angle;
 }
 
 s16 sub_806F84C(s32 dX, s32 dY)
@@ -679,10 +676,10 @@ void sub_806F944(struct SpecialStage *stage)
     s32 guardRoboY = guardRobo->y;
 
     s16 result = sub_806F84C((playerX - guardRoboX) >> 4, (playerY - guardRoboY) >> 4);
-    player->unkD0 = ((playerX - guardRoboX) * 0x20) / result;
-    player->unkD4 = ((playerY - guardRoboY) * 0x20) / result;
+    player->unkD0 = ((playerX - guardRoboX) * 32) / result;
+    player->unkD4 = ((playerY - guardRoboY) * 32) / result;
 
-    player->unkB8 = 0x300;
+    player->unkB8 = 768;
 }
 
 void sub_806F9CC(void)

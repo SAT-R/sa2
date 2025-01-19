@@ -11,7 +11,7 @@ void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;
 
 // Copied from `options.c` so contains some of that submenu logic
-void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId)
+void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 frameFlags, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *s;
@@ -32,7 +32,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
 
     s->graphics.size = 0;
     s->graphics.anim = anim;
-    s->frameFlags = unk10;
+    s->frameFlags = frameFlags;
     s->x = xPos;
     s->y = yPos;
     s->oamFlags = SPRITE_OAM_ORDER(oamOrder);

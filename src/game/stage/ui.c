@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "trig.h"
 #include "malloc_vram.h"
 #include "game/save.h"
 
@@ -123,7 +124,7 @@ struct Task *CreateStageUI(void)
             s->graphics.dest = ui->digits[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
         }
 
-        ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
+        ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & ONE_CYCLE) | 0x6000;
 
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;

@@ -10,6 +10,10 @@
 #include "game/bosses/common.h"
 #include "game/title_screen.h"
 
+#if PORTABLE
+#include "game/special_stage/main.h"
+#endif
+
 #include "animation_commands_bg.h"
 #include "data/tileset_language.h"
 
@@ -94,7 +98,7 @@ static void Task_Poll(void)
         }
 
         numToASCII(digits, levelSelect->levelId);
-        RenderText(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, (char *)digits, 0);
+        RenderText(levelSelect->vram, Tileset_Language, 12, 14, 0, (char *)digits, 0);
     }
 }
 
@@ -104,7 +108,7 @@ static void Task_UnusedLevelSelectInit(void)
     gBgPalette[1] = RGB_WHITE;
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
-    levelSelect->vram += RenderText(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, "STAGE", 0);
+    levelSelect->vram += RenderText(levelSelect->vram, Tileset_Language, 6, 14, 0, "STAGE", 0);
 
     gCurTask->main = Task_Poll;
     gCurTask->main();
@@ -121,11 +125,21 @@ static void Task_LoadStage(void)
 
     if (levelId == 0) {
         gCurrentLevel = levelId;
+#if PORTABLE
+        ApplyGameStageSettings();
+        CreateSpecialStage(-1, -1);
+#else
         GameStageStart();
+#endif
     } else if (levelId2 <= NUM_LEVEL_IDS) {
         gActiveBossTask = NULL;
         gCurrentLevel = levelId2 - 1;
+#if PORTABLE
+        ApplyGameStageSettings();
+        CreateSpecialStage(-1, -1);
+#else
         GameStageStart();
+#endif
     }
 }
 

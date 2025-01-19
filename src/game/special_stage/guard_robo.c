@@ -45,7 +45,7 @@ static void GuardRoboInit(struct SpecialStageGuardRobo *guardRobo)
     guardRobo->unk34 = gUnknown_03005B5C;
     gUnknown_03005B5C += maxSize * TILE_SIZE_4BPP;
 
-    sub_8071380(&guardRobo->sprite, vramOld, 0x78, 0x3C, 7, sprites);
+    sub_8071380(&guardRobo->sprite, vramOld, DISPLAY_WIDTH / 2, (DISPLAY_HEIGHT / 2) - 20, 7, sprites);
     guardRobo->sprites = sprites;
     guardRobo->state = 1;
 
@@ -134,7 +134,7 @@ void sub_80710B0(void)
     dY = player->q16WorldY - guardRobo->y;
 
     bearingToPlayer = (sin >> 8) * (dY >> 8) + (cos >> 6) * (dX >> 8);
-    // required for match, probably wrong
+    // required for match
     sin4 = (dX >> 8);
     temp3 = (-sin >> 8) * sin4 + (cos >> 6) * (dY >> 8);
 
@@ -186,10 +186,6 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
         case 0xE:
             return;
     }
-
-#ifdef NON_MATCHING
-    return;
-#endif
 
     if ((guardRoboX - 5) < playerX && (guardRoboX + 5) > playerX) {
         if (((guardRoboY)-5) < playerY && (guardRoboY + 5) > playerY) {

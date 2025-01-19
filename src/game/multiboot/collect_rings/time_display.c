@@ -59,7 +59,7 @@ void CreateCollectRingsTimeDisplay(void)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_ASCII;
-        s->variant = i + SA2_ANIM_ASCII_CHAR('1');
+        s->variant = i + SA2_ANIM_ASCII_CHAR('0');
         s->animCursor = 0;
         s->qAnimDelay = 0;
         s->prevVariant = -1;
