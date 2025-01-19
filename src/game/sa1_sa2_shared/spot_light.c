@@ -5,7 +5,7 @@
 
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/spot_light.h"
-#include "game/sa1_sa2_shared/unknown_task.h"
+#include "game/sa1_sa2_shared/spot_light_beam_task.h"
 #include "game/sa1_sa2_shared/player.h"
 
 /* Spot Lights that appear in the background of Ice Paradise
@@ -31,7 +31,7 @@ bool32 CreateSpotLightBeams(void)
     spotLight->unk8 = 0x600;
     spotLight->unkC = 0;
 
-    spotLight->t0 = CreateStageUnknownTask();
+    spotLight->t0 = CreateSpotlightBeamTask();
 
     ut = TASK_DATA(spotLight->t0);
     ut->unk6 = 60;
@@ -42,7 +42,7 @@ bool32 CreateSpotLightBeams(void)
     ut->unkA = 2;
     ut->unkB = 0;
 
-    spotLight->t1 = CreateStageUnknownTask();
+    spotLight->t1 = CreateSpotlightBeamTask();
 
     ut = TASK_DATA(spotLight->t1);
     ut->unk6 = 200;
