@@ -218,7 +218,7 @@ void Task_801A04C(void)
         x = DISPLAY_WIDTH;
     }
 
-    if (gUnknown_03005438 == gUnknown_03005420) {
+    if (gRoomEventQueueWritePos == gRoomEventQueueSendPos) {
         if (f2->unk0++ > x) {
             gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
             gBldRegs.bldY = 0;

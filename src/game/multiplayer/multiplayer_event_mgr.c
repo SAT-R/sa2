@@ -6,7 +6,7 @@
 
 #include "game/multiplayer/mp_attack_1_effect.h"
 
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_recv_mgr.h"
 #include "game/multiplayer/finish.h"
 #include "game/multiplayer/mp_player.h"
 
@@ -15,15 +15,23 @@
 #include "constants/char_states.h"
 #include "constants/songs.h"
 
-void sub_8018E00(union MultiSioData *recv, u8 i);
-void sub_8018AD8(union MultiSioData *recv, u8 i);
-typedef void (*UnknownFunction)(union MultiSioData *recv, u8 i);
+void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i);
+void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i);
+typedef void (*RoomEventHandler)(union MultiSioData *recv, u8 i);
 
-const UnknownFunction gUnknown_080D5744[] = {
-    sub_8019240, sub_80192A8, sub_80192FC, sub_8019350, sub_8019368, sub_8018AD8, sub_8018E00, VoidReturnSIOControl32, NULL,
+const RoomEventHandler gRoomEventHandlers[] = {
+    [ROOMEVENT_TYPE_PLATFORM_CHANGE - 1] = RecieveRoomEvent_PlatformChange, 
+    [ROOMEVENT_TYPE_ITEMBOX_BREAK - 1] = RecieveRoomEvent_ItemBoxBreak, 
+    [ROOMEVENT_TYPE_ENEMY_DESTROYED - 1] = RecieveRoomEvent_EnemyDestroyed, 
+    [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = RecieveRoomEvent_PlayerRingLoss, 
+    [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = RecieveRoomEvent_MysterItemBoxBreak, 
+    [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = RecieveRoomEvent_ItemEffect, 
+    [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = RecieveRoomEvent_ReachedStageGoal, 
+    [ROOMEVENT_TYPE_UNKNOWN - 1] = RecieveRoomEvent_Unknown, 
+    [8] = NULL,
 };
 
-void Task_80188FC(void)
+void Task_MultiplayerEventMgr_Send(void)
 {
     u8 id = SIO_MULTI_CNT->id;
     struct MultiSioData_0_0 *send = &gMultiSioSend.pat0;
@@ -43,16 +51,16 @@ void Task_80188FC(void)
         }
     }
 
-    if (gUnknown_03005438 == gUnknown_03005420) {
-        DmaFill16(3, 0, &gMultiSioSend.pat0.unk8[3], sizeof(struct UNK_3005510) - 1);
+    if (gRoomEventQueueWritePos == gRoomEventQueueSendPos) {
+        DmaFill16(3, 0, &gMultiSioSend.pat0.unk8[3], sizeof(struct RoomEvent) - 1);
     } else {
-        DmaCopy16(3, &gUnknown_03005510[gUnknown_03005420], &gMultiSioSend.pat0.unk8[3], sizeof(struct UNK_3005510) - 1);
-        gUnknown_03005420 = (gUnknown_03005420 + 1) & 0xF;
+        DmaCopy16(3, &gRoomEventQueue[gRoomEventQueueSendPos], &gMultiSioSend.pat0.unk8[3], sizeof(struct RoomEvent) - 1);
+        gRoomEventQueueSendPos = (gRoomEventQueueSendPos + 1) & 0xF;
         send->unk8[0] ^= (0x1000 << id);
     }
 }
 
-void Task_8018A28(void)
+void Task_MultiplayerEventMgr_Recieve(void)
 {
     u8 id = SIO_MULTI_CNT->id;
     struct MultiSioData_0_0 *send = &gMultiSioSend.pat0;
@@ -76,14 +84,14 @@ void Task_8018A28(void)
         if (recv->pat0.unk0 == 0x5000 && (recv->pat0.unk8[0] & (0x1000 << i)) != (send->unk8[0] & (0x1000 << i))) {
             if ((u8)(recv->pat0.unkE - 1) < 8) {
 
-                gUnknown_080D5744[recv->pat0.unkE - 1](recv, i);
+                gRoomEventHandlers[recv->pat0.unkE - 1](recv, i);
             }
             send->unk8[0] ^= (0x1000 << i);
         }
     }
 }
 
-void sub_8018AD8(union MultiSioData *recv, u8 i)
+void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 {
     MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
     MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
@@ -165,7 +173,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
     }
 }
 
-void sub_8018E00(union MultiSioData *recv, u8 i)
+void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 {
     u32 j;
     MultiplayerPlayer *mpp;
@@ -258,17 +266,17 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     sub_8019CCC(j, 1);
                 } else {
                     u32 temp;
-                    struct UNK_3005510 *unk10;
+                    struct RoomEvent *room_event;
                     sub_8019CCC(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                     gPlayer.heldInput = 0;
-                    temp = gUnknown_03005438;
-                    unk10 = &gUnknown_03005510[temp];
-                    gUnknown_03005438++;
-                    gUnknown_03005438 &= 0xF;
+                    temp = gRoomEventQueueWritePos;
+                    room_event = &gRoomEventQueue[temp];
+                    gRoomEventQueueWritePos++;
+                    gRoomEventQueueWritePos &= 0xF;
 
-                    unk10->unk0 = 7;
+                    room_event->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
                 }
             }
         }
@@ -279,23 +287,23 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
     }
 }
 
-struct Task *sub_8019120(void)
+struct Task *CreateMultiplayerSendEventMgr(void)
 {
-    struct Task *t = TaskCreate(Task_80188FC, 0, -2, 0, NULL);
+    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Send, 0, -2, 0, NULL);
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
-    DmaFill32(3, 0, &gUnknown_03005510, sizeof(gUnknown_03005510));
-    gUnknown_03005438 = gUnknown_03005420 = 0;
+    DmaFill32(3, 0, &gRoomEventQueue, sizeof(gRoomEventQueue));
+    gRoomEventQueueWritePos = gRoomEventQueueSendPos = 0;
     return t;
 }
 
-struct Task *sub_80191A4(void)
+struct Task *CreateMultiplayerRecieveEventMgr(void)
 {
-    struct Task *t = TaskCreate(Task_8018A28, 0, 1, 0, NULL);
+    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Recieve, 0, 1, 0, NULL);
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
-    DmaFill32(3, 0, &gUnknown_03005510, sizeof(gUnknown_03005510));
-    gUnknown_03005420 = 0;
-    gUnknown_03005438 = 0;
+    DmaFill32(3, 0, &gRoomEventQueue, sizeof(gRoomEventQueue));
+    gRoomEventQueueSendPos = 0;
+    gRoomEventQueueWritePos = 0;
     return t;
 }

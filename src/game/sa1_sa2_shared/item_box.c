@@ -14,7 +14,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_recv_mgr.h"
 #include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
@@ -154,11 +154,11 @@ void BreakItemBox(Entity_ItemBox *itembox)
     itembox->frames = 0;
 
     if (IS_MULTI_PLAYER) {
-        struct UNK_3005510 *unk = sub_8019224();
-        unk->unk0 = 2;
-        unk->unk1 = itembox->base.regionX;
-        unk->unk2 = itembox->base.regionY;
-        unk->unk3 = itembox->base.id;
+        struct RoomEvent *room_event = CreateRoomEvent();
+        room_event->type = ROOMEVENT_TYPE_ITEMBOX_BREAK;
+        room_event->unk1 = itembox->base.regionX;
+        room_event->unk2 = itembox->base.regionY;
+        room_event->unk3 = itembox->base.id;
     }
 
     gCurTask->main = Task_ItemBoxIconMain_Rising;
@@ -317,40 +317,40 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
 
             {
-                struct UNK_3005510 *unkPtr = sub_8019224();
-                unkPtr->unk0 = 6;
-                unkPtr->unk1 = 1;
-                unkPtr->unk2 = nearestPlayer;
+                struct RoomEvent *room_event = CreateRoomEvent();
+                room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+                room_event->unk1 = 1;
+                room_event->unk2 = nearestPlayer;
             }
 
             m4aSongNumStart(SE_218);
         } break;
 
         case ITEM__MP_CONFUSION: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 0;
+            struct RoomEvent *room_event = CreateRoomEvent();
+            room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            room_event->unk1 = 0;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case ITEM__MP_SLOWDOWN: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 2;
+            struct RoomEvent *room_event = CreateRoomEvent();
+            room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            room_event->unk1 = 2;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case ITEM__MP_ATTACK: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 3;
+            struct RoomEvent *room_event = CreateRoomEvent();
+            room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            room_event->unk1 = 3;
             m4aSongNumStart(SE_219);
         } break;
 
         case ITEM__MP_ATTACK_2: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 4;
+            struct RoomEvent *room_event = CreateRoomEvent();
+            room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            room_event->unk1 = 4;
             m4aSongNumStart(SE_216);
         } break;
     }

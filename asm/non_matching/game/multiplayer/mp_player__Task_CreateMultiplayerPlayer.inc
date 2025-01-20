@@ -740,7 +740,7 @@ _080167FE:
 	mov r4, sl
 	cmp r4, #0
 	beq _0801680C
-	bl sub_8019224
+	bl CreateRoomEvent
 	movs r1, #7
 	strb r1, [r0]
 _0801680C:
@@ -940,7 +940,7 @@ _08016956:
 	ands r0, r1
 	str r0, [r2, #0x20]
 _080169AC:
-	bl sub_8019224
+	bl CreateRoomEvent
 	movs r2, #0
 	movs r1, #8
 	strb r1, [r0]

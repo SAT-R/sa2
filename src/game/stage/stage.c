@@ -47,9 +47,9 @@ void SetupStageIntro(void);
 
 void CreateStageWaterTask(u32, u32, u32);
 
-void sub_8019120(void);
+void CreateMultiplayerSendEventMgr(void);
 
-void sub_80191A4(void);
+void CreateMultiplayerRecieveEventMgr(void);
 
 void StageInit_Zone1Act1(void);
 void StageInit_Zone3Act1(void);
@@ -253,8 +253,8 @@ void CreateGameStage(void)
     gUnknown_03005398 = 0x80;
 
     if (IS_MULTI_PLAYER) {
-        sub_80191A4();
-        sub_8019120();
+        CreateMultiplayerRecieveEventMgr();
+        CreateMultiplayerSendEventMgr();
 
         gRandomItemBox = 0;
 

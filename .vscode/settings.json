@@ -291,7 +291,7 @@
     "title_screen.h": "c",
     "game_modes.h": "c",
     "main.h": "c",
-    "unknown_task.h": "c",
+    "multiplayer_event_mgr.h": "c",
     "entities_0.h": "c",
     "dust_cloud.h": "c",
     "mp_attack_1_effect.h": "c",
@@ -304,7 +304,7 @@
     "player_super_sonic.h": "c",
     "assert.h": "c",
     "arenaalloc.h": "c",
-    "player_unk_1.h": "c",
+    "multiplayer_event_recv_mgr.h": "c",
     "mp_player.h": "c",
     "*.m": "c",
     "ranges": "c",
@@ -355,7 +355,8 @@
     "stdint.h": "c",
     "boss_5.h": "c",
     "boss_9.h": "c",
-    "xlocale": "c"
+    "xlocale": "c",
+    "xiosbase": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

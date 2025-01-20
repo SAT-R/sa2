@@ -1,20 +1,20 @@
 #include "global.h"
 #include "core.h"
 #include "game/entity.h"
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_recv_mgr.h"
 #include "game/stage/rings_scatter.h"
 #include "game/sa1_sa2_shared/entities_manager.h"
 
-struct UNK_3005510 *sub_8019224(void)
+struct RoomEvent *CreateRoomEvent(void)
 {
-    struct UNK_3005510 *result = &gUnknown_03005510[gUnknown_03005438];
+    struct RoomEvent *result = &gRoomEventQueue[gRoomEventQueueWritePos];
 
-    gUnknown_03005438 = (gUnknown_03005438 + 1) & 0xF;
+    gRoomEventQueueWritePos = (gRoomEventQueueWritePos + 1) & 0xF;
 
     return result;
 }
 
-void sub_8019240(union MultiSioData *msioData, u8 someId)
+void RecieveRoomEvent_PlatformChange(union MultiSioData *msioData, u8 someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -44,7 +44,7 @@ void sub_8019240(union MultiSioData *msioData, u8 someId)
     }
 }
 
-void sub_80192A8(union MultiSioData *msioData, u8 UNUSED someId)
+void RecieveRoomEvent_ItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -79,7 +79,7 @@ void sub_80192A8(union MultiSioData *msioData, u8 UNUSED someId)
     }
 }
 
-void sub_80192FC(union MultiSioData *msioData, u8 UNUSED someId)
+void RecieveRoomEvent_EnemyDestroyed(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -113,12 +113,12 @@ void sub_80192FC(union MultiSioData *msioData, u8 UNUSED someId)
     }
 }
 
-void sub_8019350(union MultiSioData *msioData, u8 UNUSED someId)
+void RecieveRoomEvent_PlayerRingLoss(union MultiSioData *msioData, u8 UNUSED someId)
 {
     InitScatteringRings(msioData->pat4.x, msioData->pat4.y, msioData->pat4.numRings);
 }
 
-void sub_8019368(union MultiSioData *msioData, u8 UNUSED someId)
+void RecieveRoomEvent_MysterItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -152,4 +152,4 @@ void sub_8019368(union MultiSioData *msioData, u8 UNUSED someId)
 }
 
 // Type of this is determined by it being referenced in a C func-array
-void VoidReturnSIOControl32(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }
+void RecieveRoomEvent_Unknown(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }

@@ -10,7 +10,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_recv_mgr.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"
@@ -391,12 +391,12 @@ void Task_FallingPlatformMain_FallDelay(void)
             gCurTask->main = Task_FallingPlatformMain_Falling;
 
             if (IS_MULTI_PLAYER) {
-                struct UNK_3005510 *uStrc = sub_8019224();
-                uStrc->unk0 = 1;
-                uStrc->unk1 = platform->base.regionX;
-                uStrc->unk2 = platform->base.regionY;
-                uStrc->unk3 = platform->base.id;
-                uStrc->unk4 = 1;
+                struct RoomEvent *room_event = CreateRoomEvent();
+                room_event->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
+                room_event->unk1 = platform->base.regionX;
+                room_event->unk2 = platform->base.regionY;
+                room_event->unk3 = platform->base.id;
+                room_event->unk4 = 1;
             }
         }
     }

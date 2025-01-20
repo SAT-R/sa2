@@ -16,7 +16,7 @@
 #include "game/multiplayer/mp_player.h"
 #include "game/stage/item_tasks.h"
 
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_recv_mgr.h"
 #include "game/multiplayer/mp_attack_1_effect.h"
 #include "game/multiplayer/mp_attack_2_effect.h"
 #include "game/multiplayer/multipak_connection.h"
@@ -340,7 +340,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
 
         if (someBool) {
-            sub_8019224()->unk0 = 7;
+            CreateRoomEvent()->type = 7;
         }
     }
 
@@ -384,10 +384,10 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.moveState &= ~MOVESTATE_400000;
                     }
                     {
-                        struct UNK_3005510 *thing = sub_8019224();
-                        thing->unk0 = 8;
-                        thing->unk1 = mpp->unk56;
-                        thing->unk2 = 0;
+                        struct RoomEvent *room_event = CreateRoomEvent();
+                        room_event->type = ROOMEVENT_TYPE_UNKNOWN;
+                        room_event->unk1 = mpp->unk56;
+                        room_event->unk2 = 0;
                     }
                 }
                 if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
@@ -746,10 +746,10 @@ void sub_801707C(void)
                     gPlayer.spriteOffsetY = 14;
 
                     {
-                        struct UNK_3005510 *thing = sub_8019224();
-                        thing->unk0 = 8;
-                        thing->unk1 = mpp->unk56;
-                        thing->unk2 = 1;
+                        struct RoomEvent *room_event = CreateRoomEvent();
+                        room_event->type = ROOMEVENT_TYPE_UNKNOWN;
+                        room_event->unk1 = mpp->unk56;
+                        room_event->unk2 = 1;
                     }
 
                     if (!GRAVITY_IS_INVERTED) {
@@ -851,10 +851,10 @@ void sub_801707C(void)
         }
 
         if (!(mpp->unk5C & 4)) {
-            struct UNK_3005510 *thing = sub_8019224();
-            thing->unk0 = 8;
-            thing->unk1 = mpp->unk56;
-            thing->unk2 = 0;
+            struct RoomEvent *room_event = CreateRoomEvent();
+            room_event->type = ROOMEVENT_TYPE_UNKNOWN;
+            room_event->unk1 = mpp->unk56;
+            room_event->unk2 = 0;
         }
 
         if (!GRAVITY_IS_INVERTED) {
@@ -982,10 +982,10 @@ void sub_8017670(void)
                         }
                         if (!(mpp->unk5C & 4)) {
                             {
-                                struct UNK_3005510 *thing = sub_8019224();
-                                thing->unk0 = 8;
-                                thing->unk1 = mpp->unk56;
-                                thing->unk2 = 1;
+                                struct RoomEvent *room_event = CreateRoomEvent();
+                                room_event->type = ROOMEVENT_TYPE_UNKNOWN;
+                                room_event->unk1 = mpp->unk56;
+                                room_event->unk2 = 1;
                             }
                             if (!GRAVITY_IS_INVERTED) {
                                 mpp->unk5C &= ~0x100;
@@ -1073,10 +1073,10 @@ void sub_8017670(void)
             }
 
             if (!(mpp->unk5C & 4)) {
-                struct UNK_3005510 *thing = sub_8019224();
-                thing->unk0 = 8;
-                thing->unk1 = mpp->unk56;
-                thing->unk2 = 0;
+                struct RoomEvent *room_event = CreateRoomEvent();
+                room_event->type = ROOMEVENT_TYPE_UNKNOWN;
+                room_event->unk1 = mpp->unk56;
+                room_event->unk2 = 0;
             }
 
             if (!GRAVITY_IS_INVERTED) {

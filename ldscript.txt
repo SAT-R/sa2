@@ -138,8 +138,8 @@ SECTIONS
         src/game/amy_attack_heart_effect.o(.text);
 
         src/game/multiplayer/mp_player.o(.text);
-        src/game/multiplayer/unknown_task.o(.text);
-        src/game/multiplayer/player_unk_1.o(.text);
+        src/game/multiplayer/multiplayer_event_mgr.o(.text);
+        src/game/multiplayer/multiplayer_event_recv_mgr.o(.text);
         src/game/multiplayer/indicators.o(.text);
         src/game/multiplayer/finish.o(.text);
         src/game/multiplayer/mp_attack_2_effect.o(.text);
@@ -423,7 +423,7 @@ SECTIONS
         src/game/cheese.o(.rodata);
         src/game/boost_effect.o(.rodata);
         src/game/amy_attack_heart_effect.o(.rodata);
-        src/game/multiplayer/unknown_task.o(.rodata);
+        src/game/multiplayer/multiplayer_event_mgr.o(.rodata);
         src/game/multiplayer/finish.o(.rodata);
 
         src/game/stage/stage.o(.rodata);

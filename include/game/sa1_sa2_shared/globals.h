@@ -36,6 +36,16 @@
 
 #define GRAVITY_IS_INVERTED (gStageFlags & STAGE_FLAG__GRAVITY_INVERTED)
 
+#define ROOMEVENT_TYPE_NONE 0
+#define ROOMEVENT_TYPE_PLATFORM_CHANGE 1
+#define ROOMEVENT_TYPE_ITEMBOX_BREAK 2
+#define ROOMEVENT_TYPE_ENEMY_DESTROYED 3
+#define ROOMEVENT_TYPE_PLAYER_RING_LOSS 4
+#define ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK 5
+#define ROOMEVENT_TYPE_ITEMEFFECT_APPLIED 6
+#define ROOMEVENT_TYPE_REACHED_STAGE_GOAL 7
+#define ROOMEVENT_TYPE_UNKNOWN 8
+
 typedef struct {
     u8 unk0;
     u8 unk1;
@@ -52,8 +62,10 @@ typedef struct {
 } HomingTarget;
 
 // Some Multiplayer struct
-struct UNK_3005510 {
-    u8 unk0;
+struct RoomEvent {
+    u8 type;
+
+    // TODO: this is likely a union of structs, one per type!
     u8 unk1; // regionX (truncated) [and sometimes ring-count(?)]
     u8 unk2; // regionY (truncated)
     u8 unk3; // spriteY (truncated) as per sub_800EDF8
@@ -104,7 +116,7 @@ extern struct Task *gEntitiesManagerTask;
 
 extern u8 gDestroySpotlights;
 
-extern u8 gUnknown_03005420;
+extern u8 gRoomEventQueueSendPos;
 
 // "Extra State" (see above #defines for states)
 // TODO: Find better name. Put somewhere else?
@@ -125,7 +137,7 @@ extern u32 gMPStageStartFrameCount;
 
 extern u32 gCheckpointTime; // Checkpoint timer?
 
-extern u8 gUnknown_03005438;
+extern u8 gRoomEventQueueWritePos;
 
 extern u8 gBossRingsRespawnCount;
 extern bool8 gBossRingsShallRespawn;
@@ -160,7 +172,7 @@ extern s32 gStageGoalX;
 extern u8 gUnknown_03005428[4];
 extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
-extern struct UNK_3005510 gUnknown_03005510[16];
+extern struct RoomEvent gRoomEventQueue[16];
 
 extern CheeseTarget gCheeseTarget;
 
