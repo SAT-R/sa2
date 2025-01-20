@@ -1356,19 +1356,19 @@ _08016CE2:
 	adds r0, r6, #0
 	bl DisplaySprite
 _08016CE8:
-	ldr r4, _08016D18 @ =gUnknown_03005B7C
+	ldr r4, _08016D18 @ =createMPAttackEffect
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08016CF8
-	bl sub_8087368
+	bl CreateMPAttackEffect
 	movs r0, #0
 	strb r0, [r4]
 _08016CF8:
-	ldr r4, _08016D1C @ =gUnknown_0300583C
+	ldr r4, _08016D1C @ =createMPAttack2Effect
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08016D08
-	bl sub_801A384
+	bl CreateMPAttack2Effect
 	movs r0, #0
 	strb r0, [r4]
 _08016D08:
@@ -1381,8 +1381,8 @@ _08016D08:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08016D18: .4byte gUnknown_03005B7C
-_08016D1C: .4byte gUnknown_0300583C
+_08016D18: .4byte createMPAttackEffect
+_08016D1C: .4byte createMPAttack2Effect
 
 	
 .syntax divided

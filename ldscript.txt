@@ -50,7 +50,7 @@ SECTIONS
         src/game/cheese.o(.data);
         src/game/boost_effect.o(.data);
         src/game/multiplayer/mp_player.o(.data);
-        src/game/multiplayer/player_unk_2.o(.data);
+        src/game/multiplayer/mp_attack_2_effect.o(.data);
         src/game/dummy_task.o(.data);
         src/game/stage/stage.o(.data);
         src/game/stage/camera.o(.data);
@@ -68,7 +68,7 @@ SECTIONS
         src/game/save.o(.data);
         src/game/multiboot/collect_rings/time_display.o(.data);
         src/game/math.o(.data);
-        src/game/unknown_effect.o(.data);
+        src/game/multiplayer/mp_attack_1_effect.o(.data);
         src/game/backgrounds.o(.data);
 
         /* libs */
@@ -142,7 +142,7 @@ SECTIONS
         src/game/multiplayer/player_unk_1.o(.text);
         src/game/multiplayer/indicators.o(.text);
         src/game/multiplayer/finish.o(.text);
-        src/game/multiplayer/player_unk_2.o(.text);
+        src/game/multiplayer/mp_attack_2_effect.o(.text);
 
         src/game/game.o(.text);
         src/game/dummy_task.o(.text);
@@ -319,7 +319,7 @@ SECTIONS
         src/game/mystery_item_box.o(.text);
         src/game/heart_particles_effect.o(.text);
         src/game/race_progress.o(.text);
-        src/game/unknown_effect.o(.text);
+        src/game/multiplayer/mp_attack_1_effect.o(.text);
         src/game/multiplayer_lobby.o(.text);
 
         /* time_attack_screens */
@@ -504,7 +504,7 @@ SECTIONS
         src/game/math.o(.rodata);
         src/game/mystery_item_box.o(.rodata);
         src/game/race_progress.o(.rodata);
-        src/game/unknown_effect.o(.rodata);
+        src/game/multiplayer/mp_attack_1_effect.o(.rodata);
         src/game/multiplayer_lobby.o(.rodata);
         src/game/time_attack/mode_select.o(.rodata);
         src/game/time_attack/lobby.o(.rodata);

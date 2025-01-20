@@ -1,6 +1,6 @@
 #include "core.h"
 #include "game/sa1_sa2_shared/collision.h"
-#include "game/unknown_effect.h"
+#include "game/multiplayer/mp_attack_1_effect.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
@@ -8,7 +8,7 @@
 
 #include "constants/songs.h"
 
-struct UnknownEffect87028 {
+struct MPAttack1Effect {
     /* 0x00 */ u8 unk0;
 } /* size 0x4 */;
 
@@ -18,13 +18,13 @@ void sub_8087088(void);
 void sub_80870E8(void);
 
 s32 ALIGNED(8) gUnused_03005B78 = 0;
-u8 gUnknown_03005B7C = 0;
+u8 createMPAttackEffect = 0;
 
-void Task_UnknownEffect(void)
+void Task_MPAttackEffect(void)
 {
     s16 a = I(gPlayer.qWorldX) - gCamera.x;
     s16 b = I(gPlayer.qWorldY) - gCamera.y;
-    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
+    struct MPAttack1Effect *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, DISPLAY_HEIGHT - effect->unk0);
 
@@ -38,7 +38,7 @@ void sub_8087088(void)
 {
     s16 a = I(gPlayer.qWorldX) - gCamera.x;
     s16 b = I(gPlayer.qWorldY) - gCamera.y;
-    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
+    struct MPAttack1Effect *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
 
@@ -57,7 +57,7 @@ void sub_80870E8(void)
 {
     s16 a = I(gPlayer.qWorldX) - gCamera.x;
     s16 b = I(gPlayer.qWorldY) - gCamera.y;
-    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
+    struct MPAttack1Effect *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0], b + gUnknown_080E02DC[effect->unk0 & 7][1], 160 - effect->unk0);
 
@@ -156,19 +156,19 @@ void sub_80871C4(s16 a, s16 b, s16 c)
     }
 }
 
-void TaskDestructor_UnknownEffect(struct Task *);
-void sub_80873A4(void);
+void TaskDestructor_MPAttackEffect(struct Task *);
+void InitGraphicsForMPAttackEffect(void);
 
-void sub_8087368(void)
+void CreateMPAttackEffect(void)
 {
-    struct Task *t = TaskCreate(Task_UnknownEffect, sizeof(struct UnknownEffect87028), 0x8000, 0, TaskDestructor_UnknownEffect);
-    struct UnknownEffect87028 *effect = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_MPAttackEffect, sizeof(struct MPAttack1Effect), 0x8000, 0, TaskDestructor_MPAttackEffect);
+    struct MPAttack1Effect *effect = TASK_DATA(t);
     effect->unk0 = 0;
-    sub_80873A4();
+    InitGraphicsForMPAttackEffect();
     m4aSongNumStart(SE_219);
 }
 
-void sub_80873A4(void)
+void InitGraphicsForMPAttackEffect(void)
 {
     gWinRegs[4] = 0x1F;
     gWinRegs[5] |= 0x3F;
@@ -179,4 +179,4 @@ void sub_80873A4(void)
     gWinRegs[2] = WIN_RANGE(0, DISPLAY_HEIGHT);
 }
 
-void TaskDestructor_UnknownEffect(UNUSED struct Task *t) { gFlags &= ~0x4; }
+void TaskDestructor_MPAttackEffect(UNUSED struct Task *t) { gFlags &= ~0x4; }

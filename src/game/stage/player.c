@@ -10,7 +10,7 @@
 #include "game/bosses/common.h"
 #include "game/cheese.h"
 #include "game/heart_particles_effect.h"
-#include "game/multiplayer/player_unk_2.h"
+#include "game/multiplayer/mp_attack_2_effect.h"
 #include "game/multiplayer/mp_player.h"
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks.h"
@@ -32,7 +32,7 @@
 #include "game/stage/stage.h"
 #include "game/stage/underwater_effects.h"
 #include "game/time_attack/results.h" // for Player_VictoryPose
-#include "game/unknown_effect.h"
+#include "game/multiplayer/mp_attack_1_effect.h"
 #include "game/water_effects.h"
 
 #include "constants/animations.h"
@@ -844,9 +844,9 @@ void InitializePlayer(Player *p)
         } break;
     }
 
-    gUnknown_03005B7C = 0;
-    gUnknown_03005840 = NULL;
-    gUnknown_0300583C = 0;
+    createMPAttackEffect = 0;
+    gMPAttackEffect2Regs = NULL;
+    createMPAttack2Effect = 0;
 }
 
 // Called anytime the player actively jumps, "autojumps" through touching an IA,

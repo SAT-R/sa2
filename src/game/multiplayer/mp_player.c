@@ -17,8 +17,8 @@
 #include "game/stage/item_tasks.h"
 
 #include "game/multiplayer/player_unk_1.h"
-#include "game/unknown_effect.h"
-#include "game/multiplayer/player_unk_2.h"
+#include "game/multiplayer/mp_attack_1_effect.h"
+#include "game/multiplayer/mp_attack_2_effect.h"
 #include "game/multiplayer/multipak_connection.h"
 
 #include "constants/animations.h"
@@ -27,7 +27,7 @@
 #include "constants/songs.h"
 
 u32 unused_3005838 = 0;
-u8 gUnknown_0300583C = 0;
+u8 createMPAttack2Effect = 0;
 
 void Task_CreateMultiplayerPlayer(void);
 void TaskDestructor_MultiplayerPlayer(struct Task *);
@@ -478,14 +478,14 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     }
 
-    if (gUnknown_03005B7C != 0) {
-        sub_8087368();
-        gUnknown_03005B7C = 0;
+    if (createMPAttackEffect != FALSE) {
+        CreateMPAttackEffect();
+        createMPAttackEffect = FALSE;
     }
 
-    if (gUnknown_0300583C != 0) {
-        sub_801A384();
-        gUnknown_0300583C = 0;
+    if (createMPAttack2Effect != FALSE) {
+        CreateMPAttack2Effect();
+        createMPAttack2Effect = FALSE;
     }
 }
 END_NONMATCH

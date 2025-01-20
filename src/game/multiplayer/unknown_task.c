@@ -4,7 +4,7 @@
 #include "game/stage/camera.h"
 #include "game/stage/item_tasks.h"
 
-#include "game/unknown_effect.h"
+#include "game/multiplayer/mp_attack_1_effect.h"
 
 #include "game/multiplayer/player_unk_1.h"
 #include "game/multiplayer/finish.h"
@@ -147,7 +147,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    gUnknown_03005B7C = 1;
+                    createMPAttackEffect = TRUE;
                     m4aSongNumStart(SE_219);
                 }
                 break;
@@ -156,7 +156,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    gUnknown_0300583C = 1;
+                    createMPAttack2Effect = TRUE;
                     m4aSongNumStart(SE_216);
                 }
                 break;
