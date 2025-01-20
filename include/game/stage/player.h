@@ -23,7 +23,7 @@ void Player_TransitionCancelFlyingAndBoost(Player *p);
 void sub_8023B5C(Player *, s32);
 void sub_8023260(Player *);
 void sub_80232D0(Player *);
-void sub_8023610(Player *);
+void Player_AirMovement(Player *);
 void Player_TouchGround(Player *p);
 void Player_Uncurl(Player *p);
 void Player_HandlePhysicsWithAirInput(Player *p);
