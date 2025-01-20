@@ -100,7 +100,7 @@ static void sub_807E314(void)
 static void sub_807E384(Sprite_Cannon *cannon)
 {
     Player_SetMovestate_IsInScriptedSequence();
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -125,7 +125,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
     Player_ClearMovestate_IsInScriptedSequence();
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_PT5;
 
         gPlayer.qWorldX += COS_24_8(cannon->unk6A) * 0x20;

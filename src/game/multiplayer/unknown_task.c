@@ -103,7 +103,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
             }
             case 1: {
                 if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
-                    u32 prevMoveState = gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
+                    u32 prevMoveState = gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT | MOVESTATE_IA_OVERRIDE);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);
                         gPlayer.qWorldX = QS(mpp->pos.x);

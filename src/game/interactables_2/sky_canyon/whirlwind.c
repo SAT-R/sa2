@@ -179,7 +179,7 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     register s32 r1 asm("r1");
     s16 *p184;
 
-    p1->moveState |= MOVESTATE_400000;
+    p1->moveState |= MOVESTATE_IA_OVERRIDE;
     p1->charState = CHARSTATE_IN_WHIRLWIND;
 
     // Must be some debug stuff happening here
@@ -622,7 +622,7 @@ void Task_807D268(void)
 
 void sub_807D2BC(Sprite_IA86 *unused)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_PT7;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = -Q(8.0);

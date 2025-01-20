@@ -199,11 +199,11 @@ static void Task_807DBF0(void)
             if (gPlayer.frameInput & gPlayerControls.jump) {
                 gPlayer.transition = PLTRANS_INIT_JUMP;
 
-                gPlayer.moveState &= ~MOVESTATE_400000;
+                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                 launcher->unk48 = FALSE;
             }
         } else {
-            gPlayer.moveState &= ~MOVESTATE_400000;
+            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
             launcher->unk48 = FALSE;
         }
     }
@@ -215,7 +215,7 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
 {
     m4aSongNumStart(SE_286);
 
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_LAUNCHER_IN_CART;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
@@ -242,7 +242,7 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
 static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE && launcher->unk48) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.charState = CHARSTATE_LAUNCHER_IN_AIR;
         gPlayer.transition = PLTRANS_PT7;
 

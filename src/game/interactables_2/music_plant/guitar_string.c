@@ -193,7 +193,7 @@ void sub_807608C(Sprite_GuitarString *gs)
 {
     if (PLAYER_IS_ALIVE) {
         Player_SetMovestate_IsInScriptedSequence();
-        gPlayer.moveState |= MOVESTATE_400000;
+        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
 
         gPlayer.charState = CHARSTATE_SPIN_ATTACK;
         gPlayer.speedAirX = 0;
@@ -277,7 +277,7 @@ void sub_8076258(Sprite_GuitarString UNUSED *gs)
 {
     if (PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_PT5;
         gPlayer.speedAirY = -gPlayer.speedAirY;
         m4aSongNumStart(SE_MUSIC_PLANT_GUITAR_STRING);

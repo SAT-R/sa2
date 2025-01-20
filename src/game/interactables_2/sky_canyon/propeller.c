@@ -180,7 +180,7 @@ static void sub_807B74C(Sprite_Propeller *propeller)
 
 static void sub_807B7BC(Sprite_Propeller *propeller)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_PT5;
 
     if (propeller->unk48 <= (PROPELLER_HITBOX_HEIGHT / 2) || propeller->unk48 >= 192) {
@@ -248,7 +248,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
     sub_8023B5C(&gPlayer, 14);
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_IN_WHIRLWIND;
 }
 

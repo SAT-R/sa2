@@ -183,7 +183,7 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
         return FALSE;
     }
 
-    if (gPlayer.moveState & (MOVESTATE_1000000 | MOVESTATE_400000 | MOVESTATE_IN_AIR | MOVESTATE_DEAD)) {
+    if (gPlayer.moveState & (MOVESTATE_1000000 | MOVESTATE_IA_OVERRIDE | MOVESTATE_IN_AIR | MOVESTATE_DEAD)) {
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.unk3C = NULL;
         return FALSE;

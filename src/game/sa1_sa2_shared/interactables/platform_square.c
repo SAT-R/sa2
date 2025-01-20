@@ -208,7 +208,7 @@ static void Task_Platform_Square(void)
         }
     }
 
-    if (!(p->moveState & MOVESTATE_400000)) {
+    if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
         s32 x, y;
         s32 res;
         u32 otherRes;

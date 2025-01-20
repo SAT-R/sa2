@@ -143,7 +143,7 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
 {
     s32 character;
     Player_SetMovestate_IsInScriptedSequence();
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
@@ -175,7 +175,7 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
 static void sub_8078254(Sprite_FunnelSphere *funnelSphere)
 {
     Player_ClearMovestate_IsInScriptedSequence();
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_PT5;
 
     switch (gPlayer.character) {

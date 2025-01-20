@@ -204,7 +204,7 @@ static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring, Playe
     s->x = xPos - gCamera.x;
     s->y = yPos - gCamera.y;
 
-    if (((player->moveState & MOVESTATE_400000) == 0) && sub_800CDBC(s, xPos, yPos, player) != 0) {
+    if (((player->moveState & MOVESTATE_IA_OVERRIDE) == 0) && sub_800CDBC(s, xPos, yPos, player) != 0) {
 
         player->transition = sSpringDirToPlayerTransition[spring->dir];
         player->unk6E = spring->speedId;

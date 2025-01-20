@@ -80,7 +80,7 @@ static void Task_Idle(void)
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
-    if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD)) && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
+    if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD)) && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
 #ifndef NON_MATCHING
         register s32 temp1 asm("r0"), temp2;
 #else
@@ -130,7 +130,7 @@ static void Task_Idle(void)
         gPlayer.unk6C = 1;
         m4aSongNumStart(SE_SPEED_BOOSTER);
         gPlayer.unk62 = 0;
-        gPlayer.moveState |= MOVESTATE_400000;
+        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
         gCurTask->main = Task_Rotating;
     } else {
         if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
@@ -185,7 +185,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
         sub_8023B5C(&gPlayer, 9);
         gPlayer.spriteOffsetX = 6;
         gPlayer.spriteOffsetY = 9;
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gCurTask->main = Task_AfterJump;
 
         switch (rotatingHandle->unk40) {

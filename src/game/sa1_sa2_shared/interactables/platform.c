@@ -206,7 +206,7 @@ void Task_800E89C(void)
         }
     }
 
-    if (!(p->moveState & MOVESTATE_400000)) {
+    if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
         s32 x = (posX + I(platform->unk40));
         s32 y = (posY + I(platform->unk44));
 
@@ -221,7 +221,7 @@ void Task_800E89C(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if (!(gPlayer.moveState & MOVESTATE_400000)) {
+        if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
             if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
                 if (platform->unk4C != 0x100) {
                     platform->unk4C += 0x10;
