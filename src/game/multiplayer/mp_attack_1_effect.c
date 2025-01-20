@@ -18,7 +18,7 @@ void sub_8087088(void);
 void sub_80870E8(void);
 
 s32 ALIGNED(8) gUnused_03005B78 = 0;
-u8 createMPAttackEffect = 0;
+u8 gShouldSpawnMPAttackEffect = FALSE;
 
 void Task_MPAttackEffect(void)
 {

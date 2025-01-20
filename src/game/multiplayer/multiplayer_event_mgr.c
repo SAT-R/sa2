@@ -155,7 +155,7 @@ void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    createMPAttackEffect = TRUE;
+                    gShouldSpawnMPAttackEffect = TRUE;
                     m4aSongNumStart(SE_219);
                 }
                 break;
@@ -164,7 +164,7 @@ void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    createMPAttack2Effect = TRUE;
+                    gShouldSpawnMPAttack2Effect = TRUE;
                     m4aSongNumStart(SE_216);
                 }
                 break;

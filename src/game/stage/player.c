@@ -844,9 +844,9 @@ void InitializePlayer(Player *p)
         } break;
     }
 
-    createMPAttackEffect = 0;
+    gShouldSpawnMPAttackEffect = FALSE;
     gMPAttackEffect2Regs = NULL;
-    createMPAttack2Effect = 0;
+    gShouldSpawnMPAttack2Effect = FALSE;
 }
 
 // Called anytime the player actively jumps, "autojumps" through touching an IA,

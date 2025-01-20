@@ -27,7 +27,7 @@
 #include "constants/songs.h"
 
 u32 unused_3005838 = 0;
-u8 createMPAttack2Effect = 0;
+bool8 gShouldSpawnMPAttack2Effect = FALSE;
 
 void Task_CreateMultiplayerPlayer(void);
 void TaskDestructor_MultiplayerPlayer(struct Task *);
@@ -478,14 +478,14 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     }
 
-    if (createMPAttackEffect != FALSE) {
+    if (gShouldSpawnMPAttackEffect != FALSE) {
         CreateMPAttackEffect();
-        createMPAttackEffect = FALSE;
+        gShouldSpawnMPAttackEffect = FALSE;
     }
 
-    if (createMPAttack2Effect != FALSE) {
+    if (gShouldSpawnMPAttack2Effect != FALSE) {
         CreateMPAttack2Effect();
-        createMPAttack2Effect = FALSE;
+        gShouldSpawnMPAttack2Effect = FALSE;
     }
 }
 END_NONMATCH
