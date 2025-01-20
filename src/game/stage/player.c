@@ -87,7 +87,7 @@ void Player_InitVictoryPoseTransition(Player *);
 void Player_VictoryPose(Player *);
 void Player_8027B98(Player *);
 void Player_WindupDefaultTrick(Player *);
-void Player_802890C(Player *);
+void Player_DefaultTrick(Player *);
 void Player_8029074(Player *);
 void Player_8029314(Player *);
 void Player_8026060(Player *p);
@@ -5650,7 +5650,7 @@ void Player_WindupDefaultTrick(Player *p)
         if (p->moveState & MOVESTATE_FACING_LEFT)
             p->speedAirX = -p->speedAirX;
 
-        PLAYERFN_SET(Player_802890C);
+        PLAYERFN_SET(Player_DefaultTrick);
 
         if (IS_SINGLE_PLAYER) {
             if (dir == TRICK_DIR_FORWARD && character == CHARACTER_SONIC) {
@@ -5671,7 +5671,7 @@ void Player_WindupDefaultTrick(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
-void Player_802890C(Player *p)
+void Player_DefaultTrick(Player *p)
 {
     u32 dir = p->unk5B;
     u16 character = p->character;
