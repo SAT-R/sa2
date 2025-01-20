@@ -48,7 +48,7 @@
 #define IA__CORKSCREW__END                  41
 #define IA__GOAL_LEVER                      42
 #define IA__CHECKPOINT                      43
-#define IA__IA044__A                        44
+#define IA__CEILING_SLOPE__A                44
 #define IA__TOGGLE__CHECKPOINT              45
 #define IA__TOGGLE__GOAL                    46
 #define IA__WINDUP_STICK                    47
@@ -75,7 +75,7 @@
 #define IA__HALFPIPE__START                 68
 #define IA__BIG_SNOWBALL                    69
 #define IA__NOTE_BLOCK__2                   70
-#define IA__IA044__B                        71 // Same code as IA__044__A
+#define IA__CEILING_SLOPE__B                71 // Same code as IA__CEILING_SLOPE__A
 #define IA__PIPE__START                     72
 #define IA__PIPE__END                       73
 #define IA__LIGHT_BRIDGE                    74
