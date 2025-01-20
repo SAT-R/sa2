@@ -425,6 +425,8 @@ const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
     NULL,        NULL,
 };
 
+#define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
+
 void CreateStageEntitiesManager(void)
 {
     void *decompBuf;
@@ -468,24 +470,16 @@ void CreateStageEntitiesManager(void)
     gEntitiesManagerTask = t;
 }
 
-static inline MapEntity *ReadMapEntity(void *data, u32 r6)
+void SpawnMapEntities()
 {
+// Required to be here to help the stack match
 #ifndef NON_MATCHING
-    register u32 offset asm("r0") = r6 - 8;
-#else
-    u32 offset = r6 - 8;
+    u32 temp, space;
 #endif
-    return data + offset;
-}
 
-// (98.55%) https://decomp.me/scratch/Co5bs
-NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntities())
-{
     if (!(gStageFlags & 2)) {
-        u32 pos;
-
-        u32 regionY, regionX;
-
+        u32 i;
+        u32 regionX, regionY;
         struct Range range;
         u32 h_regionCount, v_regionCount;
 
@@ -501,7 +495,11 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
         }
 
         interactables++;
+#ifndef NON_MATCHING
+        h_regionCount = (u16)(temp = *interactables++);
+#else
         h_regionCount = (u16)*interactables++;
+#endif
         v_regionCount = (u16)*interactables++;
 
         range.xLow = gCamera.x - 128;
@@ -540,29 +538,12 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 
         regionY = I(range.yLow);
         while (Q(regionY) < (u32)range.yHigh && regionY < v_regionCount) {
-
             regionX = I(range.xLow);
             while (Q(regionX) < (u32)range.xHigh && regionX < h_regionCount) {
-                u32 posY;
-                u32 i;
-#ifndef NON_MATCHING
-                register u32 r6 asm("r6");
-#else
-                u32 r6;
-#endif
-                MapEntity *me;
-                intptr_t sp28;
-
-                sp28 = ({
-                    intptr_t r0 = h_regionCount * regionY;
-                    r0 *= 4;
-                    r0 += (intptr_t)interactables;
-                    r0;
-                });
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                    r6 = *(u32 *)(sp28 + (regionX * 4));
-                    if (r6 != 0) {
-                        me = ReadMapEntity(interactables, r6);
+                    i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
+                    if (i != 0) {
+                        MapEntity *me = ((void *)interactables + (i - 8));
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -574,16 +555,9 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                         }
                     }
 
-                    r6 = *(intptr_t *)({
-                        intptr_t r0 = h_regionCount * regionY;
-                        r0 *= sizeof(u32);
-                        r0 += (intptr_t)itemBoxPositions;
-                        r0 += (regionX * sizeof(u32));
-                        r0;
-                    });
-
-                    if (r6 != 0) {
-                        MapEntity_Itembox *me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
+                    i = READ_START_INDEX(itemBoxPositions, h_regionCount, regionX, regionY);
+                    if (i != 0) {
+                        MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -595,16 +569,9 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                         }
                     }
 
-                    sp28 = ({
-                        intptr_t r0 = h_regionCount * regionY;
-                        r0 *= 4;
-                        r0 += (intptr_t)enemyPositions;
-                        r0 += (regionX * 4);
-                        r0;
-                    });
-                    r6 = *(u32 *)sp28;
-                    if (r6 != 0) {
-                        me = ReadMapEntity(enemyPositions, r6);
+                    i = READ_START_INDEX(enemyPositions, h_regionCount, regionX, regionY);
+                    if (i != 0) {
+                        MapEntity *me = ((void *)enemyPositions + (i - 8));
                         for (i = 0; (s8)me->x != -1; me++, i++) {
 
                             if ((s8)me->x >= -2) {
@@ -616,11 +583,10 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                             }
                         }
                     }
-
                 } else {
-                    r6 = *(u32 *)(sp28 + (regionX * 4));
-                    if (r6 != 0) {
-                        me = ReadMapEntity(interactables, r6);
+                    i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
+                    if (i != 0) {
+                        MapEntity *me = ((void *)interactables + (i - 8));
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -642,7 +608,6 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
         gCurTask->main = Task_8008DCC;
     }
 }
-END_NONMATCH
 
 void Task_8008DCC(void)
 {
@@ -839,9 +804,8 @@ void Task_8008DCC(void)
             while (Q(regionY) < range1.yHigh && regionY < v_regionCount) {
                 regionX = I(range1.xLow);
                 while (Q(regionX) < range1.xHigh && regionX < h_regionCount) {
-
                     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -855,8 +819,7 @@ void Task_8008DCC(void)
                             }
                         }
 
-                        i = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-
+                        i = READ_START_INDEX(itemBoxPositions, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -870,7 +833,7 @@ void Task_8008DCC(void)
                             }
                         }
 
-                        i = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(enemyPositions, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)enemyPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -883,9 +846,8 @@ void Task_8008DCC(void)
                                 }
                             }
                         }
-
                     } else {
-                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -910,16 +872,14 @@ void Task_8008DCC(void)
             regionY = I((*newRange2Ptr).yLow);
             while (Q(regionY) < (*newRange2Ptr).yHigh && regionY < v_regionCount) {
 #else
-
         if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh)) && (range2.xLow != range2.xHigh)) {
             regionY = I(range2.yLow);
             while (Q(regionY) < range2.yHigh && regionY < v_regionCount) {
 #endif
-
                 regionX = I(range2.xLow);
                 while (Q(regionX) < range2.xHigh && regionX < h_regionCount) {
                     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -933,8 +893,7 @@ void Task_8008DCC(void)
                             }
                         }
 
-                        i = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-
+                        i = READ_START_INDEX(itemBoxPositions, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -948,7 +907,7 @@ void Task_8008DCC(void)
                             }
                         }
 
-                        i = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(enemyPositions, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)enemyPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
@@ -961,9 +920,8 @@ void Task_8008DCC(void)
                                 }
                             }
                         }
-
                     } else {
-                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        i = READ_START_INDEX(interactables, h_regionCount, regionX, regionY);
                         if (i != 0) {
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
