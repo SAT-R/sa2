@@ -262,7 +262,7 @@ const RLCompressed *const gSpritePosData_enemies[] = {
 const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Toggle_PlayerLayer,
     CreateEntity_Toggle_PlayerLayer,
-    CreateEntity_Platform_A,
+    CreateEntity_Platform,
     CreateEntity_Spring_Normal_Up,
     CreateEntity_Spring_Normal_Down,
     CreateEntity_Spring_Normal_Right,
@@ -339,7 +339,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_ArrowPlatform_Right,
     CreateEntity_ArrowPlatform_Up,
     CreateEntity_SpikePlatform,
-    CreateEntity_Platform_B,
+    CreateEntity_FallingPlatform,
     CreateEntity_LightGlobe,
     CreateEntity_Platform_Square,
     CreateEntity_Propeller,

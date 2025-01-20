@@ -354,7 +354,8 @@
     "cgb_tables.h": "c",
     "stdint.h": "c",
     "boss_5.h": "c",
-    "boss_9.h": "c"
+    "boss_9.h": "c",
+    "xlocale": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

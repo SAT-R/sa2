@@ -431,7 +431,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
     mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
 
     if (mask) {
-        if (mask & 0x10000) {
+        if (mask & COLL_FLAG_10000) {
             p->moveState |= MOVESTATE_8;
             p->moveState &= ~MOVESTATE_IN_AIR;
             p->unk3C = s;
@@ -479,7 +479,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
 
     mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
 
-    if (mask & 0x10000) {
+    if (mask & COLL_FLAG_10000) {
         p->moveState |= MOVESTATE_8;
         p->unk3C = s;
     } else if (r4) {
