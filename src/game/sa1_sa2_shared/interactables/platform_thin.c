@@ -9,7 +9,7 @@
 #include "game/sa1_sa2_shared/interactables/platform_thin.h"
 #include "game/entity.h"
 
-#include "game/multiplayer/multiplayer_event_recv_mgr.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -189,12 +189,12 @@ static void Task_PlatformThinMain(void)
     }
     if (something) {
         if (IS_MULTI_PLAYER) {
-            struct RoomEvent *room_event = CreateRoomEvent();
-            room_event->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
-            room_event->unk1 = platform->base.regionX;
-            room_event->unk2 = platform->base.regionY;
-            room_event->unk3 = platform->base.id;
-            room_event->unk4 = 0;
+            struct RoomEvent *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
+            roomEvent->unk1 = platform->base.regionX;
+            roomEvent->unk2 = platform->base.regionY;
+            roomEvent->unk3 = platform->base.id;
+            roomEvent->unk4 = 0;
         }
         TaskDestroy(gCurTask);
         return;

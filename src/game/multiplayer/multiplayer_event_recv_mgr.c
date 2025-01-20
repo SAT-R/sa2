@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "game/entity.h"
-#include "game/multiplayer/multiplayer_event_recv_mgr.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/stage/rings_scatter.h"
 #include "game/sa1_sa2_shared/entities_manager.h"
 

@@ -4,7 +4,7 @@
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
-#include "game/multiplayer/multiplayer_event_recv_mgr.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/sa1_sa2_shared/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -257,7 +257,7 @@ static void sub_808636C(void)
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
 {
-    struct RoomEvent *room_event;
+    struct RoomEvent *roomEvent;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
@@ -271,13 +271,13 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     m4aSongNumStart(SE_ITEM_BOX_2);
     CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->framesSinceOpened = 0;
-    room_event = CreateRoomEvent();
+    roomEvent = CreateRoomEvent();
 
-    room_event->type = ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK;
-    room_event->unk1 = itemBox->base.regionX;
-    room_event->unk2 = itemBox->base.regionY;
-    room_event->unk3 = itemBox->base.id;
-    room_event->unk4 = itemBox->base.me->d.sData[1];
+    roomEvent->type = ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK;
+    roomEvent->unk1 = itemBox->base.regionX;
+    roomEvent->unk2 = itemBox->base.regionY;
+    roomEvent->unk3 = itemBox->base.id;
+    roomEvent->unk4 = itemBox->base.me->d.sData[1];
 
     gCurTask->main = sub_808665C;
 }
@@ -305,10 +305,10 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             break;
         }
         case 1: {
-            struct RoomEvent *room_event = CreateRoomEvent();
+            struct RoomEvent *roomEvent = CreateRoomEvent();
 
-            room_event->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
-            room_event->unk1 = 4;
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->unk1 = 4;
             break;
         }
     }

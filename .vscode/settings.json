@@ -304,7 +304,7 @@
     "player_super_sonic.h": "c",
     "assert.h": "c",
     "arenaalloc.h": "c",
-    "multiplayer_event_recv_mgr.h": "c",
+    "multiplayer_event_mgr.h": "c",
     "mp_player.h": "c",
     "*.m": "c",
     "ranges": "c",

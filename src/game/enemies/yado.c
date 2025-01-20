@@ -7,7 +7,7 @@
 #include "game/cheese.h"
 #include "game/enemies/projectiles.h"
 #include "game/stage/trapped_animals.h"
-#include "game/multiplayer/multiplayer_event_recv_mgr.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
@@ -159,11 +159,11 @@ void Task_8055084(void)
             if (cheese->s.hitboxes[1].index != HITBOX_STATE_INACTIVE) {
                 if (HB_COLLISION(x, y, s->hitboxes[0], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])) {
                     if (IS_MULTI_PLAYER) {
-                        struct RoomEvent *room_event = CreateRoomEvent();
-                        room_event->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
-                        room_event->unk1 = yado2->base.regionX;
-                        room_event->unk2 = yado2->base.regionY;
-                        room_event->unk3 = yado2->base.id;
+                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
+                        roomEvent->unk1 = yado2->base.regionX;
+                        roomEvent->unk2 = yado2->base.regionY;
+                        roomEvent->unk3 = yado2->base.id;
                     }
 
                     CreateDustCloud(x, y);

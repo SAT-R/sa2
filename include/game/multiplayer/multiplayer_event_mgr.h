@@ -8,6 +8,9 @@
 
 #include "game/sa1_sa2_shared/globals.h"
 
+struct Task *CreateMultiplayerRecieveEventMgr(void);
+struct Task *CreateMultiplayerSendEventMgr(void);
+
 void RecieveRoomEvent_PlatformChange(union MultiSioData *, u8);
 void RecieveRoomEvent_ItemBoxBreak(union MultiSioData *, u8);
 void RecieveRoomEvent_EnemyDestroyed(union MultiSioData *, u8);

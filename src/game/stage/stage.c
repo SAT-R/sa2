@@ -31,6 +31,8 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+#include "game/multiplayer/multiplayer_event_mgr.h"
+
 struct Task *gGameStageTask = NULL;
 
 void Task_GameStage(void);
@@ -46,10 +48,6 @@ void StageInit_CollectRings(void);
 void SetupStageIntro(void);
 
 void CreateStageWaterTask(u32, u32, u32);
-
-void CreateMultiplayerSendEventMgr(void);
-
-void CreateMultiplayerRecieveEventMgr(void);
 
 void StageInit_Zone1Act1(void);
 void StageInit_Zone3Act1(void);

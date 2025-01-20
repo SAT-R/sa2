@@ -6,7 +6,7 @@
 
 #include "game/multiplayer/mp_attack_1_effect.h"
 
-#include "game/multiplayer/multiplayer_event_recv_mgr.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/multiplayer/finish.h"
 #include "game/multiplayer/mp_player.h"
 
@@ -266,17 +266,17 @@ void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
                     sub_8019CCC(j, 1);
                 } else {
                     u32 temp;
-                    struct RoomEvent *room_event;
+                    struct RoomEvent *roomEvent;
                     sub_8019CCC(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                     gPlayer.heldInput = 0;
                     temp = gRoomEventQueueWritePos;
-                    room_event = &gRoomEventQueue[temp];
+                    roomEvent = &gRoomEventQueue[temp];
                     gRoomEventQueueWritePos++;
                     gRoomEventQueueWritePos &= 0xF;
 
-                    room_event->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
+                    roomEvent->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
                 }
             }
         }
