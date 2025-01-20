@@ -644,15 +644,15 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 }
 END_NONMATCH
 
-// (88.58%) https://decomp.me/scratch/pOpmU
-NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void))
+void Task_8008DCC(void)
 {
+#ifndef NON_MATCHING
+    struct Range *newRange2Ptr;
+#endif
     if (!(gStageFlags & 2)) {
-        u32 pos;
+        u32 i;
 
         u16 regionX, regionY;
-        u32 temp, temp2, temp3, temp4;
-        s32 temp5;
 
         struct Range range1;
         struct Range range2;
@@ -660,345 +660,332 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
         u32 h_regionCount, v_regionCount;
 
         EntitiesManager *em = TASK_DATA(gCurTask);
+        u32 temp, temp2, temp3, temp4;
+        u32 *interactables;
+        u32 *itemBoxPositions;
+        u32 *enemyPositions;
 
         if (em->unk14 != 0) {
             SpawnMapEntities();
             return;
         }
-        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX : em->prevCamX - gCamera.x) > 248) {
+        if (ABS(gCamera.x - em->prevCamX) > 248) {
             SpawnMapEntities();
             return;
         }
-        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY : em->prevCamY - gCamera.y) > 208) {
+        if (ABS(gCamera.y - em->prevCamY) > 208) {
             SpawnMapEntities();
             return;
         }
-        {
-            u32 *interactables;
-            u32 *itemBoxPositions;
-            u32 *enemyPositions;
 
-            interactables = (u32 *)em->interactables;
-            if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                enemyPositions = em->enemies->offsets;
-                itemBoxPositions = em->items->offsets;
-            }
+        interactables = (u32 *)em->interactables;
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            enemyPositions = em->enemies->offsets;
+            itemBoxPositions = em->items->offsets;
+        }
 
-            interactables++;
-            h_regionCount = (u16)*interactables++;
-            v_regionCount = (u16)*interactables++;
+        interactables++;
+        h_regionCount = (u16)*interactables++;
+        v_regionCount = (u16)*interactables++;
 
-            if (gCamera.x > em->prevCamX) {
-                range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 128);
-                range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
+        if (gCamera.x > em->prevCamX) {
+            range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 128);
+            range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 
-#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
-                if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                    // HACK: in zone 3 the TAS we are using depends on going so far off the screen
-                    // that some IAs do not spawn and so it gets to skip them. We have to emulate
-                    // that behaviour so that we can test the TAS in widescreen
-                    range1.xLow = em->prevCamX + (426 + 45);
-                    range1.xHigh = gCamera.x + (426 + 45);
-                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
-                    // In this stage there is a pen which initialises earlier
-                    // than the TAS expects, so this limits that
-                    range1.xLow = em->prevCamX + (426 + 80);
-                    range1.xHigh = gCamera.x + (426 + 80);
-                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
-                    // In this stage there are some birds which initialise early
-                    range1.xLow = em->prevCamX + (240 + 128);
-                    range1.xHigh = gCamera.x + (240 + 128);
-                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1)) {
-                    // In this stage some robot bird thing jumps too early
-                    range1.xLow = em->prevCamX + (426 + 35);
-                    range1.xHigh = gCamera.x + (426 + 35);
-                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
-                    // Some spike thing generates too early
-                    range1.xLow = em->prevCamX + (426 + 35);
-                    range1.xHigh = gCamera.x + (426 + 35);
-                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_2)) {
-                    // A grind rail generates too early
-                    range1.xLow = em->prevCamX + (426 + 40);
-                    range1.xHigh = gCamera.x + (426 + 40);
-                }
-#endif
-            } else {
-                range1.xLow = gCamera.x - 128;
-                range1.xHigh = em->prevCamX - 128;
-            }
-
-            if (em->unk14 != 0) {
-                SpawnMapEntities();
-                return;
-            }
-
-            range1.yLow = gCamera.y - 128;
-            range1.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
-
-            if (gCamera.y > em->prevCamY) {
-                range2.yLow = em->prevCamY + (DISPLAY_HEIGHT + 128);
-                range2.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
-            } else {
-                range2.yLow = gCamera.y - 128;
-                range2.yHigh = em->prevCamY - 128;
-            }
-
-            range2.xLow = gCamera.x - 128;
-            range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                range2.xHigh = gCamera.x + (426 + 45);
+                // HACK: in zone 3 the TAS we are using depends on going so far off the screen
+                // that some IAs do not spawn and so it gets to skip them. We have to emulate
+                // that behaviour so that we can test the TAS in widescreen
+                range1.xLow = em->prevCamX + (426 + 45);
+                range1.xHigh = gCamera.x + (426 + 45);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
-                range2.xHigh = gCamera.x + (426 + 80);
+                // In this stage there is a pen which initialises earlier
+                // than the TAS expects, so this limits that
+                range1.xLow = em->prevCamX + (426 + 80);
+                range1.xHigh = gCamera.x + (426 + 80);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
-                range2.xHigh = gCamera.x + (240 + 128);
+                // In this stage there are some birds which initialise early
+                range1.xLow = em->prevCamX + (240 + 128);
+                range1.xHigh = gCamera.x + (240 + 128);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1)) {
-                range2.xHigh = gCamera.x + (426 + 35);
+                // In this stage some robot bird thing jumps too early
+                range1.xLow = em->prevCamX + (426 + 35);
+                range1.xHigh = gCamera.x + (426 + 35);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
-                range2.xHigh = gCamera.x + (426 + 35);
+                // Some spike thing generates too early
+                range1.xLow = em->prevCamX + (426 + 35);
+                range1.xHigh = gCamera.x + (426 + 35);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_2)) {
-                range2.xHigh = gCamera.x + (426 + 40);
+                // A grind rail generates too early
+                range1.xLow = em->prevCamX + (426 + 40);
+                range1.xHigh = gCamera.x + (426 + 40);
             }
 #endif
-
-            if ((s32)range1.xLow < 0) {
-                range1.xLow = 0;
-            }
-            if ((s32)range1.yLow < 0) {
-                range1.yLow = 0;
-            }
-            if ((s32)range1.xHigh < 0) {
-                range1.xHigh = 0;
-            }
-
-            if ((s32)range1.yHigh < 0) {
-                range1.yHigh = 0;
-            }
-
-            temp2 = range1.xLow;
-            temp = Q(h_regionCount);
-            if (temp2 >= temp) {
-                range1.xLow = temp - 1;
-            }
-
-            temp3 = range1.yLow;
-            temp4 = Q(v_regionCount);
-
-            if (temp3 >= temp4) {
-                range1.yLow = temp4 - 1;
-            }
-
-            if ((u32)range1.xHigh >= temp) {
-                range1.xHigh = temp - 1;
-            }
-
-            if (range1.yHigh >= temp4) {
-                range1.yHigh = temp4 - 1;
-            }
-
-            if (range2.xLow < 0) {
-                range2.xLow = 0;
-            }
-
-            if (range2.yLow < 0) {
-                range2.yLow = 0;
-            }
-
-            if ((s32)range2.xHigh < 0) {
-                range2.xHigh = 0;
-            }
-
-            if ((s32)range2.yHigh < 0) {
-                range2.yHigh = 0;
-            }
-
-            if ((u32)range2.xLow >= temp) {
-                range2.xLow = temp - 1;
-            }
-
-            if ((u32)range2.yLow >= temp4) {
-                range2.yLow = temp4 - 1;
-            }
-
-            if ((u32)range2.xHigh >= temp) {
-                range2.xHigh = temp - 1;
-            }
-
-            if ((u32)range2.yHigh >= temp4) {
-                range2.yHigh = temp4 - 1;
-            }
-
-            if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh && range1.yLow != range1.yHigh) {
-                regionY = I(range1.yLow);
-
-                while (Q(regionY) < range1.yHigh && regionY < v_regionCount) {
-                    regionX = I((s32)range1.xLow);
-                    while (Q(regionX) < range1.xHigh && regionX < h_regionCount) {
-                        u32 r6;
-                        u32 i;
-                        MapEntity *me;
-
-                        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(interactables, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
-                                            && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                            r6 = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-
-                            if (r6 != 0) {
-                                MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
-                                            && y <= (s32)range1.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                            r6 = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(enemyPositions, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
-                                            && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                        } else {
-                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(interactables, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
-                                            && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        regionX++;
-                    }
-                    regionY++;
-                }
-            }
-            if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh)) && (range2.xLow != range2.xHigh)) {
-                regionY = I((s32)range2.yLow);
-
-                while (Q(regionY) < range2.yHigh && regionY < v_regionCount) {
-                    regionX = I((s32)range2.xLow);
-                    while (Q(regionX) < range2.xHigh && regionX < h_regionCount) {
-                        u32 r6;
-                        u32 offset;
-                        u32 i;
-                        MapEntity *me;
-
-                        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(interactables, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
-                                            && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                            r6 = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-
-                            if (r6 != 0) {
-                                MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
-                                            && y <= (s32)range2.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                            r6 = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(enemyPositions, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
-                                            && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-
-                        } else {
-                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            if (r6 != 0) {
-                                MapEntity *me;
-                                me = ReadMapEntity(interactables, r6);
-                                for (i = 0; (s8)me->x != -1; me++, i++) {
-                                    if ((s8)me->x >= -2) {
-                                        s32 x = TO_WORLD_POS(me->x, regionX);
-                                        s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
-                                            && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        regionX++;
-                    }
-                    regionY++;
-                }
-            }
-            em->prevCamX = gCamera.x;
-            em->prevCamY = gCamera.y;
+        } else {
+            range1.xLow = gCamera.x - 128;
+            range1.xHigh = em->prevCamX - 128;
         }
+
+        if (em->unk14 != 0) {
+            SpawnMapEntities();
+            return;
+        }
+
+        range1.yLow = gCamera.y - 128;
+        range1.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
+
+        if (gCamera.y > em->prevCamY) {
+            range2.yLow = em->prevCamY + (DISPLAY_HEIGHT + 128);
+            range2.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
+        } else {
+            range2.yLow = gCamera.y - 128;
+            range2.yHigh = em->prevCamY - 128;
+        }
+
+        range2.xLow = gCamera.x - 128;
+        range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+            range2.xHigh = gCamera.x + (426 + 45);
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
+            range2.xHigh = gCamera.x + (426 + 80);
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
+            range2.xHigh = gCamera.x + (240 + 128);
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1)) {
+            range2.xHigh = gCamera.x + (426 + 35);
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
+            range2.xHigh = gCamera.x + (426 + 35);
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_2)) {
+            range2.xHigh = gCamera.x + (426 + 40);
+        }
+#endif
+
+        if (range1.xLow < 0) {
+            range1.xLow = 0;
+        }
+        if (range1.yLow < 0) {
+            range1.yLow = 0;
+        }
+        if (range1.xHigh < 0) {
+            range1.xHigh = 0;
+        }
+
+        if (range1.yHigh < 0) {
+            range1.yHigh = 0;
+        }
+
+        temp2 = range1.xLow;
+        temp = Q(h_regionCount);
+        if (temp2 >= temp) {
+            range1.xLow = temp - 1;
+        }
+
+        temp3 = range1.yLow;
+        temp4 = Q(v_regionCount);
+
+        if (temp3 >= temp4) {
+            range1.yLow = temp4 - 1;
+        }
+
+        if (range1.xHigh >= temp) {
+            range1.xHigh = temp - 1;
+        }
+
+        if (range1.yHigh >= temp4) {
+            range1.yHigh = temp4 - 1;
+        }
+
+        if (range2.xLow < 0) {
+            range2.xLow = 0;
+        }
+
+        if (range2.yLow < 0) {
+            range2.yLow = 0;
+        }
+
+        if (range2.xHigh < 0) {
+            range2.xHigh = 0;
+        }
+
+        if (range2.yHigh < 0) {
+            range2.yHigh = 0;
+        }
+
+        if (range2.xLow >= temp) {
+            range2.xLow = temp - 1;
+        }
+
+        if (range2.yLow >= temp4) {
+            range2.yLow = temp4 - 1;
+        }
+
+        if (range2.xHigh >= temp) {
+            range2.xHigh = temp - 1;
+        }
+
+        if (range2.yHigh >= temp4) {
+            range2.yHigh = temp4 - 1;
+        }
+
+        // Hack to fix a stack mismatch, must be placed here
+#ifndef NON_MATCHING
+        newRange2Ptr = &range2;
+#endif
+
+        if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh && range1.yLow != range1.yHigh) {
+            regionY = I(range1.yLow);
+
+            while (Q(regionY) < range1.yHigh && regionY < v_regionCount) {
+                regionX = I(range1.xLow);
+                while (Q(regionX) < range1.xHigh && regionX < h_regionCount) {
+
+                    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)interactables + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
+                                        gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                        i = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+
+                        if (i != 0) {
+                            MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
+                                        CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                        i = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)enemyPositions + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
+                                        gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)interactables + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
+                                        gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    regionX++;
+                }
+                regionY++;
+            }
+        }
+
+#ifndef NON_MATCHING
+        if (((gCamera.y != em->prevCamY) && ((*newRange2Ptr).yLow != (*newRange2Ptr).yHigh)) && (range2.xLow != (*newRange2Ptr).xHigh)) {
+            regionY = I((*newRange2Ptr).yLow);
+            while (Q(regionY) < (*newRange2Ptr).yHigh && regionY < v_regionCount) {
+#else
+
+        if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh)) && (range2.xLow != range2.xHigh)) {
+            regionY = I(range2.yLow);
+            while (Q(regionY) < range2.yHigh && regionY < v_regionCount) {
+#endif
+
+                regionX = I(range2.xLow);
+                while (Q(regionX) < range2.xHigh && regionX < h_regionCount) {
+                    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)interactables + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
+                                        gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                        i = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+
+                        if (i != 0) {
+                            MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
+                                        CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                        i = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)enemyPositions + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
+                                        gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        i = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (i != 0) {
+                            MapEntity *me = ((void *)interactables + (i - 8));
+                            for (i = 0; (s8)me->x != -1; me++, i++) {
+                                if ((s8)me->x >= -2) {
+                                    s32 x = TO_WORLD_POS(me->x, regionX);
+                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
+                                        gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    regionX++;
+                }
+                regionY++;
+            }
+        }
+        em->prevCamX = gCamera.x;
+        em->prevCamY = gCamera.y;
     }
 }
-END_NONMATCH
 
 void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
 {
