@@ -909,7 +909,7 @@ void sub_80777C8(Sprite_Pipe_Horn *pipe)
 {
     Player_ClearMovestate_IsInScriptedSequence();
 
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_UNCURL;
 
     gPlayer.speedAirX = gUnknown_080DFE90[pipe->kind][0];
@@ -968,7 +968,7 @@ void sub_80778E4(Sprite_Pipe_Horn *pipe)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
@@ -1073,7 +1073,7 @@ void sub_8077B28(Sprite_Pipe_Horn *horn)
 {
 #ifndef MODERN
     Player_ClearMovestate_IsInScriptedSequence();
-    gPlayer.moveState &= ~(MOVESTATE_400000);
+    gPlayer.moveState &= ~(MOVESTATE_IA_OVERRIDE);
 #else
     // Doing this inline is faster, and
     // personally more comprehensible.
@@ -1137,7 +1137,7 @@ void sub_8077C3C(Sprite_Pipe_Horn *horn)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);

@@ -3293,7 +3293,7 @@ void Task_PlayerMain(void)
     sub_8023878(p);
     CallPlayerTransition(p);
 
-    if (!(p->moveState & MOVESTATE_400000)) {
+    if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
         p->callback(p);
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         sub_80232D0(p);
@@ -3388,11 +3388,11 @@ void CallPlayerTransition(Player *p)
                 PLAYERFN_SET(Player_SpinAttack);
             } break;
             case PLTRANS_INIT_JUMP - 1: {
-                p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
+                p->moveState &= ~(MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(Player_InitJump);
             } break;
             case PLTRANS_PT4 - 1: {
-                p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
+                p->moveState &= ~(MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(Player_8025F84);
             } break;
             case PLTRANS_PT7 - 1: {

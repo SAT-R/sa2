@@ -80,7 +80,7 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
     Sprite *s = &windmill->s;
     s8 spriteX;
     Player_SetMovestate_IsInScriptedSequence();
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
     switch (windmill->initialTouchAngle) {
@@ -133,7 +133,7 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
     Player_ClearMovestate_IsInScriptedSequence();
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_UNCURL;
 
         switch (windmill->initialTouchAngle) {

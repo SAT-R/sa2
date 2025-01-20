@@ -206,7 +206,7 @@ void Task_PlatformMain(void)
         }
     }
 
-    if (!(p->moveState & MOVESTATE_400000)) {
+    if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
         s32 x = (posX + I(platform->offsetX));
         s32 y = (posY + I(platform->offsetY));
 
@@ -221,7 +221,7 @@ void Task_PlatformMain(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if (!(gPlayer.moveState & MOVESTATE_400000)) {
+        if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
             if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
                 if (platform->stoodOffset != 0x100) {
                     platform->stoodOffset += 0x10;

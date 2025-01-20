@@ -494,7 +494,7 @@ void sub_8079810(void);
 void sub_80797AC(Sprite_IA69 *ia69)
 {
     Player_SetMovestate_IsInScriptedSequence();
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_HIT_AIR;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -533,7 +533,7 @@ void sub_8079888(Sprite_IA69 *ia69)
     Player_ClearMovestate_IsInScriptedSequence();
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_HURT;
     }
 

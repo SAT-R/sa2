@@ -185,7 +185,7 @@ static void sub_8072D40(void)
 
 static void sub_8072DCC(Sprite_HookRail *hookRail)
 {
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_HANGING;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
@@ -311,7 +311,7 @@ static void sub_8073068(UNUSED Sprite_HookRail *hookRail)
 
 static void sub_8073088(UNUSED Sprite_HookRail *hookRail)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8073320;
 }
@@ -330,7 +330,7 @@ static void sub_80730BC(Sprite_HookRail *hookRail)
 
 static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
     gPlayer.transition = PLTRANS_UNCURL;
     if (gPlayer.rotation == 128) {
@@ -352,7 +352,7 @@ static void sub_8073148(UNUSED Sprite_HookRail *hookRail)
 
 static void sub_8073168(UNUSED Sprite_HookRail *hookRail)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8072F8C;
 }
@@ -384,7 +384,7 @@ static void sub_80731D4(void)
 
 static void sub_807321C(void)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_INIT_JUMP;
 }
 

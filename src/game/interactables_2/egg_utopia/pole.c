@@ -104,7 +104,7 @@ static void Task_807EC70(void);
 static void Pole_PlayerJumpsOff(Sprite_Pole *pole)
 {
     if (PLAYER_IS_ALIVE) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         if (pole->facingLeft) {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
         } else {
@@ -184,7 +184,7 @@ static void TaskDestructor_Interactable094(struct Task *t)
 
 static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
 {
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_POLE;
     gPlayer.qWorldX = Q(pole->middleX);
     gPlayer.speedGroundX = 0;
@@ -198,7 +198,7 @@ static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
 static void sub_807ED00(Sprite_Pole *pole)
 {
     if (PLAYER_IS_ALIVE) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
         gPlayer.transition = PLTRANS_UNCURL;
         gPlayer.speedAirY = Q(1);
@@ -221,7 +221,7 @@ static void sub_807ED68(Sprite_Pole *pole)
 
 static void sub_807ED88(Sprite_Pole *pole)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     m4aSongNumStop(SE_POLE_SLIDING);
     gCurTask->main = Task_807EC70;
 }

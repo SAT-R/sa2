@@ -91,7 +91,7 @@ static void Task_Hammerhead(void)
         p->qWorldY += 0x100;
         p->qWorldY += ip;
     }
-    if (!(p->moveState & MOVESTATE_400000)) {
+    if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
         s32 flags = sub_800CCB8(s, posX, posY + I(hammerhead->unk48), p);
 
         if (flags & 0x10000) {
