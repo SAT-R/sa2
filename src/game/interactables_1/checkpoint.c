@@ -34,11 +34,11 @@ typedef struct {
 } Sprite_Toggle_Checkpoint;
 
 static void Task_Interactable_Toggle_Checkpoint(void);
-static void Task_8062FD8(void);
-static void Task_8063108(void);
-static void Task_806319C(void);
-static void TaskDestructor_8063214(struct Task *);
-static void Task_8063228(struct Task *);
+static void Task_CheckpointMain_Idle(void);
+static void Task_StageCheckpointMain_Activated(void);
+static void Task_CheckpointMain_Used(void);
+static void TaskDestructor_Checkpoint(struct Task *);
+static void TaskDestructor_PaletteLoader_Checkpoint(struct Task *);
 
 extern u32 gCheckpointTime;
 
@@ -62,9 +62,9 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     u16 anim;
     u8 variant;
     if (gBossIndex == 0) {
-        t = TaskCreate(Task_8062FD8, sizeof(Sprite_Checkpoint), 0x2010, 0, TaskDestructor_8063214);
+        t = TaskCreate(Task_CheckpointMain_Idle, sizeof(Sprite_Checkpoint), 0x2010, 0, TaskDestructor_Checkpoint);
     } else {
-        t = TaskCreate(Task_806319C, sizeof(Sprite_Checkpoint), 0x2010, 0, TaskDestructor_8063214);
+        t = TaskCreate(Task_CheckpointMain_Used, sizeof(Sprite_Checkpoint), 0x2010, 0, TaskDestructor_Checkpoint);
     }
 
     chkPt = TASK_DATA(t);
@@ -97,10 +97,10 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     anim = sAnimIdsCheckpoint[zone][0];
     variant = sAnimIdsCheckpoint[zone][1];
 
-    chkPt->task = CreatePaletteLoaderTask(0x2000, anim, variant, Task_8063228);
+    chkPt->task = CreatePaletteLoaderTask(0x2000, anim, variant, TaskDestructor_PaletteLoader_Checkpoint);
 }
 
-void Task_8062FD8(void)
+void Task_CheckpointMain_Idle(void)
 {
     Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
@@ -118,8 +118,8 @@ void Task_8062FD8(void)
         TaskDestroy(gCurTask);
     } else {
         if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD)) && posX <= I(gPlayer.qWorldX)) {
-            gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
-            gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
+            gPlayer.checkPointX = gCheckpointPositions[gCurrentLevel].x;
+            gPlayer.checkPointY = gCheckpointPositions[gCurrentLevel].y;
             gPlayer.checkpointTime = gCheckpointTime;
 
             if (gBossIndex == 0)
@@ -129,7 +129,7 @@ void Task_8062FD8(void)
             s->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
             s->prevVariant = -1;
 
-            gCurTask->main = Task_8063108;
+            gCurTask->main = Task_StageCheckpointMain_Activated;
 
             m4aSongNumStart(SE_CHECKPOINT);
         }
@@ -139,7 +139,7 @@ void Task_8062FD8(void)
     }
 }
 
-void Task_8063108(void)
+void Task_StageCheckpointMain_Activated(void)
 {
     Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
@@ -157,14 +157,14 @@ void Task_8063108(void)
         TaskDestroy(gCurTask);
     } else {
         if (UpdateSpriteAnimation(s) == 0) {
-            gCurTask->main = Task_806319C;
+            gCurTask->main = Task_CheckpointMain_Used;
         }
 
         DisplaySprite(s);
     }
 }
 
-void Task_806319C(void)
+void Task_CheckpointMain_Used(void)
 {
     Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
@@ -184,14 +184,14 @@ void Task_806319C(void)
 }
 
 // static
-void TaskDestructor_8063214(struct Task *t)
+void TaskDestructor_Checkpoint(struct Task *t)
 {
     Sprite_Checkpoint *chkPt = TASK_DATA(t);
     void *gfx = chkPt->s.graphics.dest;
     VramFree(gfx);
 }
 
-void Task_8063228(struct Task *unused)
+void TaskDestructor_PaletteLoader_Checkpoint(struct Task *unused)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
     s32 animId = sAnimIdsCheckpoint[zone][0];
@@ -230,8 +230,8 @@ static void Task_Interactable_Toggle_Checkpoint(void)
         me->x = toggle->base.spriteX;
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD)) && posX <= I(gPlayer.qWorldX)) {
-        gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
-        gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
+        gPlayer.checkPointX = gCheckpointPositions[gCurrentLevel].x;
+        gPlayer.checkPointY = gCheckpointPositions[gCurrentLevel].y;
         gPlayer.checkpointTime = gCheckpointTime;
 
         if (gBossIndex == 0)
