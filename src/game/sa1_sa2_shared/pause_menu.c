@@ -21,7 +21,7 @@ typedef struct {
     /* 0x30 */ Sprite s2;
     /* 0x60 */ u16 unk60;
     /* 0x62 */ u8 cursor;
-    /* 0x63 */ u8 unk63; // bitarray
+    /* 0x63 */ u8 flags; // bitarray
     /* 0x64 */ u16 pal64[0x3];
     /* 0x64 */ u16 pal6A[0x3];
 } PauseMenu; /* size: 0x70 */
@@ -65,9 +65,9 @@ void CreatePauseMenu(void)
             pm->cursor = PMCURSOR_CONTINUE;
 
             if (gInput & A_BUTTON) {
-                pm->unk63 = PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION;
+                pm->flags = PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION;
             } else {
-                pm->unk63 = PMFLAG_A_BUTTON_RELEASED;
+                pm->flags = PMFLAG_A_BUTTON_RELEASED;
             }
 
             s->graphics.dest = vramTiles;
@@ -96,8 +96,8 @@ void Task_PauseMenuUpdate(void)
     PauseMenu *pm = TASK_DATA(gCurTask);
 
     /* Handle A-/B-Button */
-    if ((gReleasedKeys & A_BUTTON) && (pm->unk63 & PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION)) {
-        pm->unk63 = PMFLAG_A_BUTTON_RELEASED;
+    if ((gReleasedKeys & A_BUTTON) && (pm->flags & PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION)) {
+        pm->flags = PMFLAG_A_BUTTON_RELEASED;
     } else if ((gPressedKeys & START_BUTTON) || ((pm->cursor == PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON))
                || ((gGameMode != GAME_MODE_SINGLE_PLAYER) && (gPressedKeys & B_BUTTON))) {
         // Close the Pause Menu
