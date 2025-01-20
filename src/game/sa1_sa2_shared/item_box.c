@@ -53,19 +53,13 @@ void Task_ItemBoxIconMain_Rise_MP(void);
 void FinishItemBoxRise_MP(Entity_ItemBox *);
 
 const u16 ItemBox_MysteryIcons[13][3] = {
-    [ITEM__ONE_UP]          = { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },  
-    [ITEM__SHIELD]          = { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },  
-    [ITEM__SHIELD_MAGNETIC] = { SA2_ANIM_ITEMBOX_TYPE, 6, 4 },  
-    [ITEM__INVINCIBILITY]   = { SA2_ANIM_ITEMBOX_TYPE, 7, 4 },
-    [ITEM__SPEED_UP]        = { SA2_ANIM_ITEMBOX_TYPE, 8, 4 },  
-    [ITEM__RINGS_RANDOM]    = { SA2_ANIM_ITEMBOX_TYPE, 9, 4 },  
-    [ITEM__RINGS_5]         = { SA2_ANIM_ITEMBOX_TYPE, 10, 4 }, 
-    [ITEM__RINGS_10]        = { SA2_ANIM_ITEMBOX_TYPE, 11, 4 },
-    [ITEM__MP_SWAP]         = { SA2_ANIM_ITEMBOX_TYPE, 13, 4 }, 
-    [ITEM__MP_CONFUSION]    = { SA2_ANIM_ITEMBOX_TYPE, 14, 4 }, 
-    [ITEM__MP_SLOWDOWN]     = { SA2_ANIM_ITEMBOX_TYPE, 15, 4 }, 
-    [ITEM__MP_ATTACK]       = { SA2_ANIM_ITEMBOX_TYPE, 16, 4 },
-    [ITEM__MP_ATTACK_2]     = { SA2_ANIM_ITEMBOX_TYPE, 12, 4 },
+    [ITEM__ONE_UP] = { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },          [ITEM__SHIELD] = { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },
+    [ITEM__SHIELD_MAGNETIC] = { SA2_ANIM_ITEMBOX_TYPE, 6, 4 }, [ITEM__INVINCIBILITY] = { SA2_ANIM_ITEMBOX_TYPE, 7, 4 },
+    [ITEM__SPEED_UP] = { SA2_ANIM_ITEMBOX_TYPE, 8, 4 },        [ITEM__RINGS_RANDOM] = { SA2_ANIM_ITEMBOX_TYPE, 9, 4 },
+    [ITEM__RINGS_5] = { SA2_ANIM_ITEMBOX_TYPE, 10, 4 },        [ITEM__RINGS_10] = { SA2_ANIM_ITEMBOX_TYPE, 11, 4 },
+    [ITEM__MP_SWAP] = { SA2_ANIM_ITEMBOX_TYPE, 13, 4 },        [ITEM__MP_CONFUSION] = { SA2_ANIM_ITEMBOX_TYPE, 14, 4 },
+    [ITEM__MP_SLOWDOWN] = { SA2_ANIM_ITEMBOX_TYPE, 15, 4 },    [ITEM__MP_ATTACK] = { SA2_ANIM_ITEMBOX_TYPE, 16, 4 },
+    [ITEM__MP_ATTACK_2] = { SA2_ANIM_ITEMBOX_TYPE, 12, 4 },
 };
 
 const u16 ItemBox_1UpIcons[5][3] = {
@@ -74,7 +68,8 @@ const u16 ItemBox_1UpIcons[5][3] = {
     { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY, 4 },
 };
 
-const u16 ItemBox_randTypeTable[8] = { ITEM__RINGS_RANDOM, ITEM__MP_RANDOM, ITEM__SPEED_UP, ITEM__MP_RANDOM, ITEM__INVINCIBILITY, ITEM__MP_RANDOM, ITEM__RINGS_5, ITEM__MP_RANDOM };
+const u16 ItemBox_randTypeTable[8] = { ITEM__RINGS_RANDOM,  ITEM__MP_RANDOM, ITEM__SPEED_UP, ITEM__MP_RANDOM,
+                                       ITEM__INVINCIBILITY, ITEM__MP_RANDOM, ITEM__RINGS_5,  ITEM__MP_RANDOM };
 
 const u16 ItemBox_subRandTypeTable[] = { ITEM__MP_SWAP, ITEM__MP_CONFUSION, ITEM__MP_SLOWDOWN, ITEM__MP_ATTACK };
 const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50, 0, 0, 0 };

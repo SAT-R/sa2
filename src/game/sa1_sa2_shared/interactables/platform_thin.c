@@ -213,7 +213,8 @@ static void Task_PlatformThinMain(void)
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreakParticles.inc",
          void CreatePlatformBreakParticles(s16 x, s16 y))
 {
-    struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
+    struct Task *t
+        = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     PlatformBreakParticles *platform = TASK_DATA(t);
 
     // Hack for better match

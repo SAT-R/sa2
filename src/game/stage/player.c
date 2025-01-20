@@ -135,7 +135,7 @@ void Player_InitAttack(Player *);
 #ifndef NON_MATCHING
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
     {                                                                                                                                      \
-        s16 speed = (player->moveState & MOVESTATE_IN_WATER) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                        \
+        s16 speed = (player->moveState & MOVESTATE_IN_WATER) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                  \
                                                                                                                                            \
         if (player->speedAirY < 0) {                                                                                                       \
             asm("lsl r0, %0, #16\n"                                                                                                        \
@@ -152,7 +152,7 @@ void Player_InitAttack(Player *);
 #else
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
     {                                                                                                                                      \
-        s16 speed = (player->moveState & MOVESTATE_IN_WATER) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                        \
+        s16 speed = (player->moveState & MOVESTATE_IN_WATER) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                  \
                                                                                                                                            \
         if (player->speedAirY < 0) {                                                                                                       \
             speed /= 2;                                                                                                                    \
@@ -202,7 +202,7 @@ void Player_InitAttack(Player *);
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
 #define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                                                                   \
-    if ((player->moveState & (MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) == MOVESTATE_STOOD_ON_OBJ) {                                                           \
+    if ((player->moveState & (MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) == MOVESTATE_STOOD_ON_OBJ) {                                     \
         gPlayer.callback = Player_TouchGround;                                                                                             \
                                                                                                                                            \
         player->speedGroundX = player->speedAirX;                                                                                          \
@@ -217,7 +217,7 @@ void Player_InitAttack(Player *);
     }
 
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                                                                             \
-    if (player->moveState & MOVESTATE_IN_WATER) {                                                                                                \
+    if (player->moveState & MOVESTATE_IN_WATER) {                                                                                          \
         player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);                                                                                \
     } else {                                                                                                                               \
         player->speedAirY += Q(PLAYER_GRAVITY);                                                                                            \

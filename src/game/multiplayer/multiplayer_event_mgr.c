@@ -20,14 +20,14 @@ void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i);
 typedef void (*RoomEventHandler)(union MultiSioData *recv, u8 i);
 
 const RoomEventHandler gRoomEventHandlers[] = {
-    [ROOMEVENT_TYPE_PLATFORM_CHANGE - 1] = RecieveRoomEvent_PlatformChange, 
-    [ROOMEVENT_TYPE_ITEMBOX_BREAK - 1] = RecieveRoomEvent_ItemBoxBreak, 
-    [ROOMEVENT_TYPE_ENEMY_DESTROYED - 1] = RecieveRoomEvent_EnemyDestroyed, 
-    [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = RecieveRoomEvent_PlayerRingLoss, 
-    [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = RecieveRoomEvent_MysterItemBoxBreak, 
-    [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = RecieveRoomEvent_ItemEffect, 
-    [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = RecieveRoomEvent_ReachedStageGoal, 
-    [ROOMEVENT_TYPE_UNKNOWN - 1] = RecieveRoomEvent_Unknown, 
+    [ROOMEVENT_TYPE_PLATFORM_CHANGE - 1] = RecieveRoomEvent_PlatformChange,
+    [ROOMEVENT_TYPE_ITEMBOX_BREAK - 1] = RecieveRoomEvent_ItemBoxBreak,
+    [ROOMEVENT_TYPE_ENEMY_DESTROYED - 1] = RecieveRoomEvent_EnemyDestroyed,
+    [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = RecieveRoomEvent_PlayerRingLoss,
+    [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = RecieveRoomEvent_MysterItemBoxBreak,
+    [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = RecieveRoomEvent_ItemEffect,
+    [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = RecieveRoomEvent_ReachedStageGoal,
+    [ROOMEVENT_TYPE_UNKNOWN - 1] = RecieveRoomEvent_Unknown,
     [8] = NULL,
 };
 
