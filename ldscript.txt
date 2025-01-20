@@ -125,7 +125,7 @@ SECTIONS
         src/game/sa1_sa2_shared/interactables/platform_square.o(.text);
         src/game/sa1_sa2_shared/interactables/ramp.o(.text);
         src/game/sa1_sa2_shared/interactables/grind_rail.o(.text);
-        src/game/sa1_sa2_shared/interactables/044.o(.text);
+        src/game/sa1_sa2_shared/interactables/ceiling_slope.o(.text);
         src/game/sa1_sa2_shared/interactables/pipe.o(.text);
         src/game/sa1_sa2_shared/interactables/platform_thin.o(.text);
         src/game/sa1_sa2_shared/interactables/slidy_ice.o(.text);
@@ -412,7 +412,7 @@ SECTIONS
         src/game/sa1_sa2_shared/interactables/platform_square.o(.rodata);
         src/game/sa1_sa2_shared/interactables/ramp.o(.rodata);
         src/game/sa1_sa2_shared/interactables/grind_rail.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/044.o(.rodata);
+        src/game/sa1_sa2_shared/interactables/ceiling_slope.o(.rodata);
         src/game/sa1_sa2_shared/interactables/pipe.o(.rodata);
         src/game/sa1_sa2_shared/interactables/platform_thin.o(.rodata);
         src/game/sa1_sa2_shared/interactables/slidy_ice.o(.rodata);

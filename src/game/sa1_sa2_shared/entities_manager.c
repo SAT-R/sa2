@@ -12,7 +12,7 @@
 #include "game/sa1_sa2_shared/entities_manager.h"
 
 #include "game/sa1_sa2_shared/interactables/platform_thin.h"
-#include "game/sa1_sa2_shared/interactables/044.h"
+#include "game/sa1_sa2_shared/interactables/ceiling_slope.h"
 #include "game/sa1_sa2_shared/interactables/grind_rail.h"
 #include "game/sa1_sa2_shared/interactables/platform_square.h"
 #include "game/sa1_sa2_shared/interactables/platform.h"
@@ -304,7 +304,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Corkscrew3D_End,
     CreateEntity_StageGoal,
     CreateEntity_Checkpoint,
-    CreateEntity_044,
+    CreateEntity_CeilingSlope,
     CreateEntity_Toggle_Checkpoint,
     CreateEntity_Toggle_StageGoal,
     CreateEntity_WindUpStick,
@@ -331,7 +331,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_HalfPipe_Start,
     CreateEntity_BigSnowball,
     CreateEntity_NoteBlock,
-    CreateEntity_044,
+    CreateEntity_CeilingSlope,
     CreateEntity_Pipe_Start,
     CreateEntity_Pipe_End,
     CreateEntity_LightBridge,
