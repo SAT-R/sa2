@@ -34,7 +34,7 @@
 #define MOVESTATE_4000000         0x04000000
 #define MOVESTATE_GOAL_REACHED    0x08000000
 #define MOVESTATE_10000000        0x10000000
-#define MOVESTATE_20000000        0x20000000
+#define MOVESTATE_SOME_ATTACK     0x20000000 // Set after using any ability (mid air or ground)
 #define MOVESTATE_IN_SCRIPTED     0x40000000 // Player speed/pos are currently handled by an Interactable
 #define MOVESTATE_80000000        0x80000000
 
