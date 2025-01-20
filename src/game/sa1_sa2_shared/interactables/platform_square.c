@@ -163,7 +163,7 @@ static void Task_Platform_Square(void)
         s->y = posY - gCamera.y + I(platform->offsetY);
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         s32 res, temp, temp2;
         p->qWorldX += deltaX;
 
@@ -178,9 +178,9 @@ static void Task_Platform_Square(void)
         if (res < 0) {
             gPlayer.qWorldY += Q(res);
 
-            p->moveState &= ~MOVESTATE_8;
+            p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = NULL;
+            p->stoodObj = NULL;
         }
 
         temp = I(p->qWorldX) + 2;
@@ -202,9 +202,9 @@ static void Task_Platform_Square(void)
         if (res < 0) {
             p->qWorldY += Q(res);
 
-            p->moveState &= ~MOVESTATE_8;
+            p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = NULL;
+            p->stoodObj = NULL;
         }
     }
 
@@ -231,9 +231,9 @@ static void Task_Platform_Square(void)
                     p->speedAirY = 0;
 
                 if (GRAVITY_IS_INVERTED) {
-                    p->moveState |= MOVESTATE_8;
+                    p->moveState |= MOVESTATE_STOOD_ON_OBJ;
                     p->moveState &= ~MOVESTATE_IN_AIR;
-                    p->unk3C = s;
+                    p->stoodObj = s;
                     p->speedAirY = 0;
                 }
 
@@ -304,7 +304,7 @@ static void Task_Platform_Square(void)
             }
         }
 
-        if ((result & 0xC0000) && !(p->moveState & MOVESTATE_8) && !(p->unk3C == s)) {
+        if ((result & 0xC0000) && !(p->moveState & MOVESTATE_STOOD_ON_OBJ) && !(p->stoodObj == s)) {
             s32 tempXX = (s16)(result & 0xFF00);
             s16 tempX = tempXX;
             p->qWorldX += tempX;

@@ -90,7 +90,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
 
     kb->unk1 = 8;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
         m4aSongNumStart(SE_TECHNO_BASE_COMMON);

@@ -111,7 +111,7 @@ static void Pole_PlayerJumpsOff(Sprite_Pole *pole)
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
         }
         gPlayer.charState = CHARSTATE_SPIN_ATTACK;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         if (pole->facingLeft) {
             gPlayer.speedAirX = -Q(5);
@@ -200,7 +200,7 @@ static void sub_807ED00(Sprite_Pole *pole)
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
         gPlayer.speedAirY = Q(1);
         m4aSongNumStop(SE_POLE_SLIDING);
     }

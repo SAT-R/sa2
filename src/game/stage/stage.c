@@ -389,7 +389,7 @@ void Task_GameStage(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & MOVESTATE_40) {
+            if (gPlayer.moveState & MOVESTATE_IN_WATER) {
                 gPlayer.speedAirY = -Q(2.625);
             } else {
                 gPlayer.speedAirY = -Q(4.875);
@@ -419,7 +419,7 @@ void Task_GameStage(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & MOVESTATE_40) {
+            if (gPlayer.moveState & MOVESTATE_IN_WATER) {
                 gPlayer.speedAirY = -Q(2.625);
             } else {
                 gPlayer.speedAirY = -Q(4.875);

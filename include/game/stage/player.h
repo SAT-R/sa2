@@ -25,7 +25,7 @@ void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void sub_8023610(Player *);
 void Player_TouchGround(Player *p);
-void Player_80261D8(Player *p);
+void Player_Uncurl(Player *p);
 void Player_HandlePhysicsWithAirInput(Player *p);
 void sub_8028204(Player *p);
 void sub_80282EC(Player *p);

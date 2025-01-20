@@ -196,7 +196,7 @@ void Task_PlatformMain(void)
     s->x = posX - gCamera.x + I(platform->offsetX);
     s->y = posY - gCamera.y + I(platform->offsetY);
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         p->qWorldX += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
@@ -222,7 +222,7 @@ void Task_PlatformMain(void)
         TaskDestroy(gCurTask);
     } else {
         if (!(gPlayer.moveState & MOVESTATE_400000)) {
-            if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+            if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
                 if (platform->stoodOffset != 0x100) {
                     platform->stoodOffset += 0x10;
                 }
@@ -334,7 +334,7 @@ void Task_FallingPlatformMain_Idle(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+        if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
             if (platform->stoodOffset != 0x100) {
                 platform->stoodOffset += 0x10;
             }
@@ -407,7 +407,7 @@ void Task_FallingPlatformMain_FallDelay(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+        if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
             if (platform->stoodOffset != 0x100) {
                 platform->stoodOffset += 0x10;
             }
@@ -455,11 +455,11 @@ void Task_FallingPlatformMain_Falling(void)
 
     platform->timer++;
 
-    if (gPlayer.moveState & MOVESTATE_8) {
-        if (gPlayer.unk3C == s) {
+    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) {
+        if (gPlayer.stoodObj == s) {
             if (platform->timer > 32) {
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
-                gPlayer.moveState &= ~MOVESTATE_8;
+                gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 gPlayer.speedAirY = platform->velocityY;
             } else {
                 gPlayer.qWorldX += platform->velocityX;
@@ -479,7 +479,7 @@ void Task_FallingPlatformMain_Falling(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+        if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
             if (platform->stoodOffset != 0x100) {
                 platform->stoodOffset += 0x10;
             }

@@ -332,7 +332,7 @@ static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
     if (gPlayer.rotation == 128) {
         gPlayer.rotation = 109;
     } else {

@@ -95,7 +95,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
-                    gPlayer.unk32 = 600;
+                    gPlayer.confusionTimer = ZONE_TIME_TO_INT(0, 10);
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);
                 }
@@ -133,7 +133,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     && (gGameMode != GAME_MODE_TEAM_PLAY
                         || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
-                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__10;
+                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
 
                     gPlayer.timerSpeedup = ZONE_TIME_TO_INT(0, 10);
                     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
@@ -212,10 +212,10 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                 sub_8019CCC(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
                     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-                    gPlayer.moveState &= ~MOVESTATE_8;
+                    gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                     gPlayer.moveState &= ~MOVESTATE_20;
                     gPlayer.moveState &= ~MOVESTATE_4;
-                    gPlayer.moveState &= ~MOVESTATE_10;
+                    gPlayer.moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
                     gPlayer.moveState |= MOVESTATE_IN_AIR;
                     gPlayer.moveState &= ~MOVESTATE_400;
                     gPlayer.moveState &= ~MOVESTATE_100;

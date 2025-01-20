@@ -46,8 +46,8 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         return result;
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
-        p->moveState &= ~MOVESTATE_8;
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
+        p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         ip = TRUE;
     }
 
@@ -61,14 +61,14 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 
         rectPlayer[1] = -p->spriteOffsetY;
         rectPlayer[3] = +p->spriteOffsetY;
-        p->moveState |= MOVESTATE_8;
+        p->moveState |= MOVESTATE_STOOD_ON_OBJ;
         result |= COLL_FLAG_8;
 
         if (!ip) {
             p->rotation = 0;
         }
 
-        p->unk3C = s;
+        p->stoodObj = s;
         p->speedAirY = 0;
 
         if (GRAVITY_IS_INVERTED) {
@@ -82,7 +82,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         }
         y = Q(y);
         p->qWorldY = Q_24_8_FRAC(p->qWorldY) + (y);
-    } else if (ip && !(p->moveState & MOVESTATE_8)) {
+    } else if (ip && !(p->moveState & MOVESTATE_STOOD_ON_OBJ)) {
         p->moveState &= ~MOVESTATE_20;
         p->moveState |= MOVESTATE_IN_AIR;
     }
@@ -319,7 +319,7 @@ void Collision_AdjustPlayerSpeed(Player *p)
     if (p->moveState & MOVESTATE_BOOST_EFFECT_ON) {
         // Also triggered on homing-attack.
         // Slight boost upwards for the player.
-        p->transition = PLTRANS_PT8;
+        p->transition = PLTRANS_HOMING_ATTACK_RECOIL;
         p->speedAirX = 0;
         p->speedAirY = 0;
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
@@ -362,7 +362,7 @@ bool32 sub_800CBA4(Player *p)
     }
 
     if (!(p->moveState & MOVESTATE_1000000)) {
-        p->transition = PLTRANS_PT9;
+        p->transition = PLTRANS_HURT;
     }
 
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
@@ -422,9 +422,9 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
         return COLL_NONE;
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         r4 = COLL_FLAG_1;
-        p->moveState &= ~MOVESTATE_8;
+        p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         p->moveState |= MOVESTATE_IN_AIR;
     }
 
@@ -432,19 +432,19 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
 
     if (mask) {
         if (mask & COLL_FLAG_10000) {
-            p->moveState |= MOVESTATE_8;
+            p->moveState |= MOVESTATE_STOOD_ON_OBJ;
             p->moveState &= ~MOVESTATE_IN_AIR;
-            p->unk3C = s;
+            p->stoodObj = s;
 
             if (r4 == 0 && s == NULL) {
                 p->speedGroundX = p->speedAirX;
             }
         }
     } else if (r4) {
-        if (!(p->moveState & MOVESTATE_8)) {
+        if (!(p->moveState & MOVESTATE_STOOD_ON_OBJ)) {
             p->moveState &= ~MOVESTATE_20;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = NULL;
+            p->stoodObj = NULL;
 
             if (IS_BOSS_STAGE(gCurrentLevel)) {
                 p->speedGroundX -= Q(gCamera.dx);
@@ -472,18 +472,18 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
         return COLL_NONE;
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         r4 = COLL_FLAG_1;
-        p->moveState &= ~MOVESTATE_8;
+        p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     }
 
     mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
 
     if (mask & COLL_FLAG_10000) {
-        p->moveState |= MOVESTATE_8;
-        p->unk3C = s;
+        p->moveState |= MOVESTATE_STOOD_ON_OBJ;
+        p->stoodObj = s;
     } else if (r4) {
-        p->unk3C = NULL;
+        p->stoodObj = NULL;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             p->speedGroundX -= Q(gCamera.dx);
@@ -657,15 +657,15 @@ bool32 sub_800DD54(Player *p)
 
     p->speedAirY = -Q(3.0);
 
-    if (p->moveState & MOVESTATE_40) {
+    if (p->moveState & MOVESTATE_IN_WATER) {
         HALVE(p->speedAirY);
         HALVE(p->speedAirX);
     }
 
-    p->moveState &= ~MOVESTATE_8;
+    p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     p->moveState &= ~MOVESTATE_20;
     p->moveState &= ~MOVESTATE_4;
-    p->moveState &= ~MOVESTATE_10;
+    p->moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;
@@ -719,15 +719,15 @@ bool32 sub_800DE44(Player *p)
 
     p->speedAirY = -Q(3.0);
 
-    if (p->moveState & MOVESTATE_40) {
+    if (p->moveState & MOVESTATE_IN_WATER) {
         HALVE(p->speedAirY);
         HALVE(p->speedAirX);
     }
 
-    p->moveState &= ~MOVESTATE_8;
+    p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     p->moveState &= ~MOVESTATE_20;
     p->moveState &= ~MOVESTATE_4;
-    p->moveState &= ~MOVESTATE_10;
+    p->moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;

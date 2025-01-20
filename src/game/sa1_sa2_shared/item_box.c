@@ -144,7 +144,7 @@ void BreakItemBox(Entity_ItemBox *itembox)
         gPlayer.speedAirY = -Q(3.0);
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
     }
 
     m4aSongNumStart(SE_ITEM_BOX_2);
@@ -213,7 +213,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
 
                 if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    CreateItemTask_Shield_Normal(gPlayer.unk60);
+                    CreateItemTask_Shield_Normal(gPlayer.playerID);
                 }
             }
 
@@ -225,7 +225,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
 
                 if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    CreateItemTask_Shield_Magnetic(gPlayer.unk60);
+                    CreateItemTask_Shield_Magnetic(gPlayer.playerID);
                 }
             }
 
@@ -236,7 +236,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
             if (IS_SINGLE_PLAYER || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__INVINCIBILITY;
-                CreateItemTask_Invincibility(gPlayer.unk60);
+                CreateItemTask_Invincibility(gPlayer.playerID);
                 gMusicManagerState.unk2 = 16;
             }
         } break;
@@ -248,7 +248,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
 
             if (IS_MULTI_PLAYER) {
-                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__10;
+                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
             }
         } break;
 

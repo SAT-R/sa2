@@ -137,8 +137,8 @@ static void Task_PlatformThinMain(void)
     if (IS_MULTI_PLAYER && (s8)me->x == -3) {
         CreatePlatformBreakParticles(x, y);
 
-        if (player->moveState & MOVESTATE_8 && player->unk3C == s) {
-            player->moveState &= ~MOVESTATE_8;
+        if (player->moveState & MOVESTATE_STOOD_ON_OBJ && player->stoodObj == s) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= 2;
         }
         TaskDestroy(gCurTask);
@@ -161,7 +161,7 @@ static void Task_PlatformThinMain(void)
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
                     if (charState == CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN) {
-                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         player->moveState |= MOVESTATE_IN_AIR;
                         player->speedAirY = player->speedAirY >> 1;
                         CreatePlatformBreakParticles(x, y);
@@ -175,7 +175,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
                     if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
-                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
                     }

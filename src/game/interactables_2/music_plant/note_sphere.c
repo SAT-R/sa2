@@ -173,7 +173,7 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
         gPlayer.speedAirY = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
 
     return angle;
 }

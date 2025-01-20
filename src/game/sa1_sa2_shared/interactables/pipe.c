@@ -53,7 +53,7 @@ static void Task_Pipe_Start(void)
         && (screenY <= I(gPlayer.qWorldY)) && ((screenY + 24) >= I(gPlayer.qWorldY)) && (!(gPlayer.moveState & MOVESTATE_80000))) {
         u8 flag;
 
-        gPlayer.transition = PLTRANS_PIPE_A;
+        gPlayer.transition = PLTRANS_PIPE_ENTRY;
 
         flag = (me->unk3 & 0x03) << 4;
         flag |= me->unk4 & 0x0F;
@@ -64,7 +64,7 @@ static void Task_Pipe_Start(void)
 
         Player_SetMovestate_IsInScriptedSequence();
 
-        gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__10;
+        gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
         gPlayer.timerSpeedup = 0;
 
         m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x100);
@@ -105,9 +105,9 @@ static void Task_Pipe_End(void)
             gPlayer.layer = PLAYER_LAYER__BACK;
         }
 
-        gPlayer.transition = PLTRANS_PIPE_B;
+        gPlayer.transition = PLTRANS_PIPE_EXIT;
         if (me->unk4 != 0) {
-            gPlayer.transition = PLTRANS_PT5;
+            gPlayer.transition = PLTRANS_UNCURL;
         }
 
         Player_ClearMovestate_IsInScriptedSequence();

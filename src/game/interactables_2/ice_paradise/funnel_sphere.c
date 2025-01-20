@@ -176,7 +176,7 @@ static void sub_8078254(Sprite_FunnelSphere *funnelSphere)
 {
     Player_ClearMovestate_IsInScriptedSequence();
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
 
     switch (gPlayer.character) {
         case CHARACTER_CREAM:

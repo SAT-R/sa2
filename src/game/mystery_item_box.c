@@ -263,7 +263,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
     }
 
     itemBox->base.me->d.sData[1] += 1;

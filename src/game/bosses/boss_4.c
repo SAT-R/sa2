@@ -354,8 +354,8 @@ static void sub_8041A08(AeroEgg *boss)
             if ((!sub_800DF38(s, worldX, worldY, p)) == COLL_NONE) {
                 s16 v = -Q(4.75);
                 p->speedAirY = v;
-                p->moveState &= ~(MOVESTATE_100 | MOVESTATE_8);
-                p->unk3C = NULL;
+                p->moveState &= ~(MOVESTATE_100 | MOVESTATE_STOOD_ON_OBJ);
+                p->stoodObj = NULL;
                 p->charState = CHARSTATE_JUMP_2;
                 p->transition = 5;
                 r7 = TRUE;

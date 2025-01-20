@@ -56,7 +56,7 @@ typedef struct {
 #define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
 #define PLAYER_ITEM_EFFECT__SPEED_UP        0x04
 #define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
-#define PLAYER_ITEM_EFFECT__10              0x10
+#define PLAYER_ITEM_EFFECT__MP_SLOW_DOWN    0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
 #define PLAYER_ITEM_EFFECT__CONFUSION       0x40
 #define PLAYER_ITEM_EFFECT__TELEPORT        0x80
@@ -118,28 +118,26 @@ typedef struct Player_ {
     /* 0x2C */ s16 timerInvulnerability;
     /* 0x2E */ s16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
-    /* 0x32 */ u16 unk32;
-    /* 0x34 */ u16 unk34;
-    /* 0x36 */ s8 unk36;
+    /* 0x32 */ u16 confusionTimer;
+    /* 0x34 */ u16 itemEffect20Timer;
+    /* 0x36 */ s8 disableTrickTimer;
     /* 0x37 */ u8 itemEffect; // bitfield
     /* 0x38 */ u8 layer; // bitfield(?), 0x1 determines layer
-    /* 0x39 */ u8 unk39;
-    /* 0x3A */ u16 unk3A;
-    /* 0x3C */ void *unk3C; // the object player collides with this frame?
-    /* 0x40 */ s32 unk40;
-    /* 0x44 */ s32 unk44;
-    /* 0x48 */ s32 unk48; // acceleration?
-    /* 0x4C */ s32 unk4C; // deceleration?
-    /* 0x50 */ u16 unk50;
-    /* 0x52 */ u16 unk52;
-    /* 0x54 */ u16 unk54; // some other anim-variant?
+    /* 0x3C */ void *stoodObj; // the object player collides with this frame?
+    /* 0x40 */ s32 maxSpeed; // top speed the player can go period
+    /* 0x44 */ s32 topSpeed; // top speed the player can accelerate to
+    /* 0x48 */ s32 acceleration;
+    /* 0x4C */ s32 deceleration;
+    /* 0x50 */ u16 rollingDeceleration;
+    /* 0x52 */ u16 boostThreshold;
+    /* 0x54 */ u16 walkAnim;
     /* 0x56 */ u16 unk56;
-    /* 0x58 */ s16 unk58;
+    /* 0x58 */ s16 boostSpeed;
     /* 0x5A */ bool8 isBoosting;
-    /* 0x5B */ u8 unk5B;
+    /* 0x5B */ u8 trickDir;
     /* 0x5C */ u16 heldInput;
     /* 0x5E */ u16 frameInput;
-    /* 0x60 */ s8 unk60;
+    /* 0x60 */ s8 playerID;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;

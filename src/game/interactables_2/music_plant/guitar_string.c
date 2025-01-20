@@ -278,7 +278,7 @@ void sub_8076258(Sprite_GuitarString UNUSED *gs)
     if (PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
         gPlayer.speedAirY = -gPlayer.speedAirY;
         m4aSongNumStart(SE_MUSIC_PLANT_GUITAR_STRING);
     }

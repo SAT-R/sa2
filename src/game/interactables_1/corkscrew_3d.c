@@ -115,13 +115,13 @@ void sub_8061AB0(void)
         if (player->speedGroundX < corkscrew->unkC) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = player->speedGroundX;
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
         } else if (player->frameInput & gPlayerControls.jump) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = player->speedGroundX;
             player->speedAirY = -Q(4.875);
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
@@ -172,13 +172,13 @@ void Task_8061C70(void)
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = 0;
             player->speedAirY = player->speedGroundX;
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
         } else if (player->frameInput & gPlayerControls.jump) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = 0;
             player->speedAirY = -Q(4.875);
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
@@ -212,7 +212,7 @@ void Task_8061DA4(void)
 
     if (I(player->qWorldX) - x > 0x1A8) {
         if (player->moveState & MOVESTATE_4) {
-            player->transition = PLTRANS_PT2;
+            player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
         }
@@ -233,13 +233,13 @@ void Task_8061DA4(void)
     if (player->speedGroundX < corkscrew->unkC) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061914;
     } else if (player->frameInput & gPlayerControls.jump) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061914;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
@@ -338,13 +338,13 @@ void Task_8062100(void)
         } else if (player->speedGroundX > -corkscrew->unkC) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = player->speedGroundX;
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
         } else if (player->frameInput & gPlayerControls.jump) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = player->speedGroundX;
             player->speedAirY = -Q(4.875);
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
@@ -393,13 +393,13 @@ void Task_80622C8(void)
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = 0;
             player->speedAirY = player->speedGroundX;
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
         } else if (player->frameInput & gPlayerControls.jump) {
             player->charState = CHARSTATE_CURLED_IN_AIR;
             player->speedAirX = 0;
             player->speedAirY = -Q(4.875);
-            player->transition = PLTRANS_PT5;
+            player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
@@ -433,7 +433,7 @@ void Task_8062414(void)
 
     if (I(player->qWorldX) - x < -424) {
         if (player->moveState & MOVESTATE_4) {
-            player->transition = PLTRANS_PT2;
+            player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
         }
@@ -454,13 +454,13 @@ void Task_8062414(void)
     if (player->speedGroundX > -corkscrew->unkC) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061F60;
     } else if (player->frameInput & gPlayerControls.jump) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061F60;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;

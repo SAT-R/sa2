@@ -141,7 +141,7 @@ static void sub_805F810(void)
         }
 
         if (spikes->unk3C[0] & 0x10000) {
-            gPlayer.moveState &= ~MOVESTATE_8;
+            gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         }
     }
 
@@ -183,7 +183,7 @@ static void sub_805F928(void)
         }
 
         if (spikes->unk3C[0] & 0x8) {
-            gPlayer.moveState &= ~MOVESTATE_8;
+            gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         }
     }
 
@@ -281,9 +281,9 @@ static void sub_805FBA0(void)
             if (r4 & 0x10000) {
                 gPlayer.qWorldY += (r4 << 24) >> 16;
                 gPlayer.speedAirY = 0;
-                gPlayer.moveState &= (~MOVESTATE_8);
+                gPlayer.moveState &= (~MOVESTATE_STOOD_ON_OBJ);
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
-                gPlayer.unk3C = 0;
+                gPlayer.stoodObj = 0;
             }
             // _0805FC6C
 
@@ -291,9 +291,9 @@ static void sub_805FBA0(void)
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
                     gPlayer.qWorldY += (r4 << 24) >> 16;
                     gPlayer.speedAirY = 0;
-                    gPlayer.moveState |= MOVESTATE_8;
+                    gPlayer.moveState |= MOVESTATE_STOOD_ON_OBJ;
                     gPlayer.moveState &= ~MOVESTATE_IN_AIR;
-                    gPlayer.unk3C = s;
+                    gPlayer.stoodObj = s;
                 }
             }
         } else {
@@ -359,7 +359,7 @@ static void sub_805FBA0(void)
         }
         // _0805FDD8
         if (spikes->unk3C[0] & 0x8) {
-            gPlayer.moveState &= ~MOVESTATE_8;
+            gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         }
     }
     // _0805FDF0
@@ -550,9 +550,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
         Sprite *sp08;
         u32 flags;
 
-        r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
+        r7 = (player->moveState >> 3) & (MOVESTATE_STOOD_ON_OBJ >> 3);
         r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
-        sp08 = player->unk3C;
+        sp08 = player->stoodObj;
 
         flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
@@ -573,9 +573,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
                         player->qWorldY = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
-                        player->moveState |= MOVESTATE_8;
+                        player->moveState |= MOVESTATE_STOOD_ON_OBJ;
                         player->moveState &= ~MOVESTATE_IN_AIR;
-                        player->unk3C = s;
+                        player->stoodObj = s;
                         player->speedGroundX = player->speedAirX;
                         // _080603BC
                         if (sub_800CBA4(player)) {
@@ -600,9 +600,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                         } else {
                             // _080603D0
                             if (r7) {
-                                player->moveState |= MOVESTATE_8;
+                                player->moveState |= MOVESTATE_STOOD_ON_OBJ;
                             } else {
-                                player->moveState &= ~MOVESTATE_8;
+                                player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                             }
 
                             if (r8) {
@@ -611,7 +611,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                                 player->moveState &= ~MOVESTATE_IN_AIR;
                             }
 
-                            player->unk3C = sp08;
+                            player->stoodObj = sp08;
                         }
                     }
                 }
@@ -677,7 +677,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gStageTime & 0x7F };
-    s32 sl = player->unk60;
+    s32 playerID = player->playerID;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
@@ -687,50 +687,50 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 
     // TODO: Replace magic numbers in if statements
     if (sp0C[0] < 60) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
 
         return FALSE;
     } else if (sp0C[0] < 62) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
         UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
-        if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP) || ((player->unk60 != 0) && (*param4 != 0))) {
-            if (player->unk60 == 0) {
+        if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP) || ((player->playerID != 0) && (*param4 != 0))) {
+            if (player->playerID == 0) {
                 // TODO: Replace magic number
                 *param4 = 1;
             }
@@ -786,9 +786,9 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
                     player->qWorldY = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
-                    player->moveState |= MOVESTATE_8;
+                    player->moveState |= MOVESTATE_STOOD_ON_OBJ;
                     player->moveState &= ~MOVESTATE_IN_AIR;
-                    player->unk3C = s;
+                    player->stoodObj = s;
                     player->speedGroundX = player->speedAirX;
 
                     if (sub_800CBA4(player)) {
@@ -804,33 +804,33 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
             }
 
             // TODO: WHY!?
-            spikes->unk3C[sl] = player->moveState;
+            spikes->unk3C[playerID] = player->moveState;
         }
     } else if (sp0C[0] < 126) {
 
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         UpdateSpriteAnimation(s);
     } else {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & MOVESTATE_20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
@@ -844,7 +844,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gStageTime & 0x7F };
-    s32 sl = player->unk60;
+    s32 playerID = player->playerID;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
@@ -854,50 +854,50 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 
     // TODO: Replace magic numbers in if statements
     if (sp0C[0] < 60) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
 
         return FALSE;
     } else if (sp0C[0] < 62) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
         UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
-        if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP) || ((player->unk60 != 0) && (*param4 != 0))) {
-            if (player->unk60 == 0) {
+        if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP) || ((player->playerID != 0) && (*param4 != 0))) {
+            if (player->playerID == 0) {
                 // TODO: Replace magic number
                 *param4 = 1;
             }
@@ -922,8 +922,8 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
             } else
                 return TRUE;
         } else {
-            spikes->unk3C[sl] = sub_800CCB8(s, screenX, screenY, player);
-            if (!(spikes->unk3C[sl] & 0x20000) || !sub_800CBA4(player)) {
+            spikes->unk3C[playerID] = sub_800CCB8(s, screenX, screenY, player);
+            if (!(spikes->unk3C[playerID] & 0x20000) || !sub_800CBA4(player)) {
                 return TRUE;
             }
         }
@@ -931,29 +931,29 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
         m4aSongNumStart(SE_SPIKES);
     } else if (sp0C[0] < 126) {
 
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         UpdateSpriteAnimation(s);
     } else {
-        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
-            player->moveState &= ~MOVESTATE_8;
+        if ((player->moveState & MOVESTATE_STOOD_ON_OBJ) && (player->stoodObj == s)) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
         // TODO: Replace magic number
-        if (spikes->unk3C[sl] & 0x20) {
+        if (spikes->unk3C[playerID] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
-            spikes->unk3C[sl] = 0;
+            spikes->unk3C[playerID] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;

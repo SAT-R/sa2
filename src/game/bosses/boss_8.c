@@ -452,7 +452,7 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == prop) {
+    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == prop) {
         gPlayer.qWorldY += Q(1);
         gPlayer.qWorldY += preY;
         if (towers->unk15E == 1) {
@@ -567,7 +567,7 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
         gPlayer.qWorldY += preY + Q(1);
 
         if (towers->unk15E == 1) {
@@ -617,7 +617,7 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
         gPlayer.qWorldY += preY + Q(1);
 
         if (towers->unk15E == 1) {
@@ -670,7 +670,7 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
         gPlayer.qWorldY += preY + Q(2);
 
         if (towers->unk15E == 1) {
@@ -986,11 +986,11 @@ void Task_804AB24(void)
         gPlayer.heldInput = 0;
         gPlayer.frameInput = 0;
 
-        if (gPlayer.moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) {
+        if (gPlayer.moveState & (MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
             gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
             gPlayer.speedAirX = -Q(2);
             gPlayer.speedAirY = -Q(0);
-            gPlayer.transition = PLTRANS_PT5;
+            gPlayer.transition = PLTRANS_UNCURL;
         } else {
             // _0804AC68
             gPlayer.speedGroundX = Q(0);

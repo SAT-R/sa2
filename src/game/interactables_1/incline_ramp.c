@@ -35,7 +35,7 @@ static void Task_InclineRamp(void)
         //  spriteY == me->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.id) == 0) {
             if (gPlayer.speedAirX > Q(4)) {
-                moveState &= ~MOVESTATE_8;
+                moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
                 moveState &= ~MOVESTATE_4;
@@ -61,7 +61,7 @@ static void Task_InclineRamp(void)
         } else {
             // _0805DC20
             if (gPlayer.speedAirX < Q_8_8(-4)) {
-                moveState &= ~MOVESTATE_8;
+                moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
                 moveState &= ~MOVESTATE_4;

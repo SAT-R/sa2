@@ -96,7 +96,7 @@ void Task_YadoMain(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -227,7 +227,7 @@ void Task_8055378(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         m4aSongNumStart(SE_SPRING);
     }

@@ -21,7 +21,7 @@ void Player_Knuckles_InitSpiralAttack(Player *);
 void Player_Knuckles_InitGlide(Player *);
 void Player_Knuckles_InitDrillClaw(Player *);
 void Player_Amy_InitHammerAttack(Player *);
-void Player_801225C(Player *p);
+void Player_InitHomingAttackRecoil(Player *p);
 void Player_UpdateHomingPosition(s32 qX, s32 qY);
 
 #endif // GUARD_player_callbacks_H

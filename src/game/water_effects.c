@@ -187,7 +187,7 @@ static void Task_StageWaterTask(void)
     }
 
     if (water->isActive != TRUE) {
-        gFlags &= ~MOVESTATE_40;
+        gFlags &= ~MOVESTATE_IN_WATER;
         return;
     }
 

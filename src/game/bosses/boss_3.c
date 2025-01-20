@@ -201,8 +201,8 @@ void CreateEggTotem(void)
     u8 i;
     void *tiles;
 
-    gPlayer.unk3C = NULL;
-    gPlayer.moveState &= ~MOVESTATE_8;
+    gPlayer.stoodObj = NULL;
+    gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
 
     sub_8039ED4();
@@ -461,10 +461,10 @@ void Task_803F3E8(void)
     if (totem->lives == 0) {
         Player_DisableInputAndBossTimer();
 
-        if (gPlayer.unk3C != NULL || gPlayer.moveState & MOVESTATE_8) {
-            gPlayer.unk3C = NULL;
+        if (gPlayer.stoodObj != NULL || gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) {
+            gPlayer.stoodObj = NULL;
 
-            gPlayer.moveState &= ~MOVESTATE_8;
+            gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             gPlayer.moveState |= MOVESTATE_IN_AIR;
         }
 
@@ -1260,11 +1260,11 @@ void sub_8040A00(EggTotem *totem)
 #else
             Player *p;
 #endif
-            u32 moveState = (gPlayer.moveState & MOVESTATE_8);
+            u32 moveState = (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ);
             s32 x, y;
             r7 = FALSE;
 
-            if (moveState && (gPlayer.unk3C == s)) {
+            if (moveState && (gPlayer.stoodObj == s)) {
                 r7 = TRUE;
             }
 
@@ -1273,7 +1273,7 @@ void sub_8040A00(EggTotem *totem)
             p = &gPlayer;
             coll = sub_800CCB8(s, x, y, p);
 
-            if ((p->moveState & MOVESTATE_8) && (coll & COLL_FLAG_10000)) {
+            if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (coll & COLL_FLAG_10000)) {
                 p->qWorldX += t3c->qUnk8 + Q(5);
                 p->qWorldY += Q(2) + (s16)Q(coll);
 
@@ -1281,8 +1281,8 @@ void sub_8040A00(EggTotem *totem)
                     p->speedAirX -= Q(5);
                 }
             } else if (r7) {
-                gPlayer.moveState &= ~MOVESTATE_8;
-                gPlayer.unk3C = NULL;
+                gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                gPlayer.stoodObj = NULL;
 
                 if (!(gPlayer.moveState & MOVESTATE_100)) {
                     gPlayer.moveState &= ~MOVESTATE_100;

@@ -133,7 +133,7 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
+        if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_STOOD_ON_OBJ))) {
             gPlayer.transition = PLTRANS_REACHED_GOAL;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
@@ -187,7 +187,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
     u32 count = 0;
     MultiplayerPlayer *player = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
-    gPlayer.unk32 = 0;
+    gPlayer.confusionTimer = 0;
 
     if (!(player->unk5C & 1)) {
         u32 j;
@@ -224,7 +224,7 @@ static UNUSED void sub_8062BD0(void)
     *SIO_MULTI_CNT;
 
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
-    gPlayer.unk32 = 0;
+    gPlayer.confusionTimer = 0;
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {
         // TODO: make this a macro? What does it even mean

@@ -181,7 +181,7 @@ static void sub_807B74C(Sprite_Propeller *propeller)
 static void sub_807B7BC(Sprite_Propeller *propeller)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
 
     if (propeller->unk48 <= (PROPELLER_HITBOX_HEIGHT / 2) || propeller->unk48 >= 192) {
         propeller->unk48 += (PROPELLER_HITBOX_HEIGHT / 2);
