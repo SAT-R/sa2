@@ -20,57 +20,57 @@
 #define ROOMEVENT_TYPE_UNKNOWN               8
 
 // RoomEvent variable structs
-struct RoomEvent_PlatformChange {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 x;
     u8 y;
     u8 id;
     u8 action;
-};
+} RoomEvent_PlatformChange;
 
-struct RoomEvent_ItemBoxBreak {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 x;
     u8 y;
     u8 id;
-};
+} RoomEvent_ItemBoxBreak;
 
-struct RoomEvent_EnemyDestroy {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 x;
     u8 y;
     u8 id;
-};
+} RoomEvent_EnemyDestroy;
 
-struct RoomEvent_RingLoss {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 ringCount;
-};
+} RoomEvent_RingLoss;
 
-struct RoomEvent_MysteryItemBoxBreak {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 x;
     u8 y;
     u8 id;
     u8 unk4;
-};
+} RoomEvent_MysteryItemBoxBreak;
 
-struct RoomEvent_ItemEffect {
+typedef struct {
     ROOMEVENT_BASE;
     u8 effect;
     u8 targetPlayer;
-};
+} RoomEvent_ItemEffect;
 
-struct RoomEvent_Unknown {
+typedef struct {
     ROOMEVENT_BASE;
     u8 unk1;
     u8 unk2;
-};
+} RoomEvent_Unknown;
 
 struct Task *CreateMultiplayerRecieveEventMgr(void);
 struct Task *CreateMultiplayerSendEventMgr(void);
@@ -83,6 +83,6 @@ void RecieveRoomEvent_MysterItemBoxBreak(union MultiSioData *, u8);
 void RecieveRoomEvent_Unknown(union MultiSioData *, u8);
 
 // Creates and sends a room event for multiplayer
-struct RoomEvent *CreateRoomEvent(void);
+void *CreateRoomEvent(void);
 
 #endif // GUARD_MULTIPLAYER_EVENT_MGR_H

@@ -189,7 +189,7 @@ static void Task_PlatformThinMain(void)
     }
     if (something) {
         if (IS_MULTI_PLAYER) {
-            struct RoomEvent_PlatformChange *roomEvent = (struct RoomEvent_PlatformChange *)CreateRoomEvent();
+            RoomEvent_PlatformChange *roomEvent = CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
             roomEvent->x = platform->base.regionX;
             roomEvent->y = platform->base.regionY;

@@ -56,11 +56,11 @@ typedef struct {
 
 // RoomEvent opaque struct
 // See 'multiplayer_event_mgr.h' for more information on this
-struct RoomEvent {
+typedef struct {
     ROOMEVENT_BASE;
 
     u8 opaque[7];
-}; /* 0x8 */
+} RoomEvent; /* 0x8 */
 
 #define CHEESE_DISTANCE_MAX 200
 typedef struct {
@@ -159,7 +159,7 @@ extern s32 gStageGoalX;
 extern u8 gUnknown_03005428[4];
 extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
-extern struct RoomEvent gRoomEventQueue[16];
+extern RoomEvent gRoomEventQueue[16];
 
 extern CheeseTarget gCheeseTarget;
 

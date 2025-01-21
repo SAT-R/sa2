@@ -67,7 +67,7 @@ u8 ALIGNED(4) gUnknown_030054F8 = 0;
 s32 gUnknown_030054FC = 0;
 
 s8 gMultiplayerCharacters[4] = {};
-struct RoomEvent ALIGNED(16) gRoomEventQueue[16] = {};
+RoomEvent ALIGNED(16) gRoomEventQueue[16] = {};
 u32 gStageTime = 0;
 
 u8 ALIGNED(4) gMultiplayerUnlockedCharacters = 0;

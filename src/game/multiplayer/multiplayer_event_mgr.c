@@ -52,9 +52,9 @@ void Task_MultiplayerEventMgr_Send(void)
     }
 
     if (gRoomEventQueueWritePos == gRoomEventQueueSendPos) {
-        DmaFill16(3, 0, &gMultiSioSend.pat0.unk8[3], sizeof(struct RoomEvent) - 1);
+        DmaFill16(3, 0, &gMultiSioSend.pat0.unk8[3], sizeof(RoomEvent) - 1);
     } else {
-        DmaCopy16(3, &gRoomEventQueue[gRoomEventQueueSendPos], &gMultiSioSend.pat0.unk8[3], sizeof(struct RoomEvent) - 1);
+        DmaCopy16(3, &gRoomEventQueue[gRoomEventQueueSendPos], &gMultiSioSend.pat0.unk8[3], sizeof(RoomEvent) - 1);
         gRoomEventQueueSendPos = (gRoomEventQueueSendPos + 1) & 0xF;
         send->unk8[0] ^= (0x1000 << id);
     }
@@ -266,7 +266,7 @@ void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
                     sub_8019CCC(j, 1);
                 } else {
                     u32 temp;
-                    struct RoomEvent *roomEvent;
+                    RoomEvent *roomEvent;
                     sub_8019CCC(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;

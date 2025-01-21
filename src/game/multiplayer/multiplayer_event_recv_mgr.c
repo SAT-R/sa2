@@ -5,9 +5,9 @@
 #include "game/stage/rings_scatter.h"
 #include "game/sa1_sa2_shared/entities_manager.h"
 
-struct RoomEvent *CreateRoomEvent(void)
+void *CreateRoomEvent(void)
 {
-    struct RoomEvent *result = &gRoomEventQueue[gRoomEventQueueWritePos];
+    RoomEvent *result = &gRoomEventQueue[gRoomEventQueueWritePos];
 
     gRoomEventQueueWritePos = (gRoomEventQueueWritePos + 1) & 0xF;
 

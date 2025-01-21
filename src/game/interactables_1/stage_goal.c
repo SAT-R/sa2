@@ -183,7 +183,7 @@ static void Task_StageGoalToggleMain(void)
 
 static void StageGoalToggle_HandleMultiplayerFinish(void)
 {
-    struct RoomEvent *roomEvent;
+    RoomEvent *roomEvent;
     u32 count = 0;
     MultiplayerPlayer *player = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
@@ -218,7 +218,7 @@ static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
 {
     u32 thing = 0;
     struct Task **mpTasks = gMultiplayerPlayerTasks;
-    struct RoomEvent *roomEvent;
+    RoomEvent *roomEvent;
     u32 j;
 
     // Required for match

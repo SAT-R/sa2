@@ -149,7 +149,7 @@ void BreakItemBox(Entity_ItemBox *itembox)
     itembox->frames = 0;
 
     if (IS_MULTI_PLAYER) {
-        struct RoomEvent_ItemBoxBreak *roomEvent = (struct RoomEvent_ItemBoxBreak *)CreateRoomEvent();
+        RoomEvent_ItemBoxBreak *roomEvent = CreateRoomEvent();
         roomEvent->type = ROOMEVENT_TYPE_ITEMBOX_BREAK;
         roomEvent->x = itembox->base.regionX;
         roomEvent->y = itembox->base.regionY;
@@ -312,7 +312,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
 
             {
-                struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+                RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
                 roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
                 roomEvent->effect = 1;
                 roomEvent->targetPlayer = nearestPlayer;
@@ -322,28 +322,28 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
 
         case ITEM__MP_CONFUSION: {
-            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
             roomEvent->effect = 0;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case ITEM__MP_SLOWDOWN: {
-            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
             roomEvent->effect = 2;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case ITEM__MP_ATTACK: {
-            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
             roomEvent->effect = 3;
             m4aSongNumStart(SE_219);
         } break;
 
         case ITEM__MP_ATTACK_2: {
-            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
             roomEvent->effect = 4;
             m4aSongNumStart(SE_216);

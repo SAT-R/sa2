@@ -257,7 +257,7 @@ static void sub_808636C(void)
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
 {
-    struct RoomEvent_MysteryItemBoxBreak *roomEvent;
+    RoomEvent_MysteryItemBoxBreak *roomEvent;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
@@ -272,7 +272,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->framesSinceOpened = 0;
 
-    roomEvent = (struct RoomEvent_MysteryItemBoxBreak *)CreateRoomEvent();
+    roomEvent = CreateRoomEvent();
     roomEvent->type = ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK;
     roomEvent->x = itemBox->base.regionX;
     roomEvent->y = itemBox->base.regionY;
@@ -305,7 +305,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             break;
         }
         case 1: {
-            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
 
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
             roomEvent->effect = 4;
