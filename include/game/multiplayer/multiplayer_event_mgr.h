@@ -37,7 +37,7 @@ struct RoomEvent_PlatformChange {
     u8 y;
     u8 id;
     u8 action;
-} platformChange;
+};
 
 struct RoomEvent_ItemBoxBreak {
     ROOMEVENT_BASE;
@@ -45,7 +45,7 @@ struct RoomEvent_ItemBoxBreak {
     u8 x;
     u8 y;
     u8 id;
-} itemBoxBreak;
+};
 
 struct RoomEvent_EnemyDestroy {
     ROOMEVENT_BASE;
@@ -53,7 +53,7 @@ struct RoomEvent_EnemyDestroy {
     u8 x;
     u8 y;
     u8 id;
-} enemyDestroy;
+};
 
 struct RoomEvent_RingLoss {
     ROOMEVENT_BASE;
