@@ -19,16 +19,6 @@
 #define ROOMEVENT_TYPE_REACHED_STAGE_GOAL    7
 #define ROOMEVENT_TYPE_UNKNOWN               8
 
-// Common RoomEvent variables
-#define ROOMEVENT_BASE u8 type
-
-// RoomEvent opaque struct
-struct RoomEvent {
-    ROOMEVENT_BASE;
-
-    u8 opaque[7];
-}; /* 0x8 */
-
 // RoomEvent variable structs
 struct RoomEvent_PlatformChange {
     ROOMEVENT_BASE;
@@ -81,10 +71,6 @@ struct RoomEvent_Unknown {
     u8 unk1;
     u8 unk2;
 };
-
-extern u8 gRoomEventQueueSendPos;
-extern u8 gRoomEventQueueWritePos;
-extern struct RoomEvent gRoomEventQueue[16];
 
 struct Task *CreateMultiplayerRecieveEventMgr(void);
 struct Task *CreateMultiplayerSendEventMgr(void);

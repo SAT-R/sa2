@@ -51,6 +51,17 @@ typedef struct {
     u16 angle;
 } HomingTarget;
 
+// Common RoomEvent variables
+#define ROOMEVENT_BASE u8 type
+
+// RoomEvent opaque struct
+// See 'multiplayer_event_mgr.h' for more information on this
+struct RoomEvent {
+    ROOMEVENT_BASE;
+
+    u8 opaque[7];
+}; /* 0x8 */
+
 #define CHEESE_DISTANCE_MAX 200
 typedef struct {
     /* 0x00 */ s32 squarePlayerDistance;
@@ -92,6 +103,8 @@ extern struct Task *gEntitiesManagerTask;
 
 extern u8 gDestroySpotlights;
 
+extern u8 gRoomEventQueueSendPos;
+
 // "Extra State" (see above #defines for states)
 // TODO: Find better name. Put somewhere else?
 extern u16 gStageFlags;
@@ -110,6 +123,8 @@ extern u32 gStageTime;
 extern u32 gMPStageStartFrameCount;
 
 extern u32 gCheckpointTime; // Checkpoint timer?
+
+extern u8 gRoomEventQueueWritePos;
 
 extern u8 gBossRingsRespawnCount;
 extern bool8 gBossRingsShallRespawn;
@@ -143,6 +158,8 @@ extern s32 gStageGoalX;
 
 extern u8 gUnknown_03005428[4];
 extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
+
+extern struct RoomEvent gRoomEventQueue[16];
 
 extern CheeseTarget gCheeseTarget;
 
