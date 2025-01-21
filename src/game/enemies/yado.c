@@ -159,11 +159,11 @@ void Task_8055084(void)
             if (cheese->s.hitboxes[1].index != HITBOX_STATE_INACTIVE) {
                 if (HB_COLLISION(x, y, s->hitboxes[0], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])) {
                     if (IS_MULTI_PLAYER) {
-                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        struct RoomEvent_EnemyDestroy *roomEvent = (struct RoomEvent_EnemyDestroy *)CreateRoomEvent();
                         roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
-                        roomEvent->unk1 = yado2->base.regionX;
-                        roomEvent->unk2 = yado2->base.regionY;
-                        roomEvent->unk3 = yado2->base.id;
+                        roomEvent->x = yado2->base.regionX;
+                        roomEvent->y = yado2->base.regionY;
+                        roomEvent->id = yado2->base.id;
                     }
 
                     CreateDustCloud(x, y);

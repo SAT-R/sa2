@@ -189,12 +189,12 @@ static void Task_PlatformThinMain(void)
     }
     if (something) {
         if (IS_MULTI_PLAYER) {
-            struct RoomEvent *roomEvent = CreateRoomEvent();
+            struct RoomEvent_PlatformChange *roomEvent = (struct RoomEvent_PlatformChange *)CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
-            roomEvent->unk1 = platform->base.regionX;
-            roomEvent->unk2 = platform->base.regionY;
-            roomEvent->unk3 = platform->base.id;
-            roomEvent->unk4 = 0;
+            roomEvent->x = platform->base.regionX;
+            roomEvent->y = platform->base.regionY;
+            roomEvent->id = platform->base.id;
+            roomEvent->action = 0;
         }
         TaskDestroy(gCurTask);
         return;

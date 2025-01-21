@@ -384,7 +384,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.moveState &= ~MOVESTATE_400000;
                     }
                     {
-                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        struct RoomEvent_Unknown *roomEvent = (struct RoomEvent_Unknown *)CreateRoomEvent();
                         roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
                         roomEvent->unk1 = mpp->unk56;
                         roomEvent->unk2 = 0;
@@ -746,7 +746,7 @@ void sub_801707C(void)
                     gPlayer.spriteOffsetY = 14;
 
                     {
-                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        struct RoomEvent_Unknown *roomEvent = (struct RoomEvent_Unknown *)CreateRoomEvent();
                         roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
                         roomEvent->unk1 = mpp->unk56;
                         roomEvent->unk2 = 1;
@@ -851,7 +851,7 @@ void sub_801707C(void)
         }
 
         if (!(mpp->unk5C & 4)) {
-            struct RoomEvent *roomEvent = CreateRoomEvent();
+            struct RoomEvent_Unknown *roomEvent = (struct RoomEvent_Unknown *)CreateRoomEvent();
             roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
             roomEvent->unk1 = mpp->unk56;
             roomEvent->unk2 = 0;
@@ -982,7 +982,7 @@ void sub_8017670(void)
                         }
                         if (!(mpp->unk5C & 4)) {
                             {
-                                struct RoomEvent *roomEvent = CreateRoomEvent();
+                                struct RoomEvent_Unknown *roomEvent = (struct RoomEvent_Unknown *)CreateRoomEvent();
                                 roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
                                 roomEvent->unk1 = mpp->unk56;
                                 roomEvent->unk2 = 1;
@@ -1073,7 +1073,7 @@ void sub_8017670(void)
             }
 
             if (!(mpp->unk5C & 4)) {
-                struct RoomEvent *roomEvent = CreateRoomEvent();
+                struct RoomEvent_Unknown *roomEvent = (struct RoomEvent_Unknown *)CreateRoomEvent();
                 roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
                 roomEvent->unk1 = mpp->unk56;
                 roomEvent->unk2 = 0;

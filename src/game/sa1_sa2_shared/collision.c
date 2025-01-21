@@ -192,11 +192,11 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
             if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])) {
                 if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(player->qWorldX), I(player->qWorldY), sprPlayer->hitboxes[1])) {
                     if (IS_MULTI_PLAYER) {
-                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        struct RoomEvent_EnemyDestroy *roomEvent = (struct RoomEvent_EnemyDestroy *)CreateRoomEvent();
                         roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
-                        roomEvent->unk1 = eb->base.regionX;
-                        roomEvent->unk2 = eb->base.regionY;
-                        roomEvent->unk3 = eb->base.id;
+                        roomEvent->x = eb->base.regionX;
+                        roomEvent->y = eb->base.regionY;
+                        roomEvent->id = eb->base.id;
                     }
 
                     Collision_AdjustPlayerSpeed(player);
@@ -215,11 +215,11 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
                     sub_800CBA4(player);
                 } else {
                     if (IS_MULTI_PLAYER) {
-                        struct RoomEvent *roomEvent = CreateRoomEvent();
+                        struct RoomEvent_EnemyDestroy *roomEvent = (struct RoomEvent_EnemyDestroy *)CreateRoomEvent();
                         roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
-                        roomEvent->unk1 = eb->base.regionX;
-                        roomEvent->unk2 = eb->base.regionY;
-                        roomEvent->unk3 = eb->base.id;
+                        roomEvent->x = eb->base.regionX;
+                        roomEvent->y = eb->base.regionY;
+                        roomEvent->id = eb->base.id;
                     }
 
                     CreateDustCloud(sx, sy);
@@ -236,11 +236,11 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
             if (cheese->s.hitboxes[1].index != -1
                 && ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])))) {
                 if (IS_MULTI_PLAYER) {
-                    struct RoomEvent *roomEvent = CreateRoomEvent();
+                    struct RoomEvent_EnemyDestroy *roomEvent = (struct RoomEvent_EnemyDestroy *)CreateRoomEvent();
                     roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
-                    roomEvent->unk1 = eb->base.regionX;
-                    roomEvent->unk2 = eb->base.regionY;
-                    roomEvent->unk3 = eb->base.id;
+                    roomEvent->x = eb->base.regionX;
+                    roomEvent->y = eb->base.regionY;
+                    roomEvent->id = eb->base.id;
                 }
 
                 CreateDustCloud(sx, sy);
@@ -386,9 +386,9 @@ bool32 sub_800CBA4(Player *p)
             InitScatteringRings(I(p->qWorldX), I(p->qWorldY), rings);
 
             if (IS_MULTI_PLAYER) {
-                struct RoomEvent *roomEvent = CreateRoomEvent();
+                struct RoomEvent_RingLoss *roomEvent = (struct RoomEvent_RingLoss *)CreateRoomEvent();
                 roomEvent->type = ROOMEVENT_TYPE_PLAYER_RING_LOSS;
-                roomEvent->unk1 = rings;
+                roomEvent->ringCount = rings;
             }
 
             gRingCount -= rings;
@@ -679,7 +679,7 @@ bool32 sub_800DD54(Player *p)
     p->transition = 9;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        struct RoomEvent *roomEvent;
+        struct RoomEvent_RingLoss *roomEvent;
 #ifndef NON_MATCHING
         register u32 rings asm("r4") = gRingCount;
 #else
@@ -693,9 +693,9 @@ bool32 sub_800DD54(Player *p)
         InitScatteringRings(I(p->qWorldX), I(p->qWorldY), rings);
         gRingCount -= rings;
 
-        roomEvent = CreateRoomEvent();
+        roomEvent = (struct RoomEvent_RingLoss *)CreateRoomEvent();
         roomEvent->type = ROOMEVENT_TYPE_PLAYER_RING_LOSS;
-        roomEvent->unk1 = rings;
+        roomEvent->ringCount = rings;
     }
 
     m4aSongNumStart(SE_LIFE_LOST);
@@ -741,7 +741,7 @@ bool32 sub_800DE44(Player *p)
     p->transition = 9;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        struct RoomEvent *roomEvent;
+        struct RoomEvent_RingLoss *roomEvent;
 #ifndef NON_MATCHING
         register u32 rings asm("r4") = gRingCount;
 #else
@@ -755,9 +755,9 @@ bool32 sub_800DE44(Player *p)
         InitScatteringRings(I(p->qWorldX), I(p->qWorldY), rings);
         gRingCount -= rings;
 
-        roomEvent = CreateRoomEvent();
+        roomEvent = (struct RoomEvent_RingLoss *)CreateRoomEvent();
         roomEvent->type = ROOMEVENT_TYPE_PLAYER_RING_LOSS;
-        roomEvent->unk1 = rings;
+        roomEvent->ringCount = rings;
     }
 
     m4aSongNumStart(SE_LIFE_LOST);

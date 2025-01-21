@@ -257,7 +257,7 @@ static void sub_808636C(void)
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
 {
-    struct RoomEvent *roomEvent;
+    struct RoomEvent_MysteryItemBoxBreak *roomEvent;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
@@ -271,12 +271,12 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     m4aSongNumStart(SE_ITEM_BOX_2);
     CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->framesSinceOpened = 0;
-    roomEvent = CreateRoomEvent();
 
+    roomEvent = (struct RoomEvent_MysteryItemBoxBreak *)CreateRoomEvent();
     roomEvent->type = ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK;
-    roomEvent->unk1 = itemBox->base.regionX;
-    roomEvent->unk2 = itemBox->base.regionY;
-    roomEvent->unk3 = itemBox->base.id;
+    roomEvent->x = itemBox->base.regionX;
+    roomEvent->y = itemBox->base.regionY;
+    roomEvent->id = itemBox->base.id;
     roomEvent->unk4 = itemBox->base.me->d.sData[1];
 
     gCurTask->main = sub_808665C;
@@ -305,10 +305,10 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             break;
         }
         case 1: {
-            struct RoomEvent *roomEvent = CreateRoomEvent();
+            struct RoomEvent_ItemEffect *roomEvent = (struct RoomEvent_ItemEffect *)CreateRoomEvent();
 
             roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
-            roomEvent->unk1 = 4;
+            roomEvent->effect = 4;
             break;
         }
     }

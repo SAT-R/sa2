@@ -391,12 +391,12 @@ void Task_FallingPlatformMain_FallDelay(void)
             gCurTask->main = Task_FallingPlatformMain_Falling;
 
             if (IS_MULTI_PLAYER) {
-                struct RoomEvent *roomEvent = CreateRoomEvent();
+                struct RoomEvent_PlatformChange *roomEvent = (struct RoomEvent_PlatformChange *)CreateRoomEvent();
                 roomEvent->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
-                roomEvent->unk1 = platform->base.regionX;
-                roomEvent->unk2 = platform->base.regionY;
-                roomEvent->unk3 = platform->base.id;
-                roomEvent->unk4 = 1;
+                roomEvent->x = platform->base.regionX;
+                roomEvent->y = platform->base.regionY;
+                roomEvent->id = platform->base.id;
+                roomEvent->action = 1;
             }
         }
     }

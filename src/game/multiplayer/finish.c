@@ -138,6 +138,7 @@ void TaskDestructor_8019EF4(struct Task *t)
 
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/results.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "lib/m4a/m4a.h"
 
 typedef struct {
