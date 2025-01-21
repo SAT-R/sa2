@@ -49,12 +49,12 @@ void Task_OllieLogoMoves(void);
 //    1
 // -------
 // x^4 + 0.5
-int logoOllieMove(int frameNum)
+s32 logoOllieMove(s32 frameNum)
 {
-    int qTime = (Q_DIV(Q(frameNum), Q(GBA_FRAMES_PER_SECOND)));
+    s32 qTime = (Q_DIV(Q(frameNum), Q(GBA_FRAMES_PER_SECOND)));
 
-    int qNum = Q(1);
-    int qDenom = Q_MUL(Q_MUL(Q_MUL(Q_MUL(qTime, qTime), qTime), qTime), qTime) + Q(1);
+    s32 qNum = Q(1);
+    s32 qDenom = Q_MUL(Q_MUL(Q_MUL(Q_MUL(qTime, qTime), qTime), qTime), qTime) + Q(1);
     return Q_DIV(qNum, qDenom);
 }
 
@@ -194,7 +194,7 @@ void Task_DecompCreditsFirst()
         }
 
         {
-            int qVel = logoOllieMove(cred->frames - cred->logoFrameT0);
+            s32 qVel = logoOllieMove(cred->frames - cred->logoFrameT0);
             cred->qLogoOllieScreenX += qVel;
         }
     }

@@ -798,7 +798,7 @@ void InitializePlayer(Player *p)
     u99_r6 = p->unk99;
     playerID = &p->playerID;
     character = &p->character;
-    memset(p->unk99, 0, 16);
+    memset(p->unk99, 0, sizeof(p->unk99));
 #endif
 
     *u99_r6 = 0x7F;
@@ -6347,8 +6347,8 @@ s32 sub_8029A28(Player *p, u8 *p1, s32 *out)
     u8 dummy;
 
     // TODO: Why is dummyInt unused?
-    int dummyInt;
-    int p1Value;
+    s32 dummyInt;
+    s32 p1Value;
 
     if (p1 == NULL)
         p1 = &dummy;
@@ -6410,8 +6410,8 @@ s32 sub_8029AC0(Player *p, u8 *p1, s32 *out)
     u8 dummy;
 
     // TODO: Why is dummyInt unused?
-    int dummyInt;
-    int p1Value;
+    s32 dummyInt;
+    s32 p1Value;
 
     if (p1 == NULL)
         p1 = &dummy;
@@ -6442,8 +6442,8 @@ s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
     u8 dummy;
 
     // TODO: Why is dummyInt unused?
-    int dummyInt;
-    int p1Value;
+    s32 dummyInt;
+    s32 p1Value;
 
     if (p1 == NULL)
         p1 = &dummy;
@@ -6467,7 +6467,7 @@ s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
     return result;
 }
 
-s32 sub_8029B58(Player *p, u8 *p1, int *out)
+s32 sub_8029B58(Player *p, u8 *p1, s32 *out)
 {
     s32 result;
 
@@ -6480,7 +6480,7 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
     return result;
 }
 
-s32 sub_8029B88(Player *p, u8 *p1, int *out)
+s32 sub_8029B88(Player *p, u8 *p1, s32 *out)
 {
     s32 result;
 

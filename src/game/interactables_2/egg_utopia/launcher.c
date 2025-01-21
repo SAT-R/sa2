@@ -120,7 +120,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
 
     {
         s32 *xs, *ys;
-        int i = 0;
+        s32 i = 0;
 #ifndef NON_MATCHING
         register void *s2 asm("r4") = &launcher->s;
 #endif

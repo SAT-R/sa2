@@ -39,5 +39,5 @@ void StageBgUpdate_Zone7Acts12(s32 x, s32 y)
         Zone7BgUpdate_Outside(x, y);
     }
 
-    gPlayer.unkA8 = bgId;
+    gPlayer.unk99[15] = bgId;
 }
