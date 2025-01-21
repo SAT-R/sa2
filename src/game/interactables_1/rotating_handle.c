@@ -145,40 +145,47 @@ static void Task_Idle(void)
 }
 
 // (95.52%) https://decomp.me/scratch/RaPDV
+// (99.80%) https://decomp.me/scratch/zEnJP
 NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Rotating())
 {
-    Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
-    Sprite *s = &rotatingHandle->s;
-    MapEntity *me = rotatingHandle->base.me;
-    u64 temp;
-    u32 cycle;
-    s32 x, y;
+    MapEntity *me;
+    Sprite *sprite;
+    Sprite_RotatingHandle *rotatingHandle;
+    u16 temp;
+    u16 temp2;
+    u16 temp3;
+
+    s32 posX, posY;
 
     s32 cos;
     s32 sin;
 
-    x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
-    y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
+    rotatingHandle = TASK_DATA(gCurTask);
+    // asm("":::"r8", "r9");
+    sprite = &rotatingHandle->s;
+    me = rotatingHandle->base.me;
+
+    posX = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    posY = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     rotatingHandle->unk3C = (rotatingHandle->unk3C + rotatingHandle->unk3E) & 0x3FF0;
-    cycle = ONE_CYCLE;
-    temp = rotatingHandle->unk3C >> 4;
+    // unused but required for match
+    temp3 = CLAMP_SIN_PERIOD(rotatingHandle->unk3C) + 0;
+    // asm("":::"r8", "r9");
+    temp2 = rotatingHandle->unk3C >> 4;
+    temp = temp2;
 
-    s->x = x - gCamera.x;
-    s->y = y - gCamera.y;
+    sprite->x = posX - gCamera.x;
+    sprite->y = posY - gCamera.y;
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_AfterJump;
-        DisplaySprite(s);
+        DisplaySprite(sprite);
         return;
     }
 
     if (gPlayer.frameInput & gPlayerControls.jump) {
-#ifndef NON_MATCHING
-        register u32 temp2 asm("r4");
-#else
-        u32 temp2;
-#endif
+        s16 r4;
         gPlayer.transition = PLTRANS_UNCURL;
         me->x = rotatingHandle->base.spriteX;
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
@@ -190,34 +197,37 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
 
         switch (rotatingHandle->unk40) {
             case 0:
-                temp2 = (0x20 - temp) & cycle;
+                r4 = CLAMP_SIN_PERIOD(0x20 - temp) + 0;
                 sin = SIN(temp);
                 gPlayer.qWorldX += sin >> 1;
                 cos = COS(temp);
                 gPlayer.qWorldY += cos >> 1;
                 break;
             case 1:
-                temp2 = (temp + 0x20) & cycle;
-                sin = SIN(temp);
+#ifndef NON_MATCHING
+                do {
+#endif
+                    r4 = CLAMP_SIN_PERIOD(temp + 0x20) + 0;
+                    sin = SIN(temp);
+#ifndef NON_MATCHING
+                } while (0);
+#endif
                 gPlayer.qWorldX += sin >> 1;
                 cos = COS(temp);
                 gPlayer.qWorldY -= cos >> 1;
                 break;
             case 2:
-                temp2 = (temp + 0x1E0) & cycle;
+                r4 = CLAMP_SIN_PERIOD(temp + 0x1E0) + 0;
                 sin = SIN(temp);
                 gPlayer.qWorldX -= sin >> 1;
                 cos = COS(temp);
+#ifndef NON_MATCHING
+                asm("" ::: "r0");
+#endif
                 gPlayer.qWorldY += cos >> 1;
-
                 break;
             case 3: {
-#ifndef NON_MATCHING
-                register s32 r1 asm("r1") = 0x220;
-#else
-                s32 r1 = 0x220;
-#endif
-                temp2 = (r1 - temp) & cycle;
+                r4 = CLAMP_SIN_PERIOD(0x220 - temp) + 0;
                 sin = SIN(temp);
                 gPlayer.qWorldX -= sin >> 1;
                 cos = COS(temp);
@@ -225,48 +235,60 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
                 break;
             }
             default:
-                temp2 = 0;
+                r4 = 0;
                 break;
         }
-        gPlayer.speedAirX = Div(COS(temp2) << 1, 0x11);
-        gPlayer.speedAirY = Div(SIN(temp2) << 1, 0x11);
+        gPlayer.speedAirX = Div(COS(r4) << 1, 0x11);
+        gPlayer.speedAirY = Div(SIN(r4) << 1, 0x11);
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
     } else {
         u8 r2;
         if (gPlayer.charState == CHARSTATE_GRABBING_HANDLE_A) {
-            s32 new_var;
             r2 = Div(temp, 0x56);
-            new_var = 0xB;
-            if (r2 > new_var) {
+            if (r2 > 0xB) {
                 r2 = 0xB;
             }
+            sprite->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
+            sprite->variant = r2;
+            sprite->prevVariant = 0xFF;
+            gPlayer.variant = r2;
+            gPlayer.unk6C = 1;
+            gPlayer.qWorldX = Q_24_8(posX);
+            gPlayer.qWorldY = Q_24_8(posY);
+            gPlayer.speedAirX = 0;
+            gPlayer.speedAirY = 0;
         } else {
             r2 = Div(temp, 0x56);
             if (r2 > 0xB) {
                 r2 = 0xB;
             }
+            sprite->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
+            sprite->variant = r2;
+            sprite->prevVariant = 0xFF;
+            gPlayer.variant = r2;
+            gPlayer.unk6C = 1;
+            gPlayer.qWorldX = Q_24_8(posX);
+            gPlayer.qWorldY = Q_24_8(posY);
+            gPlayer.speedAirX = 0;
+            gPlayer.speedAirY = 0;
         }
-
-        s->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
-        s->variant = r2;
-        s->prevVariant = -1;
-        gPlayer.variant = r2;
-        gPlayer.unk6C = 1;
-        gPlayer.qWorldX = Q(x);
-        gPlayer.qWorldY = Q(y);
-        gPlayer.speedAirX = 0;
-        gPlayer.speedAirY = 0;
     }
 
-    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = rotatingHandle->base.spriteX;
-        TaskDestroy(gCurTask);
+    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+#ifndef NON_MATCHING
+        do {
+#endif
+            me->x = rotatingHandle->base.spriteX;
+            TaskDestroy(gCurTask);
+#ifndef NON_MATCHING
+        } while (0);
+#endif
         return;
     }
 
-    UpdateSpriteAnimation(s);
-    DisplaySprite(s);
+    UpdateSpriteAnimation(sprite);
+    DisplaySprite(sprite);
 }
 END_NONMATCH
 

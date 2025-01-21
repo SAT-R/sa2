@@ -69,17 +69,7 @@ typedef struct {
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
 {
     const u8 **unk0;
-    u32 unk4;
-    u8 *unk8;
-#ifndef NON_MATCHING
-    register u32 r6 asm("r6");
-    register u32 r8 asm("r8");
-#else
-    u32 r6;
-    u32 r8;
-#endif
     const u8 *data;
-    StrcUnkInBuf *bytes;
 
     if (p->moveState & (MOVESTATE_IGNORE_INPUT | MOVESTATE_DEAD)) {
         sub_800E0C0(0, 0);
@@ -90,63 +80,52 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
     sub_800E0C0(p->frameInput, p->frameInput);
 
     if (p->unk70 != 0) {
-        unk4 = 0;
+        u16 unk4 = 0;
         unk0 = gUnknown_08C871D4[p->character];
-
         data = *unk0;
         if (data != INPUTBUF_NULL_PTR) {
             // __0800DFEC
-            r6 = *data++;
-            r8 = *data++;
+            u32 r6 = *data++;
+            u32 r8 = *data++;
 
             // _0800E002
             while (p->unk71 != r8) {
-                u8 cid;
-                cid = gNewInputCountersIndex;
+                u8 cid = gNewInputCountersIndex;
 
                 // _0800E012
                 while (r6 != 0) {
+                    u32 maskFF = 0xFF, mask1F = 0x1F;
+                    s32 r2;
+
                     s16 r1;
                     u32 r7, ip;
+                    r6 = (u16)(r6 - 1);
 
-#ifndef NON_MATCHING
-                    register u32 maskFF asm("sl") = 0xFF;
-                    register u32 mask1F asm("r9") = 0x1F;
-                    register u32 r0_2 asm("r0") = r6 - 1;
-                    register s32 r2 asm("r2");
-                    asm("" ::"r"(mask1F));
-                    asm("" ::"r"(maskFF));
-
-#else
-                    u32 maskFF = 0xFF;
-                    u32 mask1F = 0x1F;
-                    u32 r0_2 = r6 - 1;
-                    s32 r2;
-#endif
-                    r6 = (u16)r0_2;
-
-                    bytes = (StrcUnkInBuf *)&data[r6 * 3];
-                    ip = bytes->unk0;
-                    r7 = bytes->unk1;
-                    r1 = bytes->unk2 & maskFF;
+                    ip = data[r6 * 3 + 0];
+                    r7 = data[r6 * 3 + 1];
+                    r1 = data[r6 * 3 + 2] & maskFF;
 
                     // _0800E02A
                     while (1) {
+                        s32 r0;
                         u32 r3 = gNewInputCounters[cid].unk0 & r7;
                         r2 = gNewInputCounters[cid].unk1;
 
-                        if ((s16)r1 >= (signed)(r2 & maskFF)) {
+                        r0 = r1;
+                        r2 &= maskFF;
+                        if (r0 >= r2) {
                             if (ip == r3) {
-                                cid = (cid - 1);
+                                cid--;
                                 r2 = mask1F;
                                 cid &= r2;
                                 break;
                             } else {
                                 cid = (cid - 1) & mask1F;
-                                r1 = ((s16)(r1 - 1)) - r2;
+                                r0 -= 1;
+                                r0 -= r2;
+                                r1 = r0;
                             }
                         } else {
-                            // r2 should be set to 0 here, actually
                             r2 = 0;
                             break;
                         }
@@ -162,13 +141,11 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
                 }
 
                 // _0800E082
-                unk4 = (u16)(unk4 + 1);
-
-                if (unk0[unk4] == INPUTBUF_NULL_PTR) {
+                unk4++;
+                data = unk0[unk4];
+                if (data == INPUTBUF_NULL_PTR) {
                     break;
                 }
-
-                data = unk0[unk4];
                 r6 = *data++;
                 r8 = *data++;
             }
@@ -186,7 +163,9 @@ void sub_800E0C0(u16 param0, u16 param1)
 
     r3 |= r2;
     param1 = 0xF0;
+#ifndef NON_MATCHING
     asm("" ::"r"(param1));
+#endif
     r5 = param0;
     r5 &= param1;
     r5 = (r5) | r3;

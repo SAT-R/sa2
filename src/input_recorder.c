@@ -5,6 +5,9 @@
 #include "input_recorder.h"
 
 #if TAS_TESTING
+#if PORTABLE
+#include <stdio.h>
+#endif
 // This is the size of any any% speed run TAS run
 #define TAPE_LENGTH 0x20000
 #else
