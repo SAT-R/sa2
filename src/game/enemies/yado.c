@@ -7,7 +7,7 @@
 #include "game/cheese.h"
 #include "game/enemies/projectiles.h"
 #include "game/stage/trapped_animals.h"
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
@@ -96,7 +96,7 @@ void Task_YadoMain(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -159,11 +159,11 @@ void Task_8055084(void)
             if (cheese->s.hitboxes[1].index != HITBOX_STATE_INACTIVE) {
                 if (HB_COLLISION(x, y, s->hitboxes[0], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])) {
                     if (IS_MULTI_PLAYER) {
-                        struct UNK_3005510 *unk = sub_8019224();
-                        unk->unk0 = 3;
-                        unk->unk1 = yado2->base.regionX;
-                        unk->unk2 = yado2->base.regionY;
-                        unk->unk3 = yado2->base.id;
+                        RoomEvent_EnemyDestroy *roomEvent = CreateRoomEvent();
+                        roomEvent->type = ROOMEVENT_TYPE_ENEMY_DESTROYED;
+                        roomEvent->x = yado2->base.regionX;
+                        roomEvent->y = yado2->base.regionY;
+                        roomEvent->id = yado2->base.id;
                     }
 
                     CreateDustCloud(x, y);
@@ -227,7 +227,7 @@ void Task_8055378(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         m4aSongNumStart(SE_SPRING);
     }

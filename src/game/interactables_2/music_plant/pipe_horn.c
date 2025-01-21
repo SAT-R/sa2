@@ -910,7 +910,7 @@ void sub_80777C8(Sprite_Pipe_Horn *pipe)
     Player_ClearMovestate_IsInScriptedSequence();
 
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
 
     gPlayer.speedAirX = gUnknown_080DFE90[pipe->kind][0];
     gPlayer.speedAirY = gUnknown_080DFE90[pipe->kind][1];
@@ -1080,7 +1080,7 @@ void sub_8077B28(Sprite_Pipe_Horn *horn)
     gPlayer.moveState &= ~(MOVESTATE_IN_SCRIPTED | MOVESTATE_400000);
 #endif
 
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.speedAirX = gUnknown_080DFFF4[horn->kind][0];
     gPlayer.speedAirY = gUnknown_080DFFF4[horn->kind][1];
     gPlayer.rotation = gUnknown_080E0000[horn->kind];

@@ -13,7 +13,7 @@
 #include "game/interactables_1/stage_goal.h"
 
 #include "game/multiplayer/mp_player.h"
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/multiplayer/finish.h"
 
 #include "sprite.h"
@@ -32,16 +32,16 @@ typedef struct {
 } Sprite_StageGoalToggle;
 
 static void Task_StageGoalMain(void);
-static void TaskDestructor_8062E7C(struct Task *);
+static void TaskDestructor_StageGoal(struct Task *);
 static void Task_StageGoalAnimate(void);
-static void sub_8062D44(void);
+static void StageGoalToggle_PlayerReachedGoal(void);
 static void StageGoalToggle_HandleMultiplayerFinish(void);
 
 #define GOAL_LEVER_TILES 4
 
 void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0, TaskDestructor_8062E7C);
+    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0, TaskDestructor_StageGoal);
     Sprite_StageGoal *stageGoal = TASK_DATA(t);
     Sprite *s = &stageGoal->s;
 
@@ -133,7 +133,7 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
+        if (x <= I(gPlayer.qWorldX) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_STOOD_ON_OBJ))) {
             gPlayer.transition = PLTRANS_REACHED_GOAL;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
@@ -183,11 +183,11 @@ static void Task_StageGoalToggleMain(void)
 
 static void StageGoalToggle_HandleMultiplayerFinish(void)
 {
-    struct UNK_3005510 *unk5510;
+    RoomEvent *roomEvent;
     u32 count = 0;
     MultiplayerPlayer *player = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
-    gPlayer.unk32 = 0;
+    gPlayer.confusionTimer = 0;
 
     if (!(player->unk5C & 1)) {
         u32 j;
@@ -206,25 +206,26 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
             gCourseTime = 3600;
         }
 
-        unk5510 = sub_8019224();
-        unk5510->unk0 = 7;
-        gCurTask->main = sub_8062D44;
+        roomEvent = CreateRoomEvent();
+        roomEvent->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
+
+        gCurTask->main = StageGoalToggle_PlayerReachedGoal;
         gCamera.unk50 |= CAM_MODE_SPECTATOR;
     }
 }
 
-static UNUSED void sub_8062BD0(void)
+static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
 {
     u32 thing = 0;
     struct Task **mpTasks = gMultiplayerPlayerTasks;
-    struct UNK_3005510 *unk5510;
+    RoomEvent *roomEvent;
     u32 j;
 
     // Required for match
-    *SIO_MULTI_CNT;
+    u32 id = SIO_MULTI_CNT->id;
 
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
-    gPlayer.unk32 = 0;
+    gPlayer.confusionTimer = 0;
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {
         // TODO: make this a macro? What does it even mean
@@ -249,13 +250,13 @@ static UNUSED void sub_8062BD0(void)
 
     gStageFlags |= 4;
     gCourseTime = 3600;
-    unk5510 = sub_8019224();
-    unk5510->unk0 = 7;
-    gCurTask->main = sub_8062D44;
+    roomEvent = CreateRoomEvent();
+    roomEvent->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
+    gCurTask->main = StageGoalToggle_PlayerReachedGoal;
     gCamera.unk50 |= CAM_MODE_SPECTATOR;
 }
 
-static void sub_8062D44(void)
+static void StageGoalToggle_PlayerReachedGoal(void)
 {
 
     u32 id = SIO_MULTI_CNT->id;
@@ -304,7 +305,7 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void TaskDestructor_8062E7C(struct Task *t)
+static void TaskDestructor_StageGoal(struct Task *t)
 {
     Sprite_StageGoal *stageGoal = TASK_DATA(t);
     VramFree(stageGoal->s.graphics.dest);

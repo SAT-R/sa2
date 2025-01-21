@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "game/sa1_sa2_shared/globals.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 
 u8 gUnknown_030053E0 = 0;
 u32 gCheckpointTime = 0;
@@ -16,7 +17,7 @@ u8 ALIGNED(4) unused53F4[24] = {};
 u8 gActiveCollectRingEffectCount = 0;
 
 u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX] = {};
-u8 gUnknown_03005420 = 0;
+u8 gRoomEventQueueSendPos = 0;
 u16 ALIGNED(4) gStageFlags = 0;
 u8 ALIGNED(4) gUnknown_03005428[MULTI_SIO_PLAYERS_MAX] = {};
 
@@ -24,7 +25,7 @@ u8 gBossRingsRespawnCount = 0;
 bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;
 
 u32 gMultiplayerPseudoRandom = 0;
-u8 gUnknown_03005438 = 0;
+u8 gRoomEventQueueWritePos = 0;
 u8 ALIGNED(4) gUnknown_0300543C = 0;
 u16 ALIGNED(4) gBossCameraClampYLower = 0;
 s8 ALIGNED(4) gTrappedAnimalVariant = 0;
@@ -66,7 +67,7 @@ u8 ALIGNED(4) gUnknown_030054F8 = 0;
 s32 gUnknown_030054FC = 0;
 
 s8 gMultiplayerCharacters[4] = {};
-struct UNK_3005510 ALIGNED(16) gUnknown_03005510[16] = {};
+RoomEvent ALIGNED(16) gRoomEventQueue[16] = {};
 u32 gStageTime = 0;
 
 u8 ALIGNED(4) gMultiplayerUnlockedCharacters = 0;

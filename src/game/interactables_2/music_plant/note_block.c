@@ -147,7 +147,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
     gPlayer.charState = CHARSTATE_NOTE_BLOCK;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.prevCharState = CHARSTATE_INVALID;
 
     block->unk4A = 0;

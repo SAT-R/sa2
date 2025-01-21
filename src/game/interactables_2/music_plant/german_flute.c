@@ -255,7 +255,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
@@ -265,7 +265,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.transition = PLTRANS_PT5;
+    gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 

@@ -534,7 +534,7 @@ void sub_8079888(Sprite_IA69 *ia69)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.transition = PLTRANS_PT9;
+        gPlayer.transition = PLTRANS_HURT;
     }
 
     gCurTask->main = Task_Interactable069;

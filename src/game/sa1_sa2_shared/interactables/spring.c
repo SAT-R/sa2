@@ -45,9 +45,9 @@ typedef struct {
 #define INITIALIZE_SPRING(springType) CreateEntity_Spring(springType, me, spriteRegionX, spriteRegionY, param3)
 
 static void CreateEntity_Spring(u8, MapEntity *, u16, u16, u8);
-static void Task_Spring(void);
-static void sub_800E3D0(void);
-static bool32 sub_800E490(Sprite *p0, MapEntity *me, Sprite_Spring *spring, Player *player);
+static void Task_Spring_Idle(void);
+static void Task_Spring_Activated(void);
+static bool32 CheckSpringPlayerCollisions(Sprite *p0, MapEntity *me, Sprite_Spring *spring, Player *player);
 static void TaskDestructor_Spring(struct Task *t);
 
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
@@ -101,7 +101,7 @@ static const u16 sSpring_MusicPlant_Soundeffects[5]
 static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s16 springKind = SPRING_KIND_NORMAL;
-    struct Task *t = TaskCreate(Task_Spring, sizeof(Sprite_Spring), 0x2010, 0, TaskDestructor_Spring);
+    struct Task *t = TaskCreate(Task_Spring_Idle, sizeof(Sprite_Spring), 0x2010, 0, TaskDestructor_Spring);
     Sprite_Spring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -148,14 +148,14 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     UpdateSpriteAnimation(s);
 }
 
-static void Task_Spring(void)
+static void Task_Spring_Idle(void)
 {
     Sprite_Spring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
-    if (sub_800E490(s, me, spring, &gPlayer) != 0) {
-        gCurTask->main = sub_800E3D0;
+    if (CheckSpringPlayerCollisions(s, me, spring, &gPlayer) != 0) {
+        gCurTask->main = Task_Spring_Activated;
         s->variant++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->dir / 2) == 0))
@@ -170,13 +170,13 @@ static void Task_Spring(void)
     }
 }
 
-static void sub_800E3D0(void)
+static void Task_Spring_Activated(void)
 {
     Sprite_Spring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
-    sub_800E490(s, me, spring, &gPlayer);
+    CheckSpringPlayerCollisions(s, me, spring, &gPlayer);
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = spring->base.spriteX;
@@ -190,14 +190,14 @@ static void sub_800E3D0(void)
             }
 
             UpdateSpriteAnimation(s);
-            gCurTask->main = Task_Spring;
+            gCurTask->main = Task_Spring_Idle;
         }
 
         DisplaySprite(s);
     }
 }
 
-static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring, Player *player)
+static bool32 CheckSpringPlayerCollisions(Sprite *s, MapEntity *me, Sprite_Spring *spring, Player *player)
 {
     s16 xPos = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
     s16 yPos = TO_WORLD_POS(me->y, spring->base.regionY);

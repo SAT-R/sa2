@@ -13,16 +13,16 @@ typedef struct {
     /* 0x3A */ s16 speedY;
     /* 0x3C */ s16 accX;
     /* 0x3E */ s16 accY;
-    /* 0x40 */ u16 unk40;
+    /* 0x40 */ u16 lifeTime;
 } Sprite_StageSprUnknown;
 
-void sub_800A5F8(void);
+void Task_SimpleSpriteParticleMain(void);
 
 // Seems to create the given animation on the screen in a fixed position
 // and despawns once it leaves player range?
-struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant, TaskDestructor dtor)
+struct Task *CreateSimpleSpriteParticle(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(sub_800A5F8, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
+    struct Task *t = TaskCreate(Task_SimpleSpriteParticleMain, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
 
     Sprite_StageSprUnknown *su = TASK_DATA(t);
     su->x = 0;
@@ -31,7 +31,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->speedY = 0;
     su->accX = 0;
     su->accY = 0;
-    su->unk40 = 0;
+    su->lifeTime = 0;
 
     su->s.x = 0;
     su->s.y = 0;
@@ -51,7 +51,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     return t;
 }
 
-void sub_800A5F8(void)
+void Task_SimpleSpriteParticleMain(void)
 {
     Sprite_StageSprUnknown *su = TASK_DATA(gCurTask);
     su->speedX += su->accX;
@@ -63,13 +63,13 @@ void sub_800A5F8(void)
     su->s.x = I(su->x) - gCamera.x;
     su->s.y = I(su->y) - gCamera.y;
 
-    if (su->unk40 != 0) {
-        su->unk40--;
+    if (su->lifeTime != 0) {
+        su->lifeTime--;
     }
 
     if (((u16)(su->s.x + 32) > (DISPLAY_WIDTH + 2 * 32)) || (((su->s.y - 32) > DISPLAY_HEIGHT))) {
         TaskDestroy(gCurTask);
-    } else if (UpdateSpriteAnimation(&su->s) == 0 && su->unk40 == 0) {
+    } else if (UpdateSpriteAnimation(&su->s) == 0 && su->lifeTime == 0) {
         TaskDestroy(gCurTask);
     } else {
         DisplaySprite(&su->s);

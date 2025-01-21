@@ -4,7 +4,7 @@
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/sa1_sa2_shared/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -257,13 +257,13 @@ static void sub_808636C(void)
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
 {
-    struct UNK_3005510 *unk5510;
+    RoomEvent_MysteryItemBoxBreak *roomEvent;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
     }
 
     itemBox->base.me->d.sData[1] += 1;
@@ -271,13 +271,13 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     m4aSongNumStart(SE_ITEM_BOX_2);
     CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->framesSinceOpened = 0;
-    unk5510 = sub_8019224();
 
-    unk5510->unk0 = 5;
-    unk5510->unk1 = itemBox->base.regionX;
-    unk5510->unk2 = itemBox->base.regionY;
-    unk5510->unk3 = itemBox->base.id;
-    unk5510->unk4 = itemBox->base.me->d.sData[1];
+    roomEvent = CreateRoomEvent();
+    roomEvent->type = ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK;
+    roomEvent->x = itemBox->base.regionX;
+    roomEvent->y = itemBox->base.regionY;
+    roomEvent->id = itemBox->base.id;
+    roomEvent->unk4 = itemBox->base.me->d.sData[1];
 
     gCurTask->main = sub_808665C;
 }
@@ -305,10 +305,10 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             break;
         }
         case 1: {
-            struct UNK_3005510 *unk5510 = sub_8019224();
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
 
-            unk5510->unk0 = 6;
-            unk5510->unk1 = 4;
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->effect = 4;
             break;
         }
     }

@@ -87,7 +87,7 @@ static void Task_Hammerhead(void)
         s->y = (posY - gCamera.y) + I(prevUnk48);
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         p->qWorldY += 0x100;
         p->qWorldY += ip;
     }
@@ -130,8 +130,8 @@ static void TaskDestructor_Hammerhead(struct Task *t)
     Sprite *s = &hammerhead->s;
     VramFree(s->graphics.dest);
 
-    if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
-        gPlayer.moveState &= ~MOVESTATE_8;
-        gPlayer.unk3C = NULL;
+    if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
+        gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+        gPlayer.stoodObj = NULL;
     }
 }

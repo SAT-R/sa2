@@ -111,7 +111,7 @@ static void sub_807F9F0(void)
             platform->unk4C = FALSE;
             gPlayer.transition = PLTRANS_INIT_JUMP;
             gPlayer.moveState &= ~8;
-            gPlayer.unk3C = 0;
+            gPlayer.stoodObj = 0;
         }
     }
 
@@ -184,8 +184,8 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
     }
 
     if (gPlayer.moveState & (MOVESTATE_1000000 | MOVESTATE_400000 | MOVESTATE_IN_AIR | MOVESTATE_DEAD)) {
-        gPlayer.moveState &= ~MOVESTATE_8;
-        gPlayer.unk3C = NULL;
+        gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+        gPlayer.stoodObj = NULL;
         return FALSE;
     }
 

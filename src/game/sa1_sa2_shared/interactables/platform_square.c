@@ -20,19 +20,19 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ u16 unk3C;
-    /* 0x40 */ s32 unk40;
-    /* 0x44 */ s32 unk44;
-    /* 0x48 */ s16 unk48;
-    /* 0x4A */ s16 unk4A;
-    /* 0x4C */ s16 unk4C;
-    /* 0x50 */ s32 unk50[3][2];
+    /* 0x3C */ u16 timer;
+    /* 0x40 */ s32 offsetX;
+    /* 0x44 */ s32 offsetY;
+    /* 0x48 */ s16 velocityX;
+    /* 0x4A */ s16 velocityY;
+    /* 0x4C */ s16 stoodOffset; // used in "Platform" but unused in this object.
+    /* 0x50 */ s32 prevOffset[3][2];
 } Sprite_PlatformSquare; /* size: 0x68 */
 
 static void Task_Platform_Square(void);
 static void TaskDestructor_Platform_Square(struct Task *);
 static void Platform_Square_KillPlayer(void);
-static void sub_800F990(Sprite_PlatformSquare *);
+static void HandleSquarePlatformOffsetStorage(Sprite_PlatformSquare *);
 
 static const u16 sAnimsPlatformSquare[9][3] = {
     { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 }, { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },  { 36, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 1 },
@@ -51,29 +51,29 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     platform->base.me = me;
     platform->base.spriteX = me->x;
     platform->base.id = spriteY;
-    platform->unk40 = 0;
-    platform->unk44 = 0;
-    platform->unk4C = 0;
+    platform->offsetX = 0;
+    platform->offsetY = 0;
+    platform->stoodOffset = 0;
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {
-            platform->unk48 = 0x4;
-            platform->unk3C = 0;
-            platform->unk4A = 0;
+            platform->velocityX = 0x4;
+            platform->timer = 0;
+            platform->velocityY = 0;
         } else {
-            platform->unk48 = 0x4;
-            platform->unk3C = 0x80;
-            platform->unk4A = 0;
+            platform->velocityX = 0x4;
+            platform->timer = 0x80;
+            platform->velocityY = 0;
         }
     } else {
         if (me->d.sData[1] >= 0) {
-            platform->unk48 = 0;
-            platform->unk4A = 0x4;
-            platform->unk3C = 0;
+            platform->velocityX = 0;
+            platform->velocityY = 0x4;
+            platform->timer = 0;
         } else {
-            platform->unk48 = 0;
-            platform->unk4A = 0x4;
-            platform->unk3C = 0x80;
+            platform->velocityX = 0;
+            platform->velocityY = 0x4;
+            platform->timer = 0x80;
         }
     }
 
@@ -81,9 +81,9 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s32 i;
         s32 tileCount, anim, variant;
 
-        for (i = 0; i < ARRAY_COUNT(platform->unk50); i++) {
-            platform->unk50[i][0] = platform->unk40;
-            platform->unk50[i][1] = platform->unk44;
+        for (i = 0; i < ARRAY_COUNT(platform->prevOffset); i++) {
+            platform->prevOffset[i][0] = platform->offsetX;
+            platform->prevOffset[i][1] = platform->offsetY;
         }
 
         s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -126,26 +126,26 @@ static void Task_Platform_Square(void)
     me = platform->base.me;
 
     if (IS_MULTI_PLAYER) {
-        sub_800F990(platform);
+        HandleSquarePlatformOffsetStorage(platform);
     }
 
-    if (platform->unk48 != 0) {
-        s32 oldUnk40 = platform->unk40;
+    if (platform->velocityX != 0) {
+        s32 oldUnk40 = platform->offsetX;
         s32 meUdata2 = (me->d.uData[2] << 11);
 
-        platform->unk40 = (SIN((platform->unk48 * ((gStageTime + platform->unk3C) & 0xFF)) & ONE_CYCLE) * meUdata2) >> 14;
-        deltaX = platform->unk40 - oldUnk40;
+        platform->offsetX = (SIN((platform->velocityX * ((gStageTime + platform->timer) & 0xFF)) & ONE_CYCLE) * meUdata2) >> 14;
+        deltaX = platform->offsetX - oldUnk40;
     }
 
-    if (platform->unk4A != 0) {
+    if (platform->velocityY != 0) {
 #ifdef NON_MATCHING
-        s32 r5 = platform->unk44;
+        s32 r5 = platform->offsetY;
 #else
-        register s32 r5 asm("r5") = platform->unk44;
+        register s32 r5 asm("r5") = platform->offsetY;
 #endif
         s32 meUdata3 = (me->d.uData[3] << 11);
-        platform->unk44 = (SIN(((platform->unk4A * ((gStageTime + platform->unk3C) & 0xFF))) & ONE_CYCLE) * meUdata3) >> 14;
-        r5 = platform->unk44 - r5;
+        platform->offsetY = (SIN(((platform->velocityY * ((gStageTime + platform->timer) & 0xFF))) & ONE_CYCLE) * meUdata3) >> 14;
+        r5 = platform->offsetY - r5;
 #ifndef NON_MATCHING
         asm("" ::"r"(r5));
 #endif
@@ -156,14 +156,14 @@ static void Task_Platform_Square(void)
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     if (IS_MULTI_PLAYER) {
-        s->x = posX - gCamera.x + I(platform->unk50[1][0]);
-        s->y = posY - gCamera.y + I(platform->unk50[1][1]);
+        s->x = posX - gCamera.x + I(platform->prevOffset[1][0]);
+        s->y = posY - gCamera.y + I(platform->prevOffset[1][1]);
     } else {
-        s->x = posX - gCamera.x + I(platform->unk40);
-        s->y = posY - gCamera.y + I(platform->unk44);
+        s->x = posX - gCamera.x + I(platform->offsetX);
+        s->y = posY - gCamera.y + I(platform->offsetY);
     }
 
-    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+    if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
         s32 res, temp, temp2;
         p->qWorldX += deltaX;
 
@@ -178,9 +178,9 @@ static void Task_Platform_Square(void)
         if (res < 0) {
             gPlayer.qWorldY += Q(res);
 
-            p->moveState &= ~MOVESTATE_8;
+            p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = NULL;
+            p->stoodObj = NULL;
         }
 
         temp = I(p->qWorldX) + 2;
@@ -202,9 +202,9 @@ static void Task_Platform_Square(void)
         if (res < 0) {
             p->qWorldY += Q(res);
 
-            p->moveState &= ~MOVESTATE_8;
+            p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = NULL;
+            p->stoodObj = NULL;
         }
     }
 
@@ -215,8 +215,8 @@ static void Task_Platform_Square(void)
         s32 movStateCopy = p->moveState;
 
         s->hitboxes[0].top -= 3;
-        x = (posX + I(platform->unk40));
-        y = (posY + I(platform->unk44));
+        x = (posX + I(platform->offsetX));
+        y = (posY + I(platform->offsetY));
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
@@ -231,9 +231,9 @@ static void Task_Platform_Square(void)
                     p->speedAirY = 0;
 
                 if (GRAVITY_IS_INVERTED) {
-                    p->moveState |= MOVESTATE_8;
+                    p->moveState |= MOVESTATE_STOOD_ON_OBJ;
                     p->moveState &= ~MOVESTATE_IN_AIR;
-                    p->unk3C = s;
+                    p->stoodObj = s;
                     p->speedAirY = 0;
                 }
 
@@ -250,7 +250,7 @@ static void Task_Platform_Square(void)
                     s->hitboxes[0].left += 16;
                     s->hitboxes[0].right -= 16;
 
-                    otherRes = sub_800CCB8(s, posX + I(platform->unk40), posY + I(platform->unk44), p);
+                    otherRes = sub_800CCB8(s, posX + I(platform->offsetX), posY + I(platform->offsetY), p);
 
                     s->hitboxes[0].left -= 16;
                     s->hitboxes[0].right += 16;
@@ -304,7 +304,7 @@ static void Task_Platform_Square(void)
             }
         }
 
-        if ((result & 0xC0000) && !(p->moveState & MOVESTATE_8) && !(p->unk3C == s)) {
+        if ((result & 0xC0000) && !(p->moveState & MOVESTATE_STOOD_ON_OBJ) && !(p->stoodObj == s)) {
             s32 tempXX = (s16)(result & 0xFF00);
             s16 tempX = tempXX;
             p->qWorldX += tempX;
@@ -350,17 +350,17 @@ static void Platform_Square_KillPlayer(void)
     gPlayer.moveState |= MOVESTATE_DEAD;
 }
 
-static void sub_800F990(Sprite_PlatformSquare *platform)
+static void HandleSquarePlatformOffsetStorage(Sprite_PlatformSquare *platform)
 {
-    platform->unk50[2][0] = platform->unk50[1][0];
-    platform->unk50[2][1] = platform->unk50[1][1];
-    platform->unk50[1][0] = platform->unk50[0][0];
-    platform->unk50[1][1] = platform->unk50[0][1];
-    platform->unk50[0][0] = platform->unk40;
-    platform->unk50[0][1] = platform->unk44;
+    platform->prevOffset[2][0] = platform->prevOffset[1][0];
+    platform->prevOffset[2][1] = platform->prevOffset[1][1];
+    platform->prevOffset[1][0] = platform->prevOffset[0][0];
+    platform->prevOffset[1][1] = platform->prevOffset[0][1];
+    platform->prevOffset[0][0] = platform->offsetX;
+    platform->prevOffset[0][1] = platform->offsetY;
 }
 
-static u32 UNUSED sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
+static u32 UNUSED HandleSquarePlatformCollision(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 

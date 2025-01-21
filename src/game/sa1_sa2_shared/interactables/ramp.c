@@ -97,7 +97,7 @@ static void Task_Ramp(void)
     if (!(player->moveState & MOVESTATE_400000)) {
         u32 r1;
         u32 var = FALSE;
-        if (player->moveState & MOVESTATE_8 && player->unk3C == s) {
+        if (player->moveState & MOVESTATE_STOOD_ON_OBJ && player->stoodObj == s) {
             var = TRUE;
         }
 
@@ -121,7 +121,7 @@ static void Task_Ramp(void)
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
 
-                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
                         s32 playerMiddleY = I(player->qWorldY) + player->spriteOffsetY - screenY;
@@ -141,17 +141,17 @@ static void Task_Ramp(void)
                                 player->qWorldY += Q(temp6 - playerMiddleY);
                                 player->rotation = 0;
 
-                                player->moveState |= MOVESTATE_8;
+                                player->moveState |= MOVESTATE_STOOD_ON_OBJ;
                                 player->moveState &= ~MOVESTATE_IN_AIR;
-                                player->unk3C = s;
+                                player->stoodObj = s;
                             }
                         } else {
-                            player->moveState &= ~MOVESTATE_8;
+                            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                             player->moveState |= MOVESTATE_IN_AIR;
                         }
                     }
                 } else {
-                    player->moveState &= ~MOVESTATE_8;
+                    player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 }
             }
         } else {
@@ -162,8 +162,8 @@ static void Task_Ramp(void)
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
                 } else if (((ramp->unk3C & 2) != 0 && I(player->qWorldX) > s->x) || ((ramp->unk3C & 2) == 0 && I(player->qWorldX) < s->x)) {
-                    player->moveState &= ~MOVESTATE_8;
-                    player->unk3C = NULL;
+                    player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                    player->stoodObj = NULL;
                 }
             }
         }

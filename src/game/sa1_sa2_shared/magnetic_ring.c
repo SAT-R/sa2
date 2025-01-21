@@ -22,7 +22,7 @@
 
 typedef struct {
     Sprite s;
-    s16 unk30;
+    s16 radius;
 } StageRing;
 
 void Task_MagneticRing(void);
@@ -33,7 +33,7 @@ void CreateMagneticRing(s16 x, s16 y)
     StageRing *ring = TASK_DATA(t);
     Sprite *s;
 
-    ring->unk30 = 0;
+    ring->radius = 0;
 
     s = &ring->s;
     s->x = x;
@@ -62,10 +62,10 @@ void Task_MagneticRing(void)
     s16 sinVal = sub_8004418(ringToPlayerY, ringToPlayerX);
     s16 ringX, ringY;
 
-    ring->unk30 += 0x40;
+    ring->radius += 0x40;
 
-    ring->s.x += (ring->unk30 * COS(sinVal)) >> 22;
-    ring->s.y += (ring->unk30 * SIN(sinVal)) >> 22;
+    ring->s.x += (ring->radius * COS(sinVal)) >> 22;
+    ring->s.y += (ring->radius * SIN(sinVal)) >> 22;
 
     ringY = ring->s.y;
     ringX = ring->s.x;

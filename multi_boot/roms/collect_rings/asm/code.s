@@ -9333,7 +9333,7 @@ sub_02004B0C: @ 0x02004B0C
 	adds r3, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r5, r1, #0x18
-	ldr r1, _02004BA0 @ =gUnknown_03005510
+	ldr r1, _02004BA0 @ =gRoomEventQueue
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
 	ldr r4, _02004BA4 @ =0x04000128
@@ -9404,7 +9404,7 @@ _02004B98:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02004BA0: .4byte gUnknown_03005510
+_02004BA0: .4byte gRoomEventQueue
 _02004BA4: .4byte 0x04000128
 _02004BA8: .4byte gUnknown_030056C0
 _02004BAC: .4byte gUnknown_0300542C
@@ -14081,7 +14081,7 @@ sub_02006F50: @ 0x02006F50
 	ands r1, r0
 	cmp r1, #0
 	bne _02006FAE
-	ldr r1, _02006FB8 @ =gUnknown_03005510
+	ldr r1, _02006FB8 @ =gRoomEventQueue
 	ldr r0, _02006FBC @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -14104,7 +14104,7 @@ _02006FAE:
 	b _02007248
 	.align 2, 0
 _02006FB4: .4byte gUnknown_030056C0
-_02006FB8: .4byte gUnknown_03005510
+_02006FB8: .4byte gRoomEventQueue
 _02006FBC: .4byte 0x04000128
 _02006FC0:
 	ldr r0, [r2, #0x10]
@@ -16240,7 +16240,7 @@ _02008054:
 	bne _02008066
 	b _02008270
 _02008066:
-	ldr r1, _02008124 @ =gUnknown_03005510
+	ldr r1, _02008124 @ =gRoomEventQueue
 	lsls r0, r2, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -16332,7 +16332,7 @@ _02008114: .4byte gUnknown_030053B0
 _02008118: .4byte gUnknown_03005444
 _0200811C: .4byte gUnknown_030053FC
 _02008120: .4byte 0x04000128
-_02008124: .4byte gUnknown_03005510
+_02008124: .4byte gRoomEventQueue
 _02008128: .4byte gUnknown_03000052
 _0200812C: .4byte gUnknown_0300002F
 _02008130: .4byte gUnknown_03000050
@@ -17588,7 +17588,7 @@ sub_02008B1C: @ 0x02008B1C
 	movs r3, #0xc0
 	lsls r3, r3, #0x12
 	adds r0, r1, r3
-	ldr r2, _02008BB0 @ =gUnknown_03005510
+	ldr r2, _02008BB0 @ =gRoomEventQueue
 	ldrb r0, [r0]
 	lsls r0, r0, #2
 	adds r0, r0, r2
@@ -17651,7 +17651,7 @@ _02008B78:
 	b _02008BD2
 	.align 2, 0
 _02008BAC: .4byte gUnknown_030026D0
-_02008BB0: .4byte gUnknown_03005510
+_02008BB0: .4byte gRoomEventQueue
 _02008BB4: .4byte gUnknown_03000010
 _02008BB8: .4byte gUnknown_03000004
 _02008BBC: .4byte gUnknown_03005650
@@ -18345,7 +18345,7 @@ _020090E8:
 _020090EC:
 	adds r0, r4, #0
 	bl sub_020030A0
-	ldr r1, _02009108 @ =gUnknown_03005510
+	ldr r1, _02009108 @ =gRoomEventQueue
 	ldrb r0, [r5]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -18356,7 +18356,7 @@ _020090EC:
 	bx r0
 	.align 2, 0
 _02009104: .4byte 0x06010000
-_02009108: .4byte gUnknown_03005510
+_02009108: .4byte gRoomEventQueue
 
 	thumb_func_start sub_0200910C
 sub_0200910C: @ 0x0200910C
@@ -18650,7 +18650,7 @@ _0200933C:
 	lsrs r0, r0, #0x1e
 	cmp r0, r2
 	beq _020093F4
-	ldr r1, _0200943C @ =gUnknown_03005510
+	ldr r1, _0200943C @ =gRoomEventQueue
 	lsls r0, r2, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -18772,7 +18772,7 @@ _0200942E:
 	strb r2, [r3]
 	b _020095E2
 	.align 2, 0
-_0200943C: .4byte gUnknown_03005510
+_0200943C: .4byte gRoomEventQueue
 _02009440: .4byte gUnknown_03000064
 _02009444: .4byte gUnknown_030056C0
 _02009448: .4byte 0xFFFFFBFF
@@ -19587,7 +19587,7 @@ sub_02009ADC: @ 0x02009ADC
 	lsls r0, r0, #8
 	adds r1, r1, r0
 	str r1, [r3, #0xc]
-	ldr r1, _02009B88 @ =gUnknown_03005510
+	ldr r1, _02009B88 @ =gRoomEventQueue
 	ldr r0, _02009B8C @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -19643,7 +19643,7 @@ _02009B78:
 	.align 2, 0
 _02009B80: .4byte gUnknown_030026D0
 _02009B84: .4byte gUnknown_030056C0
-_02009B88: .4byte gUnknown_03005510
+_02009B88: .4byte gRoomEventQueue
 _02009B8C: .4byte 0x04000128
 _02009B90: .4byte gUnknown_03000054
 _02009B94: .4byte gUnknown_03000056
@@ -20196,7 +20196,7 @@ sub_02009FCC: @ 0x02009FCC
 	ldrb r0, [r0]
 	cmp r0, #2
 	bls _0200A018
-	ldr r1, _0200A024 @ =gUnknown_03005510
+	ldr r1, _0200A024 @ =gRoomEventQueue
 	ldr r0, [r1]
 	ldr r7, _0200A028 @ =gUnknown_030056C0
 	cmp r0, #0
@@ -20237,7 +20237,7 @@ _0200A018:
 	bx r0
 	.align 2, 0
 _0200A020: .4byte gUnknown_03005444
-_0200A024: .4byte gUnknown_03005510
+_0200A024: .4byte gRoomEventQueue
 _0200A028: .4byte gUnknown_030056C0
 
 	thumb_func_start sub_0200A02C
@@ -20247,7 +20247,7 @@ sub_0200A02C: @ 0x0200A02C
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
 	adds r2, r0, r2
-	ldr r1, _0200A050 @ =gUnknown_03005510
+	ldr r1, _0200A050 @ =gRoomEventQueue
 	ldr r3, _0200A054 @ =gUnknown_03000056
 	adds r0, r0, r3
 	ldrb r0, [r0]
@@ -20260,7 +20260,7 @@ sub_0200A02C: @ 0x0200A02C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0200A050: .4byte gUnknown_03005510
+_0200A050: .4byte gRoomEventQueue
 _0200A054: .4byte gUnknown_03000056
 
 	thumb_func_start sub_0200A058
@@ -30901,7 +30901,7 @@ _0200F076:
 	b _0200F2A4
 _0200F080:
 	ldr r5, _0200F10C @ =gUnknown_03002840
-	ldr r2, _0200F110 @ =gUnknown_03005510
+	ldr r2, _0200F110 @ =gRoomEventQueue
 	ldr r0, _0200F114 @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -30970,7 +30970,7 @@ _0200F100: .4byte 0xFFFFFBFF
 _0200F104: .4byte 0xFFFFF7FF
 _0200F108: .4byte gUnknown_03005444
 _0200F10C: .4byte gUnknown_03002840
-_0200F110: .4byte gUnknown_03005510
+_0200F110: .4byte gRoomEventQueue
 _0200F114: .4byte 0x04000128
 _0200F118: .4byte gUnknown_030053B0
 _0200F11C:
@@ -37137,7 +37137,7 @@ _02011F76:
 	lsrs r0, r0, #0x1e
 	cmp ip, r0
 	beq _02012050
-	ldr r1, _02012038 @ =gUnknown_03005510
+	ldr r1, _02012038 @ =gRoomEventQueue
 	mov r3, ip
 	lsls r0, r3, #2
 	adds r0, r0, r1
@@ -37231,7 +37231,7 @@ _02012020:
 	b _02012212
 	.align 2, 0
 _02012034: .4byte 0x04000128
-_02012038: .4byte gUnknown_03005510
+_02012038: .4byte gRoomEventQueue
 _0201203C: .4byte gUnknown_0300006A
 _02012040: .4byte gUnknown_03000054
 _02012044: .4byte gUnknown_03000050
@@ -38396,7 +38396,7 @@ sub_020129A0: @ 0x020129A0
 	strb r1, [r0]
 	ldr r0, _02012A14 @ =gUnknown_03005454
 	str r1, [r0]
-	ldr r3, _02012A18 @ =gUnknown_03005510
+	ldr r3, _02012A18 @ =gRoomEventQueue
 	movs r2, #0
 _020129CC:
 	lsls r0, r1, #2
@@ -38428,7 +38428,7 @@ _02012A08: .4byte gUnknown_030056C0
 _02012A0C: .4byte gUnknown_03005650
 _02012A10: .4byte gUnknown_030053F0
 _02012A14: .4byte gUnknown_03005454
-_02012A18: .4byte gUnknown_03005510
+_02012A18: .4byte gRoomEventQueue
 _02012A1C: .4byte gUnknown_030057C8
 
 	thumb_func_start sub_02012A20

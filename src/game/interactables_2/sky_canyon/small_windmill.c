@@ -134,7 +134,7 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         switch (windmill->initialTouchAngle) {
             case 2:

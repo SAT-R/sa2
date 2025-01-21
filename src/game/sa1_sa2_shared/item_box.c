@@ -14,7 +14,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
@@ -33,30 +33,33 @@ typedef struct {
     /* 0x3C */ Sprite item;
     /* 0x6C */ s32 x;
     /* 0x70 */ s32 y;
-    /* 0x74 */ s16 unk74;
+    /* 0x74 */ s16 iconOffset;
     /* 0x76 */ u8 kind;
     /* 0x77 */ u8 frames;
-    /* 0x78 */ bool8 unk78;
+    /* 0x78 */ bool8 noPlayerBreakRecoil;
 } Entity_ItemBox; /* size: 0x7C */
 
-void sub_800B1AC(Entity_ItemBox *);
-void sub_800B580(Entity_ItemBox *, bool32);
-void sub_800B860(Entity_ItemBox *, bool32);
+void BreakItemBox(Entity_ItemBox *);
+void InitItemBoxGraphics(Entity_ItemBox *, bool32);
+void DrawItemBox(Entity_ItemBox *, bool32);
 void Task_ItemBoxMain(void);
-void Task_800B780(void);
-void Task_800B7D0(void);
+void Task_ItemBoxIconMain_Rising(void);
+void Task_ItemBoxIconMain_Idle(void);
 void TaskDestructor_ItemBox(struct Task *);
-void sub_800B828(Entity_ItemBox *);
-bool32 sub_800B8AC(Entity_ItemBox *);
-bool32 sub_800B8F4(Entity_ItemBox *);
-void Task_800B950(void);
-void sub_800B9A0(Entity_ItemBox *);
+void MultiplayerItemBoxBreak(Entity_ItemBox *);
+bool32 CheckItemBoxOutOfBounds(Entity_ItemBox *);
+bool32 CheckItemBoxPlayerCollision(Entity_ItemBox *);
+void Task_ItemBoxIconMain_Rise_MP(void);
+void FinishItemBoxRise_MP(Entity_ItemBox *);
 
 const u16 ItemBox_MysteryIcons[13][3] = {
-    { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 6, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 7, 4 },
-    { SA2_ANIM_ITEMBOX_TYPE, 8, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 9, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 10, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 11, 4 },
-    { SA2_ANIM_ITEMBOX_TYPE, 13, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 14, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 15, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 16, 4 },
-    { SA2_ANIM_ITEMBOX_TYPE, 12, 4 },
+    [ITEM__ONE_UP] = { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },          [ITEM__SHIELD] = { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },
+    [ITEM__SHIELD_MAGNETIC] = { SA2_ANIM_ITEMBOX_TYPE, 6, 4 }, [ITEM__INVINCIBILITY] = { SA2_ANIM_ITEMBOX_TYPE, 7, 4 },
+    [ITEM__SPEED_UP] = { SA2_ANIM_ITEMBOX_TYPE, 8, 4 },        [ITEM__RINGS_RANDOM] = { SA2_ANIM_ITEMBOX_TYPE, 9, 4 },
+    [ITEM__RINGS_5] = { SA2_ANIM_ITEMBOX_TYPE, 10, 4 },        [ITEM__RINGS_10] = { SA2_ANIM_ITEMBOX_TYPE, 11, 4 },
+    [ITEM__MP_SWAP] = { SA2_ANIM_ITEMBOX_TYPE, 13, 4 },        [ITEM__MP_CONFUSION] = { SA2_ANIM_ITEMBOX_TYPE, 14, 4 },
+    [ITEM__MP_SLOWDOWN] = { SA2_ANIM_ITEMBOX_TYPE, 15, 4 },    [ITEM__MP_ATTACK] = { SA2_ANIM_ITEMBOX_TYPE, 16, 4 },
+    [ITEM__MP_ATTACK_2] = { SA2_ANIM_ITEMBOX_TYPE, 12, 4 },
 };
 
 const u16 ItemBox_1UpIcons[5][3] = {
@@ -65,10 +68,11 @@ const u16 ItemBox_1UpIcons[5][3] = {
     { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY, 4 },
 };
 
-const u16 gUnknown_080D51E4[8] = { 5, 13, 4, 13, 3, 13, 6, 13 };
+const u16 ItemBox_randTypeTable[8] = { ITEM__RINGS_RANDOM,  ITEM__MP_RANDOM, ITEM__SPEED_UP, ITEM__MP_RANDOM,
+                                       ITEM__INVINCIBILITY, ITEM__MP_RANDOM, ITEM__RINGS_5,  ITEM__MP_RANDOM };
 
-const u16 gUnknown_080D51F4[] = { 8, 9, 10, 11 };
-const u8 gUnknown_080D51FC[] = { 1, 5, 10, 30, 50, 0, 0, 0 };
+const u16 ItemBox_subRandTypeTable[] = { ITEM__MP_SWAP, ITEM__MP_CONFUSION, ITEM__MP_SLOWDOWN, ITEM__MP_ATTACK };
+const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50, 0, 0, 0 };
 
 void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -76,20 +80,20 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     Entity_ItemBox *itembox;
     Sprite *s;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
-        if (me->index == 0) {
+        if (me->index == ITEM__ONE_UP) {
             SET_MAP_ENTITY_INITIALIZED(me);
             return;
         }
 
-        if (me->index == 5) {
-            me->index = 7;
+        if (me->index == ITEM__RINGS_RANDOM) {
+            me->index = ITEM__RINGS_10;
         }
     }
 
     t = TaskCreate(Task_ItemBoxMain, sizeof(Entity_ItemBox), 0x2000, 0, TaskDestructor_ItemBox);
     itembox = TASK_DATA(t);
     itembox->kind = me->index;
-    itembox->unk74 = 0;
+    itembox->iconOffset = 0;
     itembox->x = TO_WORLD_POS(me->x, spriteRegionX);
     itembox->y = TO_WORLD_POS(me->y, spriteRegionY);
     itembox->base.regionX = spriteRegionX;
@@ -124,18 +128,18 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     s->hitboxes[0].index = -1;
     s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX_TYPE);
-    sub_800B580(itembox, TRUE);
+    InitItemBoxGraphics(itembox, TRUE);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_800B1AC(Entity_ItemBox *itembox)
+void BreakItemBox(Entity_ItemBox *itembox)
 {
-    if (itembox->unk78 != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
+    if (itembox->noPlayerBreakRecoil != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
         gPlayer.speedAirY = -Q(3.0);
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
     }
 
     m4aSongNumStart(SE_ITEM_BOX_2);
@@ -145,14 +149,14 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     itembox->frames = 0;
 
     if (IS_MULTI_PLAYER) {
-        struct UNK_3005510 *unk = sub_8019224();
-        unk->unk0 = 2;
-        unk->unk1 = itembox->base.regionX;
-        unk->unk2 = itembox->base.regionY;
-        unk->unk3 = itembox->base.id;
+        RoomEvent_ItemBoxBreak *roomEvent = CreateRoomEvent();
+        roomEvent->type = ROOMEVENT_TYPE_ITEMBOX_BREAK;
+        roomEvent->x = itembox->base.regionX;
+        roomEvent->y = itembox->base.regionY;
+        roomEvent->id = itembox->base.id;
     }
 
-    gCurTask->main = Task_800B780;
+    gCurTask->main = Task_ItemBoxIconMain_Rising;
 }
 
 #define ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount)                                                                                  \
@@ -204,7 +208,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
 
                 if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    CreateItemTask_Shield_Normal(gPlayer.unk60);
+                    CreateItemTask_Shield_Normal(gPlayer.playerID);
                 }
             }
 
@@ -216,7 +220,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
 
                 if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    CreateItemTask_Shield_Magnetic(gPlayer.unk60);
+                    CreateItemTask_Shield_Magnetic(gPlayer.playerID);
                 }
             }
 
@@ -227,7 +231,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
             if (IS_SINGLE_PLAYER || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__INVINCIBILITY;
-                CreateItemTask_Invincibility(gPlayer.unk60);
+                CreateItemTask_Invincibility(gPlayer.playerID);
                 gMusicManagerState.unk2 = 16;
             }
         } break;
@@ -239,12 +243,12 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
 
             if (IS_MULTI_PLAYER) {
-                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__10;
+                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
             }
         } break;
 
         case ITEM__RINGS_RANDOM: {
-            s32 rnd = gUnknown_080D51FC[(u32)PseudoRandom32() % 5];
+            s32 rnd = ItemBox_ringAmountTable[(u32)PseudoRandom32() % 5];
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             // There are points in the game where the TAS depends on the RNG
             // giving specific values. Because widescreen runs different code
@@ -280,7 +284,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
-        case ITEM__MP_8: {
+        case ITEM__MP_SWAP: {
             s32 smallestMagnitude = -1;
             u8 nearestPlayer = 0;
             u8 playerId;
@@ -308,56 +312,56 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
 
             {
-                struct UNK_3005510 *unkPtr = sub_8019224();
-                unkPtr->unk0 = 6;
-                unkPtr->unk1 = 1;
-                unkPtr->unk2 = nearestPlayer;
+                RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
+                roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+                roomEvent->effect = 1;
+                roomEvent->targetPlayer = nearestPlayer;
             }
 
             m4aSongNumStart(SE_218);
         } break;
 
-        case ITEM__MP_9: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 0;
+        case ITEM__MP_CONFUSION: {
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->effect = 0;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
-        case ITEM__MP_10: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 2;
+        case ITEM__MP_SLOWDOWN: {
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->effect = 2;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
-        case ITEM__MP_11: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 3;
+        case ITEM__MP_ATTACK: {
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->effect = 3;
             m4aSongNumStart(SE_219);
         } break;
 
-        case ITEM__MP_12: {
-            struct UNK_3005510 *unkPtr = sub_8019224();
-            unkPtr->unk0 = 6;
-            unkPtr->unk1 = 4;
+        case ITEM__MP_ATTACK_2: {
+            RoomEvent_ItemEffect *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_ITEMEFFECT_APPLIED;
+            roomEvent->effect = 4;
             m4aSongNumStart(SE_216);
         } break;
     }
 
     itembox->frames = 0;
-    gCurTask->main = Task_800B7D0;
+    gCurTask->main = Task_ItemBoxIconMain_Idle;
 }
 
-void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
+void InitItemBoxGraphics(Entity_ItemBox *itembox, bool32 firstLoad)
 {
     switch (gGameMode) {
         case GAME_MODE_SINGLE_PLAYER:
         case GAME_MODE_TIME_ATTACK:
         case GAME_MODE_BOSS_TIME_ATTACK: {
-            if (p1) {
-                if (itembox->kind == 0) {
+            if (firstLoad) {
+                if (itembox->kind == ITEM__ONE_UP) {
                     itembox->item.graphics.anim = ItemBox_1UpIcons[gSelectedCharacter][0];
                     itembox->item.variant = ItemBox_1UpIcons[gSelectedCharacter][1];
                 } else {
@@ -371,16 +375,16 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
 
         case GAME_MODE_MULTI_PLAYER:
         case GAME_MODE_TEAM_PLAY: {
-            if (p1 || ((gStageTime & 0x1F) == 0)) {
-                s32 kind = gUnknown_080D51E4[(gStageTime >> 5) & 0x7];
+            if (firstLoad || ((gStageTime & 0x1F) == 0)) {
+                s32 kind = ItemBox_randTypeTable[(gStageTime >> 5) & 0x7];
 
-                if (kind == 13) {
-                    kind = gUnknown_080D51F4[gMultiplayerPseudoRandom & 0x3];
+                if (kind == ITEM__MP_RANDOM) {
+                    kind = ItemBox_subRandTypeTable[gMultiplayerPseudoRandom & 0x3];
 
                     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_7) {
-                        if (kind == 8) {
+                        if (kind == ITEM__MP_SWAP) {
                             s32 index = ((gMultiplayerPseudoRandom >> 2) % 3) + 1;
-                            kind = gUnknown_080D51F4[index];
+                            kind = ItemBox_subRandTypeTable[index];
                         }
                     }
                 }
@@ -393,7 +397,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
         } break;
 
         case GAME_MODE_MULTI_PLAYER_COLLECT_RINGS: {
-            if (p1) {
+            if (firstLoad) {
                 itembox->item.graphics.anim = ItemBox_MysteryIcons[itembox->kind][0];
                 itembox->item.variant = ItemBox_MysteryIcons[itembox->kind][1];
                 UpdateSpriteAnimation(&itembox->item);
@@ -407,24 +411,24 @@ void Task_ItemBoxMain(void)
     Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER && ((s8)itembox->base.me->x) == MAP_ENTITY_STATE_MINUS_THREE) {
-        sub_800B828(itembox);
+        MultiplayerItemBoxBreak(itembox);
     } else {
-        if (sub_800B8F4(itembox)) {
-            sub_800B1AC(itembox);
+        if (CheckItemBoxPlayerCollision(itembox)) {
+            BreakItemBox(itembox);
         } else {
-            sub_800B580(itembox, FALSE);
+            InitItemBoxGraphics(itembox, FALSE);
         }
 
-        if (sub_800B8AC(itembox)) {
+        if (CheckItemBoxOutOfBounds(itembox)) {
             SET_MAP_ENTITY_NOT_INITIALIZED(itembox->base.me, itembox->base.spriteX);
             TaskDestroy(gCurTask);
         } else {
-            sub_800B860(itembox, FALSE);
+            DrawItemBox(itembox, FALSE);
         }
     }
 }
 
-void Task_800B780(void)
+void Task_ItemBoxIconMain_Rising(void)
 {
     Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
@@ -432,13 +436,13 @@ void Task_800B780(void)
     if (itembox->frames++ >= 60)
         ApplyItemboxEffect(itembox);
     else {
-        itembox->unk74 += -Q(1.0);
+        itembox->iconOffset += -Q(1.0);
     }
 
-    sub_800B860(itembox, TRUE);
+    DrawItemBox(itembox, TRUE);
 }
 
-void Task_800B7D0(void)
+void Task_ItemBoxIconMain_Idle(void)
 {
     Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
@@ -446,7 +450,7 @@ void Task_800B7D0(void)
     if (itembox->frames++ >= 30)
         TaskDestroy(gCurTask);
     else
-        sub_800B860(itembox, TRUE);
+        DrawItemBox(itembox, TRUE);
 }
 
 void TaskDestructor_ItemBox(struct Task *t)
@@ -456,7 +460,7 @@ void TaskDestructor_ItemBox(struct Task *t)
     VramFree(itembox->item.graphics.dest);
 }
 
-void sub_800B828(Entity_ItemBox *itembox)
+void MultiplayerItemBoxBreak(Entity_ItemBox *itembox)
 {
     m4aSongNumStart(SE_ITEM_BOX_2);
 
@@ -464,24 +468,24 @@ void sub_800B828(Entity_ItemBox *itembox)
 
     itembox->frames = 0;
 
-    gCurTask->main = Task_800B950;
+    gCurTask->main = Task_ItemBoxIconMain_Rise_MP;
 }
 
-void sub_800B860(Entity_ItemBox *itembox, bool32 p1)
+void DrawItemBox(Entity_ItemBox *itembox, bool32 disableBox)
 {
     itembox->s.x = itembox->x - gCamera.x;
     itembox->s.y = itembox->y - gCamera.y;
 
     itembox->item.x = itembox->x - gCamera.x;
-    itembox->item.y = (I(itembox->unk74) + itembox->s.y);
+    itembox->item.y = (I(itembox->iconOffset) + itembox->s.y);
 
-    if (!p1)
+    if (!disableBox)
         DisplaySprite(&itembox->s);
 
     DisplaySprite(&itembox->item);
 }
 
-bool32 sub_800B8AC(Entity_ItemBox *itembox)
+bool32 CheckItemBoxOutOfBounds(Entity_ItemBox *itembox)
 {
     s16 x = itembox->x - gCamera.x;
     s16 y = itembox->y - gCamera.y;
@@ -493,47 +497,47 @@ bool32 sub_800B8AC(Entity_ItemBox *itembox)
     return FALSE;
 }
 
-bool32 sub_800B8F4(Entity_ItemBox *itembox)
+bool32 CheckItemBoxPlayerCollision(Entity_ItemBox *itembox)
 {
     if (PLAYER_IS_ALIVE) {
         Sprite *s = &itembox->s;
         u32 res = sub_800C944(s, itembox->x, itembox->y);
 
         if (res != 0) {
-            itembox->unk78 = 1;
+            itembox->noPlayerBreakRecoil = TRUE;
 
-            return itembox->unk78;
+            return itembox->noPlayerBreakRecoil;
         } else {
             if (!sub_800C204(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
-            sub_800B8F4_Ret0:
+            CheckItemBoxPlayerCollision_Ret0:
                 return FALSE;
             } else {
-                itembox->unk78 = 0;
+                itembox->noPlayerBreakRecoil = FALSE;
 
                 return TRUE;
             }
         }
     } else {
-        goto sub_800B8F4_Ret0;
+        goto CheckItemBoxPlayerCollision_Ret0;
     }
 }
 
-void Task_800B950(void)
+void Task_ItemBoxIconMain_Rise_MP(void)
 {
     Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
     if (itembox->frames++ >= 60) {
-        sub_800B9A0(itembox);
+        FinishItemBoxRise_MP(itembox);
     } else {
-        itembox->unk74 += -Q(1.0);
+        itembox->iconOffset += -Q(1.0);
     }
 
-    sub_800B860(itembox, TRUE);
+    DrawItemBox(itembox, TRUE);
 }
 
-void sub_800B9A0(Entity_ItemBox *itembox)
+void FinishItemBoxRise_MP(Entity_ItemBox *itembox)
 {
     itembox->frames = 0;
-    gCurTask->main = Task_800B7D0;
+    gCurTask->main = Task_ItemBoxIconMain_Idle;
 }

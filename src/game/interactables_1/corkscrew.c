@@ -92,7 +92,7 @@ void sub_8060ED0(void)
 
     if (I(player->qWorldX) - x > 0x230) {
         if (player->moveState & MOVESTATE_4) {
-            player->transition = PLTRANS_PT2;
+            player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
         }
@@ -111,13 +111,13 @@ void sub_8060ED0(void)
     if (player->speedGroundX < corkscrew->unk10) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8060D34;
     } else if (player->frameInput & gPlayerControls.jump) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8060D34;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
@@ -202,7 +202,7 @@ void sub_8061228(void)
 
     if (I(player->qWorldX) - x < -0x230) {
         if (player->moveState & MOVESTATE_4) {
-            player->transition = PLTRANS_PT2;
+            player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
         }
@@ -221,13 +221,13 @@ void sub_8061228(void)
     if (player->speedGroundX > corkscrew->unk10) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = sub_8061088;
     } else if (player->frameInput & gPlayerControls.jump) {
         player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
-        player->transition = PLTRANS_PT5;
+        player->transition = PLTRANS_UNCURL;
         gCurTask->main = sub_8061088;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;

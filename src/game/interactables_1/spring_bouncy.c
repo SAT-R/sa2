@@ -117,7 +117,7 @@ static void Task_Interactable_BouncySpring()
             if (gPlayer.speedAirY < Q_8_8(-12))
                 gPlayer.speedAirY = Q_8_8(-12);
 
-            gPlayer.unk36 = 3;
+            gPlayer.disableTrickTimer = 3;
 
             Player_TransitionCancelFlyingAndBoost(&gPlayer);
             sub_8023B5C(&gPlayer, 14);

@@ -126,7 +126,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         gPlayer.qWorldX += COS_24_8(cannon->unk6A) * 0x20;
         gPlayer.qWorldY += SIN_24_8(cannon->unk6A) * 0x20;

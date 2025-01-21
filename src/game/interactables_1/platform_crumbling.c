@@ -198,8 +198,8 @@ void Task_805E480(void)
 
             if (value > 0) {
                 if (r6 == 0 && value == 1) {
-                    if ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == s) {
-                        gPlayer.moveState = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
+                    if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && gPlayer.stoodObj == s) {
+                        gPlayer.moveState = ((gPlayer.moveState & (~MOVESTATE_STOOD_ON_OBJ)) | MOVESTATE_IN_AIR);
                     }
 
                     gCurTask->main = Task_805E6A4;

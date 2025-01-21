@@ -19,6 +19,9 @@ struct MultiSioData_0_0 {
     u8 unk3;
     u32 unk4;
     u16 unk8[3];
+
+    // TODO: all values from unkE onwards appear to be 'RoomEvent' types?
+    // This seems to apply to all 'MultiSioData_X_X' types?
     u8 unkE;
     u8 unkF;
     u32 unk10;
@@ -36,6 +39,9 @@ struct MultiSioData_0_1 {
     u16 unk6;
 
     u16 unk8[3];
+
+    // TODO: all values from unkE onwards appear to be 'RoomEvent' types?
+    // This seems to apply to all 'MultiSioData_X_X' types?
     u8 unkE;
     u8 unkF;
     u32 unk10;
@@ -53,6 +59,9 @@ struct MultiSioData_0_2 {
     u16 unk6;
 
     u16 unk8[3];
+
+    // TODO: all values from unkE onwards appear to be 'RoomEvent' types?
+    // This seems to apply to all 'MultiSioData_X_X' types?
     u8 unkE;
     u8 unkF;
     u32 unk10;
@@ -71,6 +80,9 @@ struct MultiSioData_0_3 {
 
     u32 unk8;
     u16 unkC;
+
+    // TODO: all values from unkE onwards appear to be 'RoomEvent' types?
+    // This seems to apply to all 'MultiSioData_X_X' types?
     u8 unkE;
     u8 unkF;
     u32 unk10;
@@ -89,6 +101,8 @@ struct MultiSioData_0_4 {
     u8 unkC;
     u8 unkD;
 
+    // TODO: all values from unkE onwards appear to be 'RoomEvent' types?
+    // This seems to apply to all 'MultiSioData_X_X' types?
     u8 unkE;
     u8 numRings;
     u8 unk10;

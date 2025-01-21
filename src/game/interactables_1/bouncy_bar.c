@@ -91,7 +91,7 @@ void Task_BouncyBarIdle(void)
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1) && (gPlayer.speedAirY > 0)
         && (I(gPlayer.qWorldY) + 4) < screenY) {
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = PLTRANS_UNCURL;
 
         bar->unk3C = gPlayer.speedAirY >> 0xA;
         if (bar->unk3C > 2) {

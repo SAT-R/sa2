@@ -31,6 +31,8 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+#include "game/multiplayer/multiplayer_event_mgr.h"
+
 struct Task *gGameStageTask = NULL;
 
 void Task_GameStage(void);
@@ -46,10 +48,6 @@ void StageInit_CollectRings(void);
 void SetupStageIntro(void);
 
 void CreateStageWaterTask(u32, u32, u32);
-
-void sub_8019120(void);
-
-void sub_80191A4(void);
 
 void StageInit_Zone1Act1(void);
 void StageInit_Zone3Act1(void);
@@ -253,8 +251,8 @@ void CreateGameStage(void)
     gUnknown_03005398 = 0x80;
 
     if (IS_MULTI_PLAYER) {
-        sub_80191A4();
-        sub_8019120();
+        CreateMultiplayerRecieveEventMgr();
+        CreateMultiplayerSendEventMgr();
 
         gRandomItemBox = 0;
 
@@ -389,7 +387,7 @@ void Task_GameStage(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & MOVESTATE_40) {
+            if (gPlayer.moveState & MOVESTATE_IN_WATER) {
                 gPlayer.speedAirY = -Q(2.625);
             } else {
                 gPlayer.speedAirY = -Q(4.875);
@@ -419,7 +417,7 @@ void Task_GameStage(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & MOVESTATE_40) {
+            if (gPlayer.moveState & MOVESTATE_IN_WATER) {
                 gPlayer.speedAirY = -Q(2.625);
             } else {
                 gPlayer.speedAirY = -Q(4.875);

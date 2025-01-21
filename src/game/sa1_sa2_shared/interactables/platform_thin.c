@@ -9,7 +9,7 @@
 #include "game/sa1_sa2_shared/interactables/platform_thin.h"
 #include "game/entity.h"
 
-#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -21,13 +21,13 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 unk3C;
-    /* 0x40 */ s32 unk40;
-    /* 0x44 */ s32 unk44;
+    /* 0x3C */ s32 timer;
+    /* 0x40 */ s32 offsetX;
+    /* 0x44 */ s32 offsetY;
 
     // unused
-    /* 0x48 */ s32 unk48;
-    /* 0x4C */ s32 unk4C;
+    /* 0x48 */ s32 velocityX;
+    /* 0x4C */ s32 velocityY;
 } Sprite_CommonThinPlatform;
 
 typedef struct {
@@ -39,9 +39,9 @@ typedef struct {
     SpriteTransform unkCC;
     SpriteTransform unkD8;
     SpriteTransform unkE4;
-    u16 unkF0;
-    s16 unkF2;
-} Platform_D1C /* size 0xF4*/;
+    u16 timer;
+    s16 gravityStrength;
+} PlatformBreakParticles /* size 0xF4*/;
 
 static void Task_PlatformThinMain(void);
 static void TaskDestructor_PlatformThin(struct Task *);
@@ -50,7 +50,7 @@ static void Task_PlatformBreakParticlesMain(void);
 static void TaskDestructor_PlatformBreakParticles(struct Task *);
 
 void CreatePlatformBreakParticles(s16, s16);
-static u32 sub_80111F0(Sprite *, s32, s32, Player *);
+static u32 HandleThinPlatformCollision(Sprite *, s32, s32, Player *);
 
 static const ALIGNED(4) u16 sPlatformThinAnimations[][3] = {
     { 24, SA2_ANIM_562, 0 },
@@ -89,8 +89,8 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     platform->base.spriteX = me->x;
     platform->base.id = spriteY;
 
-    platform->unk40 = 0;
-    platform->unk44 = 0;
+    platform->offsetX = 0;
+    platform->offsetY = 0;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -137,8 +137,8 @@ static void Task_PlatformThinMain(void)
     if (IS_MULTI_PLAYER && (s8)me->x == -3) {
         CreatePlatformBreakParticles(x, y);
 
-        if (player->moveState & MOVESTATE_8 && player->unk3C == s) {
-            player->moveState &= ~MOVESTATE_8;
+        if (player->moveState & MOVESTATE_STOOD_ON_OBJ && player->stoodObj == s) {
+            player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
             player->moveState |= 2;
         }
         TaskDestroy(gCurTask);
@@ -148,7 +148,7 @@ static void Task_PlatformThinMain(void)
     if (!(player->moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         u32 temp2 = sub_800CCB8(s, x, y, player);
         if (temp2 & 0xC0000) {
-            if (sub_80111F0(s, x, y, player) & 0xC0000) {
+            if (HandleThinPlatformCollision(s, x, y, player) & 0xC0000) {
                 player->qWorldX += (s16)(temp2 & 0xFF00);
                 player->speedAirX = 0;
             }
@@ -161,7 +161,7 @@ static void Task_PlatformThinMain(void)
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
                     if (charState == CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN) {
-                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         player->moveState |= MOVESTATE_IN_AIR;
                         player->speedAirY = player->speedAirY >> 1;
                         CreatePlatformBreakParticles(x, y);
@@ -175,7 +175,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
                     if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
-                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
                     }
@@ -189,12 +189,12 @@ static void Task_PlatformThinMain(void)
     }
     if (something) {
         if (IS_MULTI_PLAYER) {
-            struct UNK_3005510 *unk5510 = sub_8019224();
-            unk5510->unk0 = 1;
-            unk5510->unk1 = platform->base.regionX;
-            unk5510->unk2 = platform->base.regionY;
-            unk5510->unk3 = platform->base.id;
-            unk5510->unk4 = 0;
+            RoomEvent_PlatformChange *roomEvent = CreateRoomEvent();
+            roomEvent->type = ROOMEVENT_TYPE_PLATFORM_CHANGE;
+            roomEvent->x = platform->base.regionX;
+            roomEvent->y = platform->base.regionY;
+            roomEvent->id = platform->base.id;
+            roomEvent->action = 0;
         }
         TaskDestroy(gCurTask);
         return;
@@ -213,8 +213,9 @@ static void Task_PlatformThinMain(void)
 NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreakParticles.inc",
          void CreatePlatformBreakParticles(s16 x, s16 y))
 {
-    struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
-    Platform_D1C *platform = TASK_DATA(t);
+    struct Task *t
+        = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
+    PlatformBreakParticles *platform = TASK_DATA(t);
 
     // Hack for better match
 #ifndef NON_MATCHING
@@ -226,8 +227,8 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreak
     {
         Sprite *s = &platform->unk0;
         SpriteTransform *transform = &platform->unkC0;
-        platform->unkF0 = 0;
-        platform->unkF2 = 0xFE00;
+        platform->timer = 0;
+        platform->gravityStrength = -0x200;
         x -= 128;
         y -= 50;
 
@@ -318,22 +319,22 @@ END_NONMATCH
 static void Task_PlatformBreakParticlesMain(void)
 {
     s16 x, y;
-    Platform_D1C *platform = TASK_DATA(gCurTask);
+    PlatformBreakParticles *platform = TASK_DATA(gCurTask);
     Sprite *s;
     s16 width;
     SpriteTransform *transform;
-    if (platform->unkF0++ >= 0x3D) {
+    if (platform->timer++ >= 0x3D) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    platform->unkF2 += 0x28;
+    platform->gravityStrength += 0x28;
 
     //
     s = &platform->unk0;
     transform = &platform->unkC0;
 
-    transform->y += I(platform->unkF2);
+    transform->y += I(platform->gravityStrength);
 
     x = transform->x;
     y = transform->y;
@@ -341,7 +342,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
 
-    transform->x -= platform->unkF0 * 2;
+    transform->x -= platform->timer * 2;
 
     width = transform->qScaleX + 8;
     if (width > 0x200) {
@@ -363,7 +364,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk30;
     transform = &platform->unkCC;
 
-    transform->y += I(platform->unkF2);
+    transform->y += I(platform->gravityStrength);
 
     x = transform->x;
     y = transform->y;
@@ -371,7 +372,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
 
-    transform->x += platform->unkF0;
+    transform->x += platform->timer;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
@@ -389,14 +390,14 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk60;
     transform = &platform->unkD8;
 
-    transform->y += I(platform->unkF2);
+    transform->y += I(platform->gravityStrength);
 
     x = transform->x;
     y = transform->y;
 
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
-    transform->x += platform->unkF0 * 2;
+    transform->x += platform->timer * 2;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
@@ -414,14 +415,14 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk90;
     transform = &platform->unkE4;
 
-    transform->y += I(platform->unkF2);
+    transform->y += I(platform->gravityStrength);
 
     x = transform->x;
     y = transform->y;
 
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
-    transform->x -= platform->unkF0;
+    transform->x -= platform->timer;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
@@ -445,12 +446,12 @@ static void TaskDestructor_PlatformThin(struct Task *t)
 
 static void TaskDestructor_PlatformBreakParticles(struct Task *t)
 {
-    Platform_D1C *platform = TASK_DATA(t);
+    PlatformBreakParticles *platform = TASK_DATA(t);
     VramFree(platform->unk0.graphics.dest);
     VramFree(platform->unk60.graphics.dest);
 }
 
-static u32 sub_80111F0(Sprite *s, s32 x, s32 y, Player *player)
+static u32 HandleThinPlatformCollision(Sprite *s, s32 x, s32 y, Player *player)
 {
     u32 result;
     s->hitboxes[0].top += 1;

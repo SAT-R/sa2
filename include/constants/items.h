@@ -9,10 +9,11 @@
 #define ITEM__RINGS_RANDOM    5
 #define ITEM__RINGS_5         6
 #define ITEM__RINGS_10        7
-#define ITEM__MP_8            8
-#define ITEM__MP_9            9
-#define ITEM__MP_10           10
-#define ITEM__MP_11           11
-#define ITEM__MP_12           12
+#define ITEM__MP_SWAP         8
+#define ITEM__MP_CONFUSION    9
+#define ITEM__MP_SLOWDOWN     10
+#define ITEM__MP_ATTACK       11
+#define ITEM__MP_ATTACK_2     12
+#define ITEM__MP_RANDOM       13
 
 #endif // GUARD_CONSTANTS_ITEMS_H

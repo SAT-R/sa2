@@ -24,7 +24,7 @@ typedef struct {
 } RingsManager;
 
 void Task_RingsMgrMain(void);
-void TaskDestructor_8007F1C(struct Task *);
+void TaskDestructor_RingsMgr(struct Task *);
 
 // TODO: combine these macros with `ring.c`
 
@@ -90,7 +90,7 @@ void CreateStageRingsManager(void)
     u32 dataSize;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0, TaskDestructor_8007F1C);
+        t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0, TaskDestructor_RingsMgr);
 
         compressedRingPosData = gSpritePosData_rings[gCurrentLevel];
         dataSize = (*(u32 *)compressedRingPosData) >> 8;
@@ -436,7 +436,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 }
 END_NONMATCH
 
-void TaskDestructor_8007F1C(struct Task *t)
+void TaskDestructor_RingsMgr(struct Task *t)
 {
     void *rings = *(void **)(TASK_DATA(t) + offsetof(RingsManager, rings));
     EwramFree(rings);

@@ -33,6 +33,6 @@ void CreateMultiplayerPlayer(u8);
 
 void sub_8018818(void);
 
-extern u8 gUnknown_0300583C;
+extern bool8 gShouldSpawnMPAttack2Effect;
 
 #endif
