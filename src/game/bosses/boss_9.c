@@ -1215,7 +1215,7 @@ void sub_804E15C(struct TA53_unk48 *unk48)
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk558 *unk558 = &boss->unk558;
     TA53_unk1C *unk1C = &boss->unk1C;
-    s32 sonicX, sonicY;
+    s32 qSonicX, qSonicY;
     u8 sp14, i;
 
     if (sub_8050030(unk48) != 0) {
@@ -1280,12 +1280,12 @@ void sub_804E15C(struct TA53_unk48 *unk48)
             }
             // _0804E30A
 
-            SuperSonicGetPos(&sonicX, &sonicY);
+            SuperSonicGetPos(&qSonicX, &qSonicY);
 
             r5 += unk48->unk38;
             r6 = CLAMP_SIN_PERIOD(r5);
 
-            r5 = (u16)sub_8004418(I(sonicY - r8), I(sonicX - sb));
+            r5 = (u16)sub_8004418(I(qSonicY - r8), I(qSonicX - sb));
 
             if ((r6 < (r5 + 0x10)) && (r6 > (r5 - 0x10))) {
                 sub_802BB54();
@@ -1318,9 +1318,9 @@ void sub_804E15C(struct TA53_unk48 *unk48)
         } else {
             u32 p0;
             // _0804E43C
-            sub_802C704(8, &sonicX, &sonicY);
+            sub_802C704(8, &qSonicX, &qSonicY);
 
-            r6 = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+            r6 = sub_8004418(I(qSonicY - r8), I(qSonicX - sb));
             p0 = r5;
             p0 += unk48->unk38;
             if (sub_808558C(p0 & ONE_CYCLE, r6, 10) < 0) {
@@ -1858,30 +1858,24 @@ void sub_804F108(TA53_unk558 *unk558)
     }
 }
 
-// (81.57%) https://decomp.me/scratch/iqeu1
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc", void sub_804F1EC(struct TA53_unk558 *unk558))
+void sub_804F1EC(struct TA53_unk558 *unk558)
 {
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk1C *unk1C = &boss->unk1C;
     TA53_unk48 *unk48 = &boss->unk48;
     TA53_unk98 *unk98 = &boss->unk98;
-    TA53_unkA8 *unkA8;
     Sprite *s = &unk558->s;
-    s32 qX, qY;
-    s32 qSonicX, qSonicY;
-    u16 index;
-    u8 i;
-    u32 hitbox;
-    s32 r7;
 
     if (boss->lives > 0) {
-        // _0804F222
+        s32 qX, qY;
+        s32 qSonicX, qSonicY;
+        s32 r7;
+        u16 index;
 
         if (--unk558->unk6 == 0) {
             unk558->callback = sub_8050DC8;
             m4aSongNumStop(SE_SUCTION);
         }
-        // _0804F23C
 
         r7 = unk558->unk8 + 2;
         if (r7 > 464) {
@@ -1919,7 +1913,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc", void sub_804F1E
             s->prevVariant = -1;
             s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         } else {
-            // _0804F36C
+            u8 i;
             m4aSongNumStartOrContinue(SE_SUCTION);
 
             s->x = I(qX) - gCamera.x;
@@ -1928,23 +1922,22 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc", void sub_804F1E
             DisplaySprite(s);
 
             for (i = 0; i < 3; i++) {
-                unkA8 = &unk98->unk10[i];
+                TA53_unkA8 *unkA8 = &unk98->unk10[i];
 
-                if (unkA8->unk4 & 0x1) {
-                    // TODO: This is a range-comparison, remove '<< 16'!
-                    s32 res = (sub_8004418(I(unkA8->pos14.y - qY), I(unkA8->pos14.x - qX)) - 301) << 16;
-                    if (((unsigned)res <= 422 << 16) || (unkA8->unk6 > 0)) {
-                        s32 unk1C = unkA8->unk1C + 0xA;
+                if (unkA8->unk4 & 1) {
+                    s16 res = (sub_8004418(I(unkA8->pos14.y - qY), I(unkA8->pos14.x - qX)));
+                    if ((res >= 301 && res <= 723) || (unkA8->unk6 > 0)) {
+                        r7 = unkA8->unk1C + 0xA;
                         unkA8->unk6 = 1;
-                        unkA8->unk1C = unk1C;
+                        unkA8->unk1C = r7;
 
-                        unkA8->pos14.x = sub_8085698(unkA8->pos14.x, +Q(22) + qX, (unk1C), 10, 2);
-                        unkA8->pos14.y = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0), 10, 2);
+                        unkA8->pos14.x = sub_8085698(unkA8->pos14.x, +Q(22) + qX, (r7), 10, 2);
+
+                        unkA8->pos14.y = sub_8085698(unkA8->pos14.y, qY, (r7 + 160), 10, 2);
 
                         unkA8->unkE = Div(unkA8->unkE * 90, 100);
                         unkA8->unk10 = Div(unkA8->unk10 * 90, 100);
                     }
-                    // _0804F430
 
                     if (sub_804EF68(&unkA8->spr20, I(unkA8->pos14.x), I(unkA8->pos14.y), s, I(qX) + 16, I(qY)) == TRUE) {
                         unkA8->unk4 = 0;
@@ -1954,7 +1947,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc", void sub_804F1E
         }
     }
 }
-END_NONMATCH
 
 void sub_804F47C(struct TA53_unk558 *unk558)
 {
