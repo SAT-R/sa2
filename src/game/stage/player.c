@@ -858,7 +858,7 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
         m4aSongNumStop(SE_281);
     }
 
-    p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
+    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
                       | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
                       | MOVESTATE_FLIP_WITH_MOVE_DIR);
 
@@ -3417,7 +3417,7 @@ void CallPlayerTransition(Player *p)
                     gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
                 }
 
-                if (p->moveState & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
+                if (p->moveState & (MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
                     p->moveState |= (MOVESTATE_GOAL_REACHED | MOVESTATE_IGNORE_INPUT);
                     p->heldInput = 0;
                     p->frameInput = 0;
@@ -5732,17 +5732,17 @@ void DoTrickIfButtonPressed(Player *p)
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
-                    p->moveState |= MOVESTATE_20000000;
+                    p->moveState |= MOVESTATE_SOME_ATTACK;
                     PLAYERFN_SET(Player_SonicAmy_InitStopNSlam);
                 } break;
 
                 case CHARACTER_KNUCKLES: {
-                    p->moveState |= MOVESTATE_20000000;
+                    p->moveState |= MOVESTATE_SOME_ATTACK;
                     PLAYERFN_SET(Player_Knuckles_InitDrillClaw);
                 } break;
 
                 case CHARACTER_AMY: {
-                    p->moveState |= MOVESTATE_20000000;
+                    p->moveState |= MOVESTATE_SOME_ATTACK;
                     PLAYERFN_SET(Player_SonicAmy_InitStopNSlam);
                 } break;
 
@@ -6040,7 +6040,7 @@ void Player_DashRing(Player *p)
 bool32 Player_TryMidAirAction(Player *p)
 {
     u16 song;
-    if (!(p->moveState & MOVESTATE_20000000)) {
+    if (!(p->moveState & MOVESTATE_SOME_ATTACK)) {
         if (p->frameInput & gPlayerControls.attack) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -6076,7 +6076,7 @@ bool32 Player_TryMidAirAction(Player *p)
                         Player_Sonic_InitHomingAttack(p);
                         return TRUE;
                     } else {
-                        p->moveState |= MOVESTATE_20000000;
+                        p->moveState |= MOVESTATE_SOME_ATTACK;
                         p->charState = CHARSTATE_SOME_ATTACK;
                         Player_SonicAmy_InitSkidAttackGfxTask(I(p->qWorldX), I(p->qWorldY), 1);
                         song = SE_SONIC_INSTA_SHIELD;
@@ -6092,7 +6092,7 @@ bool32 Player_TryMidAirAction(Player *p)
                 case CHARACTER_TAILS: {
                     if (!(p->moveState & MOVESTATE_IN_WATER)) {
                         Player_Tails_InitFlying(p);
-                        p->moveState |= MOVESTATE_20000000;
+                        p->moveState |= MOVESTATE_SOME_ATTACK;
                         return TRUE;
                     }
                 } break;
@@ -6105,7 +6105,7 @@ bool32 Player_TryMidAirAction(Player *p)
                 } break;
 
                 case CHARACTER_AMY: {
-                    p->moveState |= MOVESTATE_20000000;
+                    p->moveState |= MOVESTATE_SOME_ATTACK;
                     p->charState = CHARSTATE_SOME_ATTACK;
                     CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_C);
 
