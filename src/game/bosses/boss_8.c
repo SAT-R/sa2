@@ -460,7 +460,7 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
+    if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 result = sub_800CCB8(prop, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
@@ -492,7 +492,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
+    if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
         s32 result = sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
             gPlayer.qWorldY -= Q(8);
@@ -575,7 +575,7 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
+    if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
@@ -625,7 +625,7 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
+    if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
@@ -678,7 +678,7 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
     }
 
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
+    if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
@@ -868,11 +868,11 @@ static void Task_804A9D8(void)
     boss->unkB = 1;
     sub_804C3AC(boss);
 
-    gPlayer.moveState |= (MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
+    gPlayer.moveState |= (MOVESTATE_IGNORE_INPUT | MOVESTATE_IA_OVERRIDE);
 
     if (--boss->unk14 == 0) {
         gStageFlags &= ~STAGE_FLAG__DISABLE_PAUSE_MENU;
-        gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
+        gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT | MOVESTATE_IA_OVERRIDE);
 
         m4aSongNumStart(SE_260);
 
@@ -1035,7 +1035,7 @@ static void Task_804AD68(void)
         gStageFlags |= STAGE_FLAG__TURN_OFF_HUD;
 
         gPlayer.moveState |= MOVESTATE_100000;
-        gPlayer.moveState |= MOVESTATE_400000;
+        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
         gCurTask->main = Task_ShowResultsAndDelete;
     } else {
         sub_804CC98(boss);

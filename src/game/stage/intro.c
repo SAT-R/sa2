@@ -614,7 +614,7 @@ static void Task_IntroControllerMain(void)
     if ((IS_SINGLE_PLAYER) && !IS_BOSS_STAGE(gCurrentLevel)) {
         if (gPressedKeys & (A_BUTTON | B_BUTTON)) {
             gPlayer.moveState &= ~MOVESTATE_100000;
-            gPlayer.moveState &= ~MOVESTATE_400000;
+            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
             frameCounter = 200;
             introController->skippedIntro = TRUE;
         }
@@ -625,11 +625,11 @@ static void Task_IntroControllerMain(void)
 
     if (frameCounter < 150) {
         gPlayer.moveState |= MOVESTATE_100000;
-        gPlayer.moveState |= MOVESTATE_400000;
+        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     } else if (frameCounter == 151) {
         gPlayer.moveState &= ~MOVESTATE_100000;
     } else if (frameCounter >= 150 && frameCounter <= 166) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     }
 
     /*    Set player animation to "Getting Ready" and delay until it is finished    */

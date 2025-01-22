@@ -104,7 +104,7 @@ void Task_BouncyBarIdle(void)
         bar->unk40 = screenX - I(gPlayer.qWorldX) >= 0 ? screenX - I(gPlayer.qWorldX) : I(gPlayer.qWorldX) - screenX;
 
         gCurTask->main = Task_BouncyBarLaunch;
-        gPlayer.moveState |= MOVESTATE_400000;
+        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
 
         bar->unk3C = 2 - bar->unk3C;
         s->graphics.anim = 538;
@@ -150,7 +150,7 @@ void Task_BouncyBarLaunch(void)
 
             gPlayer.speedAirY = gUnknown_080D94F2[bar->unk3C];
             gPlayer.speedAirY += ((temp * bar->unk3E) * gUnknown_080D94EE[bar->unk3C]) >> 1;
-            gPlayer.moveState &= ~MOVESTATE_400000;
+            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
             gPlayer.moveState &= ~MOVESTATE_100;
         }
     }

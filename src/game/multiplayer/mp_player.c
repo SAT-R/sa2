@@ -225,10 +225,10 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.charState = CHARSTATE_WALK_A;
                         gPlayer.moveState |= MOVESTATE_800000;
                         gPlayer.callback = Player_TouchGround;
-                        gPlayer.moveState &= ~MOVESTATE_400000;
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                         mpp->unk5C &= ~4;
                         if (mpp2->unk5C & 4) {
-                            gPlayer.moveState &= ~MOVESTATE_400000;
+                            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                             mpp2->unk5C &= ~4;
                         }
                     }
@@ -252,7 +252,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
                 if (mpp->unk54 & 4) {
                     if (mpp->unk5C & 4) {
-                        gPlayer.moveState &= ~MOVESTATE_400000;
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                         mpp->unk5C &= ~4;
                     }
 
@@ -346,7 +346,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
     if (!(gStageFlags & 1) && !(mpp->unk54 & 0x80000004)) {
         if (!(gPlayer.itemEffect & 0x80)) {
-            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
+            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (mpp->unk56 != SIO_MULTI_CNT->id) {
                         switch (gMultiplayerCharacters[mpp->unk56]) {
@@ -381,7 +381,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                     && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES && mpp->unk5C & 4) {
                     mpp->unk5C &= ~0x6;
                     if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
-                        gPlayer.moveState &= ~MOVESTATE_400000;
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                     }
                     {
                         RoomEvent_Unknown *roomEvent = CreateRoomEvent();
@@ -737,7 +737,7 @@ void sub_801707C(void)
                 }
 
                 if (result - gPlayer.spriteOffsetY > 0) {
-                    gPlayer.moveState |= MOVESTATE_400000;
+                    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
                     gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
 
                     mpp->unk5C |= 4;
@@ -773,7 +773,7 @@ void sub_801707C(void)
 
         if (Player_TryJump(&gPlayer)) {
             mpp->unk60 = 30;
-            gPlayer.moveState &= ~MOVESTATE_400000;
+            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
             mpp->unk5C &= ~4;
 
         } else {
@@ -782,7 +782,7 @@ void sub_801707C(void)
                  && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
                 || I(gPlayer.qWorldX) <= gCamera.minX || I(gPlayer.qWorldX) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO
                 || moveStateVal != 0) {
-                gPlayer.moveState &= ~MOVESTATE_400000;
+                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                 mpp->unk5C &= ~4;
                 gPlayer.charState = CHARSTATE_IDLE;
                 gPlayer.callback = Player_TouchGround;
@@ -791,7 +791,7 @@ void sub_801707C(void)
                 }
             } else {
                 if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) {
-                    gPlayer.moveState &= ~MOVESTATE_400000;
+                    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                     mpp->unk5C &= ~4;
                 } else {
                     s32 x, y;
@@ -807,7 +807,7 @@ void sub_801707C(void)
 
                         if (result < 0) {
                             y += Q(result);
-                            gPlayer.moveState &= ~MOVESTATE_400000;
+                            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                             gPlayer.moveState |= MOVESTATE_IN_AIR;
                             mpp->unk5C &= ~4;
                         }
@@ -819,7 +819,7 @@ void sub_801707C(void)
 
                         if (result < 0) {
                             y -= Q(result);
-                            gPlayer.moveState &= ~MOVESTATE_400000;
+                            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                             gPlayer.moveState |= MOVESTATE_IN_AIR;
                             mpp->unk5C &= ~4;
                         }
@@ -966,7 +966,7 @@ void sub_8017670(void)
                     && !GRAVITY_IS_INVERTED == !(mpp->unk54 & 8)) {
                     if ((!GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) > mpp->pos.y)
                         || (GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) < mpp->pos.y)) {
-                        gPlayer.moveState |= MOVESTATE_400000;
+                        gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
                         sub_8023B5C(&gPlayer, 14);
                         gPlayer.spriteOffsetX = 6;
                         gPlayer.spriteOffsetY = 14;
@@ -1004,7 +1004,7 @@ void sub_8017670(void)
 
             if (Player_TryJump(&gPlayer) != 0) {
                 mpp->unk60 = 30;
-                gPlayer.moveState &= ~MOVESTATE_400000;
+                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                 mpp->unk5C &= ~0x4;
                 return;
             }
@@ -1014,7 +1014,7 @@ void sub_8017670(void)
                  && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
                 || I(gPlayer.qWorldX) <= gCamera.minX || I(gPlayer.qWorldX) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO
                 || moveStateVal != 0) {
-                gPlayer.moveState &= ~MOVESTATE_400000;
+                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                 mpp->unk5C &= ~4;
                 gPlayer.charState = CHARSTATE_IDLE;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
@@ -1037,7 +1037,7 @@ void sub_8017670(void)
 
                     if (result < 0) {
                         y -= QS(result);
-                        gPlayer.moveState &= ~MOVESTATE_400000;
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk5C &= ~4;
                     }
@@ -1048,7 +1048,7 @@ void sub_8017670(void)
 
                     if (result < 0) {
                         y += QS(result);
-                        gPlayer.moveState &= ~MOVESTATE_400000;
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk5C &= ~4;
                     }

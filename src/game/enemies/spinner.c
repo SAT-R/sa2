@@ -65,7 +65,7 @@ void Task_EnemySpinner(void)
     me = spinner->base.me;
     ENEMY_UPDATE_POSITION_STATIC(spinner, s, pos.x, pos.y);
 
-    if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
+    if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
         Player *p = &gPlayer;
         Sprite *s2 = &p->spriteInfoBody->s;
 

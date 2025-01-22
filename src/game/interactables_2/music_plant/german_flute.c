@@ -195,7 +195,7 @@ static void sub_8076B84(Sprite_GermanFlute *flute)
 
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -253,7 +253,7 @@ static void sub_8076C70(Sprite_GermanFlute *flute)
 
 static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
     gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.speedAirX = 0;
@@ -264,7 +264,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 
 static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_UNCURL;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -276,7 +276,7 @@ static void sub_8076CF4(Sprite_GermanFlute UNUSED *flute) { gCurTask->main = Tas
 
 static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
 {
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gCurTask->main = Task_GermanFlute;
 }
 
