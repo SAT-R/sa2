@@ -346,7 +346,8 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
     if (!(gStageFlags & 1) && !(mpp->unk54 & 0x80000004)) {
         if (!(gPlayer.itemEffect & 0x80)) {
-            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
+            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0)
+                && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (mpp->unk56 != SIO_MULTI_CNT->id) {
                         switch (gMultiplayerCharacters[mpp->unk56]) {
