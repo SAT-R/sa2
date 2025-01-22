@@ -72,7 +72,7 @@ void sub_8022318(Player *p);
 void sub_8022838(Player *p);
 void sub_80232D0(Player *p);
 
-void Player_AirMovement(Player *p);
+void Player_AirInputControls(Player *p);
 void Player_UpdatePosition(Player *p);
 void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
@@ -1380,7 +1380,7 @@ void Player_Knuckles_GlideSoftFall(Player *p)
 {
     u8 someFlags;
 
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
     PlayerFn_Cmd_UpdateAirFallSpeed(p);
     sub_8022838(p);
 

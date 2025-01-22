@@ -2850,7 +2850,7 @@ void sub_80232D0(Player *p)
     }
 }
 
-void Player_AirMovement(Player *p)
+void Player_AirInputControls(Player *p)
 {
     s32 r5 = p->acceleration * 2;
     s32 r6 = p->topSpeed;
@@ -4380,7 +4380,7 @@ void Player_Jumping(Player *p)
     }
 
     sub_80246DC(p);
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
 
     if (!IS_BOSS_STAGE(gCurrentLevel)) {
         sub_80236C8(p);
@@ -4487,7 +4487,7 @@ void Player_Uncurl(Player *p)
     sub_80246DC(p);
 
     if ((p->unk6E != 1) || (p->speedAirY > 0)) {
-        Player_AirMovement(p);
+        Player_AirInputControls(p);
 
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->moveState & MOVESTATE_100)) {
             if (Player_Sonic_TryForwardThrust(p) || Player_TryMidAirAction(p))
@@ -4894,7 +4894,7 @@ void Player_8026BCC(Player *p)
 void Player_8026D2C(Player *p)
 {
     sub_80246DC(p);
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
     sub_80236C8(p);
     sub_80232D0(p);
 
@@ -5007,7 +5007,7 @@ void Player_PropellorSpring(Player *p)
         p->rotation += Q(4.0 / 256.0);
     }
 
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
     sub_80236C8(p);
     sub_80232D0(p);
 
@@ -5465,7 +5465,7 @@ void Player_8027D3C(Player *p)
 void Player_HandlePhysicsWithAirInput(Player *p)
 {
     if (p->moveState & MOVESTATE_IN_AIR) {
-        Player_AirMovement(p);
+        Player_AirInputControls(p);
         sub_80236C8(p);
         sub_80232D0(p);
 
@@ -5510,7 +5510,7 @@ void Player_HandlePhysics(Player *p)
 
 void sub_8028204(Player *p)
 {
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
     sub_80236C8(p);
     sub_80232D0(p);
 
@@ -5525,7 +5525,7 @@ void sub_80282EC(Player *p)
 {
     p->acceleration >>= 1;
 
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
 
     if (p->character == CHARACTER_TAILS) {
         sub_80236C8(p);
@@ -5692,7 +5692,7 @@ void Player_DefaultTrick(Player *p)
     }
 
     if (!(mask & MASK_80D6992_2) || (p->speedAirY > 0)) {
-        Player_AirMovement(p);
+        Player_AirInputControls(p);
     }
 
     if (!(mask & MASK_80D6992_4)) {
@@ -5900,7 +5900,7 @@ void Player_8029074(Player *p)
 {
     sub_80246DC(p);
     DoTrickIfButtonPressed(p);
-    Player_AirMovement(p);
+    Player_AirInputControls(p);
     sub_80236C8(p);
     sub_80232D0(p);
 
