@@ -453,18 +453,19 @@ void SetupEggmanKidnapsVanillaTask(void)
     gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
 }
 
-// (39.42%) https://decomp.me/scratch/CKySX
-// (77.90%) https://decomp.me/scratch/cSWIn
-NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void CreateTrueArea53Boss(void))
+void CreateTrueArea53Boss(void)
 {
-    void *vram;
     TA53Boss *boss;
     TA53_unk1C *unk1C;
     TA53_unk48 *unk48;
     TA53_unk98 *unk98;
+    // Required to be here for match
+    s32 unused;
     TA53_unk558 *unk558;
     TA53_unk594 *unk594;
     TA53_unk654 *unk654;
+    ScreenFade *fade;
+    void *vram;
     Sprite *s;
     u32 i, j;
 
@@ -484,18 +485,21 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
 
     boss->lives = 12;
     boss->unkD = 0;
+
     boss->unk10 = 1;
     boss->unk12 = 80;
     boss->unkE = 0;
     boss->unkF = 0;
     boss->qPos.x = 0;
     boss->qPos.y = 0;
-    boss->fade.window = 0;
-    boss->fade.brightness = Q(0);
-    boss->fade.flags = SCREEN_FADE_FLAG_LIGHTEN;
-    boss->fade.speed = 20;
-    boss->fade.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
-    boss->fade.bldAlpha = 1;
+
+    fade = &boss->fade;
+    fade->window = 0;
+    fade->brightness = Q(0);
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    fade->speed = 20;
+    fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+    fade->bldAlpha = 0;
 
     unk558 = &boss->unk558;
     unk558->callback = sub_8050DC8;
@@ -514,9 +518,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
     unk1C->unk14 = unk1C->unk16;
     unk1C->unk18 = 0;
 
-    for (i = 0; i < 4; i++) {
-        unk1C->unk4[i] = gUnknown_080D8C4C[i];
-        unk1C->unkC[i] = gUnknown_080D8C54[i];
+    for (j = 0; j < 4; j++) {
+        unk1C->unk4[j] = gUnknown_080D8C4C[j];
+        unk1C->unkC[j] = gUnknown_080D8C64[j];
     }
 
     unk48->unk30 &= 0xFFF;
@@ -531,12 +535,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
     unk48->unk30 = 0;
     unk48->unk4;
 
-    for (i = 0; i < 4; i++) {
-        unk48->unk4[i] = gUnknown_080D8A1C[0][i];
-        unk48->unkC[i] = gUnknown_080D8A34[0][i];
-        unk48->unk14[i] = gUnknown_080D8A4C[0][i];
-        unk48->unk1C[i] = gUnknown_080D8A64[0][i];
-        unk48->unk24[i] = gUnknown_080D8A7C[0][i];
+    for (j = 0; j < 4; j++) {
+        unk48->unk4[j] = gUnknown_080D8A1C[0][j];
+        unk48->unkC[j] = gUnknown_080D8A34[0][j];
+        unk48->unk14[j] = gUnknown_080D8A4C[0][j];
+        unk48->unk1C[j] = gUnknown_080D8A64[0][j];
+        unk48->unk24[j] = gUnknown_080D8A7C[0][j];
     }
 
     unk594->callback = sub_804DFB0;
@@ -578,14 +582,17 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
     // Rockets
     for (i = 0; i < 3; i++) {
         // _0804D1F0
-        s = &unk98->unk10[i].spr20;
+        TA53_unkA8 *unk10 = &unk98->unk10[i];
+        TA53_RocketExhaust *exhaust;
+        s = &unk10->spr20;
 
-        unk98->unk10[i].unk4 = 0;
-        unk98->unk10[i].unkA = 0;
-        unk98->unk10[i].unkE = 0;
-        unk98->unk10[i].unk10 = 0;
-        unk98->unk10[i].pos14.x = 0;
-        unk98->unk10[i].pos14.y = 0;
+        unk10->unk4 = 0;
+        unk10->unkA = 0;
+        unk10->unkE = 0;
+        unk10->unk10 = 0;
+        unk10->pos14.x = 0;
+        unk10->pos14.y = 0;
+
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(16);
@@ -602,19 +609,20 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-        unk98->unk10[i].exhaust.callback = sub_804DD9C;
+        exhaust = &unk10->exhaust;
+        exhaust->callback = sub_804DD9C;
 
         // Rocket Exhaust Clouds
         for (j = 0; j < 5; j++) {
             // _0804D25C
-            TA53_RocketExhaust *exhaust = &unk98->unk10[i].exhaust;
+            s = &exhaust->s[j];
+
             exhaust->unk4[j] = 0;
             exhaust->unkA[j][0] = 0;
             exhaust->unkA[j][1] = 0;
             exhaust->pos[j].x = 0;
             exhaust->pos[j].y = 0;
 
-            s = &unk98->unk10[i].exhaust.s[j];
             s->x = 0;
             s->y = 0;
             s->graphics.dest = vram;
@@ -736,7 +744,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 }
-END_NONMATCH
 
 void TrueArea53BossMove(s32 dX, s32 dY)
 {
