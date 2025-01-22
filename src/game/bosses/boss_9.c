@@ -2266,10 +2266,68 @@ void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
     m4aSongNumStart(SE_258);
 }
 
-// TODO: Implement
-// Code resembles sub_804F850 and sub_804FAA4
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FC10.inc", void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_)) { }
-END_NONMATCH
+void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
+{
+    u8 array[8];
+    u16 sinIndex = sinIndex_;
+
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk654 *unk654 = &boss->unk654;
+
+    u8 r6;
+
+    for (r6 = 0; r6 < 2; r6++) {
+        u16 idx;
+        u8 *pArray = array;
+        bool32 r5 = FALSE;
+        u8 r3 = 0;
+        u8 r2, i;
+        for (r2 = 0; r2 < 16; r2++) {
+            if (unk654->unkE[r2] == 0) {
+                *pArray++ = r2;
+
+                r3++;
+
+                if (r3 == ARRAY_COUNT(array)) {
+                    break;
+                }
+            }
+        }
+
+        if (r3 == ARRAY_COUNT(array)) {
+            r5 = TRUE;
+        }
+
+        if (!r5) {
+            return;
+        }
+
+        if (array[ARRAY_COUNT(array) - 1] < 8) {
+            idx = sinIndex + 40;
+        } else {
+            idx = sinIndex - 40;
+        }
+        idx = CLAMP_SIN_PERIOD(idx);
+
+        for (i = 0; i < 8; i++) {
+            s32 val;
+            u16 arrIndex = array[i];
+
+            unk654->unkE[arrIndex] = 1;
+            unk654->unk1E[arrIndex] = 255;
+
+            val = i * 64;
+
+            unk654->unk2E[arrIndex][0] = ((COS(idx) * (1024 - val))) >> 14;
+            unk654->unk2E[arrIndex][1] = ((SIN(idx) * (1024 - val))) >> 14;
+
+            unk654->qPos70[arrIndex].x = qX;
+            unk654->qPos70[arrIndex].y = qY;
+        }
+    }
+
+    m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
+}
 
 void sub_804FD58(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
 {
