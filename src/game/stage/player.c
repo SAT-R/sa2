@@ -127,9 +127,9 @@ void Player_InitTaunt(Player *);
 void Player_InitAttack(Player *);
 
 // >> acceleration = (sin(angle) * 3) / 32
-#define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle) * 4) * 3) >> 5)
-#define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle) * 4) * 5) >> 5)
-#define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle) * 4) * 60))
+#define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
+#define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
+#define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 // TODO: Match this without ASM!
 #ifndef NON_MATCHING
