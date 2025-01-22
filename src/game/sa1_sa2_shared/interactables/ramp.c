@@ -94,7 +94,7 @@ static void Task_Ramp(void)
     } while (0);
 #endif
 
-    if (!(player->moveState & MOVESTATE_400000)) {
+    if (!(player->moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 r1;
         u32 var = FALSE;
         if (player->moveState & MOVESTATE_STOOD_ON_OBJ && player->stoodObj == s) {

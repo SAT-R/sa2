@@ -68,7 +68,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     Sprite *s = &turnAroundBar->s;
     Player_ClearMovestate_IsInScriptedSequence();
 
-    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.qWorldY -= turnAroundBar->unk44;
 
     if (gPlayer.speedGroundX > 0) {
@@ -167,7 +167,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     Sprite *s = &turnAroundBar->s;
     Player_SetMovestate_IsInScriptedSequence();
 
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.qWorldY;
     gPlayer.qWorldX = Q(turnAroundBar->x);
     gPlayer.qWorldY = Q(turnAroundBar->y);

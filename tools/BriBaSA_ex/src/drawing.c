@@ -151,7 +151,7 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
         flags |= DRAWIA_FLAG_DRAW_TEXTURE;
     } break;
 
-    case IA__IA044__A: {
+    case IA__CEILING_SLOPE__A: {
         flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
         
@@ -302,7 +302,7 @@ GetEntityOffsetRect(AppState *state, EntityType etype, int x, int y, int kind, c
             offsetY = -(ia->texture.height / 4);
         } break;
         
-        case IA__IA044__A: {
+        case IA__CEILING_SLOPE__A: {
             flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
         } break;
         

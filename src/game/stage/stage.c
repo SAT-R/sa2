@@ -223,7 +223,7 @@ void CreateGameStage(void)
         InitCamera(0);
         StageInit_CollectRings();
         CreateCollectRingsTimeDisplay();
-        gPlayer.moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
+        gPlayer.moveState &= ~(MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT);
         gStageFlags &= ~STAGE_FLAG__ACT_START;
     }
 

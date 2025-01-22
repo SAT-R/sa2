@@ -162,7 +162,7 @@ static void sub_807A560(void)
     }
 
     if (gPlayer.timerInvulnerability == 120 && ia75->unk90) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         ia75->unk90 = 0;
     }
 
@@ -221,7 +221,7 @@ static void sub_807A73C(Sprite_IA75 *ia75)
     UpdateSpriteAnimation(s);
 
     if (PLAYER_IS_ALIVE && ia75->unk90) {
-        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         ia75->unk90 = 0;
         switch (ia75->unk94) {
             case 0:
@@ -382,7 +382,7 @@ static void sub_807AB04(struct Task *t)
 
 static void sub_807AB18(Sprite_IA75 *ia75)
 {
-    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.qWorldX = ia75->unk7C + Q(ia75->x) + ia75->unk74;
     gPlayer.qWorldY = ia75->unk80 + Q(ia75->y) + ia75->unk78;
     sub_807A99C(ia75);

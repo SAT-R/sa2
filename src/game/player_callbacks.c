@@ -72,7 +72,7 @@ void sub_8022318(Player *p);
 void sub_8022838(Player *p);
 void sub_80232D0(Player *p);
 
-void sub_8023610(Player *p);
+void Player_AirInputControls(Player *p);
 void Player_UpdatePosition(Player *p);
 void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
@@ -178,7 +178,7 @@ void Player_SonicAmy_InitSkidAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     if (!p->isBoosting) {
         if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -279,7 +279,7 @@ void Player_SonicAmy_InitStopNSlam(Player *p)
     Player_TransitionCancelFlyingAndBoost(p);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -406,7 +406,7 @@ void Player_Sonic_InitHomingAttack(Player *p)
     s32 cosVal, sinVal;
 
     Player_TransitionCancelFlyingAndBoost(p);
-    p->moveState |= (MOVESTATE_20000000 | MOVESTATE_BOOST_EFFECT_ON | MOVESTATE_IN_AIR);
+    p->moveState |= (MOVESTATE_SOME_ATTACK | MOVESTATE_BOOST_EFFECT_ON | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -435,7 +435,7 @@ void Player_InitHomingAttackRecoil(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
-    p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_1000000 | MOVESTATE_20);
+    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_1000000 | MOVESTATE_20);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -594,7 +594,7 @@ void Player_Cream_InitChaoAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     if (ABS(p->speedGroundX) < Q(0.25)) {
         p->speedGroundX = 0;
@@ -730,7 +730,7 @@ void Player_Cream_InitStepAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     p->charState = CHARSTATE_BOOST_ATTACK;
 
@@ -745,7 +745,7 @@ void Player_Cream_InitChaoRollingAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+    p->moveState |= (MOVESTATE_SOME_ATTACK | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
     p->charState = CHARSTATE_SOME_ATTACK;
 
@@ -760,7 +760,7 @@ void Player_Cream_InitMidAirChaoAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+    p->moveState |= (MOVESTATE_SOME_ATTACK | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
     p->charState = CHARSTATE_SOME_OTHER_ATTACK;
 
@@ -857,7 +857,7 @@ void Player_Tails_InitUnusedJump(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+    p->moveState |= (MOVESTATE_SOME_ATTACK | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
     p->speedAirY = -Q(4.0);
 
@@ -976,7 +976,7 @@ void Player_Tails_InitTailSwipe(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     sub_80129DC(I(p->qWorldX), I(p->qWorldY));
 
@@ -1055,7 +1055,7 @@ void Player_Knuckles_InitPunch(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     if (ABS(p->speedGroundX) < Q(3.0)) {
         if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -1143,7 +1143,7 @@ void Player_Knuckles_InitSpiralAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     sub_8012DF8(I(p->qWorldX), I(p->qWorldY), 0);
 
@@ -1380,7 +1380,7 @@ void Player_Knuckles_GlideSoftFall(Player *p)
 {
     u8 someFlags;
 
-    sub_8023610(p);
+    Player_AirInputControls(p);
     PlayerFn_Cmd_UpdateAirFallSpeed(p);
     sub_8022838(p);
 
@@ -1930,7 +1930,7 @@ void Player_Knuckles_InitDrillClaw(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100);
+    p->moveState |= (MOVESTATE_SOME_ATTACK | MOVESTATE_100);
 
     p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -2064,7 +2064,7 @@ void Player_Amy_InitHammerAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->moveState |= MOVESTATE_20000000;
+    p->moveState |= MOVESTATE_SOME_ATTACK;
 
     CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_HAMMER_ATTACK);
 

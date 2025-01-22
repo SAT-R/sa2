@@ -1024,7 +1024,7 @@ bool8 sub_8015118(Cheese *cheese)
             unk54->unk60 |= 0x100000;
         }
 
-        if (gSelectedCharacter == CHARACTER_CREAM && gPlayer.moveState & MOVESTATE_400000) {
+        if (gSelectedCharacter == CHARACTER_CREAM && gPlayer.moveState & MOVESTATE_IA_OVERRIDE) {
             thing = TRUE;
         }
 
@@ -1052,7 +1052,7 @@ bool8 sub_8015118(Cheese *cheese)
         unk54->unk68 = &gPlayer.spriteInfoBody->s;
         unk54->unk60 = gPlayer.moveState;
 
-        if (!(gPlayer.moveState & MOVESTATE_400000)) {
+        if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
             unk54->unk64 = gPlayer.rotation;
             if (gPlayer.moveState & MOVESTATE_IN_AIR) {
                 unk54->unk64 = 0;

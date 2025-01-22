@@ -8,7 +8,7 @@
 //  0x0C = Something Grinding
 //  0x0D = Something Grinding
 //  0x16 = Set in IA Ramp
-//  0x17 = Used in Interactable_044
+//  0x17 = Used in interactable CeilingSlope
 //  0x18 = Dash Ring Object
 //  0x1C = Set by IA ClearPipe_End if data[1] is 0
 

@@ -634,7 +634,7 @@ static bool32 HandleSpikeMovementDown(Sprite *s, MapEntity *me, Sprite_Spikes *s
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(player->moveState & MOVESTATE_400000)) {
+    if (!(player->moveState & MOVESTATE_IA_OVERRIDE)) {
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {

@@ -145,7 +145,7 @@ static void Task_PlatformThinMain(void)
         return;
     }
 
-    if (!(player->moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
+    if (!(player->moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
         u32 temp2 = sub_800CCB8(s, x, y, player);
         if (temp2 & 0xC0000) {
             if (HandleThinPlatformCollision(s, x, y, player) & 0xC0000) {
