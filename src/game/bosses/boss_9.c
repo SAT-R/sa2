@@ -2190,12 +2190,9 @@ void sub_804F9BC(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
     }
 }
 
-// NOTE/TODO: The logic of this does not match the game.
-//            The lowest loop is incorrect.
-// (61.23%) https://decomp.me/scratch/kecMc
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc", void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
 {
-    u8 array[0x8];
+    u8 array[8];
     u8 i;
 
     TA53Boss *boss = TASK_DATA(gCurTask);
@@ -2233,27 +2230,27 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc", void sub_804FAA
     } else {
         sinIndex -= 0x46;
     }
-    sinIndex &= ONE_CYCLE;
+    sinIndex = CLAMP_SIN_PERIOD(sinIndex);
 
     // _0804FB28
     for (i = 0; i < 8; i++) {
         // _0804FB5E
         u16 arrIndex = array[i];
-        u16 newSinIndex;
+        u16 newSinIndex, index2;
         unk654->unkE[arrIndex] = 1;
         unk654->unk1E[arrIndex] = 255;
 
         if (i < 4) {
-            newSinIndex = sinIndex + i * 16;
+            newSinIndex = i * 16 + sinIndex;
+            index2 = i * 48;
         } else {
-            newSinIndex = sinIndex - i * 16;
+            newSinIndex = sinIndex - (i - 4) * 16;
+            index2 = (i - 4) * 48;
         }
 
-        unk654->unk2E[arrIndex][0] = (COS(newSinIndex) * 3) >> 6;
-        unk654->unk2E[arrIndex][1] = (SIN(newSinIndex) * 3) >> 6;
-
-        unk654->unk2E[arrIndex][0] += (COS(i * 128) * 3) >> 8;
-        unk654->unk2E[arrIndex][1] += (SIN(i * 128) * 3) >> 8;
+        newSinIndex = CLAMP_SIN_PERIOD(newSinIndex);
+        unk654->unk2E[arrIndex][0] = ((COS(newSinIndex)) * (0x280 - index2)) >> 0xE;
+        unk654->unk2E[arrIndex][1] = ((SIN(newSinIndex)) * (0x280 - index2)) >> 0xE;
 
         unk654->qPos70[arrIndex].x = qX;
         unk654->qPos70[arrIndex].y = qY;
@@ -2261,7 +2258,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc", void sub_804FAA
 
     m4aSongNumStart(SE_258);
 }
-END_NONMATCH
 
 // TODO: Implement
 // Code resembles sub_804F850 and sub_804FAA4
