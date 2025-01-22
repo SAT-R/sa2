@@ -127,9 +127,9 @@ void Player_InitTaunt(Player *);
 void Player_InitAttack(Player *);
 
 // >> acceleration = (sin(angle) * 3) / 32
-#define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
-#define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
-#define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
+#define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle) * 4) * 3) >> 5)
+#define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle) * 4) * 5) >> 5)
+#define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle) * 4) * 60))
 
 // TODO: Match this without ASM!
 #ifndef NON_MATCHING
@@ -3417,7 +3417,8 @@ void CallPlayerTransition(Player *p)
                     gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
                 }
 
-                if (p->moveState & (MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
+                if (p->moveState
+                    & (MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
                     p->moveState |= (MOVESTATE_GOAL_REACHED | MOVESTATE_IGNORE_INPUT);
                     p->heldInput = 0;
                     p->frameInput = 0;
