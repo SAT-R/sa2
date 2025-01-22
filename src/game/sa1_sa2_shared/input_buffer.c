@@ -19,7 +19,7 @@ const u8 gUnknown_080D5262[] = {
     0x04, // r6
     0x01, // r8
 
-    // unk0, unk1, unk2
+    // 0, 1, 2
     0x00, 0xF0, 0x08, //
     0x20, 0xF0, 0x08, //
     0x00, 0xF0, 0x08, //
@@ -54,19 +54,12 @@ const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
     unk_8C87198, unk_8C871A4, unk_8C871B0, unk_8C871BC, unk_8C871C8,
 };
 
-typedef struct {
-    u8 unk0;
-    u8 unk1;
-    u8 unk2;
-} StrcUnkInBuf;
-
 // The current value in gNewInputCounters[gNewInputCountersIndex]
 // gets increased until either it reaches 0xFF or a new button was pressed.
 // Letting go of a button does not trigger the index increase.
-// (This might be used for timing in multiplayer?)
 //
-// (97%) https://decomp.me/scratch/VpRkC
-NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
+// This is likely used for trick timings
+void sub_800DF8C(Player *p)
 {
     const u8 **unk0;
     const u8 *data;
@@ -95,7 +88,7 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
                 // _0800E012
                 while (r6 != 0) {
                     u32 maskFF = 0xFF, mask1F = 0x1F;
-                    s32 r2;
+                    bool32 shouldBail;
 
                     s16 r1;
                     u32 r7, ip;
@@ -106,31 +99,39 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
                     r1 = data[r6 * 3 + 2] & maskFF;
 
                     // _0800E02A
+                    shouldBail = FALSE;
                     while (1) {
                         s32 r0;
-                        u32 r3 = gNewInputCounters[cid].unk0 & r7;
+
+                        // TODO: use the permuter to find the real match for this
+                        // https://decomp.me/scratch/eLocX
+#ifndef NON_MATCHING
+                        register s32 r3 asm("r3");
+                        register s32 r2 asm("r2");
+#else
+                        s32 r2, r3;
+#endif
+                        r3 = gNewInputCounters[cid].unk0 & r7;
                         r2 = gNewInputCounters[cid].unk1;
 
                         r0 = r1;
                         r2 &= maskFF;
                         if (r0 >= r2) {
                             if (ip == r3) {
-                                cid--;
-                                r2 = mask1F;
-                                cid &= r2;
-                                break;
-                            } else {
                                 cid = (cid - 1) & mask1F;
-                                r0 -= 1;
-                                r0 -= r2;
-                                r1 = r0;
+                                shouldBail = TRUE;
+                                break;
                             }
+                            cid = (cid - 1) & mask1F;
+                            r0 -= 1;
+                            r0 -= r2;
+                            r1 = r0;
                         } else {
-                            r2 = 0;
                             break;
                         }
                     }
-                    if (r2 == 0) {
+
+                    if (shouldBail == FALSE) {
                         break;
                     }
                 }
@@ -140,7 +141,6 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
                     break;
                 }
 
-                // _0800E082
                 unk4++;
                 data = unk0[unk4];
                 if (data == INPUTBUF_NULL_PTR) {
@@ -152,7 +152,6 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void
         }
     }
 }
-END_NONMATCH
 
 // (100.00%) https://decomp.me/scratch/WjLUa
 void sub_800E0C0(u16 param0, u16 param1)
