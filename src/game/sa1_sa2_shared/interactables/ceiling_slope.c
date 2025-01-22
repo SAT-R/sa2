@@ -4,7 +4,7 @@
 #include "task.h"
 
 #include "game/entity.h"
-#include "game/sa1_sa2_shared/interactables/044.h"
+#include "game/sa1_sa2_shared/interactables/ceiling_slope.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -13,16 +13,16 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-} Sprite_IA044;
+} Sprite_CeilingSlope;
 
 #define sLeft   (screenX + me->d.sData[0] * TILE_WIDTH)
 #define sRight  ((sLeft) + me->d.uData[2] * TILE_WIDTH)
 #define sTop    (screenY + me->d.sData[1] * TILE_WIDTH)
 #define sBottom ((sTop) + me->d.uData[3] * TILE_WIDTH)
-void Task_Interactable_044(void)
+void Task_Interactable_CeilingSlope(void)
 {
-    Sprite_IA044 *ia044 = TASK_DATA(gCurTask);
-    SpriteBase *base = &ia044->base;
+    Sprite_CeilingSlope *ceilingSlope = TASK_DATA(gCurTask);
+    SpriteBase *base = &ceilingSlope->base;
     MapEntity *me = base->me;
     s32 screenX, screenY;
     u32 regionY, regionX;
@@ -54,8 +54,8 @@ void Task_Interactable_044(void)
                     gPlayer.transition = PLTRANS_PT23;
                     gPlayer.unk6E = 0;
 
-                    if (me->index != IA__IA044__A) {
-                        // me->index == IA__IA044__B
+                    if (me->index != IA__CEILING_SLOPE__A) {
+                        // me->index == IA__CEILING_SLOPE__B
                         gPlayer.unk6E = 1;
                     }
                 }
@@ -81,15 +81,15 @@ void Task_Interactable_044(void)
 #undef sRight
 #undef sLeft
 
-void CreateEntity_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_CeilingSlope(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);
-    Sprite_IA044 *ia044 = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_Interactable_CeilingSlope, sizeof(Sprite_CeilingSlope), 0x2010, 0, NULL);
+    Sprite_CeilingSlope *ceilingSlope = TASK_DATA(t);
 
-    ia044->base.regionX = spriteRegionX;
-    ia044->base.regionY = spriteRegionY;
-    ia044->base.me = me;
-    ia044->base.spriteX = me->x;
-    ia044->base.id = 0;
+    ceilingSlope->base.regionX = spriteRegionX;
+    ceilingSlope->base.regionY = spriteRegionY;
+    ceilingSlope->base.me = me;
+    ceilingSlope->base.spriteX = me->x;
+    ceilingSlope->base.id = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
