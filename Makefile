@@ -147,6 +147,7 @@ else
 ASM_BUILDDIR =
 endif
 
+C_INCLUDEDIR = include
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
@@ -179,6 +180,9 @@ else
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
+# Platform not included as we only need the headers for decomp scratches
+C_HEADERS := $(shell find $(C_INCLUDEDIR) -name "*.h" -not -path "*/platform/*")
 
 ifeq ($(PLATFORM),gba)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
@@ -214,7 +218,7 @@ FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ex
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -iquote include -D $(GAME_REGION)
+CPPFLAGS ?= -iquote $(C_INCLUDEDIR) -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
@@ -585,3 +589,11 @@ format:
 check_format:
 	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
 	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
+
+
+### DECOMP TOOLS ###
+
+ctx.c: $(C_HEADERS)
+	@for header in $(C_HEADERS); do echo "#include \"$$header\""; done > ctx.h
+	$(CPP) -P $(CPPFLAGS) ctx.h -o ctx.c
+	@rm ctx.h
