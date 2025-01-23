@@ -31,4 +31,10 @@ void m4aMPlayVolumeControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, u16
 void m4aMPlayPitchControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s16 pitch);
 void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 pan);
 
+#define IS_ACTIVE_SONG(music_player_ID, song_ID) (gMPlayTable[music_player_ID].info->songHeader == gSongTable[song_ID].header)
+#define MUSIC_PLAYER_BGM                         0
+#define MUSIC_PLAYER_SE1                         1
+#define MUSIC_PLAYER_SE2                         2
+#define MUSIC_PLAYER_SE3                         3
+
 #endif // GUARD_M4A_H

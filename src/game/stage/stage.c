@@ -251,7 +251,7 @@ void CreateGameStage(void)
     gUnknown_03005398 = 0x80;
 
     if (IS_MULTI_PLAYER) {
-        CreateMultiplayerRecieveEventMgr();
+        CreateMultiplayerReceiveEventMgr();
         CreateMultiplayerSendEventMgr();
 
         gRandomItemBox = 0;

@@ -15,19 +15,19 @@
 #include "constants/char_states.h"
 #include "constants/songs.h"
 
-void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i);
-void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i);
+void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i);
+void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i);
 typedef void (*RoomEventHandler)(union MultiSioData *recv, u8 i);
 
 const RoomEventHandler gRoomEventHandlers[] = {
-    [ROOMEVENT_TYPE_PLATFORM_CHANGE - 1] = RecieveRoomEvent_PlatformChange,
-    [ROOMEVENT_TYPE_ITEMBOX_BREAK - 1] = RecieveRoomEvent_ItemBoxBreak,
-    [ROOMEVENT_TYPE_ENEMY_DESTROYED - 1] = RecieveRoomEvent_EnemyDestroyed,
-    [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = RecieveRoomEvent_PlayerRingLoss,
-    [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = RecieveRoomEvent_MysterItemBoxBreak,
-    [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = RecieveRoomEvent_ItemEffect,
-    [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = RecieveRoomEvent_ReachedStageGoal,
-    [ROOMEVENT_TYPE_UNKNOWN - 1] = RecieveRoomEvent_Unknown,
+    [ROOMEVENT_TYPE_PLATFORM_CHANGE - 1] = ReceiveRoomEvent_PlatformChange,
+    [ROOMEVENT_TYPE_ITEMBOX_BREAK - 1] = ReceiveRoomEvent_ItemBoxBreak,
+    [ROOMEVENT_TYPE_ENEMY_DESTROYED - 1] = ReceiveRoomEvent_EnemyDestroyed,
+    [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = ReceiveRoomEvent_PlayerRingLoss,
+    [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = ReceiveRoomEvent_MysterItemBoxBreak,
+    [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = ReceiveRoomEvent_ItemEffect,
+    [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = ReceiveRoomEvent_ReachedStageGoal,
+    [ROOMEVENT_TYPE_UNKNOWN - 1] = ReceiveRoomEvent_Unknown,
     [8] = NULL,
 };
 
@@ -60,7 +60,7 @@ void Task_MultiplayerEventMgr_Send(void)
     }
 }
 
-void Task_MultiplayerEventMgr_Recieve(void)
+void Task_MultiplayerEventMgr_Receive(void)
 {
     u8 id = SIO_MULTI_CNT->id;
     struct MultiSioData_0_0 *send = &gMultiSioSend.pat0;
@@ -91,7 +91,7 @@ void Task_MultiplayerEventMgr_Recieve(void)
     }
 }
 
-void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
+void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 {
     MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
     MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
@@ -173,7 +173,7 @@ void RecieveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
     }
 }
 
-void RecieveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
+void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 {
     u32 j;
     MultiplayerPlayer *mpp;
@@ -297,9 +297,9 @@ struct Task *CreateMultiplayerSendEventMgr(void)
     return t;
 }
 
-struct Task *CreateMultiplayerRecieveEventMgr(void)
+struct Task *CreateMultiplayerReceiveEventMgr(void)
 {
-    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Recieve, 0, 1, 0, NULL);
+    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Receive, 0, 1, 0, NULL);
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
     DmaFill32(3, 0, &gRoomEventQueue, sizeof(gRoomEventQueue));

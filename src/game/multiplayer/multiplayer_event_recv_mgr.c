@@ -14,7 +14,7 @@ void *CreateRoomEvent(void)
     return result;
 }
 
-void RecieveRoomEvent_PlatformChange(union MultiSioData *msioData, u8 someId)
+void ReceiveRoomEvent_PlatformChange(union MultiSioData *msioData, u8 someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -44,7 +44,7 @@ void RecieveRoomEvent_PlatformChange(union MultiSioData *msioData, u8 someId)
     }
 }
 
-void RecieveRoomEvent_ItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
+void ReceiveRoomEvent_ItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -79,7 +79,7 @@ void RecieveRoomEvent_ItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someI
     }
 }
 
-void RecieveRoomEvent_EnemyDestroyed(union MultiSioData *msioData, u8 UNUSED someId)
+void ReceiveRoomEvent_EnemyDestroyed(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -113,12 +113,12 @@ void RecieveRoomEvent_EnemyDestroyed(union MultiSioData *msioData, u8 UNUSED som
     }
 }
 
-void RecieveRoomEvent_PlayerRingLoss(union MultiSioData *msioData, u8 UNUSED someId)
+void ReceiveRoomEvent_PlayerRingLoss(union MultiSioData *msioData, u8 UNUSED someId)
 {
     InitScatteringRings(msioData->pat4.x, msioData->pat4.y, msioData->pat4.numRings);
 }
 
-void RecieveRoomEvent_MysterItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
+void ReceiveRoomEvent_MysterItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -152,4 +152,4 @@ void RecieveRoomEvent_MysterItemBoxBreak(union MultiSioData *msioData, u8 UNUSED
 }
 
 // Type of this is determined by it being referenced in a C func-array
-void RecieveRoomEvent_Unknown(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }
+void ReceiveRoomEvent_Unknown(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }
