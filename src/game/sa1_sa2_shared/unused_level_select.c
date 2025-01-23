@@ -5,10 +5,14 @@
 #include "task.h"
 
 #include "game/sa1_sa2_shared/globals.h"
+#include "game/character_select.h"
 
 #include "game/stage/stage.h"
+
+#if (GAME == GAME_SA2)
 #include "game/bosses/common.h"
 #include "game/title_screen.h"
+#endif
 
 #if PORTABLE
 #include "game/special_stage/main.h"
@@ -27,6 +31,8 @@ typedef struct {
 
 static void Task_UnusedLevelSelectInit(void);
 static void Task_Poll(void);
+static void Task_CreateMultiplayer(void);
+static void Task_CreateSelectedTask(void);
 static void Task_LoadStage(void);
 
 void CreateUnusedLevelSelect(void)
@@ -47,6 +53,7 @@ void CreateUnusedLevelSelect(void)
         levelSelect->levelId = 0;
         levelSelect->vram = (void *)(BG_CHAR_ADDR(1) + 1 * TILE_SIZE_4BPP);
 
+#if (GAME == GAME_SA2)
         gBldRegs.bldY = 0;
         gBldRegs.bldCnt = BLDCNT_EFFECT_NONE;
         gBldRegs.bldAlpha = BLDCNT_EFFECT_NONE;
@@ -63,6 +70,7 @@ void CreateUnusedLevelSelect(void)
         gDispCnt &= ~(DISPCNT_OBJWIN_ON | DISPCNT_WIN1_ON | DISPCNT_WIN0_ON);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
+#endif
     }
 }
 
@@ -75,26 +83,61 @@ static void Task_Poll(void)
     if (gPressedKeys & (START_BUTTON | A_BUTTON)) {
         m4aSongNumStart(SE_SELECT);
 
+#if (GAME == GAME_SA1)
+        m4aSongNumStop(MUS_CHARACTER_SELECTION);
+
+        sa2__gUnknown_03004D80[0] = 0;
+        sa2__gUnknown_03002280[0][0] = 0;
+        sa2__gUnknown_03002280[0][1] = 0;
+        sa2__gUnknown_03002280[0][2] = 0xFF;
+        sa2__gUnknown_03002280[0][3] = 0x20;
+
+        if (IS_MULTI_PLAYER) {
+            gCurTask->main = Task_CreateMultiplayer;
+        } else {
+            gCurTask->main = Task_CreateSelectedTask;
+        }
+#elif (GAME == GAME_SA2)
         gUnknown_03004D80[0] = 0;
         gUnknown_03002280[0][0] = 0;
         gUnknown_03002280[0][1] = 0;
         gUnknown_03002280[0][2] = 0xFF;
         gUnknown_03002280[0][3] = 0x20;
+
         gCurTask->main = Task_LoadStage;
+#endif
     } else if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
         TaskDestroy(gCurTask);
 
+#if (GAME == GAME_SA1)
+        CreateCharacterSelectionScreen(0);
+
+        sa2__gUnknown_03004D80[0] = 0;
+        sa2__gUnknown_03002280[0][0] = 0;
+        sa2__gUnknown_03002280[0][1] = 0;
+        sa2__gUnknown_03002280[0][2] = 0xFF;
+        sa2__gUnknown_03002280[0][3] = 0x20;
+#elif (GAME == GAME_SA2)
         gUnknown_03004D80[0] = 0;
         gUnknown_03002280[0][0] = 0;
         gUnknown_03002280[0][1] = 0;
         gUnknown_03002280[0][2] = 0xFF;
         gUnknown_03002280[0][3] = 0x20;
+#endif
     } else {
         if (gRepeatedKeys & DPAD_LEFT) {
-            levelSelect->levelId--;
-        } else if (gRepeatedKeys & DPAD_RIGHT) {
+#if (GAME == GAME_SA1)
             levelSelect->levelId++;
+#elif (GAME == GAME_SA2)
+            levelSelect->levelId--;
+#endif
+        } else if (gRepeatedKeys & DPAD_RIGHT) {
+#if (GAME == GAME_SA1)
+            levelSelect->levelId--;
+#elif (GAME == GAME_SA2)
+            levelSelect->levelId++;
+#endif
         }
 
         numToASCII(digits, levelSelect->levelId);
@@ -132,7 +175,9 @@ static void Task_LoadStage(void)
         GameStageStart();
 #endif
     } else if (levelId2 <= NUM_LEVEL_IDS) {
+#if (GAME == GAME_SA2)
         gActiveBossTask = NULL;
+#endif
         gCurrentLevel = levelId2 - 1;
 #if PORTABLE
         ApplyGameStageSettings();
