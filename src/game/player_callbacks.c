@@ -1702,66 +1702,74 @@ void sub_801394C(Player *p)
 }
 
 // (76.32%) https://decomp.me/scratch/8fUWD
-NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_UpdateSpeed(Player *p))
+// (97.64%) https://decomp.me/scratch/Bd3kQ
+NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_UpdateSpeed(Player *player))
 {
-    s32 speedGrnd = ABS(p->speedGroundX);
-    s8 r2 = p->w.tf.shift;
-    u8 shift;
+    s32 speedGrnd = ABS(player->speedGroundX);
+    u8 r2 = player->w.tf.shift;
 
-    if (speedGrnd < Q(3.0)) {
-        speedGrnd += Q(6.0 / 256.0);
-    } else if (speedGrnd < Q(15.0)) {
-        if ((r2 & 0x7F) == 0)
-            speedGrnd += Q(3.0 / 256.0);
+    if (speedGrnd < Q_24_8(3.0)) {
+        speedGrnd += Q_24_8(6.0 / 256.0);
+    } else if (speedGrnd < Q_24_8(15.0)) {
+        if ((player->w.tf.shift & 0x7F) == 0)
+            speedGrnd += Q_24_8(3.0 / 256.0);
     }
-
-    if (p->moveState & MOVESTATE_IN_WATER) {
-        if ((speedGrnd > Q(3.0)) && (speedGrnd -= Q(9.0 / 256.0)) < Q(3.0))
-            speedGrnd = Q(3.0);
-    }
-
-    shift = p->w.tf.shift + Q(0.25);
-    if (shift <= 0) {
-        p->speedGroundX = -speedGrnd;
-    } else {
-        p->speedGroundX = +speedGrnd;
-    }
-
-    if (p->heldInput & DPAD_LEFT) {
-        if (((u8)r2 != 0x80)) {
-            shift = ABS(r2) + Q_8_8(2.0);
-        }
-    } else if (p->heldInput & DPAD_RIGHT) {
-        if ((r2 != 0)) {
-            shift = ABS(r2) + Q_8_8(2.0);
-        }
-    } else {
-        if (r2 & 0x7F) {
-            shift = r2 + 2;
+    // _080139E4
+    if (player->moveState & MOVESTATE_IN_WATER) {
+        if (speedGrnd > Q_24_8(3.0)) {
+            speedGrnd -= Q_24_8(9.0 / 256.0);
+            speedGrnd = speedGrnd < Q_24_8(3.0) ? Q_24_8(3.0) : speedGrnd;
         }
     }
-
-    p->w.tf.shift = shift;
 
     {
-        s32 speedX = I(COS_24_8(shift) * speedGrnd);
-        p->speedAirX = speedX;
-    }
-    {
-        s32 speedY = p->speedAirY;
-
-        if (speedY < Q(0.5)) {
-            speedY += Q(0.09375);
+        s8 shift = player->w.tf.shift + Q_24_8(0.25);
+        if (shift <= 0) {
+            player->speedGroundX = -speedGrnd;
         } else {
-            speedY -= Q(0.09375);
+            player->speedGroundX = +speedGrnd;
         }
-        p->speedAirY = speedY;
     }
 
-    if (gCamera.unk4C > 0) {
-        gCamera.unk4C -= 2;
-    } else if (gCamera.unk4C < 0) {
-        gCamera.unk4C += 4;
+    {
+        s32 r0;
+        u8 shift = r2;
+        if (player->heldInput & DPAD_LEFT) {
+            s32 r0 = r2;
+            if ((u8)r0 != 128) {
+                r2 = ABS((s8)shift);
+                shift = r2 + 2;
+            }
+        } else if (player->heldInput & DPAD_RIGHT) {
+            s32 r0 = r2;
+            if (((s8)r0 != 0)) {
+                s8 r2Signed = (s8)r2 > 0 ? -r0 : r2;
+                shift = r2Signed + 2;
+            }
+        } else {
+            s32 r0;
+            s8 r1;
+            r1 = shift;
+            if (r1 & 0x7F) {
+                r0 = r1 + 2;
+                shift = (u8)r0;
+            }
+        }
+        player->w.tf.shift = (u8)shift;
+        r0 = shift;
+        player->speedAirX = Q_24_8_TO_INT(COS_24_8((u8)r0 << 2) * speedGrnd);
+
+        if (player->speedAirY < Q_24_8(0.5)) {
+            player->speedAirY += Q_24_8(0.09375);
+        } else {
+            player->speedAirY -= Q_24_8(0.09375);
+        }
+
+        if (gCamera.unk4C > 0) {
+            gCamera.unk4C -= 2;
+        } else if (gCamera.unk4C < 0) {
+            gCamera.unk4C += 4;
+        }
     }
 }
 END_NONMATCH
