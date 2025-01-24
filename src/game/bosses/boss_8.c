@@ -1050,10 +1050,7 @@ static void Task_804AD68(void)
     }
 }
 
-// (95.06%) https://decomp.me/scratch/of4k0
-// (98.77%) https://decomp.me/scratch/Kzx1m
-// (99.59%) https://decomp.me/scratch/IzRyM
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", void sub_804AE40(SuperEggRoboZ *boss))
+void sub_804AE40(SuperEggRoboZ *boss)
 {
     Sprite *s;
 
@@ -1152,20 +1149,22 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", void sub_804AE4
                     }
                     // _0804B096
 #ifndef NON_MATCHING
-                    // Doesn't yet work :/
-                    asm("ldrh r0, [%3, #0x10]\n"
-                        "mov r1, %0\n"
-                        "lsl r3, r1, #0x10\n"
-                        "asr r3, r3, #0x10\n"
-                        "add r1, %1, #1\n"
-                        "lsl r1, r1, #0x10\n"
-                        "asr r1, r1, #0x10\n"
-                        "str r1, [sp]\n"
-                        "movs r1, #0x20\n"
-                        "str r1, [sp, #4]\n"
-                        "add r1, %2, #0\n"
-                        "movs r2, #6\n"
-                        "bl sub_802E784\n"
+                    // Only needed because because r4 is loaded in the wrong order
+                    // in the original rom
+                    // (99.59%) https://decomp.me/scratch/IzRyM
+                    asm("ldrh r0, [%3, #0x10]\n\t"
+                        "mov r1, %0\n\t"
+                        "lsl r3, r1, #0x10\n\t"
+                        "asr r3, r3, #0x10\n\t"
+                        "add r1, %1, #1\n\t"
+                        "lsl r1, r1, #0x10\n\t"
+                        "asr r1, r1, #0x10\n\t"
+                        "str r1, [sp]\n\t"
+                        "mov r1, #0x20\n\t"
+                        "str r1, [sp, #4]\n\t"
+                        "add r1, %2, #0\n\t"
+                        "mov r2, #6\n\t"
+                        "bl sub_802E784"
                         :
                         : "r"(r8), "r"(r6), "r"(r4), "r"(boss));
 #else
@@ -1179,8 +1178,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", void sub_804AE4
         }
     }
 }
-
-END_NONMATCH
 
 static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 {

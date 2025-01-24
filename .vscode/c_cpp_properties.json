@@ -1,11 +1,11 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Linux GBA",
             "includePath": [
                 "${workspaceFolder}/include/**"
             ],
-            "defines": [],
+            "defines": ["PLATFORM_GBA=1"],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
             "cppStandard": "gnu++17",

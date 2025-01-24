@@ -53,6 +53,7 @@ void CreateStageBg_Zone7(void)
 }
 
 // (98.52%) https://decomp.me/scratch/DUPkY
+// (99.82%) https://decomp.me/scratch/pfVTf (fake match)
 NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void Zone7BgUpdate_Inside(s32 x, s32 y))
 {
     u16 *dst;

@@ -2237,7 +2237,7 @@ void sub_8022C44(Player *p)
         *pRot = r1;
 
         if (GRAVITY_IS_INVERTED) {
-            // TODO: CLEANUP (effectively *pRot = 128-r1)
+#ifndef NON_MATCHING
             r1 = *pRot;
             asm("" ::"r"(r1));
             r0 = r1;
@@ -2250,6 +2250,9 @@ void sub_8022C44(Player *p)
             r0 -= 0x40;
 
             *pRot = r0;
+#else
+            *pRot = 128 - r1
+#endif
         }
     }
 }

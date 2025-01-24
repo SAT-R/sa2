@@ -1658,24 +1658,25 @@ void sub_80454A4(EggSaucer *boss)
     s->prevVariant = -1;
 }
 
-// (86.11%) https://decomp.me/scratch/wnQsf
+// (98.39%) https://decomp.me/scratch/wnQsf
 NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
 {
     s32 index;
-    u8 val2;
+    s32 new_var = 0xF;
 
     if (boss->unk15 == 0) {
         ExplosionPartsInfo e;
         s32 rand;
+
         if (Mod(gStageTime, 7) == 0) {
-            rand = (PseudoRandom32() & 31) + 0x18;
-            index = CLAMP_SIN_PERIOD(gStageTime * 900);
-            e.spawnX = (I(boss->x) - gCamera.x);
-            e.spawnX += +((rand * COS(index)) >> 14);
-            e.spawnY = (I(boss->y) - gCamera.y);
+            rand = ({ (PseudoRandom32() & 0x1f) + 0x18; }) + 0;
+            index = CLAMP_SIN_PERIOD(gStageTime * 900) + 0;
+            e.spawnX = (Q_24_8_TO_INT(boss->x) - gCamera.x);
+            e.spawnX += ((rand * COS(index)) >> 14);
+            e.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y);
             e.spawnY += ((rand * SIN(index)) >> 14);
             e.velocity = 0;
-            e.rotation = ({ 0x407 - (PseudoRandom32() & 0x3F); });
+            e.rotation = ({ 0x407 - (PseudoRandom32() & 0x3F); }) + 0;
             e.speed = 0x500;
             e.vram = (void *)OBJ_VRAM0 + 0x2980;
             e.anim = SA2_ANIM_EXPLOSION;
@@ -1683,17 +1684,18 @@ NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_804556
             e.unk4 = 0;
             CreateBossParticleWithExplosionUpdate(&e, &boss->unk14);
         }
+
         if (Mod(gStageTime, 10) == 0) {
-            rand = (PseudoRandom32() & 31) + 0x18;
-            index = CLAMP_SIN_PERIOD(gStageTime * 900);
+            u8 val2;
+            rand = ({ (PseudoRandom32() & 0x1f) + 0x18; }) + 0;
+            index = CLAMP_SIN_PERIOD(gStageTime * 900) + 0;
             val2 = Mod(gStageTime, 6);
-            e.spawnX = (I(boss->x) - gCamera.x);
+            e.spawnX = (Q_24_8_TO_INT(boss->x) - gCamera.x);
             e.spawnX += ((rand * COS(index)) >> 14);
-            e.spawnY = (I(boss->y) - gCamera.y);
+            e.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y);
             e.spawnY += ((rand * SIN(index)) >> 14);
             e.velocity = 0x40;
-            rand = (PseudoRandom32() & ONE_CYCLE);
-            e.rotation = rand;
+            e.rotation = ({ (PseudoRandom32() & 0x3FF); }) + 0;
             e.speed = 0x600;
             e.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[val2][0] * 0x20);
             e.anim = gTileInfoBossScrews[val2][1];
@@ -1703,13 +1705,22 @@ NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_804556
         }
 
         if (Mod(gStageTime, 9) == 0) {
-            rand = PseudoRandom32();
-            e.spawnX = (I(boss->cabinX) - gCamera.x) + (rand & 0xF) - 8;
-            rand = PseudoRandom32();
-            e.spawnY = (I(boss->cabinY) - gCamera.y) + (rand & 0xF) - 8;
+            u32 r4;
+            rand = PseudoRandom32() & 0xf;
+
+            e.spawnX = (Q_24_8_TO_INT(boss->cabinX) - gCamera.x);
+            e.spawnX += rand & 0xf;
+            e.spawnX -= 8;
+            rand = PseudoRandom32() + 0;
+            e.spawnY = (Q_24_8_TO_INT(boss->cabinY) - gCamera.y);
+            e.spawnY += (rand & 0xf);
+            e.spawnY -= 8;
+#ifndef NON_MATCHING
+            gStageTime = gStageTime;
+#endif
             e.velocity = 0;
 
-            e.rotation = ({ 0x407 - (PseudoRandom32() & 63); });
+            e.rotation = ({ 0x407 - (PseudoRandom32() & 63); }) + 0;
             e.speed = 0x500;
             e.vram = (void *)OBJ_VRAM0 + 0x2980;
             e.anim = SA2_ANIM_EXPLOSION;
@@ -1719,13 +1730,20 @@ NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_804556
         }
 
         if (Mod(gStageTime, 0xB) == 0) {
-            rand = PseudoRandom32();
-            e.spawnX = (I(boss->armBaseX) - gCamera.x) + (rand & 0xF) - 8;
-            rand = PseudoRandom32();
-            e.spawnY = (I(boss->armBaseY) - gCamera.y) + (rand & 0xF) - 8;
+            u32 r3;
+            rand = PseudoRandom32() & 0xF;
+            e.spawnX = (Q_24_8_TO_INT(boss->armBaseX) - gCamera.x);
+            e.spawnX += rand & new_var;
+            e.spawnX -= 8;
+            rand = PseudoRandom32() + 0;
+            e.spawnY = (Q_24_8_TO_INT(boss->armBaseY) - gCamera.y);
+            e.spawnY += (rand & new_var);
+            e.spawnY -= 8;
             e.velocity = 0;
-
-            e.rotation = ({ 0x407 - (PseudoRandom32() & 63); });
+#ifndef NON_MATCHING
+            rand = 0x6000000 + 0x10000;
+#endif
+            e.rotation = ({ 0x407 - (PseudoRandom32() & 63); }) + 0;
             e.speed = 0x500;
             e.vram = (void *)OBJ_VRAM0 + 0x2980;
             e.anim = SA2_ANIM_EXPLOSION;
