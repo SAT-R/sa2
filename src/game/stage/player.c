@@ -2251,7 +2251,7 @@ void sub_8022C44(Player *p)
 
             *pRot = r0;
 #else
-            *pRot = 128 - r1
+            *pRot = 128 - r1;
 #endif
         }
     }
