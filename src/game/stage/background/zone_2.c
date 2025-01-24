@@ -22,7 +22,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         if (gBgScrollRegs[3][0] == 0) {
             gBgScrollRegs[3][0] = cameraX;
         }
-        gBgScrollRegs[3][0] += (gPlayer.speedGroundX >> 8);
+        gBgScrollRegs[3][0] += (gPlayer.qSpeedGround >> 8);
         cameraX = gBgScrollRegs[3][0];
     }
 

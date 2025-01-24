@@ -553,7 +553,7 @@ void UpdateCamera(void)
             camera->unk40--;
         } else {
             if (!(camera->unk50 & 1)) {
-                s16 airSpeedX = player->speedAirX;
+                s16 airSpeedX = player->qSpeedAirX;
                 camera->unk10 = I(player->qWorldX) + camera->shiftX - (DISPLAY_WIDTH / 2);
                 camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);

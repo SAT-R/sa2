@@ -71,17 +71,17 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.qWorldY -= turnAroundBar->unk44;
 
-    if (gPlayer.speedGroundX > 0) {
+    if (gPlayer.qSpeedGround > 0) {
         gPlayer.qWorldX = Q(turnAroundBar->x - 6);
-        gPlayer.speedGroundX += Q_8_8(1.25);
+        gPlayer.qSpeedGround += Q_8_8(1.25);
     } else {
         gPlayer.qWorldX = Q(turnAroundBar->x + 6);
-        gPlayer.speedGroundX -= Q_8_8(1.25);
+        gPlayer.qSpeedGround -= Q_8_8(1.25);
     }
 
-    gPlayer.speedGroundX = ClampSpeed(-gPlayer.speedGroundX);
+    gPlayer.qSpeedGround = ClampSpeed(-gPlayer.qSpeedGround);
     gPlayer.rotation = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
     gPlayer.transition = PLTRANS_TOUCH_GROUND;
 
@@ -104,7 +104,7 @@ static u32 sub_8073520(Sprite_TurnAroundBar *turnAroundBar)
     temp4 = I(gPlayer.qWorldY) - gCamera.y;
     if (temp - 6 <= temp2 && temp + 6 >= temp2) {
         if (temp3 - 32 <= temp4 && temp3 >= temp4) {
-            if (abs(gPlayer.speedGroundX) < Q_8_8(4)) {
+            if (abs(gPlayer.qSpeedGround) < Q_8_8(4)) {
                 return 1;
             }
 

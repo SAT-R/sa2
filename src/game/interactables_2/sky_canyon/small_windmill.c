@@ -139,29 +139,29 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
         switch (windmill->initialTouchAngle) {
             case 2:
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = -Q(8);
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirX = -Q(8);
+                gPlayer.qSpeedAirY = 0;
                 break;
             case 1:
             case 4:
-                gPlayer.speedAirX = 0;
-                gPlayer.speedAirY = -Q(8);
+                gPlayer.qSpeedAirX = 0;
+                gPlayer.qSpeedAirY = -Q(8);
                 break;
             case 5:
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = -Q(8);
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirX = -Q(8);
+                gPlayer.qSpeedAirY = 0;
                 break;
             case 6:
             case 7:
-                gPlayer.speedAirX = 0;
-                gPlayer.speedAirY = Q(8);
+                gPlayer.qSpeedAirX = 0;
+                gPlayer.qSpeedAirY = Q(8);
                 break;
             case 3:
             case 8:
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = Q(8);
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirX = Q(8);
+                gPlayer.qSpeedAirY = 0;
                 break;
         }
     }
@@ -209,7 +209,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
             if (playerX <= x) {
                 if (playerY <= y) {
                     if (windmill->type & 1) {
-                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                        if (abs(gPlayer.qSpeedAirX) <= abs(gPlayer.qSpeedAirY)) {
                             return 2;
                         } else {
                             return 1;
@@ -217,7 +217,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
                     }
                 } else {
                     if (windmill->type & 4) {
-                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                        if (abs(gPlayer.qSpeedAirX) <= abs(gPlayer.qSpeedAirY)) {
                             return 5;
                         } else {
                             return 6;
@@ -227,7 +227,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
             } else {
                 if (playerY <= y) {
                     if (windmill->type & 2) {
-                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                        if (abs(gPlayer.qSpeedAirX) <= abs(gPlayer.qSpeedAirY)) {
                             return 3;
                         } else {
                             return 4;
@@ -235,7 +235,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
                     }
                 } else {
                     if (windmill->type & 8) {
-                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                        if (abs(gPlayer.qSpeedAirX) <= abs(gPlayer.qSpeedAirY)) {
                             return 8;
                         } else {
                             return 7;

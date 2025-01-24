@@ -84,8 +84,8 @@ void ChangeGravityByKind(Sprite_GravityToggle *toggle)
 
         case GRAVITY_KIND__TOGGLE: {
             // Maybe collision on enter/exit?
-            if (((toggle->playerAirX > 0) && (gPlayer.speedAirX > 0)) || ((toggle->playerAirX < 0) && (gPlayer.speedAirX < 0))
-                || ((toggle->playerAirY > 0) && (gPlayer.speedAirY > 0)) || ((toggle->playerAirY < 0) && (gPlayer.speedAirY < 0))) {
+            if (((toggle->playerAirX > 0) && (gPlayer.qSpeedAirX > 0)) || ((toggle->playerAirX < 0) && (gPlayer.qSpeedAirX < 0))
+                || ((toggle->playerAirY > 0) && (gPlayer.qSpeedAirY > 0)) || ((toggle->playerAirY < 0) && (gPlayer.qSpeedAirY < 0))) {
                 gStageFlags ^= STAGE_FLAG__GRAVITY_INVERTED;
             }
 
@@ -137,8 +137,8 @@ void TaskDestructor_8080230(UNUSED struct Task *t) { }
 
 void UpdateTogglePlayerSpeed(Sprite_GravityToggle *toggle)
 {
-    toggle->playerAirX = gPlayer.speedAirX;
-    toggle->playerAirY = gPlayer.speedAirY;
+    toggle->playerAirX = gPlayer.qSpeedAirX;
+    toggle->playerAirY = gPlayer.qSpeedAirY;
     gCurTask->main = Task_GravityToggle;
 }
 

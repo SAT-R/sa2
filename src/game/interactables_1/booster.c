@@ -46,14 +46,14 @@ const TileInfo sBoosterAnimationData[2][6] = {
 // Look left and accelerate
 #define BOOSTER_ACCEL_LEFT(player)                                                                                                         \
     (player).moveState |= MOVESTATE_FACING_LEFT;                                                                                           \
-    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                                                                             \
-        gPlayer.speedGroundX = -BOOSTER_SPEED;
+    if (gPlayer.qSpeedGround > -BOOSTER_SPEED)                                                                                             \
+        gPlayer.qSpeedGround = -BOOSTER_SPEED;
 
 // Look right and accelerate
 #define BOOSTER_ACCEL_RIGHT(player)                                                                                                        \
     (player).moveState &= ~MOVESTATE_FACING_LEFT;                                                                                          \
-    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                                                                              \
-        gPlayer.speedGroundX = BOOSTER_SPEED;
+    if (gPlayer.qSpeedGround < BOOSTER_SPEED)                                                                                              \
+        gPlayer.qSpeedGround = BOOSTER_SPEED;
 
 void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {

@@ -1278,7 +1278,7 @@ void sub_8040A00(EggTotem *totem)
                 p->qWorldY += Q(2) + (s16)Q(coll);
 
                 if (!r7) {
-                    p->speedAirX -= Q(5);
+                    p->qSpeedAirX -= Q(5);
                 }
             } else if (r7) {
                 gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;

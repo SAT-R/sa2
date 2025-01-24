@@ -45,7 +45,7 @@ void Task_Interactable_CeilingSlope(void)
 
         if ((top <= playerY) && sBottom >= playerY) {
             u32 moveState = gPlayer.moveState;
-            if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR) && (gPlayer.speedAirY < 0)) {
+            if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR) && (gPlayer.qSpeedAirY < 0)) {
                 if (moveState & MOVESTATE_10000000) {
                     base->id = 1;
                 }

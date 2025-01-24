@@ -114,9 +114,9 @@ static void Pole_PlayerJumpsOff(Sprite_Pole *pole)
         gPlayer.transition = PLTRANS_UNCURL;
 
         if (pole->facingLeft) {
-            gPlayer.speedAirX = -Q(5);
+            gPlayer.qSpeedAirX = -Q(5);
         } else {
-            gPlayer.speedAirX = +Q(5);
+            gPlayer.qSpeedAirX = +Q(5);
         }
         m4aSongNumStop(SE_POLE_SLIDING);
     }
@@ -187,9 +187,9 @@ static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_POLE;
     gPlayer.qWorldX = Q(pole->middleX);
-    gPlayer.speedGroundX = 0;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedGround = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
 
     m4aSongNumStart(SE_POLE_SLIDING);
     gCurTask->main = Task_807EA8C;
@@ -201,7 +201,7 @@ static void sub_807ED00(Sprite_Pole *pole)
         gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
         gPlayer.transition = PLTRANS_UNCURL;
-        gPlayer.speedAirY = Q(1);
+        gPlayer.qSpeedAirY = Q(1);
         m4aSongNumStop(SE_POLE_SLIDING);
     }
     gCurTask->main = Task_Pole_NotTouching;

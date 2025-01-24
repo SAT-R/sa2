@@ -118,7 +118,7 @@ void ReceiveRoomEvent_PlayerRingLoss(union MultiSioData *msioData, u8 UNUSED som
     InitScatteringRings(msioData->pat4.x, msioData->pat4.y, msioData->pat4.numRings);
 }
 
-void ReceiveRoomEvent_MysterItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
+void ReceiveRoomEvent_MysteryItemBoxBreak(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);

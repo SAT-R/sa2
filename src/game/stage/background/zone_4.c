@@ -50,7 +50,7 @@ void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
         if (sCameraShiftX == 0) {
             sCameraShiftX = camX;
         }
-        sCameraShiftX += I(player->speedGroundX);
+        sCameraShiftX += I(player->qSpeedGround);
         camX = sCameraShiftX;
     } else {
         sCameraShiftX = 0;

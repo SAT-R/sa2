@@ -63,9 +63,9 @@ static void SuperSonicInitPlayer(void)
     p->unk4 = 0;
     p->qWorldX = 0;
     p->qWorldY = 0;
-    p->speedAirX = 0;
-    p->speedAirY = 0;
-    p->speedGroundX = 0;
+    p->qSpeedAirX = 0;
+    p->qSpeedAirY = 0;
+    p->qSpeedGround = 0;
     p->spriteOffsetX = 0;
     p->spriteOffsetY = 0;
     // /* 0x18 */ u8 filler18[8]; // no idea what this data is and why it's not set
@@ -138,8 +138,8 @@ void SuperSonicInit()
 
     gPlayer.moveState = 0;
     gPlayer.checkpointTime = 0;
-    gPlayer.speedAirX = Q(2.0);
-    gPlayer.speedGroundX = Q(2.0);
+    gPlayer.qSpeedAirX = Q(2.0);
+    gPlayer.qSpeedGround = Q(2.0);
 
     gCourseTime = 0;
 

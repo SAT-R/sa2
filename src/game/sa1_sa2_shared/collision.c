@@ -51,7 +51,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         ip = TRUE;
     }
 
-    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->qWorldX, p->qWorldY, (struct Rect8 *)rectPlayer) && (p->speedAirY >= 0)) {
+    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->qWorldX, p->qWorldY, (struct Rect8 *)rectPlayer) && (p->qSpeedAirY >= 0)) {
 
 #ifndef NON_MATCHING
         register s32 y asm("r1");
@@ -69,7 +69,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         }
 
         p->stoodObj = s;
-        p->speedAirY = 0;
+        p->qSpeedAirY = 0;
 
         if (GRAVITY_IS_INVERTED) {
             y = s->hitboxes[0].bottom;
@@ -320,20 +320,20 @@ void Collision_AdjustPlayerSpeed(Player *p)
         // Also triggered on homing-attack.
         // Slight boost upwards for the player.
         p->transition = PLTRANS_HOMING_ATTACK_RECOIL;
-        p->speedAirX = 0;
-        p->speedAirY = 0;
+        p->qSpeedAirX = 0;
+        p->qSpeedAirY = 0;
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
-        s32 speedX = -(p->speedAirX >> 1);
-        p->speedAirY = -p->speedAirY;
+        s32 speedX = -(p->qSpeedAirX >> 1);
+        p->qSpeedAirY = -p->qSpeedAirY;
         // BUG: using the camera DX here is not really fair, since
         // this will throw the player forwards if the camera is moving
         // towards the boss.
         // In reality this should use a fixed value of +Q(5) since that's
         // the boss moving speed
-        p->speedAirX = speedX - Q(gCamera.dx);
-    } else if (p->speedAirY > 0) {
+        p->qSpeedAirX = speedX - Q(gCamera.dx);
+    } else if (p->qSpeedAirY > 0) {
         // Bounce off of enemies
-        p->speedAirY = -p->speedAirY;
+        p->qSpeedAirY = -p->qSpeedAirY;
     }
 
     gPlayer.moveState |= MOVESTATE_4000;
@@ -437,7 +437,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
             p->stoodObj = s;
 
             if (r4 == 0 && s == NULL) {
-                p->speedGroundX = p->speedAirX;
+                p->qSpeedGround = p->qSpeedAirX;
             }
         }
     } else if (r4) {
@@ -447,7 +447,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
             p->stoodObj = NULL;
 
             if (IS_BOSS_STAGE(gCurrentLevel)) {
-                p->speedGroundX -= Q(gCamera.dx);
+                p->qSpeedGround -= Q(gCamera.dx);
             }
         }
     }
@@ -486,7 +486,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
         p->stoodObj = NULL;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            p->speedGroundX -= Q(gCamera.dx);
+            p->qSpeedGround -= Q(gCamera.dx);
         }
     }
 
@@ -544,18 +544,18 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
         }
 
         if (GRAVITY_IS_INVERTED) {
-            if (p->speedAirY > 0) {
+            if (p->qSpeedAirY > 0) {
                 return 0;
             }
         } else {
-            if (p->speedAirY < 0) {
+            if (p->qSpeedAirY < 0) {
                 return 0;
             }
         }
 
         if (!(p->moveState & MOVESTATE_IN_AIR)) {
             if ((p->rotation + 0x20) & 0x40) {
-                p->speedGroundX = 0;
+                p->qSpeedGround = 0;
             }
         }
 
@@ -609,7 +609,7 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED 
     }
     // _0800DABC
 
-    if ((p->speedAirX == 0 && p->speedAirY == 0) && HITBOX_IS_ACTIVE(opponent->hitboxes[1])) {
+    if ((p->qSpeedAirX == 0 && p->qSpeedAirY == 0) && HITBOX_IS_ACTIVE(opponent->hitboxes[1])) {
         if (HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y, mpPlayerSprite->hitboxes[0])) {
             // _0800DB68
             result |= COLL_FLAG_2;
@@ -650,16 +650,16 @@ bool32 sub_800DD54(Player *p)
     p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
     if (p->moveState & MOVESTATE_FACING_LEFT) {
-        p->speedAirX = +Q(1.5);
+        p->qSpeedAirX = +Q(1.5);
     } else {
-        p->speedAirX = -Q(1.5);
+        p->qSpeedAirX = -Q(1.5);
     }
 
-    p->speedAirY = -Q(3.0);
+    p->qSpeedAirY = -Q(3.0);
 
     if (p->moveState & MOVESTATE_IN_WATER) {
-        HALVE(p->speedAirY);
-        HALVE(p->speedAirX);
+        HALVE(p->qSpeedAirY);
+        HALVE(p->qSpeedAirX);
     }
 
     p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
@@ -712,16 +712,16 @@ bool32 sub_800DE44(Player *p)
     p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
     if (p->moveState & MOVESTATE_FACING_LEFT) {
-        p->speedAirX = -Q(1.5);
+        p->qSpeedAirX = -Q(1.5);
     } else {
-        p->speedAirX = +Q(1.5);
+        p->qSpeedAirX = +Q(1.5);
     }
 
-    p->speedAirY = -Q(3.0);
+    p->qSpeedAirY = -Q(3.0);
 
     if (p->moveState & MOVESTATE_IN_WATER) {
-        HALVE(p->speedAirY);
-        HALVE(p->speedAirX);
+        HALVE(p->qSpeedAirY);
+        HALVE(p->qSpeedAirX);
     }
 
     p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;

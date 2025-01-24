@@ -217,9 +217,9 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
 
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_LAUNCHER_IN_CART;
-    gPlayer.speedGroundX = 0;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedGround = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
 
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
@@ -249,14 +249,14 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-                gPlayer.speedAirX = -Q(15.0);
-                gPlayer.speedAirY = -Q(3.0);
+                gPlayer.qSpeedAirX = -Q(15.0);
+                gPlayer.qSpeedAirY = -Q(3.0);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN):
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-                gPlayer.speedAirX = +Q(15.0);
-                gPlayer.speedAirY = -Q(3.0);
+                gPlayer.qSpeedAirX = +Q(15.0);
+                gPlayer.qSpeedAirY = -Q(3.0);
             } break;
         }
 

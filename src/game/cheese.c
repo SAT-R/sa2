@@ -1047,8 +1047,8 @@ bool8 sub_8015118(Cheese *cheese)
     } else {
         unk54->unk54 = gPlayer.qWorldX;
         unk54->unk58 = gPlayer.qWorldY;
-        unk54->unk5C = gPlayer.speedAirX;
-        unk54->unk5E = gPlayer.speedAirY;
+        unk54->unk5C = gPlayer.qSpeedAirX;
+        unk54->unk5E = gPlayer.qSpeedAirY;
         unk54->unk68 = &gPlayer.spriteInfoBody->s;
         unk54->unk60 = gPlayer.moveState;
 

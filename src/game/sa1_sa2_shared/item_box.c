@@ -136,7 +136,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
 void BreakItemBox(Entity_ItemBox *itembox)
 {
     if (itembox->noPlayerBreakRecoil != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
-        gPlayer.speedAirY = -Q(3.0);
+        gPlayer.qSpeedAirY = -Q(3.0);
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
         gPlayer.transition = PLTRANS_UNCURL;

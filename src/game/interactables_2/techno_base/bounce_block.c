@@ -125,7 +125,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
         temp3 = temp1;
 
         if (temp3 < 49 && temp4 < 33) {
-            s16 speedGround = gPlayer.speedGroundX;
+            s16 speedGround = gPlayer.qSpeedGround;
 
             temp = sub_800CDBC(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40, &gPlayer);
             if (temp == 0) {
@@ -134,25 +134,25 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
 
             if (temp & 0x10000) {
                 gPlayer.qWorldY += Q_8_8(temp);
-                gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
+                gPlayer.qSpeedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_UNCURL;
                 noteBlock->unk4D = 0xC0;
             } else if (temp & 0x40000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
+                gPlayer.qSpeedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_UNCURL;
                 noteBlock->unk4D = 0x80;
             } else if (temp & 0x80000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
+                gPlayer.qSpeedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_UNCURL;
                 noteBlock->unk4D = 0;
             } else {
                 gPlayer.qWorldY += Q_8_8(temp);
-                gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
+                gPlayer.qSpeedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_UNCURL;
                 noteBlock->unk4D = 0x40;
@@ -161,7 +161,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
             if (gPlayer.moveState & MOVESTATE_IN_AIR) {
                 gPlayer.moveState &= ~MOVESTATE_100;
             } else {
-                gPlayer.speedGroundX = speedGround;
+                gPlayer.qSpeedGround = speedGround;
                 gPlayer.charState = CHARSTATE_SPIN_ATTACK;
                 gPlayer.transition = PLTRANS_UNCURL;
             }

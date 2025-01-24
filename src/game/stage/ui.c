@@ -327,7 +327,7 @@ void Task_StageUIMain(void)
         }
 
         /* Ring */
-        ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q(0.25));
+        ui->unk2D0 += ((gPlayer.qSpeedAirX >> 3) + Q(0.25));
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
         ui->ring.prevVariant = -1;

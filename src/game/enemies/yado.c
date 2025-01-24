@@ -93,7 +93,7 @@ void Task_YadoMain(void)
 
     if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
         m4aSongNumStart(SE_SPRING);
-        gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+        gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
         gPlayer.transition = PLTRANS_UNCURL;
@@ -134,7 +134,7 @@ void Task_8055084(void)
             TaskDestroy(gCurTask);
             return;
         } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
-            gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+            gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
             gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
             gPlayer.unk6C = 1;
             gPlayer.transition = 5;
@@ -142,7 +142,7 @@ void Task_8055084(void)
             m4aSongNumStart(SE_SPRING);
         }
     } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
-        gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+        gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
         gPlayer.transition = 5;
@@ -224,7 +224,7 @@ void Task_8055378(void)
     ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
 
     if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
-        gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+        gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
         gPlayer.transition = PLTRANS_UNCURL;

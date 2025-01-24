@@ -381,7 +381,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
         sub_800CA20(s, pos.x, pos.y, 1, &gPlayer);
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
-        if (boss->unkB1 == 0 || ((gPlayer.speedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
+        if (boss->unkB1 == 0 || ((gPlayer.qSpeedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
             if (sub_800C320(s, pos.x, pos.y, 0, &gPlayer) == 1) {
                 sub_803B6AC(boss);
             } else {

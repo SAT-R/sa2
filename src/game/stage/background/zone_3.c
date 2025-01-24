@@ -154,7 +154,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
             if (sUnknown_03000408 == 0) {
                 sUnknown_03000408 = a;
             }
-            sUnknown_03000408 += I(gPlayer.speedGroundX);
+            sUnknown_03000408 += I(gPlayer.qSpeedGround);
             a = sUnknown_03000408;
         } else {
             sUnknown_03000408 = 0;

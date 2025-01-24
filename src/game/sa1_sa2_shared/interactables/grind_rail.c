@@ -69,7 +69,7 @@ static void Task_GrindRail(void)
                     r6 = TRUE;
             }
 
-            if ((p->speedAirY >= 0) && r6 && !(kind & RAIL_KIND_80)) {
+            if ((p->qSpeedAirY >= 0) && r6 && !(kind & RAIL_KIND_80)) {
                 if ((p->moveState & MOVESTATE_1000000)) {
                     if ((!(kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
                          && (I(p->qWorldX) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))

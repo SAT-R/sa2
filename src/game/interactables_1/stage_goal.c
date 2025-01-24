@@ -143,13 +143,13 @@ static void Task_StageGoalToggleMain(void)
         gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__ACT_START;
         gStageGoalX = x;
 
-        if (gGameMode == GAME_MODE_SINGLE_PLAYER && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > Q(2.5)) {
+        if (gGameMode == GAME_MODE_SINGLE_PLAYER && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.qSpeedGround > Q(2.5)) {
             u32 extraScore;
-            if (gPlayer.speedGroundX <= Q(4.0)) {
+            if (gPlayer.qSpeedGround <= Q(4.0)) {
                 extraScore = 200;
-            } else if (gPlayer.speedGroundX <= Q(9.0)) {
+            } else if (gPlayer.qSpeedGround <= Q(9.0)) {
                 extraScore = 300;
-            } else if (gPlayer.speedGroundX <= Q(10.0)) {
+            } else if (gPlayer.qSpeedGround <= Q(10.0)) {
                 extraScore = 500;
             } else {
                 extraScore = 800;
@@ -164,10 +164,10 @@ static void Task_StageGoalToggleMain(void)
 
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
         if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) {
-            gPlayer.speedGroundX = 0;
+            gPlayer.qSpeedGround = 0;
             gInputRecorder.playbackHead += 1;
         } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_2)) {
-            gPlayer.speedAirX = 0;
+            gPlayer.qSpeedAirX = 0;
             gInputRecorder.playbackHead += 1;
         }
 #endif
