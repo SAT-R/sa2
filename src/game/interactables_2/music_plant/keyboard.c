@@ -102,11 +102,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
         case 0: {
             if (kb->unkC > 0) {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = +sKeyboardAccelTechnoBase[0][0];
-                    gPlayer.speedAirY = -sKeyboardAccelTechnoBase[0][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelTechnoBase[0][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelTechnoBase[0][1];
                 } else {
-                    gPlayer.speedAirX = +sKeyboardAccelMusicPlant[0][0];
-                    gPlayer.speedAirY = -sKeyboardAccelMusicPlant[0][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelMusicPlant[0][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelMusicPlant[0][1];
                 }
                 r7 = Q_8_8(7. / 8.);
                 r5 = -Q_8_8(4.5);
@@ -116,11 +116,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
             } else if (kb->unkC < 0) {
                 // _080764F8
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = -sKeyboardAccelTechnoBase[0][0];
-                    gPlayer.speedAirY = -sKeyboardAccelTechnoBase[0][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelTechnoBase[0][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelTechnoBase[0][1];
                 } else {
-                    gPlayer.speedAirX = -sKeyboardAccelMusicPlant[0][0];
-                    gPlayer.speedAirY = -sKeyboardAccelMusicPlant[0][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelMusicPlant[0][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelMusicPlant[0][1];
                 }
                 r7 = Q_8_8(7. / 8.);
                 r5 = -Q_8_8(4.5);
@@ -129,11 +129,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
             } else {
                 //_08076548
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = 0;
-                    gPlayer.speedAirY = -sKeyboardAccelTechnoBase[0][1];
+                    gPlayer.qSpeedAirX = 0;
+                    gPlayer.qSpeedAirY = -sKeyboardAccelTechnoBase[0][1];
                 } else {
-                    gPlayer.speedAirX = 0;
-                    gPlayer.speedAirY = -sKeyboardAccelMusicPlant[0][1];
+                    gPlayer.qSpeedAirX = 0;
+                    gPlayer.qSpeedAirY = -sKeyboardAccelMusicPlant[0][1];
                 }
                 r7 = Q_8_8(7. / 8.);
                 r5 = -Q_8_8(4.5);
@@ -145,11 +145,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
         case 1: {
             if (kb->unkE > 0) {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = -sKeyboardAccelTechnoBase[1][0];
-                    gPlayer.speedAirY = +sKeyboardAccelTechnoBase[1][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelTechnoBase[1][0];
+                    gPlayer.qSpeedAirY = +sKeyboardAccelTechnoBase[1][1];
                 } else {
-                    gPlayer.speedAirX = -sKeyboardAccelMusicPlant[1][0];
-                    gPlayer.speedAirY = +sKeyboardAccelMusicPlant[1][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelMusicPlant[1][0];
+                    gPlayer.qSpeedAirY = +sKeyboardAccelMusicPlant[1][1];
                 }
 
                 r7 = Q_8_8(7. / 8.);
@@ -158,11 +158,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
                 r6 = r5;
             } else if (kb->unkE < 0) {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = -sKeyboardAccelTechnoBase[1][0];
-                    gPlayer.speedAirY = -sKeyboardAccelTechnoBase[1][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelTechnoBase[1][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelTechnoBase[1][1];
                 } else {
-                    gPlayer.speedAirX = -sKeyboardAccelMusicPlant[1][0];
-                    gPlayer.speedAirY = -sKeyboardAccelMusicPlant[1][1];
+                    gPlayer.qSpeedAirX = -sKeyboardAccelMusicPlant[1][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelMusicPlant[1][1];
                 }
 
                 r7 = Q_8_8(7. / 8.);
@@ -171,11 +171,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
                 r6 = r5;
             } else {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = -sKeyboardAccelTechnoBase[1][0];
-                    gPlayer.speedAirY = 0;
+                    gPlayer.qSpeedAirX = -sKeyboardAccelTechnoBase[1][0];
+                    gPlayer.qSpeedAirY = 0;
                 } else {
-                    gPlayer.speedAirX = -sKeyboardAccelMusicPlant[1][0];
-                    gPlayer.speedAirY = 0;
+                    gPlayer.qSpeedAirX = -sKeyboardAccelMusicPlant[1][0];
+                    gPlayer.qSpeedAirY = 0;
                 }
 
                 r7 = Q_8_8(7. / 8.);
@@ -188,11 +188,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
         case 2: {
             if (kb->unkE > 0) {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = +sKeyboardAccelTechnoBase[2][0];
-                    gPlayer.speedAirY = +sKeyboardAccelTechnoBase[2][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelTechnoBase[2][0];
+                    gPlayer.qSpeedAirY = +sKeyboardAccelTechnoBase[2][1];
                 } else {
-                    gPlayer.speedAirX = +sKeyboardAccelMusicPlant[2][0];
-                    gPlayer.speedAirY = +sKeyboardAccelMusicPlant[2][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelMusicPlant[2][0];
+                    gPlayer.qSpeedAirY = +sKeyboardAccelMusicPlant[2][1];
                 }
 
                 r7 = Q_8_8(7. / 8.);
@@ -201,11 +201,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
                 r6 = 0;
             } else if (kb->unkE < 0) {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = +sKeyboardAccelTechnoBase[2][0];
-                    gPlayer.speedAirY = -sKeyboardAccelTechnoBase[2][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelTechnoBase[2][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelTechnoBase[2][1];
                 } else {
-                    gPlayer.speedAirX = +sKeyboardAccelMusicPlant[2][0];
-                    gPlayer.speedAirY = -sKeyboardAccelMusicPlant[2][1];
+                    gPlayer.qSpeedAirX = +sKeyboardAccelMusicPlant[2][0];
+                    gPlayer.qSpeedAirY = -sKeyboardAccelMusicPlant[2][1];
                 }
 
                 r7 = Q_8_8(7. / 8.);
@@ -214,11 +214,11 @@ static void sub_8076448(Sprite_Keyboard *kb)
                 r6 = r5;
             } else {
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                    gPlayer.speedAirX = +sKeyboardAccelTechnoBase[2][0];
-                    gPlayer.speedAirY = 0;
+                    gPlayer.qSpeedAirX = +sKeyboardAccelTechnoBase[2][0];
+                    gPlayer.qSpeedAirY = 0;
                 } else {
-                    gPlayer.speedAirX = +sKeyboardAccelMusicPlant[2][0];
-                    gPlayer.speedAirY = 0;
+                    gPlayer.qSpeedAirX = +sKeyboardAccelMusicPlant[2][0];
+                    gPlayer.qSpeedAirY = 0;
                 }
 
                 r7 = Q_8_8(7. / 8.);

@@ -186,9 +186,9 @@ static void sub_807A688(Sprite_IA75 *ia75)
 
     gPlayer.transition = PLTRANS_TOUCH_GROUND;
     gPlayer.charState = CHARSTATE_IDLE;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
-    gPlayer.speedGroundX = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
+    gPlayer.qSpeedGround = 0;
     gPlayer.rotation = 0;
     ia75->unk90 = 1;
 
@@ -225,12 +225,12 @@ static void sub_807A73C(Sprite_IA75 *ia75)
         ia75->unk90 = 0;
         switch (ia75->unk94) {
             case 0:
-                gPlayer.speedGroundX = -Q_8_8(7.5);
+                gPlayer.qSpeedGround = -Q_8_8(7.5);
                 gPlayer.moveState |= 1;
                 gPlayer.transition = PLTRANS_TOUCH_GROUND;
                 break;
             case 1:
-                gPlayer.speedGroundX = Q_8_8(7.5);
+                gPlayer.qSpeedGround = Q_8_8(7.5);
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.transition = PLTRANS_TOUCH_GROUND;
                 break;
@@ -310,26 +310,26 @@ static u32 sub_807A99C(Sprite_IA75 *ia75)
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.qWorldY += Q_8_8(temp);
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirY = 0;
                 return 2;
             }
             if (temp & 0x40000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                gPlayer.speedAirX = 0;
-                gPlayer.speedGroundX = 0;
+                gPlayer.qSpeedAirX = 0;
+                gPlayer.qSpeedGround = 0;
                 gPlayer.moveState |= MOVESTATE_20;
                 return 1;
             }
             if (temp & 0x80000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                gPlayer.speedAirX = 0;
-                gPlayer.speedGroundX = 0;
+                gPlayer.qSpeedAirX = 0;
+                gPlayer.qSpeedGround = 0;
                 gPlayer.moveState |= MOVESTATE_20;
                 return 3;
             }
             if (temp & 0x20000) {
                 gPlayer.qWorldY += Q_8_8(temp);
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirY = 0;
                 return 4;
             }
         }

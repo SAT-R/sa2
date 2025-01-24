@@ -140,9 +140,9 @@ static void sub_807D468(Sprite_Fan *prop)
     prop->playerDeltaX = I(prop->playerDeltaX * prop->fanSpeed);
 
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
-        if (gPlayer.speedAirX < 0) {
-            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX - Q(0.25));
-            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX - Q(0.25));
+        if (gPlayer.qSpeedAirX < 0) {
+            gPlayer.qSpeedGround = ClampPlayerSpeed(gPlayer.qSpeedGround - Q(0.25));
+            gPlayer.qSpeedAirX = ClampPlayerSpeed(gPlayer.qSpeedAirX - Q(0.25));
         } else {
             s32 newPlayerX = gPlayer.qWorldX - prop->playerDeltaX;
             gPlayer.qWorldX = newPlayerX;
@@ -155,13 +155,13 @@ static void sub_807D468(Sprite_Fan *prop)
 
             if (gPlayer.frameInput & 0x20) {
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
             }
         }
     } else {
-        if (gPlayer.speedAirX > 0) {
-            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX + Q(0.25));
-            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX + Q(0.25));
+        if (gPlayer.qSpeedAirX > 0) {
+            gPlayer.qSpeedGround = ClampPlayerSpeed(gPlayer.qSpeedGround + Q(0.25));
+            gPlayer.qSpeedAirX = ClampPlayerSpeed(gPlayer.qSpeedAirX + Q(0.25));
         } else {
             s32 newPlayerX = gPlayer.qWorldX + prop->playerDeltaX;
             gPlayer.qWorldX = newPlayerX;
@@ -174,7 +174,7 @@ static void sub_807D468(Sprite_Fan *prop)
 
             if (gPlayer.frameInput & 0x10) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-                gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
             }
         }
     }

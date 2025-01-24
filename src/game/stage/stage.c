@@ -388,9 +388,9 @@ void Task_GameStage(void)
             gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & MOVESTATE_IN_WATER) {
-                gPlayer.speedAirY = -Q(2.625);
+                gPlayer.qSpeedAirY = -Q(2.625);
             } else {
-                gPlayer.speedAirY = -Q(4.875);
+                gPlayer.qSpeedAirY = -Q(4.875);
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
@@ -418,9 +418,9 @@ void Task_GameStage(void)
             gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & MOVESTATE_IN_WATER) {
-                gPlayer.speedAirY = -Q(2.625);
+                gPlayer.qSpeedAirY = -Q(2.625);
             } else {
-                gPlayer.speedAirY = -Q(4.875);
+                gPlayer.qSpeedAirY = -Q(4.875);
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);

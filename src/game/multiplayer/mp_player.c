@@ -549,13 +549,13 @@ void sub_8016D20(void)
             } else if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
-                gPlayer.speedGroundX = Q_8_8(12);
-                gPlayer.speedAirX = Q_8_8(12);
+                gPlayer.qSpeedGround = Q_8_8(12);
+                gPlayer.qSpeedAirX = Q_8_8(12);
             } else {
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
-                gPlayer.speedGroundX = -Q_8_8(12);
-                gPlayer.speedAirX = -Q_8_8(12);
+                gPlayer.qSpeedGround = -Q_8_8(12);
+                gPlayer.qSpeedAirX = -Q_8_8(12);
             }
             mpp->unk60 = 30;
         } else {
@@ -605,13 +605,13 @@ void sub_8016D20(void)
             } else if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
-                gPlayer.speedGroundX = Q(12);
-                gPlayer.speedAirX = Q(12);
+                gPlayer.qSpeedGround = Q(12);
+                gPlayer.qSpeedAirX = Q(12);
             } else {
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
-                gPlayer.speedGroundX = -Q(12);
-                gPlayer.speedAirX = -Q(12);
+                gPlayer.qSpeedGround = -Q(12);
+                gPlayer.qSpeedAirX = -Q(12);
             }
             mpp->unk60 = 30;
         }
@@ -831,18 +831,18 @@ void sub_801707C(void)
 #ifndef NON_MATCHING
                         // thanks pidgey
                         u32 speed = 0;
-                        gPlayer.speedAirX = speed;
+                        gPlayer.qSpeedAirX = speed;
                         invertedGravity = GRAVITY_IS_INVERTED;
                         if (!invertedGravity) {
                             invertedGravity = FALSE;
                         } else {
                             invertedGravity = FALSE;
                         }
-                        gPlayer.speedAirY = speed;
+                        gPlayer.qSpeedAirY = speed;
                         asm("" ::: "r2");
 #else
-                        gPlayer.speedAirX = 0;
-                        gPlayer.speedAirY = 0;
+                        gPlayer.qSpeedAirX = 0;
+                        gPlayer.qSpeedAirY = 0;
 #endif
 
                         gPlayer.moveState &= ~MOVESTATE_20;
@@ -971,8 +971,8 @@ void sub_8017670(void)
                         sub_8023B5C(&gPlayer, 14);
                         gPlayer.spriteOffsetX = 6;
                         gPlayer.spriteOffsetY = 14;
-                        gPlayer.speedGroundX = 0;
-                        gPlayer.speedAirX = 0;
+                        gPlayer.qSpeedGround = 0;
+                        gPlayer.qSpeedAirX = 0;
                         gPlayer.charState = CHARSTATE_IDLE;
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
@@ -1064,7 +1064,7 @@ void sub_8017670(void)
                 gPlayer.moveState &= ~MOVESTATE_IN_AIR;
 
                 gPlayer.stoodObj = s;
-                gPlayer.speedAirY = 0;
+                gPlayer.qSpeedAirY = 0;
 
                 if ((s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
                     gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
@@ -1175,19 +1175,19 @@ void sub_8017C28(void)
 
             if ((val & 1)) {
                 if ((val & 0x20000)) {
-                    if (gPlayer.speedAirX > 0) {
-                        gPlayer.speedAirX = -gPlayer.speedAirX;
-                        gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                    if (gPlayer.qSpeedAirX > 0) {
+                        gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                        gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                     }
                 } else if ((val & 0x40000)) {
-                    if (gPlayer.speedAirX < 0) {
-                        gPlayer.speedAirX = -gPlayer.speedAirX;
-                        gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                    if (gPlayer.qSpeedAirX < 0) {
+                        gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                        gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                     }
                 }
 
-                if (val & 0x100000 && gPlayer.speedAirY > 0) {
-                    gPlayer.speedAirY = -gPlayer.speedAirY;
+                if (val & 0x100000 && gPlayer.qSpeedAirY > 0) {
+                    gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
                 }
 #ifndef NON_MATCHING
             lab:
@@ -1323,19 +1323,19 @@ bool32 sub_80181E0(void)
 
         if ((val & 1)) {
             if (gPlayer.unk61 == 0 && (val & 0x20000)) {
-                if (gPlayer.speedAirX > 0) {
-                    gPlayer.speedAirX = -gPlayer.speedAirX;
-                    gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                if (gPlayer.qSpeedAirX > 0) {
+                    gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                    gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
             } else if (gPlayer.unk61 == 0 && (val & 0x40000)) {
-                if (gPlayer.speedAirX < 0) {
-                    gPlayer.speedAirX = -gPlayer.speedAirX;
-                    gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                if (gPlayer.qSpeedAirX < 0) {
+                    gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                    gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
             }
 
-            if (val & 0x100000 && gPlayer.speedAirY > 0) {
-                gPlayer.speedAirY = -gPlayer.speedAirY;
+            if (val & 0x100000 && gPlayer.qSpeedAirY > 0) {
+                gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
             }
             mpp->unk60 = 30;
             return TRUE;
@@ -1371,19 +1371,19 @@ bool32 sub_8018300(void)
 
         if (val2 & 1) {
             if (gPlayer.unk61 == 0 && (val2 & 0x20000)) {
-                if (gPlayer.speedAirX > 0) {
-                    gPlayer.speedAirX = -gPlayer.speedAirX;
-                    gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                if (gPlayer.qSpeedAirX > 0) {
+                    gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                    gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
             } else if (gPlayer.unk61 == 0 && (val2 & 0x40000)) {
-                if (gPlayer.speedAirX < 0) {
-                    gPlayer.speedAirX = -gPlayer.speedAirX;
-                    gPlayer.speedGroundX = -gPlayer.speedGroundX;
+                if (gPlayer.qSpeedAirX < 0) {
+                    gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
+                    gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
             }
 
-            if (val2 & 0x100000 && gPlayer.speedAirY > 0) {
-                gPlayer.speedAirY = -gPlayer.speedAirY;
+            if (val2 & 0x100000 && gPlayer.qSpeedAirY > 0) {
+                gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
             }
             mpp->unk60 = 30;
 
@@ -1500,7 +1500,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.spriteOffsetX = 6;
         gPlayer.spriteOffsetY = 14;
         m4aSongNumStart(SE_SPRING);
-        gPlayer.speedAirY = *airSpeed;
+        gPlayer.qSpeedAirY = *airSpeed;
         TaskDestroy(gCurTask);
         return;
     }

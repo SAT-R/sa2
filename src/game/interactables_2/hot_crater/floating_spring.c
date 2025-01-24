@@ -127,34 +127,34 @@ static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
         if (temp != 0) {
             if (I(gPlayer.qWorldY) < floatingSpring->unk40) {
                 gPlayer.qWorldY += Q(floatingSpring->s.hitboxes[0].top);
-                if (gPlayer.speedAirY > 0) {
-                    gPlayer.speedAirY = 0;
+                if (gPlayer.qSpeedAirY > 0) {
+                    gPlayer.qSpeedAirY = 0;
                 }
                 return 2;
             } else if (temp & 0x10000) {
                 gPlayer.qWorldY += Q_8_8(temp);
-                if (gPlayer.speedAirY > 0) {
-                    gPlayer.speedAirY = 0;
+                if (gPlayer.qSpeedAirY > 0) {
+                    gPlayer.qSpeedAirY = 0;
                 }
                 return 2;
             } else if (temp & 0x20000) {
                 gPlayer.qWorldY += Q_8_8(temp);
-                if (gPlayer.speedAirY < 0) {
-                    gPlayer.speedAirY = 0;
+                if (gPlayer.qSpeedAirY < 0) {
+                    gPlayer.qSpeedAirY = 0;
                 }
                 return 1;
             } else if (temp & 0x40000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                if (gPlayer.speedAirX < 0) {
-                    gPlayer.speedAirX = 0;
-                    gPlayer.speedGroundX = 0;
+                if (gPlayer.qSpeedAirX < 0) {
+                    gPlayer.qSpeedAirX = 0;
+                    gPlayer.qSpeedGround = 0;
                 }
                 return 1;
             } else if (temp & 0x80000) {
                 gPlayer.qWorldX += (s16)(temp & 0xFF00);
-                if (gPlayer.speedAirX > 0) {
-                    gPlayer.speedAirX = 0;
-                    gPlayer.speedGroundX = 0;
+                if (gPlayer.qSpeedAirX > 0) {
+                    gPlayer.qSpeedAirX = 0;
+                    gPlayer.qSpeedGround = 0;
                 }
                 return 1;
             }

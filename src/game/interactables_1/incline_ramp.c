@@ -34,7 +34,7 @@ static void Task_InclineRamp(void)
         && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == me->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.id) == 0) {
-            if (gPlayer.speedAirX > Q(4)) {
+            if (gPlayer.qSpeedAirX > Q(4)) {
                 moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
@@ -44,9 +44,9 @@ static void Task_InclineRamp(void)
                 sub_8023B5C(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
-                gPlayer.speedAirY = Q_8_8(-3);
-                gPlayer.speedGroundX = Q_8_8(17);
-                gPlayer.speedAirX += Q_8_8(17);
+                gPlayer.qSpeedAirY = Q_8_8(-3);
+                gPlayer.qSpeedGround = Q_8_8(17);
+                gPlayer.qSpeedAirX += Q_8_8(17);
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
@@ -60,7 +60,7 @@ static void Task_InclineRamp(void)
             }
         } else {
             // _0805DC20
-            if (gPlayer.speedAirX < Q_8_8(-4)) {
+            if (gPlayer.qSpeedAirX < Q_8_8(-4)) {
                 moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
@@ -70,9 +70,9 @@ static void Task_InclineRamp(void)
                 sub_8023B5C(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
-                gPlayer.speedAirY = Q_8_8(-3);
-                gPlayer.speedGroundX = Q_8_8(-17);
-                gPlayer.speedAirX += Q_8_8(-17);
+                gPlayer.qSpeedAirY = Q_8_8(-3);
+                gPlayer.qSpeedGround = Q_8_8(-17);
+                gPlayer.qSpeedAirX += Q_8_8(-17);
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);

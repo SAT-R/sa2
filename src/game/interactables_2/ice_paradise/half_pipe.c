@@ -92,9 +92,9 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
 
     {
 #ifndef NON_MATCHING
-        register s16 temp asm("r0") = abs(gPlayer.speedAirX);
+        register s16 temp asm("r0") = abs(gPlayer.qSpeedAirX);
 #else
-        s16 temp = abs(gPlayer.speedAirX);
+        s16 temp = abs(gPlayer.qSpeedAirX);
 #endif
         temp = temp << 0x10 >> 0x10;
         airSpeed = temp;
@@ -113,7 +113,7 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
     sin = I(sin * temp2);
 
     gPlayer.qWorldY = halfPipe->basePlayerY - sin;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedAirY = 0;
     gPlayer.moveState &= ~MOVESTATE_IN_AIR;
 
     if (!(gPlayer.moveState & MOVESTATE_4)) {
@@ -175,7 +175,7 @@ static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe) { gCurTask
 
 static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
-    if (gPlayer.speedAirX <= -Q(2) || gPlayer.speedAirX >= Q(2.25)) {
+    if (gPlayer.qSpeedAirX <= -Q(2) || gPlayer.qSpeedAirX >= Q(2.25)) {
         if (gPlayer.frameInput & gPlayerControls.jump) {
             gPlayer.transition = PLTRANS_INIT_JUMP;
         } else {
@@ -213,12 +213,12 @@ static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 
     switch (halfPipe->direction) {
         case HALF_PIPE_DIRECTION_FORWARD:
-            if (gPlayer.speedAirX < Q(2.25)) {
+            if (gPlayer.qSpeedAirX < Q(2.25)) {
                 return FALSE;
             }
             break;
         case HALF_PIPE_DIRECTION_REVERSE:
-            if (gPlayer.speedAirX > -Q(2.25)) {
+            if (gPlayer.qSpeedAirX > -Q(2.25)) {
                 return FALSE;
             }
             break;

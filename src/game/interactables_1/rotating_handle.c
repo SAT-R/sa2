@@ -89,8 +89,8 @@ static void Task_Idle(void)
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
         rotatingHandle->unk3C = 0;
 
-        temp1 = abs(gPlayer.speedAirX);
-        temp2 = abs(gPlayer.speedAirY);
+        temp1 = abs(gPlayer.qSpeedAirX);
+        temp2 = abs(gPlayer.qSpeedAirY);
         rotatingHandle->unk3E = temp1 + temp2;
         if (rotatingHandle->unk3E < 0xE0) {
             rotatingHandle->unk3E = 0xE0;
@@ -100,7 +100,7 @@ static void Task_Idle(void)
             rotatingHandle->unk3E = 0x180;
         }
 
-        if (gPlayer.speedAirX > 0) {
+        if (gPlayer.qSpeedAirX > 0) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
             if (I(gPlayer.qWorldY) > y) {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
@@ -238,8 +238,8 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
                 r4 = 0;
                 break;
         }
-        gPlayer.speedAirX = Div(COS(r4) << 1, 0x11);
-        gPlayer.speedAirY = Div(SIN(r4) << 1, 0x11);
+        gPlayer.qSpeedAirX = Div(COS(r4) << 1, 0x11);
+        gPlayer.qSpeedAirY = Div(SIN(r4) << 1, 0x11);
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
     } else {
@@ -256,8 +256,8 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
             gPlayer.unk6C = 1;
             gPlayer.qWorldX = Q_24_8(posX);
             gPlayer.qWorldY = Q_24_8(posY);
-            gPlayer.speedAirX = 0;
-            gPlayer.speedAirY = 0;
+            gPlayer.qSpeedAirX = 0;
+            gPlayer.qSpeedAirY = 0;
         } else {
             r2 = Div(temp, 0x56);
             if (r2 > 0xB) {
@@ -270,8 +270,8 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
             gPlayer.unk6C = 1;
             gPlayer.qWorldX = Q_24_8(posX);
             gPlayer.qWorldY = Q_24_8(posY);
-            gPlayer.speedAirX = 0;
-            gPlayer.speedAirY = 0;
+            gPlayer.qSpeedAirX = 0;
+            gPlayer.qSpeedAirY = 0;
         }
     }
 

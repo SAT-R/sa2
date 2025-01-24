@@ -95,8 +95,8 @@ static void sub_8076928(void)
 
         if (ABS(gPlayer.qWorldX - posX) <= Q(8)) {
             if (gPlayer.qWorldY != posY) {
-                gPlayer.speedAirY += Q(1. / 6.);
-                gPlayer.qWorldY += gPlayer.speedAirY;
+                gPlayer.qSpeedAirY += Q(1. / 6.);
+                gPlayer.qWorldY += gPlayer.qSpeedAirY;
 
                 if (gPlayer.qWorldY > posY) {
                     gPlayer.qWorldY = posY;
@@ -124,8 +124,8 @@ static void sub_80769E0(void)
         sub_8076D08(flute);
     }
 
-    gPlayer.qWorldY += gPlayer.speedAirY;
-    gPlayer.speedAirY += Q(1. / 6.);
+    gPlayer.qWorldY += gPlayer.qSpeedAirY;
+    gPlayer.qSpeedAirY += Q(1. / 6.);
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
     res = sub_801F100(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, -8, sub_801EC3C);
@@ -134,7 +134,7 @@ static void sub_80769E0(void)
         gPlayer.qWorldY -= Q(res);
     }
 
-    if (gPlayer.speedAirY >= 0) {
+    if (gPlayer.qSpeedAirY >= 0) {
         sub_8076C70(flute);
     }
 }
@@ -199,9 +199,9 @@ static void sub_8076B84(Sprite_GermanFlute *flute)
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
-    gPlayer.speedGroundX = 0;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedGround = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
 
     gPlayer.qWorldY = Q(flute->posY - 8);
     gCurTask->main = sub_8076928;
@@ -256,8 +256,8 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
     gPlayer.transition = PLTRANS_UNCURL;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
 
     gCurTask->main = Task_GermanFlute;
 }
@@ -266,8 +266,8 @@ static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     gPlayer.transition = PLTRANS_UNCURL;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
 
     gCurTask->main = Task_GermanFlute;
 }
@@ -334,9 +334,9 @@ static void TaskDestructor_GermanFlute(struct Task *t) {};
 static void sub_8076E3C(Sprite_GermanFlute *flute)
 {
     gPlayer.charState = CHARSTATE_FLUTE_EXHAUST;
-    gPlayer.speedAirX = 0;
+    gPlayer.qSpeedAirX = 0;
 
-    gPlayer.speedAirY = -sFluteUpdraft[flute->kind];
+    gPlayer.qSpeedAirY = -sFluteUpdraft[flute->kind];
     flute->timer = 0;
     sub_8080AFC(flute->posX, (flute->posY + 24), 0, 30, 0, DEG_TO_SIN(270) / 4, 3);
     m4aSongNumStart(sFluteSfx[flute->kind]);

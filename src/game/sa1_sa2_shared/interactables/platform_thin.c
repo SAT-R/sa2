@@ -150,7 +150,7 @@ static void Task_PlatformThinMain(void)
         if (temp2 & 0xC0000) {
             if (HandleThinPlatformCollision(s, x, y, player) & 0xC0000) {
                 player->qWorldX += (s16)(temp2 & 0xFF00);
-                player->speedAirX = 0;
+                player->qSpeedAirX = 0;
             }
         }
 
@@ -163,18 +163,18 @@ static void Task_PlatformThinMain(void)
                     if (charState == CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN) {
                         player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         player->moveState |= MOVESTATE_IN_AIR;
-                        player->speedAirY = player->speedAirY >> 1;
+                        player->qSpeedAirY = player->qSpeedAirY >> 1;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
                         break;
                     }
                     player->qWorldY += (s16)(temp2 << 8);
-                    player->speedAirY = 0;
+                    player->qSpeedAirY = 0;
                     break;
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
-                    if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
+                    if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->qSpeedAirY > 0) {
                         player->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
@@ -182,7 +182,7 @@ static void Task_PlatformThinMain(void)
                 }
                 default:
                     player->qWorldY += (s16)(temp2 << 8);
-                    player->speedAirY = 0;
+                    player->qSpeedAirY = 0;
                     break;
             }
         }

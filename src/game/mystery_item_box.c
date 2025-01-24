@@ -260,7 +260,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     RoomEvent_MysteryItemBoxBreak *roomEvent;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
-        gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
+        gPlayer.qSpeedAirY = -Q(3); // default itembox-hit y-accel
         gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = CHARSTATE_INVALID;
         gPlayer.transition = PLTRANS_UNCURL;

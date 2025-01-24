@@ -167,7 +167,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
             if (!(p->moveState & MOVESTATE_FACING_LEFT))
                 randX = -randX;
 
-            SpawnAirBubbles(p->qWorldX - randX, p->qWorldY - randY, p->speedAirX, ((u32)PseudoRandom32() & 0x100) >> 8);
+            SpawnAirBubbles(p->qWorldX - randX, p->qWorldY - randY, p->qSpeedAirX, ((u32)PseudoRandom32() & 0x100) >> 8);
 
             result = TRUE;
         }

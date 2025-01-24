@@ -350,10 +350,10 @@ static void sub_8041A08(AeroEgg *boss)
     if (boss->main.unk17 == 0) {
         Player *p = &gPlayer;
 
-        if ((p->speedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
+        if ((p->qSpeedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
             if ((!sub_800DF38(s, worldX, worldY, p)) == COLL_NONE) {
                 s16 v = -Q(4.75);
-                p->speedAirY = v;
+                p->qSpeedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_STOOD_ON_OBJ);
                 p->stoodObj = NULL;
                 p->charState = CHARSTATE_JUMP_2;

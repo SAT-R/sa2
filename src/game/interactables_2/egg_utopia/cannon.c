@@ -114,9 +114,9 @@ static void sub_807E384(Sprite_Cannon *cannon)
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
-    gPlayer.speedGroundX = 0;
-    gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = 0;
+    gPlayer.qSpeedGround = 0;
+    gPlayer.qSpeedAirX = 0;
+    gPlayer.qSpeedAirY = 0;
     gCurTask->main = sub_807E7B0;
 }
 
@@ -130,11 +130,11 @@ static void sub_807E408(Sprite_Cannon *cannon)
 
         gPlayer.qWorldX += COS_24_8(cannon->unk6A) * 0x20;
         gPlayer.qWorldY += SIN_24_8(cannon->unk6A) * 0x20;
-        gPlayer.speedAirX = COS_24_8(cannon->unk6A) * 0xF;
-        gPlayer.speedAirY = SIN_24_8(cannon->unk6A) * 0xF;
+        gPlayer.qSpeedAirX = COS_24_8(cannon->unk6A) * 0xF;
+        gPlayer.qSpeedAirY = SIN_24_8(cannon->unk6A) * 0xF;
 
         if (GRAVITY_IS_INVERTED) {
-            gPlayer.speedAirY = -gPlayer.speedAirY;
+            gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
         }
 
         gPlayer.rotation = cannon->unk6A >> 2;

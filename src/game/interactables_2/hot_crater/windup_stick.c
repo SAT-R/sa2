@@ -97,8 +97,8 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
     switch (windUpStick->unk10) {
         case 1:
             gPlayer.charState = CHARSTATE_WINDUP_STICK_UPWARDS;
-            gPlayer.speedAirX = 0;
-            gPlayer.speedAirY -= Q(6.5);
+            gPlayer.qSpeedAirX = 0;
+            gPlayer.qSpeedAirY -= Q(6.5);
             break;
         case 2:
 #ifndef NON_MATCHING
@@ -109,22 +109,22 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
 #else
             gPlayer.charState = CHARSTATE_WINDUP_STICK_DOWNWARDS;
 #endif
-            gPlayer.speedAirX = 0;
+            gPlayer.qSpeedAirX = 0;
             break;
         case 3:
             gPlayer.charState = CHARSTATE_WINDUP_STICK_SINGLE_TURN_UP;
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                gPlayer.speedGroundX -= Q(2.5);
+                gPlayer.qSpeedGround -= Q(2.5);
             } else {
-                gPlayer.speedGroundX += Q(2.5);
+                gPlayer.qSpeedGround += Q(2.5);
             }
             break;
         case 4:
             gPlayer.charState = CHARSTATE_WINDUP_STICK_SINGLE_TURN_DOWN;
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                gPlayer.speedGroundX -= Q(1.25);
+                gPlayer.qSpeedGround -= Q(1.25);
             } else {
-                gPlayer.speedGroundX += Q(1.25);
+                gPlayer.qSpeedGround += Q(1.25);
             }
             gPlayer.moveState ^= 1;
             break;
@@ -187,13 +187,13 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
         if ((posX + windUpStick->unk8) <= playerX && (posX + windUpStick->unk8) + (windUpStick->unkC - windUpStick->unk8) >= playerX) {
             if (posY + windUpStick->unkA <= playerY && (posY + windUpStick->unkA) + (windUpStick->unkE - windUpStick->unkA) >= playerY) {
                 if (gPlayer.moveState & MOVESTATE_IN_AIR) {
-                    if (gPlayer.speedAirY < 0) {
+                    if (gPlayer.qSpeedAirY < 0) {
                         return 1;
                     } else {
                         return 2;
                     }
                 } else {
-                    if (gPlayer.speedAirY < 0) {
+                    if (gPlayer.qSpeedAirY < 0) {
                         return 3;
                     } else {
                         return 4;

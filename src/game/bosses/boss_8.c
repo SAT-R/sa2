@@ -206,7 +206,7 @@ void CreateBossRunManager(u8 bossIndex)
         Cheese *cheese;
         Player_DisableInputAndBossTimer();
 
-        gPlayer.speedGroundX = Q(5);
+        gPlayer.qSpeedGround = Q(5);
 
         // ???
         x = gUnknown_080D87E6[bossIndex - 1][0] - I(gPlayer.qWorldX);
@@ -250,7 +250,7 @@ static void Task_BossRunManagerMain(void)
             gBossCameraClampYUpper = gBossCameraYClamps[7][1];
             if (gPlayer.qWorldX < Q(42960) && gPlayer.qWorldX > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                gPlayer.speedGroundX = Q(5);
+                gPlayer.qSpeedGround = Q(5);
                 gPlayer.frameInput = 0;
                 gPlayer.heldInput = 0;
                 gPlayer.rotation = 0;
@@ -275,7 +275,7 @@ static void Task_BossRunManagerMain(void)
                 r5 = gPlayer.qWorldX;
                 if (r5 > Q(42960)) {
                     gPlayer.moveState &= ~MOVESTATE_GOAL_REACHED;
-                    gPlayer.speedGroundX = 0;
+                    gPlayer.qSpeedGround = 0;
                     gPlayer.transition = 1;
                     manager->bossIndex++;
                     manager->unk6 = 1;
@@ -496,7 +496,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
         s32 result = sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
             gPlayer.qWorldY -= Q(8);
-            gPlayer.speedAirY = -Q(3.5);
+            gPlayer.qSpeedAirY = -Q(3.5);
             gPlayer.charState = CHARSTATE_HIT_AIR;
             gPlayer.transition = PLTRANS_PT6;
         }
@@ -919,25 +919,25 @@ void Task_804AB24(void)
         asm("mov r1, %2\n"
             "ldrsh %0, [%1, r1]"
             : "=r"(speed)
-            : "r"(p), "I"(offsetof(Player, speedAirX)));
+            : "r"(p), "I"(offsetof(Player, qSpeedAirX)));
 #else
-        speed = p->speedAirX;
+        speed = p->qSpeedAirX;
 #endif
         if (speed > 0) {
             speed = -speed;
-            p->speedAirX = speed;
+            p->qSpeedAirX = speed;
         }
 
 #ifndef NON_MATCHING
         asm("mov r1, %2\n"
             "ldrsh %0, [%1, r1]"
             : "=r"(speed)
-            : "r"(p), "I"(offsetof(Player, speedGroundX)));
+            : "r"(p), "I"(offsetof(Player, qSpeedGround)));
 #else
-        speed = p->speedGroundX;
+        speed = p->qSpeedGround;
 #endif
         if (speed > 0) {
-            p->speedGroundX = -speed;
+            p->qSpeedGround = -speed;
         }
     }
     // _0804ABC0
@@ -949,24 +949,24 @@ void Task_804AB24(void)
         asm("mov r1, %2\n"
             "ldrsh %0, [%1, r1]"
             : "=r"(speed)
-            : "r"(p), "I"(offsetof(Player, speedAirX)));
+            : "r"(p), "I"(offsetof(Player, qSpeedAirX)));
 #else
-        speed = p->speedAirX;
+        speed = p->qSpeedAirX;
 #endif
         if (speed > 0) {
-            p->speedAirX = -speed;
+            p->qSpeedAirX = -speed;
         }
 
 #ifndef NON_MATCHING
         asm("mov r1, %2\n"
             "ldrsh %0, [%1, r1]"
             : "=r"(speed)
-            : "r"(p), "I"(offsetof(Player, speedGroundX)));
+            : "r"(p), "I"(offsetof(Player, qSpeedGround)));
 #else
-        speed = p->speedGroundX;
+        speed = p->qSpeedGround;
 #endif
         if (speed > 0) {
-            p->speedGroundX = -speed;
+            p->qSpeedGround = -speed;
         }
     }
 
@@ -988,14 +988,14 @@ void Task_804AB24(void)
 
         if (gPlayer.moveState & (MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) {
             gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
-            gPlayer.speedAirX = -Q(2);
-            gPlayer.speedAirY = -Q(0);
+            gPlayer.qSpeedAirX = -Q(2);
+            gPlayer.qSpeedAirY = -Q(0);
             gPlayer.transition = PLTRANS_UNCURL;
         } else {
             // _0804AC68
-            gPlayer.speedGroundX = Q(0);
-            gPlayer.speedAirX = Q(0);
-            gPlayer.speedAirY = Q(0);
+            gPlayer.qSpeedGround = Q(0);
+            gPlayer.qSpeedAirX = Q(0);
+            gPlayer.qSpeedAirY = Q(0);
         }
         // _0804AC6E
 
@@ -1255,14 +1255,14 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
                 s32 speed;
                 result = sub_804C9B4(boss, arm);
 
-                speed = -gPlayer.speedAirX;
-                gPlayer.speedAirX = speed;
+                speed = -gPlayer.qSpeedAirX;
+                gPlayer.qSpeedAirX = speed;
 
-                speed = -gPlayer.speedAirY;
-                gPlayer.speedAirY = speed;
+                speed = -gPlayer.qSpeedAirY;
+                gPlayer.qSpeedAirY = speed;
 
-                speed = -gPlayer.speedGroundX;
-                gPlayer.speedGroundX = speed;
+                speed = -gPlayer.qSpeedGround;
+                gPlayer.qSpeedGround = speed;
 
                 return result;
             }
@@ -1323,14 +1323,14 @@ bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm)
             s32 speed;
             result = sub_804C9B4(boss, arm);
 
-            speed = -gPlayer.speedAirX;
-            gPlayer.speedAirX = speed;
+            speed = -gPlayer.qSpeedAirX;
+            gPlayer.qSpeedAirX = speed;
 
-            speed = -gPlayer.speedAirY;
-            gPlayer.speedAirY = speed;
+            speed = -gPlayer.qSpeedAirY;
+            gPlayer.qSpeedAirY = speed;
 
-            speed = -gPlayer.speedGroundX;
-            gPlayer.speedGroundX = speed;
+            speed = -gPlayer.qSpeedGround;
+            gPlayer.qSpeedGround = speed;
 
             return result;
         }
@@ -1940,15 +1940,15 @@ static void sub_804C830(SuperEggRoboZ *boss)
             Boss8_HitCockpit(boss);
 
             {
-                s32 speed = p->speedAirX;
+                s32 speed = p->qSpeedAirX;
                 if (speed > 0) {
-                    p->speedAirX = -ABS(speed);
+                    p->qSpeedAirX = -ABS(speed);
                 }
             }
         } else if (sub_800CA20(s, headPos.x, headPos.y, 0, p) == TRUE) {
-            s32 speed = p->speedAirX;
+            s32 speed = p->qSpeedAirX;
             if (speed > 0) {
-                p->speedAirX = -speed;
+                p->qSpeedAirX = -speed;
             }
         }
     }
@@ -2068,7 +2068,7 @@ static void Task_SuperEggRoboZMain(void)
 
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
 
-    if ((gPlayer.speedGroundX == 0) && (--boss->unk14 == 0)) {
+    if ((gPlayer.qSpeedGround == 0) && (--boss->unk14 == 0)) {
         boss->unk14 = 300;
         gCurTask->main = Task_804A9D8;
         m4aSongNumStart(SE_260);

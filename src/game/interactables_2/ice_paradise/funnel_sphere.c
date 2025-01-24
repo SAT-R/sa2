@@ -104,8 +104,8 @@ static void sub_8077F7C(void)
 
         gPlayer.rotation = I((0x40 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) + 0x40;
 
-        gPlayer.speedAirX = COS_24_8(MUL_4(gPlayer.rotation));
-        gPlayer.speedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
+        gPlayer.qSpeedAirX = COS_24_8(MUL_4(gPlayer.rotation));
+        gPlayer.qSpeedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
         funnelSphere->unkC += 0x40;
     } else {
         r7 = funnelSphere->y - I(funnelSphere->unkC);
@@ -130,8 +130,8 @@ static void sub_8077F7C(void)
 
         gPlayer.rotation = I((0xC0 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) - 0x40;
 
-        gPlayer.speedAirX = COS_24_8(MUL_4(gPlayer.rotation));
-        gPlayer.speedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
+        gPlayer.qSpeedAirX = COS_24_8(MUL_4(gPlayer.rotation));
+        gPlayer.qSpeedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
         funnelSphere->unkC -= 0x40;
     }
     if (r7 > 0x1F) {
@@ -163,7 +163,7 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
             gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     }
 
-    if (gPlayer.speedAirX < Q_8_8(9)) {
+    if (gPlayer.qSpeedAirX < Q_8_8(9)) {
         funnelSphere->unk1C = 1;
     } else {
         funnelSphere->unk1C = 0;
@@ -252,10 +252,10 @@ static void sub_807844C(void)
         return;
     }
 
-    if (gPlayer.speedAirX < 0x300) {
+    if (gPlayer.qSpeedAirX < 0x300) {
         gPlayer.qWorldX += 0x300;
     } else {
-        gPlayer.qWorldX += gPlayer.speedAirX;
+        gPlayer.qWorldX += gPlayer.qSpeedAirX;
     }
 
     if (I(gPlayer.qWorldX) >= funnelSphere->x + 0x20) {
@@ -276,12 +276,12 @@ static void sub_80784B0(Sprite_FunnelSphere *funnelSphere)
 static void sub_80784F4(Sprite_FunnelSphere *funnelSphere)
 {
     if (funnelSphere->unk1C == 1) {
-        gPlayer.speedAirY = 0x600;
+        gPlayer.qSpeedAirY = 0x600;
     } else {
-        gPlayer.speedAirY = -0xA00;
+        gPlayer.qSpeedAirY = -0xA00;
     }
 
-    gPlayer.speedAirX = 0;
+    gPlayer.qSpeedAirX = 0;
     gCamera.unk50 &= ~1;
     m4aSongNumStop(SE_293);
     gCurTask->main = sub_8078634;
@@ -327,7 +327,7 @@ static void sub_8078634(void)
         return;
     }
 
-    gPlayer.qWorldY += gPlayer.speedAirY;
+    gPlayer.qWorldY += gPlayer.qSpeedAirY;
     y = funnelSphere->y - I(gPlayer.qWorldY);
 
     if (abs(y) >= 72) {

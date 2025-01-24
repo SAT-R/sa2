@@ -69,7 +69,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
         if (gBgScrollRegs[3][0] == 0)
             gBgScrollRegs[3][0] = x;
 
-        gBgScrollRegs[3][0] += I(gPlayer.speedGroundX);
+        gBgScrollRegs[3][0] += I(gPlayer.qSpeedGround);
 
         x = gBgScrollRegs[3][0];
     }

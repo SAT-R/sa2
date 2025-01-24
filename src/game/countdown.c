@@ -133,9 +133,9 @@ void sub_8036168(void)
         gStageFlags &= ~STAGE_FLAG__100;
         gPlayer.charState = CHARSTATE_WALK_A;
         if (countdown->unk6A != 0) {
-            gPlayer.speedGroundX = Q_8_8(9);
+            gPlayer.qSpeedGround = Q_8_8(9);
         } else {
-            gPlayer.speedGroundX = Q_8_8(4);
+            gPlayer.qSpeedGround = Q_8_8(4);
         }
 
         sub_8018818();

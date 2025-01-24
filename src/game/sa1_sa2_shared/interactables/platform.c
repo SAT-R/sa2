@@ -460,7 +460,7 @@ void Task_FallingPlatformMain_Falling(void)
             if (platform->timer > 32) {
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
                 gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
-                gPlayer.speedAirY = platform->velocityY;
+                gPlayer.qSpeedAirY = platform->velocityY;
             } else {
                 gPlayer.qWorldX += platform->velocityX;
                 gPlayer.qWorldY += Q(1.0) + platform->velocityY;

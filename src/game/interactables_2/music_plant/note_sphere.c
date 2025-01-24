@@ -159,8 +159,8 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     {
         u8 newAngle;
         u8 r4;
-        s16 vecNewPlayerDirX = -gPlayer.speedAirX;
-        s16 vecNewPlayerDirY = -gPlayer.speedAirY;
+        s16 vecNewPlayerDirX = -gPlayer.qSpeedAirX;
+        s16 vecNewPlayerDirY = -gPlayer.qSpeedAirY;
         r6 = sub_8085530((s16)vecNewPlayerDirX, (s16)vecNewPlayerDirY);
 
         vecNewPlayerDirX = ((vecNewPlayerDirX << 8) / r6) << 6;
@@ -169,8 +169,8 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 
         r4 = (u8)(newAngle + (sub_808558C(newAngle, angle, 8) << 1));
 
-        gPlayer.speedAirX = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
-        gPlayer.speedAirY = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
+        gPlayer.qSpeedAirX = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
+        gPlayer.qSpeedAirY = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
     gPlayer.transition = PLTRANS_UNCURL;

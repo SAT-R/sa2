@@ -227,14 +227,14 @@ static void Task_Platform_Square(void)
             p->qWorldY += Q_8_8(result);
 
             if (result & 0x20000) {
-                if (p->speedAirY <= 0)
-                    p->speedAirY = 0;
+                if (p->qSpeedAirY <= 0)
+                    p->qSpeedAirY = 0;
 
                 if (GRAVITY_IS_INVERTED) {
                     p->moveState |= MOVESTATE_STOOD_ON_OBJ;
                     p->moveState &= ~MOVESTATE_IN_AIR;
                     p->stoodObj = s;
-                    p->speedAirY = 0;
+                    p->qSpeedAirY = 0;
                 }
 
                 res = sub_801F100(I(p->qWorldY) + p->spriteOffsetY, I(p->qWorldX), p->layer, 8, sub_801EC3C);
@@ -269,8 +269,8 @@ static void Task_Platform_Square(void)
                             p->qWorldX += +Q(16.0) + value;
                         }
 
-                        p->speedAirX = 0;
-                        p->speedGroundX = 0;
+                        p->qSpeedAirX = 0;
+                        p->qSpeedGround = 0;
                     }
 
                     if (otherRes & 0x10000) {
@@ -281,20 +281,20 @@ static void Task_Platform_Square(void)
                                 Platform_Square_KillPlayer();
                             } else {
                                 p->qWorldY -= Q_8_8(result);
-                                p->speedGroundX = 0;
+                                p->qSpeedGround = 0;
                             }
                         } else {
                             p->qWorldY -= Q_8_8(result);
-                            p->speedGroundX = 0;
-                            p->speedAirX = 0;
-                            p->speedAirY = 0;
+                            p->qSpeedGround = 0;
+                            p->qSpeedAirX = 0;
+                            p->qSpeedAirY = 0;
                         }
                     } else {
                         p->qWorldY -= Q_8_8(result);
                     }
                 } else {
                     s32 newRes;
-                    p->speedAirY = 0;
+                    p->qSpeedAirY = 0;
                     newRes = sub_801F100(I(p->qWorldY) - p->spriteOffsetY, I(p->qWorldX), p->layer, -8, sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
@@ -308,8 +308,8 @@ static void Task_Platform_Square(void)
             s32 tempXX = (s16)(result & 0xFF00);
             s16 tempX = tempXX;
             p->qWorldX += tempX;
-            p->speedAirX = 0;
-            p->speedGroundX = 0;
+            p->qSpeedAirX = 0;
+            p->qSpeedGround = 0;
 
             if (result & 0x40000) {
                 s32 tempXVal = I(p->qWorldX) + 2;
@@ -345,8 +345,8 @@ static void TaskDestructor_Platform_Square(struct Task *t)
 
 static void Platform_Square_KillPlayer(void)
 {
-    gPlayer.speedGroundX = 0;
-    gPlayer.speedAirX = 0;
+    gPlayer.qSpeedGround = 0;
+    gPlayer.qSpeedAirX = 0;
     gPlayer.moveState |= MOVESTATE_DEAD;
 }
 

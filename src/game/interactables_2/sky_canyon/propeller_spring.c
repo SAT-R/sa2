@@ -119,7 +119,7 @@ static void sub_807C3DC(Sprite_IA85 *ia85)
 static bool32 sub_807C424(Sprite_IA85 *ia85)
 {
     s16 temp, temp2, temp3, temp4;
-    if (gPlayer.moveState & 0x80 || gPlayer.speedAirY <= 0) {
+    if (gPlayer.moveState & 0x80 || gPlayer.qSpeedAirY <= 0) {
         return 0;
     }
 
@@ -140,9 +140,9 @@ static void sub_807C4A0(Sprite_IA85 *ia85)
 {
     gPlayer.transition = PLTRANS_PROPELLER_SPRING;
     if (ia85->unk48 & 1)
-        gPlayer.speedAirY = -Q(5.5);
+        gPlayer.qSpeedAirY = -Q(5.5);
     else
-        gPlayer.speedAirY = -Q(5.5);
+        gPlayer.qSpeedAirY = -Q(5.5);
     ia85->unk49 = 0;
     ia85->unk48 = 0;
     m4aSongNumStart(SE_284);
