@@ -149,9 +149,9 @@ void CreateStageRingsManager(void)
     s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
-#ifndef NON_MATCHING
+// Required for match, but probably fake
+// leaving this in to ensure build consistency
 static inline s32 getCameraY(void) { return gCamera.y; }
-#endif
 
 void Task_RingsMgrMain(void)
 {
@@ -176,7 +176,7 @@ void Task_RingsMgrMain(void)
         Player *p;
         s16 leftIndex;
 
-        rings = *(u32 **)((uintptr_t)TASK_DATA(gCurTask) + offsetof(RingsManager, rings));
+        rings = *(u32 **)(TASK_DATA(gCurTask) + offsetof(RingsManager, rings));
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gBossRingsShallRespawn && gBossRingsRespawnCount > 0) {
@@ -185,7 +185,7 @@ void Task_RingsMgrMain(void)
                 gBossRingsRespawnCount--;
             }
         }
-        // _08007FBE
+
         sp08 = FALSE;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             u32 res = SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__10 | SUPER_FLAG__8 | SUPER_FLAG__4);
@@ -195,16 +195,14 @@ void Task_RingsMgrMain(void)
                 sp08 = FALSE;
             }
 
-            // _08007FE4
             SuperSonicGetPos(&gPlayer.qWorldX, &gPlayer.qWorldY);
             rect[0] = -10;
             rect[1] = -10;
             rect[2] = +10;
             rect[3] = +10;
         }
-        // _08007FFA
 
-        rings = *(u32 **)((uintptr_t)TASK_DATA(gCurTask) + offsetof(RingsManager, rings));
+        rings = *(u32 **)(TASK_DATA(gCurTask) + offsetof(RingsManager, rings));
         rm = TASK_DATA(gCurTask);
         s = &rm->s;
         UpdateSpriteAnimation(s);
@@ -229,7 +227,7 @@ void Task_RingsMgrMain(void)
 
                 u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
                 if (offset) {
-                    meRing = (void *)(((u8 *)rings - sizeof(u32) * 2) + (offset));
+                    meRing = DATA_START(rings) + offset;
 
                     while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                         if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
@@ -291,6 +289,7 @@ void Task_RingsMgrMain(void)
                                             meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                         }
                                     }
+
                                     meRing++;
                                 }
                             }
@@ -303,11 +302,7 @@ void Task_RingsMgrMain(void)
         // Draw rings
         regionY = TO_REGION(gCamera.y);
         if (gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-#ifndef NON_MATCHING
             for (; TO_WORLD_POS(0, regionY) < getCameraY() + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
-#else
-            for (; TO_WORLD_POS(0, regionY) < gCamera.x + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
-#endif
                 for (regionX = TO_REGION(gCamera.x); TO_WORLD_POS(0, regionX) < gCamera.x + DISPLAY_WIDTH; regionX++) {
                     u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
 
@@ -316,8 +311,7 @@ void Task_RingsMgrMain(void)
                     }
 
                     if (offset != 0) {
-                        meRing = (void *)((u8 *)rings + (offset - sizeof(u32) * 2));
-
+                        meRing = DATA_START(rings) + offset;
                         while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                             if (meRing->x == (u8)MAP_ENTITY_STATE_INITIALIZED) {
                                 meRing++;
@@ -327,9 +321,7 @@ void Task_RingsMgrMain(void)
                             rx = TO_WORLD_POS(meRing->x, regionX);
 #ifndef NON_MATCHING
                             // Required for stack fixes
-                            {
-                                s32 *new_var = &ry;
-                            }
+                            ({ s32 *new_var = &ry; });
 #endif
                             ry = TO_WORLD_POS(meRing->y, regionY);
                             if (rx - gCamera.x < -TILE_WIDTH || (rx - gCamera.x) + TILE_WIDTH > DISPLAY_WIDTH + 2 * TILE_WIDTH
@@ -348,7 +340,6 @@ void Task_RingsMgrMain(void)
 
                                 if ((drawCount == 0) || s->oamBaseIndex == 0xFF) {
                                     s->oamBaseIndex = 0xFF;
-
                                     s->x = rx - gCamera.x;
                                     s->y = ry - gCamera.y;
                                     DisplaySprite(s);
@@ -368,6 +359,7 @@ void Task_RingsMgrMain(void)
                                     oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
                                     oamAllocated->all.attr1 += ((rx - gCamera.x) - dimensions->offsetX) & 0x1FF;
                                 }
+
                                 drawCount++;
                             }
                         };
@@ -375,17 +367,13 @@ void Task_RingsMgrMain(void)
                 }
             }
         } else {
-#ifndef NON_MATCHING
             for (; TO_WORLD_POS(0, regionY) < getCameraY() + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
-#else
-            for (; TO_WORLD_POS(0, regionY) < gCamera.x + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
-#endif
                 for (regionX = TO_REGION(gCamera.x); TO_WORLD_POS(0, regionX) < gCamera.x + DISPLAY_WIDTH && regionX < h_regionCount;
                      regionX++) {
                     u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
 
                     if (offset != 0) {
-                        meRing = (void *)((u8 *)rings + (offset - sizeof(u32) * 2));
+                        meRing = DATA_START(rings) + offset;
                         while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                             if (meRing->x == (u8)MAP_ENTITY_STATE_INITIALIZED) {
                                 meRing++;
@@ -400,6 +388,7 @@ void Task_RingsMgrMain(void)
                                 meRing++;
                             } else {
                                 meRing++;
+
                                 if ((drawCount == 0) || s->oamBaseIndex == 0xFF) {
                                     s->oamBaseIndex = 0xFF;
                                     s->x = rx - gCamera.x;
@@ -420,6 +409,7 @@ void Task_RingsMgrMain(void)
                                     oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
                                     oamAllocated->all.attr1 += ((rx - gCamera.x) - dimensions->offsetX) & 0x1FF;
                                 }
+
                                 drawCount++;
                             }
                         }
