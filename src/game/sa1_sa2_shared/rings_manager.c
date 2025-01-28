@@ -43,6 +43,7 @@ void TaskDestructor_RingsMgr(struct Task *);
               && RECT_BOTTOM(I((p)->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 #define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
+#define DATA_START(data)                 (void *)((u8 *)(data) - (sizeof(u32) * 2))
 
 #define TO_REGION(pos) ((pos) >> 8)
 
@@ -228,7 +229,7 @@ void Task_RingsMgrMain(void)
 
                 u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
                 if (offset) {
-                    meRing = (void *)((u8 *)rings + (offset - sizeof(u32) * 2));
+                    meRing = (void *)(((u8 *)rings - sizeof(u32) * 2) + (offset));
 
                     while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                         if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
@@ -272,7 +273,7 @@ void Task_RingsMgrMain(void)
 
                             u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
                             if (offset != 0) {
-                                meRing = (void *)((u8 *)rings + (offset - sizeof(u32) * 2));
+                                meRing = DATA_START(rings) + offset;
                                 while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                                     if (meRing->x == (u8)MAP_ENTITY_STATE_INITIALIZED) {
                                         meRing++;
