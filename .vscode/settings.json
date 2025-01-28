@@ -1,5 +1,10 @@
 {
   "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }",
+  "C_Cpp.files.exclude": {
+      "build/**": true,
+      "**/ext/**": true,
+      "ctx.c": true
+  },
   "files.associations": {
     "multi_sio.h": "c",
     "global.h": "c",
@@ -356,11 +361,14 @@
     "boss_9.h": "c",
     "xlocale": "c",
     "xiosbase": "c",
-    "magnetic_ring.h": "c"
+    "magnetic_ring.h": "c",
+    "recordings.h": "c",
+    "bg_effects.h": "c",
+    "palettes.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "xaver.clang-format",
   "clang-format.executable": "clang-format-13",
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
 }

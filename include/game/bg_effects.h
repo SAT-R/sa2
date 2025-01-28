@@ -4,15 +4,14 @@
 #include "global.h"
 #include "sprite.h"
 
-struct UNK_3005B80_UNK4 {
+struct BgEffectState {
     u8 unk0;
-    u8 unk1;
-    u8 unk2;
-    u8 filler3;
+    u8 bgPalId;
+    u8 cursor;
 
-    const u8 *unk4;
+    const u8 *pattern;
 
-    const void *unk8;
+    const u16 *palette;
 
     u8 unkC;
     u8 unkD;
@@ -25,20 +24,20 @@ struct UNK_3005B80_UNK4 {
 
     u8 unk13;
 
-    u16 unk14[16];
+    u16 palBuffer[32 / sizeof(u16)];
 
-    s16 unk34;
+    s16 vcountStart;
     u8 unk36;
 };
 
-struct UNK_3005B80 {
-    struct UNK_3005B80_UNK4 *unk0;
-    Background *unk4;
+struct BackgroundEffects {
+    struct BgEffectState *state;
+    Background *background;
 };
 
 // Used outside of this module I think, so declared here
-extern struct UNK_3005B80 gUnknown_03005B80;
+extern struct BackgroundEffects gBgEffects;
 
-void sub_808DB2C(int_vcount vcount);
+void BgEffectPaletteSwap(int_vcount vcount);
 
 #endif // GUARD_BACKGROUNDS_H

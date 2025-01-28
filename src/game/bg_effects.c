@@ -1,45 +1,27 @@
 #include "global.h"
-#include "game/backgrounds.h"
-
-struct UNK_3005B80_UNK4_UNK8 {
-    s8 unk0;
-    u8 unk1;
-    u16 unk2;
-
-    u16 unk4;
-    s8 unk6;
-
-    s8 unk7;
-    s8 unk8;
-    s8 unk9;
-    s8 unkA;
-
-    u8 unkB;
-
-    u8 unkC[BG_PLTT_SIZE];
-};
+#include "game/bg_effects.h"
 
 struct UNK_808DB78 {
     u8 unk0;
     u8 unk1;
     u16 unk2;
     u16 unk4;
-    u8 unk6;
-    u8 unk7;
-    u8 unk8;
+    s8 unk6;
+    s8 unk7;
+    s8 unk8;
 
-    u16 filler9;
+    u16 unkA;
 
-    u8 unkC[BG_PLTT_SIZE];
+    u16 unkC[BG_PLTT_SIZE / sizeof(u16)];
 };
 
-struct UNK_3005B80 ALIGNED(16) gUnknown_03005B80 = {};
+struct BackgroundEffects gBgEffects = {};
 
-UNUSED void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8 *unk0)
+UNUSED void sub_808D8A0(struct UNK_808DB78 *unk0)
 {
     u16 i;
     u16 array[BG_PLTT_SIZE / sizeof(u16)];
-    u16 *colors = (u16 *)unk0->unkC;
+    u16 *colors = unk0->unkC;
     u16 temp5;
     s16 temp2;
     u16 color;
@@ -88,44 +70,44 @@ UNUSED void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8 *unk0)
     unk0->unk1 = unk0->unk4 >> 8;
 }
 
-UNUSED void sub_808D988(u8 vcount)
+UNUSED void sub_808D988(int_vcount vcount)
 {
     u8 i;
-    u16 array[16];
+    u16 palette[16];
 
-    struct UNK_3005B80_UNK4 *unk0 = gUnknown_03005B80.unk0;
+    struct BgEffectState *unk0 = gBgEffects.state;
 
-    if (vcount == unk0->unk13 + unk0->unk34) {
+    if (vcount == unk0->unk13 + unk0->vcountStart) {
         if (unk0->unk0 == 0) {
-            CpuFastSet((void *)BG_PLTT, unk0->unk14, 1);
+            CpuFastSet((void *)BG_PLTT, unk0->palBuffer, 1);
             unk0->unk0 = 1;
         }
-        if (unk0->unk2 == 0) {
-            CpuFastSet(unk0->unk14, (void *)BG_PLTT + (unk0->unk1 * 16), 1);
+        if (unk0->cursor == 0) {
+            CpuFastSet(unk0->palBuffer, (u16 *)BG_PLTT + (unk0->bgPalId * 8), 1);
         } else {
             for (i = 0; i < 16; i++) {
                 u16 temp5 = 0;
-                s16 temp2 = (unk0->unk14[i] & 0x1F) + unk0->unkF;
+                s16 temp2 = (unk0->palBuffer[i] & 0x1F) + unk0->unkF;
                 if (temp2 > 0x1F) {
                     temp2 = 0x1F;
                 }
                 temp5 |= temp2;
 
-                temp2 = ((unk0->unk14[i] & 0x3E0) >> 5) + unk0->unk10;
+                temp2 = ((unk0->palBuffer[i] & 0x3E0) >> 5) + unk0->unk10;
                 if (temp2 > 0x1F) {
                     temp2 = 0x1F;
                 }
                 temp5 |= temp2 << 5;
 
-                temp2 = ((unk0->unk14[i] & 0x7C00) >> 10) + unk0->unk11;
+                temp2 = ((unk0->palBuffer[i] & 0x7C00) >> 10) + unk0->unk11;
                 if (temp2 > 0x1F) {
                     temp2 = 0x1F;
                 }
                 temp5 |= temp2 << 10;
 
-                array[i] = temp5;
+                palette[i] = temp5;
             }
-            CpuFastSet(array, (void *)BG_PLTT + unk0->unk1 * 16, 1);
+            CpuFastCopy(palette, (u16 *)BG_PLTT + unk0->bgPalId * 8, sizeof(u16) * 2);
         }
 
         unk0->unkF += unk0->unkC;
@@ -133,15 +115,15 @@ UNUSED void sub_808D988(u8 vcount)
         unk0->unk11 += unk0->unkE;
         unk0->unk13 += unk0->unk12;
 
-        unk0->unk2++;
+        unk0->cursor++;
 
-        if (unk0->unk4[unk0->unk2] == 0xFF) {
-            unk0->unk2 = 0;
+        if (unk0->pattern[unk0->cursor] == 0xFF) {
+            unk0->cursor = 0;
         }
     }
 
     if (vcount == 0x9F) {
-        unk0->unk2 = 0;
+        unk0->cursor = 0;
         unk0->unkF = 0;
         unk0->unk10 = 0;
         unk0->unk11 = 0;
@@ -149,25 +131,25 @@ UNUSED void sub_808D988(u8 vcount)
     }
 }
 
-UNUSED void sub_808DAC8(u8 a, const u8 *b, const void *c, struct UNK_3005B80_UNK4 *d)
+UNUSED void sub_808DAC8(u8 a, const u8 *b, const void *c, struct BgEffectState *d)
 {
     d->unk0 = 0;
-    d->unk2 = 0;
+    d->cursor = 0;
     d->unkC = 0;
     d->unkD = 0;
     d->unkE = 0;
 
-    d->unk34 = 0;
-    d->unk1 = a;
-    d->unk4 = b;
-    d->unk8 = c;
-    gUnknown_03005B80.unk0 = d;
+    d->vcountStart = 0;
+    d->bgPalId = a;
+    d->pattern = b;
+    d->palette = c;
+    gBgEffects.state = d;
 }
 
-UNUSED void sub_808DAEC(u8 a, u8 b, u8 c, u8 d, u32 e, struct UNK_3005B80_UNK4 *f)
+UNUSED void sub_808DAEC(u8 a, u8 b, u8 c, u8 d, u32 e, struct BgEffectState *f)
 {
     f->unk0 = 1;
-    f->unk2 = 0;
+    f->cursor = 0;
     f->unkC = b;
     f->unkD = c;
     f->unkE = d;
@@ -177,30 +159,31 @@ UNUSED void sub_808DAEC(u8 a, u8 b, u8 c, u8 d, u32 e, struct UNK_3005B80_UNK4 *
     f->unk11 = 0;
     f->unk13 = 0;
 
-    f->unk34 = 0;
-    f->unk1 = a;
-    f->unk4 = NULL;
-    f->unk8 = NULL;
+    f->vcountStart = 0;
+    f->bgPalId = a;
+    f->pattern = NULL;
+    f->palette = NULL;
 
-    CpuFastSet((void *)BG_PLTT, &f->unk14, 1);
-    gUnknown_03005B80.unk0 = f;
+    CpuFastCopy((u16 *)BG_PLTT, f->palBuffer, sizeof(u16) * 2);
+    gBgEffects.state = f;
 }
 
-void sub_808DB2C(int_vcount vcount)
+void BgEffectPaletteSwap(int_vcount vcount)
 {
-    struct UNK_3005B80_UNK4 *unk0 = gUnknown_03005B80.unk0;
+    struct BgEffectState *state = gBgEffects.state;
 
     if (vcount >= (DISPLAY_HEIGHT - 1)) {
-        unk0->unk2 = 0;
+        state->cursor = 0;
         return;
     }
 
-    if (vcount < (unk0->unk4[unk0->unk2]) + unk0->unk34) {
+    if (vcount < state->pattern[state->cursor] + state->vcountStart) {
         return;
     }
 
-    CpuFastSet(unk0->unk8 + (unk0->unk2 * 32), (void *)BG_PLTT + (unk0->unk1 * 32), 1);
-    unk0->unk2++;
+    CpuFastCopy(&state->palette[state->cursor * 16], (u16 *)BG_PLTT + (state->bgPalId * 16), sizeof(u16) * 2);
+
+    state->cursor++;
 }
 
 UNUSED void sub_808DB78(u32 a, u16 b, u8 c, u8 d, u8 e, struct UNK_808DB78 *f)

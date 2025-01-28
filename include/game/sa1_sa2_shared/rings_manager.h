@@ -13,11 +13,11 @@
 #define RESERVED_RING_EFFECT_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2100)
 
 #define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect))             \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect) && RECT_RIGHT(I(p->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))        \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->qWorldY), rect) && ringIntY >= RECT_TOP(I(p->qWorldY), rect))                    \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->qWorldY), rect)                                                               \
-              && RECT_BOTTOM(I(p->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I((p)->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect))         \
+      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect) && RECT_RIGHT(I((p)->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))    \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I((p)->qWorldY), rect) && ringIntY >= RECT_TOP(I((p)->qWorldY), rect))                \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I((p)->qWorldY), rect)                                                             \
+              && RECT_BOTTOM(I((p)->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 #define MP_PLAYER_TOUCHING_RING(mp, rect, ringIntX, ringIntY)                                                                              \
     ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(mp->pos.x, rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(mp->pos.x, rect))                     \

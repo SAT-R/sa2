@@ -6,7 +6,7 @@
 #include "lib/m4a/m4a.h"
 #include "flags.h"
 #include "trig.h"
-#include "game/backgrounds.h"
+#include "game/bg_effects.h"
 #include "game/stage/screen_fade.h"
 #include "data/palettes.h"
 
@@ -20,7 +20,7 @@
 struct SoundTestScreen {
     struct OptionsScreen *optionsScreen;
     ScreenFade fade;
-    struct UNK_3005B80_UNK4 unk10;
+    struct BgEffectState unk10;
 
     // Only 1 used, but fits 2
     Background background[2];
@@ -230,9 +230,7 @@ static const u8 sDigitTransitionAnim[8] = {
     0, 1, 1, 1, 2, 2, 3, 4,
 };
 
-static const u8 gUnknown_080E0C38[12] = {
-    0, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 0,
-};
+static const u8 gUnknown_080E0C38[] = { 0, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160 };
 
 static const u32 sTitleText[NUM_LANGUAGES * 3] = {
     Text(LANG_JAPANESE, 42, 967, 0, 1), Text(LANG_ENGLISH, 32, 1030, 0, 1), Text(LANG_GERMAN, 32, 1030, 0, 1),
@@ -257,11 +255,11 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
         = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     ScreenFade *fade;
-    struct UNK_3005B80_UNK4 *unk10;
+    struct BgEffectState *bgState;
     u32 i;
 
     fade = &soundTestScreen->fade;
-    unk10 = &soundTestScreen->unk10;
+    bgState = &soundTestScreen->unk10;
     m4aMPlayAllStop();
 
     soundTestScreen->optionsScreen = optionsScreen;
@@ -295,19 +293,19 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
-    unk10->unk0 = 0;
-    unk10->unk2 = 0;
-    unk10->unkC = 1;
-    unk10->unkD = 1;
-    unk10->unkE = 1;
-    unk10->unk1 = 0;
+    bgState->unk0 = 0;
+    bgState->cursor = 0;
+    bgState->unkC = 1;
+    bgState->unkD = 1;
+    bgState->unkE = 1;
+    bgState->bgPalId = 0;
 
-    unk10->unk4 = gUnknown_080E0C38;
-    unk10->unk8 = gUnknown_08C8796C;
+    bgState->pattern = gUnknown_080E0C38;
+    bgState->palette = gUnknown_08C8796C;
 
-    unk10->unk34 = 0;
+    bgState->vcountStart = 0;
 
-    gUnknown_03005B80.unk0 = unk10;
+    gBgEffects.state = bgState;
 }
 
 static void SoundTestScreenCreateUI(struct Task *t)
@@ -558,7 +556,7 @@ static void SoundTestScreenRenderUI(void)
 #ifdef BUG_FIX
     soundTestScreen->hblankIrqIndex = gNumHBlankCallbacks;
 #endif
-    gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
+    gHBlankCallbacks[gNumHBlankCallbacks++] = BgEffectPaletteSwap;
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     for (i = 0; i < 2; i++, numberDisplayDigit++) {
