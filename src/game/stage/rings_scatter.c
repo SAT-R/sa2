@@ -12,20 +12,13 @@
 
 #include "game/stage/rings_scatter.h"
 #include "game/sa1_sa2_shared/collect_ring_effect.h"
-#include "game/sa1_sa2_shared/rings_manager.h" // for RESERVED_RING_TILES_VRAM
+#include "game/sa1_sa2_shared/rings_manager.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
 
 #define MAX_SCATTERING_RINGS_COUNT_SP 32
 #define MAX_SCATTERING_RINGS_COUNT_MP 16
-
-#define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect))             \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->qWorldX), rect) && RECT_RIGHT(I(p->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))        \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->qWorldY), rect) && ringIntY >= RECT_TOP(I(p->qWorldY), rect))                    \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->qWorldY), rect)                                                               \
-              && RECT_BOTTOM(I(p->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 typedef struct {
     /* 0x00 */ s32 x;

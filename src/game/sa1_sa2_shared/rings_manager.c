@@ -26,22 +26,6 @@ typedef struct {
 void Task_RingsMgrMain(void);
 void TaskDestructor_RingsMgr(struct Task *);
 
-// TODO: combine these macros with `ring.c`
-
-#define MP_PLAYER_TOUCHING_RING(mp, rect, ringIntX, ringIntY)                                                                              \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(mp->pos.x, rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(mp->pos.x, rect))                     \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(mp->pos.x, rect) && RECT_RIGHT(mp->pos.x, rect) >= (ringIntX - TILE_WIDTH)))                \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(mp->pos.y, rect) && ringIntY >= RECT_TOP(mp->pos.y, rect))                            \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(mp->pos.y, rect)                                                                   \
-              && RECT_BOTTOM(mp->pos.y, rect) >= (ringIntY - (TILE_WIDTH * 2))))))
-
-#define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I((p)->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect))         \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect) && RECT_RIGHT(I((p)->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))    \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I((p)->qWorldY), rect) && ringIntY >= RECT_TOP(I((p)->qWorldY), rect))                \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I((p)->qWorldY), rect)                                                             \
-              && RECT_BOTTOM(I((p)->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
-
 #define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
 #define DATA_START(data)                 (void *)((u8 *)(data) - (sizeof(u32) * 2))
 
@@ -223,7 +207,7 @@ void Task_RingsMgrMain(void)
              regionY <= REGION_UPPER(I(p->qWorldY), rect[3], TILE_WIDTH) && regionY < v_regionCount; regionY++) {
 
             for (regionX = REGION_LOWER(I(p->qWorldX), rect[leftIndex], -TILE_WIDTH);
-                 regionX <= REGION_UPPER(I(p->qWorldX), rect[2], 2 * TILE_WIDTH) && regionX < h_regionCount; regionX++) {
+                 regionX <= REGION_UPPER(I(p->qWorldX), rect[2], TILE_WIDTH * 2) && regionX < h_regionCount; regionX++) {
 
                 u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
                 if (offset) {
@@ -267,7 +251,7 @@ void Task_RingsMgrMain(void)
                          regionY <= REGION_UPPER(mpp->pos.y, mpp->s.hitboxes[0].bottom, TILE_WIDTH) && regionY < v_regionCount; regionY++) {
 
                         for (regionX = REGION_LOWER(mpp->pos.x, mpp->s.hitboxes[0].left, -TILE_WIDTH);
-                             regionX <= REGION_UPPER(mpp->pos.x, mpp->s.hitboxes[0].right, 2 * TILE_WIDTH) && regionX < h_regionCount;
+                             regionX <= REGION_UPPER(mpp->pos.x, mpp->s.hitboxes[0].right, TILE_WIDTH * 2) && regionX < h_regionCount;
                              regionX++) {
 
                             u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
