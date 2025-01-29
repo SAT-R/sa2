@@ -1,7 +1,7 @@
 #ifndef GUARD_RECT_H
 #define GUARD_RECT_H
 
-typedef struct Rect8 {
+typedef struct {
     /* 0x00 */ s8 left;
     /* 0x01 */ s8 top;
     /* 0x02 */ s8 right;

@@ -254,8 +254,8 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
         hb = &p->spriteInfoBody->s.hitboxes[0];
         if (ring->unkC <= sp0C && (p->charState != SA2_CHAR_ANIM_20 || p->timerInvulnerability == 0) && IS_ALIVE(p)) {
-            struct Rect8 *rect = (struct Rect8 *)&hb->left;
-            if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
+            Rect8 *rect = (Rect8 *)&hb->left;
+            if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
                 s32 oldRingCount;
                 // _0801FF70
 
@@ -371,8 +371,8 @@ void RingsScatterSingleplayer_NormalGravity(void)
 
         hb = &p->spriteInfoBody->s.hitboxes[0];
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && IS_ALIVE(p)) {
-            struct Rect8 *rect = (struct Rect8 *)&hb->left;
-            if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
+            Rect8 *rect = (Rect8 *)&hb->left;
+            if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
                 CreateCollectRingEffect(ip, ringIntY);
 
                 INCREMENT_RINGS(1);

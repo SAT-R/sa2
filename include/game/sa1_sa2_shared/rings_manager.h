@@ -12,19 +12,17 @@
 #define RESERVED_RING_TILES_VRAM        (void *)(OBJ_VRAM0 + 0x1F00)
 #define RESERVED_RING_EFFECT_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2100)
 
-#define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I((p)->qWorldX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect))         \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I((p)->qWorldX), rect) && RECT_RIGHT(I((p)->qWorldX), rect) >= (ringIntX - TILE_WIDTH)))    \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I((p)->qWorldY), rect) && ringIntY >= RECT_TOP(I((p)->qWorldY), rect))                \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I((p)->qWorldY), rect)                                                             \
-              && RECT_BOTTOM(I((p)->qWorldY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+#define RECT_TOUCHING_RING(posX, posY, ringIntX, ringIntY, rect)                                                                           \
+    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT((posX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT((posX), rect))                           \
+      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT((posX), rect) && RECT_RIGHT((posX), rect) >= (ringIntX - TILE_WIDTH)))                      \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP((posY), rect) && ringIntY >= RECT_TOP((posY), rect))                                  \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP((posY), rect) && RECT_BOTTOM((posY), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
 
-#define MP_PLAYER_TOUCHING_RING(mp, rect, ringIntX, ringIntY)                                                                              \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(mp->pos.x, rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(mp->pos.x, rect))                     \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(mp->pos.x, rect) && RECT_RIGHT(mp->pos.x, rect) >= (ringIntX - TILE_WIDTH)))                \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(mp->pos.y, rect) && ringIntY >= RECT_TOP(mp->pos.y, rect))                            \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(mp->pos.y, rect)                                                                   \
-              && RECT_BOTTOM(mp->pos.y, rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+#define HB_TOUCHING_RING(posX, posY, ringIntX, ringIntY, hb)                                                                               \
+    ((((ringIntX - TILE_WIDTH) <= HB_LEFT((posX), hb) && (ringIntX + TILE_WIDTH) >= HB_LEFT((posX), hb))                                   \
+      || ((ringIntX - TILE_WIDTH) >= HB_LEFT((posX), hb) && HB_RIGHT((posX), hb) >= (ringIntX - TILE_WIDTH)))                              \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= HB_TOP((posY), hb) && ringIntY >= HB_TOP((posY), hb))                                          \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= HB_TOP((posY), hb) && HB_BOTTOM((posY), hb) >= (ringIntY - (TILE_WIDTH * 2))))))
 
 extern const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS];
 

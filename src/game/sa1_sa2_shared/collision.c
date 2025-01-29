@@ -18,7 +18,7 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, struct Rect8 *rectPlayer)
+u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
 {
     u32 result = 0;
 
@@ -51,7 +51,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         ip = TRUE;
     }
 
-    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->qWorldX, p->qWorldY, (struct Rect8 *)rectPlayer) && (p->qSpeedAirY >= 0)) {
+    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->qWorldX, p->qWorldY, (Rect8 *)rectPlayer) && (p->qSpeedAirY >= 0)) {
 
 #ifndef NON_MATCHING
         register s32 y asm("r1");
@@ -428,7 +428,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
         p->moveState |= MOVESTATE_IN_AIR;
     }
 
-    mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
+    mask = sub_800CE94(s, sx, sy, (Rect8 *)rectPlayer, p);
 
     if (mask) {
         if (mask & COLL_FLAG_10000) {
@@ -477,7 +477,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
         p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     }
 
-    mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
+    mask = sub_800CE94(s, sx, sy, (Rect8 *)rectPlayer, p);
 
     if (mask & COLL_FLAG_10000) {
         p->moveState |= MOVESTATE_STOOD_ON_OBJ;
@@ -495,7 +495,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
 
 // Looks like each byte in the result is one value
 // TODO: Remove gotos
-u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
+u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *inRect, Player *p)
 {
     s32 px = I(p->qWorldX);
     s32 py = I(p->qWorldY);
@@ -503,7 +503,7 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
     s32 r1;
     s32 r3, r6;
 
-    if (RECT_COLLISION(sx, sy, (struct Rect8 *)&s->hitboxes[0].left, px, py, inRect)) {
+    if (RECT_COLLISION(sx, sy, (Rect8 *)&s->hitboxes[0].left, px, py, inRect)) {
         s32 sMidX = (sx + ((s->hitboxes[0].left + s->hitboxes[0].right) >> 1));
         s32 sMidY = (sy + ((s->hitboxes[0].top + s->hitboxes[0].bottom) >> 1));
         if ((sMidX <= px)) {
@@ -769,8 +769,8 @@ bool32 sub_800DE44(Player *p)
 //       Code identical to beginning of sub_800C060
 u32 sub_800DF38(Sprite *s, s32 x, s32 y, Player *p)
 {
-    // TODO: Could this match with a 'struct Rect8' instead of s8[4]?
+    // TODO: Could this match with a 'Rect8' instead of s8[4]?
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
-    return CheckRectCollision_SpritePlayer(s, x, y, p, (struct Rect8 *)&rectPlayer);
+    return CheckRectCollision_SpritePlayer(s, x, y, p, (Rect8 *)&rectPlayer);
 }

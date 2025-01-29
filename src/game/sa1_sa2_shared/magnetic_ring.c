@@ -2,7 +2,6 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "rect.h"
 
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/collect_ring_effect.h"
@@ -13,16 +12,9 @@
 #include "constants/animations.h"
 #include "constants/zones.h"
 
-#define PLAYER_TOUCHING_RING_HB(p, hb, ringIntX, ringIntY)                                                                                 \
-    ((((ringIntX - TILE_WIDTH) <= HB_LEFT(I(p.qWorldX), hb) && (ringIntX + TILE_WIDTH) >= HB_LEFT(I(p.qWorldX), hb))                       \
-      || ((ringIntX - TILE_WIDTH) >= HB_LEFT(I(p.qWorldX), hb) && HB_RIGHT(I(p.qWorldX), hb) >= (ringIntX - TILE_WIDTH)))                  \
-     && ((                                                                                                                                 \
-         ((ringIntY - (TILE_WIDTH * 2)) <= HB_TOP(I(p.qWorldY), hb) && ringIntY >= HB_TOP(I(p.qWorldY), hb))                               \
-         || ((ringIntY - (TILE_WIDTH * 2)) >= HB_TOP(I(p.qWorldY), hb) && HB_BOTTOM(I(p.qWorldY), hb) >= (ringIntY - (TILE_WIDTH * 2))))))
-
 typedef struct {
     Sprite s;
-    s16 radius;
+    s16 speed;
 } StageRing;
 
 void Task_MagneticRing(void);
@@ -33,7 +25,7 @@ void CreateMagneticRing(s16 x, s16 y)
     StageRing *ring = TASK_DATA(t);
     Sprite *s;
 
-    ring->radius = 0;
+    ring->speed = 0;
 
     s = &ring->s;
     s->x = x;
@@ -62,15 +54,15 @@ void Task_MagneticRing(void)
     s16 sinVal = sub_8004418(ringToPlayerY, ringToPlayerX);
     s16 ringX, ringY;
 
-    ring->radius += 0x40;
+    ring->speed += Q(0.25);
 
-    ring->s.x += (ring->radius * COS(sinVal)) >> 22;
-    ring->s.y += (ring->radius * SIN(sinVal)) >> 22;
+    ring->s.x += (ring->speed * COS(sinVal)) >> 22;
+    ring->s.y += (ring->speed * SIN(sinVal)) >> 22;
 
     ringY = ring->s.y;
     ringX = ring->s.x;
 
-    if (PLAYER_TOUCHING_RING_HB(gPlayer, gUnknown_03005AF0.s.hitboxes[0], ringX, ringY)) {
+    if (HB_TOUCHING_RING(I(gPlayer.qWorldX), I(gPlayer.qWorldY), ringX, ringY, gUnknown_03005AF0.s.hitboxes[0])) {
         if (PLAYER_IS_ALIVE) {
             INCREMENT_RINGS(1);
 

@@ -221,7 +221,7 @@ void Task_RingsMgrMain(void)
 
                             if (sp08 != FALSE
                                 || (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) && !(p->moveState & MOVESTATE_DEAD))) {
-                                if (PLAYER_TOUCHING_RING(p, (struct Rect8 *)rect, rx, ry)) {
+                                if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), rx, ry, (Rect8 *)rect)) {
                                     INCREMENT_RINGS(1);
 
                                     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && gRingCount > 255) {
@@ -265,7 +265,7 @@ void Task_RingsMgrMain(void)
 
                                     rx = TO_WORLD_POS(meRing->x, regionX);
                                     ry = TO_WORLD_POS(meRing->y, regionY);
-                                    if (MP_PLAYER_TOUCHING_RING(mpp, &mpp->s.hitboxes[0], rx, ry)) {
+                                    if (RECT_TOUCHING_RING(mpp->pos.x, mpp->pos.y, rx, ry, &mpp->s.hitboxes[0])) {
                                         u8 pAnim = mpp->s.graphics.anim;
                                         u8 anims = gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
                                         u8 anim = pAnim - anims;
