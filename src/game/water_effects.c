@@ -208,7 +208,7 @@ static void Task_StageWaterTask(void)
         water->unk2 = 0xFF;
     }
 
-    gUnknown_03001870[gUnknown_03004D50++] = sub_8011A4C;
+    gVBlankCallbacks[gNumVBlankCallbacks++] = sub_8011A4C;
     gFlags |= FLAGS_10;
 
     unk1 = water->unk1 - 1;

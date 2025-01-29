@@ -13,8 +13,6 @@
 extern void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum);
 #endif
 
-extern const AnimationCommandFunc animCmdTable[];
-
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s);
@@ -30,44 +28,6 @@ static AnimCmdResult animCmd_10(void *cursor, Sprite *s);
 static AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s);
 static AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s);
 
-static const u8 unkFractions[8] = {
-    /* 0x00 */ I(Q(0.5 * 2)),
-    /* 0x01 */ I(Q(0.0 * 2)),
-    /* 0x02 */ I(Q(1.0 * 2)),
-    /* 0x03 */ I(Q(1.5 * 2)),
-    /* 0x04 */ I(Q(3.0 * 2)),
-    /* 0x05 */ I(Q(3.5 * 2)),
-    /* 0x06 */ I(Q(2.5 * 2)),
-    /* 0x07 */ I(Q(2.0 * 2)),
-};
-
-// TODO: Make static
-const AnimationCommandFunc animCmdTable[] = {
-    // 0x080984AC
-    animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,        animCmd_End, animCmd_PlaySoundEffect,   animCmd_AddHitbox,
-    animCmd_TranslateSprite, animCmd_8,          animCmd_SetIdAndVariant, animCmd_10,  animCmd_SetSpritePriority, animCmd_SetOamOrder,
-};
-
-const u8 gOamShapesSizes[12][2] = {
-    // Square
-    { 8, 8 },
-    { 16, 16 },
-    { 32, 32 },
-    { 64, 64 },
-
-    // Horizontal
-    { 16, 8 },
-    { 32, 8 },
-    { 32, 16 },
-    { 64, 32 },
-
-    // Vertical
-    { 8, 16 },
-    { 8, 32 },
-    { 16, 32 },
-    { 32, 64 },
-};
-
 // This function gets called as long as an enemy is on-screen.
 // Potentially something to do with collision/distance?
 //
@@ -77,8 +37,16 @@ s16 sub_8004418(s16 x, s16 y)
     s16 fraction;
     s32 result;
     u8 index = 0;
-    u8 array[8];
-    memcpy(array, unkFractions, sizeof(array));
+    u8 array[] = {
+        /* 0x00 */ I(Q(0.5 * 2)),
+        /* 0x01 */ I(Q(0.0 * 2)),
+        /* 0x02 */ I(Q(1.0 * 2)),
+        /* 0x03 */ I(Q(1.5 * 2)),
+        /* 0x04 */ I(Q(3.0 * 2)),
+        /* 0x05 */ I(Q(3.5 * 2)),
+        /* 0x06 */ I(Q(2.5 * 2)),
+        /* 0x07 */ I(Q(2.0 * 2)),
+    };
 
     if ((x | y) == 0) {
         result = -1;
@@ -167,6 +135,11 @@ u32 Base10DigitsToHexNibbles(u16 num)
 
 AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 {
+    static const AnimationCommandFunc animCmdTable[] = {
+        // 0x080984AC
+        animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,        animCmd_End, animCmd_PlaySoundEffect,   animCmd_AddHitbox,
+        animCmd_TranslateSprite, animCmd_8,          animCmd_SetIdAndVariant, animCmd_10,  animCmd_SetSpritePriority, animCmd_SetOamOrder,
+    };
     SPRITE_INIT_ANIM_IF_CHANGED(s);
 
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
@@ -528,6 +501,27 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
     }
 }
 END_NONMATCH
+
+// used in background.c
+const u8 gOamShapesSizes[12][2] = {
+    // Square
+    { 8, 8 },
+    { 16, 16 },
+    { 32, 32 },
+    { 64, 64 },
+
+    // Horizontal
+    { 16, 8 },
+    { 32, 8 },
+    { 32, 16 },
+    { 64, 32 },
+
+    // Vertical
+    { 8, 16 },
+    { 8, 32 },
+    { 16, 32 },
+    { 32, 64 },
+};
 
 void DisplaySprite(Sprite *sprite)
 {

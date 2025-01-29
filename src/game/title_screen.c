@@ -1,4 +1,3 @@
-#include "game/title_screen.h"
 #include "core.h"
 #include "flags.h"
 #include "global.h"
@@ -9,18 +8,21 @@
 #include "sprite.h"
 #include "lib/m4a/m4a.h"
 #include "input_recorder.h"
-#include "game/backgrounds.h"
+
+#include "game/title_screen.h"
+#include "game/bg_palette_effects.h"
 #include "game/character_select.h"
 #include "game/math.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/options_screen.h"
-#include "data/recordings.h"
 #include "game/sa1_sa2_shared/demo_manager.h"
 #include "game/save.h"
 #include "game/stage/stage.h"
 #include "game/stage/screen_fade.h"
 #include "game/time_attack/lobby.h"
 #include "game/time_attack/mode_select.h"
+
+#include "data/recordings.h"
 
 // Temp hack to allow playing the special stages from the chao garden
 #if PORTABLE
@@ -57,12 +59,12 @@ typedef struct {
     // fade s
     ScreenFade unk270;
 
-    struct UNK_3005B80_UNK4 unk27C;
+    BgPaletteEffectState bgEffect;
 
     // Something to do with the wave effects
-    u16 wavesTranslationX[DISPLAY_HEIGHT];
-    u32 unk3F4[DISPLAY_HEIGHT][4];
-    u16 wavesTranslationY[DISPLAY_HEIGHT];
+    u16 wavesTransformX[DISPLAY_HEIGHT];
+    BgAffineReg unk3F4[DISPLAY_HEIGHT];
+    u16 wavesTransformY[DISPLAY_HEIGHT];
 
     u16 unkF34;
     u16 unkF36;
@@ -115,7 +117,7 @@ typedef struct {
     u8 unk207;
 } LensFlare; /* size 0x208 */
 
-static void sub_808D874(void);
+static void ResetWavesPalette(void);
 
 static void InitTitleScreenBackgrounds(TitleScreen *);
 static void InitTitleScreenUI(TitleScreen *);
@@ -243,7 +245,7 @@ static const TileInfo sMenuTiles[] = {
     { 0x28, SA2_ANIM_SOME_JAPANESE_TXT, SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 },
 };
 
-static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
+static const u16 sWavesBrightnessPalette[] = INCBIN_U16("graphics/80E0EF4.gbapal");
 
 // Each value is scan line which the brightness should be increased
 // 0 being top 160 being bottom
@@ -293,7 +295,7 @@ void CreateTitleScreen(void)
     struct Task *t;
     TitleScreen *titleScreen;
     ScreenFade *fade;
-    struct UNK_3005B80_UNK4 *config27C;
+    BgPaletteEffectState *bgEffect;
     s32 i, val;
     s16 denom;
 
@@ -317,14 +319,13 @@ void CreateTitleScreen(void)
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
         denom = Div(65536, (i + 1) * 8);
 
-        // I.E: (512 * demon) - Not sure why it uses this when it's constant
         val = (titleScreen->unkF34 * denom) >> 8;
 
         // Goes from 16384 -> 102 in an log curve \_
-        titleScreen->wavesTranslationX[i] = val;
+        titleScreen->wavesTransformX[i] = val;
         // Goes from 4 -> 642 in steps of 4 but becomes
         // a slightly more jagged line as i increases
-        titleScreen->wavesTranslationY[i] = Div(65536, val);
+        titleScreen->wavesTransformY[i] = Div(65536, val);
     };
 
     fade = &titleScreen->unk270;
@@ -335,17 +336,17 @@ void CreateTitleScreen(void)
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 
-    config27C = &titleScreen->unk27C;
-    config27C->unk0 = 0;
-    config27C->unk2 = 0;
-    config27C->unk34 = titleScreen->wavesTopOffset;
-    config27C->unk1 = 0xE;
-    config27C->unk4 = sWavesVerticalBrightnessGradiant;
-    config27C->unk8 = sUnknown_080E0EF4;
-    config27C->unk36 = 0;
+    bgEffect = &titleScreen->bgEffect;
+    bgEffect->unk0 = 0;
+    bgEffect->cursor = 0;
+    bgEffect->offset = titleScreen->wavesTopOffset;
+    bgEffect->bgPalId = 14;
+    bgEffect->pattern = sWavesVerticalBrightnessGradiant;
+    bgEffect->palette = sWavesBrightnessPalette;
+    bgEffect->unk36 = 0;
 
-    gUnknown_03005B80.unk0 = config27C;
-    gUnknown_03005B80.unk4 = &titleScreen->unk0;
+    gBgPaletteEffects.state = bgEffect;
+    gBgPaletteEffects.background = &titleScreen->unk0;
 
     InitTitleScreenBackgrounds(titleScreen);
     m4aSongNumStart(MUS_INTRO);
@@ -960,7 +961,7 @@ static void Task_IntroSkyAnim(void)
         bg0->unk20 = 0;
         bg0->unk22 = 0;
         bg0->unk24 = 0;
-        bg0->targetTilesX = 0x1A;
+        bg0->targetTilesX = 26;
         bg0->targetTilesY = 10;
         bg0->paletteOffset = 0;
         bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
@@ -1458,12 +1459,12 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
         titleScreen->unkF3A = 7680;
     }
 
-    gUnknown_03001870[gUnknown_03004D50++] = sub_808D874;
+    gVBlankCallbacks[gNumVBlankCallbacks++] = ResetWavesPalette;
     gFlags |= FLAGS_10;
 
-    titleScreen->unk27C.unk34 = (titleScreen->wavesTopOffset - 2);
+    titleScreen->bgEffect.offset = (titleScreen->wavesTopOffset - 2);
 
-    gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
+    gHBlankCallbacks[gNumHBlankCallbacks++] = BgPaletteEffectGradient;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     gFlags |= FLAGS_4;
@@ -1471,17 +1472,17 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
-    gBgOffsetsHBlank = &titleScreen->unk3F4[0][0];
-    pointer = &titleScreen->unk3F4[0][0];
+    gBgOffsetsHBlank = titleScreen->unk3F4;
+    pointer = (void *)titleScreen->unk3F4;
     for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
         s32 temp, r3;
         if (titleScreen->wavesTopOffset <= i) {
-            r3 = titleScreen->wavesTranslationX[i - titleScreen->wavesTopOffset];
+            r3 = titleScreen->wavesTransformX[i - titleScreen->wavesTopOffset];
             *pointer++ = r3;
             *pointer++ = 0;
 
             // * DISPLAY_WIDTH
-            temp = (titleScreen->wavesTranslationY[i - titleScreen->wavesTopOffset] * 0xF000) >> 8;
+            temp = (titleScreen->wavesTransformY[i - titleScreen->wavesTopOffset] * 0xF000) >> 8;
             temp = (0xF000 - (temp)) >> 1;
             temp = ((temp)*r3) >> 8;
 
@@ -1995,9 +1996,8 @@ UNUSED void sub_808D824(void)
     TaskDestroy(gCurTask);
 }
 
-// Might not in game/title_screen
-static void sub_808D874(void)
+static void ResetWavesPalette(void)
 {
-    CpuFastSet(sUnknown_080E0EF4, (void *)(BG_PLTT + 0x1C0), 1);
+    CpuFastSet(sWavesBrightnessPalette, (u16 *)BG_PLTT + 224, 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }

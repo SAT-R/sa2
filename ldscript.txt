@@ -69,7 +69,7 @@ SECTIONS
         src/game/multiboot/collect_rings/time_display.o(.data);
         src/game/math.o(.data);
         src/game/multiplayer/mp_attack_1_effect.o(.data);
-        src/game/backgrounds.o(.data);
+        src/game/bg_palette_effects.o(.data);
 
         /* libs */
         . = ALIGN(16);
@@ -331,7 +331,7 @@ SECTIONS
     
         src/game/sound_test.o(.text);
         src/game/title_screen.o(.text);
-        src/game/backgrounds.o(.text);
+        src/game/bg_palette_effects.o(.text);
 
         src/game/cutscenes/level_endings.o(.text);
         src/game/cutscenes/endings.o(.text);
