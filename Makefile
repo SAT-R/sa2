@@ -301,7 +301,7 @@ endif
 #### MAIN TARGETS ####
 
 # these commands will run regardless of deps being completed
-.PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
+.PHONY: clean tools tidy clean-tools $(TOOLDIRS) libagbsyscall
 
 # Ensure required directories exist
 $(shell mkdir -p $(C_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
@@ -369,22 +369,9 @@ clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
 
 tidy:
-	$(RM) $(ROM) $(ELF) $(MAP)
-	$(RM) $(BUILD_NAME)_europe.gba $(BUILD_NAME)_europe.elf $(BUILD_NAME)_europe.map
-	$(RM) $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
 	$(RM) -r build/*
 	$(RM) SDL2.dll
-ifeq ($(PLATFORM),gba)
-	@$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386
-	@$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386
-	@$(MAKE) tidy PLATFORM=sdl
-	@$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386 DEBUG=1
-	@$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386 DEBUG=1
-	@$(MAKE) tidy PLATFORM=sdl DEBUG=1
-ifeq ($(DEBUG),0)
-	@$(MAKE) tidy DEBUG=1
-endif
-endif
+	$(RM) $(BUILD_NAME)*.exe $(BUILD_NAME)*.elf $(BUILD_NAME)*.map $(BUILD_NAME)*.sdl $(BUILD_NAME)*.gba
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN
 
