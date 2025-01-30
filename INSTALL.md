@@ -52,6 +52,8 @@ Inside the `agbcc` folder, run `./build.sh` and then install the compiler in thi
 
 ## Building
 
+Clone/Download the repo
+
 The repo targets multiple platforms. You don't need to build the rom to build the port, so skip that step if you just want to run it on the PC.
 
 Run all commands in the same folder as this project. All outputs go into the same folder.

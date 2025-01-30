@@ -3,16 +3,6 @@
 #
 include config.mk
 
-# TODO: compile songs to C so that we can work around this.
-#
-# MacOS refuses to link the songs data because some pointers
-# are not aligned. The music player code reads pointers from raw
-# bytes, so they don't need to be aligned. But this is a simple
-# work around which tells the compiler not to care. Once we are
-# compiling the songs to C, we can cast the pointers to integers
-# which means the linker will not notice
-export MACOSX_DEPLOYMENT_TARGET := 11
-
 MAKEFLAGS += --no-print-directory
 
 # Clear the default suffixes
@@ -107,7 +97,7 @@ ifeq ($(CREATE_PDB),1)
 CV2PDB    := ./cv2pdb.exe
 endif
 
-TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils tools/BriBaSA_ex,$(wildcard tools/*))
+TOOLDIRS := $(filter-out tools/agbcc/ tools/BriBaSA_ex/, $(dir $(wildcard tools/*/Makefile)))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
@@ -139,15 +129,10 @@ ELF      := $(ROM:.exe=.elf)
 MAP      := $(ROM:.exe=.map)
 endif
 
-ASM_SUBDIR = asm
+INCLUDE_DIRS = include
+INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
+INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
-ifeq ($(CPU_ARCH),arm)
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
-else
-ASM_BUILDDIR =
-endif
-
-C_INCLUDEDIR = include
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
@@ -182,18 +167,12 @@ endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
 # Platform not included as we only need the headers for decomp scratches
-C_HEADERS := $(shell find $(C_INCLUDEDIR) -name "*.h" -not -path "*/platform/*")
+C_HEADERS := $(shell find $(INCLUDE_DIRS) -name "*.h" -not -path "*/platform/*")
 
 ifeq ($(PLATFORM),gba)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
-ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
-else
-# Don't include asm sources on non-gba platforms
-ASM_SRCS :=
 endif
-
-ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
@@ -207,7 +186,7 @@ MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS := $(C_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
@@ -218,13 +197,14 @@ FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ex
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -iquote $(C_INCLUDEDIR) -D $(GAME_REGION)
+CPPFLAGS ?= $(INCLUDE_CPP_ARGS) -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
 ifeq ($(PLATFORM),gba)
+	INCLUDE_SCANINC_ARGS += -I tools/agbcc/include
 	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
 	CC1FLAGS += -fhex-asm
 else
@@ -324,7 +304,7 @@ endif
 .PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
 
 # Ensure required directories exist
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
+$(shell mkdir -p $(C_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
 # a special command which ensures that stdout and stderr
 # get printed instead of output into the makefile
@@ -342,6 +322,19 @@ ifneq ($(MAKE_TOOLS_OUTCOME),0)
 endif
 else
 NODEP ?= 1
+endif
+
+# When not building tools, we should specify this
+ifneq ($(NODEP),1)
+# MacOS refuses to link the songs data because some pointers
+# are not aligned. The music player code reads pointers from raw
+# bytes, so they don't need to be aligned. But this is a simple
+# work around which tells the compiler not to care. Once we are
+# compiling the songs to C, we can cast the pointers to integers
+# which means the linker will not notice.
+#
+# TODO: compile songs to C so that we can work around this.
+export MACOSX_DEPLOYMENT_TARGET := 11
 endif
 
 ifeq ($(PLATFORM),gba)
@@ -362,6 +355,7 @@ tool_libs:
 	@$(MAKE) -C tools/_shared
 
 clean: tidy clean-tools
+	@$(MAKE) clean -C tools/BriBaSA_ex
 	@$(MAKE) clean -C chao_garden
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
@@ -380,10 +374,16 @@ tidy:
 	$(RM) $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
 	$(RM) -r build/*
 	$(RM) SDL2.dll
-ifeq ($(PLATFORM), GBA)
-	$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386
-	$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386
-	$(MAKE) tidy PLATFORM=sdl
+ifeq ($(PLATFORM),gba)
+	@$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386
+	@$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386
+	@$(MAKE) tidy PLATFORM=sdl
+	@$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386 DEBUG=1
+	@$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386 DEBUG=1
+	@$(MAKE) tidy PLATFORM=sdl DEBUG=1
+ifeq ($(DEBUG),0)
+	@$(MAKE) tidy DEBUG=1
+endif
 endif
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN
@@ -465,14 +465,6 @@ ifeq ($(CREATE_PDB),1)
 endif
 endif
 
-# Scan the C dependencies to determine if headers have changed
-ifeq ($(NODEP),1)
-$(OBJ_DIR)/src/%.o: c_dep :=
-else
-$(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
-$(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=) 2>/dev/null)
-endif
-
 ifeq ($(PLATFORM),gba)
 # Use the old compiler for m4a, as it was prebuilt and statically linked
 # to the original codebase
@@ -483,32 +475,41 @@ $(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Wer
 endif
 
 # Build c sources, and ensure alignment
-$(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
 	@echo "$(CC1) <flags> -o $@ $<"
-	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
-	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.i'))
+	@$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
+	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s -
 ifeq ($(PLATFORM), gba)
-	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 endif
-	@$(AS) $(ASFLAGS) $(OBJ_DIR)/$*.s -o $@
+	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
+
+# Scan the src dependencies to determine if any dependent files have changed
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.d'))
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
+endif
 
 # rule for sources from the src dir (parts of libraries)
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
-
-# Scan the ASM data dependencies to determine if any .inc files have changed
-ifeq ($(NODEP),1)
-$(DATA_ASM_BUILDDIR)/%.o: data_dep :=
-else
-$(DATA_ASM_BUILDDIR)/%.o: data_dep = $(shell $(SCANINC) $(DATA_ASM_SUBDIR)/$*.s)
-endif
-
-$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
+$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+
+# Scan the ASM data dependencies to determine if any .inc files have changed
+$(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
+endif
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
