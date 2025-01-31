@@ -344,7 +344,6 @@ ifneq ($(NODEP),1)
 export MACOSX_DEPLOYMENT_TARGET := 11
 endif
 
-# Fix "prologue issue" bugfix in select files
 # TODO: Find a better way to limit this to SA1!
 ifeq ($(BUILD_NAME), sa1)
 ifeq ($(CC1), $(DEFAULT_CC1))
