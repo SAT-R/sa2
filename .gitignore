@@ -2,6 +2,10 @@
 Thumbs.db
 ehthumbs.db
 
+# Visual Studio folder
+.vs
+*.pdb
+
 # Folder config file
 Desktop.ini
 
@@ -67,8 +71,6 @@ tools/agbcc
 /ctx.c
 reports
 .vscode/*.log
-.vs/
-*.pdb
 *.gbapal
 *.lz
 *.rl
