@@ -69,8 +69,9 @@ endif
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
+DEFAULT_CC1 := tools/agbcc/bin/agbcc$(EXE)
 ifeq ($(PLATFORM),gba)
-CC1       := tools/agbcc/bin/agbcc$(EXE)
+CC1       := $(DEFAULT_CC1)
 CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
 else
 CC1       := $(PREFIX)gcc$(EXE)
@@ -346,7 +347,11 @@ endif
 # Fix "prologue issue" bugfix in select files
 # TODO: Find a better way to limit this to SA1!
 ifeq ($(BUILD_NAME), sa1)
+ifeq ($(CC1), $(DEFAULT_CC1))
     PROLOGUE_FIX := -fprologue-bugfix
+else
+    PROLOGUE_FIX :=
+endif
 endif
 
 ifeq ($(PLATFORM),gba)
