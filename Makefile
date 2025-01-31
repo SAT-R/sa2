@@ -426,9 +426,9 @@ include graphics.mk
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
 
-chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba
+chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
-
+    
 data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 	$(GFX) $< $@ -search 1
 
@@ -498,7 +498,7 @@ $(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
-    
+
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
@@ -510,7 +510,7 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 # Scan the ASM data dependencies to determine if any .inc files have changed
 $(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
-
+    
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 -include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
@@ -519,7 +519,7 @@ endif
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
-    
+
 ### SUB-PROGRAMS ###
 
 chao_garden/mb_chao_garden.gba: 
@@ -532,7 +532,7 @@ endif
 
 chao_garden: tools
 	@$(MAKE) -C chao_garden DEBUG=0
-
+    
 # Dependency here is already explicit, but we sometimes get a race condition if this
 # is not specified
 multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
@@ -576,7 +576,7 @@ bribasa:
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@
-
+    
 ### DEPS INSTALL COMMANDS ###
 
 $(SDL_MINGW_LIB):
