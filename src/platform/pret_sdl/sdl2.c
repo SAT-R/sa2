@@ -415,9 +415,9 @@ static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
-#if HEADLESS
-    return;
-#endif
+    if (headless) {
+        return;
+    }
     // Reset the audio buffer if we are 10 frames out of sync
     // If this happens it suggests there was some OS level lag
     // in playing audio. The queue length should remain stable at < 10 otherwise
