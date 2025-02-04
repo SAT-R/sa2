@@ -21,6 +21,11 @@
 #include "game/stage/screen_fade.h"
 #include "game/stage/screen_shake.h"
 
+#if TAS_TESTING
+#include <stdio.h>
+#include <stdlib.h>
+#endif
+
 #include "constants/animations.h"
 #include "constants/char_states.h"
 #include "constants/move_states.h"
@@ -229,6 +234,11 @@ void CreateBossRunManager(u8 bossIndex)
         }
         manager->bossIndex--;
     }
+
+#if TAS_TESTING
+    printf("Got to boss run\n");
+    exit(0);
+#endif
 }
 
 static void Task_BossRunManagerMain(void)

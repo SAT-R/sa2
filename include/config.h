@@ -27,7 +27,16 @@
 #define USE_NEW_DMA 1
 #endif
 
-#define TAS_TESTING                 0
+#ifndef TAS_TESTING
+#define TAS_TESTING 0
+#endif
+
+#define TAS_INPUT_LOGGING 0
+
+#ifndef HEADLESS
+#define HEADLESS 0
+#endif
+
 #define TAS_TESTING_WIDESCREEN_HACK 1
 
 #define RENDERER_SOFTWARE 0

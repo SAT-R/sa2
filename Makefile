@@ -259,6 +259,12 @@ else
   CPPFLAGS += -D PORTABLE=0
 endif
 
+ifeq ($(TAS_TESTING),1)
+  CPPFLAGS += -D TAS_TESTING=1
+else
+  CPPFLAGS += -D TAS_TESTING=0
+endif
+
 ifeq ($(NON_MATCHING),1)
 # TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
 #    CPPFLAGS += -D NON_MATCHING=1
@@ -377,13 +383,14 @@ japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
-
 sdl: ; @$(MAKE) PLATFORM=sdl
 
 sdl_win32:
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
+
+tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
 
 #### Recipes ####
 
