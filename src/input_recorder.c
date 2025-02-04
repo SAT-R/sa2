@@ -43,8 +43,8 @@ u16 InputRecorderRead(void)
     if (gInputRecorder.playbackHead < TAPE_LENGTH) {
         u16 val = gInputRecorderTapeBuffer[gInputRecorder.playbackHead++];
 #if TAS_TESTING
+#if PORTABLE && TAS_INPUT_LOGGING
         if (val != 0) {
-#if PORTABLE
             printf("Frame %d, 0x%X\n", gInputRecorder.playbackHead - 1, (u32)val);
             if (val & A_BUTTON) {
                 printf("A ");
@@ -65,8 +65,8 @@ u16 InputRecorderRead(void)
                 printf("DPAD_DOWN ");
             }
             printf("\n");
-#endif
         }
+#endif
         if (val == (A_BUTTON | B_BUTTON | START_BUTTON | SELECT_BUTTON)) {
             return 0;
         }

@@ -138,6 +138,44 @@ jobs:
         run: |
           make -j${nproc} ${{ matrix.platform }}
 
+  test:
+    strategy:
+      matrix: 
+        platform: ["sdl"]
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    runs-on: ubuntu-22.04
+    name: TAS Test ${{ matrix.platform }}
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+  
+      - name: Install SDL for win32
+        if: ${{ matrix.platform == 'sdl_win32' }}
+        run: |
+          make SDL2.dll
+  
+      - name: Build ${{ matrix.platform }}
+        run: |
+          make -j${nproc} ${{ matrix.platform }} TAS_TESTING=1
+      
+      - name: Run TAS
+        timeout-minutes: 1
+        env:
+          HEADLESS: true
+        run: |
+          ./sa2.${{ matrix.platform }}
+
   level_editor:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-22.04

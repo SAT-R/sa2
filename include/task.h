@@ -30,7 +30,7 @@ typedef TaskPtr TaskPtr32;
 
 typedef void *IwramData;
 
-#if !DEBUG
+#if !DEBUG && !TAS_TESTING
 #define ENABLE_TASK_LOGGING !TRUE
 #else
 #define ENABLE_TASK_LOGGING TRUE
