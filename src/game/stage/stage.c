@@ -152,7 +152,9 @@ void GameStageStart(void)
     gTrappedAnimalVariant = 0;
     gBossIndex = 0;
     gRingCount = 0;
-    gUnknown_030054F8 = 1;
+
+    // Unused leftover var from SA1, used for CPU "Partner" Tails
+    gNumSingleplayerCharacters = 1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         CallSetStageSpawnPos(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);

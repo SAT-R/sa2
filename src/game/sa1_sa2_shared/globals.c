@@ -63,7 +63,7 @@ u8 ALIGNED(4) gDifficultyLevel = 0;
 s8 ALIGNED(4) gSelectedCharacter = 0;
 u8 ALIGNED(4) gSpecialRingCount = 0;
 
-u8 ALIGNED(4) gUnknown_030054F8 = 0;
+u8 ALIGNED(4) gNumSingleplayerCharacters = 0;
 s32 gUnknown_030054FC = 0;
 
 s8 gMultiplayerCharacters[4] = {};

@@ -127,7 +127,7 @@ extern u8 gDifficultyLevel;
 extern s8 gTrappedAnimalVariant;
 
 extern u8 gBossIndex; // TODO: Boss ID in XX-Stage? But it's used in checkpointc.c ...
-extern u8 gUnknown_030054F8;
+extern u8 gNumSingleplayerCharacters;
 
 // Incremented by 1 every frame if the game is not paused.
 // Starts before the stage-timer that is used for scores does.
