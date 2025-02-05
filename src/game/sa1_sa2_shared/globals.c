@@ -19,7 +19,7 @@ u8 gActiveCollectRingEffectCount = 0;
 u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gRoomEventQueueSendPos = 0;
 u16 ALIGNED(4) gStageFlags = 0;
-u8 ALIGNED(4) gUnknown_03005428[MULTI_SIO_PLAYERS_MAX] = {};
+u8 ALIGNED(4) gMPRingCollectWins[MULTI_SIO_PLAYERS_MAX] = {};
 
 u8 gBossRingsRespawnCount = 0;
 bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;

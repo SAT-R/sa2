@@ -171,7 +171,7 @@ void Task_RingsMgrMain(void)
         }
 
         sp08 = FALSE;
-        if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+        if (IS_EXTRA_STAGE(gCurrentLevel)) {
             u32 res = SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__10 | SUPER_FLAG__8 | SUPER_FLAG__4);
             sp08 = TRUE;
 

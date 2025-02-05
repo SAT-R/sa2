@@ -168,7 +168,7 @@ extern u8 gMultiplayerConnections;
 // Only set after the player passed it, used to determine extra score
 extern s32 gStageGoalX;
 
-extern u8 gUnknown_03005428[4];
+extern u8 gMPRingCollectWins[4];
 extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
 extern RoomEvent gRoomEventQueue[16];

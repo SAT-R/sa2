@@ -509,10 +509,10 @@ void sub_8082788(void)
                 UpdateSpriteAnimation(s);
                 DisplaySprite(s);
 
-                if (gUnknown_03005428[i] > 99) {
+                if (gMPRingCollectWins[i] > 99) {
                     temp = 99;
                 } else {
-                    temp = Base10DigitsToHexNibbles(gUnknown_03005428[i]);
+                    temp = Base10DigitsToHexNibbles(gMPRingCollectWins[i]);
                 }
 
                 s = &resultsScreen->unk160[((temp) >> 4)];

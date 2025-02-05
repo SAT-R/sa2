@@ -427,7 +427,7 @@ void sub_80818B8(void)
             if (recv->pat0.unk0 == 0x4010) {
                 for (j = 0; j < 4; j++) {
                     gMultiplayerCharacters[j] = 0;
-                    gUnknown_03005428[j] = 0;
+                    gMPRingCollectWins[j] = 0;
                     gUnknown_030054B4[j] = j;
                     gMultiplayerMissingHeartbeats[j] = 0;
                 }
@@ -519,7 +519,7 @@ void ShowSinglePakResults(void)
     u32 i;
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         gMultiplayerCharacters[i] = 0;
-        gUnknown_03005428[i] = 0;
+        gMPRingCollectWins[i] = 0;
         gUnknown_030054B4[i] = i;
         gMultiplayerMissingHeartbeats[i] = 0;
     }
