@@ -195,7 +195,7 @@ void CreateGameStage(void)
 
     sub_801F044();
     gUnknown_030053E0 = 0;
-    
+
     if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         sub_80213C0(gSelectedCharacter, gCurrentLevel, &gPlayer);
     }
