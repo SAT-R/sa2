@@ -311,7 +311,7 @@ void Task_GameStage(void)
         timeStep = framesSinceStageStart - gStageTime;
         gStageTime = framesSinceStageStart;
 
-        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (GAME_MODE_REQUIRES_ITEM_RNG) {
             if ((framesSinceStageStart & ~(0x1FF)) != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
                 u32 mask, rand;
                 u32 temp = MultiplayerPseudoRandom32();
@@ -329,7 +329,13 @@ void Task_GameStage(void)
             u32 temp = MultiplayerPseudoRandom32();
         }
 
-        if (gCamera.unk50 & CAM_MODE_SPECTATOR) {
+#if (GAME == GAME_SA1)
+        if (gCamera.sa2__unk50 & CAM_MODE_SPECTATOR)
+#elif (GAME == GAME_SA2)
+        if (gCamera.unk50 & CAM_MODE_SPECTATOR)
+#endif
+        {
+
             if ((gInput & (L_BUTTON | R_BUTTON)) == (L_BUTTON | R_BUTTON)) {
                 if (sioId != 3) {
                     gCamera.spectatorTarget = 3;
@@ -360,12 +366,22 @@ void Task_GameStage(void)
             gCamera.spectatorTarget = sioId;
         }
 
+#if (GAME == GAME_SA1)
+        if (sa2__gUnknown_030053E0 > 0) {
+            sa2__gUnknown_030053E0--;
+        }
+#elif (GAME == GAME_SA2)
         if (gUnknown_030053E0 > 0) {
             gUnknown_030053E0--;
         }
+#endif
     }
 
+#if (GAME == GAME_SA1)
+    sa2__gUnknown_0300544C = gStageFlags;
+#elif (GAME == GAME_SA2)
     gUnknown_0300544C = gStageFlags;
+#endif
 
     if (gStageFlags & STAGE_FLAG__ACT_START) {
         return;
@@ -382,9 +398,15 @@ void Task_GameStage(void)
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
 
+#if (GAME == GAME_SA1)
+            if (gLoadedSaveGame.timeLimitDisabled) {
+                return;
+            }
+#elif (GAME == GAME_SA2)
             if (gLoadedSaveGame->timeLimitDisabled) {
                 return;
             }
+#endif
 
             gPlayer.itemEffect = 0;
 
@@ -394,14 +416,23 @@ void Task_GameStage(void)
                 gPlayer.qSpeedAirY = -Q(4.875);
             }
 
-            if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
+#if (GAME == GAME_SA1)
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1))
+#elif (GAME == GAME_SA2)
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS))
+#endif
+            {
                 CreateScreenShake(0x800, 8, 16, -1, (SCREENSHAKE_VERTICAL | SCREENSHAKE_HORIZONTAL | SCREENSHAKE_RANDOM_VALUE));
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
+#if (GAME == GAME_SA1)
+            sa2__sub_8019F08();
+#elif (GAME == GAME_SA2)
             sub_8019F08();
+#endif
         }
     } else {
         gCourseTime += timeStep;
@@ -412,9 +443,15 @@ void Task_GameStage(void)
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
 
+#if (GAME == GAME_SA1)
+            if (gLoadedSaveGame.timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
+                return;
+            }
+#elif (GAME == GAME_SA2)
             if (gLoadedSaveGame->timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
                 return;
             }
+#endif
 
             gPlayer.itemEffect = 0;
 
@@ -427,7 +464,11 @@ void Task_GameStage(void)
             m4aSongNumStart(SE_TIME_UP);
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
+#if (GAME == GAME_SA1)
+            sa2__sub_8019F08();
+#elif (GAME == GAME_SA2)
             sub_8019F08();
+#endif
         }
     }
 }
