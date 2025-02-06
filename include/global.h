@@ -32,6 +32,13 @@ typedef void (*VoidFn)(void);
 
 // helper macros
 
+// This macro is only needed while SA2 still has variables called gUnknown_XXXXXXX left
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA3))
+#define SA2_LABEL(_label) sa2__##_label
+#else
+#define SA2_LABEL(_label) _label
+#endif
+
 #if (PORTABLE)
 #define BUG_FIX
 

@@ -477,25 +477,46 @@ void HandleLifeLost(void)
 {
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 
-    if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
+    if (GAME_MODE_IS_TIME_ATTACK) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+
+        SA2_LABEL(gUnknown_03005390) = 0;
+
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
+#if (GAME == GAME_SA2)
         gNumLives = 2;
+#endif
         return;
-    }
-
-    if (--gNumLives == 0) {
-        gStageFlags |= STAGE_FLAG__ACT_START;
-        CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
     } else {
-        TasksDestroyAll();
-        PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
-        PAUSE_GRAPHICS_QUEUE();
-        CreateGameStage();
+#if (GAME == GAME_SA1)
+        if (IS_SINGLE_PLAYER && (--gNumLives == 0))
+#elif (GAME == GAME_SA2)
+        if (--gNumLives == 0)
+#endif
+        {
+            gStageFlags |= STAGE_FLAG__ACT_START;
+
+#if (GAME == GAME_SA1)
+            if (SA2_LABEL(gUnknown_0300543C) > 0) {
+                SA2_LABEL(gUnknown_0300543C)--;
+                CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
+            } else {
+                CreateGameOverScreen(OVER_CAUSE_TIME_UP);
+            }
+#else
+            CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
+#endif
+        } else {
+            TasksDestroyAll();
+            PAUSE_BACKGROUNDS_QUEUE();
+
+            SA2_LABEL(gUnknown_03005390) = 0;
+
+            PAUSE_GRAPHICS_QUEUE();
+            CreateGameStage();
+        }
     }
 }
 
