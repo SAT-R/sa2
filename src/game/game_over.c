@@ -24,7 +24,22 @@ typedef struct {
     u8 delay;
 } GameOverScreenFade;
 
+typedef struct {
+    ScreenFade unk0;
+    Sprite sprGameOrTime;
+    Sprite sprOver;
+    u32 framesUntilDone;
+} GameOverScreen;
+
 void Task_FadeoutToOverScreen(void);
+void DisplayOverScreenTextSprites(GameOverScreen *screen);
+void sub_80369D8(void);
+static void InitOverScreen(LostLifeCause lostLifeCause);
+void Task_GameOverScreenMain(void);
+void TaskDestructor_GameOverTimeOverScreen(struct Task *);
+void Task_TimeOverScreenMain(void);
+void sub_8036B70(void);
+void UpdateTimeOverScreenSprites(GameOverScreen *screen);
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
@@ -47,8 +62,6 @@ void CreateGameOverScreen(LostLifeCause lostLifeCause)
     m4aMPlayFadeOut(&gMPlayInfo_SE2, 8);
     m4aMPlayFadeOut(&gMPlayInfo_SE3, 8);
 }
-
-static void InitOverScreen(LostLifeCause lostLifeCause);
 
 void Task_FadeoutToOverScreen(void)
 {
@@ -75,17 +88,6 @@ void Task_FadeoutToOverScreen(void)
         }
     }
 }
-
-typedef struct {
-    ScreenFade unk0;
-    Sprite sprGameOrTime;
-    Sprite sprOver;
-    u32 framesUntilDone;
-} GameOverScreen;
-
-void Task_GameOverScreenMain(void);
-void TaskDestructor_GameOverTimeOverScreen(struct Task *);
-void Task_TimeOverScreenMain(void);
 
 static void InitOverScreen(LostLifeCause lostLifeCause)
 {
@@ -166,9 +168,6 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     fade->bldAlpha = 0;
 }
 
-void DisplayOverScreenTextSprites(GameOverScreen *screen);
-void sub_80369D8(void);
-
 void Task_GameOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
@@ -244,8 +243,6 @@ void sub_80369D8(void)
     DisplayOverScreenTextSprites(screen);
 }
 
-void UpdateTimeOverScreenSprites(GameOverScreen *screen);
-
 void Task_TimeOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
@@ -300,8 +297,6 @@ void Task_TimeOverScreenMain(void)
 
     UpdateTimeOverScreenSprites(screen);
 }
-
-void sub_8036B70(void);
 
 void sub_8036B30(void)
 {

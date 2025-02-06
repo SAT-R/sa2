@@ -31,15 +31,30 @@
 #define DIGITS_Y ((I(gPlayer.qWorldY) - gCamera.y) - 24)
 #endif
 
-struct CourseStartCountdown {
+typedef struct {
     Sprite sprMachine;
     Sprite sprCountdownDigits;
     u32 machineScreenX;
     u32 machineScreenY;
-    s16 unk68;
-    u8 unk6A;
-    u8 unk6B;
-};
+    s16 timer;
+    bool8 speedBoost;
+    bool8 boostDisabled;
+} CourseStartCountdown;
+
+typedef struct {
+    Sprite sLeft;
+    SpriteTransform transformLeft;
+    Sprite sRight;
+    SpriteTransform transformRight;
+    u16 timer;
+} RaceStartMessage; /* 0x7C */
+
+void sub_8036168(void);
+void TaskDestructor_CourseStartCountdown(struct Task *);
+void CreateRaceStartMessage(void);
+void sub_8036398(void);
+void Task_RaceStartMessageMain(void);
+void TaskDestructor_RaceStartMessage(struct Task *);
 
 const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
     TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC)),
@@ -53,26 +68,23 @@ const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
     TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY)),
 };
 
-void sub_8036168(void);
-void sub_8036638(struct Task *);
-
 void CreateCourseStartCountdown(bool8 playerSkippedIntro)
 {
     struct Task *t;
-    struct CourseStartCountdown *countdown;
+    CourseStartCountdown *countdown;
     Sprite *s;
 
     gStageFlags |= STAGE_FLAG__100;
-    t = TaskCreate(sub_8036168, sizeof(struct CourseStartCountdown), 0x3000, 0, sub_8036638);
+    t = TaskCreate(sub_8036168, sizeof(CourseStartCountdown), 0x3000, 0, TaskDestructor_CourseStartCountdown);
     countdown = TASK_DATA(t);
 
-    countdown->unk6A = 0;
-    countdown->unk6B = 0;
+    countdown->speedBoost = FALSE;
+    countdown->boostDisabled = FALSE;
 
     if (!playerSkippedIntro) {
-        countdown->unk68 = GBA_FRAMES_PER_SECOND * 5 + 10;
+        countdown->timer = GBA_FRAMES_PER_SECOND * 5 + 10;
     } else {
-        countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
+        countdown->timer = GBA_FRAMES_PER_SECOND * 3;
     }
 
     s = &countdown->sprCountdownDigits;
@@ -90,49 +102,35 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     s->frameFlags = 0;
 
     s = &countdown->sprMachine;
-    s->graphics.dest = VramMalloc(0xE);
-    s->graphics.anim = SA2_ANIM_LEVEL_START_MACHINE;
-    s->variant = 0;
-    s->oamFlags = SPRITE_OAM_ORDER(18);
-    s->graphics.size = 0;
-    s->animCursor = 0;
-    s->qAnimDelay = 0;
-    s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s->palId = 0;
-    s->hitboxes[0].index = -1;
-    s->frameFlags = 0x2400;
+    SPRITE_INIT_FLAGS(s, 14, SA2_ANIM_LEVEL_START_MACHINE, 0, 18, 2, SPRITE_FLAG(X_FLIP, 1));
 }
-
-void CreateRaceStartMessage(void);
-void sub_8036398(void);
 
 void sub_8036168(void)
 {
-    struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
+    CourseStartCountdown *countdown = TASK_DATA(gCurTask);
     Sprite *s;
 
     // Skip intro
-    if (IS_SINGLE_PLAYER && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3) && gPressedKeys & (A_BUTTON | B_BUTTON)) {
-        countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
+    if (IS_SINGLE_PLAYER && countdown->timer > (GBA_FRAMES_PER_SECOND * 3) && gPressedKeys & (A_BUTTON | B_BUTTON)) {
+        countdown->timer = GBA_FRAMES_PER_SECOND * 3;
     }
 
-    if (countdown->unk68 == GBA_FRAMES_PER_SECOND * 3) {
+    if (countdown->timer == GBA_FRAMES_PER_SECOND * 3) {
         m4aSongNumStart(VOICE__ANNOUNCER__3);
-    } else if (countdown->unk68 == GBA_FRAMES_PER_SECOND * 2) {
+    } else if (countdown->timer == GBA_FRAMES_PER_SECOND * 2) {
         m4aSongNumStart(VOICE__ANNOUNCER__2);
-    } else if (countdown->unk68 == GBA_FRAMES_PER_SECOND * 1) {
+    } else if (countdown->timer == GBA_FRAMES_PER_SECOND * 1) {
         m4aSongNumStart(VOICE__ANNOUNCER__1);
     }
 
-    if (--countdown->unk68 == 0) {
+    if (--countdown->timer == 0) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         // Uncomment to skip straight to level ending
         // gPlayer.moveState |= MOVESTATE_GOAL_REACHED;
         gStageFlags &= ~STAGE_FLAG__ACT_START;
         gStageFlags &= ~STAGE_FLAG__100;
         gPlayer.charState = CHARSTATE_WALK_A;
-        if (countdown->unk6A != 0) {
+        if (countdown->speedBoost) {
             gPlayer.qSpeedGround = Q_8_8(9);
         } else {
             gPlayer.qSpeedGround = Q_8_8(4);
@@ -144,15 +142,13 @@ void sub_8036168(void)
         countdown->machineScreenY = I(gPlayer.qWorldY);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
+    } else if (countdown->timer < 5) {
+        if (gPressedKeys & DPAD_RIGHT && countdown->boostDisabled == FALSE) {
+            countdown->speedBoost = TRUE;
+        }
     } else {
-        if (countdown->unk68 < 5) {
-            if (gPressedKeys & DPAD_RIGHT && countdown->unk6B == 0) {
-                countdown->unk6A = 1;
-            }
-        } else {
-            if (gPressedKeys & DPAD_RIGHT) {
-                countdown->unk6B = 1;
-            }
+        if (gPressedKeys & DPAD_RIGHT) {
+            countdown->boostDisabled = TRUE;
         }
     }
 
@@ -162,9 +158,9 @@ void sub_8036168(void)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
+    if (countdown->timer < (GBA_FRAMES_PER_SECOND * 3)) {
         s = &countdown->sprCountdownDigits;
-        s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
+        s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->timer, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
         s->x = DIGITS_X;
         s->y = DIGITS_Y;
@@ -172,7 +168,7 @@ void sub_8036168(void)
         DisplaySprite(s);
     }
 
-    if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND) && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
+    if (countdown->timer >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND) && countdown->timer < 3 * GBA_FRAMES_PER_SECOND) {
         gPlayer.anim = gUnknown_080D7518[gSelectedCharacter].anim;
         gPlayer.variant = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
@@ -187,7 +183,7 @@ void sub_8036168(void)
 
 void sub_8036398(void)
 {
-    struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
+    CourseStartCountdown *countdown = TASK_DATA(gCurTask);
     Sprite *s = &countdown->sprMachine;
 
     s->x = countdown->machineScreenX - gCamera.x;
@@ -201,27 +197,15 @@ void sub_8036398(void)
     DisplaySprite(s);
 }
 
-void sub_8036524(void);
-void sub_8036654(struct Task *);
-
-struct RaceStartMessage {
-    Sprite unk0;
-    SpriteTransform unk30;
-    Sprite unk3C;
-    SpriteTransform unk6C;
-    u16 unk78;
-    u16 filler7A;
-}; /* 0x7C */
-
 void CreateRaceStartMessage(void)
 {
-    struct Task *t = TaskCreate(sub_8036524, sizeof(struct RaceStartMessage), 0x3000, 0, sub_8036654);
-    struct RaceStartMessage *startMessage = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_RaceStartMessageMain, sizeof(RaceStartMessage), 0x3000, 0, TaskDestructor_RaceStartMessage);
+    RaceStartMessage *startMessage = TASK_DATA(t);
     Sprite *s;
 
-    startMessage->unk78 = 0x3C;
-    s = &startMessage->unk0;
-    s->graphics.dest = VramMalloc(0x40);
+    startMessage->timer = GBA_FRAMES_PER_SECOND;
+    s = &startMessage->sLeft;
+    s->graphics.dest = VramMalloc(64);
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
     s->prevVariant = -1;
@@ -232,10 +216,10 @@ void CreateRaceStartMessage(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
-    s = &startMessage->unk3C;
-    s->graphics.dest = VramMalloc(0x40);
+    s = &startMessage->sRight;
+    s->graphics.dest = VramMalloc(64);
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
     s->prevVariant = -1;
@@ -246,33 +230,33 @@ void CreateRaceStartMessage(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 }
 
-void sub_8036524(void)
+void Task_RaceStartMessageMain(void)
 {
-    struct RaceStartMessage *startMessage = TASK_DATA(gCurTask);
+    RaceStartMessage *startMessage = TASK_DATA(gCurTask);
     Sprite *s, *element2;
     SpriteTransform *transform;
-    s16 unk78;
-    startMessage->unk78--;
+    s16 timer;
+    startMessage->timer--;
 
-    if (startMessage->unk78 == 0) {
+    if (startMessage->timer == 0) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    s = &startMessage->unk0;
-    transform = &startMessage->unk30;
+    s = &startMessage->sLeft;
+    transform = &startMessage->transformLeft;
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->frameFlags = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;
-    unk78 = startMessage->unk78;
-    if (unk78 < 0x10) {
-        transform->qScaleX = Q(2) - startMessage->unk78 * 0x10;
-        transform->qScaleY = (startMessage->unk78 + 1) * 0x10;
+    timer = startMessage->timer;
+    if (timer < 16) {
+        transform->qScaleX = Q(2) - startMessage->timer * 16;
+        transform->qScaleY = (startMessage->timer + 1) * 16;
     } else {
         transform->qScaleX = Q(1);
         transform->qScaleY = Q(1);
@@ -284,17 +268,17 @@ void sub_8036524(void)
     TransformSprite(s, transform);
     DisplaySprite(s);
 
-    s = &startMessage->unk3C;
-    transform = &startMessage->unk6C;
+    s = &startMessage->sRight;
+    transform = &startMessage->transformRight;
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->frameFlags = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;
-    unk78 = startMessage->unk78;
-    if (unk78 < 0x10) {
-        transform->qScaleX = Q(2) - startMessage->unk78 * 0x10;
-        transform->qScaleY = (startMessage->unk78 + 1) * 0x10;
+    timer = startMessage->timer;
+    if (timer < 16) {
+        transform->qScaleX = Q(2) - startMessage->timer * 16;
+        transform->qScaleY = (startMessage->timer + 1) * 16;
     } else {
         transform->qScaleX = Q(1);
         transform->qScaleY = Q(1);
@@ -307,16 +291,16 @@ void sub_8036524(void)
     DisplaySprite(s);
 }
 
-void sub_8036638(struct Task *t)
+void TaskDestructor_CourseStartCountdown(struct Task *t)
 {
-    struct CourseStartCountdown *countdown = TASK_DATA(t);
+    CourseStartCountdown *countdown = TASK_DATA(t);
     VramFree(countdown->sprMachine.graphics.dest);
     VramFree(countdown->sprCountdownDigits.graphics.dest);
 }
 
-void sub_8036654(struct Task *t)
+void TaskDestructor_RaceStartMessage(struct Task *t)
 {
-    struct RaceStartMessage *startMessage = TASK_DATA(t);
-    VramFree(startMessage->unk3C.graphics.dest);
-    VramFree(startMessage->unk0.graphics.dest);
+    RaceStartMessage *startMessage = TASK_DATA(t);
+    VramFree(startMessage->sRight.graphics.dest);
+    VramFree(startMessage->sLeft.graphics.dest);
 }

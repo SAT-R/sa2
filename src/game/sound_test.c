@@ -335,22 +335,23 @@ static void SoundTestScreenCreateUI(struct Task *t)
     s32 langOffset = LangOffset(*language);
 
     sub_806A568(title, RENDER_TARGET_SCREEN, r6[TextOffset(langOffset, 0, 0, 1)], sTitleText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10,
-                0x10, 5, sTitleText[TextOffset(langOffset, 2, 0, 1)], 0);
+                16, 5, sTitleText[TextOffset(langOffset, 2, 0, 1)], 0);
     // Trim
     sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN, 0x60, 0x3C9, 0x1000, 0, 0, 6, 0, 0);
 
     titleTrimAndControls++;
     // Controls (play and buttons)
     sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN, sControlsText[TextOffset(langOffset, 0, 0, 1)],
-                sControlsText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10, 0x86, 5, sControlsText[TextOffset(langOffset, 2, 0, 1)], 0);
+                sControlsText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10, DISPLAY_HEIGHT - 26, 5,
+                sControlsText[TextOffset(langOffset, 2, 0, 1)], 0);
 
     // back button name
     sub_806A568(backControlName, RENDER_TARGET_SCREEN, sBackButtonText[TextOffset(langOffset, 0, 1, 2)],
-                sBackButtonText[TextOffset(langOffset, 1, 1, 2)], 0x1000, 0x5A, 0x86, 5, sBackButtonText[TextOffset(langOffset, 2, 1, 2)],
-                0);
-    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, 0x5A, 0x5A, 5, 2, 0);
+                sBackButtonText[TextOffset(langOffset, 1, 1, 2)], 0x1000, 90, DISPLAY_HEIGHT - 26, 5,
+                sBackButtonText[TextOffset(langOffset, 2, 1, 2)], 0);
+    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, (DISPLAY_WIDTH / 4) + 30, (DISPLAY_HEIGHT / 2) + 10, 5, 2, 0);
 
-    for (i = 0, xPos = 80, yPos = 96; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
+    for (i = 0, xPos = (DISPLAY_WIDTH / 4) + 20, yPos = (DISPLAY_HEIGHT / 2) + 16; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
         if (i == 0) {
             sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000, xPos, yPos, 5, 0x11, 0);
         } else {
@@ -359,7 +360,8 @@ static void SoundTestScreenCreateUI(struct Task *t)
     }
 
     for (i = 0; i < 4; i++) {
-        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, 0x4c, 0x5a, 6, 0, 0);
+        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, (DISPLAY_WIDTH / 4) + 16, (DISPLAY_HEIGHT / 2) + 10, 6,
+                    0, 0);
     }
 
     // Transforms static circle
@@ -367,8 +369,8 @@ static void SoundTestScreenCreateUI(struct Task *t)
         transforms[i].rotation = DEG_TO_SIN(90) * i;
         transforms[i].qScaleX = Q(1);
         transforms[i].qScaleY = Q(1);
-        transforms[i].x = 76;
-        transforms[i].y = 90;
+        transforms[i].x = (DISPLAY_WIDTH / 4) + 16;
+        transforms[i].y = (DISPLAY_HEIGHT / 2) + 10;
     }
 
     transforms[1].x--;
@@ -376,14 +378,14 @@ static void SoundTestScreenCreateUI(struct Task *t)
     transforms[2].x--;
     transforms[3].y--;
 
-    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, 0xB4, 0x8C, 6, 0, 4);
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, 0xB4, 0x74, 5, 0, 0);
+    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 60, 6, 0, 4);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 36, 5, 0, 0);
     animatedCream++;
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, 0xB4, 0x74, 5, 0, 0);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 36, 5, 0, 0);
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         sub_806A568(&soundTestScreen->nameDisplay[i], RENDER_TARGET_SCREEN, 2, 0x45F, 0x1000, 0, 0, 5,
-                    sSoundNames[sCompletedGameSoundsOrder[0]][i] - 0x20, 0);
+                    sSoundNames[sCompletedGameSoundsOrder[0]][i] - 32, 0);
     }
 }
 
@@ -526,11 +528,12 @@ static void Task_SoundTestScreenMain(void)
         }
     }
 
-    if (++soundTestScreen->nameTickerPos > 400) {
+    if (++soundTestScreen->nameTickerPos > DISPLAY_WIDTH + 160) {
         soundTestScreen->nameTickerPos = 0;
     }
 
-    SoundTestScreenSetNameDisplayPos(soundsList[soundTestScreen->soundNumber - 1], 0x100 - soundTestScreen->nameTickerPos, 0x9E);
+    SoundTestScreenSetNameDisplayPos(soundsList[soundTestScreen->soundNumber - 1], (DISPLAY_WIDTH + 16) - soundTestScreen->nameTickerPos,
+                                     DISPLAY_HEIGHT - 2);
     SoundTestScreenRenderUI();
 }
 
@@ -552,7 +555,6 @@ static void SoundTestScreenRenderUI(void)
     struct SoundMixerState *soundInfo;
 
     s16 i;
-    const u8 *E0C30;
 
     gBgScrollRegs[0][0] += 2;
     gBgScrollRegs[0][1] += 1;
@@ -564,16 +566,16 @@ static void SoundTestScreenRenderUI(void)
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     for (i = 0; i < 2; i++, numberDisplayDigit++) {
-        numberDisplayDigit->y = 96;
+        numberDisplayDigit->y = (DISPLAY_HEIGHT / 2) + 16;
 
         if (soundTestScreen->soundNumAnimSteps[i] != 0) {
             if (soundTestScreen->soundNumAnimSteps[i] > 0) {
-                numberDisplayDigit->y = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 96;
+                numberDisplayDigit->y = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + (DISPLAY_HEIGHT / 2) + 16;
                 soundTestScreen->soundNumAnimSteps[i]--;
             }
 
             if (soundTestScreen->soundNumAnimSteps[i] < 0) {
-                numberDisplayDigit->y = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                numberDisplayDigit->y = (DISPLAY_HEIGHT / 2) + 16 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
                 soundTestScreen->soundNumAnimSteps[i]++;
             }
         }
@@ -686,9 +688,9 @@ static void SoundTestScreenRenderUI(void)
 
     DisplaySprite(sprCream);
 
-    scrollArrows->x = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7) + 94;
+    scrollArrows->x = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7) + (DISPLAY_WIDTH / 4) + 34;
     DisplaySprite(scrollArrows);
-    scrollArrows->x = 58 - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
+    scrollArrows->x = (DISPLAY_WIDTH / 4 - 2) - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     SPRITE_FLAG_SET(scrollArrows, X_FLIP);
     DisplaySprite(scrollArrows);
     SPRITE_FLAG_CLEAR(scrollArrows, X_FLIP);
@@ -843,15 +845,17 @@ static void Task_SoundTestScreenCleanup(void)
     ResetProfileScreensVram();
 
 #ifdef BUG_FIX
-    // Prevent a crash related to task data being cleared on-destroy
-    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
-    s32 i = soundTestScreen->hblankIrqIndex;
+    {
+        // Prevent a crash related to task data being cleared on-destroy
+        struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
+        s32 i = soundTestScreen->hblankIrqIndex;
 
-    for (; i + 1 < gNumHBlankIntrs; i++) {
-        gHBlankCallbacks[i] = gHBlankCallbacks[i + 1];
+        for (; i + 1 < gNumHBlankIntrs; i++) {
+            gHBlankCallbacks[i] = gHBlankCallbacks[i + 1];
+        }
+
+        gHBlankCallbacks[--gNumHBlankIntrs] = NULL;
     }
-
-    gHBlankCallbacks[--gNumHBlankIntrs] = NULL;
 #endif
 
     TaskDestroy(gCurTask);

@@ -272,6 +272,12 @@ else
   CPPFLAGS += -D PORTABLE=0
 endif
 
+ifeq ($(TAS_TESTING),1)
+  CPPFLAGS += -D TAS_TESTING=1
+else
+  CPPFLAGS += -D TAS_TESTING=0
+endif
+
 ifeq ($(NON_MATCHING),1)
 # TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
 #    CPPFLAGS += -D NON_MATCHING=1
@@ -409,6 +415,7 @@ sdl_win32:
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### RECIPES ####
+tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
 
 include songs.mk
 include graphics.mk
