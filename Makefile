@@ -214,6 +214,12 @@ ifeq ($(PLATFORM),gba)
 	INCLUDE_SCANINC_ARGS += -I tools/agbcc/include
 	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
 	CC1FLAGS += -fhex-asm
+
+ifeq ($(BUILD_NAME), sa1)
+    # It seems this bug was introduced to GCC after SA1 released.
+    PROLOGUE_FIX := -fprologue-bugfix
+endif # BUILD_NAME == sa1
+
 else
 	CC1FLAGS += -Wstrict-overflow=1
 	ifeq ($(PLATFORM),sdl)
@@ -342,15 +348,6 @@ ifneq ($(NODEP),1)
 #
 # TODO: compile songs to C so that we can work around this.
 export MACOSX_DEPLOYMENT_TARGET := 11
-endif
-
-# TODO: Find a better way to limit this to SA1!
-ifeq ($(BUILD_NAME), sa1)
-ifeq ($(CC1), $(DEFAULT_CC1))
-    PROLOGUE_FIX := -fprologue-bugfix
-else
-    PROLOGUE_FIX :=
-endif
 endif
 
 ifeq ($(PLATFORM),gba)
