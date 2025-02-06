@@ -26,7 +26,7 @@ bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;
 
 u32 gMultiplayerPseudoRandom = 0;
 u8 gRoomEventQueueWritePos = 0;
-u8 ALIGNED(4) gUnknown_0300543C = 0;
+s8 ALIGNED(4) gUnknown_0300543C = 0;
 u16 ALIGNED(4) gBossCameraClampYLower = 0;
 s8 ALIGNED(4) gTrappedAnimalVariant = 0;
 

@@ -124,7 +124,7 @@ extern u16 gBossCameraClampYUpper;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
-extern u8 gUnknown_0300543C;
+extern s8 gUnknown_0300543C;
 extern struct Task *gEntitiesManagerTask;
 
 extern u8 gDestroySpotlights;
