@@ -42,7 +42,6 @@ void sub_801F044(void);
 
 void sub_80213C0(u32, u32, Player *);
 void CreateBossRunManager(u8);
-void InitCamera(u32);
 void StageInit_CollectRings(void);
 
 void SetupStageIntro(void);
@@ -196,8 +195,8 @@ void CreateGameStage(void)
 
     sub_801F044();
     gUnknown_030053E0 = 0;
-
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+    
+    if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         sub_80213C0(gSelectedCharacter, gCurrentLevel, &gPlayer);
     }
 
