@@ -659,9 +659,9 @@ void DestroyStageTasks(void)
     TaskDestroy(gGameStageTask);
     gGameStageTask = NULL;
     DestroyPlayerTasks(&gPlayer);
-    
+
 #if (GAME == GAME_SA1)
-    if(IS_SINGLE_PLAYER) {
+    if (IS_SINGLE_PLAYER) {
         DestroyPlayerTasks(&gPartner);
     }
 #endif
@@ -759,6 +759,12 @@ void GoToNextLevel(void)
 
 void TaskDestructor_GameStage(struct Task *t)
 {
+#if (GAME == GAME_SA1)
+    if ((gGameMode == GAME_MODE_TIME_ATTACK || (gGameMode == GAME_MODE_RACE) || (gGameMode == GAME_MODE_MULTI_PLAYER))
+        || (gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
+        gLoadedSaveGame.difficultyLevel = gDifficultyLevel;
+    }
+#endif
     gGameStageTask = NULL;
     m4aMPlayAllStop();
 }
