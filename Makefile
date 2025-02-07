@@ -69,9 +69,8 @@ endif
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
-DEFAULT_CC1 := tools/agbcc/bin/agbcc$(EXE)
 ifeq ($(PLATFORM),gba)
-CC1       := $(DEFAULT_CC1)
+CC1       := tools/agbcc/bin/agbcc$(EXE)
 CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
 else
 CC1       := $(PREFIX)gcc$(EXE)
