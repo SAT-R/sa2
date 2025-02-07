@@ -36,6 +36,7 @@ extern const Background gStageCameraBgTemplates[4];
 
 void InitCamera(u32);
 void UpdateCamera(void);
+void DestroyCameraMovementTask(void);
 
 extern const Collision *gRefCollision;
 

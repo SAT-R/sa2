@@ -6333,7 +6333,7 @@ void Player_HandleWalkAnim(Player *p)
 
 void CallSetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p) { SetStageSpawnPos(character, level, playerID, p); }
 
-void sub_80299FC(Player *p)
+void DestroyPlayerTasks(Player *p)
 {
     TaskDestroy(p->spriteTask);
     p->spriteTask = NULL;

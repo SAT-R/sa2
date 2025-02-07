@@ -134,7 +134,7 @@ void ApplyGameStageSettings(void)
     if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK || gGameMode == GAME_MODE_MULTI_PLAYER
          || gGameMode == GAME_MODE_TEAM_PLAY)
         || (gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
-        gDifficultyLevel = 0;
+        gDifficultyLevel = DIFFICULTY_NORMAL;
     } else {
         gDifficultyLevel = gLoadedSaveGame->difficultyLevel;
     }
@@ -654,14 +654,11 @@ void StageInit_Zone7ActBoss(void)
     StageInit_SetMusic_inline(gCurrentLevel);
 }
 
-void DestroyCameraMovementTask(void);
-void sub_80299FC(Player *player);
-
 void sub_801B68C(void)
 {
     TaskDestroy(gGameStageTask);
     gGameStageTask = NULL;
-    sub_80299FC(&gPlayer);
+    DestroyPlayerTasks(&gPlayer);
     DestroyCameraMovementTask();
 }
 
@@ -686,22 +683,71 @@ void HandleDeath(void)
     }
 }
 
-// TODO:
 // Unused.
-// Might be a leftover from the first game?
+// Leftover from SA1, but smaller than in there.
 void GoToNextLevel(void)
 {
+    u16 irqEnable, irqMasterEnable, dispStat;
+
     TasksDestroyAll();
     PAUSE_BACKGROUNDS_QUEUE();
-    gUnknown_03005390 = 0;
+    SA2_LABEL(gUnknown_03005390) = 0;
     PAUSE_GRAPHICS_QUEUE();
+
+#if (GAME == GAME_SA1)
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+
+    gFlags |= FLAGS_8000;
+    irqEnable = REG_IE;
+    irqMasterEnable = REG_IME;
+    dispStat = REG_DISPSTAT;
+
+    REG_IE = 0;
+    REG_IE;
+    REG_IME = 0;
+    REG_IME;
+    REG_DISPSTAT = 0;
+    REG_DISPSTAT;
+
+    gFlags &= ~FLAGS_4;
+
+    SlowDmaStop(0);
+    SlowDmaStop(1);
+    SlowDmaStop(2);
+    SlowDmaStop(3);
+#endif
+
     WriteSaveGame();
 
-    if (gGameMode == 0) {
+#if (GAME == GAME_SA1)
+    REG_IE = irqEnable;
+    REG_IE;
+    REG_IME = irqMasterEnable;
+    REG_IME;
+    REG_DISPSTAT = dispStat;
+    REG_DISPSTAT;
+
+    m4aSoundVSyncOn();
+
+    gFlags &= ~FLAGS_8000;
+#endif
+
+#if (GAME == GAME_SA1)
+    if (gGameMode != GAME_MODE_TIME_ATTACK)
+#elif (GAME == GAME_SA2)
+    if (gGameMode == GAME_MODE_SINGLE_PLAYER)
+#endif
+    {
         if (++gCurrentLevel < NUM_LEVEL_IDS) {
             GameStageStart();
         }
     }
+#if (GAME == GAME_SA1)
+    else {
+        CreateTimeAttackLobbyScreen();
+    }
+#endif
 }
 
 void TaskDestructor_GameStage(struct Task *t)
