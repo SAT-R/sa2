@@ -654,11 +654,18 @@ void StageInit_Zone7ActBoss(void)
     StageInit_SetMusic_inline(gCurrentLevel);
 }
 
-void sub_801B68C(void)
+void DestroyStageTasks(void)
 {
     TaskDestroy(gGameStageTask);
     gGameStageTask = NULL;
     DestroyPlayerTasks(&gPlayer);
+    
+#if (GAME == GAME_SA1)
+    if(IS_SINGLE_PLAYER) {
+        DestroyPlayerTasks(&gPartner);
+    }
+#endif
+
     DestroyCameraMovementTask();
 }
 
