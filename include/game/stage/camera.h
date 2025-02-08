@@ -14,11 +14,13 @@
 #if !WIDESCREEN_HACK
 #define CAM_SCREENBASE_BACK_A    28
 #define CAM_SCREENBASE_BACK_B    29
+#define CAM_SCREENBASE_BACK_C    26
 #define CAM_SCREENBASE_MAP_FRONT 30
 #define CAM_SCREENBASE_MAP_BACK  31
 #else
 #define CAM_SCREENBASE_BACK_A    48
 #define CAM_SCREENBASE_BACK_B    50
+#define CAM_SCREENBASE_BACK_C    58
 #define CAM_SCREENBASE_MAP_FRONT 52
 #define CAM_SCREENBASE_MAP_BACK  56
 #endif
@@ -32,7 +34,9 @@ struct Backgrounds {
 
 extern const Background gStageCameraBgTemplates[4];
 
+void InitCamera(u32);
 void UpdateCamera(void);
+void DestroyCameraMovementTask(void);
 
 extern const Collision *gRefCollision;
 

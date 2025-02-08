@@ -24212,7 +24212,7 @@ sub_0200BEA8: @ 0x0200BEA8
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200BED0
-	ldr r0, _0200BEEC @ =gUnknown_03005428
+	ldr r0, _0200BEEC @ =gMPRingCollectWins
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200BF3C
@@ -24230,7 +24230,7 @@ _0200BED0:
 	.align 2, 0
 _0200BEE4: .4byte gUnknown_03005444
 _0200BEE8: .4byte gUnknown_03005524
-_0200BEEC: .4byte gUnknown_03005428
+_0200BEEC: .4byte gMPRingCollectWins
 _0200BEF0: .4byte gUnknown_03005548
 _0200BEF4:
 	ldr r0, _0200BF44 @ =sub_0200BF54
@@ -29385,7 +29385,7 @@ _0200E4BA:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200E4D6
-	ldr r0, _0200E4F4 @ =gUnknown_03005428
+	ldr r0, _0200E4F4 @ =gMPRingCollectWins
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200E4DA
@@ -29403,7 +29403,7 @@ _0200E4E4: .4byte gUnknown_03005650
 _0200E4E8: .4byte 0x80000080
 _0200E4EC: .4byte 0x0000FB20
 _0200E4F0: .4byte gUnknown_03005524
-_0200E4F4: .4byte gUnknown_03005428
+_0200E4F4: .4byte gMPRingCollectWins
 _0200E4F8: .4byte gUnknown_030053F4
 _0200E4FC: .4byte gUnknown_03005434
 _0200E500:
@@ -29961,7 +29961,7 @@ _0200E904:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200E920
-	ldr r0, _0200E98C @ =gUnknown_03005428
+	ldr r0, _0200E98C @ =gMPRingCollectWins
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200E924
@@ -30020,7 +30020,7 @@ _0200E95A:
 	b _0200E9A6
 	.align 2, 0
 _0200E988: .4byte gUnknown_03005524
-_0200E98C: .4byte gUnknown_03005428
+_0200E98C: .4byte gMPRingCollectWins
 _0200E990: .4byte gUnknown_03005650
 _0200E994: .4byte gUnknown_030026D0
 _0200E998: .4byte sub_0200E7F8
@@ -32219,7 +32219,7 @@ _0200FA22:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200FA8A
-	ldr r0, _0200FAC8 @ =gUnknown_03005428
+	ldr r0, _0200FAC8 @ =gMPRingCollectWins
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200FA8E
@@ -32254,7 +32254,7 @@ _0200FA9A:
 	.align 2, 0
 _0200FAC0: .4byte gUnknown_02014FB8
 _0200FAC4: .4byte gUnknown_03005524
-_0200FAC8: .4byte gUnknown_03005428
+_0200FAC8: .4byte gMPRingCollectWins
 _0200FACC: .4byte gUnknown_03005650
 _0200FAD0: .4byte 0xFFFFBFFF
 _0200FAD4: .4byte gUnknown_030056C0
@@ -37628,7 +37628,7 @@ sub_02012308: @ 0x02012308
 	strb r4, [r0]
 	ldr r0, _02012434 @ =gUnknown_0300546C
 	strb r4, [r0]
-	ldr r0, _02012438 @ =gUnknown_03005428
+	ldr r0, _02012438 @ =gMPRingCollectWins
 	strb r4, [r0]
 	ldr r5, _0201243C @ =gUnknown_030053D4
 	ldrh r0, [r5]
@@ -37750,7 +37750,7 @@ _02012428: .4byte sub_020127B4
 _0201242C: .4byte gUnknown_030057D0
 _02012430: .4byte gUnknown_030053CC
 _02012434: .4byte gUnknown_0300546C
-_02012438: .4byte gUnknown_03005428
+_02012438: .4byte gMPRingCollectWins
 _0201243C: .4byte gUnknown_030053D4
 _02012440: .4byte 0x0000FF7F
 _02012444: .4byte gUnknown_030053E4
@@ -38038,7 +38038,7 @@ sub_020126AC: @ 0x020126AC
 	ldr r0, _020126DC @ =gUnknown_03005404
 	movs r1, #0
 	str r1, [r0]
-	ldr r0, _020126E0 @ =gUnknown_03005428
+	ldr r0, _020126E0 @ =gMPRingCollectWins
 	strb r1, [r0]
 	ldr r1, _020126E4 @ =gUnknown_030053FC
 	movs r0, #3
@@ -38059,7 +38059,7 @@ _020126CA:
 	bx r0
 	.align 2, 0
 _020126DC: .4byte gUnknown_03005404
-_020126E0: .4byte gUnknown_03005428
+_020126E0: .4byte gMPRingCollectWins
 _020126E4: .4byte gUnknown_030053FC
 _020126E8: .4byte gUnknown_03005444
 

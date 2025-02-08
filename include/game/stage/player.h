@@ -19,6 +19,7 @@ void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
 void InitializePlayer(Player *p);
+void DestroyPlayerTasks(Player *player);
 void Player_TransitionCancelFlyingAndBoost(Player *p);
 void sub_8023B5C(Player *, s32);
 void sub_8023260(Player *);

@@ -17,7 +17,7 @@ void DestroyCameraMovementTask(void)
     gCamera.movementTask = NULL;
 }
 
-void TaskDestructor_801E040(struct Task *unused)
+void TaskDestructor_Camera(struct Task *unused)
 {
     s32 i;
     gCamera.movementTask = NULL;
@@ -27,7 +27,7 @@ void TaskDestructor_801E040(struct Task *unused)
         gBgScrollRegs[i][1] = 0;
     }
 
-    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) && (gFlags & FLAGS_40)) {
+    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_40)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
         gFlags &= ~FLAGS_40;
     }
@@ -38,9 +38,12 @@ void TaskDestructor_801E040(struct Task *unused)
 void Task_CallUpdateCamera(void)
 {
     gDispCnt |= (DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON);
-    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+
+#if (GAME == GAME_SA2)
+    if (IS_EXTRA_STAGE(gCurrentLevel)) {
         gDispCnt &= ~DISPCNT_BG3_ON;
     }
+#endif
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         gDispCnt &= ~DISPCNT_WIN0_ON;

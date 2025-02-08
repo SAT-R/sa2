@@ -4,23 +4,43 @@
 #include "multi_sio.h"
 #include "core.h"
 
-#define GAME_MODE_SINGLE_PLAYER    0
-#define GAME_MODE_TIME_ATTACK      1
-#define GAME_MODE_BOSS_TIME_ATTACK 2
+#define GAME_MODE_SINGLE_PLAYER 0
+#define GAME_MODE_TIME_ATTACK   1
 
 #define GAME_MODE_MULTI_PLAYER 3
-#define GAME_MODE_TEAM_PLAY    4
 #if (GAME == GAME_SA1)
+#define GAME_MODE_RACE                       2
+#define GAME_MODE_CHAO_HUNT                  4
+#define GAME_MODE_TEAM_PLAY                  5
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 6
 #elif (GAME == GAME_SA2)
+#define GAME_MODE_BOSS_TIME_ATTACK           2
+#define GAME_MODE_TEAM_PLAY                  4
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
 #endif
+
+// TODO: Improve this name; SA1 only?
+#define IS_MP_OR_TEAM_PLAY ((gGameMode == GAME_MODE_MULTI_PLAYER) || (gGameMode == GAME_MODE_TEAM_PLAY))
 
 #if (GAME == GAME_SA1)
 #define IS_SINGLE_PLAYER ((gGameMode == GAME_MODE_SINGLE_PLAYER) || (gGameMode == GAME_MODE_TIME_ATTACK))
 #elif (GAME == GAME_SA2)
 #define IS_SINGLE_PLAYER                                                                                                                   \
     ((gGameMode == GAME_MODE_SINGLE_PLAYER) || (gGameMode == GAME_MODE_TIME_ATTACK) || (gGameMode == GAME_MODE_BOSS_TIME_ATTACK))
+#endif
+
+#if (GAME == GAME_SA1)
+#define GAME_MODE_IS_TIME_ATTACK (gGameMode == GAME_MODE_TIME_ATTACK)
+#elif (GAME == GAME_SA2)
+#define GAME_MODE_IS_TIME_ATTACK (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
+#endif
+
+#if (GAME == GAME_SA1)
+#define GAME_MODE_REQUIRES_ITEM_RNG                                                                                                        \
+    ((gGameMode != GAME_MODE_SINGLE_PLAYER) && (gGameMode != GAME_MODE_TIME_ATTACK) && (gGameMode != GAME_MODE_RACE)                       \
+     && (gGameMode != GAME_MODE_MULTI_PLAYER))
+#elif (GAME == GAME_SA2)
+#define GAME_MODE_REQUIRES_ITEM_RNG (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
 #endif
 
 #define IS_MULTI_PLAYER (!(IS_SINGLE_PLAYER))
@@ -110,7 +130,7 @@ extern u16 gBossCameraClampYUpper;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
-extern u8 gUnknown_0300543C;
+extern s8 gUnknown_0300543C;
 extern struct Task *gEntitiesManagerTask;
 
 extern u8 gDestroySpotlights;
@@ -127,7 +147,7 @@ extern u8 gDifficultyLevel;
 extern s8 gTrappedAnimalVariant;
 
 extern u8 gBossIndex; // TODO: Boss ID in XX-Stage? But it's used in checkpointc.c ...
-extern u8 gUnknown_030054F8;
+extern u8 gNumSingleplayerCharacters;
 
 // Incremented by 1 every frame if the game is not paused.
 // Starts before the stage-timer that is used for scores does.
@@ -168,7 +188,7 @@ extern u8 gMultiplayerConnections;
 // Only set after the player passed it, used to determine extra score
 extern s32 gStageGoalX;
 
-extern u8 gUnknown_03005428[4];
+extern u8 gMPRingCollectWins[4];
 extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
 extern RoomEvent gRoomEventQueue[16];

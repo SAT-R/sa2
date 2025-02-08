@@ -37,7 +37,7 @@ static void RenderMetatileLayers(s32, s32);
 
 // camera_destroy.h
 void Task_CallUpdateCamera(void);
-void TaskDestructor_801E040(struct Task *);
+void TaskDestructor_Camera(struct Task *);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
@@ -445,7 +445,7 @@ void InitCamera(u32 level)
     camera->shakeOffsetX = 0;
     camera->shakeOffsetY = 0;
 
-    camera->movementTask = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
+    camera->movementTask = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_Camera);
 
     camera->fnBgUpdate = sStageBgUpdateFuncs[level];
 

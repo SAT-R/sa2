@@ -292,7 +292,7 @@ void Task_TransitionToResultsScreen(void)
                         gMultiplayerCharacters[sp00[i]] = 2;
                     } else {
                         gUnknown_030054B4[sp00[0]] = i;
-                        gUnknown_03005428[sp00[0]]++;
+                        gMPRingCollectWins[sp00[0]]++;
                         gMultiplayerCharacters[sp00[0]] = i;
                     }
                 }
