@@ -60,6 +60,15 @@ void InitPlayerHitRingsScatter(void)
     void *dmaDest;
     u32 size;
 
+#if (GAME == GAME_SA1)
+    if (IS_MULTI_PLAYER) {
+        tgtTask = &gRingsScatterTask;
+        taskFn = Task_RingsScatter_MP_Multipak;
+    } else {
+        tgtTask = &gRingsScatterTask;
+        taskFn = Task_RingsScatter_Singleplayer;
+    }
+#elif (GAME == GAME_SA2)
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         if (IS_SINGLE_PLAYER) {
             tgtTask = &gRingsScatterTask;
@@ -72,6 +81,7 @@ void InitPlayerHitRingsScatter(void)
         tgtTask = &gRingsScatterTask;
         taskFn = Task_RingsScatter_MP_Singlepak;
     }
+#endif
 
     size = sizeof(RingsScatter);
 
@@ -91,17 +101,36 @@ void InitPlayerHitRingsScatter(void)
     s->graphics.dest = RESERVED_RING_TILES_VRAM;
     s->oamFlags = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
+#if (GAME == GAME_SA1)
+    s->graphics.anim = SA1_ANIM_RING;
+#elif (GAME == GAME_SA2)
     s->graphics.anim = SA2_ANIM_RING;
+#endif
     s->variant = 0;
     s->animCursor = 0;
     s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
-    s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2)
+#if (GAME == GAME_SA2)
+        | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC
+#endif
+        ;
     rs->unk2B6 = 0;
+
+#if (GAME == GAME_SA1)
+    if (!IS_EXTRA_STAGE(gCurrentLevel)) {
+        rs->unk2B4 = 0xE0;
+        rs->unk2B0 = 0x12;
+    } else {
+        rs->unk2B4 = 0xE0;
+        rs->unk2B0 = 7;
+    }
+#else
     rs->unk2B4 = 0x94;
     rs->unk2B0 = 0x12;
+#endif
 
     dmaDest = rs->rings;
     DmaFill16(3, 0, dmaDest, sizeof(rs->rings));
