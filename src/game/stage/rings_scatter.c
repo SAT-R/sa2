@@ -167,7 +167,11 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
     for (i = 0, ip = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
 
         if (ring->unkC == 0) {
+#if (GAME == GAME_SA1)
+            ring->unkC = 256;
+#elif (GAME == GAME_SA2)
             ring->unkC = 180;
+#endif
             ring->unkE = p->layer;
             ring->x = Q(x);
             ring->y = Q(y);
@@ -185,10 +189,20 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
                 }
                 r2 = r0;
 
+#if (GAME == GAME_SA1)
+                {
+                    s32 index = (r3 & 0xFF) * 4;
+                    velX = SIN(index);
+                    velX >>= r2;
+                    velY = COS(index);
+                    velY >>= r2;
+                }
+#elif (GAME == GAME_SA2)
                 velX = SIN((r3 & 0xFF) * 4);
                 velX >>= r2;
                 velY = COS((r3 & 0xFF) * 4);
                 velY >>= r2;
+#endif
 
                 velX -= (velX >> 2);
                 velY -= (velY >> 2);
@@ -207,6 +221,8 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
 
             r3 = -r3;
             velX = -velX;
+
+#if (GAME == GAME_SA2)
             ring->unk10 = r2;
 
             if (!(PseudoRandom32() & 0x10000)) {
@@ -214,6 +230,8 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
             }
 
             ring->unk10 |= (ip & 0x3);
+
+#endif
             ip++;
 
             if (ip >= numRings) {
