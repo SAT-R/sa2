@@ -1,7 +1,9 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
+#ifndef GEN_CTX
 #include <stdint.h>
+#endif
 
 #define IO_SIZE 0x400
 #if !PORTABLE

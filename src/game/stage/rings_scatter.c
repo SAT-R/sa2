@@ -256,9 +256,6 @@ void RingsScatterSingleplayer_FlippedGravity(void)
         if (ring->unkC <= sp0C && (p->charState != SA2_CHAR_ANIM_20 || p->timerInvulnerability == 0) && IS_ALIVE(p)) {
             Rect8 *rect = (Rect8 *)&hb->left;
             if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
-                s32 oldRingCount;
-                // _0801FF70
-
                 CreateCollectRingEffect(ringIntX, ringIntY);
 
                 INCREMENT_RINGS(1);
