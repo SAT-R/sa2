@@ -400,9 +400,6 @@ void RingsScatterSingleplayer_FlippedGravity(void)
             Rect8 *rect = (Rect8 *)&hb->left;
 #endif
             if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
-                s32 oldRingCount;
-                // _0801FF70
-
                 CreateCollectRingEffect(ringIntX, ringIntY);
 
                 INCREMENT_RINGS(1);

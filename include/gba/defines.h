@@ -1,8 +1,10 @@
 #ifndef GUARD_GBA_DEFINES
 #define GUARD_GBA_DEFINES
 
+#ifndef GEN_CTX
 #include <stddef.h>
 #include <stdint.h> // for uint16_t
+#endif
 
 #define TRUE  1
 #define FALSE 0

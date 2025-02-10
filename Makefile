@@ -604,5 +604,6 @@ check_format:
 
 ctx.c: $(C_HEADERS)
 	@for header in $(C_HEADERS); do echo "#include \"$$header\""; done > ctx.h
-	$(CPP) -P $(CPPFLAGS) ctx.h -o ctx.c
-	@rm ctx.h
+	gcc -P -E -dD -undef -nostdinc -I include -D GEN_CTX=1 ctx.h | sed '/^#define __STDC/d' | sed '1s|^|#include <stdint.h>\n|' > ctx.c
+
+
