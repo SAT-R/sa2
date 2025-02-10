@@ -120,8 +120,8 @@ typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
 
 struct Range {
-    s32 xLow, yLow;
-    s32 xHigh, yHigh;
+    CamCoord xLow, yLow;
+    CamCoord xHigh, yHigh;
 };
 
 struct Ranges {

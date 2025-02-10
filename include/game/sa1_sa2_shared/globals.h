@@ -213,9 +213,11 @@ extern struct InputCounters gNewInputCounters[32];
 extern u8 gUnknown_030055D8;
 
 #if (GAME == GAME_SA1) && !defined(BUG_FIX)
-#define LIVES_BOUND_CHECK_A(lives) (lives)
-#define LIVES_BOUND_CHECK_B(lives) (lives)
-#define BOUND_CHK_VARNAME          gNumLives
+#define LIVES_BOUND_CHECK_A(lives)            (lives)
+#define LIVES_BOUND_CHECK_B(lives)            (lives)
+#define NEW_LIVE_COUNT(_type, _varname, _inc) (gNumLives += 1)
+
+#define BOUND_CHK_VARNAME gNumLives
 #else
 #define LIVES_BOUND_CHECK_A(lives)                                                                                                         \
     ({                                                                                                                                     \
@@ -233,16 +235,11 @@ extern u8 gUnknown_030055D8;
         }                                                                                                                                  \
     })
 
-#define BOUND_CHK_VARNAME lives
-#endif
-
-#if (GAME == GAME_SA1)
-#define NEW_LIVE_COUNT(_type, _varname, _inc) (gNumLives += 1)
-#else
 #define NEW_LIVE_COUNT(_type, _varname, _inc)                                                                                              \
     _type _varname = divResA - divResB;                                                                                                    \
     _varname += _inc;
 
+#define BOUND_CHK_VARNAME lives
 #endif
 
 #define INCREMENT_SCORE_BASE(_inc, restartMusic, BoundCheck)                                                                               \
