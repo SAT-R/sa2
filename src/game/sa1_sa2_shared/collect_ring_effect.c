@@ -71,7 +71,7 @@ void Task_CollectRingEffect(void)
 
     s->x -= gCamera.x;
     s->y -= gCamera.y;
-    if (UpdateSpriteAnimation(s) == 0) {
+    if (UpdateSpriteAnimation(s) == ACMD_RESULT__ENDED) {
         DisplaySprite(s);
 
         gActiveCollectRingEffectCount--;

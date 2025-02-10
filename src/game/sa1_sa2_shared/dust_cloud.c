@@ -39,7 +39,7 @@ static void Task_CreateDustCloud(void)
     s->x -= gCamera.x;
     s->y -= gCamera.y;
 
-    if (UpdateSpriteAnimation(s) == 0) {
+    if (UpdateSpriteAnimation(s) == ACMD_RESULT__ENDED) {
         DisplaySprite(s);
         TaskDestroy(gCurTask);
 #ifdef BUG_FIX
