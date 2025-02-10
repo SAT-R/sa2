@@ -288,7 +288,7 @@ void sub_8040C1C(s32 x, s32 y, s32 numRings)
     for (i = 0, ip = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
         if (ring->unkC == 0) {
             ring->unkC = 256;
-            
+
             ring->unkE = p->layer;
             ring->x = Q(x);
             ring->y = Q(y);
@@ -334,7 +334,8 @@ void sub_8040C1C(s32 x, s32 y, s32 numRings)
 
 #if (GAME == GAME_SA1)
 // (99.52%) https://decomp.me/scratch/mlP3E
-NONMATCH("asm/non_matching/game/sa1_sa2_shared/RingsScatterSingleplayer_FlippedGravity.inc", void RingsScatterSingleplayer_FlippedGravity(void))
+NONMATCH("asm/non_matching/game/sa1_sa2_shared/RingsScatterSingleplayer_FlippedGravity.inc",
+         void RingsScatterSingleplayer_FlippedGravity(void))
 #else
 void RingsScatterSingleplayer_FlippedGravity(void)
 #endif
@@ -365,22 +366,22 @@ void RingsScatterSingleplayer_FlippedGravity(void)
         ringIntY = I(ring->y);
         {
 #if (GAME == GAME_SA1)
-        register Camera *cam asm("r4") = &gCamera;
+            register Camera *cam asm("r4") = &gCamera;
 #else
-        Camera *cam = &gCamera;
+            Camera *cam = &gCamera;
 #endif
-        screenX = ringIntX - cam->x;
+            screenX = ringIntX - cam->x;
 #if (GAME == GAME_SA2) && !(defined(NON_MATCHING))
-        screenY = ({
-            s32 r0 = cam->y;
-            register s32 r2 asm("r2") = ringIntY;
-            asm("" ::"r"(r2));
-            r2 -= r0;
-            asm("" ::"r"(r2));
-            r2;
-        });
+            screenY = ({
+                s32 r0 = cam->y;
+                register s32 r2 asm("r2") = ringIntY;
+                asm("" ::"r"(r2));
+                r2 -= r0;
+                asm("" ::"r"(r2));
+                r2;
+            });
 #else
-        screenY = ringIntY - cam->y;
+            screenY = ringIntY - cam->y;
 #endif
         }
 
@@ -420,27 +421,26 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
 #if (GAME == GAME_SA1)
         // "Cheat Code" Tails
-        if(gNumSingleplayerCharacters == 2) {
+        if (gNumSingleplayerCharacters == 2) {
             Player *p = &gPartner;
             hb = &p->spriteInfoBody->s.hitboxes[0];
-            if (ring->unkC <= sp0C && (p->charState != 15 || p->timerInvulnerability == 0) && (p->charState != 40) && IS_ALIVE(p))
-            {
+            if (ring->unkC <= sp0C && (p->charState != 15 || p->timerInvulnerability == 0) && (p->charState != 40) && IS_ALIVE(p)) {
                 Rect8 *rect = &hb->b;
                 if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
                     s32 oldRingCount;
                     // _0801FF70
-    
+
                     CreateCollectRingEffect(ringIntX, ringIntY);
-    
+
                     INCREMENT_RINGS(1);
                     // _0801FFC4
-    
+
                     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                         if (gRingCount > 255) {
                             gRingCount = 255;
                         }
                     }
-    
+
                     ring->unkC = 0;
                     continue;
                 }
@@ -513,7 +513,13 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 END_NONMATCH
 #endif
 
+#if (GAME == GAME_SA1)
+// (98.01%) https://decomp.me/scratch/iOeRj
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_NormalGravity.inc",
+         void RingsScatterSingleplayer_NormalGravity(void))
+#elif (GAME == GAME_SA2)
 void RingsScatterSingleplayer_NormalGravity(void)
+#endif
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -524,7 +530,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
     s32 i; // sp14
     s32 ringIntX, ringIntY;
     s32 screenX, screenY;
-    s32 ip;
+    s32 bossWorldX; // Used in SA1 in the Extra Boss stage (apparently; non-matching right now)
 
     Player *p;
     Hitbox *hb;
@@ -536,19 +542,42 @@ void RingsScatterSingleplayer_NormalGravity(void)
             continue;
         }
 
+#if (GAME == GAME_SA1)
+        ring->x += ring->velX;
+        ring->y += ring->velY;
+#elif (GAME == GAME_SA2)
         ring->x += ring->velX + gUnknown_030054FC;
         ring->y += ring->velY + gUnknown_030054E0;
+#endif
 
-        ringIntX = I(ring->x);
-        ip = ringIntX;
+#if (GAME == GAME_SA1)
+        bossWorldX = I(ring->x);
+        ringIntX = bossWorldX;
         ringIntY = I(ring->y);
+
+        if (IS_EXTRA_STAGE(gCurrentLevel)) {
+            s32 v = (ringIntX + gStageTime * 8) - 72;
+            if (v >= 2688) {
+                bossWorldX = Mod(v, 2688) + 72;
+            }
+        }
+#elif (GAME == GAME_SA2)
+        ringIntX = I(ring->x);
+        bossWorldX = ringIntX;
+        ringIntY = I(ring->y);
+#endif
+
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
         p = &gPlayer;
         hb = &p->spriteInfoBody->s.hitboxes[0];
 
+#if (GAME == GAME_SA1)
+        if ((ring->unkC <= sp0C) && ((p->charState != 15) || (p->timerInvulnerability == 0)) && (p->charState != 40) && IS_ALIVE(p))
+#elif (GAME == GAME_SA2)
         if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && IS_ALIVE(p))
+#endif
         {
 #if (GAME == GAME_SA1)
             Rect8 *rect = &hb->b;
@@ -559,7 +588,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
 #if (GAME == GAME_SA1)
                 CreateCollectRingEffect(ringIntX, ringIntY);
 #elif (GAME == GAME_SA2)
-                CreateCollectRingEffect(ip, ringIntY);
+                CreateCollectRingEffect(bossWorldX, ringIntY);
 #endif
 
                 INCREMENT_RINGS(1);
@@ -575,45 +604,52 @@ void RingsScatterSingleplayer_NormalGravity(void)
                 continue;
             }
         }
-        
+
 #if (GAME == GAME_SA1)
-        if(gNumSingleplayerCharacters == 2) {
+        if (gNumSingleplayerCharacters == 2) {
             p = &gPartner;
             hb = &p->spriteInfoBody->s.hitboxes[0];
-            
-            if ((ring->unkC <= sp0C) && ((p->charState != 15) || (p->timerInvulnerability == 0)) && (p->charState != 40) && IS_ALIVE(p))
-            {
+
+            if ((ring->unkC <= sp0C) && ((p->charState != 15) || (p->timerInvulnerability == 0)) && (p->charState != 40) && IS_ALIVE(p)) {
                 Rect8 *rect = &hb->b;
-                
+
                 if (RECT_TOUCHING_RING(I(p->qWorldX), I(p->qWorldY), ringIntX, ringIntY, rect)) {
                     CreateCollectRingEffect(ringIntX, ringIntY);
-    
+
                     INCREMENT_RINGS(1);
-    
+
                     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                         if (gRingCount > 255) {
                             gRingCount = 255;
                         }
                     }
-    
+
                     ring->unkC = 0;
-    
+
                     continue;
                 }
             }
         }
 #endif
 
-        if (ring->velY > 0 && ((ring->unk10 & 0x7) == 0)) {
+        if (ring->velY > 0 && UNK10_CONDITION) {
+#if (GAME == GAME_SA1)
+            s32 res = SA2_LABEL(sub_801F100)(ringIntY, bossWorldX, ring->unkE, +8, SA2_LABEL(sub_801EC3C));
+#elif (GAME == GAME_SA2)
             s32 res = SA2_LABEL(sub_801F100)(ringIntY, ringIntX, ring->unkE, +8, SA2_LABEL(sub_801EC3C));
+#endif
             if (res <= 0) {
                 ring->y += Q_24_8(res);
                 ring->velY = (ring->velY >> 2) - ring->velY;
             }
         }
 
-        if (rs->unk2B6 & 0x1 && ring->velY < 0 && ((ring->unk10 & 0x7) == 0)) {
+        if (rs->unk2B6 & 0x1 && ring->velY < 0 && UNK10_CONDITION) {
+#if (GAME == GAME_SA1)
+            s32 res = SA2_LABEL(sub_801F100)((ringIntY - 16), bossWorldX, ring->unkE, -8, SA2_LABEL(sub_801EC3C));
+#elif (GAME == GAME_SA2)
             s32 res = SA2_LABEL(sub_801F100)((ringIntY - 16), ringIntX, ring->unkE, -8, SA2_LABEL(sub_801EC3C));
+#endif
             if (res <= 0) {
                 ring->y -= Q_24_8(res);
                 ring->velY = (ring->velY >> 2) - ring->velY;
@@ -665,7 +701,10 @@ void RingsScatterSingleplayer_NormalGravity(void)
         }
     }
 }
- 
+#if (GAME == GAME_SA1)
+END_NONMATCH
+#endif
+
 #define USE_HITBOX_RECT 1
 
 // TODO: Use improved version of these globaly!

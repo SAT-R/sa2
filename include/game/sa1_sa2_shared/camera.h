@@ -10,7 +10,6 @@ typedef s16 CamCoord;
 typedef s32 CamCoord;
 #endif
 
-// TODO: Move TILE_WIDTH into "include/tilemap.h"
 #define TILE_WIDTH              8
 #define CAM_REGION_WIDTH        256
 #define TILES_PER_METATILE_AXIS 12

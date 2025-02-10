@@ -122,16 +122,23 @@ union MultiSioData {
 // TODO: Have we defined this somewhere else already?
 #define MAP_LAYER_COUNT 2
 
-// Thanks @MainMemory_ for figuring out how collision works!
+#if (GAME == GAME_SA1)
+typedef u16 collPxDim_t;
+#else
+typedef u32 collPxDim_t;
+#endif
+
+// Thanks @MainMemory_ for figuring out how collision is stored!
 typedef struct {
     /* 0x00 */ const s8 *height_map;
     /* 0x04 */ const u8 *tile_rotation;
     /* 0x08 */ const u16 *metatiles;
-    /* 0x0C */ const u16 *map[MAP_LAYER_COUNT];
+    /* 0x0C */ const MetatileIndexType *map[MAP_LAYER_COUNT];
     /* 0x14 */ const u16 *flags;
     /* 0x18 */ u16 levelX, levelY;
-    /* 0x1C */ u32 pxWidth; // u16 in SA1!
-    /* 0x20 */ u32 pxHeight; // u16 in SA1!
+    /* 0x1C */ collPxDim_t pxWidth, pxHeight;
+
+    // unk20/unk22 are not in SA1
 } Collision;
 
 struct Unk_03003674_1_Sub {

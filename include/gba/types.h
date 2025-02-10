@@ -27,6 +27,12 @@ typedef int16_t  s16;
 typedef int32_t  s32;
 typedef int64_t  s64;
 
+#if (GAME == GAME_SA1)
+typedef u8 MetatileIndexType;
+#else
+typedef u16 MetatileIndexType;
+#endif
+
 // If the DISPLAY_HEIGHT was >255, scanline effects would break,
 // so we have to make this variable bigger.
 // (u16 should be plenty for screen coordinates, right?)

@@ -160,7 +160,8 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     SA2_LABEL(sub_801F100)(I(_enemy->spawnY + _enemy->offsetY), I(_enemy->spawnX + _enemy->offsetX), _unknownBool, 8, _task);
 
 #define ENEMY_CLAMP_TO_GROUND_INNER_X_FIRST(_enemy, _unknownBool)                                                                          \
-    SA2_LABEL(sub_801F100)(I(_enemy->spawnX + _enemy->offsetX), I(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8, SA2_LABEL(sub_801EC3C));
+    SA2_LABEL(sub_801F100)                                                                                                                 \
+    (I(_enemy->spawnX + _enemy->offsetX), I(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8, SA2_LABEL(sub_801EC3C));
 
 #define ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, _p)                                                                                \
     {                                                                                                                                      \
@@ -169,7 +170,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
                                                                                                                                            \
         if (delta < 0) {                                                                                                                   \
             _enemy->offsetY += Q(delta);                                                                                                   \
-            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, SA2_LABEL(sub_801EC3C));                                                        \
+            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, SA2_LABEL(sub_801EC3C));                                             \
         }                                                                                                                                  \
                                                                                                                                            \
         if (delta > 0) {                                                                                                                   \
@@ -186,7 +187,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
                                                                                                                                            \
         if (delta < 0) {                                                                                                                   \
             _enemy->offsetY -= Q(delta);                                                                                                   \
-            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, SA2_LABEL(sub_801EC3C));                                                        \
+            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, SA2_LABEL(sub_801EC3C));                                             \
         }                                                                                                                                  \
                                                                                                                                            \
         if (delta > 0) {                                                                                                                   \
