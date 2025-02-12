@@ -13,8 +13,8 @@ typedef struct {
     /*0x3C */ Hitbox reserved; // TODO: Maybe 3 hitboxes (Player, Action, Shield)?
 } PlayerSpriteInfo; /* size: 0x44 */
 
-extern PlayerSpriteInfo gUnknown_03005AA0;
-extern PlayerSpriteInfo gUnknown_03005AF0;
+extern PlayerSpriteInfo gPlayerLimbsPSI;
+extern PlayerSpriteInfo gPlayerBodyPSI;
 
 // TODO: Better name.
 //       This is used for an apparent around the value Cream uses for flying duration

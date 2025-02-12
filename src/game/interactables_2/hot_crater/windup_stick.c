@@ -89,9 +89,9 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
     gPlayer.spriteOffsetY = 14;
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
-    windUpStick->unk12 = (gUnknown_03005AF0.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;
-    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    windUpStick->unk12 = (gPlayerBodyPSI.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;
+    gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerBodyPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     gPlayer.qWorldY = Q(windUpStick->unk4 + 3);
 
     switch (windUpStick->unk10) {
@@ -137,8 +137,8 @@ static void sub_80727F4(Sprite_WindUpStick *windUpStick)
     Player_ClearMovestate_IsInScriptedSequence();
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
 
-    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, windUpStick->unk12);
+    gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerBodyPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, windUpStick->unk12);
 
     switch (windUpStick->unk10) {
         case 1:

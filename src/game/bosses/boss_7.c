@@ -255,8 +255,8 @@ void CreateEggFrog(void)
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
-    gUnknown_03005AF0.s.frameFlags &= ~0x3000;
-    gUnknown_03005AF0.s.frameFlags |= 0x1000;
+    gPlayerBodyPSI.s.frameFlags &= ~0x3000;
+    gPlayerBodyPSI.s.frameFlags |= 0x1000;
     gActiveBossTask = TaskCreate(Task_EggFrogMain, sizeof(EggFrog), 0x4000, 0, TaskDestructor_EggFrogMain);
 
     boss = TASK_DATA(gActiveBossTask);

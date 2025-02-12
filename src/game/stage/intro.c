@@ -621,7 +621,7 @@ static void Task_IntroControllerMain(void)
     }
     introController->counter = frameCounter;
 
-    gUnknown_03005AF0.s.frameFlags &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
+    gPlayerBodyPSI.s.frameFlags &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
 
     if (frameCounter < 150) {
         gPlayer.moveState |= MOVESTATE_100000;
@@ -692,7 +692,7 @@ static void Task_IntroControllerMain(void)
         if (IS_MULTI_PLAYER) {
             sub_8018818();
         } else {
-            gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_18;
+            gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_18;
         }
         CreateStageUI();
         TaskDestroy(gCurTask);

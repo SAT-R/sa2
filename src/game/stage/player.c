@@ -49,8 +49,8 @@ typedef struct {
 Player ALIGNED(8) gPlayer = {};
 
 // Potentially some extra space on player for this to be aligned 16 (should be 8)
-PlayerSpriteInfo ALIGNED(16) gUnknown_03005AA0 = {};
-PlayerSpriteInfo ALIGNED(16) gUnknown_03005AF0 = {};
+PlayerSpriteInfo ALIGNED(16) gPlayerLimbsPSI = {};
+PlayerSpriteInfo ALIGNED(16) gPlayerBodyPSI = {};
 
 // sakit
 extern void InitNewInputCounters(void);
@@ -679,8 +679,8 @@ void SetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p)
 
     p->unk98 = 0;
     p->checkpointTime = 0;
-    p->spriteInfoBody = &gUnknown_03005AF0;
-    p->spriteInfoLimbs = &gUnknown_03005AA0;
+    p->spriteInfoBody = &gPlayerBodyPSI;
+    p->spriteInfoLimbs = &gPlayerLimbsPSI;
 }
 
 void InitializePlayer(Player *p)
