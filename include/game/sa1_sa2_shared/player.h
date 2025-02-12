@@ -180,8 +180,21 @@ typedef struct Player_ {
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ PlayerSpriteInfo *spriteInfoBody; // for character sprites
     /* 0x94 */ PlayerSpriteInfo *spriteInfoLimbs; // SpriteInfo for Tails' tails / Cream's ears, when rolling
+#if PORTABLE
+    // NOTE: There's a copy in player.c's 'InitializePlayer' that
+    //       copies via a (u32 *) to unk99.
+    //
+    //       Since it is offset originally, platforms only writing words
+    //       aligned (or crash when trying to write to an odd pointer) will
+    //       not have the memory initialized properly.
+    //
+    //       Ironically this is a non-crashing bug on GBA as well.
+    /* 0x99 */ s8 unk99[16];
+    /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
+#else
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99[16];
+#endif
     /* 0x9A */ u8 fillerA9[0x3];
 
     // Cream's framecounter for flying
