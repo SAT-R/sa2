@@ -48,7 +48,7 @@ typedef struct {
 
 Player ALIGNED(8) gPlayer = {};
 
-// Poentially some extra space on player for this to be aligned 16 (should be 8)
+// Potentially some extra space on player for this to be aligned 16 (should be 8)
 PlayerSpriteInfo ALIGNED(16) gUnknown_03005AA0 = {};
 PlayerSpriteInfo ALIGNED(16) gUnknown_03005AF0 = {};
 
@@ -530,19 +530,14 @@ static inline void Player_CameraShift_inline(Player *p)
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
-#ifndef NON_MATCHING
-    register Player *p asm("r5") = player;
-#else
-    Player *p = player;
-#endif
-
-    s32 playerID = p->playerID;
     struct Task *t;
     player_0_Task *gt;
 
-    t = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_Player);
-    p->spriteTask = t;
-    gt = TASK_DATA(t);
+    Player *p = player;
+    s32 playerID = p->playerID;
+
+    p->spriteTask = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_Player);
+    gt = TASK_DATA(p->spriteTask);
     gt->unk0 = playerID;
     gt->unk4 = 0;
 
