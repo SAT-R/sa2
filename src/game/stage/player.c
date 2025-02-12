@@ -719,8 +719,8 @@ void InitializePlayer(Player *p)
     p->layer = PLAYER_LAYER__BACK;
     p->maxSpeed = Q(9.0);
     p->topSpeed = Q(6.0);
-    p->acceleration = 8;
-    p->deceleration = 64;
+    p->acceleration = Q(8. / 256.);
+    p->deceleration = Q(64. / 256.);
     p->charState = CHARSTATE_IDLE;
     p->prevCharState = CHARSTATE_INVALID;
     p->anim = -1;
@@ -735,8 +735,8 @@ void InitializePlayer(Player *p)
     p->unk72 = ZONE_TIME_TO_INT(0, 6);
     p->unk7E = 0;
     p->unk7C = 0;
-    p->unk82 = 0x100;
-    p->unk80 = 0x100;
+    p->unk82 = Q(1);
+    p->unk80 = Q(1);
     p->defeatScoreIndex = 0;
     p->unk61 = 0;
     p->unk62 = 0;
@@ -744,6 +744,8 @@ void InitializePlayer(Player *p)
     p->secondsUntilDrown = 30;
     p->framesUntilDrownCountDecrement = 60;
     p->unk88 = 10;
+
+#if (GAME == GAME_SA2)
     p->transition = 0;
     p->unk6E = 0;
     p->prevTransition = 0;
@@ -757,6 +759,7 @@ void InitializePlayer(Player *p)
     sub_8015750();
     sub_801561C();
     Player_HandleBoostThreshold(p);
+#endif
 
 #ifndef NON_MATCHING
     {
@@ -788,14 +791,18 @@ void InitializePlayer(Player *p)
             :
             : "r"(u99), "r"(i));
     }
-
 #else
-    u99_r6 = p->unk99;
-    playerID = &p->playerID;
-    character = &p->character;
-    memset(p->unk99, 0, sizeof(p->unk99));
+    {
+        u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
+        s32 i = 4;
+        while (i-- != 0) {
+            // @BUG: agbcc compiles this to an stmia instruction, which writes aligned words,
+            //       so the written bytes are off by one, because SA2_LABEL(unk99) isn't word-aligned!
+            //       >> writes unk98 - unk99[14]
+            *ptr++ = 0;
+        }
+    }
 #endif
-
     *u99_r6 = 0x7F;
 
     if ((*playerID == 0) && IS_SINGLE_PLAYER) {
