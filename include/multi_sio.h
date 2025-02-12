@@ -12,10 +12,12 @@
 
 #define MULTI_SIO_SYNC_DATA 0xfefe // Synchronized Data (0x0000/0xfffa~0xffff prohibited)
 
+#if PLATFORM_GBA
 // Comment out if no space in CPU internal Work RAM
 #define MULTI_SIO_DI_FUNC_FAST // SIO Interrupt Prohibit Function High
                                // Speed Flag (CPU Internal RAM
                                // Execution)
+#endif
 
 // Update if maximum delay for communication interrupt is larger than
 // following.
