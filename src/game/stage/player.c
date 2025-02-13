@@ -794,9 +794,9 @@ void InitializePlayer(Player *p)
     *u99_r6 = 0x7F;
 #else
     {
+        u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
         playerID = &p->playerID;
         character = &p->character;
-        u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
 
         s32 i = 4;
         while (i-- != 0) {
