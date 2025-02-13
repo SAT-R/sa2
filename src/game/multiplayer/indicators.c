@@ -19,12 +19,159 @@ typedef struct {
     /* 0x00 */ Sprite spr;
 } SelfIndicator; /* size: 0x40 */
 
+static void Task_801951C(void);
+static void Task_8019898(void);
+static void Task_SelfPositionIndicator(void);
+static void TaskDestructor_8019CC8(struct Task *);
+
 #define RESERVED_INDICATOR_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2700)
 
-void Task_801951C(void);
-void Task_8019898(void);
-void Task_SelfPositionIndicator(void);
-void TaskDestructor_8019CC8(struct Task *);
+#define RETURN_IF_PLAYER_ONSCREEN(posX, posY, camX, camY)                                                                                  \
+    if (((posX) - (camX) >= 0) && ((posX) - (camX) <= DISPLAY_WIDTH)) {                                                                    \
+        if ((((posY) - (camY)) >= 0)) {                                                                                                    \
+            if ((((posY) - (camY)) <= DISPLAY_HEIGHT)) {                                                                                   \
+                return;                                                                                                                    \
+            }                                                                                                                              \
+        }                                                                                                                                  \
+    }
+
+// This was likely not a macro and instead a copy and paste, but it's
+// nicer that we can clean up this code a bit to re-use the logic
+#define UPDATE_INDICATOR(targetX, targetY, s, transf)                                                                                      \
+    ({                                                                                                                                     \
+        s32 opponentDistSq;                                                                                                                \
+        s16 rot, tfx, tfy;                                                                                                                 \
+        s16 r1 = (targetX);                                                                                                                \
+        s16 r4 = (targetY);                                                                                                                \
+                                                                                                                                           \
+        if (((targetX) != 0) && ((targetY) != 0)) {                                                                                        \
+            while ((ABS(r1) >= 128) || (ABS(r4) >= 128)) {                                                                                 \
+                r1 = r1 / 2;                                                                                                               \
+                r4 = r4 / 2;                                                                                                               \
+                                                                                                                                           \
+                if (ABS(r1) < 2) {                                                                                                         \
+                    break;                                                                                                                 \
+                }                                                                                                                          \
+                                                                                                                                           \
+                if (ABS(r4) < 2) {                                                                                                         \
+                    break;                                                                                                                 \
+                }                                                                                                                          \
+            }                                                                                                                              \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (ABS(r1) < 2) {                                                                                                                 \
+            if (r4 > 0) {                                                                                                                  \
+                rot = 256;                                                                                                                 \
+            } else {                                                                                                                       \
+                rot = 768;                                                                                                                 \
+            }                                                                                                                              \
+        } else if (ABS(r4) < 2) {                                                                                                          \
+            rot = 512;                                                                                                                     \
+            if (r1 > 0) {                                                                                                                  \
+                rot = 0;                                                                                                                   \
+            }                                                                                                                              \
+        } else {                                                                                                                           \
+            rot = sub_8004418(r4, r1);                                                                                                     \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        (transf)->rotation = (rot + 256) & ONE_CYCLE;                                                                                      \
+        opponentDistSq = SQUARE((targetX)) + SQUARE((targetY));                                                                            \
+                                                                                                                                           \
+        if (opponentDistSq < 0x10000) {                                                                                                    \
+            (s)->animSpeed = opponentDistSq < 0x10000 ? SPRITE_ANIM_SPEED(1.5) : SPRITE_ANIM_SPEED(1.0);                                   \
+        } else {                                                                                                                           \
+            (s)->animSpeed = SPRITE_ANIM_SPEED(1.0);                                                                                       \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (opponentDistSq > 0x06000000) {                                                                                                 \
+            (transf)->qScaleX = Q(0.25);                                                                                                   \
+            (transf)->qScaleY = Q(0.25);                                                                                                   \
+        } else if (opponentDistSq < SQUARE(256)) {                                                                                         \
+            (transf)->qScaleX = Q(1.875);                                                                                                  \
+            (transf)->qScaleY = Q(1.875);                                                                                                  \
+        } else {                                                                                                                           \
+            s32 dist = (0x06000000 - opponentDistSq) >> 16;                                                                                \
+            s32 scale = Div(dist * Q(1.625), Q(5.99609375)) + Q(0.25);                                                                     \
+            (transf)->qScaleX = scale;                                                                                                     \
+            (transf)->qScaleY = scale;                                                                                                     \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (rot == 0) {                                                                                                                    \
+            tfy = (DISPLAY_HEIGHT / 2);                                                                                                    \
+            tfx = DISPLAY_WIDTH;                                                                                                           \
+        } else if (rot == 256) {                                                                                                           \
+            tfy = DISPLAY_HEIGHT;                                                                                                          \
+            tfx = (DISPLAY_WIDTH / 2);                                                                                                     \
+        } else if (rot == 512) {                                                                                                           \
+            tfy = (DISPLAY_HEIGHT / 2);                                                                                                    \
+            tfx = 0;                                                                                                                       \
+        } else if (rot == 768) {                                                                                                           \
+            tfy = 0;                                                                                                                       \
+            tfx = (DISPLAY_WIDTH / 2);                                                                                                     \
+        } else {                                                                                                                           \
+            if ((targetX) > 0) {                                                                                                           \
+                s16 divRes = Div(SIN_24_8(rot) * 256, COS_24_8(rot));                                                                      \
+                tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT / 2);                                                                         \
+                                                                                                                                           \
+                if ((targetY) > 0) {                                                                                                       \
+                    if (tfy >= DISPLAY_HEIGHT) {                                                                                           \
+                        s32 sinVal;                                                                                                        \
+                        tfy = DISPLAY_HEIGHT;                                                                                              \
+                        sinVal = (256 - rot) & ONE_CYCLE;                                                                                  \
+                        divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
+                        tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);                                                                   \
+                    } else {                                                                                                               \
+                        tfx = DISPLAY_WIDTH;                                                                                               \
+                    }                                                                                                                      \
+                } else {                                                                                                                   \
+                    if (tfy < 0) {                                                                                                         \
+                        s32 sinVal;                                                                                                        \
+                        tfy = 0;                                                                                                           \
+                        sinVal = (256 - rot) & ONE_CYCLE;                                                                                  \
+                        divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
+                        tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);                                                                   \
+                    } else {                                                                                                               \
+                        tfx = DISPLAY_WIDTH;                                                                                               \
+                    }                                                                                                                      \
+                }                                                                                                                          \
+                                                                                                                                           \
+            } else {                                                                                                                       \
+                s16 divRes                                                                                                                 \
+                    = Div((SIN_24_8((rot - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100, (COS_24_8((rot - (SIN_PERIOD / 2)) & ONE_CYCLE)));     \
+                tfy = (DISPLAY_HEIGHT / 2) - ((divRes * 15) >> 5);                                                                         \
+                if ((targetY) > 0) {                                                                                                       \
+                    if (tfy >= DISPLAY_HEIGHT) {                                                                                           \
+                        s32 sinVal;                                                                                                        \
+                        tfy = DISPLAY_HEIGHT;                                                                                              \
+                        sinVal = (768 - rot) & ONE_CYCLE;                                                                                  \
+                        divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
+                        tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);                                                                   \
+                    } else {                                                                                                               \
+                        tfx = 0;                                                                                                           \
+                    }                                                                                                                      \
+                } else {                                                                                                                   \
+                    if (tfy < 0) {                                                                                                         \
+                        s32 sinVal;                                                                                                        \
+                        tfy = 0;                                                                                                           \
+                                                                                                                                           \
+                        sinVal = (768 - rot) & ONE_CYCLE;                                                                                  \
+                        divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
+                        tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);                                                                   \
+                    } else {                                                                                                               \
+                        tfx = 0;                                                                                                           \
+                    }                                                                                                                      \
+                }                                                                                                                          \
+            }                                                                                                                              \
+        }                                                                                                                                  \
+        (transf)->x = tfx;                                                                                                                 \
+        (transf)->y = tfy;                                                                                                                 \
+                                                                                                                                           \
+        (s)->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;                                                                                    \
+        (s)->frameFlags |= gUnknown_030054B8++;                                                                                            \
+        UpdateSpriteAnimation((s));                                                                                                        \
+        TransformSprite((s), (transf));                                                                                                    \
+        DisplaySprite((s));                                                                                                                \
+    })
 
 void CreateOpponentPositionIndicator(u8 sid)
 {
@@ -90,199 +237,68 @@ void CreateSelfPositionIndicator(void)
     UpdateSpriteAnimation(spr);
 }
 
-// (79.22%) https://decomp.me/scratch/SKNlg
-NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc", void Task_801951C(void))
+static void Task_801951C(void)
 {
-    s32 opponentX, opponentY;
-    s32 opponentDistSq;
+    OpponentIndicator *pi = TASK_DATA(gCurTask);
+    struct Task *t = gMultiplayerPlayerTasks[pi->playerId];
+    MultiplayerPlayer *mpp = TASK_DATA(t);
+    Sprite *spr = &pi->spr;
+    SpriteTransform *transform = &pi->transform;
+
     s16 opponentX2, opponentY2;
-    s16 tfx, tfy;
-    s16 r4;
-    s32 sinVal;
-    Sprite *spr;
-    SpriteTransform *transform;
-    OpponentIndicator *pi;
-    struct Task *t;
-    MultiplayerPlayer *mpp;
 
-    pi = TASK_DATA(gCurTask);
-    t = gMultiplayerPlayerTasks[pi->playerId];
-    mpp = TASK_DATA(t);
-    spr = &pi->spr;
-    transform = &pi->transform;
+    RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, gCamera.x, gCamera.y);
 
-    opponentX = mpp->pos.x - gCamera.x;
+    opponentX2 = (unsigned)(mpp->pos.x - (DISPLAY_WIDTH / 2) - gCamera.x);
+    opponentY2 = (unsigned)(mpp->pos.y - (DISPLAY_HEIGHT / 2) - gCamera.y);
 
-    if ((opponentX >= 0) && (opponentX <= DISPLAY_WIDTH)) {
-        opponentY = mpp->pos.y - gCamera.y;
+    UPDATE_INDICATOR(opponentX2, opponentY2, spr, transform);
+}
 
-        if ((opponentY >= 0) && (opponentY <= DISPLAY_HEIGHT)) {
-            return;
-        }
-    }
+static void Task_8019898()
+{
+    OpponentIndicator *pi = TASK_DATA(gCurTask);
+    struct Task *t = gMultiplayerPlayerTasks[pi->playerId];
+    MultiplayerPlayer *mpp = TASK_DATA(t);
+    Sprite *spr = &pi->spr;
+    SpriteTransform *transform = &pi->transform;
+
+    s32 normalizedCamX, normalizedCamY;
+    s16 opponentX, opponentY;
+
+    RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, gCamera.x, gCamera.y);
     // _08019576
 
-    opponentX2 = mpp->pos.x - (DISPLAY_WIDTH / 2);
-    opponentY2 = mpp->pos.y - (DISPLAY_HEIGHT / 2);
+    opponentX = (unsigned)(mpp->pos.x - (DISPLAY_WIDTH / 2) - gCamera.x);
+    opponentY = (unsigned)(mpp->pos.y - (DISPLAY_HEIGHT / 2) - gCamera.y);
 
-    opponentX2 -= gCamera.x;
-    opponentY2 -= gCamera.y;
-
-    if ((opponentX2 != 0) && (opponentY2 != 0)) {
-        while ((ABS(opponentY2) >= 128) || (ABS(opponentX2) >= 128)) {
-            // _080195C8
-            // NOTE: This has GOT to be wrong!
-            opponentX2 = -(opponentX2) >> 1;
-            opponentY2 = -(opponentY2) >> 1;
-
-            if (ABS(opponentX2) < 2) {
-                break;
-            }
-
-            if (ABS(opponentY2) < 2) {
-                break;
-            }
-        }
-    }
-    // _08019616
-
-    if (ABS(opponentX2) < 2) {
-        // _08019622+4
-        r4 = opponentY2 > 0 ? Q(1.0) : Q(3.0);
-
-    } else if (ABS(opponentY2) < 2) {
-        // _08019636
-        r4 = Q(2.0);
-        if (opponentY2 > 0) {
-            r4 = Q(0);
-        }
+    // Only addition is from here
+    if (gCamera.x >= 961) {
+        normalizedCamX = gCamera.x - 1440;
+        normalizedCamY = gCamera.y - 864;
     } else {
-        r4 = sub_8004418(opponentX2, opponentY2);
-    }
-    transform->rotation = (r4 + Q(1.0)) & ONE_CYCLE;
-    // __0801966E
-    opponentDistSq = SQUARE(opponentX2) + SQUARE(opponentY2);
-
-    if (opponentDistSq < 0x10000) {
-        spr->animSpeed = opponentDistSq < 0x10000 ? SPRITE_ANIM_SPEED(1.5) : SPRITE_ANIM_SPEED(1.0);
-    } else {
-        spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        normalizedCamX = gCamera.x + 1440;
+        normalizedCamY = gCamera.y + 864;
     }
 
-    if (opponentDistSq > 0x06000000) {
-        transform->qScaleX = Q(0.25);
-        transform->qScaleY = Q(0.25);
-    } else if (opponentDistSq < 0x10000) {
-        transform->qScaleX = Q(1.875);
-        transform->qScaleY = Q(1.875);
-        asm(""); // TEMP
-    } else {
-        // _080196C0
-        s32 dist = (0x06000000 - opponentDistSq) >> 16;
-        s32 scale = Div(dist * 0x1A0, 0x5FF) + 0x40;
-        transform->qScaleX = scale;
-        transform->qScaleY = scale;
+    RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, normalizedCamX, normalizedCamY);
+
+    normalizedCamX = ({ mpp->pos.x - (DISPLAY_WIDTH / 2); }) - normalizedCamX;
+    normalizedCamY = ({ mpp->pos.y - (DISPLAY_HEIGHT / 2); }) - normalizedCamY;
+
+    if (MAX(ABS(opponentX), ABS(opponentY)) > MAX(ABS(normalizedCamX), ABS(normalizedCamY))) {
+        opponentX = normalizedCamX;
+        opponentY = normalizedCamY;
     }
-    // _080196DC
 
-    if (r4 == 0) {
-        tfy = (DISPLAY_HEIGHT / 2);
-    label:
-        tfx = DISPLAY_WIDTH;
-        asm("");
-    } else if (r4 == 0x100) {
-        tfy = DISPLAY_HEIGHT;
-        tfx = (DISPLAY_WIDTH / 2);
-    } else if (r4 == 0x200) {
-        tfy = (DISPLAY_HEIGHT / 2);
-        tfx = 0;
-    } else if (r4 == 0x300) {
-        tfy = 0;
-        tfx = (DISPLAY_WIDTH / 2);
-    } else {
-        // _08019716
-        if (opponentX2 > 0) {
-            s16 divRes = Div(SIN_24_8(r4) * 0x100, COS_24_8(r4));
-            tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT / 2);
-
-            if (opponentY2 > 0) {
-                if (tfy >= DISPLAY_HEIGHT) {
-                    tfy = DISPLAY_HEIGHT;
-
-                    sinVal = (0x100 - r4) & ONE_CYCLE;
-                    goto label2_0;
-                } else {
-                    // tfx = DISPLAY_WIDTH;
-                    goto label;
-                }
-            } else {
-                // _08019768
-                if (tfy < 0) {
-                    tfy = 0;
-
-                    sinVal = (0x100 - r4) & ONE_CYCLE;
-                    goto label2;
-                } else {
-                    // tfx = DISPLAY_WIDTH;
-                    goto label;
-                }
-            }
-
-            // _08019818
-        } else {
-            // _0801977C
-            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100, (COS_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)));
-            tfy = (DISPLAY_HEIGHT / 2) - ((divRes * 15) >> 5);
-
-            if (opponentY2 > 0) {
-                if (tfy >= DISPLAY_HEIGHT) {
-                    tfy = DISPLAY_HEIGHT;
-
-                    sinVal = (0x300 - r4) & ONE_CYCLE;
-                label2_0:
-                    divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
-                    tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);
-                } else {
-                    tfx = 0;
-                }
-
-            } else {
-                // _08019808
-                if (tfy < 0) {
-                    tfy = 0;
-
-                    sinVal = (0x300 - r4) & ONE_CYCLE;
-                label2:
-                    divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
-                    tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);
-                } else {
-                    // _08019848
-                    tfx = 0;
-                }
-            }
-        }
-    }
-    transform->x = tfx;
-    transform->y = tfy;
-
-    // _0801984A+6
-    spr->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    spr->frameFlags |= gUnknown_030054B8++;
-    UpdateSpriteAnimation(spr);
-    TransformSprite(spr, transform);
-    DisplaySprite(spr);
+    UPDATE_INDICATOR(opponentX, opponentY, spr, transform);
 }
-END_NONMATCH
 
-// Almost identical to Task_801951C
-NONMATCH("asm/non_matching/Task_8019898.inc", void Task_8019898()) { }
-END_NONMATCH
-
-void Task_SelfPositionIndicator(void)
+static void Task_SelfPositionIndicator(void)
 {
     SelfIndicator *pi = TASK_DATA(gCurTask);
     Sprite *s = &pi->spr;
     UpdateSpriteAnimation(s);
 }
 
-void TaskDestructor_8019CC8(struct Task *t) { return; }
+static void TaskDestructor_8019CC8(struct Task *t) { return; }
