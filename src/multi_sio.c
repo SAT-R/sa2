@@ -2,6 +2,10 @@
 #include "multi_sio.h"
 #include "sio32_multi_load.h"
 
+#if PORTABLE
+#include "platform/platform.h"
+#endif
+
 static const char sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
 
 #ifdef MULTI_SIO_DI_FUNC_FAST
@@ -222,6 +226,9 @@ void MultiSioIntr(void)
         gMultiSioArea.nextSendBufp = bufpTmp;
     } else if (gMultiSioArea.sendBufCounter >= 0) { // Set Send Data
         ((struct SioMultiCnt *)REG_ADDR_SIOCNT)->data = gMultiSioArea.currentSendBufp[gMultiSioArea.sendBufCounter];
+#if PORTABLE
+        Platform_SioSend();
+#endif
     }
     if (gMultiSioArea.sendBufCounter < (s32)(sizeof(struct MultiSioPacket) / 2 - 1))
         ++gMultiSioArea.sendBufCounter;

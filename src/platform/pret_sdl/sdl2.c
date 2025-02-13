@@ -21,6 +21,7 @@
 #include "lib/agb_flash/flash_internal.h"
 #include "platform/shared/dma.h"
 #include "platform/shared/input.h"
+#include "platform/network.h"
 
 #if ENABLE_AUDIO
 #include "platform/shared/audio/cgb_audio.h"
@@ -120,6 +121,11 @@ void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GE
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
+extern int initClient(void);
+extern NetworkPacket *clientRecv(void);
+extern void clientSend(u8 sioId, u16 data);
+int SioRecvLoop(void *);
+
 int main(int argc, char **argv)
 {
     const char *headlessEnv = getenv("HEADLESS");
@@ -128,13 +134,28 @@ int main(int argc, char **argv)
         headless = true;
     }
 
-    const char *parentEnv = getenv("SIO_PARENT");
+    const char *sioIdEnv = getenv("SIO_ID");
+    int sioId = -1;
+    if (sioIdEnv) {
+        sioId = atoi(sioIdEnv);
+        if (sioId > MULTI_SIO_PLAYERS_MAX - 1 || sioId < 0) {
+            fprintf(stderr, "Invalid SIO ID %i\n", sioId);
+        }
+    }
 
-    if (parentEnv && strcmp(parentEnv, "true") == 0) {
-        SIO_MULTI_CNT->id = 0;
+    if (sioId != -1) {
+        SIO_MULTI_CNT->id = sioId;
         SIO_MULTI_CNT->si = 1;
         SIO_MULTI_CNT->sd = 1;
         SIO_MULTI_CNT->enable = false;
+    }
+
+    if (sioId != -1) {
+        printf("Connecting to server as %i\n", sioId);
+        if (initClient() != 0) {
+            fprintf(stderr, "Could not connect to server\n");
+            return 1;
+        }
     }
 
     // Open an output console on Windows
@@ -160,6 +181,14 @@ int main(int argc, char **argv)
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
+    }
+
+    if (sioId != -1) {
+        if (sioId == 0) {
+            printf("Starting sio receiver thread\n");
+            SDL_CreateThread(SioRecvLoop, "test", NULL);
+        }
+        // SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data);
     }
 
 #ifdef TITLE_BAR
@@ -257,6 +286,30 @@ int main(int argc, char **argv)
     return 0;
 }
 
+void Platform_SioSend(void)
+{
+    printf("SIO SEND %i\n", SIO_MULTI_CNT->data);
+    clientSend(SIO_MULTI_CNT->id, SIO_MULTI_CNT->data);
+}
+
+int SioRecvLoop(void *_)
+{
+    while (1) {
+        NetworkPacket *packet = clientRecv();
+        if (packet == NULL) {
+            printf("Received NULL\n");
+            continue;
+        }
+        printf("Received %i, %i\n", packet->sioId, packet->sioData);
+
+        u8 sioId = packet->sioId;
+        u16 data = packet->sioData;
+
+        ((u16 *)REG_ADDR_SIOMLT_RECV)[sioId] = data;
+        gIntrTable[INTR_INDEX_SIO]();
+    }
+}
+
 bool newFrameRequested = FALSE;
 
 // Every GBA frame we process the SDL events and render the number of times
@@ -271,6 +324,7 @@ void VBlankIntrWait(void)
         RunDMAs(DMA_VBLANK);                                                                                                               \
         if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)                                                                                           \
             gIntrTable[INTR_INDEX_VBLANK]();                                                                                               \
+        gIntrTable[INTR_INDEX_SIO]();                                                                                                      \
         REG_DISPSTAT &= ~INTR_FLAG_VBLANK;                                                                                                 \
     })
 
