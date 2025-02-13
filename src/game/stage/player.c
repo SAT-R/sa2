@@ -791,9 +791,13 @@ void InitializePlayer(Player *p)
             :
             : "r"(u99), "r"(i));
     }
+    *u99_r6 = 0x7F;
 #else
     {
+        playerID = &p->playerID;
+        character = &p->character;
         u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
+
         s32 i = 4;
         while (i-- != 0) {
             // @BUG: agbcc compiles this to an stmia instruction, which writes aligned words,
@@ -801,9 +805,10 @@ void InitializePlayer(Player *p)
             //       >> writes unk98 - unk99[14]
             *ptr++ = 0;
         }
+
+        p->SA2_LABEL(unk99)[0] = 0x7F;
     }
 #endif
-    *u99_r6 = 0x7F;
 
     if ((*playerID == 0) && IS_SINGLE_PLAYER) {
         if (gCourseTime >= MAX_COURSE_TIME) {
