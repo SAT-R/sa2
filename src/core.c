@@ -157,7 +157,11 @@ extern void IntrMain(void);
 // Warning: array contains an empty slot which would have
 // been used for a Timer3Intr function
 IntrFunc const gIntrTableTemplate[] = {
+#ifdef MULTI_SIO_DI_FUNC_FAST
     (void *)gMultiSioIntrFuncBuf,
+#else
+    MultiSioIntr,
+#endif
     VBlankIntr,
     HBlankIntr,
     VCountIntr,

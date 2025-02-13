@@ -601,7 +601,11 @@ s8 sub_8081D70(UNUSED struct SinglePakConnectScreen *connectScreen)
 
 void sub_8081DB4(struct SinglePakConnectScreen *connectScreen)
 {
+#ifdef MULTI_SIO_DI_FUNC_FAST
     gIntrTable[0] = (void *)gMultiSioIntrFuncBuf;
+#else
+    gIntrTable[0] = MultiSioIntr;
+#endif
     MultiSioInit((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     connectScreen->unkF8 = 0;
     connectScreen->unkF4 = 0;

@@ -14,6 +14,7 @@
 
 #include "global.h"
 #include "core.h"
+#include "multi_sio.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/types.h"
@@ -125,6 +126,15 @@ int main(int argc, char **argv)
 
     if (headlessEnv && strcmp(headlessEnv, "true") == 0) {
         headless = true;
+    }
+
+    const char *parentEnv = getenv("SIO_PARENT");
+
+    if (parentEnv && strcmp(parentEnv, "true") == 0) {
+        SIO_MULTI_CNT->id = 0;
+        SIO_MULTI_CNT->si = 1;
+        SIO_MULTI_CNT->sd = 1;
+        SIO_MULTI_CNT->enable = false;
     }
 
     // Open an output console on Windows
@@ -254,6 +264,7 @@ bool newFrameRequested = FALSE;
 // the loop via a return
 void VBlankIntrWait(void)
 {
+    // ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)
 #define HANDLE_VBLANK_INTRS()                                                                                                              \
     ({                                                                                                                                     \
         REG_DISPSTAT |= INTR_FLAG_VBLANK;                                                                                                  \
