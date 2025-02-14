@@ -594,7 +594,7 @@
 #define SA2_ANIM_SOUNDTEST_PLATFORM                      972
 #define SA2_ANIM_SOUNDTEST_CLAP_FORWARD                  973
 
-#define SA2_ANIM_DEMO_PLAY                        1044
+#define ANIM_DEMO_PLAY                            1044
 #define SA2_ANIM_1045                             1045
 #define SA2_ANIM_COPYRIGHT_INFO_TITLE_SCREEN      1046
 #define SA2_ANIM_TIME_ATTACK_DIGITS               1047

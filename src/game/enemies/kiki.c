@@ -310,7 +310,7 @@ static void CreateKikiProjectilePiece(s16 x, s16 y)
 
 static void Task_ProjPieceMain(void)
 {
-    Sprite *s2 = &gUnknown_03005AF0.s;
+    Sprite *s2 = &gPlayerBodyPSI.s;
     Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     s16 x, y;

@@ -212,56 +212,63 @@ extern struct InputCounters gNewInputCounters[32];
 
 extern u8 gUnknown_030055D8;
 
-#if (GAME == GAME_SA1)
-#define SET_LIVES_A(lives) (lives)
+#if (GAME == GAME_SA1) && !defined(BUG_FIX)
+#define LIVES_BOUND_CHECK_A(lives)            (lives)
+#define LIVES_BOUND_CHECK_B(lives)            (lives)
+#define NEW_LIVE_COUNT(_type, _varname, _inc) (gNumLives += 1)
+
+#define BOUND_CHK_VARNAME gNumLives
 #else
-#define SET_LIVES_A(lives)                                                                                                                 \
+#define LIVES_BOUND_CHECK_A(lives)                                                                                                         \
     ({                                                                                                                                     \
         if ((lives) > 255)                                                                                                                 \
             (lives) = 255;                                                                                                                 \
         gNumLives = (lives);                                                                                                               \
     })
-#endif
 
-// Sometimes this variant was used
-#define SET_LIVES_B(lives)                                                                                                                 \
+#define LIVES_BOUND_CHECK_B(lives)                                                                                                         \
     ({                                                                                                                                     \
         if (lives > 255) {                                                                                                                 \
             gNumLives = 255;                                                                                                               \
         } else {                                                                                                                           \
             gNumLives = lives;                                                                                                             \
-        };                                                                                                                                 \
-    });
+        }                                                                                                                                  \
+    })
 
-#define INCREMENT_SCORE_BASE(incVal, restartMusic, SetLives)                                                                               \
+#define NEW_LIVE_COUNT(_type, _varname, _inc)                                                                                              \
+    _type _varname = divResA - divResB;                                                                                                    \
+    _varname += _inc;
+
+#define BOUND_CHK_VARNAME lives
+#endif
+
+#define INCREMENT_SCORE_BASE(_inc, restartMusic, BoundCheck)                                                                               \
     {                                                                                                                                      \
         s32 divResA, divResB;                                                                                                              \
         s32 oldScore = gLevelScore;                                                                                                        \
-        gLevelScore += incVal;                                                                                                             \
+        gLevelScore += _inc;                                                                                                               \
                                                                                                                                            \
         divResA = Div(gLevelScore, 50000);                                                                                                 \
         divResB = Div(oldScore, 50000);                                                                                                    \
                                                                                                                                            \
         if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                                                              \
-            u16 lives = divResA - divResB;                                                                                                 \
-            lives += gNumLives;                                                                                                            \
-                                                                                                                                           \
-            SetLives(lives);                                                                                                               \
+            NEW_LIVE_COUNT(u16, BOUND_CHK_VARNAME, gNumLives);                                                                             \
+            BoundCheck(BOUND_CHK_VARNAME);                                                                                                 \
                                                                                                                                            \
             if (restartMusic)                                                                                                              \
                 gMusicManagerState.unk3 = 0x10 | 0x0;                                                                                      \
         }                                                                                                                                  \
     }
 
-#define INCREMENT_SCORE_A(incVal) INCREMENT_SCORE_BASE(incVal, FALSE, SET_LIVES_A)
-#define INCREMENT_SCORE(incVal)   INCREMENT_SCORE_BASE(incVal, TRUE, SET_LIVES_A)
-#define INCREMENT_SCORE_B(incVal) INCREMENT_SCORE_BASE(incVal, TRUE, SET_LIVES_B)
+#define INCREMENT_SCORE_A(_inc) INCREMENT_SCORE_BASE(_inc, FALSE, LIVES_BOUND_CHECK_A)
+#define INCREMENT_SCORE(_inc)   INCREMENT_SCORE_BASE(_inc, TRUE, LIVES_BOUND_CHECK_A)
+#define INCREMENT_SCORE_B(_inc) INCREMENT_SCORE_BASE(_inc, TRUE, LIVES_BOUND_CHECK_B)
 
-#define INCREMENT_RINGS(incVal)                                                                                                            \
+#define INCREMENT_RINGS(_inc)                                                                                                              \
     {                                                                                                                                      \
         s32 prevLives, newLives;                                                                                                           \
         s32 oldRings = gRingCount;                                                                                                         \
-        gRingCount += incVal;                                                                                                              \
+        gRingCount += _inc;                                                                                                                \
                                                                                                                                            \
         if (!(IS_EXTRA_STAGE(gCurrentLevel))) {                                                                                            \
             newLives = Div(gRingCount, 100);                                                                                               \
@@ -270,7 +277,7 @@ extern u8 gUnknown_030055D8;
             if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                                                       \
                 u16 lives = gNumLives + 1;                                                                                                 \
                                                                                                                                            \
-                SET_LIVES_A(lives);                                                                                                        \
+                gNumLives = LIVES_BOUND_CHECK_A(lives);                                                                                    \
                                                                                                                                            \
                 gMusicManagerState.unk3 = 0x10 | 0x0;                                                                                      \
             }                                                                                                                              \

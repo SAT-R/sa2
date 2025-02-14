@@ -10,7 +10,6 @@ typedef s16 CamCoord;
 typedef s32 CamCoord;
 #endif
 
-// TODO: Move TILE_WIDTH into "include/tilemap.h"
 #define TILE_WIDTH              8
 #define CAM_REGION_WIDTH        256
 #define TILES_PER_METATILE_AXIS 12
@@ -26,7 +25,7 @@ typedef void (*BgUpdate)(s32, s32);
 
 // NOTE: This was copy-pasted from SA2.
 //       There are type differences for members
-struct Camera {
+typedef struct Camera {
     /* 0x00|0x04 */ CamCoord x;
     /* 0x02|0x04 */ CamCoord y;
 #if (GAME == GAME_SA1)
@@ -73,7 +72,7 @@ struct Camera {
     /* 0x64 */ s16 unk64;
     /* 0x66 */ u8 spectatorTarget;
 #endif
-}; /* size 0x80(in SA2) */
+} Camera; /* size 0x80(in SA2) */
 
 extern struct Camera gCamera;
 

@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
@@ -9,12 +11,23 @@
 #include "game/sa1_sa2_shared/demo_manager.h"
 #include "game/sa1_sa2_shared/player.h"
 
-// TODO: add headers for these into sakit
+// TODO: add headers for these into sa1_sa2_shared
 // instead of including from the main game
 #include "game/save.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
+#include "constants/anim_sizes.h"
+
+#if (GAME == GAME_SA1)
+#define DEMO_SPRITE_PRIO   1
+#define DEMO_OAM_ORDER     15
+#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 30)
+#elif (GAME == GAME_SA2)
+#define DEMO_SPRITE_PRIO   0
+#define DEMO_OAM_ORDER     1
+#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 24.5)
+#endif
 
 typedef struct {
     /* 0x00 */ Sprite textPressStart;
@@ -38,16 +51,26 @@ void Task_DemoManagerMusicFadeout(void);
 
 void CreateDemoManager(void)
 {
-    u8 blendCtrl = gBldRegs.bldCnt & 0xC0;
-    s8 lang = gLoadedSaveGame->language;
-    struct Task *t = TaskCreate(Task_DemoManagerMain, sizeof(DemoManager), 1, 0, TaskDestructor_DemoManagerMain);
-    DemoManager *dm = TASK_DATA(t);
+    u8 blendCtrl;
+    s8 lang;
+    struct Task *t;
+    DemoManager *dm;
     Sprite *s;
+#if (GAME == GAME_SA1)
+    const AnimId arr[2];
+    memcpy(&arr, gPressStartTiles, sizeof(arr));
+#endif
+    blendCtrl = gBldRegs.bldCnt & 0xC0;
+#if (GAME == GAME_SA2)
+    lang = LOADED_SAVE->language;
+#endif
+    t = TaskCreate(Task_DemoManagerMain, sizeof(DemoManager), 1, 0, TaskDestructor_DemoManagerMain);
+    dm = TASK_DATA(t);
 
     dm->fadeBlendFactor = 0;
     dm->tFadeout = 0;
     dm->playerPressedStart = FALSE;
-    dm->timeLimitDisabled = gLoadedSaveGame->timeLimitDisabled;
+    dm->timeLimitDisabled = LOADED_SAVE->timeLimitDisabled;
 
     gStageFlags |= STAGE_FLAG__DEMO_RUNNING;
 
@@ -55,21 +78,28 @@ void CreateDemoManager(void)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2) + 33;
 
+#if (GAME == GAME_SA1)
+    s->graphics.dest = ALLOC_TILES(SA1_ANIM_PRESS_START_MSG_JP);
+    s->graphics.size = 0;
+    s->graphics.anim = arr[LOADED_SAVE->uiLanguage];
+    s->variant = 0;
+#elif (GAME == GAME_SA2)
     s->graphics.dest = VramMalloc(gPressStartTiles[lang].numTiles);
     s->graphics.size = 0;
     s->graphics.anim = gPressStartTiles[lang].anim;
     s->variant = gPressStartTiles[lang].variant;
+#endif
 
     s->animCursor = 0;
     s->prevVariant = -1;
     s->qAnimDelay = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->oamFlags = SPRITE_OAM_ORDER(1);
-    s->frameFlags = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(DEMO_OAM_ORDER);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, DEMO_SPRITE_PRIO);
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
-        s->frameFlags = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+        s->frameFlags |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
     UpdateSpriteAnimation(s);
 
@@ -77,21 +107,28 @@ void CreateDemoManager(void)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2);
 
-    s->graphics.dest = VramMalloc(28);
+#if (GAME == GAME_SA1)
+    s->graphics.dest = ALLOC_TILES(SA1_ANIM_DEMO_PLAY);
     s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_DEMO_PLAY;
+    s->graphics.anim = SA1_ANIM_DEMO_PLAY;
     s->variant = 0;
+#elif (GAME == GAME_SA2)
+    s->graphics.dest = ALLOC_TILES(ANIM_DEMO_PLAY);
+    s->graphics.size = 0;
+    s->graphics.anim = ANIM_DEMO_PLAY;
+    s->variant = 0;
+#endif
 
     s->animCursor = 0;
     s->prevVariant = -1;
     s->qAnimDelay = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->oamFlags = SPRITE_OAM_ORDER(1);
-    s->frameFlags = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(DEMO_OAM_ORDER);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, DEMO_SPRITE_PRIO);
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
-        s->frameFlags = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+        s->frameFlags |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
     UpdateSpriteAnimation(s);
 }
@@ -114,8 +151,15 @@ void Task_DemoManagerMain(void)
         gBldRegs.bldY = 0;
 
         gMusicManagerState.unk0 = 0xFF;
+#if (GAME == GAME_SA1)
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE1, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE2, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
+#elif (GAME == GAME_SA2)
         CreateMusicFadeoutTask(64);
-    } else if (gCheckpointTime > (u32)ZONE_TIME_TO_INT(0, 24.5)) {
+#endif
+    } else if (gCheckpointTime > (u32)DEMO_PLAYBACK_TIME) {
         dm->playerPressedStart = FALSE;
 
         gCurTask->main = Task_DemoManagerFadeout;
@@ -124,20 +168,37 @@ void Task_DemoManagerMain(void)
         gBldRegs.bldY = 0;
 
         gMusicManagerState.unk0 = 0xFF;
+#if (GAME == GAME_SA1)
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE1, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE2, 4);
+        m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
+#elif (GAME == GAME_SA2)
         CreateMusicFadeoutTask(64);
+#endif
     }
 
-    if (!(gStageFlags & STAGE_FLAG__100)) {
+#if (GAME == GAME_SA2)
+    if (!(gStageFlags & STAGE_FLAG__100))
+#endif
+    {
         Sprite *s = &dm->textPressStart;
 
-        if (gStageTime & 0x20) {
+#if (GAME == GAME_SA1)
+        if (gCheckpointTime & 0x20)
+#elif (GAME == GAME_SA2)
+        if (gStageTime & 0x20)
+#endif
+        {
             if (gBldRegs.bldY != 0) {
                 s->frameFlags |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
             } else {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
             }
 
+#if (GAME == GAME_SA2)
             UpdateSpriteAnimation(s);
+#endif
             DisplaySprite(s);
         }
 
@@ -156,23 +217,33 @@ void Task_DemoManagerEndFadeout(void)
     DemoManager *dm = TASK_DATA(gCurTask);
     dm->tFadeout++;
 
+#if (GAME == GAME_SA2)
     m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE1, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE2, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, 0);
+#endif
 
     if (dm->tFadeout >= 48) {
-        gLoadedSaveGame->timeLimitDisabled = dm->timeLimitDisabled;
+        LOADED_SAVE->timeLimitDisabled = dm->timeLimitDisabled;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        SA2_LABEL(gUnknown_03005390) = 0;
         PAUSE_GRAPHICS_QUEUE();
 
+#if (GAME == GAME_SA1)
+        if (!dm->playerPressedStart) {
+            CreateSegaLogo();
+        } else {
+            CreateTitleScreen(TITLESCREEN_PARAM__PLAY_MUSIC);
+        }
+#elif (GAME == GAME_SA2)
         if (!dm->playerPressedStart) {
             CreateTitleScreen();
         } else {
             CreateTitleScreenAtPlayModeMenu();
         }
+#endif
     }
 }
 
@@ -198,6 +269,7 @@ void TaskDestructor_DemoManagerMain(struct Task *t)
     gStageFlags &= ~STAGE_FLAG__DEMO_RUNNING;
 }
 
+#if (GAME == GAME_SA2)
 void CreateMusicFadeoutTask(u16 factor)
 {
     struct Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
@@ -221,3 +293,4 @@ void Task_DemoManagerMusicFadeout(void)
         mf->volume = 0;
     }
 }
+#endif

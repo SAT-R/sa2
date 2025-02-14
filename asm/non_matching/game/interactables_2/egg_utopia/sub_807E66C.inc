@@ -51,7 +51,7 @@
 	adds r3, r0, r4
 	lsls r2, r2, #0x10
 	asrs r2, r2, #0x10
-	ldr r1, _0807E760 @ =gUnknown_03005AF0
+	ldr r1, _0807E760 @ =gPlayerBodyPSI
 	adds r0, r1, #0
 	adds r0, #0x38
 	movs r5, #0
@@ -127,7 +127,7 @@ _0807E752:
 	.align 2, 0
 _0807E758: .4byte gPlayer
 _0807E75C: .4byte gCamera
-_0807E760: .4byte gUnknown_03005AF0
+_0807E760: .4byte gPlayerBodyPSI
 _0807E764:
 	movs r0, #0
 _0807E766:

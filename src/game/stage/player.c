@@ -48,9 +48,9 @@ typedef struct {
 
 Player ALIGNED(8) gPlayer = {};
 
-// Poentially some extra space on player for this to be aligned 16 (should be 8)
-PlayerSpriteInfo ALIGNED(16) gUnknown_03005AA0 = {};
-PlayerSpriteInfo ALIGNED(16) gUnknown_03005AF0 = {};
+// Potentially some extra space on player for this to be aligned 16 (should be 8)
+PlayerSpriteInfo ALIGNED(16) gPlayerLimbsPSI = {};
+PlayerSpriteInfo ALIGNED(16) gPlayerBodyPSI = {};
 
 // sakit
 extern void InitNewInputCounters(void);
@@ -530,19 +530,14 @@ static inline void Player_CameraShift_inline(Player *p)
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
-#ifndef NON_MATCHING
-    register Player *p asm("r5") = player;
-#else
-    Player *p = player;
-#endif
-
-    s32 playerID = p->playerID;
     struct Task *t;
     player_0_Task *gt;
 
-    t = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_Player);
-    p->spriteTask = t;
-    gt = TASK_DATA(t);
+    Player *p = player;
+    s32 playerID = p->playerID;
+
+    p->spriteTask = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_Player);
+    gt = TASK_DATA(p->spriteTask);
     gt->unk0 = playerID;
     gt->unk4 = 0;
 
@@ -684,21 +679,12 @@ void SetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p)
 
     p->unk98 = 0;
     p->checkpointTime = 0;
-    p->spriteInfoBody = &gUnknown_03005AF0;
-    p->spriteInfoLimbs = &gUnknown_03005AA0;
+    p->spriteInfoBody = &gPlayerBodyPSI;
+    p->spriteInfoLimbs = &gPlayerLimbsPSI;
 }
 
 void InitializePlayer(Player *p)
 {
-#ifndef NON_MATCHING
-    register s8 *u99_r6 asm("r6");
-    register s8 *playerID asm("r4");
-#else
-    s8 *u99_r6;
-    s8 *playerID;
-#endif
-    s8 *character;
-
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->qWorldX & p->qWorldY) + 1) != 0)) {
         p->qWorldX = Q(460);
     } else {
@@ -722,12 +708,26 @@ void InitializePlayer(Player *p)
     p->unk29 = 0;
     p->unk28 = 0;
     p->layer = PLAYER_LAYER__BACK;
+#if (GAME == GAME_SA1)
+    p->maxSpeed = Q(4.5);
+#elif (GAME == GAME_SA2)
     p->maxSpeed = Q(9.0);
     p->topSpeed = Q(6.0);
-    p->acceleration = 8;
-    p->deceleration = 64;
+#endif
+
+#if (GAME == GAME_SA1)
+    p->acceleration = Q(8. / 256.);
+    p->deceleration = Q(96. / 256.);
+#elif (GAME == GAME_SA2)
+    p->acceleration = Q(8. / 256.);
+    p->deceleration = Q(64. / 256.);
+#endif
     p->charState = CHARSTATE_IDLE;
+#if (GAME == GAME_SA1)
+    p->prevCharState = 0;
+#elif (GAME == GAME_SA2)
     p->prevCharState = CHARSTATE_INVALID;
+#endif
     p->anim = -1;
     p->variant = -1;
     p->timerInvulnerability = 0;
@@ -736,19 +736,21 @@ void InitializePlayer(Player *p)
     p->confusionTimer = 0;
     p->stoodObj = NULL;
     p->itemEffect = PLAYER_ITEM_EFFECT__NONE;
-    p->unk2A = 0;
-    p->unk72 = ZONE_TIME_TO_INT(0, 6);
-    p->unk7E = 0;
-    p->unk7C = 0;
-    p->unk82 = 0x100;
-    p->unk80 = 0x100;
+    p->SA2_LABEL(unk2A) = 0;
+    p->SA2_LABEL(unk72) = ZONE_TIME_TO_INT(0, 6);
+    p->SA2_LABEL(unk7E) = 0;
+    p->SA2_LABEL(unk7C) = 0;
+    p->SA2_LABEL(unk82) = Q(1);
+    p->SA2_LABEL(unk80) = Q(1);
     p->defeatScoreIndex = 0;
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
+    p->SA2_LABEL(unk61) = 0;
+    p->SA2_LABEL(unk62) = 0;
+    p->SA2_LABEL(unk63) = 0;
     p->secondsUntilDrown = 30;
     p->framesUntilDrownCountDecrement = 60;
-    p->unk88 = 10;
+    p->SA2_LABEL(unk88) = 10;
+
+#if (GAME == GAME_SA2)
     p->transition = 0;
     p->unk6E = 0;
     p->prevTransition = 0;
@@ -762,48 +764,28 @@ void InitializePlayer(Player *p)
     sub_8015750();
     sub_801561C();
     Player_HandleBoostThreshold(p);
-
-#ifndef NON_MATCHING
-    {
-        // Should be this but can't get it to match (even though it's functionally correct)
-        // so we resort back to asm
-        //
-        // u32 *u99 = (void *)p->unk99;
-        // s32 i = 4;
-        // u99_r6 = (void *)u99;
-        // playerID = &p->playerID;
-        // character = &p->character;
-
-        // while (i-- != 0) {
-        //     *u99++ = 0;
-        // }
-
-        register u32 *u99 asm("r1") = (void *)p->unk99;
-        register s32 i asm("r2") = 3;
-        u99_r6 = (void *)u99;
-        playerID = &p->playerID;
-        character = &p->character;
-        asm("movs r3, #0\n"
-            "loop:\n"
-            "stm r1!, {r3}\n"
-            "add r0, r2, #0\n"
-            "sub r2, #1\n"
-            "cmp r0, #0\n"
-            "bne loop\n"
-            :
-            : "r"(u99), "r"(i));
-    }
-
-#else
-    u99_r6 = p->unk99;
-    playerID = &p->playerID;
-    character = &p->character;
-    memset(p->unk99, 0, sizeof(p->unk99));
 #endif
 
-    *u99_r6 = 0x7F;
+    {
+        u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
+        s32 i = 3;
+#if (GAME == GAME_SA2) && !defined(NON_MATCHING)
+        register u8 *u99_r6 asm("r6") = (void *)ptr;
+#endif
+        do {
+            // @BUG: agbcc compiles this to an stmia instruction, which writes aligned words,
+            //       so the written bytes are off by one, because SA2_LABEL(unk99) isn't word-aligned!
+            //       >> writes unk98 - unk99[14]
+            *ptr++ = 0;
+        } while (i-- != 0);
+#if (GAME == GAME_SA2) && !defined(NON_MATCHING)
+        *u99_r6 = 0x7F;
+#else
+        p->SA2_LABEL(unk99)[0] = 0x7F;
+#endif
+    }
 
-    if ((*playerID == 0) && IS_SINGLE_PLAYER) {
+    if ((p->playerID == 0) && IS_SINGLE_PLAYER) {
         if (gCourseTime >= MAX_COURSE_TIME) {
             gCheckpointTime = 0;
             gCourseTime = 0;
@@ -814,18 +796,20 @@ void InitializePlayer(Player *p)
         }
     }
 
-    switch (*character) {
+    switch (p->character) {
         case CHARACTER_SONIC: {
             p->w.sf.flags = 0;
             p->w.sf.unkAE = 0;
             p->w.sf.unkB0 = 0;
         } break;
 
+#if (GAME == GAME_SA2)
         case CHARACTER_CREAM: {
             p->w.cf.unkAE = 0;
             p->w.cf.flyingDuration = 0;
             p->w.cf.unkB0 = 0;
         } break;
+#endif
 
         case CHARACTER_TAILS: {
             p->w.tf.flags = 0;

@@ -120,8 +120,13 @@ typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
 
 struct Range {
-    s32 xLow, yLow;
-    s32 xHigh, yHigh;
+    CamCoord xLow, yLow;
+    CamCoord xHigh, yHigh;
+};
+
+struct Ranges {
+    struct Range a;
+    struct Range b;
 };
 
 void Task_8008DCC(void);
@@ -612,7 +617,7 @@ void SpawnMapEntities()
 void Task_8008DCC(void)
 {
 #ifndef NON_MATCHING
-    struct Range *newRange2Ptr;
+    struct Range *newrange2Ptr;
 #endif
     if (!(gStageFlags & 2)) {
         u32 i;
@@ -630,7 +635,7 @@ void Task_8008DCC(void)
         u32 *itemBoxPositions;
         u32 *enemyPositions;
 
-        if (em->unk14 != 0) {
+        if (em->SA2_LABEL(unk14) != 0) {
             SpawnMapEntities();
             return;
         }
@@ -692,7 +697,7 @@ void Task_8008DCC(void)
             range1.xHigh = em->prevCamX - 128;
         }
 
-        if (em->unk14 != 0) {
+        if (em->SA2_LABEL(unk14) != 0) {
             SpawnMapEntities();
             return;
         }
@@ -795,7 +800,7 @@ void Task_8008DCC(void)
 
         // Hack to fix a stack mismatch, must be placed here
 #ifndef NON_MATCHING
-        newRange2Ptr = &range2;
+        newrange2Ptr = &range2;
 #endif
 
         if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh && range1.yLow != range1.yHigh) {
@@ -810,8 +815,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
                                         gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
                                     }
@@ -824,8 +829,8 @@ void Task_8008DCC(void)
                             MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
                                         CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
                                     }
@@ -838,8 +843,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)enemyPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
                                         gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
                                     }
@@ -852,8 +857,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range1.xLow && x <= range1.xHigh && y >= range1.yLow && y <= range1.yHigh) {
                                         gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
                                     }
@@ -868,9 +873,9 @@ void Task_8008DCC(void)
         }
 
 #ifndef NON_MATCHING
-        if (((gCamera.y != em->prevCamY) && ((*newRange2Ptr).yLow != (*newRange2Ptr).yHigh)) && (range2.xLow != (*newRange2Ptr).xHigh)) {
-            regionY = I((*newRange2Ptr).yLow);
-            while (Q(regionY) < (*newRange2Ptr).yHigh && regionY < v_regionCount) {
+        if (((gCamera.y != em->prevCamY) && ((*newrange2Ptr).yLow != (*newrange2Ptr).yHigh)) && (range2.xLow != (*newrange2Ptr).xHigh)) {
+            regionY = I((*newrange2Ptr).yLow);
+            while (Q(regionY) < (*newrange2Ptr).yHigh && regionY < v_regionCount) {
 #else
         if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh)) && (range2.xLow != range2.xHigh)) {
             regionY = I(range2.yLow);
@@ -884,8 +889,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
                                         gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
                                     }
@@ -898,8 +903,8 @@ void Task_8008DCC(void)
                             MapEntity_Itembox *me = ((void *)itemBoxPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
                                         CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
                                     }
@@ -912,8 +917,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)enemyPositions + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
                                         gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
                                     }
@@ -926,8 +931,8 @@ void Task_8008DCC(void)
                             MapEntity *me = ((void *)interactables + (i - 8));
                             for (i = 0; (s8)me->x != -1; me++, i++) {
                                 if ((s8)me->x >= -2) {
-                                    s32 x = TO_WORLD_POS(me->x, regionX);
-                                    s32 y = TO_WORLD_POS(me->y, regionY);
+                                    CamCoord x = TO_WORLD_POS(me->x, regionX);
+                                    CamCoord y = TO_WORLD_POS(me->y, regionY);
                                     if (x >= range2.xLow && x <= range2.xHigh && y >= range2.yLow && y <= range2.yHigh) {
                                         gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
                                     }

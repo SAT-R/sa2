@@ -733,10 +733,10 @@ void CreateSuperEggRoboZ(void)
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
-    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
-    gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerBodyPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    gPlayerLimbsPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerLimbsPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
     t = TaskCreate(Task_SuperEggRoboZMain, sizeof(SuperEggRoboZ), 0x4000, 0, TaskDestructor_SuperEggRoboZMain);
     gActiveBossTask = t;
@@ -892,10 +892,10 @@ static void Task_804A9D8(void)
         boss->unkB = 0;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
 
-        gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
-        gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+        gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayerBodyPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+        gPlayerLimbsPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayerLimbsPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         gCurTask->main = Task_804AB24;
     }
 }

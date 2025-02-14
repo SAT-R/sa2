@@ -1,14 +1,15 @@
 #include "global.h"
 #include "tilemap.h"
-
 #include "game/stage/collision.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
 
+#include "constants/zones.h"
+
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
-s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
+s32 SA2_LABEL(sub_801EF94)(s32 p0, s32 p1, s32 layer);
 
 #define POS__NOT_MOD(i)                                                                                                                    \
     if (p3 > 0) {                                                                                                                          \
@@ -55,6 +56,47 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
         return (p0 % 8u) - ((i)*TILE_WIDTH);                                                                                               \
     }
 
+#if (GAME == GAME_SA1)
+extern const Collision CollHeader_zone_1_act_1_fg;
+extern const Collision CollHeader_zone_1_act_2_fg;
+extern const Collision CollHeader_zone_2_act_1_fg;
+extern const Collision CollHeader_zone_2_act_2_fg;
+extern const Collision CollHeader_zone_3_act_1_fg;
+extern const Collision CollHeader_zone_3_act_2_fg;
+extern const Collision CollHeader_zone_4_act_1_fg;
+extern const Collision CollHeader_zone_4_act_2_fg;
+extern const Collision CollHeader_zone_5_act_1_fg;
+extern const Collision CollHeader_zone_5_act_2_fg;
+extern const Collision CollHeader_zone_6_act_1_fg;
+extern const Collision CollHeader_zone_6_act_2_fg;
+extern const Collision CollHeader_zone_7_act_1_fg;
+extern const Collision CollHeader_zone_7_act_2_fg;
+extern const Collision CollHeader_zone_chao_hunt_act_vs_zone_a_fg;
+extern const Collision CollHeader_zone_chao_hunt_act_vs_zone_b_fg;
+extern const Collision CollHeader_zone_chao_hunt_act_vs_zone_c_fg;
+extern const Collision CollHeader_zone_chao_hunt_act_vs_zone_d_fg;
+
+const Collision *const gCollisionTable[NUM_LEVEL_IDS] = {
+    &CollHeader_zone_1_act_1_fg,
+    &CollHeader_zone_1_act_2_fg,
+    &CollHeader_zone_2_act_1_fg,
+    &CollHeader_zone_2_act_2_fg,
+    &CollHeader_zone_3_act_1_fg,
+    &CollHeader_zone_3_act_2_fg,
+    &CollHeader_zone_4_act_1_fg,
+    &CollHeader_zone_4_act_2_fg,
+    &CollHeader_zone_5_act_1_fg,
+    &CollHeader_zone_5_act_2_fg,
+    &CollHeader_zone_6_act_1_fg,
+    &CollHeader_zone_6_act_2_fg,
+    &CollHeader_zone_7_act_1_fg,
+    &CollHeader_zone_7_act_2_fg,
+    &CollHeader_zone_chao_hunt_act_vs_zone_a_fg,
+    &CollHeader_zone_chao_hunt_act_vs_zone_b_fg,
+    &CollHeader_zone_chao_hunt_act_vs_zone_c_fg,
+    &CollHeader_zone_chao_hunt_act_vs_zone_d_fg,
+};
+#elif (GAME == GAME_SA2)
 extern const Collision CollHeader_zone_1_act_1_fg;
 extern const Collision CollHeader_zone_1_act_2_fg;
 extern const Collision CollHeader_zone_1_act_boss_fg;
@@ -94,8 +136,9 @@ const Collision *const gCollisionTable[] = {
     &CollHeader_zone_1_act_dummy_fg,      &CollHeader_zone_final_act_xx_fg, &CollHeader_zone_final_act_ta53_fg,
     &CollHeader_zone_final_act_unused_fg,
 };
+#endif
 
-s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
+s32 SA2_LABEL(sub_801E4E4)(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 {
     u8 dummy[4];
     u8 *dummy_p;
@@ -422,7 +465,7 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 }
 #endif
 
-s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
+s32 SA2_LABEL(sub_801EB44)(s32 p0, s32 p1, s32 layer)
 {
     u32 r0;
     s32 yPixel;
@@ -435,7 +478,7 @@ s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
     p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
     p1 = CLAMP_32(p1, 0, gRefCollision->pxHeight - 1);
 
-    tile = sub_801EF94(p0, p1, layer & PLAYER_LAYER__MASK);
+    tile = SA2_LABEL(sub_801EF94)(p0, p1, layer & PLAYER_LAYER__MASK);
     mtTileIndex = tile & TILE_MASK_INDEX;
 
     yPixel = p1 % (unsigned)TILE_WIDTH;
@@ -482,7 +525,7 @@ s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
     return hv;
 }
 
-s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
+s32 SA2_LABEL(sub_801EC3C)(s32 p0, s32 p1, s32 layer)
 {
     u32 r0;
     s32 xPixel;
@@ -495,7 +538,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
     p1 = CLAMP_32(p1, 0, gRefCollision->pxWidth - 1);
     p0 = CLAMP_32(p0, 0, gRefCollision->pxHeight - 1);
 
-    tile = sub_801EF94(p1, p0, layer & PLAYER_LAYER__MASK);
+    tile = SA2_LABEL(sub_801EF94)(p1, p0, layer & PLAYER_LAYER__MASK);
     mtTileIndex = tile & TILE_MASK_INDEX;
 
     xPixel = p1 % (unsigned)TILE_WIDTH;
@@ -538,7 +581,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
     return hv;
 }
 
-s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
+s32 SA2_LABEL(sub_801ED24)(s32 p0, s32 p1, s32 p2, u8 *p3)
 {
     u32 r0;
     s32 r3;
@@ -551,7 +594,7 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
     p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
     p1 = CLAMP_32(p1, 0, gRefCollision->pxHeight - 1);
 
-    res = sub_801EF94(p0, p1, p2 & 0x1);
+    res = SA2_LABEL(sub_801EF94)(p0, p1, p2 & 0x1);
     mtTileIndex = res & 0x3FF;
 
     r3 = p1 % 8u;
@@ -619,11 +662,19 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
 
 // TODO: Fix this register mess!
 // (100.00%) https://decomp.me/scratch/sJY4g
-s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
+s32 SA2_LABEL(sub_801EE64)(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 {
+    // NOTE: I'm surprised it is using UNsigned ints in SA2.
+    // TODO: Should we consider the SA2 type a bugfix in SA1?
+#if (GAME == GAME_SA1)
+    typedef s32 r0r1_t;
+#elif (GAME == GAME_SA2)
+    typedef u32 r0r1_t;
+#endif
+
 #ifndef NON_MATCHING
-    register u32 r0 asm("r0");
-    register u32 r1 asm("r1");
+    register r0r1_t r0 asm("r0");
+    register r0r1_t r1 asm("r1");
     register s32 r3 asm("r3");
     register s32 p0 asm("r4") = p0in;
     register s32 p1 asm("r5") = p1in;
@@ -634,8 +685,8 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     register u8 *p3 asm("sl") = p3in;
     register s32 res asm("r4");
 #else
-    u32 r0;
-    u32 r1;
+    r0r1_t r0;
+    r0r1_t r1;
     s32 r3;
     s32 p0 = p0in;
     s32 p1 = p1in;
@@ -676,7 +727,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 
     sb = 1;
 
-    p0 = sub_801EF94(p1, p0, p2 & sb);
+    p0 = SA2_LABEL(sub_801EF94)(p1, p0, p2 & sb);
     r7 = 0x3FF;
     r7 &= p0;
 
@@ -757,7 +808,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 // TODO: This should return a u16, representing a tile inside a metatile
 // TODO: Fix this register mess!
 // (100.00%) https://decomp.me/scratch/nh7WN
-s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
+s32 SA2_LABEL(sub_801EF94)(s32 p0, s32 p1, s32 layer)
 {
     s32 r0;
 #ifndef NON_MATCHING
@@ -817,7 +868,7 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     }
 
     coll = gRefCollision;
-    mtIndex = ((u16 *)coll->map[layer])[(r3 * coll->levelX) + r8];
+    mtIndex = (coll->map[layer])[(r3 * coll->levelX) + r8];
 
     // ((r5 << 3) + (r5 << 2)) == r5 * TILES_PER_METATILE_AXIS
     r1 = ((r5 << 3) + (r5 << 2) + r7);
@@ -838,13 +889,13 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     return result;
 }
 
-void sub_801F044(void)
+void SA2_LABEL(sub_801F044)(void)
 {
     DmaFill32(3, 0, &gUnknown_3000410, sizeof(gUnknown_3000410));
     DmaFill32(3, 0, &gUnknown_3000420, sizeof(gUnknown_3000420));
 }
 
-s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
+s32 SA2_LABEL(sub_801F07C)(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 {
     u8 dummy[4];
     u8 *dummy_p;
@@ -890,7 +941,7 @@ s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     return result;
 }
 
-s32 sub_801F100(s32 p0, s32 p1, s32 p2, s32 p3, Func801F100 func)
+s32 SA2_LABEL(sub_801F100)(s32 p0, s32 p1, s32 p2, s32 p3, Func801F100 func)
 {
     s32 result;
     s32 funcRes = func(p0, p1, p2);

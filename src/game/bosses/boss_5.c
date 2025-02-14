@@ -221,11 +221,11 @@ void CreateEggSaucer(void)
 
     m4aSongNumStart(SE_253);
 
-    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    gPlayerBodyPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerBodyPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
-    gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    gPlayerLimbsPSI.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gPlayerLimbsPSI.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
     gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0, TaskDestructor_EggSaucerMain);
     boss = TASK_DATA(gActiveBossTask);
