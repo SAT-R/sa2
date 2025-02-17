@@ -13,6 +13,7 @@ static void MusManager_UpdateBgmParams(void);
 void MusManager_Fadeout(u16 fadeoutSpeed);
 
 #if (GAME == GAME_SA1)
+ALIGNED(4)
 const u16 gLevelSongs[] = {
     MUS_NEO_GREEN_HILL__ACT_1,
     MUS_NEO_GREEN_HILL__ACT_2,
@@ -36,6 +37,7 @@ const u16 gLevelSongs[] = {
     MUS_COSMIC_ANGEL,
 };
 #elif (GAME == GAME_SA2)
+ALIGNED(4)
 const u16 gLevelSongs[] = {
     MUS_LEAF_FOREST__ACT_1,
     MUS_LEAF_FOREST__ACT_2,
