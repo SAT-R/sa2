@@ -3120,7 +3120,7 @@ _02001A52:
 	ldrh r1, [r1]
 	movs r0, #0
 	bl sub_0200167c
-	movs r0, #1
+	movs r0, #1         @ MUS_GARDEN
 	bl m4aSongNumStart
 	ldr r1, _02001B48 @ =gUnknown_03003330
 	movs r0, #1
@@ -3269,7 +3269,7 @@ sub_02001BF8: @ 0x02001BF8
 	ldrh r1, [r1]
 	movs r0, #0
 	bl sub_0200167c
-	movs r0, #1
+	movs r0, #1         @ MUS_GARDEN
 	bl m4aSongNumStart
 	ldr r1, _02001C58 @ =gUnknown_03003330
 	movs r0, #1
@@ -3927,7 +3927,7 @@ _020021B0:
 	cmp r0, #0
 	beq _020021E4
 	bl m4aMPlayAllStop
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	strh r5, [r4, #0xe]
 	movs r0, #8
@@ -3989,7 +3989,7 @@ _0200222C:
 	ldrsh r0, [r5, r1]
 	cmp r0, #0
 	beq _02002248
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	movs r0, #0x2d
 	strb r0, [r5, #0x19]
@@ -3999,7 +3999,7 @@ _0200222C:
 	.align 2, 0
 _02002244: .4byte sub_02008940
 _02002248:
-	movs r4, #0xc
+	movs r4, #0xc       @ SE_CONFIRM
 _0200224A:
 	bl m4aMPlayAllContinue
 	adds r0, r4, #0
@@ -4038,7 +4038,7 @@ _02002278:
 	strh r0, [r5, #0xe]
 	b _020022C0
 _0200229A:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 	b _020022C0
 _020022A2:
@@ -4055,7 +4055,7 @@ _020022A2:
 	strh r2, [r5, #0xe]
 	b _020022C0
 _020022BA:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _020022C0:
 	ldr r4, _0200233C @ =gUnknown_03003330
@@ -5139,7 +5139,7 @@ _02002AA4:
 	ands r0, r1
 	cmp r0, #0
 	bne _02002AF2
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	ldr r0, _02002B50 @ =sub_02008e0c
 	str r0, [r4, #4]
@@ -5210,7 +5210,7 @@ _02002B66:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _02002B84
-	movs r0, #0x16
+	movs r0, #0x16      @ SE_GAUGE_EXPANDS
 	bl m4aSongNumStart
 _02002B84:
 	adds r5, #1
@@ -5249,7 +5249,7 @@ _02002B94:
 	strh r0, [r4]
 	movs r0, #0x78
 	strb r0, [r4, #2]
-	movs r0, #0x23
+	movs r0, #0x23      @ SE_GAUGE_LVL_UP
 	bl m4aSongNumStart
 	ldr r1, _02002BD8 @ =gUnknown_03001500
 	movs r0, #0x48
@@ -6136,7 +6136,7 @@ _02003302:
 	movs r2, #0xff
 	movs r3, #0
 	bl sub_020017b0
-	movs r0, #1
+	movs r0, #1         @ MUS_GARDEN
 	bl m4aSongNumStartOrContinue
 _02003322:
 	ldrh r1, [r7, #0xe]
@@ -7127,7 +7127,7 @@ _02003A90:
 	ldr r0, _02003AD0 @ =gMPlayInfo_BGM
 	movs r1, #1
 	bl m4aMPlayFadeOut
-	movs r0, #0xc
+	movs r0, #0xc           @ SE_CONFIRM
 	bl m4aSongNumStart
 	ldrb r0, [r5, #0x1a]
 	cmp r0, #0
@@ -7706,7 +7706,7 @@ _02003EF4:
 	str r1, [r4]
 	adds r0, r4, #0
 	bl _call_via_r1
-	movs r0, #0x21
+	movs r0, #0x21          @ SE_HATCH
 	bl m4aSongNumStart
 	b _02003F62
 	.align 2, 0
@@ -8760,7 +8760,7 @@ _020047FA:
 	.align 2, 0
 _02004804: .4byte gUnknown_0300152C
 _02004808:
-	movs r0, #0x21
+	movs r0, #0x21          @ SE_HATCH
 	bl m4aSongNumStart
 	movs r0, #1
 	strb r0, [r6, #7]
@@ -9268,13 +9268,13 @@ _02004BC6:
 	ldrh r0, [r6, #0x14]
 	cmp r0, #0x50
 	bls _02004C00
-	movs r0, #0x1a
+	movs r0, #0x1a      @ SE_TOY_TRUMPET
 	bl m4aSongNumStart
 	b _02004C06
 	.align 2, 0
 _02004BFC: .4byte gUnknown_0300152C
 _02004C00:
-	movs r0, #0x24
+	movs r0, #0x24      @ SE_TOY_TRUMPET_NOVICE
 	bl m4aSongNumStart
 _02004C06:
 	ldrb r1, [r6, #0x1b]
@@ -9851,7 +9851,7 @@ _02005058:
 	lsls r4, r4, #8
 	str r4, [sp]
 	bl sub_020017b0
-	movs r0, #0x1f
+	movs r0, #0x1f      @ SE_SPEECH_BUBBLE
 	bl m4aSongNumStart
 	movs r0, #0x1e
 	strh r0, [r6, #0x14]
@@ -9987,9 +9987,9 @@ _0200515E:
 	bl sub_020017b0
 	movs r0, #0x3c
 	strh r0, [r6, #0x14]
-	movs r0, #2
+	movs r0, #2         @ MUS_GOODBYE_CHAO
 	bl m4aSongNumStart
-	movs r0, #0x1f
+	movs r0, #0x1f      @ SE_SPEECH_BUBBLE
 	bl m4aSongNumStart
 	ldr r2, _020051C0 @ =gUnknown_03003330
 	ldrb r0, [r2, #0xf]
@@ -10073,7 +10073,7 @@ _020051F4:
 	strh r0, [r6, #0x14]
 	movs r0, #0x23
 	strb r0, [r6, #0x17]
-	movs r0, #1
+	movs r0, #1         @ MUS_GARDEN
 	bl m4aSongNumStart
 	bl _02005E10
 	.align 2, 0
@@ -10108,7 +10108,7 @@ _02005288:
 	movs r0, #0xfb
 	ands r0, r1
 	strb r0, [r2, #0xf]
-	movs r0, #1
+	movs r0, #1         @ MUS_GARDEN
 	bl m4aSongNumStart
 	ldr r1, _020052DC @ =0x0600E800
 	str r4, [sp]
@@ -10564,7 +10564,7 @@ _02005630:
 	lsls r4, r4, #8
 	str r4, [sp]
 	bl sub_020017b0
-	movs r0, #0x1f
+	movs r0, #0x1f      @ SE_SPEECH_BUBBLE
 	bl m4aSongNumStart
 	movs r0, #0x1e
 	strh r0, [r6, #0x14]
@@ -11179,7 +11179,7 @@ _02005AEC:
 _02005AFE:
 	strb r4, [r6, #0x16]
 _02005B00:
-	movs r0, #0xf
+	movs r0, #0xf       @ SE_CHAO_WALK
 	bl m4aSongNumStart
 	b _02005E10
 _02005B08:
@@ -13495,7 +13495,7 @@ _02006CBA:
 	ands r0, r1
 	cmp r0, #0
 	bne _02006CF2
-	movs r0, #0xf
+	movs r0, #0xf       @ SE_CHAO_WALK
 	bl m4aSongNumStart
 _02006CF2:
 	ldrb r1, [r4, #0x16]
@@ -13601,7 +13601,7 @@ _02006D98:
 	beq _02006DA4
 	b _020071E6
 _02006DA4:
-	movs r0, #0x14
+	movs r0, #0x14      @ SE_SNORE
 	bl m4aSongNumStart
 	b _020071E6
 _02006DAC:
@@ -13726,7 +13726,7 @@ _02006E46:
 	ands r0, r1
 	cmp r0, #0
 	bne _02006E7E
-	movs r0, #0xf
+	movs r0, #0xf       @ SE_CHAO_WALK
 	bl m4aSongNumStart
 _02006E7E:
 	ldrb r0, [r4, #0x1a]
@@ -15855,7 +15855,7 @@ _02007E78:
 	blt _02007E80
 	b _02007F9C
 _02007E80:
-	movs r0, #0x16
+	movs r0, #0x16      @ SE_GAUGE_EXPANDS
 	bl m4aSongNumStart
 	mov r4, r8
 	ldr r0, [r4]
@@ -16016,7 +16016,7 @@ _02007FB4:
 	ldrb r4, [r1]
 	cmp r4, #0
 	bne _02007FF4
-	movs r0, #0x16
+	movs r0, #0x16      @ SE_GAUGE_EXPANDS
 	bl m4aSongNumStart
 	ldr r1, _02007FF0 @ =gUnknown_0300150C
 	ldr r0, [r1]
@@ -18242,7 +18242,7 @@ _0200915A:
 	ldrb r0, [r0, #6]
 	cmp r0, #0x5f
 	bne _02009174
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	b _020091B2
 	.align 2, 0
@@ -18400,7 +18400,7 @@ _02009290:
 	ands r1, r0
 	cmp r1, #0
 	beq _020092A2
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 	movs r0, #0
 	strb r0, [r4, #0x1a]
@@ -18588,7 +18588,7 @@ _020093F0: .4byte gUnknown_03001968
 _020093F4:
 	cmp r2, #0
 	bne _02009400
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	b _02009448
 _02009400:
@@ -18598,10 +18598,10 @@ _02009400:
 	bl sub_02009458
 	b _02009448
 _0200940C:
-	movs r3, #0xd
+	movs r3, #0xd       @ SE_13
 	cmp r1, #0x5f
 	beq _02009428
-	movs r3, #0xc
+	movs r3, #0xc       @ SE_CONFIRM
 	ldr r2, _02009450 @ =gUnknown_03004400
 	adds r0, r4, #0
 	adds r0, #0x20
@@ -18704,7 +18704,7 @@ _020094CA:
 	cmp r1, #0x14
 	ble _020094DC
 _020094CE:
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	b _02009518
 	.align 2, 0
@@ -18715,7 +18715,7 @@ _020094DE:
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
 _020094E2:
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	ldr r2, _02009520 @ =gUnknown_03004400
 	adds r0, r5, #0
@@ -18783,7 +18783,7 @@ _02009554:
 	adds r2, #1
 	cmp r2, #6
 	ble _02009554
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	adds r0, r5, #0
 	bl sub_02000ed4
@@ -18999,7 +18999,7 @@ _02009720: .4byte sub_02001b58
 sub_02009724: @ 0x02009724
 	push {r4, lr}
 	adds r3, r0, #0
-	movs r4, #0xd
+	movs r4, #0xd       @ SE_13
 	ldrb r0, [r3, #0x19]
 	cmp r0, #0
 	bne _02009748
@@ -19013,7 +19013,7 @@ sub_02009724: @ 0x02009724
 	.align 2, 0
 _02009740: .4byte gUnknown_03001968
 _02009744:
-	movs r4, #0xe
+	movs r4, #0xe       @ SE_MSGBOX
 	b _02009768
 _02009748:
 	ldr r2, _02009774 @ =gUnknown_03001968
@@ -19795,7 +19795,7 @@ _02009D50:
 	movs r0, #1
 	strb r0, [r2]
 	bl sub_02009c0c
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 	b _02009D9A
 	.align 2, 0
@@ -19811,7 +19811,7 @@ _02009D80:
 	movs r0, #0
 	strb r0, [r2]
 	bl sub_02009c0c
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _02009D9A:
 	ldr r0, _02009DC0 @ =gUnknown_030043F0
@@ -19820,7 +19820,7 @@ _02009D9A:
 	ands r0, r1
 	cmp r0, #0
 	beq _02009DC8
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	ldr r0, _02009DC4 @ =gUnknown_03001985
 	ldrb r0, [r0]
@@ -19962,7 +19962,7 @@ _02009E8A:
 	movs r0, #1
 	strb r0, [r6]
 	strh r3, [r7]
-	movs r0, #0x17
+	movs r0, #0x17      @ SE_MINIGAME_LOST
 	bl m4aSongNumStart
 	b _0200A14E
 	.align 2, 0
@@ -20094,7 +20094,7 @@ _02009F9E:
 	movs r0, #1
 	strb r0, [r6]
 	strh r3, [r7]
-	movs r0, #0x23
+	movs r0, #0x23      @ SE_GAUGE_LVL_UP
 	bl m4aSongNumStart
 	b _0200A14E
 	.align 2, 0
@@ -20589,7 +20589,7 @@ _0200A35E:
 	strb r3, [r0]
 	bl sub_02009c0c
 	bl m4aMPlayAllStop
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	add sp, #4
 	pop {r4, r5, r6}
@@ -21513,7 +21513,7 @@ _0200AAD4:
 	ldr r1, _0200ABB4 @ =gUnknown_030019D5
 	movs r0, #0
 	strb r0, [r1]
-	movs r0, #4
+	movs r0, #4         @ MUS_MINIGAME
 	bl m4aSongNumStart
 	bl _0200BDD2
 	.align 2, 0
@@ -22547,7 +22547,7 @@ _0200B4B4:
 	ands r0, r1
 	cmp r0, #0
 	bne _0200B4C6
-	movs r0, #0xf
+	movs r0, #0xf       @ SE_CHAO_WALK
 	bl m4aSongNumStart
 _0200B4C6:
 	ldr r0, _0200B534 @ =gUnknown_030019B7
@@ -22819,7 +22819,7 @@ _0200B6E4:
 	movs r0, #4
 	strb r0, [r1]
 _0200B702:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _0200B708:
 	ldr r0, _0200B7C4 @ =gUnknown_030043F0
@@ -22839,7 +22839,7 @@ _0200B708:
 	movs r0, #0
 	strb r0, [r1]
 _0200B728:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _0200B72E:
 	ldr r0, _0200B7C4 @ =gUnknown_030043F0
@@ -22858,7 +22858,7 @@ _0200B72E:
 	movs r0, #5
 	strb r0, [r1]
 _0200B74C:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _0200B752:
 	ldr r0, _0200B7C4 @ =gUnknown_030043F0
@@ -22878,7 +22878,7 @@ _0200B752:
 	movs r0, #0
 	strb r0, [r1]
 _0200B772:
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _0200B778:
 	ldr r0, _0200B7C4 @ =gUnknown_030043F0
@@ -24973,7 +24973,7 @@ _0200C7EE:
 _0200C80A:
 	asrs r0, r0, #0xb
 	strb r0, [r5, #0xb]
-	movs r0, #0xc
+	movs r0, #0xc       @ SE_CONFIRM
 	bl m4aSongNumStart
 	b _0200C836
 	.align 2, 0
@@ -24988,7 +24988,7 @@ _0200C820:
 	ldrb r0, [r1]
 	subs r0, #1
 	strb r0, [r1]
-	movs r0, #0x14
+	movs r0, #0x14      @ SE_SNORE
 	bl m4aSongNumStart
 _0200C836:
 	movs r0, #0
@@ -25970,7 +25970,7 @@ _0200CE94:
 	ldr r1, _0200D0EC @ =0xC1FFFCFF
 	ands r0, r1
 	str r0, [r2]
-	movs r0, #4
+	movs r0, #4     @ MUS_MINIGAME
 	bl m4aSongNumStart
 	b _0200D196
 	.align 2, 0
@@ -26125,7 +26125,7 @@ _0200D1B8:
 	strb r2, [r3]
 	cmp r0, #2
 	bgt _0200D1E0
-	movs r0, #0x1f
+	movs r0, #0x1f      @ SE_SPEECH_BUBBLE
 	bl m4aSongNumStart
 _0200D1E0:
 	ldr r2, _0200D224 @ =gUnknown_03001AC0
@@ -26371,7 +26371,7 @@ _0200D3C2:
 	asrs r0, r0, #0x10
 	cmp r0, #1
 	ble _0200D3B8
-	movs r0, #4
+	movs r0, #4     @ MUS_MINIGAME
 	bl m4aSongNumStartOrChange
 	bl sub_0200d538
 	add sp, #0x10
@@ -26667,7 +26667,7 @@ _0200D6A2:
 	orrs r0, r3
 	strb r0, [r4, #0xf]
 	bl m4aMPlayAllStop
-	movs r0, #0xe
+	movs r0, #0xe       @ SE_MSGBOX
 	bl m4aSongNumStart
 	b _0200D7E2
 	.align 2, 0
@@ -26690,7 +26690,7 @@ _0200D6C4:
 	lsrs r1, r0, #0x10
 	cmp r1, #0
 	beq _0200D6F8
-	movs r5, #0xd
+	movs r5, #0xd       @ SE_13
 	movs r0, #0x7f
 	ands r0, r3
 	strb r0, [r4, #0xf]
@@ -26699,7 +26699,7 @@ _0200D6C4:
 	.align 2, 0
 _0200D6F4: .4byte gUnknown_030043F0
 _0200D6F8:
-	movs r5, #0xc
+	movs r5, #0xc       @ SE_CONFIRM
 	ldrb r0, [r6, #0x19]
 	cmp r0, #0
 	beq _0200D70A
@@ -26746,7 +26746,7 @@ _0200D748:
 	beq _0200D764
 	movs r0, #0
 	strb r0, [r6, #0x19]
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 	b _0200D77E
 _0200D764:
@@ -26760,7 +26760,7 @@ _0200D764:
 	bne _0200D77E
 	movs r0, #1
 	strb r0, [r6, #0x19]
-	movs r0, #0xb
+	movs r0, #0xb       @ SE_MSGBOX_SELECT
 	bl m4aSongNumStart
 _0200D77E:
 	ldr r5, _0200D7EC @ =gUnknown_03001AD0
@@ -26851,7 +26851,7 @@ sub_0200d814: @ 0x0200d814
 	bl sub_020017b0
 	strb r5, [r4, #0x1d]
 	strh r5, [r4, #0x20]
-	movs r0, #0x17
+	movs r0, #0x17      @ SE_MINIGAME_LOST
 	bl m4aSongNumStart
 _0200D848:
 	ldrb r5, [r4, #0x1d]
@@ -27036,7 +27036,7 @@ _0200D984:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0200D9B6
-	movs r0, #0x14
+	movs r0, #0x14      @ SE_SNORE
 	bl m4aSongNumStart
 _0200D9B6:
 	ldrb r1, [r4, #7]
@@ -28054,7 +28054,7 @@ _0200E148:
 	orrs r0, r1
 	strb r0, [r3, #0xf]
 _0200E188:
-	movs r0, #0x23
+	movs r0, #0x23      @ SE_GAUGE_LVL_UP
 	bl m4aSongNumStart
 	b _0200E1B4
 	.align 2, 0
