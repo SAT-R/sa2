@@ -2979,22 +2979,40 @@ void sub_8023748(Player *p)
     }
 }
 
-void sub_8023878(Player *p)
+void SA2_LABEL(sub_8023878)(Player *p)
 {
+#if (GAME == GAME_SA1) && !defined(BUG_FIX)
+#define WATER_ACTIVE_CHECK 1
+#else
+#define WATER_ACTIVE_CHECK gWater.isActive == TRUE
+#endif
+
     p->moveState &= ~MOVESTATE_1000;
-    if (gWater.isActive == TRUE && gWater.currentWaterLevel >= 0 && (I(p->qWorldY) - 4) >= gWater.currentWaterLevel) {
+    if (WATER_ACTIVE_CHECK && gWater.currentWaterLevel >= 0 && (I(p->qWorldY) - 4) >= gWater.currentWaterLevel) {
         if (!(p->moveState & MOVESTATE_IN_WATER)) {
             p->moveState |= MOVESTATE_IN_WATER;
             p->moveState |= MOVESTATE_1000;
 
             p->qSpeedAirX = p->qSpeedAirX >> 1;
             p->qSpeedAirY = p->qSpeedAirY >> 2;
-            if ((p->character != 3 || p->unk61 != 9) && (s8)p->unk88 < 1) {
-                p->unk88 = 10;
+            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && (s8)p->SA2_LABEL(unk88) < 1) {
+                p->SA2_LABEL(unk88) = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->qWorldX), gWater.currentWaterLevel);
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
         }
+
+#if (GAME == GAME_SA1)
+        if (!(p->moveState & MOVESTATE_2000)) {
+            p->maxSpeed = Q(2.25);
+            p->acceleration = Q(4. / 256.);
+            p->deceleration = Q(48. / 256.);
+        } else {
+            p->maxSpeed = Q(3.75);
+            p->acceleration = Q(18. / 256.);
+            p->deceleration = Q(96. / 256.);
+        }
+#endif
 
         if (--p->framesUntilDrownCountDecrement < 1) {
             switch (p->secondsUntilDrown--) {
@@ -3040,31 +3058,54 @@ void sub_8023878(Player *p)
             p->moveState |= MOVESTATE_1000;
             p->qSpeedAirY = p->qSpeedAirY << 1;
 
-            if ((p->character != 3 || p->unk61 != 9) && p->unk88 < 1) {
-                p->unk88 = 10;
+            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && p->SA2_LABEL(unk88) < 1) {
+                p->SA2_LABEL(unk88) = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->qWorldX), gWater.currentWaterLevel);
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
         }
+#if (GAME == GAME_SA1)
+        if (!(p->moveState & MOVESTATE_2000)) {
+            p->maxSpeed = Q(4.50);
+            p->acceleration = Q(8. / 256.);
+            p->deceleration = Q(96. / 256.);
+        } else {
+            p->maxSpeed = Q(7.50);
+            p->acceleration = Q(36. / 256.);
+            p->deceleration = Q(192. / 256.);
+        }
+#endif
         p->framesUntilDrownCountDecrement = 60;
         p->secondsUntilDrown = 30;
 
+#if (GAME == GAME_SA1)
+        if (p->playerID == 0) {
+            m4aSongNumStop(MUS_DROWNING);
+        }
+#else
         if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header && p->playerID == 0) {
             m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
         }
+#endif
     }
 
     if (p->itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) {
+#if (GAME == GAME_SA1)
+        p->maxSpeed = p->maxSpeed * 2;
         p->acceleration = p->acceleration * 2;
         p->deceleration = p->deceleration * 2;
+#else
+        p->acceleration = p->acceleration * 2;
+        p->deceleration = p->deceleration * 2;
+#endif
     } else if (p->itemEffect & PLAYER_ITEM_EFFECT__MP_SLOW_DOWN) {
         p->maxSpeed = p->maxSpeed >> 2;
         p->acceleration = p->acceleration >> 2;
         p->deceleration = p->deceleration >> 2;
     }
 
-    if (p->unk88 != 0) {
-        p->unk88--;
+    if (p->SA2_LABEL(unk88) != 0) {
+        p->SA2_LABEL(unk88)--;
     }
 }
 

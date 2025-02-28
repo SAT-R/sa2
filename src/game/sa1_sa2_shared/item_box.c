@@ -72,7 +72,11 @@ const u16 ItemBox_randTypeTable[8] = { ITEM__RINGS_RANDOM,  ITEM__MP_RANDOM, ITE
                                        ITEM__INVINCIBILITY, ITEM__MP_RANDOM, ITEM__RINGS_5,  ITEM__MP_RANDOM };
 
 const u16 ItemBox_subRandTypeTable[] = { ITEM__MP_SWAP, ITEM__MP_CONFUSION, ITEM__MP_SLOWDOWN, ITEM__MP_ATTACK };
-const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50, 0, 0, 0 };
+#if (GAME == GAME_SA1)
+const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 20, 30, 40 };
+#elif (GAME == GAME_SA2)
+const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50 };
+#endif
 
 void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -248,7 +252,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
 
         case ITEM__RINGS_RANDOM: {
-            s32 rnd = ItemBox_ringAmountTable[(u32)PseudoRandom32() % 5];
+            s32 rnd = ItemBox_ringAmountTable[(u32)PseudoRandom32() % ARRAY_COUNT(ItemBox_ringAmountTable)];
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             // There are points in the game where the TAS depends on the RNG
             // giving specific values. Because widescreen runs different code
