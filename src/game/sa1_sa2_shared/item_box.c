@@ -73,7 +73,7 @@ const u16 ItemBox_randTypeTable[8] = { ITEM__RINGS_RANDOM,  ITEM__MP_RANDOM, ITE
 
 const u16 ItemBox_subRandTypeTable[] = { ITEM__MP_SWAP, ITEM__MP_CONFUSION, ITEM__MP_SLOWDOWN, ITEM__MP_ATTACK };
 #if (GAME == GAME_SA1)
-const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 20, 30, 50 };
+const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 20, 30, 40 };
 #elif (GAME == GAME_SA2)
 const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50 };
 #endif
