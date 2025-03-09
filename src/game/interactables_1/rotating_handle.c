@@ -25,9 +25,9 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     Sprite s;
-    s16 unk3C;
-    s16 unk3E;
-    u8 unk40;
+    s16 rot;
+    s16 rotSpeed;
+    u8 quartile;
 } Sprite_RotatingHandle;
 
 static void Task_AfterJump(void);
@@ -45,9 +45,9 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         rotatingHandle->base.me = me;
         rotatingHandle->base.spriteX = me->x;
         rotatingHandle->base.id = spriteY;
-        rotatingHandle->unk3C = 0;
-        rotatingHandle->unk3E = 0;
-        rotatingHandle->unk40 = 0;
+        rotatingHandle->rot = 0;
+        rotatingHandle->rotSpeed = 0;
+        rotatingHandle->quartile = 0;
 
         s->x = TO_WORLD_POS(me->x, spriteRegionX);
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -87,17 +87,17 @@ static void Task_Idle(void)
         s32 temp1, temp2;
 #endif
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
-        rotatingHandle->unk3C = 0;
+        rotatingHandle->rot = 0;
 
         temp1 = abs(gPlayer.qSpeedAirX);
         temp2 = abs(gPlayer.qSpeedAirY);
-        rotatingHandle->unk3E = temp1 + temp2;
-        if (rotatingHandle->unk3E < 0xE0) {
-            rotatingHandle->unk3E = 0xE0;
+        rotatingHandle->rotSpeed = temp1 + temp2;
+        if (rotatingHandle->rotSpeed < 0xE0) {
+            rotatingHandle->rotSpeed = 0xE0;
         }
 
-        if (rotatingHandle->unk3E > 0x180) {
-            rotatingHandle->unk3E = 0x180;
+        if (rotatingHandle->rotSpeed > 0x180) {
+            rotatingHandle->rotSpeed = 0x180;
         }
 
         if (gPlayer.qSpeedAirX > 0) {
@@ -105,22 +105,22 @@ static void Task_Idle(void)
             if (I(gPlayer.qWorldY) > y) {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_A;
-                rotatingHandle->unk40 = 0;
+                rotatingHandle->quartile = 0;
             } else {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_B;
-                rotatingHandle->unk40 = 1;
+                rotatingHandle->quartile = 1;
             }
         } else {
             gPlayer.moveState |= 1;
             if (I(gPlayer.qWorldY) > y) {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_A;
-                rotatingHandle->unk40 = 2;
+                rotatingHandle->quartile = 2;
             } else {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.charState = CHARSTATE_GRABBING_HANDLE_B;
-                rotatingHandle->unk40 = 3;
+                rotatingHandle->quartile = 3;
             }
         }
 
@@ -168,11 +168,11 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
     posX = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
     posY = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
-    rotatingHandle->unk3C = (rotatingHandle->unk3C + rotatingHandle->unk3E) & 0x3FF0;
+    rotatingHandle->rot = (rotatingHandle->rot + rotatingHandle->rotSpeed) & 0x3FF0;
     // unused but required for match
-    temp3 = CLAMP_SIN_PERIOD(rotatingHandle->unk3C) + 0;
+    temp3 = CLAMP_SIN_PERIOD(rotatingHandle->rot) + 0;
     // asm("":::"r8", "r9");
-    temp2 = rotatingHandle->unk3C >> 4;
+    temp2 = rotatingHandle->rot >> 4;
     temp = temp2;
 
     sprite->x = posX - gCamera.x;
@@ -195,7 +195,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
         gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gCurTask->main = Task_AfterJump;
 
-        switch (rotatingHandle->unk40) {
+        switch (rotatingHandle->quartile) {
             case 0:
                 r4 = CLAMP_SIN_PERIOD(0x20 - temp) + 0;
                 sin = SIN(temp);
@@ -302,14 +302,14 @@ static void Task_AfterJump(void)
 
     u8 temp3;
 
-    rotatingHandle->unk3E--;
-    if (rotatingHandle->unk3E < 0xE0) {
-        rotatingHandle->unk3E = 0xE0;
+    rotatingHandle->rotSpeed--;
+    if (rotatingHandle->rotSpeed < 0xE0) {
+        rotatingHandle->rotSpeed = 0xE0;
     }
 
-    rotatingHandle->unk3C = (rotatingHandle->unk3C + rotatingHandle->unk3E) & 0x3FF0;
+    rotatingHandle->rot = (rotatingHandle->rot + rotatingHandle->rotSpeed) & 0x3FF0;
 
-    temp3 = Div(rotatingHandle->unk3C >> 4, 85);
+    temp3 = Div(rotatingHandle->rot >> 4, 85);
     if (temp3 > 0xB) {
         temp3 = 0xB;
     }
@@ -328,8 +328,8 @@ static void Task_AfterJump(void)
     }
 
     if (temp3 == 0) {
-        rotatingHandle->unk3C = 0;
-        rotatingHandle->unk3E = 0;
+        rotatingHandle->rot = 0;
+        rotatingHandle->rotSpeed = 0;
         gCurTask->main = Task_Idle;
     }
     UpdateSpriteAnimation(s);
