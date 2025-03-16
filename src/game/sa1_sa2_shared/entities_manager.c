@@ -48,7 +48,7 @@
 #include "game/interactables_2/music_plant/pipe_horn.h"
 #include "game/interactables_2/music_plant/keyboard.h"
 #include "game/interactables_2/music_plant/note_block.h"
-#include "game/interactables_2/music_plant/guitar_string.h"
+#include "game/interactables_2/music_plant/bouncy_chain.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
 #include "game/interactables_2/ice_paradise/big_snowball.h"
@@ -321,9 +321,9 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Crane,
     CreateEntity_DashRing,
     CreateEntity_FloatingSpring_Up,
-    CreateEntity_Note_Sphere,
-    CreateEntity_Note_Block,
-    CreateEntity_GuitarString,
+    CreateEntity_NoteSphere,
+    CreateEntity_NoteBlock,
+    CreateEntity_BouncyChain,
     CreateEntity_Keyboard_Vertical,
     CreateEntity_Keyboard_Horizontal_PushLeft,
     CreateEntity_Keyboard_Horizontal_PushRight,
@@ -335,7 +335,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_HalfPipe_End,
     CreateEntity_HalfPipe_Start,
     CreateEntity_BigSnowball,
-    CreateEntity_NoteBlock,
+    CreateEntity_BounceBlock,
     CreateEntity_CeilingSlope,
     CreateEntity_Pipe_Start,
     CreateEntity_Pipe_End,

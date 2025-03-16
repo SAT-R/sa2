@@ -30,13 +30,13 @@ typedef struct {
     /* 0x4B */ u8 unk4B;
 } Sprite_NoteSphere; /* size: 0x4C */
 
-static void Task_Note_Sphere(void);
+static void Task_Idle(void);
 
 static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
 static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *);
 static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
 static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *);
-static void NoteSphere_80758B8(Sprite_NoteSphere *);
+static void Render(Sprite_NoteSphere *);
 static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *);
 static void NoteSphere_Despawn(Sprite_NoteSphere *);
 
@@ -56,9 +56,9 @@ static const u16 sNoteSphereSfx[8] = {
     SE_MUSIC_PLANT_NOTES_5, SE_MUSIC_PLANT_NOTES_6, SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
-void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_NoteSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
+    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_NoteSphere), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
     Sprite_NoteSphere *note = TASK_DATA(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
@@ -109,12 +109,12 @@ static void Task_80754B8(void)
         case 6: {
             note->unk44 = 0;
             note->unk46 = 0;
-            gCurTask->main = Task_Note_Sphere;
+            gCurTask->main = Task_Idle;
         } break;
     }
 
     NoteSphere_UpdateSpritePos(note);
-    NoteSphere_80758B8(note);
+    Render(note);
 }
 
 static void NoteSphere_ApplyCollisionPlayer(Sprite_NoteSphere *note)
@@ -127,11 +127,11 @@ static void NoteSphere_ApplyCollisionPlayer(Sprite_NoteSphere *note)
     gPlayer.moveState = ((gPlayer.moveState | MOVESTATE_IN_AIR) & ~(MOVESTATE_100));
     note->unk4A = 0;
 
-    sub_8080C78(note->posX, note->posY, 5, 30, (sNoteSphereVelocities[note->kind] >> 3),
-                (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 0);
+    CreateNoteParticle(note->posX, note->posY, 5, 30, (sNoteSphereVelocities[note->kind] >> 3),
+                       (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 0);
 
-    sub_8080C78(note->posX, note->posY, 5, 30, (-sNoteSphereVelocities[note->kind] >> 3),
-                (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 1);
+    CreateNoteParticle(note->posX, note->posY, 5, 30, (-sNoteSphereVelocities[note->kind] >> 3),
+                       (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 1);
 
     m4aSongNumStart(sNoteSphereSfx[note->kind]);
     gCurTask->main = Task_80754B8;
@@ -196,7 +196,7 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
     return FALSE;
 }
 
-static void Task_Note_Sphere(void)
+static void Task_Idle(void)
 {
     Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
@@ -208,7 +208,7 @@ static void Task_Note_Sphere(void)
         NoteSphere_Despawn(note);
     } else {
         NoteSphere_UpdateSpritePos(note);
-        NoteSphere_80758B8(note);
+        Render(note);
     }
 }
 
@@ -222,7 +222,7 @@ static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *note)
     s->y = (note->posY - gCamera.y) + Q_8_8_TO_INT(note->unk46);
 }
 
-static void NoteSphere_80758B8(Sprite_NoteSphere *note)
+static void Render(Sprite_NoteSphere *note)
 {
     Sprite *s = &note->disp;
 
