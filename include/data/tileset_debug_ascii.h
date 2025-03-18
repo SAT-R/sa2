@@ -3,6 +3,6 @@
 
 #include "gba/types.h"
 
-extern const u8 Tileset_Language[];
+extern const u8 Tileset_DebugAscii[];
 
 #endif // GUARD_TILESET_LANGUAGE_H

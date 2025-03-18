@@ -4,7 +4,7 @@
 #include "animation_commands_bg.h"
 #include "game/title_screen.h"
 
-#include "data/tileset_language.h"
+#include "data/tileset_debug_ascii.h"
 
 static const char ALIGNED(4) sTxtFlash[]
     = { 'F', 'L', 'A', 'S', 'H', 0xC5, 0xB2, 0xC4, 0x2C, 0xBE, 0xB0, 0xCC, 0xDE, 0xC3, 0xDE, 0xB7, 0xC5, 0xB2, 0xC3, 0xDE, 0xBD };
@@ -33,7 +33,7 @@ void CreateUnusedStageTask(void)
 
 void Task_UnusedStageTask(void)
 {
-    RenderText((void *)(VRAM + 1 * TILE_SIZE_4BPP), &Tileset_Language, 1, 10, 2, sTxtFlash, 0);
+    RenderText((void *)(VRAM + 1 * TILE_SIZE_4BPP), &Tileset_DebugAscii, 1, 10, 2, sTxtFlash, 0);
 
     if (gPressedKeys & A_BUTTON) {
         DestroyUnusedStageTask();

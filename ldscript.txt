@@ -529,7 +529,7 @@ SECTIONS
         src/data/sprite_oam_data.o(.rodata);
         data/sprite_animation_data.o(.rodata);
 
-        src/data/tileset_debug_text.o(.rodata);
+        src/data/tileset_debug_ascii.o(.rodata);
         src/data/tilemap_data.o(.rodata);
 
         src/lib/m4a/m4a_tables.o(.rodata);
