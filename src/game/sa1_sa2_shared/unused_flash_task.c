@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
 #include "task.h"
 #include "animation_commands_bg.h"
 #include "game/title_screen.h"
