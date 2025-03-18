@@ -9,10 +9,10 @@
 static const char ALIGNED(4) sTxtFlash[]
     = { 'F', 'L', 'A', 'S', 'H', 0xC5, 0xB2, 0xC4, 0x2C, 0xBE, 0xB0, 0xCC, 0xDE, 0xC3, 0xDE, 0xB7, 0xC5, 0xB2, 0xC3, 0xDE, 0xBD };
 
-void Task_UnusedStageTask(void);
-void DestroyUnusedStageTask(void);
+void Task_UnusedFlashTask(void);
+void DestroyUnusedFlashTask(void);
 
-void CreateUnusedStageTask(void)
+void CreateUnusedFlashTask(void)
 {
     gDispCnt = (DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_0);
     gBgCntRegs[2] = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
@@ -25,22 +25,22 @@ void CreateUnusedStageTask(void)
     SA2_LABEL(gUnknown_03002280)[2][3] = 0x40;
 
     {
-        struct Task *t = TaskCreate(Task_UnusedStageTask, 0, 0x1000, 0, NULL);
+        struct Task *t = TaskCreate(Task_UnusedFlashTask, 0, 0x1000, 0, NULL);
         gBgPalette[1] = RGB_WHITE;
         gFlags |= 0x1;
     }
 }
 
-void Task_UnusedStageTask(void)
+void Task_UnusedFlashTask(void)
 {
     RenderText((void *)(VRAM + 1 * TILE_SIZE_4BPP), &Tileset_DebugAscii, 1, 10, 2, sTxtFlash, 0);
 
     if (gPressedKeys & A_BUTTON) {
-        DestroyUnusedStageTask();
+        DestroyUnusedFlashTask();
     }
 }
 
-void DestroyUnusedStageTask(void)
+void DestroyUnusedFlashTask(void)
 {
     SA2_LABEL(gUnknown_03004D80)[2] = 0;
     SA2_LABEL(gUnknown_03002280)[2][0] = 0;
