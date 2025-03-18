@@ -27,7 +27,7 @@ void CreateUnusedFlashTask(void)
     {
         struct Task *t = TaskCreate(Task_UnusedFlashTask, 0, 0x1000, 0, NULL);
         gBgPalette[1] = RGB_WHITE;
-        gFlags |= 0x1;
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 }
 
