@@ -18,11 +18,11 @@ void CreateUnusedStageTask(void)
     gBgCntRegs[2] = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
     DmaFill32(3, 0, VRAM, 2 * TILE_SIZE_4BPP);
 
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x40;
+    SA2_LABEL(gUnknown_03004D80)[2] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][0] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][1] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][2] = 0xFF;
+    SA2_LABEL(gUnknown_03002280)[2][3] = 0x40;
 
     {
         struct Task *t = TaskCreate(Task_UnusedStageTask, 0, 0x1000, 0, NULL);
@@ -42,11 +42,11 @@ void Task_UnusedStageTask(void)
 
 void DestroyUnusedStageTask(void)
 {
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x20;
+    SA2_LABEL(gUnknown_03004D80)[2] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][0] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][1] = 0;
+    SA2_LABEL(gUnknown_03002280)[2][2] = 0xFF;
+    SA2_LABEL(gUnknown_03002280)[2][3] = 0x20;
 
     TaskDestroy(gCurTask);
     CreateTitleScreen();
