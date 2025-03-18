@@ -49,5 +49,10 @@ void DestroyUnusedStageTask(void)
     SA2_LABEL(gUnknown_03002280)[2][3] = 0x20;
 
     TaskDestroy(gCurTask);
+
+#if (GAME == GAME_SA1)
+    CreateSegaLogo();
+#elif (GAME == GAME_SA2)
     CreateTitleScreen();
+#endif
 }
