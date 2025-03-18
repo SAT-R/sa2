@@ -72,13 +72,13 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
         checksum;                                                                                                                          \
     })
 
-#define UNLOCK_FLAG_CREAM       1 << 0
-#define UNLOCK_FLAG_TAILS       1 << 1
-#define UNLOCK_FLAG_KNUCKLES    1 << 2
-#define UNLOCK_FLAG_AMY         1 << 3
-#define UNLOCK_FLAG_BOSS_TA     1 << 4
-#define UNLOCK_FLAG_SOUND_TEST  1 << 5
-#define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
+#define UNLOCK_FLAG_CREAM       (1 << 0)
+#define UNLOCK_FLAG_TAILS       (1 << 1)
+#define UNLOCK_FLAG_KNUCKLES    (1 << 2)
+#define UNLOCK_FLAG_AMY         (1 << 3)
+#define UNLOCK_FLAG_BOSS_TA     (1 << 4)
+#define UNLOCK_FLAG_SOUND_TEST  (1 << 5)
+#define UNLOCK_FLAG_CHAO_GARDEN (1 << 6)
 
 #define GAME_PLAY_OPTION_DIFFICULTY_EASY     1
 #define GAME_PLAY_OPTION_TIME_LIMIT_DISABLED 2
