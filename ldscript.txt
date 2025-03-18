@@ -109,7 +109,7 @@ SECTIONS
         src/game/sa1_sa2_shared/spot_light_beam_task.o(.text);
         src/game/sa1_sa2_shared/enemy_defeat_score.o(.text);
         src/game/sa1_sa2_shared/demo_manager.o(.text);
-        src/game/sa1_sa2_shared/unused_unknown_task.o(.text);
+        src/game/sa1_sa2_shared/unused_stage_task.o(.text);
         src/game/sa1_sa2_shared/simple_sprite_particle.o(.text);
         src/game/sa1_sa2_shared/spot_light.o(.text);
         src/game/sa1_sa2_shared/pause_menu.o(.text);
@@ -402,7 +402,7 @@ SECTIONS
         src/game/sa1_sa2_shared/rings_manager.o(.rodata);
         src/game/sa1_sa2_shared/entities_manager.o(.rodata);
         src/game/sa1_sa2_shared/unused_level_select.o(.rodata);
-        src/game/sa1_sa2_shared/unused_unknown_task.o(.rodata);
+        src/game/sa1_sa2_shared/unused_stage_task.o(.rodata);
         src/game/sa1_sa2_shared/pause_menu.o(.rodata);
         src/game/sa1_sa2_shared/item_box.o(.rodata);
         src/game/sa1_sa2_shared/music_manager.o(.rodata);
