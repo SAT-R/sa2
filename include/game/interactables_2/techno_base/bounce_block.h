@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_NoteBlock(MapEntity *ia, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
+void CreateEntity_BounceBlock(MapEntity *ia, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
 
 #endif

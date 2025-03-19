@@ -13,8 +13,8 @@
 
 /* TODO: Make including <entity>.h from game code work */
 
-//From "game/interactables_2/music_plant/guitar_string.h"
-#define NUM_GUITAR_STRING_ELEMS 6
+//From "game/interactables_2/music_plant/bouncy_chain.h"
+#define NUM_BOUNCY_CHAIN_ELEMS 6
 
 // From light_bridge.h
 #define BRIDGE_SEGMENT_WIDTH 12
@@ -161,10 +161,10 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
     } break;
 
 #if 0
-    // NOTE: The frame for the guitar string elements is in
+    // NOTE: The frame for the bouncy chain elements is in
     //       variant 15 of NOTE_BLOCK, for some reason.
-    case IA__GUITAR_STRING: {
-        for(int i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+    case IA__BOUNCY_CHAIN: {
+        for(int i = 0; i < NUM_BOUNCY_CHAIN_ELEMS; i++) {
 
         }
     } break;

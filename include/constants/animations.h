@@ -266,7 +266,7 @@
 #define SA2_ANIM_SPRING_MUS_PLA_2                573
 #define SA2_ANIM_PLATFORM_SQUARE_MUS_PLA         574
 #define SA2_ANIM_NOTE_BLOCK                      575
-#define SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR       15
+#define SA2_ANIM_VARIANT_NOTE_BLOCK_CHAIN_LINK   15
 #define SA2_ANIM_NOTE_PARTICLES                  576
 #define SA2_ANIM_VARIANT_NOTE_H                  0
 #define SA2_ANIM_VARIANT_NOTE_V                  1

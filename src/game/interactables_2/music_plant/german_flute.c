@@ -338,7 +338,7 @@ static void sub_8076E3C(Sprite_GermanFlute *flute)
 
     gPlayer.qSpeedAirY = -sFluteUpdraft[flute->kind];
     flute->timer = 0;
-    sub_8080AFC(flute->posX, (flute->posY + 24), 0, 30, 0, DEG_TO_SIN(270) / 4, 3);
+    CreateAngledNoteParticle(flute->posX, (flute->posY + 24), 0, 30, 0, DEG_TO_SIN(270) / 4, 3);
     m4aSongNumStart(sFluteSfx[flute->kind]);
     gCurTask->main = sub_80769E0;
 }

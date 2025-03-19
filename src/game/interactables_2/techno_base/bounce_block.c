@@ -47,7 +47,7 @@ static const u16 sTecBasBlockSfx[] = {
     SE_TECHNO_BASE_COMMON,
 };
 
-void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_BounceBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
     Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(t);
