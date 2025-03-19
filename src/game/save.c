@@ -87,15 +87,17 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define PACKED_B_BUTTON 2
 #define PACKED_R_BUTTON 4
 
-// If the sector's security field is not this value then the sector is either invalid or
-// empty.
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS       10
 
+// If the sector's security field is not this value then the sector is either invalid or
+// empty.
 #if (GAME == GAME_SA1)
 #define SECTOR_SECURITY_NUM 0x4F524950
 #elif (GAME == GAME_SA2)
 #define SECTOR_SECURITY_NUM 0x4547474D
+#elif (GAME == GAME_SA3)
+#define SECTOR_SECURITY_NUM 0x47544E4C
 #endif
 
 void InsertMultiplayerProfile(u32 playerId, u16 *name)
