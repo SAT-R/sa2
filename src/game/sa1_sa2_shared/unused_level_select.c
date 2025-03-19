@@ -19,7 +19,7 @@
 #endif
 
 #include "animation_commands_bg.h"
-#include "data/tileset_language.h"
+#include "data/tileset_debug_ascii.h"
 
 #include "constants/songs.h"
 
@@ -141,7 +141,7 @@ static void Task_Poll(void)
         }
 
         numToASCII(digits, levelSelect->levelId);
-        RenderText(levelSelect->vram, Tileset_Language, 12, 14, 0, (char *)digits, 0);
+        RenderText(levelSelect->vram, Tileset_DebugAscii, 12, 14, 0, (char *)digits, 0);
     }
 }
 
@@ -151,7 +151,7 @@ static void Task_UnusedLevelSelectInit(void)
     gBgPalette[1] = RGB_WHITE;
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
-    levelSelect->vram += RenderText(levelSelect->vram, Tileset_Language, 6, 14, 0, "STAGE", 0);
+    levelSelect->vram += RenderText(levelSelect->vram, Tileset_DebugAscii, 6, 14, 0, "STAGE", 0);
 
     gCurTask->main = Task_Poll;
     gCurTask->main();

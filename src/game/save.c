@@ -72,13 +72,13 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
         checksum;                                                                                                                          \
     })
 
-#define UNLOCK_FLAG_CREAM       1 << 0
-#define UNLOCK_FLAG_TAILS       1 << 1
-#define UNLOCK_FLAG_KNUCKLES    1 << 2
-#define UNLOCK_FLAG_AMY         1 << 3
-#define UNLOCK_FLAG_BOSS_TA     1 << 4
-#define UNLOCK_FLAG_SOUND_TEST  1 << 5
-#define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
+#define UNLOCK_FLAG_CREAM       (1 << 0)
+#define UNLOCK_FLAG_TAILS       (1 << 1)
+#define UNLOCK_FLAG_KNUCKLES    (1 << 2)
+#define UNLOCK_FLAG_AMY         (1 << 3)
+#define UNLOCK_FLAG_BOSS_TA     (1 << 4)
+#define UNLOCK_FLAG_SOUND_TEST  (1 << 5)
+#define UNLOCK_FLAG_CHAO_GARDEN (1 << 6)
 
 #define GAME_PLAY_OPTION_DIFFICULTY_EASY     1
 #define GAME_PLAY_OPTION_TIME_LIMIT_DISABLED 2
@@ -87,11 +87,18 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define PACKED_B_BUTTON 2
 #define PACKED_R_BUTTON 4
 
-// If the sector's security field is not this value then the sector is either invalid or
-// empty.
-#define SECTOR_SECURITY_NUM    0x4547474D
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS       10
+
+// If the sector's security field is not this value then the sector is either invalid or
+// empty.
+#if (GAME == GAME_SA1)
+#define SECTOR_SECURITY_NUM 0x4F524950
+#elif (GAME == GAME_SA2)
+#define SECTOR_SECURITY_NUM 0x4547474D
+#elif (GAME == GAME_SA3)
+#define SECTOR_SECURITY_NUM 0x47544E4C
+#endif
 
 void InsertMultiplayerProfile(u32 playerId, u16 *name)
 {
@@ -491,7 +498,7 @@ static u16 WriteToSaveSector(struct SaveSectorData *data, s16 sectorNum)
 
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
 
     preIE = REG_IE;
     preIME = REG_IME;
@@ -514,7 +521,7 @@ static u16 WriteToSaveSector(struct SaveSectorData *data, s16 sectorNum)
     REG_DISPSTAT = preDISPSTAT;
 
     m4aSoundVSyncOn();
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     return result;
 }
@@ -793,7 +800,7 @@ static u16 EraseSaveSector(s16 sectorNum)
 
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
 
     preIE = REG_IE;
     preIME = REG_IME;
@@ -816,7 +823,7 @@ static u16 EraseSaveSector(s16 sectorNum)
     REG_DISPSTAT = preDISPSTAT;
 
     m4aSoundVSyncOn();
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     return result;
 }
@@ -949,7 +956,6 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData *save, s16 s
     return 1;
 }
 
-// StringEquals
 static bool16 StringEquals(u16 *string1Char, u16 *string2Char, s16 length)
 {
     s16 i;
