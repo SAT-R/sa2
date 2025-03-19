@@ -23,47 +23,47 @@ typedef struct {
     Sprite sprite2;
     s32 x;
     s32 y;
-    u16 unk68;
-    u16 unk6A;
-    u16 unk6C;
+    u16 facingRight;
+    u16 qCannonAngle;
+    u16 fireTimeout;
     u16 unk6E;
     MapEntity *me;
     u8 spriteX;
     u8 spriteY;
 } Sprite_Cannon;
 
-static void Task_Interactable093(void);
+static void Task_Idle(void);
 static void TaskDestructor_Interactable093(struct Task *);
-static void sub_807E56C(Sprite_Cannon *);
-static void sub_807E5F0(Sprite_Cannon *);
-static void sub_807E408(Sprite_Cannon *);
-static bool16 sub_807E954(Sprite_Cannon *);
-static void sub_807E940(Sprite_Cannon *);
-static void sub_807E8FC(void);
-static void sub_807E884(Sprite_Cannon *);
-static void sub_807E834(Sprite_Cannon *cannon);
-static void sub_807E86C(Sprite_Cannon *cannon);
-static bool32 sub_807E898(Sprite_Cannon *cannon);
-static void sub_807E8E0(Sprite_Cannon *cannon);
-static void sub_807E7F8(void);
-static void sub_807E7B0(void);
+static void HandleMovement(Sprite_Cannon *);
+static void Render(Sprite_Cannon *);
+static void Fire(Sprite_Cannon *);
+static bool16 HandleResetMovement(Sprite_Cannon *);
+static void HandleSetIdle(Sprite_Cannon *);
+static void Task_Reset(void);
+static void StartReset(Sprite_Cannon *);
+static void Task_ActivateCannon(Sprite_Cannon *cannon);
+static void HandleDeathWhilstActivating(Sprite_Cannon *cannon);
+static bool32 ShouldDespawn(Sprite_Cannon *cannon);
+static void Despawn(Sprite_Cannon *cannon);
+static void Task_IdleBeforeReset(void);
+static void Task_Activating(void);
 
 void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0, TaskDestructor_Interactable093);
+    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_Cannon), 0x2010, 0, TaskDestructor_Interactable093);
     Sprite_Cannon *cannon = TASK_DATA(t);
-    cannon->unk68 = me->d.sData[0];
+    cannon->facingRight = me->d.sData[0];
     cannon->x = TO_WORLD_POS(me->x, spriteRegionX);
     cannon->y = TO_WORLD_POS(me->y, spriteRegionY);
     cannon->me = me;
     cannon->spriteX = me->x;
     cannon->spriteY = spriteY;
 
-    if (cannon->unk68 == 0) {
-        cannon->unk6A = 0x200;
+    if (!cannon->facingRight) {
+        cannon->qCannonAngle = Q(2);
     } else {
-        cannon->unk6A = 0;
+        cannon->qCannonAngle = 0;
     }
 
     s = &cannon->sprite2;
@@ -85,26 +85,26 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void sub_807E314(void)
+static void Task_Active(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
-    if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF || gPlayer.frameInput & (gPlayerControls.jump | gPlayerControls.attack)) {
-        sub_807E408(cannon);
+    if (!PLAYER_IS_ALIVE || --cannon->fireTimeout == (u16)-1 || gPlayer.frameInput & (gPlayerControls.jump | gPlayerControls.attack)) {
+        Fire(cannon);
     } else {
-        sub_807E56C(cannon);
+        HandleMovement(cannon);
     }
 
-    sub_807E5F0(cannon);
+    Render(cannon);
 }
 
-static void sub_807E384(Sprite_Cannon *cannon)
+static void HandlePlayerEnter(Sprite_Cannon *cannon)
 {
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
-    if (cannon->unk68 == 0) {
+    if (!cannon->facingRight) {
         gPlayer.qWorldX = Q(cannon->x + 40);
         gPlayer.qWorldY = Q(cannon->y);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
@@ -117,10 +117,10 @@ static void sub_807E384(Sprite_Cannon *cannon)
     gPlayer.qSpeedGround = 0;
     gPlayer.qSpeedAirX = 0;
     gPlayer.qSpeedAirY = 0;
-    gCurTask->main = sub_807E7B0;
+    gCurTask->main = Task_Activating;
 }
 
-static void sub_807E408(Sprite_Cannon *cannon)
+static void Fire(Sprite_Cannon *cannon)
 {
     Player_ClearMovestate_IsInScriptedSequence();
 
@@ -128,27 +128,27 @@ static void sub_807E408(Sprite_Cannon *cannon)
         gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_UNCURL;
 
-        gPlayer.qWorldX += COS_24_8(cannon->unk6A) * 0x20;
-        gPlayer.qWorldY += SIN_24_8(cannon->unk6A) * 0x20;
-        gPlayer.qSpeedAirX = COS_24_8(cannon->unk6A) * 0xF;
-        gPlayer.qSpeedAirY = SIN_24_8(cannon->unk6A) * 0xF;
+        gPlayer.qWorldX += COS_24_8(cannon->qCannonAngle) * 32;
+        gPlayer.qWorldY += SIN_24_8(cannon->qCannonAngle) * 32;
+        gPlayer.qSpeedAirX = COS_24_8(cannon->qCannonAngle) * 15;
+        gPlayer.qSpeedAirY = SIN_24_8(cannon->qCannonAngle) * 15;
 
         if (GRAVITY_IS_INVERTED) {
             gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
         }
 
-        gPlayer.rotation = cannon->unk6A >> 2;
+        gPlayer.rotation = cannon->qCannonAngle >> 2;
         gPlayer.timerInvulnerability = 4;
         m4aSongNumStart(SE_289);
     }
 
     cannon->unk6E = 0;
-    gCurTask->main = sub_807E7F8;
+    gCurTask->main = Task_IdleBeforeReset;
 }
 
-static bool32 sub_807E4E4(Sprite_Cannon *cannon)
+static bool32 MovePlayerIntoCannon(Sprite_Cannon *cannon)
 {
-    u8 temp = 0;
+    u8 conditionsMet = 0;
     s32 val = Q(cannon->x);
 
     if (gPlayer.qWorldX > val) {
@@ -165,7 +165,7 @@ static bool32 sub_807E4E4(Sprite_Cannon *cannon)
         }
 
     } else {
-        temp++;
+        conditionsMet++;
     }
 
     val = Q(cannon->y);
@@ -184,27 +184,21 @@ static bool32 sub_807E4E4(Sprite_Cannon *cannon)
         }
 
     } else {
-        temp++;
+        conditionsMet++;
     }
 
-    return temp == 2 ? TRUE : FALSE;
+    return conditionsMet == 2 ? TRUE : FALSE;
 }
 
-static void sub_807E56C(Sprite_Cannon *cannon)
+static void HandleMovement(Sprite_Cannon *cannon)
 {
     u16 r3;
     s16 temp2;
     s16 temp3;
-    s32 mask;
-#ifndef NON_MATCHING
-    register s16 r0 asm("r0");
-#else
-    s16 r0;
-#endif
-    s32 r1;
 
-    r3 = (cannon->unk68 == 0) ? ((cannon->unk6E == 0) ? 0x280 : 0x180) : ((cannon->unk6E == 0) ? 0x80 : 0x380);
-    temp2 = sub_808558C(cannon->unk6A, r3, 10);
+    r3 = (!cannon->facingRight) ? ((cannon->unk6E == 0) ? DEG_TO_SIN(225) : DEG_TO_SIN(135))
+                                : ((cannon->unk6E == 0) ? DEG_TO_SIN(45) : DEG_TO_SIN(315));
+    temp2 = sub_808558C(cannon->qCannonAngle, r3, 10);
     temp3 = temp2;
 
     if (abs(temp2) >= 5) {
@@ -217,34 +211,24 @@ static void sub_807E56C(Sprite_Cannon *cannon)
         cannon->unk6E ^= 1;
     }
 
-    r0 = cannon->unk6A + temp3;
-    mask = ONE_CYCLE;
-
-#ifndef NON_MATCHING
-    asm("add %0, %1, #0" : "=r"(r1) : "r"(mask) : "cc");
-    r0 &= r1;
-#else
-    r0 &= mask;
-#endif
-
-    cannon->unk6A = r0;
+    cannon->qCannonAngle = CLAMP_SIN_PERIOD(cannon->qCannonAngle + temp3);
 }
 
-static void sub_807E5F0(Sprite_Cannon *cannon)
+static void Render(Sprite_Cannon *cannon)
 {
     SpriteTransform transform;
     Sprite *s = &cannon->sprite2;
     s->x = cannon->x - gCamera.x;
     s->y = cannon->y - gCamera.y;
 
-    transform.rotation = cannon->unk6A;
+    transform.rotation = cannon->qCannonAngle;
     transform.qScaleX = +Q(1);
     transform.qScaleY = +Q(1);
     transform.x = s->x;
     transform.y = s->y;
 
     s->frameFlags = 0x2060 | gUnknown_030054B8++;
-    if (cannon->unk68 == 0) {
+    if (!cannon->facingRight) {
         s->frameFlags |= 0x400;
     }
 
@@ -255,7 +239,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 // (68.07%) https://decomp.me/scratch/TDVLh
 // (72.09%) https://decomp.me/scratch/sgt5z
 // (87.28%) https://decomp.me/scratch/pAFRx
-NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", bool32 sub_807E66C(Sprite_Cannon *cannon))
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/cannon__IsPlayerTouching.inc", bool32 IsPlayerTouching(Sprite_Cannon *cannon))
 {
     s16 x;
     s16 y;
@@ -274,7 +258,7 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", boo
     // Maybe log
     {
 #ifndef NON_MATCHING
-        register u16 r0 asm("r0") = cannon->unk68;
+        register u16 r0 asm("r0") = cannon->facingRight;
         asm("" ::"r"(r0));
 #endif
     }
@@ -293,43 +277,41 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", boo
 }
 END_NONMATCH
 
-static void Task_Interactable093(void)
+static void Task_Idle(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
-    if (sub_807E66C(cannon)) {
-        sub_807E384(cannon);
+    if (IsPlayerTouching(cannon)) {
+        HandlePlayerEnter(cannon);
     }
 
-    if (sub_807E898(cannon)) {
-        sub_807E8E0(cannon);
+    if (ShouldDespawn(cannon)) {
+        Despawn(cannon);
     } else {
-        sub_807E5F0(cannon);
+        Render(cannon);
     }
 }
 
-static void sub_807E7B0(void)
+static void Task_Activating(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
-        sub_807E86C(cannon);
-    } else {
-        if (sub_807E4E4(cannon)) {
-            sub_807E834(cannon);
-        }
+        HandleDeathWhilstActivating(cannon);
+    } else if (MovePlayerIntoCannon(cannon)) {
+        Task_ActivateCannon(cannon);
     }
-    sub_807E5F0(cannon);
+    Render(cannon);
 }
 
-static void sub_807E7F8(void)
+static void Task_IdleBeforeReset(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (cannon->unk6E++ > 60) {
-        sub_807E884(cannon);
+        StartReset(cannon);
     }
 
-    sub_807E5F0(cannon);
+    Render(cannon);
 }
 
 static void TaskDestructor_Interactable093(struct Task *unused)
@@ -337,29 +319,27 @@ static void TaskDestructor_Interactable093(struct Task *unused)
     // unused
 }
 
-static void sub_807E834(Sprite_Cannon *cannon)
+static void Task_ActivateCannon(Sprite_Cannon *cannon)
 {
-    cannon->unk6C = 0x200;
-    if (cannon->unk68 == 0) {
+    cannon->fireTimeout = 512;
+    if (!cannon->facingRight) {
         cannon->unk6E = 0;
     } else {
         cannon->unk6E = 1;
     }
 
-    gCurTask->main = sub_807E314;
+    gCurTask->main = Task_Active;
 }
 
-static void sub_807E7F8(void);
-
-static void sub_807E86C(Sprite_Cannon *cannon)
+static void HandleDeathWhilstActivating(Sprite_Cannon *cannon)
 {
     cannon->unk6E = 0;
-    gCurTask->main = sub_807E7F8;
+    gCurTask->main = Task_IdleBeforeReset;
 }
 
-static void sub_807E884(Sprite_Cannon *cannon) { gCurTask->main = sub_807E8FC; }
+static void StartReset(Sprite_Cannon *cannon) { gCurTask->main = Task_Reset; }
 
-static bool32 sub_807E898(Sprite_Cannon *cannon)
+static bool32 ShouldDespawn(Sprite_Cannon *cannon)
 {
     s16 x = cannon->x - gCamera.x;
     s16 y = cannon->y - gCamera.y;
@@ -371,37 +351,37 @@ static bool32 sub_807E898(Sprite_Cannon *cannon)
     return FALSE;
 }
 
-static void sub_807E8E0(Sprite_Cannon *cannon)
+static void Despawn(Sprite_Cannon *cannon)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(cannon->me, cannon->spriteX);
     TaskDestroy(gCurTask);
 }
 
-static void sub_807E8FC(void)
+static void Task_Reset(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
-    if (sub_807E954(cannon)) {
-        sub_807E940(cannon);
+    if (HandleResetMovement(cannon)) {
+        HandleSetIdle(cannon);
     }
 
-    if (sub_807E898(cannon)) {
-        sub_807E8E0(cannon);
+    if (ShouldDespawn(cannon)) {
+        Despawn(cannon);
     } else {
-        sub_807E5F0(cannon);
+        Render(cannon);
     }
 }
 
-static void sub_807E940(UNUSED Sprite_Cannon *cannon) { gCurTask->main = Task_Interactable093; }
+static void HandleSetIdle(UNUSED Sprite_Cannon *cannon) { gCurTask->main = Task_Idle; }
 
-static bool16 sub_807E954(Sprite_Cannon *cannon)
+static bool16 HandleResetMovement(Sprite_Cannon *cannon)
 {
     bool16 ret = FALSE;
     u16 r3;
     s16 temp2, temp3;
 
-    r3 = cannon->unk68 == 0 ? 0x200 : 0;
-    temp2 = sub_808558C(cannon->unk6A, r3, 10);
+    r3 = cannon->facingRight == 0 ? DEG_TO_SIN(180) : DEG_TO_SIN(0);
+    temp2 = sub_808558C(cannon->qCannonAngle, r3, 10);
     temp3 = temp2;
 
     if (abs(temp2) >= 5) {
@@ -414,7 +394,7 @@ static bool16 sub_807E954(Sprite_Cannon *cannon)
         ret = TRUE;
     }
 
-    cannon->unk6A = CLAMP_SIN_PERIOD(cannon->unk6A + temp3);
+    cannon->qCannonAngle = CLAMP_SIN_PERIOD(cannon->qCannonAngle + temp3);
 
     return ret;
 }

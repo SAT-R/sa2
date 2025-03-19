@@ -1,14 +1,12 @@
-#include "global.h"
 #include "core.h"
-#include "malloc_vram.h"
-#include "sprite.h"
-#include "task.h"
+
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "lib/m4a/m4a.h"
 #include "game/sa1_sa2_shared/collision.h"
 #include "game/sa1_sa2_shared/entities_manager.h"
+
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"
@@ -18,20 +16,18 @@
 typedef struct {
     /* 0x0 */ SpriteBase base;
     /* 0xA */ Sprite s;
-    /* 0x3C */ u8 unk3C;
-    /* 0x3D */ u8 unk3D;
-    /* 0x3E */ s16 unk3E;
-    /* 0x40 */ s16 unk40;
+    /* 0x3C */ u8 landingSpeed;
+    /* 0x3D */ u8 launchFrame;
+    /* 0x3E */ s16 springStiffness;
+    /* 0x40 */ s16 landingPosition;
 } BouncyBar;
 
-void Task_BouncyBarIdle(void);
-void Task_BouncyBarLaunch(void);
+static void Task_BouncyBarIdle(void);
+static void Task_BouncyBarLaunch(void);
 
-const u16 gUnknown_080D94E8[] = { 9, 9, 9 };
-
-const s8 gUnknown_080D94EE[] = { -16, -18, -20 };
-
-const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
+static const u16 sSpringStiffness[] = { 9, 9, 9 };
+static const s8 sLaunchBonusSpeed[] = { -16, -18, -20 };
+static const s16 sBaseLaunchSpeed[] = { -Q(1.5), -Q(1.5), -Q(1.5) };
 
 void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -47,35 +43,23 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     bar->base.spriteX = me->x;
     bar->base.id = spriteY;
 
-    bar->unk3C = 0;
-    bar->unk3D = 0;
-    bar->unk3E = 0;
-    bar->unk40 = 0;
+    bar->landingSpeed = 0;
+    bar->launchFrame = 0;
+    bar->springStiffness = 0;
+    bar->landingPosition = 0;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->graphics.dest = VramMalloc(0x18);
-    s->graphics.anim = SA2_ANIM_BOUNCY_BAR;
-    s->variant = 0;
-
-    s->oamFlags = SPRITE_OAM_ORDER(18);
-    s->graphics.size = 0;
-    s->animCursor = 0;
-    s->qAnimDelay = 0;
-    s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s->palId = 0;
-    s->hitboxes[0].index = -1;
-    s->frameFlags = 0x2000;
+    SPRITE_INIT(s, 24, SA2_ANIM_BOUNCY_BAR, 0, 18, 2);
 
     if (me->d.sData[0] != 0) {
         SPRITE_FLAG_SET(s, X_FLIP);
     }
 }
 
-void Task_BouncyBarIdle(void)
+static void Task_BouncyBarIdle(void)
 {
     BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
@@ -93,24 +77,24 @@ void Task_BouncyBarIdle(void)
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.transition = PLTRANS_UNCURL;
 
-        bar->unk3C = gPlayer.qSpeedAirY >> 0xA;
-        if (bar->unk3C > 2) {
-            bar->unk3C = 2;
+        bar->landingSpeed = I(gPlayer.qSpeedAirY) >> 2;
+        if (bar->landingSpeed > 2) {
+            bar->landingSpeed = 2;
         }
 
-        bar->unk3D = (bar->unk3C * 5) + 10;
-        bar->unk3E = gUnknown_080D94E8[bar->unk3C];
+        bar->launchFrame = (bar->landingSpeed * 5) + 10;
+        bar->springStiffness = sSpringStiffness[bar->landingSpeed];
 
-        bar->unk40 = screenX - I(gPlayer.qWorldX) >= 0 ? screenX - I(gPlayer.qWorldX) : I(gPlayer.qWorldX) - screenX;
+        bar->landingPosition = ABS(screenX - I(gPlayer.qWorldX));
 
         gCurTask->main = Task_BouncyBarLaunch;
         gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
 
-        bar->unk3C = 2 - bar->unk3C;
-        s->graphics.anim = 538;
-        s->variant = bar->unk3C + 1;
+        bar->landingSpeed = 2 - bar->landingSpeed;
+        s->graphics.anim = SA2_ANIM_BOUNCY_BAR;
+        s->variant = bar->landingSpeed + 1;
         s->prevVariant = -1;
-        bar->unk3C = 2 - bar->unk3C;
+        bar->landingSpeed = 2 - bar->landingSpeed;
         m4aSongNumStart(SE_279);
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = bar->base.spriteX;
@@ -122,7 +106,7 @@ void Task_BouncyBarIdle(void)
     DisplaySprite(s);
 }
 
-void Task_BouncyBarLaunch(void)
+static void Task_BouncyBarLaunch(void)
 {
     BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
@@ -135,21 +119,20 @@ void Task_BouncyBarLaunch(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (bar->unk3D != 0) {
-        s8 temp;
-        bar->unk3D--;
-        gPlayer.qWorldY += bar->unk40 * bar->unk3E;
+    if (bar->launchFrame != 0) {
+        bar->launchFrame--;
+        gPlayer.qWorldY += bar->landingPosition * bar->springStiffness;
         gPlayer.qSpeedAirY = 0;
 
-        if (bar->unk3D == 0) {
-            temp = (bar->unk40 >> 1) + (bar->unk40 >> 2);
+        if (bar->launchFrame == 0) {
+            s8 launchFactor = (bar->landingPosition >> 1) + (bar->landingPosition >> 2);
 
-            if (temp > 0x18) {
-                temp = 0x18;
+            if (launchFactor > 24) {
+                launchFactor = 24;
             }
 
-            gPlayer.qSpeedAirY = gUnknown_080D94F2[bar->unk3C];
-            gPlayer.qSpeedAirY += ((temp * bar->unk3E) * gUnknown_080D94EE[bar->unk3C]) >> 1;
+            gPlayer.qSpeedAirY = sBaseLaunchSpeed[bar->landingSpeed];
+            gPlayer.qSpeedAirY += ((launchFactor * bar->springStiffness) * sLaunchBonusSpeed[bar->landingSpeed]) >> 1;
             gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
             gPlayer.moveState &= ~MOVESTATE_100;
         }

@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_Note_Block(MapEntity *, u16, u16, u8);
+void CreateEntity_NoteBlock(MapEntity *, u16, u16, u8);
 
 #endif

@@ -38,7 +38,7 @@ static void Task_8080DB8(void);
 static void Task_8080E54(void);
 static void TaskDestructor_8080EF8(struct Task *);
 
-void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 velocity, u8 quarterAngle, u8 kind)
+void CreateAngledNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 velocity, u8 quarterAngle, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
@@ -68,7 +68,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     UpdateSpriteAnimation(s);
 }
 
-void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 accelX, s16 accelY, u8 kind)
+void CreateNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 accelX, s16 accelY, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
