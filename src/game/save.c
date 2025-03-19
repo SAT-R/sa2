@@ -89,9 +89,14 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 
 // If the sector's security field is not this value then the sector is either invalid or
 // empty.
-#define SECTOR_SECURITY_NUM    0x4547474D
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS       10
+
+#if (GAME == GAME_SA1)
+#define SECTOR_SECURITY_NUM 0x4F524950
+#elif (GAME == GAME_SA2)
+#define SECTOR_SECURITY_NUM 0x4547474D
+#endif
 
 void InsertMultiplayerProfile(u32 playerId, u16 *name)
 {
@@ -491,7 +496,7 @@ static u16 WriteToSaveSector(struct SaveSectorData *data, s16 sectorNum)
 
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
 
     preIE = REG_IE;
     preIME = REG_IME;
@@ -514,7 +519,7 @@ static u16 WriteToSaveSector(struct SaveSectorData *data, s16 sectorNum)
     REG_DISPSTAT = preDISPSTAT;
 
     m4aSoundVSyncOn();
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     return result;
 }
@@ -793,7 +798,7 @@ static u16 EraseSaveSector(s16 sectorNum)
 
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
 
     preIE = REG_IE;
     preIME = REG_IME;
@@ -816,7 +821,7 @@ static u16 EraseSaveSector(s16 sectorNum)
     REG_DISPSTAT = preDISPSTAT;
 
     m4aSoundVSyncOn();
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     return result;
 }
@@ -949,7 +954,6 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData *save, s16 s
     return 1;
 }
 
-// StringEquals
 static bool16 StringEquals(u16 *string1Char, u16 *string2Char, s16 length)
 {
     s16 i;
