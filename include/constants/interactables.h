@@ -62,7 +62,7 @@
 #define IA__FLOATING_SPRING                 55
 #define IA__NOTE_BLOCK__SPHERE              56
 #define IA__NOTE_BLOCK__BLOCK               57
-#define IA__BOUNCY_CHAIN                    58
+#define IA__CHORD                           58
 #define IA__KEYBOARD_VERTICAL               59
 #define IA__KEYBOARD_HORIZONTAL_LEFT        60
 #define IA__KEYBOARD_HORIZONTAL_RIGHT       61

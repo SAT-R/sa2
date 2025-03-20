@@ -13,8 +13,8 @@
 
 /* TODO: Make including <entity>.h from game code work */
 
-//From "game/interactables_2/music_plant/bouncy_chain.h"
-#define NUM_BOUNCY_CHAIN_ELEMS 6
+//From "game/interactables_2/music_plant/chord.h"
+#define NUM_CHORD_ELEMS 6
 
 // From light_bridge.h
 #define BRIDGE_SEGMENT_WIDTH 12
@@ -163,8 +163,8 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
 #if 0
     // NOTE: The frame for the bouncy chain elements is in
     //       variant 15 of NOTE_BLOCK, for some reason.
-    case IA__BOUNCY_CHAIN: {
-        for(int i = 0; i < NUM_BOUNCY_CHAIN_ELEMS; i++) {
+    case IA__CHORD: {
+        for(int i = 0; i < NUM_CHORD_ELEMS; i++) {
 
         }
     } break;

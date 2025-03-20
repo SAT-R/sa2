@@ -285,7 +285,7 @@
     "anim_commands.h": "c",
     "platform_crumbling.h": "c",
     "german_flute.h": "c",
-    "bouncy_chain.h": "c",
+    "chord.h": "c",
     "giant_propeller.h": "c",
     "collect_ring_effect.h": "c",
     "zone_1.h": "c",

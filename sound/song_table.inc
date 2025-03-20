@@ -649,7 +649,7 @@ mAlignWord
 mAlignWord
 	song C_DECL(se_music_plant_horn3), 2, 2
 mAlignWord
-	song C_DECL(se_music_plant_bouncy_chain), 2, 2
+	song C_DECL(se_music_plant_chord), 2, 2
 mAlignWord
 	song C_DECL(se_music_plant_piano), 2, 2
 mAlignWord

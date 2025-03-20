@@ -700,7 +700,7 @@ $(MID_SUBDIR)/se_music_plant_exit_horn2.s: %.s: %.mid
 $(MID_SUBDIR)/se_music_plant_horn3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/se_music_plant_bouncy_chain.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_chord.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G6 -P20 -V127
     
 $(MID_SUBDIR)/se_music_plant_piano.s: %.s: %.mid

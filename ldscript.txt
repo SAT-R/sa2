@@ -279,7 +279,7 @@ SECTIONS
         src/game/interactables_2/hot_crater/floating_spring.o(.text);
         src/game/interactables_2/music_plant/note_sphere.o(.text);
         src/game/interactables_2/music_plant/note_block.o(.text);
-        src/game/interactables_2/music_plant/bouncy_chain.o(.text);
+        src/game/interactables_2/music_plant/chord.o(.text);
         src/game/interactables_2/music_plant/keyboard.o(.text);
         src/game/interactables_2/music_plant/german_flute.o(.text);
         src/game/interactables_2/music_plant/pipe_horn.o(.text);
@@ -768,7 +768,7 @@ SECTIONS
         sound/songs/midi/se_music_plant_enter_horn2.o(.rodata);
         sound/songs/midi/se_music_plant_exit_horn2.o(.rodata);
         sound/songs/midi/se_music_plant_horn3.o(.rodata);
-        sound/songs/midi/se_music_plant_bouncy_chain.o(.rodata);
+        sound/songs/midi/se_music_plant_chord.o(.rodata);
         sound/songs/midi/se_music_plant_piano.o(.rodata);
         sound/songs/midi/se_music_plant_flute_1.o(.rodata);
         sound/songs/midi/se_music_plant_flute_2.o(.rodata);
