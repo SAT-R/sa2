@@ -4,9 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
-void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
-
 typedef struct {
     /* 0x00 */ s32 x0;
     /* 0x04 */ s32 y0;
@@ -23,7 +20,7 @@ typedef struct {
     /* 0x28 */ MapEntity *me;
     /* 0x2C */ u8 spriteX;
     /* 0x2D */ u8 spriteY;
-} Sprite_Pipe_Horn;
+} Sprite_PipeHorn;
 
 #define NUM_PIPE_HANDLERS 16
 
@@ -41,13 +38,14 @@ typedef struct Pipe_Data {
 
 } Pipe_Data;
 
+void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
+bool32 sub_8077788(Sprite_PipeHorn *pipe, const Pipe_Data *data);
+void sub_8077774(Sprite_PipeHorn *pipe, s32 x, s32 y);
+
 extern const Pipe_Data gUnknown_080DFCF0[];
 extern const Pipe_Data gUnknown_080DFD40[];
 extern const Pipe_Data gUnknown_080DFD98[];
 extern const Pipe_Data gUnknown_080DFDD8[];
 extern const Pipe_Data gUnknown_080DFE30[];
-extern const Pipe_Data gUnknown_080DFEE4[];
-extern const Pipe_Data gUnknown_080DFF3C[];
-extern const Pipe_Data gUnknown_080DFF9C[];
 
 #endif // GUARD_INTERACTABLE_PIPE_HORN_H

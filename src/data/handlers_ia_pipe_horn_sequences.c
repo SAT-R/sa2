@@ -1,4 +1,5 @@
 #include "game/interactables_2/music_plant/pipe_horn.h"
+#include "game/interactables_2/music_plant/french_horn.h"
 
 // NOTE: Stored at end of rom, probably because it's configured data (like levels and
 // assets?)

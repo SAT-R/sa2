@@ -283,6 +283,7 @@ SECTIONS
         src/game/interactables_2/music_plant/keyboard.o(.text);
         src/game/interactables_2/music_plant/german_flute.o(.text);
         src/game/interactables_2/music_plant/pipe_horn.o(.text);
+        src/game/interactables_2/music_plant/french_horn.o(.text);
         src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         src/game/interactables_2/ice_paradise/funnel_sphere.o(.text);
         src/game/interactables_2/ice_paradise/half_pipe.o(.text);
@@ -494,6 +495,7 @@ SECTIONS
         src/game/interactables_2/music_plant/keyboard.o(.rodata);
         src/game/interactables_2/music_plant/german_flute.o(.rodata);
         src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
+        src/game/interactables_2/music_plant/french_horn.o(.rodata);
         src/game/interactables_2/techno_base/bounce_block.o(.rodata);
         src/game/interactables_2/techno_base/light_bridge.o(.rodata);
         src/game/interactables_2/techno_base/spike_platform.o(.rodata);
@@ -803,6 +805,9 @@ SECTIONS
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */
+        /* It's possible that all of these were actually
+           set in a single asm file, since the order doesnt
+           make any logical sense */
         src/game/sa1_sa2_shared/input_buffer.o(.data);
         data/special_stage_levels.o(.rodata);
         src/data/handlers_ia_pipe_horn_sequences.o(.rodata);

@@ -91,7 +91,7 @@ void CreateEntity_NoteSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     UpdateSpriteAnimation(s);
 }
 
-static void Task_80754B8(void)
+static void Task_Vibrate(void)
 {
     Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
@@ -134,7 +134,7 @@ static void NoteSphere_ApplyCollisionPlayer(Sprite_NoteSphere *note)
                        (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 1);
 
     m4aSongNumStart(sNoteSphereSfx[note->kind]);
-    gCurTask->main = Task_80754B8;
+    gCurTask->main = Task_Vibrate;
 }
 
 static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)

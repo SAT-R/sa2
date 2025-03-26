@@ -365,7 +365,9 @@
     "recordings.h": "c",
     "bg_palette_effects.h": "c",
     "palettes.h": "c",
-    "dma.h": "c"
+    "dma.h": "c",
+    "ceiling_slope.h": "c",
+    "french_horn.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

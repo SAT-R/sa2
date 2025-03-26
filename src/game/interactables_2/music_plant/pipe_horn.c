@@ -14,33 +14,26 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *, const Pipe_Data *);
-void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *, const Pipe_Data *);
-void sub_80778AC(void);
-void sub_80778E4(Sprite_Pipe_Horn *pipe);
-bool32 sub_807794C(Sprite_Pipe_Horn *);
-void sub_8077994(Sprite_Pipe_Horn *);
-void sub_8077A3C(void);
+static void Handler_MusicPlant_Pipe_0(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_1(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_2(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_3(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_4(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_5(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_6(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_7(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_8(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_9(Sprite_PipeHorn *, const Pipe_Data *);
+static void Handler_MusicPlant_Pipe_10(Sprite_PipeHorn *, const Pipe_Data *);
+static void sub_80778AC(void);
+static void sub_80778E4(Sprite_PipeHorn *pipe);
+static bool32 sub_807794C(Sprite_PipeHorn *);
+static void sub_8077994(Sprite_PipeHorn *);
+static void sub_8077A3C(void);
 static void TaskDestructor_Pipe(struct Task *t);
-void sub_8077AAC(Sprite_Pipe_Horn *horn);
-static void sub_8077B28(Sprite_Pipe_Horn *);
-void sub_8077C3C(Sprite_Pipe_Horn *);
-void sub_8077CA0(Sprite_Pipe_Horn *);
-bool32 sub_8077CB0(Sprite_Pipe_Horn *);
-void Task_FrenchHorn_8077C04(void);
-void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
-void TaskDestructor_FrenchHorn(struct Task *);
+static void sub_8077AAC(Sprite_PipeHorn *horn);
 
-typedef void (*PipeHandler)(Sprite_Pipe_Horn *, const Pipe_Data *);
+typedef void (*PipeHandler)(Sprite_PipeHorn *, const Pipe_Data *);
 
 // These functions control the character when they enter
 // one of the horns or pipes in Music Plant.
@@ -338,204 +331,29 @@ const u16 gUnknown_080DFED0[10] = {
     SE_MUSIC_PLANT_EXIT_HORN2, SE_MUSIC_PLANT_HORN3, SE_MUSIC_PLANT_EXIT_HORN2, SE_MUSIC_PLANT_HORN3, MUS_DUMMY,
 };
 
-const Pipe_Data gUnknown_080DFEE4[] = {
-    {
-        0,
-        34,
-        { ._16 = { Q_8_8(8.0), Q_8_8(8.0) } },
-    },
-    {
-        0,
-        120,
-        { ._16 = { Q_8_8(96.0), Q_8_8(96.0) } },
-    },
-    {
-        0,
-        341,
-        { ._16 = { Q_8_8(32.0), Q_8_8(32.0) } },
-    },
-    {
-        9,
-        640,
-        { ._32 = Q(40.0) },
-    },
-    {
-        3,
-        320,
-        { ._32 = Q(56.0) },
-    },
-    {
-        5,
-        320,
-        { ._32 = Q(56.0) },
-    },
-    {
-        10,
-        640,
-        { ._32 = Q(48.0) },
-    },
-    {
-        0,
-        146,
-        { ._16 = { Q_8_8(84.0), Q_8_8(-84.0) } },
-    },
-    { 0, 120, { ._32 = Q(96.0) } },
-    { 0, 292, { ._32 = Q(56.0) } },
-    {
-        -1,
-        -1,
-        { ._32 = -1 },
-    },
-};
-const Pipe_Data gUnknown_080DFF3C[] = {
-    {
-        0,
-        34,
-        { ._16 = { Q_8_8(8.0), Q_8_8(8.0) } },
-    },
-    {
-        0,
-        120,
-        { ._16 = { Q_8_8(96.0), Q_8_8(96.0) } },
-    },
-    {
-        0,
-        341,
-        { ._16 = { Q_8_8(32.0), Q_8_8(32.0) } },
-    },
-    {
-        9,
-        640,
-        { ._16 = { Q_8_8(40.0), Q_8_8(0.0) } },
-    },
-    {
-        3,
-        320,
-        { ._16 = { Q_8_8(56.0), Q_8_8(0.0) } },
-    },
-    {
-        5,
-        320,
-        { ._16 = { Q_8_8(56.0), Q_8_8(0.0) } },
-    },
-    {
-        10,
-        640,
-        { ._16 = { Q_8_8(48.0), Q_8_8(0.0) } },
-    },
-    {
-        0,
-        146,
-        { ._16 = { Q_8_8(84.0), Q_8_8(-84.0) } },
-    },
-    {
-        0,
-        120,
-        { ._32 = Q(96.0) },
-    },
-    {
-        0,
-        120,
-        { ._32 = Q(96.0) },
-    },
-    {
-        0,
-        292,
-        { ._32 = Q(56.0) },
-    },
-    {
-        -1,
-        -1,
-        { ._32 = -1 },
-    },
-};
-const Pipe_Data gUnknown_080DFF9C[] = {
-    {
-        0,
-        34,
-        { ._16 = { Q_8_8(8.0), Q_8_8(8.0) } },
-    },
-    {
-        0,
-        120,
-        { ._16 = { Q_8_8(96.0), Q_8_8(96.0) } },
-    },
-    {
-        0,
-        341,
-        { ._16 = { Q_8_8(32.0), Q_8_8(32.0) } },
-    },
-    {
-        9,
-        640,
-        { ._32 = Q(40.0) },
-    },
-    {
-        3,
-        320,
-        { ._32 = Q(56.0) },
-    },
-    {
-        5,
-        320,
-        { ._32 = Q(56.0) },
-    },
-    {
-        10,
-        640,
-        { ._32 = Q(48.0) },
-    },
-    {
-        0,
-        146,
-        { ._16 = { Q_8_8(84.0), Q_8_8(-84.0) } },
-    },
-    {
-        0,
-        120,
-        { ._16 = { Q_8_8(96.0), Q_8_8(-96.0) } },
-    },
-    {
-        0,
-        341,
-        { ._16 = { Q_8_8(32.0), Q_8_8(-32.0) } },
-    },
-    {
-        -1,
-        -1,
-        { ._32 = -1 },
-    },
-};
-
-static const s16 gUnknown_080DFFF4[3][2] = {
-    { Q_8_8(9), Q_8_8(0) },
-    { Q_8_8(12), Q_8_8(0) },
-    { Q_8_8(9), Q_8_8(-9) },
-};
-
-static const s16 gUnknown_080E0000[4] = {
-    Q_8_8(0),
-    Q_8_8(0),
-    Q_8_8(7. / 8.),
-    Q_8_8(0),
-};
-
-void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_0(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
-    s32 r1 = (u16)data[pipe->unk18].unk4._16[1];
     s32 r0, r3, r5, r6, r7;
+#ifndef NON_MATCHING
+    s32 r1;
+#else
+    s16 r1;
+#endif
 
+    r1 = (u16)data[pipe->unk18].unk4._16[1];
     r0 = data[pipe->unk18].unk4._16[0];
     r3 = pipe->x1;
     r7 = -r0;
-    pipe->x2 = r3 - (((s16)pipe->unk1A * r7) >> 10);
+    pipe->x2 = r3 - ((pipe->unk1A * r7) >> 10);
 
+#ifndef NON_MATCHING
     r1 <<= 0x10;
     r1 >>= 0x10;
+#endif
 
     r6 = pipe->y1;
     r5 = -r1;
-    pipe->y2 = r6 - ((r5 * (s16)pipe->unk1A) >> 10);
+    pipe->y2 = r6 - ((r5 * pipe->unk1A) >> 10);
 
     pipe->unk1A += data[pipe->unk18].unk2;
 
@@ -553,7 +371,7 @@ void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_1(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -585,7 +403,7 @@ void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_2(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -617,7 +435,7 @@ void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_3(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -649,7 +467,7 @@ void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_4(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -681,7 +499,7 @@ void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_5(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -713,7 +531,7 @@ void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_6(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -745,7 +563,7 @@ void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_7(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -778,7 +596,7 @@ void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_8(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -810,7 +628,7 @@ void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_9(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s32 sin, cos;
     s32 sin2;
@@ -846,7 +664,7 @@ void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_10(Sprite_PipeHorn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
     s32 r5 = data[pipe->unk18].unk4._32;
@@ -878,7 +696,7 @@ void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     }
 }
 
-void sub_8077774(Sprite_Pipe_Horn *pipe, s32 x, s32 y)
+void sub_8077774(Sprite_PipeHorn *pipe, s32 x, s32 y)
 {
     pipe->x0 = x;
     pipe->y0 = y;
@@ -890,7 +708,7 @@ void sub_8077774(Sprite_Pipe_Horn *pipe, s32 x, s32 y)
     pipe->unk1A = 0;
 }
 
-bool32 sub_8077788(Sprite_Pipe_Horn *pipe, const Pipe_Data *data)
+bool32 sub_8077788(Sprite_PipeHorn *pipe, const Pipe_Data *data)
 {
     u32 result;
     if (pipe->unk18 == (u16)-1) {
@@ -905,7 +723,7 @@ bool32 sub_8077788(Sprite_Pipe_Horn *pipe, const Pipe_Data *data)
     return (-result | result) >> 31;
 }
 
-void sub_80777C8(Sprite_Pipe_Horn *pipe)
+static void sub_80777C8(Sprite_PipeHorn *pipe)
 {
     Player_ClearMovestate_IsInScriptedSequence();
 
@@ -922,7 +740,7 @@ void sub_80777C8(Sprite_Pipe_Horn *pipe)
 }
 
 // NOTE: sub_8077840 is identical with sub_8077B98
-bool32 sub_8077840(Sprite_Pipe_Horn *pipe)
+static bool32 sub_8077840(Sprite_PipeHorn *pipe)
 {
     // NOTE: This matches... but at what cost? D:
     if (gPlayer.moveState & MOVESTATE_DEAD) {
@@ -951,9 +769,9 @@ bool32 sub_8077840(Sprite_Pipe_Horn *pipe)
     }
 }
 
-void sub_80778AC(void)
+static void sub_80778AC(void)
 {
-    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
+    Sprite_PipeHorn *pipe = TASK_DATA(gCurTask);
 
     if (sub_8077840(pipe)) {
         sub_80778E4(pipe);
@@ -964,7 +782,7 @@ void sub_80778AC(void)
     }
 }
 
-void sub_80778E4(Sprite_Pipe_Horn *pipe)
+static void sub_80778E4(Sprite_PipeHorn *pipe)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
@@ -984,7 +802,7 @@ void sub_80778E4(Sprite_Pipe_Horn *pipe)
     gCurTask->main = sub_8077A3C;
 }
 
-bool32 sub_807794C(Sprite_Pipe_Horn *pipe)
+static bool32 sub_807794C(Sprite_PipeHorn *pipe)
 {
     s16 screenX, screenY;
 
@@ -998,7 +816,7 @@ bool32 sub_807794C(Sprite_Pipe_Horn *pipe)
     return FALSE;
 }
 
-void sub_8077994(Sprite_Pipe_Horn *pipe)
+static void sub_8077994(Sprite_PipeHorn *pipe)
 {
     pipe->me->x = pipe->spriteX;
     TaskDestroy(gCurTask);
@@ -1006,8 +824,8 @@ void sub_8077994(Sprite_Pipe_Horn *pipe)
 
 void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_Pipe_Horn), 0x2010, 0, TaskDestructor_Pipe);
-    Sprite_Pipe_Horn *pipe = TASK_DATA(t);
+    struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_Pipe);
+    Sprite_PipeHorn *pipe = TASK_DATA(t);
 
     pipe->kind = me->d.sData[0];
     pipe->me = me;
@@ -1019,9 +837,9 @@ void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spr
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_8077A3C(void)
+static void sub_8077A3C(void)
 {
-    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
+    Sprite_PipeHorn *pipe = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
@@ -1039,162 +857,10 @@ void sub_8077A3C(void)
     }
 }
 
-void TaskDestructor_Pipe(struct Task *t) { }
+static void TaskDestructor_Pipe(struct Task *t) { }
 
-/* --- French Horn --- */
-
-void sub_8077AAC(Sprite_Pipe_Horn *horn)
+static void sub_8077AAC(Sprite_PipeHorn *horn)
 {
     gPlayer.qWorldX = horn->x2;
     gPlayer.qWorldY = horn->y2;
-}
-
-void sub_8077ABC(void)
-{
-    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
-        Player_ClearMovestate_IsInScriptedSequence();
-        gCurTask->main = Task_FrenchHorn_8077C04;
-    } else {
-        gPlayer.rotation = 0x20;
-
-        gPlayer.qSpeedAirX = 1;
-        gPlayer.qSpeedAirY = 1;
-
-        if (sub_8077788(horn, gUnknown_08C87960[horn->kind]) == 0) {
-            sub_8077B28(horn);
-        }
-
-        sub_8077CA0(horn);
-    }
-}
-
-void sub_8077B28(Sprite_Pipe_Horn *horn)
-{
-#ifndef MODERN
-    Player_ClearMovestate_IsInScriptedSequence();
-    gPlayer.moveState &= ~(MOVESTATE_IA_OVERRIDE);
-#else
-    // Doing this inline is faster, and
-    // personally more comprehensible.
-    gPlayer.moveState &= ~(MOVESTATE_IN_SCRIPTED | MOVESTATE_IA_OVERRIDE);
-#endif
-
-    gPlayer.transition = PLTRANS_UNCURL;
-    gPlayer.qSpeedAirX = gUnknown_080DFFF4[horn->kind][0];
-    gPlayer.qSpeedAirY = gUnknown_080DFFF4[horn->kind][1];
-    gPlayer.rotation = gUnknown_080E0000[horn->kind];
-
-    m4aSongNumStart(SE_MUSIC_PLANT_EXIT_HORN);
-
-    gCurTask->main = Task_FrenchHorn_8077C04;
-}
-
-// NOTE: Literally copy-paste of sub_8077840
-bool32 sub_8077B98(Sprite_Pipe_Horn *horn)
-{
-    // NOTE: This matches... but at what cost? D:
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
-        goto sub_8077B98_ret0;
-    } else {
-        s16 screenX, screenY;
-        s16 playerX, playerY;
-        s32 cSquared;
-
-        screenX = horn->posX - gCamera.x;
-        screenY = horn->posY - gCamera.y;
-
-        playerX = I(gPlayer.qWorldX) - gCamera.x;
-        playerY = I(gPlayer.qWorldY) - gCamera.y;
-
-        screenX -= playerX;
-        screenY -= playerY;
-
-        cSquared = (screenX * screenX) + (screenY * screenY);
-        if (cSquared > 400) {
-        sub_8077B98_ret0:
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    }
-}
-
-void Task_FrenchHorn_8077C04(void)
-{
-    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
-
-    if (sub_8077B98(horn)) {
-        sub_8077C3C(horn);
-    }
-
-    if (sub_8077CB0(horn)) {
-        FrenchHorn_Despawn(horn);
-    }
-}
-
-void sub_8077C3C(Sprite_Pipe_Horn *horn)
-{
-    Player_SetMovestate_IsInScriptedSequence();
-
-    gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
-    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
-
-    m4aSongNumStart(SE_SPIN_ATTACK);
-
-    gPlayer.moveState &= ~(MOVESTATE_FACING_LEFT);
-    gPlayer.qSpeedAirX = 0;
-    gPlayer.qSpeedAirY = 0;
-
-    sub_8077774(horn, Q(horn->posX), Q(horn->posY));
-
-    m4aSongNumStart(SE_MUSIC_PLANT_ENTER_HORN);
-
-    gCurTask->main = sub_8077ABC;
-}
-
-void sub_8077CA0(Sprite_Pipe_Horn *horn)
-{
-    gPlayer.qWorldX = horn->x2;
-    gPlayer.qWorldY = horn->y2;
-}
-
-bool32 sub_8077CB0(Sprite_Pipe_Horn *horn)
-{
-    s16 screenX, screenY;
-
-    screenX = horn->posX - gCamera.x;
-    screenY = horn->posY - gCamera.y;
-
-    if (IS_OUT_OF_RANGE_(0, screenX, screenY, (CAM_REGION_WIDTH / 2))) {
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-void FrenchHorn_Despawn(Sprite_Pipe_Horn *horn)
-{
-    horn->me->x = horn->spriteX;
-    TaskDestroy(gCurTask);
-}
-
-void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
-{
-    struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_Pipe_Horn), 0x2010, 0, TaskDestructor_FrenchHorn);
-    Sprite_Pipe_Horn *horn = TASK_DATA(t);
-
-    horn->kind = me->d.sData[0];
-    horn->me = me;
-    horn->spriteX = me->x;
-    horn->spriteY = spriteY;
-
-    horn->posX = TO_WORLD_POS(me->x, spriteRegionX);
-    horn->posY = TO_WORLD_POS(me->y, spriteRegionY);
-    SET_MAP_ENTITY_INITIALIZED(me);
-}
-
-void TaskDestructor_FrenchHorn(struct Task *t)
-{
-    // unused
 }

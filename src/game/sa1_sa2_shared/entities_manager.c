@@ -46,6 +46,7 @@
 
 #include "game/interactables_2/music_plant/note_sphere.h"
 #include "game/interactables_2/music_plant/pipe_horn.h"
+#include "game/interactables_2/music_plant/french_horn.h"
 #include "game/interactables_2/music_plant/keyboard.h"
 #include "game/interactables_2/music_plant/note_block.h"
 #include "game/interactables_2/music_plant/chord.h"
