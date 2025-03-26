@@ -33,8 +33,8 @@ static void memArenaExpand(MemArena *arena, s32 numNewArenas);
 // if you directly pass a value that is 2GB or more (0x80000000),
 // you'll be left with a downcast signed 32 bit value, even in 64bit mode
 //   Behaviour in:  VS Compiler v14.34.31937.0
-u64 GetGigabytes(u64 num) {
-    return num*1024*1024*1024;
+u64 GetMegabytes(u64 num) {
+    return num*1024*1024;
 }
 
 static void *memArenaVirtualAlloc(void* baseAddress, size_t size) {
@@ -51,11 +51,11 @@ static void *memArenaVirtualAlloc(void* baseAddress, size_t size) {
     }
 #elif (defined _MSC_VER)
     // TODO/TEMP: Just reserve 2GB for each arena
-    u64 memoryAmount = GetGigabytes(1);
+    u64 memoryAmount = GetMegabytes(1);
     memory = VirtualAlloc(baseAddress, memoryAmount, (MEM_COMMIT | MEM_RESERVE), PAGE_READWRITE);
 #else
     // TODO/TEMP: Just reserve 2GB for each arena
-    u64 memoryAmount = GetGigabytes(1);
+    u64 memoryAmount = GetMegabytes(1);
     printf("WARNING: OS-specific SDK not found. Using malloc.\n");
     memory = malloc(memoryAmount);
 
