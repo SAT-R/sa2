@@ -2,8 +2,8 @@
 #include "lib/m4a/m4a.h"
 
 #include "game/sa1_sa2_shared/globals.h"
-#include "game/interactables_2/music_plant/pipe_horn.h"
 #include "game/interactables_2/music_plant/french_horn.h"
+#include "game/interactables_2/music_plant/pipe_sequence.h"
 
 #include "constants/move_states.h"
 #include "constants/player_transitions.h"
@@ -12,12 +12,22 @@
 
 #include "data/handlers_ia_pipe_horn_sequences.h"
 
-static void sub_8077C3C(Sprite_PipeHorn *);
-static bool32 sub_8077CB0(Sprite_PipeHorn *);
-static void sub_8077CA0(Sprite_PipeHorn *);
-static void sub_8077B28(Sprite_PipeHorn *);
-static void Task_FrenchHorn_8077C04(void);
-static void FrenchHorn_Despawn(Sprite_PipeHorn *);
+typedef struct {
+    /* 0x00 */ PipeSequence pipeSequence;
+    /* 0x1C */ s32 entryPosX;
+    /* 0x20 */ s32 entryPosY;
+    /* 0x24 */ u16 kind;
+    /* 0x28 */ MapEntity *me;
+    /* 0x2C */ u8 spriteX;
+    /* 0x2D */ u8 spriteY;
+} Sprite_FrenchHorn;
+
+static void FrenchHorn_BeginPipeSequence(Sprite_FrenchHorn *);
+static bool32 sub_8077CB0(Sprite_FrenchHorn *);
+static void FrenchHorn_UpdatePlayerPos(Sprite_FrenchHorn *);
+static void FrenchHorn_HandleExit(Sprite_FrenchHorn *);
+static void Task_FrenchHorn_Idle(void);
+static void FrenchHorn_Despawn(Sprite_FrenchHorn *);
 static void TaskDestructor_FrenchHorn(struct Task *);
 
 const Pipe_Data gUnknown_080DFEE4[] = {
@@ -202,27 +212,27 @@ static const s16 gUnknown_080E0000[4] = {
     Q_8_8(0),
 };
 
-static void sub_8077ABC(void)
+static void Task_FrenchHorn_Active(void)
 {
-    Sprite_PipeHorn *horn = TASK_DATA(gCurTask);
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
+    Sprite_FrenchHorn *horn = TASK_DATA(gCurTask);
+    if (!PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
-        gCurTask->main = Task_FrenchHorn_8077C04;
+        gCurTask->main = Task_FrenchHorn_Idle;
     } else {
         gPlayer.rotation = 0x20;
 
         gPlayer.qSpeedAirX = 1;
         gPlayer.qSpeedAirY = 1;
 
-        if (sub_8077788(horn, gUnknown_08C87960[horn->kind]) == 0) {
-            sub_8077B28(horn);
+        if (IncrementPipeSequence(&horn->pipeSequence, gUnknown_08C87960[horn->kind]) == 0) {
+            FrenchHorn_HandleExit(horn);
         }
 
-        sub_8077CA0(horn);
+        FrenchHorn_UpdatePlayerPos(horn);
     }
 }
 
-static void sub_8077B28(Sprite_PipeHorn *horn)
+static void FrenchHorn_HandleExit(Sprite_FrenchHorn *horn)
 {
 #ifndef MODERN
     Player_ClearMovestate_IsInScriptedSequence();
@@ -240,45 +250,42 @@ static void sub_8077B28(Sprite_PipeHorn *horn)
 
     m4aSongNumStart(SE_MUSIC_PLANT_EXIT_HORN);
 
-    gCurTask->main = Task_FrenchHorn_8077C04;
+    gCurTask->main = Task_FrenchHorn_Idle;
 }
 
-// NOTE: Literally copy-paste of sub_8077840
-static bool32 sub_8077B98(Sprite_PipeHorn *horn)
+static bool32 PlayerIsTouchingEntry(Sprite_FrenchHorn *horn)
 {
-    // NOTE: This matches... but at what cost? D:
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
-        goto sub_8077B98_ret0;
+    s16 screenX, screenY;
+    s16 playerX, playerY;
+    s32 cSquared;
+
+    if (!PLAYER_IS_ALIVE) {
+        return FALSE;
+    }
+
+    screenX = horn->entryPosX - gCamera.x;
+    screenY = horn->entryPosY - gCamera.y;
+
+    playerX = I(gPlayer.qWorldX) - gCamera.x;
+    playerY = I(gPlayer.qWorldY) - gCamera.y;
+
+    screenX -= playerX;
+    screenY -= playerY;
+
+    cSquared = (screenX * screenX) + (screenY * screenY);
+    if (cSquared <= 400) {
+        return TRUE;
     } else {
-        s16 screenX, screenY;
-        s16 playerX, playerY;
-        s32 cSquared;
-
-        screenX = horn->posX - gCamera.x;
-        screenY = horn->posY - gCamera.y;
-
-        playerX = I(gPlayer.qWorldX) - gCamera.x;
-        playerY = I(gPlayer.qWorldY) - gCamera.y;
-
-        screenX -= playerX;
-        screenY -= playerY;
-
-        cSquared = (screenX * screenX) + (screenY * screenY);
-        if (cSquared > 400) {
-        sub_8077B98_ret0:
-            return FALSE;
-        } else {
-            return TRUE;
-        }
+        return FALSE;
     }
 }
 
-static void Task_FrenchHorn_8077C04(void)
+static void Task_FrenchHorn_Idle(void)
 {
-    Sprite_PipeHorn *horn = TASK_DATA(gCurTask);
+    Sprite_FrenchHorn *horn = TASK_DATA(gCurTask);
 
-    if (sub_8077B98(horn)) {
-        sub_8077C3C(horn);
+    if (PlayerIsTouchingEntry(horn)) {
+        FrenchHorn_BeginPipeSequence(horn);
     }
 
     if (sub_8077CB0(horn)) {
@@ -286,7 +293,7 @@ static void Task_FrenchHorn_8077C04(void)
     }
 }
 
-static void sub_8077C3C(Sprite_PipeHorn *horn)
+static void FrenchHorn_BeginPipeSequence(Sprite_FrenchHorn *horn)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
@@ -299,25 +306,25 @@ static void sub_8077C3C(Sprite_PipeHorn *horn)
     gPlayer.qSpeedAirX = 0;
     gPlayer.qSpeedAirY = 0;
 
-    sub_8077774(horn, Q(horn->posX), Q(horn->posY));
+    InitPipeSequence(&horn->pipeSequence, Q(horn->entryPosX), Q(horn->entryPosY));
 
     m4aSongNumStart(SE_MUSIC_PLANT_ENTER_HORN);
 
-    gCurTask->main = sub_8077ABC;
+    gCurTask->main = Task_FrenchHorn_Active;
 }
 
-static void sub_8077CA0(Sprite_PipeHorn *horn)
+static void FrenchHorn_UpdatePlayerPos(Sprite_FrenchHorn *horn)
 {
-    gPlayer.qWorldX = horn->x2;
-    gPlayer.qWorldY = horn->y2;
+    gPlayer.qWorldX = horn->pipeSequence.x2;
+    gPlayer.qWorldY = horn->pipeSequence.y2;
 }
 
-static bool32 sub_8077CB0(Sprite_PipeHorn *horn)
+static bool32 sub_8077CB0(Sprite_FrenchHorn *horn)
 {
     s16 screenX, screenY;
 
-    screenX = horn->posX - gCamera.x;
-    screenY = horn->posY - gCamera.y;
+    screenX = horn->entryPosX - gCamera.x;
+    screenY = horn->entryPosY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_(0, screenX, screenY, (CAM_REGION_WIDTH / 2))) {
         return TRUE;
@@ -326,7 +333,7 @@ static bool32 sub_8077CB0(Sprite_PipeHorn *horn)
     return FALSE;
 }
 
-static void FrenchHorn_Despawn(Sprite_PipeHorn *horn)
+static void FrenchHorn_Despawn(Sprite_FrenchHorn *horn)
 {
     horn->me->x = horn->spriteX;
     TaskDestroy(gCurTask);
@@ -334,16 +341,16 @@ static void FrenchHorn_Despawn(Sprite_PipeHorn *horn)
 
 void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
-    Sprite_PipeHorn *horn = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_FrenchHorn_Idle, sizeof(Sprite_FrenchHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
+    Sprite_FrenchHorn *horn = TASK_DATA(t);
 
     horn->kind = me->d.sData[0];
     horn->me = me;
     horn->spriteX = me->x;
     horn->spriteY = spriteY;
 
-    horn->posX = TO_WORLD_POS(me->x, spriteRegionX);
-    horn->posY = TO_WORLD_POS(me->y, spriteRegionY);
+    horn->entryPosX = TO_WORLD_POS(me->x, spriteRegionX);
+    horn->entryPosY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
