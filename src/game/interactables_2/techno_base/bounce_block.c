@@ -30,11 +30,13 @@ static void sub_8079D9C(Sprite_TecBaseNoteBlock *);
 static void sub_8079D00(Sprite_TecBaseNoteBlock *);
 static void sub_8079D30(Sprite_TecBaseNoteBlock *);
 
+ALIGNED(4)
 static const u16 sNoteBlockAssets[][3] = {
     { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 0, 0x14C },
     { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 1, 0x154 },
     { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 2, 0x15C },
 };
+
 static const u16 gUnknown_080E001A[][4] = {
     { Q_8_8(6), Q_8_8(250), Q_8_8(250), Q_8_8(6) },
     { Q_8_8(7), Q_8_8(249), Q_8_8(249), Q_8_8(7) },

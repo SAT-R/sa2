@@ -23,14 +23,14 @@ typedef struct {
 } Sprite_FrenchHorn;
 
 static void FrenchHorn_BeginPipeSequence(Sprite_FrenchHorn *);
-static bool32 sub_8077CB0(Sprite_FrenchHorn *);
-static void FrenchHorn_UpdatePlayerPos(Sprite_FrenchHorn *);
+static bool32 FrenchHorn_ShouldDespawn(Sprite_FrenchHorn *);
+static void UpdatePlayerPositionInPipe(Sprite_FrenchHorn *);
 static void FrenchHorn_HandleExit(Sprite_FrenchHorn *);
-static void Task_FrenchHorn_Idle(void);
+static void Task_Idle(void);
 static void FrenchHorn_Despawn(Sprite_FrenchHorn *);
 static void TaskDestructor_FrenchHorn(struct Task *);
 
-const Pipe_Data gUnknown_080DFEE4[] = {
+const Pipe_Data gFrenchHornPipeSequence0[] = {
     {
         0,
         34,
@@ -79,7 +79,7 @@ const Pipe_Data gUnknown_080DFEE4[] = {
         { ._32 = -1 },
     },
 };
-const Pipe_Data gUnknown_080DFF3C[] = {
+const Pipe_Data gFrenchHornPipeSequence1[] = {
     {
         0,
         34,
@@ -141,7 +141,7 @@ const Pipe_Data gUnknown_080DFF3C[] = {
         { ._32 = -1 },
     },
 };
-const Pipe_Data gUnknown_080DFF9C[] = {
+const Pipe_Data gFrenchHornPipeSequence2[] = {
     {
         0,
         34,
@@ -199,27 +199,26 @@ const Pipe_Data gUnknown_080DFF9C[] = {
     },
 };
 
-static const s16 gUnknown_080DFFF4[3][2] = {
+static const s16 sExitSpeeds[][2] = {
     { Q_8_8(9), Q_8_8(0) },
     { Q_8_8(12), Q_8_8(0) },
     { Q_8_8(9), Q_8_8(-9) },
 };
 
-static const s16 gUnknown_080E0000[4] = {
-    Q_8_8(0),
-    Q_8_8(0),
-    Q_8_8(7. / 8.),
-    Q_8_8(0),
+static const s16 sExitRotation[] = {
+    0,
+    0,
+    224,
 };
 
-static void Task_FrenchHorn_Active(void)
+static void Task_Active(void)
 {
     Sprite_FrenchHorn *horn = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
-        gCurTask->main = Task_FrenchHorn_Idle;
+        gCurTask->main = Task_Idle;
     } else {
-        gPlayer.rotation = 0x20;
+        gPlayer.rotation = 32;
 
         gPlayer.qSpeedAirX = 1;
         gPlayer.qSpeedAirY = 1;
@@ -228,7 +227,7 @@ static void Task_FrenchHorn_Active(void)
             FrenchHorn_HandleExit(horn);
         }
 
-        FrenchHorn_UpdatePlayerPos(horn);
+        UpdatePlayerPositionInPipe(horn);
     }
 }
 
@@ -244,13 +243,13 @@ static void FrenchHorn_HandleExit(Sprite_FrenchHorn *horn)
 #endif
 
     gPlayer.transition = PLTRANS_UNCURL;
-    gPlayer.qSpeedAirX = gUnknown_080DFFF4[horn->kind][0];
-    gPlayer.qSpeedAirY = gUnknown_080DFFF4[horn->kind][1];
-    gPlayer.rotation = gUnknown_080E0000[horn->kind];
+    gPlayer.qSpeedAirX = sExitSpeeds[horn->kind][0];
+    gPlayer.qSpeedAirY = sExitSpeeds[horn->kind][1];
+    gPlayer.rotation = sExitRotation[horn->kind];
 
     m4aSongNumStart(SE_MUSIC_PLANT_EXIT_HORN);
 
-    gCurTask->main = Task_FrenchHorn_Idle;
+    gCurTask->main = Task_Idle;
 }
 
 static bool32 PlayerIsTouchingEntry(Sprite_FrenchHorn *horn)
@@ -280,7 +279,7 @@ static bool32 PlayerIsTouchingEntry(Sprite_FrenchHorn *horn)
     }
 }
 
-static void Task_FrenchHorn_Idle(void)
+static void Task_Idle(void)
 {
     Sprite_FrenchHorn *horn = TASK_DATA(gCurTask);
 
@@ -288,7 +287,7 @@ static void Task_FrenchHorn_Idle(void)
         FrenchHorn_BeginPipeSequence(horn);
     }
 
-    if (sub_8077CB0(horn)) {
+    if (FrenchHorn_ShouldDespawn(horn)) {
         FrenchHorn_Despawn(horn);
     }
 }
@@ -310,16 +309,16 @@ static void FrenchHorn_BeginPipeSequence(Sprite_FrenchHorn *horn)
 
     m4aSongNumStart(SE_MUSIC_PLANT_ENTER_HORN);
 
-    gCurTask->main = Task_FrenchHorn_Active;
+    gCurTask->main = Task_Active;
 }
 
-static void FrenchHorn_UpdatePlayerPos(Sprite_FrenchHorn *horn)
+static void UpdatePlayerPositionInPipe(Sprite_FrenchHorn *horn)
 {
-    gPlayer.qWorldX = horn->pipeSequence.x2;
-    gPlayer.qWorldY = horn->pipeSequence.y2;
+    gPlayer.qWorldX = horn->pipeSequence.playerX;
+    gPlayer.qWorldY = horn->pipeSequence.playerY;
 }
 
-static bool32 sub_8077CB0(Sprite_FrenchHorn *horn)
+static bool32 FrenchHorn_ShouldDespawn(Sprite_FrenchHorn *horn)
 {
     s16 screenX, screenY;
 
@@ -341,7 +340,7 @@ static void FrenchHorn_Despawn(Sprite_FrenchHorn *horn)
 
 void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_FrenchHorn_Idle, sizeof(Sprite_FrenchHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
+    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_FrenchHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
     Sprite_FrenchHorn *horn = TASK_DATA(t);
 
     horn->kind = me->d.sData[0];

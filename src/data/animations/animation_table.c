@@ -993,7 +993,7 @@ extern const s32 * const anim_1131[];
 extern const s32 * const anim_1132[];
 extern const s32 * const anim_logos[];
 
-const s32 * const *gAnimations[] = {
+const s32 * const * const gAnimations[] = {
     anim_0000,
     anim_0001,
     anim_0002,

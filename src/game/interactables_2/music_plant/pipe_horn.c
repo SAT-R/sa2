@@ -25,24 +25,24 @@ typedef struct {
     /* 0x2D */ u8 spriteY;
 } Sprite_PipeHorn;
 
-static void PipeHorn_Idle(void);
-static void PipeHorn_BeginPipeSequence(Sprite_PipeHorn *pipe);
-static bool32 PipeHorn_ShouldDespawn(Sprite_PipeHorn *);
-static void PipeHorn_Despawn(Sprite_PipeHorn *);
+static void Task_Idle(void);
+static void BeginPipeSequence(Sprite_PipeHorn *pipe);
+static bool32 ShouldDespawn(Sprite_PipeHorn *);
+static void Despawn(Sprite_PipeHorn *);
 static void Task_Active(void);
-static void TaskDestructor_Pipe(struct Task *t);
-static void sub_8077AAC(Sprite_PipeHorn *horn);
+static void TaskDestructor_PipeHorn(struct Task *t);
+static void UpdatePlayerPosWithinPipe(Sprite_PipeHorn *horn);
 
 const Pipe_Data gUnknown_080DFCF0[] = {
     {
         0,
         34,
-        { ._32 = Q(8.0) },
+        { ._16 = { Q(8.0), Q(0.0) } },
     },
     {
         0,
         204,
-        { ._32 = Q(80.0) },
+        { ._16 = Q(80.0), Q(0.0) },
     },
     {
         2,
@@ -86,12 +86,12 @@ const Pipe_Data gUnknown_080DFD40[] = {
     {
         0,
         34,
-        { ._32 = Q(8.0) },
+        { ._16 = { Q_8_8(8.0), Q_8_8(0.0) } },
     },
     {
         0,
         204,
-        { ._32 = Q(80.0) },
+        { ._16 = { Q_8_8(80.0), Q_8_8(0.0) } },
     },
     {
         2,
@@ -140,12 +140,12 @@ const Pipe_Data gUnknown_080DFD98[] = {
     {
         0,
         34,
-        { ._32 = Q(8.0) },
+        { ._16 = { Q_8_8(8.0), Q_8_8(0.0) } },
     },
     {
         0,
         204,
-        { ._32 = Q(80.0) },
+        { ._16 = { Q_8_8(80.0), Q_8_8(0.0) } },
     },
     {
         2,
@@ -179,17 +179,17 @@ const Pipe_Data gUnknown_080DFDD8[] = {
     {
         0,
         34,
-        { ._32 = Q(8.0) },
+        { ._16 = { Q_8_8(8.0), Q_8_8(0.0) } },
     },
     {
         0,
         170,
-        { ._32 = Q(96.0) },
+        { ._16 = { Q_8_8(96.0), Q_8_8(0.0) } },
     },
     {
         0,
         256,
-        { ._32 = Q(64.0) },
+        { ._16 = { Q_8_8(64.0), Q_8_8(0.0) } },
     },
     {
         2,
@@ -233,17 +233,17 @@ const Pipe_Data gUnknown_080DFE30[] = {
     {
         0,
         34,
-        { ._32 = Q(8.0) },
+        { ._16 = { Q_8_8(8.0), Q_8_8(0.0) } },
     },
     {
         0,
         170,
-        { ._32 = Q(96.0) },
+        { ._16 = { Q_8_8(96.0), Q_8_8(0.0) } },
     },
     {
         0,
         256,
-        { ._32 = Q(64.0) },
+        { ._16 = { Q_8_8(64.0), Q_8_8(0.0) } },
     },
     {
         2,
@@ -253,7 +253,7 @@ const Pipe_Data gUnknown_080DFE30[] = {
     {
         0,
         292,
-        { ._16 = { (0.0), Q_8_8(56.0) } },
+        { ._16 = { Q(0.0), Q(56.0) } },
     },
     {
         4,
@@ -321,7 +321,7 @@ static void sub_80777C8(Sprite_PipeHorn *pipe)
 
     m4aSongNumStart(gUnknown_080DFED0[pipe->kind]);
 
-    gCurTask->main = PipeHorn_Idle;
+    gCurTask->main = Task_Idle;
 }
 
 static bool32 PlayerIsTouchingEntry(Sprite_PipeHorn *pipe)
@@ -351,20 +351,20 @@ static bool32 PlayerIsTouchingEntry(Sprite_PipeHorn *pipe)
     }
 }
 
-static void PipeHorn_Idle(void)
+static void Task_Idle(void)
 {
     Sprite_PipeHorn *pipe = TASK_DATA(gCurTask);
 
     if (PlayerIsTouchingEntry(pipe)) {
-        PipeHorn_BeginPipeSequence(pipe);
+        BeginPipeSequence(pipe);
     }
 
-    if (PipeHorn_ShouldDespawn(pipe)) {
-        PipeHorn_Despawn(pipe);
+    if (ShouldDespawn(pipe)) {
+        Despawn(pipe);
     }
 }
 
-static void PipeHorn_BeginPipeSequence(Sprite_PipeHorn *pipe)
+static void BeginPipeSequence(Sprite_PipeHorn *pipe)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
@@ -384,7 +384,7 @@ static void PipeHorn_BeginPipeSequence(Sprite_PipeHorn *pipe)
     gCurTask->main = Task_Active;
 }
 
-static bool32 PipeHorn_ShouldDespawn(Sprite_PipeHorn *pipe)
+static bool32 ShouldDespawn(Sprite_PipeHorn *pipe)
 {
     s16 screenX, screenY;
 
@@ -398,7 +398,7 @@ static bool32 PipeHorn_ShouldDespawn(Sprite_PipeHorn *pipe)
     return FALSE;
 }
 
-static void PipeHorn_Despawn(Sprite_PipeHorn *pipe)
+static void Despawn(Sprite_PipeHorn *pipe)
 {
     pipe->me->x = pipe->spriteX;
     TaskDestroy(gCurTask);
@@ -406,7 +406,7 @@ static void PipeHorn_Despawn(Sprite_PipeHorn *pipe)
 
 void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(PipeHorn_Idle, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_Pipe);
+    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_PipeHorn);
     Sprite_PipeHorn *pipe = TASK_DATA(t);
 
     pipe->kind = me->d.sData[0];
@@ -425,7 +425,7 @@ static void Task_Active(void)
 
     if (!PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
-        gCurTask->main = PipeHorn_Idle;
+        gCurTask->main = Task_Idle;
         return;
     }
 
@@ -437,13 +437,13 @@ static void Task_Active(void)
         sub_80777C8(pipe);
     }
 
-    sub_8077AAC(pipe);
+    UpdatePlayerPosWithinPipe(pipe);
 }
 
-static void TaskDestructor_Pipe(struct Task *t) { }
+static void TaskDestructor_PipeHorn(struct Task *t) { }
 
-static void sub_8077AAC(Sprite_PipeHorn *horn)
+static void UpdatePlayerPosWithinPipe(Sprite_PipeHorn *horn)
 {
-    gPlayer.qWorldX = horn->pipeSequence.x2;
-    gPlayer.qWorldY = horn->pipeSequence.y2;
+    gPlayer.qWorldX = horn->pipeSequence.playerX;
+    gPlayer.qWorldY = horn->pipeSequence.playerY;
 }

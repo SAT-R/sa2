@@ -7,8 +7,8 @@
 
 void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
 
-extern const Pipe_Data gUnknown_080DFEE4[];
-extern const Pipe_Data gUnknown_080DFF3C[];
-extern const Pipe_Data gUnknown_080DFF9C[];
+extern const Pipe_Data gFrenchHornPipeSequence0[];
+extern const Pipe_Data gFrenchHornPipeSequence1[];
+extern const Pipe_Data gFrenchHornPipeSequence2[];
 
 #endif // GUARD_INTERACTABLE_FRENCH_HORN_H

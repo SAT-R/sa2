@@ -16,7 +16,7 @@ const Pipe_Data *const gUnknown_08C8793C[9] = {
 };
 
 const Pipe_Data * const gUnknown_08C87960[3] = {
-    gUnknown_080DFEE4,
-    gUnknown_080DFF3C,
-    gUnknown_080DFF9C,
+    gFrenchHornPipeSequence0,
+    gFrenchHornPipeSequence1,
+    gFrenchHornPipeSequence2,
 };

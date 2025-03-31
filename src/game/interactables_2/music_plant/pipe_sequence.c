@@ -32,7 +32,7 @@ typedef void (*PipeHandler)(PipeSequence *, const Pipe_Data *);
 
 // These functions control the character when they enter
 // one of the horns or pipes in Music Plant.
-const PipeHandler gPipeHandlers[NUM_PIPE_HANDLERS] = {
+static const PipeHandler gPipeHandlers[NUM_PIPE_HANDLERS] = {
     Handler_MusicPlant_Pipe_0,
     Handler_MusicPlant_Pipe_1,
     Handler_MusicPlant_Pipe_2,
@@ -51,393 +51,394 @@ const PipeHandler gPipeHandlers[NUM_PIPE_HANDLERS] = {
     NULL,
 };
 
-static void Handler_MusicPlant_Pipe_0(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_0(PipeSequence *pipSequence, const Pipe_Data data[])
 {
-    s32 r0, r3, r5, r6, r7;
+    s32 offsetDx, baseX, negOffsetDy, baseY, negOffsetDx;
 #ifndef NON_MATCHING
-    s32 r1;
+    s32 offsetDy;
 #else
-    s16 r1;
+    s16 offsetDy;
 #endif
 
-    r1 = (u16)data[pipe->keyFrame].unk4._16[1];
-    r0 = data[pipe->keyFrame].unk4._16[0];
-    r3 = pipe->x1;
-    r7 = -r0;
-    pipe->x2 = r3 - ((pipe->unk1A * r7) >> 10);
+    offsetDy = (u16)data[pipSequence->index].d._16[1];
+    offsetDx = data[pipSequence->index].d._16[0];
+    baseX = pipSequence->baseX;
+    negOffsetDx = -offsetDx;
+    pipSequence->playerX = baseX - ((pipSequence->accumulator * negOffsetDx) >> 10);
 
 #ifndef NON_MATCHING
-    r1 <<= 0x10;
-    r1 >>= 0x10;
+    offsetDy <<= 0x10;
+    offsetDy >>= 0x10;
 #endif
 
-    r6 = pipe->y1;
-    r5 = -r1;
-    pipe->y2 = r6 - ((r5 * pipe->unk1A) >> 10);
+    baseY = pipSequence->baseY;
+    negOffsetDy = -offsetDy;
+    pipSequence->playerY = baseY - ((negOffsetDy * pipSequence->accumulator) >> 10);
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
-        u32 value;
-        pipe->unk1A -= 1024;
+    if (pipSequence->accumulator >= 1024U) {
+        u32 nextType;
+        pipSequence->accumulator -= 1024;
 
-        pipe->x1 = pipe->x1 - r7;
-        pipe->y1 = pipe->y1 - -r1;
+        pipSequence->baseX = pipSequence->baseX - negOffsetDx;
+        pipSequence->baseY = pipSequence->baseY - negOffsetDy;
 
-        value = data[++pipe->keyFrame].unk0;
-        if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+        nextType = data[++pipSequence->index].type;
+        if (nextType == (u16)-1) {
+            // Complete
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_1(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_1(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (DEG_TO_SIN(90) - index) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1 - r5;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY - r5;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(0);
-        pipe->x1 = I(cos * r5) + pipe->x1;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
 
         sin = SIN_DEG(0);
-        pipe->y1 = I(sin * r5) + pipe->y1 - r5;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY - r5;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_2(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_2(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (DEG_TO_SIN(270) + index) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1 + r5;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY + r5;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(0);
-        pipe->x1 = I(cos * r5) + pipe->x1;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
 
         sin = SIN_DEG(0);
-        pipe->y1 = I(sin * r5) + pipe->y1 + r5;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY + r5;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_3(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_3(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (index)&ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1 - r5;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX - r5;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(90);
-        pipe->x1 = I(cos * r5) + pipe->x1 - r5;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX - r5;
 
         sin = SIN_DEG(90);
-        pipe->y1 = I(sin * r5) + pipe->y1;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_4(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_4(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (DEG_TO_SIN(180) - index) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1 + r5;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX + r5;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(90);
-        pipe->x1 = I(cos * r5) + pipe->x1 + r5;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX + r5;
 
         sin = SIN_DEG(90);
-        pipe->y1 = I(sin * r5) + pipe->y1;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_5(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_5(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (index + DEG_TO_SIN(90)) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1 - r5;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY - r5;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(180);
-        pipe->x1 = I(cos * r5) + pipe->x1;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
 
         sin = SIN_DEG(180);
-        pipe->y1 = I(sin * r5) + pipe->y1 - r5;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY - r5;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_6(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_6(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (DEG_TO_SIN(270) - index) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1 + r5;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY + r5;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(180);
-        pipe->x1 = I(cos * r5) + pipe->x1;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
 
         sin = SIN_DEG(180);
-        pipe->y1 = I(sin * r5) + pipe->y1 + r5;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY + r5;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_7(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_7(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u32 index = ((u16)pipe->unk1A >> 2);
+    s32 r5 = data[pipSequence->index].d._32;
+    u32 index = ((u16)pipSequence->accumulator >> 2);
     u16 sinIndex = (DEG_TO_SIN(360) - index) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1 - r5;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX - r5;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(270);
-        pipe->x1 = I(cos * r5) + pipe->x1;
-        pipe->x1 -= r5;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
+        pipSequence->baseX -= r5;
 
         sin = SIN_DEG(270);
-        pipe->y1 = I(sin * r5) + pipe->y1;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_8(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_8(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u16 sinIndex = (((u16)pipe->unk1A >> 2) + 512) & ONE_CYCLE;
+    s32 r5 = data[pipSequence->index].d._32;
+    u16 sinIndex = (((u16)pipSequence->accumulator >> 2) + 512) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1 + r5;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX + r5;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(270);
-        pipe->x1 = I(cos * r5) + pipe->x1;
-        pipe->x1 += r5;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
+        pipSequence->baseX += r5;
 
         sin = SIN_DEG(270);
-        pipe->y1 = I(sin * r5) + pipe->y1;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_9(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_9(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s32 sin, cos;
     s32 sin2;
     s32 r8, r9;
-    s32 r7 = data[pipe->keyFrame].unk4._32;
-    u16 sinIndex = (((u16)pipe->unk1A >> 3) + DEG_TO_SIN(315)) & ONE_CYCLE;
+    s32 r7 = data[pipSequence->index].d._32;
+    u16 sinIndex = (((u16)pipSequence->accumulator >> 3) + DEG_TO_SIN(315)) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
     r8 = r7 * cos;
 
     sin = SIN_DEG(135);
     r9 = r7 * sin;
-    pipe->x2 = I(r8 - r9) + pipe->x1;
+    pipSequence->playerX = I(r8 - r9) + pipSequence->baseX;
 
     sin2 = (SIN_24_8(sinIndex) + SIN_DEG(45));
-    pipe->y2 = I(sin2 * r7) + pipe->y1;
+    pipSequence->playerY = I(sin2 * r7) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = SIN_DEG(90) * r7;
-        pipe->x1 = I(cos - r9) + pipe->x1;
+        pipSequence->baseX = I(cos - r9) + pipSequence->baseX;
 
-        pipe->y1 = I((SIN_DEG(0) + SIN_DEG(45)) * r7) + pipe->y1;
+        pipSequence->baseY = I((SIN_DEG(0) + SIN_DEG(45)) * r7) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= -1;
+            pipSequence->index |= -1;
         }
     }
 }
 
-static void Handler_MusicPlant_Pipe_10(PipeSequence *pipe, const Pipe_Data data[])
+static void Handler_MusicPlant_Pipe_10(PipeSequence *pipSequence, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->keyFrame].unk4._32;
-    u16 sinIndex = (((u16)pipe->unk1A >> 3) + 512) & ONE_CYCLE;
+    s32 r5 = data[pipSequence->index].d._32;
+    u16 sinIndex = (((u16)pipSequence->accumulator >> 3) + 512) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = I(cos * r5) + pipe->x1 + r5;
+    pipSequence->playerX = I(cos * r5) + pipSequence->baseX + r5;
 
     sin = SIN_24_8(sinIndex);
-    pipe->y2 = I(sin * r5) + pipe->y1;
+    pipSequence->playerY = I(sin * r5) + pipSequence->baseY;
 
-    pipe->unk1A += data[pipe->keyFrame].unk2;
+    pipSequence->accumulator += data[pipSequence->index].step;
 
-    if (pipe->unk1A >= 1024U) {
+    if (pipSequence->accumulator >= 1024U) {
         u32 value;
-        pipe->unk1A -= 1024;
+        pipSequence->accumulator -= 1024;
 
         cos = COS_DEG(225);
-        pipe->x1 = I(cos * r5) + pipe->x1;
-        pipe->x1 += r5;
+        pipSequence->baseX = I(cos * r5) + pipSequence->baseX;
+        pipSequence->baseX += r5;
 
         sin = SIN_DEG(225);
-        pipe->y1 = I(sin * r5) + pipe->y1;
+        pipSequence->baseY = I(sin * r5) + pipSequence->baseY;
 
-        value = data[++pipe->keyFrame].unk0;
+        value = data[++pipSequence->index].type;
         if (value == (u16)-1) {
-            pipe->keyFrame |= value;
+            pipSequence->index |= value;
         }
     }
 }
 
-void InitPipeSequence(PipeSequence *pipe, s32 x, s32 y)
+void InitPipeSequence(PipeSequence *pipSequence, s32 x, s32 y)
 {
-    pipe->x0 = x;
-    pipe->y0 = y;
-    pipe->x1 = x;
-    pipe->y1 = y;
-    pipe->x2 = x;
-    pipe->y2 = y;
-    pipe->keyFrame = 0;
-    pipe->unk1A = 0;
+    pipSequence->x0 = x;
+    pipSequence->y0 = y;
+    pipSequence->baseX = x;
+    pipSequence->baseY = y;
+    pipSequence->playerX = x;
+    pipSequence->playerY = y;
+    pipSequence->index = 0;
+    pipSequence->accumulator = 0;
 }
 
-bool32 IncrementPipeSequence(PipeSequence *pipe, const Pipe_Data *data)
+bool32 IncrementPipeSequence(PipeSequence *pipSequence, const Pipe_Data *data)
 {
     u32 result;
-    if (pipe->keyFrame == (u16)-1) {
+    if (pipSequence->index == (u16)-1) {
         return FALSE;
     }
 
-    gPipeHandlers[data[pipe->keyFrame].unk0](pipe, data);
+    gPipeHandlers[data[pipSequence->index].type](pipSequence, data);
 
-    result = pipe->keyFrame;
+    result = pipSequence->index;
     result ^= (u16)-1;
 
     return (-result | result) >> 31;
