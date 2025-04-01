@@ -282,6 +282,7 @@ SECTIONS
         src/game/interactables_2/music_plant/chord.o(.text);
         src/game/interactables_2/music_plant/keyboard.o(.text);
         src/game/interactables_2/music_plant/german_flute.o(.text);
+        src/game/interactables_2/music_plant/pipe_sequence.o(.text);
         src/game/interactables_2/music_plant/pipe_horn.o(.text);
         src/game/interactables_2/music_plant/french_horn.o(.text);
         src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
@@ -494,6 +495,7 @@ SECTIONS
         src/game/interactables_2/music_plant/note_block.o(.rodata);
         src/game/interactables_2/music_plant/keyboard.o(.rodata);
         src/game/interactables_2/music_plant/german_flute.o(.rodata);
+        src/game/interactables_2/music_plant/pipe_sequence.o(.rodata);
         src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
         src/game/interactables_2/music_plant/french_horn.o(.rodata);
         src/game/interactables_2/techno_base/bounce_block.o(.rodata);
@@ -526,7 +528,7 @@ SECTIONS
 
         src/data/sprite_tables.o(.rodata);
         src/data/animations/animations.o(.rodata);
-        src/data/animations/animation_table.o(.data);
+        src/data/animations/animation_table.o(.rodata);
         src/data/sprite_dimensions.o(.rodata);
         src/data/sprite_oam_data.o(.rodata);
         data/sprite_animation_data.o(.rodata);

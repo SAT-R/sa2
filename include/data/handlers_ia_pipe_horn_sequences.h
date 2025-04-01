@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/interactables_2/music_plant/pipe_horn.h"
 
-extern const Pipe_Data *gUnknown_08C8793C[9];
-extern const Pipe_Data *gUnknown_08C87960[3];
+extern const PipeSegment *gUnknown_08C8793C[9];
+extern const PipeSegment *gUnknown_08C87960[3];
 
 #endif

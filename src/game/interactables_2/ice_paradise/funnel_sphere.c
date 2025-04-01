@@ -28,7 +28,7 @@ typedef struct {
     // prevPriority2
     u16 unk14;
 
-    s32 unk18;
+    s32 keyFrame;
     u16 unk1C;
     MapEntity *me; /* 0x20 */
     s8 spriteX; /* 0x24 */
@@ -64,9 +64,9 @@ static void sub_8077F7C(void)
 
     funnelSphere->unk10 -= 0x40;
     r6 = (funnelSphere->unk10 >> 2);
-    if (funnelSphere->unk18 == 0 && (r6 < 0x40)) {
+    if (funnelSphere->keyFrame == 0 && (r6 < 0x40)) {
         gCamera.unk50 |= 1;
-        funnelSphere->unk18 = 1;
+        funnelSphere->keyFrame = 1;
     }
 
 #ifndef NON_MATCHING
@@ -168,7 +168,7 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
     } else {
         funnelSphere->unk1C = 0;
     }
-    funnelSphere->unk18 = 0;
+    funnelSphere->keyFrame = 0;
     gCurTask->main = sub_807844C;
 };
 
