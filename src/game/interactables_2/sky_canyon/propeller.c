@@ -245,7 +245,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
 {
 
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    sub_8023B5C(&gPlayer, 14);
+    Player_SetSpriteOffsetY(&gPlayer, 14);
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;

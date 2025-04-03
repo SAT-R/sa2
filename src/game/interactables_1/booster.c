@@ -117,11 +117,11 @@ void Task_Interactable_Booster(void)
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
         if (gPlayer.moveState & MOVESTATE_4) {
-            sub_8023B5C(&gPlayer, 9);
+            Player_SetSpriteOffsetY(&gPlayer, 9);
             gPlayer.spriteOffsetX = 6;
             gPlayer.spriteOffsetY = 9;
         } else {
-            sub_8023B5C(&gPlayer, 14);
+            Player_SetSpriteOffsetY(&gPlayer, 14);
             gPlayer.spriteOffsetX = 6;
             gPlayer.spriteOffsetY = 14;
         }

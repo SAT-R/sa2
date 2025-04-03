@@ -162,7 +162,7 @@ static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
 {
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    sub_8023B5C(&gPlayer, 14);
+    Player_SetSpriteOffsetY(&gPlayer, 14);
 
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;

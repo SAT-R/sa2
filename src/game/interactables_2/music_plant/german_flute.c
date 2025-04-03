@@ -191,7 +191,7 @@ static void Task_8076A6C(void)
 static void sub_8076B84(Sprite_GermanFlute *flute)
 {
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    sub_8023B5C(&gPlayer, 14);
+    Player_SetSpriteOffsetY(&gPlayer, 14);
 
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;

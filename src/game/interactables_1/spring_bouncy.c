@@ -120,7 +120,7 @@ static void Task_Interactable_BouncySpring()
             gPlayer.disableTrickTimer = 3;
 
             Player_TransitionCancelFlyingAndBoost(&gPlayer);
-            sub_8023B5C(&gPlayer, 14);
+            Player_SetSpriteOffsetY(&gPlayer, 14);
 
             gPlayer.spriteOffsetX = 6;
             gPlayer.spriteOffsetY = 14;

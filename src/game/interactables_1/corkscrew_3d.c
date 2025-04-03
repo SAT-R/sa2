@@ -125,7 +125,7 @@ void sub_8061AB0(void)
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
-            sub_8023B5C(player, 9);
+            Player_SetSpriteOffsetY(player, 9);
             player->spriteOffsetX = 6;
             player->spriteOffsetY = 9;
             player->moveState |= MOVESTATE_4;
@@ -182,7 +182,7 @@ void Task_8061C70(void)
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
-            sub_8023B5C(player, 9);
+            Player_SetSpriteOffsetY(player, 9);
             player->spriteOffsetX = 6;
             player->spriteOffsetY = 9;
             player->moveState |= MOVESTATE_4;
@@ -243,7 +243,7 @@ void Task_8061DA4(void)
         gCurTask->main = Task_8061914;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
-        sub_8023B5C(player, 9);
+        Player_SetSpriteOffsetY(player, 9);
         player->spriteOffsetX = 6;
         player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;
@@ -348,7 +348,7 @@ void Task_8062100(void)
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
-            sub_8023B5C(player, 9);
+            Player_SetSpriteOffsetY(player, 9);
             player->spriteOffsetX = 6;
             player->spriteOffsetY = 9;
             player->moveState |= MOVESTATE_4;
@@ -403,7 +403,7 @@ void Task_80622C8(void)
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
-            sub_8023B5C(player, 9);
+            Player_SetSpriteOffsetY(player, 9);
             player->spriteOffsetX = 6;
             player->spriteOffsetY = 9;
             player->moveState |= MOVESTATE_4;
@@ -464,7 +464,7 @@ void Task_8062414(void)
         gCurTask->main = Task_8061F60;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
-        sub_8023B5C(player, 9);
+        Player_SetSpriteOffsetY(player, 9);
         player->spriteOffsetX = 6;
         player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;

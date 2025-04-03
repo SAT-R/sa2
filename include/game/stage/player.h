@@ -21,7 +21,7 @@ void Player_ClearMovestate_IsInScriptedSequence(void);
 void InitializePlayer(Player *p);
 void DestroyPlayerTasks(Player *player);
 void Player_TransitionCancelFlyingAndBoost(Player *p);
-void sub_8023B5C(Player *, s32);
+void Player_SetSpriteOffsetY(Player *, s32);
 void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void Player_AirInputControls(Player *);
@@ -68,7 +68,7 @@ bool32 Player_TryAttack(Player *);
     }
 #define PLAYERFN_CHANGE_SHIFT_OFFSETS(player, x, y)                                                                                        \
     {                                                                                                                                      \
-        sub_8023B5C(player, y);                                                                                                            \
+        Player_SetSpriteOffsetY(player, y);                                                                                                \
         PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                                                                           \
     }
 

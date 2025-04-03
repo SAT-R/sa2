@@ -84,7 +84,7 @@ static void sub_8072650(void)
 static void sub_80726E8(Sprite_WindUpStick *windUpStick)
 {
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    sub_8023B5C(&gPlayer, 0xE);
+    Player_SetSpriteOffsetY(&gPlayer, 0xE);
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     Player_SetMovestate_IsInScriptedSequence();

@@ -1025,7 +1025,7 @@ void sub_8021BE0(Player *p)
 
         if (p->moveState & MOVESTATE_4) {
             p->moveState &= ~MOVESTATE_4;
-            sub_8023B5C(p, 14);
+            Player_SetSpriteOffsetY(p, 14);
         }
         PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
     } else {
@@ -2624,7 +2624,7 @@ void sub_80231C0(Player *p)
                 p->qSpeedAirX = 0;
                 p->moveState &= ~MOVESTATE_4;
 
-                sub_8023B5C(p, 14);
+                Player_SetSpriteOffsetY(p, 14);
                 p->spriteOffsetX = 6;
                 p->spriteOffsetY = 14;
                 p->qSpeedGround = 0;
@@ -3109,7 +3109,7 @@ void SA2_LABEL(sub_8023878)(Player *p)
     }
 }
 
-void sub_8023B5C(Player *p, s32 spriteOffsetY)
+void Player_SetSpriteOffsetY(Player *p, s32 spriteOffsetY)
 {
     u8 rot;
     if (p->spriteOffsetY == spriteOffsetY) {
@@ -6242,7 +6242,7 @@ void Player_HandleGroundMovement(Player *p)
                 }
 
                 charState = CHARSTATE_WALK_A;
-                sub_8023B5C(p, 14);
+                Player_SetSpriteOffsetY(p, 14);
                 p->spriteOffsetX = 6;
                 p->spriteOffsetY = 14;
             } else {

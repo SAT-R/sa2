@@ -41,7 +41,7 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_4;
                 gPlayer.moveState = moveState;
 
-                sub_8023B5C(&gPlayer, 14);
+                Player_SetSpriteOffsetY(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
                 gPlayer.qSpeedAirY = Q_8_8(-3);
@@ -50,7 +50,7 @@ static void Task_InclineRamp(void)
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
-                sub_8023B5C(&gPlayer, 14);
+                Player_SetSpriteOffsetY(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
@@ -67,7 +67,7 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_4;
                 gPlayer.moveState = moveState;
 
-                sub_8023B5C(&gPlayer, 14);
+                Player_SetSpriteOffsetY(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
                 gPlayer.qSpeedAirY = Q_8_8(-3);
@@ -76,7 +76,7 @@ static void Task_InclineRamp(void)
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
-                sub_8023B5C(&gPlayer, 14);
+                Player_SetSpriteOffsetY(&gPlayer, 14);
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
