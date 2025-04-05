@@ -191,10 +191,7 @@ static void Task_8076A6C(void)
 static void sub_8076B84(Sprite_GermanFlute *flute)
 {
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    Player_SetSpriteOffsetY(&gPlayer, 14);
-
-    gPlayer.spriteOffsetX = 6;
-    gPlayer.spriteOffsetY = 14;
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);

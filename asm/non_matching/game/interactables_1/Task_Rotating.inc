@@ -97,7 +97,7 @@ _0805ED4E:
 	bl Player_TransitionCancelFlyingAndBoost
 	adds r0, r5, #0
 	movs r1, #9
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #9

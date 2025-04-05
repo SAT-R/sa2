@@ -228,9 +228,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
                     gPlayer.moveState &= ~MOVESTATE_400;
                     gPlayer.moveState &= ~MOVESTATE_100;
                     gPlayer.charState = CHARSTATE_HIT_AIR;
-                    Player_SetSpriteOffsetY(&gPlayer, 0xe);
-                    gPlayer.spriteOffsetX = 6;
-                    gPlayer.spriteOffsetY = 0xE;
+                    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
                     gPlayer.unk61 = 0;
                     gPlayer.unk62 = 0;
                     gPlayer.qSpeedGround = 0;

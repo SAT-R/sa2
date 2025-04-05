@@ -175,7 +175,7 @@ typedef struct Player_ {
     /* 0x85 */ s8 character;
     /* 0x86 */ s8 secondsUntilDrown;
     /* 0x87 */ s8 framesUntilDrownCountDecrement;
-    /* 0x88 */ s8 unk88;
+    /* 0x88 */ s8 framesUntilWaterSurfaceEffect;
     /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ PlayerSpriteInfo *spriteInfoBody; // for character sprites

@@ -41,18 +41,14 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_4;
                 gPlayer.moveState = moveState;
 
-                Player_SetSpriteOffsetY(&gPlayer, 14);
-                gPlayer.spriteOffsetX = 6;
-                gPlayer.spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
                 gPlayer.qSpeedAirY = Q_8_8(-3);
                 gPlayer.qSpeedGround = Q_8_8(17);
                 gPlayer.qSpeedAirX += Q_8_8(17);
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
-                Player_SetSpriteOffsetY(&gPlayer, 14);
-                gPlayer.spriteOffsetX = 6;
-                gPlayer.spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
 
                 gPlayer.charState = CHARSTATE_SPRING_C;
                 gPlayer.transition = PLTRANS_PT7;
@@ -67,18 +63,14 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_4;
                 gPlayer.moveState = moveState;
 
-                Player_SetSpriteOffsetY(&gPlayer, 14);
-                gPlayer.spriteOffsetX = 6;
-                gPlayer.spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
                 gPlayer.qSpeedAirY = Q_8_8(-3);
                 gPlayer.qSpeedGround = Q_8_8(-17);
                 gPlayer.qSpeedAirX += Q_8_8(-17);
 
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
-                Player_SetSpriteOffsetY(&gPlayer, 14);
-                gPlayer.spriteOffsetX = 6;
-                gPlayer.spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
 
                 gPlayer.charState = CHARSTATE_JUMP_2;
                 gPlayer.transition = PLTRANS_PT7;

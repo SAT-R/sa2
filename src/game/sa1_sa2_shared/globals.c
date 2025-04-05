@@ -90,9 +90,9 @@ u32 unused_030055C0[4] = {};
 #endif
 
 // Maybe?
-u8 gUnknown_030055D0[MULTI_SIO_PLAYERS_MAX] = {};
+u8 gFrameInputsBuf[4] = {};
 u8 gNewInputCountersIndex = 0;
-u8 ALIGNED(4) gUnknown_030055D8 = 0;
+u8 ALIGNED(4) gFrameInputsBufIndex = 0;
 
 // Fills available space, but size not yet confirmed
 struct InputCounters ALIGNED(8) gNewInputCounters[32] = {};

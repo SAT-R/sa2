@@ -216,9 +216,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         gPlayer.moveState &= ~MOVESTATE_400;
                         gPlayer.moveState &= ~MOVESTATE_100;
-                        Player_SetSpriteOffsetY(&gPlayer, 14);
-                        gPlayer.spriteOffsetX = 6;
-                        gPlayer.spriteOffsetY = 14;
+                        PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
 
@@ -742,9 +740,7 @@ void sub_801707C(void)
                     gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
 
                     mpp->unk5C |= 4;
-                    Player_SetSpriteOffsetY(&gPlayer, 14);
-                    gPlayer.spriteOffsetX = 6;
-                    gPlayer.spriteOffsetY = 14;
+                    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
 
                     {
                         RoomEvent_Unknown *roomEvent = CreateRoomEvent();
@@ -968,9 +964,7 @@ void sub_8017670(void)
                     if ((!GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) > mpp->pos.y)
                         || (GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) < mpp->pos.y)) {
                         gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
-                        Player_SetSpriteOffsetY(&gPlayer, 14);
-                        gPlayer.spriteOffsetX = 6;
-                        gPlayer.spriteOffsetY = 14;
+                        PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
                         gPlayer.qSpeedGround = 0;
                         gPlayer.qSpeedAirX = 0;
                         gPlayer.charState = CHARSTATE_IDLE;
@@ -1496,9 +1490,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.moveState &= ~MOVESTATE_100;
         gPlayer.charState = CHARSTATE_SPRING_B;
         sprPlayer->prevVariant = -1;
-        Player_SetSpriteOffsetY(&gPlayer, 14);
-        gPlayer.spriteOffsetX = 6;
-        gPlayer.spriteOffsetY = 14;
+        PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
         m4aSongNumStart(SE_SPRING);
         gPlayer.qSpeedAirY = *airSpeed;
         TaskDestroy(gCurTask);

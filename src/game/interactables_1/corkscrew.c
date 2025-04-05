@@ -121,9 +121,7 @@ void sub_8060ED0(void)
         gCurTask->main = Task_8060D34;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
-        Player_SetSpriteOffsetY(player, 9);
-        player->spriteOffsetX = 6;
-        player->spriteOffsetY = 9;
+        PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
@@ -231,9 +229,7 @@ void sub_8061228(void)
         gCurTask->main = sub_8061088;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
-        Player_SetSpriteOffsetY(player, 9);
-        player->spriteOffsetX = 6;
-        player->spriteOffsetY = 9;
+        PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {

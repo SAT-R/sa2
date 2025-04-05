@@ -492,10 +492,7 @@ static void sub_8074088(Sprite_HCCrane *crane)
     s16 v;
 
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    Player_SetSpriteOffsetY(&gPlayer, 9);
-
-    gPlayer.spriteOffsetX = 6;
-    gPlayer.spriteOffsetY = 9;
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 9);
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     gPlayer.charState = CHARSTATE_HANGING;
 

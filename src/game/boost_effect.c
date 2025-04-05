@@ -78,7 +78,7 @@ void sub_801561C(void)
     sPlayerStateBufferIndex = 0;
 }
 
-void sub_80156D0(void)
+void BoostEffect_StorePlayerState(void)
 {
     Player *p = &gPlayer;
     u32 oldMovestate = p->moveState;
@@ -115,7 +115,7 @@ void sub_8015750(void)
     sPlayerPosBufferIndex = 0;
 }
 
-void sub_8015790(void)
+void BoostEffect_StorePlayerPos(void)
 {
     u32 index;
 

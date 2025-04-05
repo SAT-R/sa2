@@ -195,7 +195,7 @@ extern RoomEvent gRoomEventQueue[16];
 
 extern CheeseTarget gCheeseTarget;
 
-extern u8 gUnknown_030055D0[4];
+extern u8 gFrameInputsBuf[4];
 
 #if 0
 extern u8 gNewInputCountersIndex;
@@ -210,7 +210,7 @@ extern u8 gNewInputCountersIndex;
 extern struct InputCounters gNewInputCounters[32];
 #endif
 
-extern u8 gUnknown_030055D8;
+extern u8 gFrameInputsBufIndex;
 
 #if (GAME == GAME_SA1) && !defined(BUG_FIX)
 #define LIVES_BOUND_CHECK_A(lives)            (lives)

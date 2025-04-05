@@ -380,7 +380,7 @@ _080164C4:
 	str r0, [r4, #0x20]
 	adds r0, r4, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r4, #0x16]
 	movs r0, #0xe

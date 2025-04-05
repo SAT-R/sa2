@@ -59,18 +59,18 @@ const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
 // Letting go of a button does not trigger the index increase.
 //
 // This is likely used for trick timings
-void sub_800DF8C(Player *p)
+void InputBuffer_HandleFrameInput(Player *p)
 {
     const u8 **unk0;
     const u8 *data;
 
     if (p->moveState & (MOVESTATE_IGNORE_INPUT | MOVESTATE_DEAD)) {
-        sub_800E0C0(0, 0);
+        InputBuffer_NewFrameInput(0, 0);
         return;
     }
     // _0800DFB4
 
-    sub_800E0C0(p->frameInput, p->frameInput);
+    InputBuffer_NewFrameInput(p->frameInput, p->frameInput);
 
     if (p->unk70 != 0) {
         u16 unk4 = 0;
@@ -88,7 +88,7 @@ void sub_800DF8C(Player *p)
                 // _0800E012
                 while (r6 != 0) {
                     u32 maskFF = 0xFF, mask1F = 0x1F;
-                    bool32 shouldBail;
+                    bool32 shouldContinue;
 
                     s16 r1;
                     u32 r7, ip;
@@ -99,7 +99,7 @@ void sub_800DF8C(Player *p)
                     r1 = data[r6 * 3 + 2] & maskFF;
 
                     // _0800E02A
-                    shouldBail = FALSE;
+                    shouldContinue = FALSE;
                     while (1) {
                         s32 r0;
 
@@ -119,7 +119,7 @@ void sub_800DF8C(Player *p)
                         if (r0 >= r2) {
                             if (ip == r3) {
                                 cid = (cid - 1) & mask1F;
-                                shouldBail = TRUE;
+                                shouldContinue = TRUE;
                                 break;
                             }
                             cid = (cid - 1) & mask1F;
@@ -131,7 +131,7 @@ void sub_800DF8C(Player *p)
                         }
                     }
 
-                    if (shouldBail == FALSE) {
+                    if (shouldContinue == FALSE) {
                         break;
                     }
                 }
@@ -154,25 +154,25 @@ void sub_800DF8C(Player *p)
 }
 
 // (100.00%) https://decomp.me/scratch/WjLUa
-void sub_800E0C0(u16 param0, u16 param1)
+void InputBuffer_NewFrameInput(u16 frameInputs1, u16 frameInputs2)
 {
-    u32 r3 = param1 % 4u;
-    u16 r2 = ((param1 & 0x100) >> 6);
+    u32 r3 = frameInputs2 % 4u;
+    u16 r2 = ((frameInputs2 & R_BUTTON) >> 6);
     u32 r5;
 
     r3 |= r2;
-    param1 = 0xF0;
+    frameInputs2 = 0xF0;
 #ifndef NON_MATCHING
-    asm("" ::"r"(param1));
+    asm("" ::"r"(frameInputs2));
 #endif
-    r5 = param0;
-    r5 &= param1;
+    r5 = frameInputs1;
+    r5 &= frameInputs2;
     r5 = (r5) | r3;
-    gUnknown_030055D8 = (gUnknown_030055D8 + 1) % 4u;
-    gUnknown_030055D0[gUnknown_030055D8] = r5;
-    r5 |= gUnknown_030055D0[(gUnknown_030055D8 - 1) % 4u];
-    r5 |= gUnknown_030055D0[(gUnknown_030055D8 - 2) % 4u];
-    r5 &= param0;
+    gFrameInputsBufIndex = (gFrameInputsBufIndex + 1) % ARRAY_COUNT(gFrameInputsBuf);
+    gFrameInputsBuf[gFrameInputsBufIndex] = r5;
+    r5 |= gFrameInputsBuf[(gFrameInputsBufIndex - 1) % ARRAY_COUNT(gFrameInputsBuf)];
+    r5 |= gFrameInputsBuf[(gFrameInputsBufIndex - 2) % ARRAY_COUNT(gFrameInputsBuf)];
+    r5 &= frameInputs1;
 
 #ifndef NON_MATCHING
     asm("lsl r0, %0, #24\n"
@@ -184,7 +184,7 @@ void sub_800E0C0(u16 param0, u16 param1)
     if ((gNewInputCounters[gNewInputCountersIndex].unk0 == r5) && (gNewInputCounters[gNewInputCountersIndex].unk1 != 0xFF)) {
         gNewInputCounters[gNewInputCountersIndex].unk1++;
     } else {
-        gNewInputCountersIndex = (gNewInputCountersIndex + 1) % 32u;
+        gNewInputCountersIndex = (gNewInputCountersIndex + 1) % ARRAY_COUNT(gNewInputCounters);
         gNewInputCounters[gNewInputCountersIndex].unk0 = r5;
         gNewInputCounters[gNewInputCountersIndex].unk1 = 0;
     }

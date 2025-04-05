@@ -84,9 +84,7 @@ static void sub_8072650(void)
 static void sub_80726E8(Sprite_WindUpStick *windUpStick)
 {
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
-    Player_SetSpriteOffsetY(&gPlayer, 0xE);
-    gPlayer.spriteOffsetX = 6;
-    gPlayer.spriteOffsetY = 14;
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
     windUpStick->unk12 = (gPlayerBodyPSI.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;

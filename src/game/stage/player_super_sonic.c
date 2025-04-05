@@ -124,7 +124,7 @@ static void SuperSonicInitPlayer(void)
     p->character = CHARACTER_SONIC;
     p->secondsUntilDrown = 0;
     p->framesUntilDrownCountDecrement = 0;
-    p->unk88 = 0;
+    p->framesUntilWaterSurfaceEffect = 0;
 }
 
 void SuperSonicInit()

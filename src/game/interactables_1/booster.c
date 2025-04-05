@@ -117,13 +117,9 @@ void Task_Interactable_Booster(void)
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
         if (gPlayer.moveState & MOVESTATE_4) {
-            Player_SetSpriteOffsetY(&gPlayer, 9);
-            gPlayer.spriteOffsetX = 6;
-            gPlayer.spriteOffsetY = 9;
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 9);
         } else {
-            Player_SetSpriteOffsetY(&gPlayer, 14);
-            gPlayer.spriteOffsetX = 6;
-            gPlayer.spriteOffsetY = 14;
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
         }
 
         m4aSongNumStart(SE_SPEED_BOOSTER);

@@ -341,7 +341,7 @@ _0800D2EA:
 	str r0, [r6, #0x20]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r6, #0x16]
 	movs r0, #0xe
@@ -419,7 +419,7 @@ _0800D38E:
 	str r0, [r6, #0x20]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r1, #0
 	movs r0, #6
 	strb r0, [r6, #0x16]
@@ -528,7 +528,7 @@ _0800D47C:
 	str r0, [r5, #0x20]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
@@ -592,7 +592,7 @@ _0800D500:
 	str r0, [r5, #0x20]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r1, #0
 	movs r0, #6
 	strb r0, [r5, #0x16]
@@ -779,7 +779,7 @@ _0800D66A:
 	strh r3, [r6, #0x10]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r6, #0x16]
 	movs r0, #0xe
@@ -847,7 +847,7 @@ _0800D6EA:
 	str r0, [r6, #0x20]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r6, #0x16]
 	movs r0, #0xe
@@ -877,7 +877,7 @@ _0800D738:
 	str r4, [sp, #0x30]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r6, #0x16]
 	movs r0, #0xe
@@ -954,7 +954,7 @@ _0800D7D8:
 	strh r0, [r6, #0x10]
 	adds r0, r6, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r6, #0x16]
 	movs r0, #0xe
@@ -1041,7 +1041,7 @@ _0800D868:
 	strh r0, [r5, #0x10]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
@@ -1112,7 +1112,7 @@ _0800D8F2:
 	str r0, [r5, #0x20]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
@@ -1148,7 +1148,7 @@ _0800D93C:
 	str r0, [r5]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
@@ -1213,7 +1213,7 @@ _0800D9BE:
 	strh r0, [r5, #0x10]
 	adds r0, r5, #0
 	movs r1, #0xe
-	bl Player_SetSpriteOffsetY
+	bl Player_HandleSpriteYOffsetChange
 	movs r0, #6
 	strb r0, [r5, #0x16]
 	movs r0, #0xe

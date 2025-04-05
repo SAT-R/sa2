@@ -66,7 +66,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *s);
 void sub_8024F74(Player *p, PlayerSpriteInfo *s);
 void Player_8026BCC(Player *);
 
-s32 sub_8029BB8(Player *p, u8 *p1, s32 *out);
+s32 sub_8029BB8(Player *p, u8 *rot, s32 *out);
 
 void Player_SpinAttack(Player *p);
 
@@ -125,6 +125,11 @@ void Player_Nop(Player *);
 void Player_Skidding(Player *);
 void Player_InitTaunt(Player *);
 void Player_InitAttack(Player *);
+void Player_HandleBoostState(Player *p);
+void Player_ApplyBoostPhysics(Player *p);
+void Player_HandleWalkAnim(Player *p);
+void Player_HandleInputs(Player *p);
+void CallPlayerTransition(Player *p);
 
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
@@ -748,7 +753,7 @@ void InitializePlayer(Player *p)
     p->SA2_LABEL(unk63) = 0;
     p->secondsUntilDrown = 30;
     p->framesUntilDrownCountDecrement = 60;
-    p->SA2_LABEL(unk88) = 10;
+    p->framesUntilWaterSurfaceEffect = 10;
 
 #if (GAME == GAME_SA2)
     p->transition = 0;
@@ -866,7 +871,7 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
 }
 
 // Very similar to sub_8029BB8
-s32 sub_802195C(Player *p, u8 *p1, s32 *out)
+s32 sub_802195C(Player *p, u8 *rot, s32 *out)
 {
     u8 dummy;
     s32 dummyInt;
@@ -877,8 +882,8 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
     s32 r5, r1;
     s32 result;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
@@ -904,11 +909,11 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
 
     if (r5 < r1) {
         result = r5;
-        *p1 = anotherByte;
+        *rot = anotherByte;
         *out = r1;
     } else {
         result = r1;
-        *p1 = anotherByte2;
+        *rot = anotherByte2;
         *out = r5;
     }
 
@@ -916,7 +921,7 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
 }
 
 // Very similar to sub_802195C
-s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
+s32 sub_8021A34(Player *p, u8 *rot, s32 *out)
 {
     u8 dummy;
     s32 dummyInt;
@@ -927,8 +932,8 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
     s32 r5, r1;
     s32 result;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
@@ -954,11 +959,11 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
 
     if (r5 < r1) {
         result = r5;
-        *p1 = anotherByte;
+        *rot = anotherByte;
         *out = r1;
     } else {
         result = r1;
-        *p1 = anotherByte2;
+        *rot = anotherByte2;
         *out = r5;
     }
 
@@ -966,7 +971,7 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
 }
 
 // Very similar to sub_802195C
-s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
+s32 sub_8021B08(Player *p, u8 *rot, s32 *out)
 {
     u8 dummy;
     s32 dummyInt;
@@ -977,8 +982,8 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
     s32 r5, r1;
     s32 result;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
@@ -1004,11 +1009,11 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
 
     if (r5 < r1) {
         result = r5;
-        *p1 = anotherByte;
+        *rot = anotherByte;
         *out = r1;
     } else {
         result = r1;
-        *p1 = anotherByte2;
+        *rot = anotherByte2;
         *out = r5;
     }
 
@@ -1025,7 +1030,7 @@ void sub_8021BE0(Player *p)
 
         if (p->moveState & MOVESTATE_4) {
             p->moveState &= ~MOVESTATE_4;
-            Player_SetSpriteOffsetY(p, 14);
+            Player_HandleSpriteYOffsetChange(p, 14);
         }
         PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
     } else {
@@ -2624,9 +2629,7 @@ void sub_80231C0(Player *p)
                 p->qSpeedAirX = 0;
                 p->moveState &= ~MOVESTATE_4;
 
-                Player_SetSpriteOffsetY(p, 14);
-                p->spriteOffsetX = 6;
-                p->spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
                 p->qSpeedGround = 0;
             } break;
 
@@ -2979,7 +2982,7 @@ void sub_8023748(Player *p)
     }
 }
 
-void SA2_LABEL(sub_8023878)(Player *p)
+void Player_HandleWater(Player *p)
 {
 #if (GAME == GAME_SA1) && !defined(BUG_FIX)
 #define WATER_ACTIVE_CHECK 1
@@ -2995,8 +2998,8 @@ void SA2_LABEL(sub_8023878)(Player *p)
 
             p->qSpeedAirX = p->qSpeedAirX >> 1;
             p->qSpeedAirY = p->qSpeedAirY >> 2;
-            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && (s8)p->SA2_LABEL(unk88) < 1) {
-                p->SA2_LABEL(unk88) = 10;
+            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && p->framesUntilWaterSurfaceEffect < 1) {
+                p->framesUntilWaterSurfaceEffect = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->qWorldX), gWater.currentWaterLevel);
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
@@ -3058,8 +3061,8 @@ void SA2_LABEL(sub_8023878)(Player *p)
             p->moveState |= MOVESTATE_1000;
             p->qSpeedAirY = p->qSpeedAirY << 1;
 
-            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && p->SA2_LABEL(unk88) < 1) {
-                p->SA2_LABEL(unk88) = 10;
+            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && p->framesUntilWaterSurfaceEffect < 1) {
+                p->framesUntilWaterSurfaceEffect = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->qWorldX), gWater.currentWaterLevel);
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
@@ -3104,12 +3107,12 @@ void SA2_LABEL(sub_8023878)(Player *p)
         p->deceleration = p->deceleration >> 2;
     }
 
-    if (p->SA2_LABEL(unk88) != 0) {
-        p->SA2_LABEL(unk88)--;
+    if (p->framesUntilWaterSurfaceEffect != 0) {
+        p->framesUntilWaterSurfaceEffect--;
     }
 }
 
-void Player_SetSpriteOffsetY(Player *p, s32 spriteOffsetY)
+void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
 {
     u8 rot;
     if (p->spriteOffsetY == spriteOffsetY) {
@@ -3300,25 +3303,19 @@ void Task_PlayerDied(void)
     sub_8024F74(p, psi2);
 }
 
-void sub_80298DC(Player *p);
-void Player_ApplyBoostPhysics(Player *p);
-void Player_HandleWalkAnim(Player *p);
-void sub_802460C(Player *p);
-void CallPlayerTransition(Player *p);
-
 void Task_PlayerMain(void)
 {
     Player *p = &gPlayer;
     Player_HandleBoostThreshold(p);
-    sub_80298DC(p);
+    Player_HandleBoostState(p);
     Player_ApplyBoostPhysics(p);
     Player_HandleWalkAnim(p);
 
     gUnknown_030054FC = 0;
     gUnknown_030054E0 = 0;
-    sub_802460C(p);
-    sub_800DF8C(p);
-    sub_8023878(p);
+    Player_HandleInputs(p);
+    InputBuffer_HandleFrameInput(p);
+    Player_HandleWater(p);
     CallPlayerTransition(p);
 
     if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
@@ -3342,8 +3339,8 @@ void Task_PlayerMain(void)
     sub_8023748(p);
 
     // from boost_effect.c
-    sub_8015790();
-    sub_80156D0();
+    BoostEffect_StorePlayerPos();
+    BoostEffect_StorePlayerState();
 
     p->moveState &= ~MOVESTATE_ICE_SLIDE;
     gHomingTarget.squarePlayerDistance = SQUARE(128);
@@ -3545,7 +3542,7 @@ void CallPlayerTransition(Player *p)
     p->transition = 0;
 }
 
-void sub_802460C(Player *p)
+void Player_HandleInputs(Player *p)
 {
     u32 input;
     u16 input2;
@@ -6242,9 +6239,7 @@ void Player_HandleGroundMovement(Player *p)
                 }
 
                 charState = CHARSTATE_WALK_A;
-                Player_SetSpriteOffsetY(p, 14);
-                p->spriteOffsetX = 6;
-                p->spriteOffsetY = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
             } else {
                 gPlayer.callback = Player_Skidding;
             }
@@ -6305,7 +6300,7 @@ void Player_HandleBoostThreshold(Player *p)
     }
 }
 
-void sub_80298DC(Player *p)
+void Player_HandleBoostState(Player *p)
 {
     bool32 isBoostActive = p->isBoosting;
     if (isBoostActive) {
@@ -6369,7 +6364,7 @@ void DestroyPlayerTasks(Player *p)
     }
 }
 
-s32 sub_8029A28(Player *p, u8 *p1, s32 *out)
+s32 sub_8029A28(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
 
@@ -6377,94 +6372,62 @@ s32 sub_8029A28(Player *p, u8 *p1, s32 *out)
 
     // TODO: Why is dummyInt unused?
     s32 dummyInt;
-    s32 p1Value;
+    s32 rotValue;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
-    result = sub_802195C(p, p1, out);
+    result = sub_802195C(p, rot, out);
 
-    p1Value = *p1;
+    rotValue = *rot;
 
-    if (p1Value & 0x1)
-        *p1 = 0;
+    if (rotValue & 0x1)
+        *rot = 0;
     else {
         if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
-            val -= p1Value;
-            *p1 = val;
+            val -= rotValue;
+            *rot = val;
         }
     }
 
     return result;
 }
 
-s32 sub_8029A74(Player *p, u8 *p1, s32 *out)
+s32 sub_8029A74(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
 
     u8 dummy;
 
     s32 dummyInt;
-    s32 p1Value;
+    s32 rotValue;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
-    result = sub_8021A34(p, p1, out);
+    result = sub_8021A34(p, rot, out);
 
-    p1Value = *p1;
+    rotValue = *rot;
 
-    if (p1Value & 0x1)
-        *p1 = 0;
+    if (rotValue & 0x1)
+        *rot = 0;
     else {
         if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
-            val -= p1Value;
-            *p1 = val;
+            val -= rotValue;
+            *rot = val;
         }
     }
 
     return result;
 }
 
-s32 sub_8029AC0(Player *p, u8 *p1, s32 *out)
-{
-    s32 result;
-
-    u8 dummy;
-
-    // TODO: Why is dummyInt unused?
-    s32 dummyInt;
-    s32 p1Value;
-
-    if (p1 == NULL)
-        p1 = &dummy;
-    if (out == NULL)
-        out = &dummyInt;
-
-    result = sub_8021B08(p, p1, out);
-
-    p1Value = *p1;
-
-    if (p1Value & 0x1)
-        *p1 = 0;
-    else {
-        if (GRAVITY_IS_INVERTED) {
-            s32 val = -0x80;
-            val -= p1Value;
-            *p1 = val;
-        }
-    }
-
-    return result;
-}
-
-s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
+s32 sub_8029AC0(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
 
@@ -6472,58 +6435,90 @@ s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
 
     // TODO: Why is dummyInt unused?
     s32 dummyInt;
-    s32 p1Value;
+    s32 rotValue;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rot == NULL)
+        rot = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
-    result = sub_8029BB8(p, p1, out);
+    result = sub_8021B08(p, rot, out);
 
-    p1Value = *p1;
+    rotValue = *rot;
 
-    if (p1Value & 0x1)
-        *p1 = 0;
+    if (rotValue & 0x1)
+        *rot = 0;
     else {
         if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
-            val -= p1Value;
-            *p1 = val;
+            val -= rotValue;
+            *rot = val;
         }
     }
 
     return result;
 }
 
-s32 sub_8029B58(Player *p, u8 *p1, s32 *out)
+s32 sub_8029B0C(Player *p, u8 *ret_rotation, s32 *out)
+{
+    s32 result;
+
+    u8 dummy;
+
+    // TODO: Why is dummyInt unused?
+    s32 dummyInt;
+    s32 rotValue;
+
+    if (ret_rotation == NULL)
+        ret_rotation = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    result = sub_8029BB8(p, ret_rotation, out);
+
+    rotValue = *ret_rotation;
+
+    if (rotValue & 0x1)
+        *ret_rotation = 0;
+    else {
+        if (GRAVITY_IS_INVERTED) {
+            s32 val = -DEG_TO_TURNS(180);
+            val -= rotValue;
+            *ret_rotation = val;
+        }
+    }
+
+    return result;
+}
+
+s32 sub_8029B58(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
 
     if (GRAVITY_IS_INVERTED) {
-        result = sub_8029B0C(p, p1, out);
+        result = sub_8029B0C(p, rot, out);
     } else {
-        result = sub_8029AC0(p, p1, out);
+        result = sub_8029AC0(p, rot, out);
     }
 
     return result;
 }
 
-s32 sub_8029B88(Player *p, u8 *p1, s32 *out)
+s32 sub_8029B88(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
 
     if (GRAVITY_IS_INVERTED) {
-        result = sub_8029AC0(p, p1, out);
+        result = sub_8029AC0(p, rot, out);
     } else {
-        result = sub_8029B0C(p, p1, out);
+        result = sub_8029B0C(p, rot, out);
     }
 
     return result;
 }
 
 // Very similar to sub_802195C
-s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
+s32 sub_8029BB8(Player *p, u8 *rotation, s32 *out)
 {
     u8 dummy;
     s32 dummyInt;
@@ -6534,8 +6529,8 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
     s32 r5, r1;
     s32 result;
 
-    if (p1 == NULL)
-        p1 = &dummy;
+    if (rotation == NULL)
+        rotation = &dummy;
     if (out == NULL)
         out = &dummyInt;
 
@@ -6561,11 +6556,11 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 
     if (r5 < r1) {
         result = r5;
-        *p1 = anotherByte;
+        *rotation = anotherByte;
         *out = r1;
     } else {
         result = r1;
-        *p1 = anotherByte2;
+        *rotation = anotherByte2;
         *out = r5;
     }
 
@@ -6574,16 +6569,16 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 
 void sub_8029C84(Player *p)
 {
-    s32 rot = p->rotation + Q(0.25);
+    s32 rot = p->rotation + DEG_TO_TURNS(90);
 
-    if ((rot & UINT8_MAX) > INT8_MAX)
+    if ((rot & (DEG_TO_TURNS(360) - 1)) >= DEG_TO_TURNS(180))
         p->qSpeedGround = 0;
 }
 
 void sub_8029CA0(Player *p)
 {
     s32 rot = p->rotation;
-    if (((rot + Q(0.375)) & 0xFF) < 0xC0) {
+    if (((rot + DEG_TO_TURNS(135)) & (DEG_TO_TURNS(360) - 1)) < DEG_TO_TURNS(270)) {
         rot = GET_ROTATED_ACCEL(rot);
 
         if (p->qSpeedGround != 0) {
@@ -6595,7 +6590,7 @@ void sub_8029CA0(Player *p)
 void sub_8029CE0(Player *p)
 {
     s32 rot = p->rotation;
-    if (((rot + Q(0.375)) & 0xFF) < 0xC0) {
+    if (((rot + DEG_TO_TURNS(135)) & (DEG_TO_TURNS(360) - 1)) < DEG_TO_TURNS(270)) {
         s32 other = GET_ROTATED_ACCEL_2(rot);
 
         p->qSpeedGround += other;
@@ -6610,7 +6605,7 @@ void sub_8029D14(Player *p)
     s32 grndSpeed = p->qSpeedGround;
 #endif
 
-    if ((((p->rotation + Q(0.375)) & 0xFF) < 0xC0) && grndSpeed != 0) {
+    if (((p->rotation + DEG_TO_TURNS(135)) & (DEG_TO_TURNS(360) - 1)) < DEG_TO_TURNS(270) && grndSpeed != 0) {
         s32 accelInt = I(GET_ROTATED_ACCEL_3(p->rotation));
 
         if (grndSpeed > 0) {
@@ -6650,7 +6645,7 @@ bool32 sub_8029DE8(Player *p)
 }
 
 // Might've been an inline func, but doesn't match with it.
-bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
+UNUSED bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
 {
     struct Camera *cam = &gCamera;
     s32 playerY = p->qWorldY;
@@ -6691,8 +6686,6 @@ bool32 Player_TryJump(Player *p)
 void sub_8029ED8(Player *p) { PLAYERFN_UPDATE_UNK2A(p); }
 
 void sub_8029F20(Player *p) { PLAYERFN_UPDATE_ROTATION(p); }
-
-/* This could be a different module starting here? */
 
 void ContinueLevelSongAfterDrowning(Player *p)
 {
