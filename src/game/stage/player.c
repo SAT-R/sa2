@@ -18,7 +18,7 @@
 #include "game/sa1_sa2_shared/music_manager.h"
 #include "game/save.h"
 #include "game/stage/camera.h"
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 #include "game/stage/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/stage/item_tasks.h"

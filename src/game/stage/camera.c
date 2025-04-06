@@ -10,7 +10,7 @@
 #include "game/stage/camera.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 #include "game/stage/background/dummy.h"
 #include "game/stage/background/zone_1.h"
 #include "game/stage/background/zone_2.h"

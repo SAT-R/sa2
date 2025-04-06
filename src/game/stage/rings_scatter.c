@@ -6,7 +6,7 @@
 
 #include "game/sa1_sa2_shared/globals.h"
 
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

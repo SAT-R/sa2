@@ -17,7 +17,7 @@
 #include "game/cutscenes/level_endings.h"
 #include "game/parameters/bosses.h"
 #include "game/stage/boss_results_transition.h"
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/results.h"

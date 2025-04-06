@@ -12,7 +12,7 @@
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks.h"
 
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 #include "game/stage/player.h"
 #include "game/save.h"
 #include "game/stage/screen_shake.h"

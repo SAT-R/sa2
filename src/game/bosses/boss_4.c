@@ -11,7 +11,7 @@
 
 #include "game/player_callbacks.h"
 #include "game/stage/player.h"
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 
 #include "game/entity.h" // Player_IsSpriteColliding
 #include "game/bosses/common.h"

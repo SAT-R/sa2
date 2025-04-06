@@ -368,7 +368,8 @@
     "dma.h": "c",
     "ceiling_slope.h": "c",
     "french_horn.h": "c",
-    "pipe_sequence.h": "c"
+    "pipe_sequence.h": "c",
+    "terrain_collision.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

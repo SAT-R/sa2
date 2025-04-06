@@ -28,7 +28,7 @@ SECTIONS
         src/game/stage/background/zone_4.o(.bss);
 
         . = 0x00000410;
-        src/game/stage/collision.o(.bss);
+        src/game/stage/terrain_collision.o(.bss);
 
         src/lib/agb_flash/agb_flash.o(.bss);
 
@@ -170,7 +170,7 @@ SECTIONS
         src/game/stage/background/zone_final_boss.o(.text);
         src/game/stage/background/zone_extra_boss.o(.text);
         src/game/stage/background/callbacks.o(.text);
-        src/game/stage/collision.o(.text);
+        src/game/stage/terrain_collision.o(.text);
         src/game/stage/mp_sprite_task.o(.text);
         src/game/stage/dust_effect_braking.o(.text);
         src/game/stage/dust_effect_spindash.o(.text);
@@ -440,7 +440,7 @@ SECTIONS
         src/game/stage/background/zone_7_2.o(.rodata);
         src/game/stage/background/zone_final.o(.rodata);
         src/game/stage/tilemap_table.o(.rodata);
-        src/game/stage/collision.o(.rodata);
+        src/game/stage/terrain_collision.o(.rodata);
         src/game/stage/mp_sprite_task.o(.rodata);
         src/game/stage/spawn_positions.o(.rodata);
         src/game/stage/rings_scatter.o(.rodata);

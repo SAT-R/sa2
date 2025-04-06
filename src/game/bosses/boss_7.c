@@ -6,7 +6,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/boss_results_transition.h"
-#include "game/stage/collision.h"
+#include "game/stage/terrain_collision.h"
 
 #include "game/bosses/boss_7.h"
 #include "game/bosses/common.h"
