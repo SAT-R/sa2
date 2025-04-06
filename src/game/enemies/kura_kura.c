@@ -109,7 +109,7 @@ void sub_805213C(Sprite_KuraKura *kk)
 
     s2->x = pos.x - gCamera.x;
     s2->y = pos.y - gCamera.y;
-    sub_800C84C(s2, pos.x, pos.y);
+    Player_EnemySpriteCollision(s2, pos.x, pos.y);
 
     UpdateSpriteAnimation(s2);
     DisplaySprite(s2);

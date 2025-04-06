@@ -91,7 +91,7 @@ void Task_YadoMain(void)
 
     ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
 
-    if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
+    if (Player_HitboxCollision(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
         m4aSongNumStart(SE_SPRING);
         gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
@@ -130,10 +130,10 @@ void Task_8055084(void)
     ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
 
     if (!(gPlayer.moveState & MOVESTATE_IN_AIR)) {
-        if (sub_800C4FC(s, pos.x, pos.y, 1) == TRUE) {
+        if (Enemy_PlayerAttackCollision(s, pos.x, pos.y, 1) == TRUE) {
             TaskDestroy(gCurTask);
             return;
-        } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
+        } else if (Player_HitboxCollision(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
             gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
             gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
             gPlayer.unk6C = 1;
@@ -141,7 +141,7 @@ void Task_8055084(void)
 
             m4aSongNumStart(SE_SPRING);
         }
-    } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
+    } else if (Player_HitboxCollision(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
         gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
@@ -223,7 +223,7 @@ void Task_8055378(void)
 
     ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
 
-    if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
+    if (Player_HitboxCollision(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
         gPlayer.qSpeedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;

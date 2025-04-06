@@ -113,7 +113,7 @@ void Task_Interactable_Booster(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR)) && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
+    if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR)) && (Player_HitboxCollision(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
         if (gPlayer.moveState & MOVESTATE_4) {

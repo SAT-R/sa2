@@ -543,18 +543,18 @@ void sub_803F5E0(EggTotem *totem)
     s->x = worldX - gCamera.x;
     s->y = worldY - gCamera.y;
 
-    sub_800CA20(s, worldX, worldY, 1, &gPlayer);
+    Player_EnemyCollision(s, worldX, worldY, 1, &gPlayer);
 
-    if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+    if (Player_AttackBossCollision(s, worldX, worldY, 0, &gPlayer) == TRUE) {
         sub_8040D74(totem);
-    } else if (sub_800CA20(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+    } else if (Player_EnemyCollision(s, worldX, worldY, 0, &gPlayer) == TRUE) {
         sub_80412B4(totem);
     }
 
     Player_UpdateHomingPosition(totem->qWorldX, totem->qWorldY - BOSS5_HEIGHT);
 
     if (totem->unk35 == 0) {
-        if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+        if (Cheese_IsSpriteColliding(s, worldX, worldY, 0, &gPlayer) == TRUE) {
             sub_8040D74(totem);
         }
     }
@@ -1253,8 +1253,8 @@ void sub_8040A00(EggTotem *totem)
         s = &totem->sprPlatform[i].s;
         t3c = &totem->unk3C[i];
 
-        if (sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 1, &gPlayer) == FALSE
-            && sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 2, &gPlayer) == FALSE) {
+        if (Player_EnemyCollision(s, I(t3c->qWorldX), I(t3c->qWorldY), 1, &gPlayer) == FALSE
+            && Player_EnemyCollision(s, I(t3c->qWorldX), I(t3c->qWorldY), 2, &gPlayer) == FALSE) {
 #ifndef NON_MATCHING
             register Player *p asm("r5");
 #else
@@ -1271,7 +1271,7 @@ void sub_8040A00(EggTotem *totem)
             x = I(t3c->qWorldX);
             y = I(t3c->qWorldY);
             p = &gPlayer;
-            coll = sub_800CCB8(s, x, y, p);
+            coll = Player_PlatformCollision(s, x, y, p);
 
             if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (coll & COLL_FLAG_10000)) {
                 p->qWorldX += t3c->qUnk8 + Q(5);
@@ -1321,7 +1321,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
     t3CX = I(t3c->qWorldX);
     t3CY = I(t3c->qWorldY) + t3c->unk17;
 
-    if (sub_800C320(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
+    if (Player_AttackBossCollision(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
         t3c->unk14 -= 1;
 
 #ifndef NON_MATCHING
@@ -1377,7 +1377,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
     Player_UpdateHomingPosition(Q(t3CX), Q(t3CY));
 
-    if (IsColliding_Cheese(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
+    if (Cheese_IsSpriteColliding(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
         t3c->unk14--;
 #ifndef NON_MATCHING
         val = 0xFF;
@@ -1423,7 +1423,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
             m4aSongNumStart(SE_EXPLOSION);
 
-            Collision_AdjustPlayerSpeed(&gPlayer);
+            Player_AdjustSpeedAfterBossCollision(&gPlayer);
             gCheeseTarget.task->unk15 = 0;
         } else {
             m4aSongNumStart(SE_143);
@@ -1721,7 +1721,7 @@ void Task_EggTotemBullet(void)
     if (bullet->totem->lives != 0) {
         bool32 res;
 
-        res = sub_800CA20(s, I(bullet->qScreenX) + gCamera.x, I(bullet->qScreenY) + gCamera.y, 0, &gPlayer);
+        res = Player_EnemyCollision(s, I(bullet->qScreenX) + gCamera.x, I(bullet->qScreenY) + gCamera.y, 0, &gPlayer);
 
         if (res == TRUE && bullet->totem->unk35 == 0) {
             Sprite *s2;

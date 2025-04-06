@@ -78,7 +78,7 @@ static void Task_MonMain(void)
     s->x = I(mon->x) - gCamera.x;
     s->y = I(mon->y) - gCamera.y;
 
-    if (sub_800C4FC(s, I(mon->x), I(mon->y), 0)) {
+    if (Enemy_PlayerAttackCollision(s, I(mon->x), I(mon->y), 0)) {
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
@@ -109,7 +109,7 @@ static void Task_Mon_2(void)
     s->x = I(mon->x) - gCamera.x;
     s->y = I(mon->y) - gCamera.y;
 
-    if (sub_800C4FC(s, I(mon->x), I(mon->y), 0)) {
+    if (Enemy_PlayerAttackCollision(s, I(mon->x), I(mon->y), 0)) {
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
@@ -143,7 +143,7 @@ static void Task_Mon_3(void)
     s->x = I(mon->x) - gCamera.x;
     s->y = I(mon->y + mon->offsetY) - gCamera.y;
 
-    if (sub_800C4FC(s, I(mon->x), I(mon->y + mon->offsetY), 0)) {
+    if (Enemy_PlayerAttackCollision(s, I(mon->x), I(mon->y + mon->offsetY), 0)) {
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
@@ -172,7 +172,7 @@ static void Task_Mon_4(void)
     s->x = I(mon->x) - gCamera.x;
     s->y = I(mon->y) - gCamera.y;
 
-    if (sub_800C4FC(s, I(mon->x), I(mon->y), 0)) {
+    if (Enemy_PlayerAttackCollision(s, I(mon->x), I(mon->y), 0)) {
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {

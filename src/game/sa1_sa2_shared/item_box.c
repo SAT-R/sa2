@@ -505,14 +505,14 @@ bool32 CheckItemBoxPlayerCollision(Entity_ItemBox *itembox)
 {
     if (PLAYER_IS_ALIVE) {
         Sprite *s = &itembox->s;
-        u32 res = sub_800C944(s, itembox->x, itembox->y);
+        u32 res = Player_ItemBoxCollision(s, itembox->x, itembox->y);
 
         if (res != 0) {
             itembox->noPlayerBreakRecoil = TRUE;
 
             return itembox->noPlayerBreakRecoil;
         } else {
-            if (!sub_800C204(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
+            if (!Player_HitboxCollision(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
             CheckItemBoxPlayerCollision_Ret0:
                 return FALSE;
             } else {

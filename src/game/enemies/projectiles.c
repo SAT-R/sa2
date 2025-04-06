@@ -92,7 +92,7 @@ void Task_805102C(void)
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
     } else {
-        sub_800C84C(s, I(proj->x), I(proj->y));
+        Player_EnemySpriteCollision(s, I(proj->x), I(proj->y));
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -123,7 +123,7 @@ void Task_80510B0(void)
             proj->isActive[i] = FALSE;
         }
 
-        sub_800C84C(s, I(proj->positions[i].x), I(proj->positions[i].y));
+        Player_EnemySpriteCollision(s, I(proj->positions[i].x), I(proj->positions[i].y));
         DisplaySprite(s);
     }
 

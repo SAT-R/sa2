@@ -267,7 +267,7 @@ static void Task_SpikesLeftRightMain(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || me->d.sData[0] != 0 || gUnknown_030053E0 != 0) {
         // _0805FC16
-        s32 r4 = sub_800CCB8(s, screenX, screenY, &gPlayer);
+        s32 r4 = Player_PlatformCollision(s, screenX, screenY, &gPlayer);
 #ifdef NON_MATCHING
         u32 gravityInverted;
 #else
@@ -322,7 +322,7 @@ static void Task_SpikesLeftRightMain(void)
 
             iaIndex = IA__SPIKES__NORMAL_LEFT;
             if (iaIndex != me->index) {
-                if (sub_800CBA4(&gPlayer)) {
+                if (Player_CollisionDamage(&gPlayer)) {
                     m4aSongNumStart(SE_SPIKES);
                 }
             }
@@ -341,7 +341,7 @@ static void Task_SpikesLeftRightMain(void)
 
                 iaIndex = IA__SPIKES__NORMAL_LEFT;
                 if (iaIndex == me->index) {
-                    if (sub_800CBA4(&gPlayer)) {
+                    if (Player_CollisionDamage(&gPlayer)) {
                         m4aSongNumStart(SE_SPIKES);
                     }
                 }
@@ -517,7 +517,7 @@ bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Pl
     s->y = screenY - gCamera.y;
 
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gUnknown_030053E0 == 30)) {
-        u32 flags = sub_800CCB8(s, screenX, screenY, player);
+        u32 flags = Player_PlatformCollision(s, screenX, screenY, player);
 
         if (flags) {
             u32 v = ((u8)player->spriteOffsetX + 5);
@@ -533,7 +533,7 @@ bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Pl
                 player->qWorldY = Q(screenY + s->hitboxes[0].bottom + sp00[3]);
             }
 
-            if (sub_800CBA4(player)) {
+            if (Player_CollisionDamage(player)) {
                 m4aSongNumStart(SE_SPIKES);
                 return TRUE;
             }
@@ -549,7 +549,7 @@ bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Pl
         r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
         sp08 = player->stoodObj;
 
-        flags = sub_800CCB8(s, screenX, screenY, player);
+        flags = Player_PlatformCollision(s, screenX, screenY, player);
         if (flags) {
             if (flags & 0x30000) {
 
@@ -573,7 +573,7 @@ bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Pl
                         player->stoodObj = s;
                         player->qSpeedGround = player->qSpeedAirX;
                         // _080603BC
-                        if (sub_800CBA4(player)) {
+                        if (Player_CollisionDamage(player)) {
                             m4aSongNumStart(SE_SPIKES);
                             return TRUE;
                         }
@@ -588,7 +588,7 @@ bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Pl
                             player->qSpeedAirY = 0;
 
                             // _080603BC
-                            if (sub_800CBA4(player)) {
+                            if (Player_CollisionDamage(player)) {
                                 m4aSongNumStart(SE_SPIKES);
                                 return TRUE;
                             }
@@ -635,14 +635,14 @@ static bool32 HandleSpikeMovementDown(Sprite *s, MapEntity *me, Sprite_Spikes *s
     s->y = screenY - gCamera.y;
 
     if (!(player->moveState & MOVESTATE_IA_OVERRIDE)) {
-        u32 flags = sub_800CCB8(s, screenX, screenY, player);
+        u32 flags = Player_PlatformCollision(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
                 player->qWorldY = Q((screenY + s->hitboxes[0].bottom) + player->spriteOffsetY + 1);
                 player->qSpeedAirY = 0;
                 player->qSpeedGround = 0;
 
-                if (sub_800CBA4(player)) {
+                if (Player_CollisionDamage(player)) {
                     m4aSongNumStart(SE_SPIKES);
                     return TRUE;
                 }
@@ -652,7 +652,7 @@ static bool32 HandleSpikeMovementDown(Sprite *s, MapEntity *me, Sprite_Spikes *s
                 player->qSpeedAirY = 0;
                 player->qSpeedGround = 0;
 
-                if (sub_800CBA4(player)) {
+                if (Player_CollisionDamage(player)) {
                     m4aSongNumStart(SE_SPIKES);
                     return TRUE;
                 }
@@ -733,7 +733,7 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             UpdateSpriteAnimation(s);
 
-            if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
+            if (Player_IsSpriteColliding(s, screenX, screenY, player) == 0x80000) {
                 if ((HandleSpikePlayerCollision(s, screenX, screenY, player) & 0xD0000) != 0) {
                     u32 v = ((u8)player->spriteOffsetX + 5);
                     s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
@@ -743,19 +743,19 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
                     } else {
                         player->qWorldY = Q((screenY + s->hitboxes[0].bottom) + sp00[3]);
                     }
-                    if (sub_800CBA4(player)) {
+                    if (Player_CollisionDamage(player)) {
                         m4aSongNumStart(SE_SPIKES);
                         return TRUE;
                     }
                 }
             } else {
-                u32 flags = sub_800CCB8(s, screenX, screenY, player);
+                u32 flags = Player_PlatformCollision(s, screenX, screenY, player);
                 if (flags) {
                     if (flags & 0x10000) {
                         flags = HandleSpikePlayerCollision(s, screenX, screenY, player);
 
                         if (flags & 0x10000) {
-                            if (sub_800CBA4(player)) {
+                            if (Player_CollisionDamage(player)) {
                                 m4aSongNumStart(SE_SPIKES);
                                 return TRUE;
                             }
@@ -769,12 +769,12 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
                 }
             }
         } else {
-            u32 flags = sub_800CCB8(s, screenX, screenY, player);
+            u32 flags = Player_PlatformCollision(s, screenX, screenY, player);
             if (flags) {
                 if ((flags & 0x10000) && !GRAVITY_IS_INVERTED) {
                     flags = HandleSpikePlayerCollision(s, screenX, screenY, player);
 
-                    if ((flags & 0x10000) && sub_800CBA4(player)) {
+                    if ((flags & 0x10000) && Player_CollisionDamage(player)) {
                         m4aSongNumStart(SE_SPIKES);
                         return TRUE;
                     }
@@ -785,7 +785,7 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
                     player->stoodObj = s;
                     player->qSpeedGround = player->qSpeedAirX;
 
-                    if (sub_800CBA4(player)) {
+                    if (Player_CollisionDamage(player)) {
                         m4aSongNumStart(SE_SPIKES);
                         return TRUE;
                     }
@@ -896,7 +896,7 @@ static bool32 HandleSpikeMovementHidingDown(Sprite *s, MapEntity *me, Sprite_Spi
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             UpdateSpriteAnimation(s);
 
-            if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
+            if ((Player_IsSpriteColliding(s, screenX, screenY, player) == 0x80000)
                 && ((HandleSpikePlayerCollision(s, screenX, screenY, player) & 0xD0000) != 0)) {
 
                 u32 v = ((u8)player->spriteOffsetX + 5);
@@ -907,14 +907,14 @@ static bool32 HandleSpikeMovementHidingDown(Sprite *s, MapEntity *me, Sprite_Spi
                 } else {
                     player->qWorldY = Q(s->hitboxes[0].top + screenY + sp00[1]);
                 }
-                if (!sub_800CBA4(player)) {
+                if (!Player_CollisionDamage(player)) {
                     return TRUE;
                 }
             } else
                 return TRUE;
         } else {
-            spikes->playerMoveState[playerID] = sub_800CCB8(s, screenX, screenY, player);
-            if (!(spikes->playerMoveState[playerID] & MOVESTATE_20000) || !sub_800CBA4(player)) {
+            spikes->playerMoveState[playerID] = Player_PlatformCollision(s, screenX, screenY, player);
+            if (!(spikes->playerMoveState[playerID] & MOVESTATE_20000) || !Player_CollisionDamage(player)) {
                 return TRUE;
             }
         }
@@ -966,7 +966,7 @@ static u32 HandleSpikePlayerCollision(Sprite *s, s32 x, s32 y, Player *player)
     s->hitboxes[0].left++;
     s->hitboxes[0].right--;
 
-    result = sub_800CCB8(s, x, y, player);
+    result = Player_PlatformCollision(s, x, y, player);
 
     s->hitboxes[0].left--;
     s->hitboxes[0].right++;

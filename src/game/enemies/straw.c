@@ -75,7 +75,7 @@ void sub_80567F8(void)
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
+    if (Enemy_PlayerAttackCollision(s, pos.x, pos.y, 0)) {
         TaskDestroy(gCurTask);
         return;
     }

@@ -101,7 +101,7 @@ static void Task_Ramp(void)
             var = TRUE;
         }
 
-        r1 = sub_800CDBC(s, screenX, screenY, player);
+        r1 = Player_InteractableCollision(s, screenX, screenY, player);
         if (r1 != 0) {
             if (((r1 & 0x80000) && (ramp->unk3C & 2) && (player->qSpeedAirX > -1))
                 || ((r1 & 0x40000) && (!(ramp->unk3C & 2)) && (player->qSpeedAirX < 1))) {

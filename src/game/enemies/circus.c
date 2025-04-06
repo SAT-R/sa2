@@ -90,7 +90,7 @@ void Task_CircusMain(void)
     s2->x = s->x;
     s2->y = s->y - Q(0.125);
 
-    sub_800C84C(s2, pos.x, pos.y - Q(0.125));
+    Player_EnemySpriteCollision(s2, pos.x, pos.y - Q(0.125));
     DisplaySprite(s2);
 }
 
@@ -126,7 +126,7 @@ void Task_8055AB8(void)
         s2->x = s->x;
         s2->y = s->y - Q(0.125);
 
-        sub_800C84C(s2, pos.x, pos.y - Q(0.125));
+        Player_EnemySpriteCollision(s2, pos.x, pos.y - Q(0.125));
         DisplaySprite(s2);
     }
 }
@@ -150,7 +150,7 @@ void Task_8055C0C(void)
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
 
-    sub_800C84C(s2, pos.x, pos.y + I(circus->unk86) - Q(0.125));
+    Player_EnemySpriteCollision(s2, pos.x, pos.y + I(circus->unk86) - Q(0.125));
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(circus, me, s);
 
@@ -201,7 +201,7 @@ void Task_8055D7C(void)
     s2->x = s->x;
     s2->y = s->y - Q(0.125);
 
-    sub_800C84C(s2, pos.x, pos.y - Q(0.125));
+    Player_EnemySpriteCollision(s2, pos.x, pos.y - Q(0.125));
     DisplaySprite(s2);
 }
 

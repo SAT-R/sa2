@@ -114,7 +114,7 @@ static void Task_803CA1C(void);
 static void sub_803CB18(EggHammerTankII *);
 static void sub_803AC2C(EggHammerTankII *);
 static void sub_803CBFC(EggHammerTankII *boss);
-static void sub_803B6AC(EggHammerTankII *boss);
+static void HandleBossHit(EggHammerTankII *boss);
 static void sub_803CC3C(EggHammerTankII *boss);
 static void sub_803B17C(EggHammerTankII *boss);
 static void sub_803B264(EggHammerTankII *boss);
@@ -367,7 +367,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
             pos.y -= I(gPlayer.qWorldY);
             if ((SQUARE(pos.x) + SQUARE(pos.y)) < 0x1A4) {
                 sub_803CBFC(boss);
-                sub_800CBA4(&gPlayer);
+                Player_CollisionDamage(&gPlayer);
             }
         }
 
@@ -378,18 +378,18 @@ static void sub_803A8E4(EggHammerTankII *boss)
         s->x = pos.x - gCamera.x;
         s->y = pos.y - gCamera.y;
 
-        sub_800CA20(s, pos.x, pos.y, 1, &gPlayer);
+        Player_EnemyCollision(s, pos.x, pos.y, 1, &gPlayer);
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
         if (boss->unkB1 == 0 || ((gPlayer.qSpeedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
-            if (sub_800C320(s, pos.x, pos.y, 0, &gPlayer) == 1) {
-                sub_803B6AC(boss);
+            if (Player_AttackBossCollision(s, pos.x, pos.y, 0, &gPlayer) == 1) {
+                HandleBossHit(boss);
             } else {
-                sub_800CA20(s, pos.x, pos.y, 0, &gPlayer);
+                Player_EnemyCollision(s, pos.x, pos.y, 0, &gPlayer);
             }
 
-            if (boss->unkB1 == 0 && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
-                sub_803B6AC(boss);
+            if (boss->unkB1 == 0 && Cheese_IsSpriteColliding(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
+                HandleBossHit(boss);
             }
         }
     }
@@ -840,7 +840,7 @@ static void sub_803B62C(EggHammerTankII *boss)
     }
 }
 
-static void sub_803B6AC(EggHammerTankII *boss)
+static void HandleBossHit(EggHammerTankII *boss)
 {
     Sprite *s;
 

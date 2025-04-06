@@ -163,7 +163,7 @@ static u32 sub_807AE60(Sprite_IA78 *ia78)
 {
     if (PLAYER_IS_ALIVE) {
         Sprite *s = &ia78->s;
-        u32 temp = sub_800CCB8(s, ia78->unk3C, ia78->unk40, &gPlayer);
+        u32 temp = Player_PlatformCollision(s, ia78->unk3C, ia78->unk40, &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.qWorldY += Q_8_8(temp);
@@ -197,7 +197,7 @@ static u32 sub_807AF0C(Sprite_IA78 *ia78)
         ia78->s.hitboxes[0].top -= 16;
         ia78->s.hitboxes[0].bottom += 16;
 
-        temp = sub_800CDBC(&ia78->s, ia78->unk3C, ia78->unk40, &gPlayer);
+        temp = Player_InteractableCollision(&ia78->s, ia78->unk3C, ia78->unk40, &gPlayer);
 
         ia78->s.hitboxes[0].top += 16;
         ia78->s.hitboxes[0].bottom -= 16;
@@ -232,7 +232,7 @@ static void Task_Interactable078(void)
 
     if (ia78->unk44) {
         if (sub_807AF0C(ia78) & 6) {
-            sub_800CBA4(&gPlayer);
+            Player_CollisionDamage(&gPlayer);
         }
     }
 

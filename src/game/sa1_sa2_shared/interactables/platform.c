@@ -210,7 +210,7 @@ void Task_PlatformMain(void)
         s32 x = (posX + I(platform->offsetX));
         s32 y = (posY + I(platform->offsetY));
 
-        result = sub_800CCB8(s, x, y, p);
+        result = Player_PlatformCollision(s, x, y, p);
 
         if (result & COLL_FLAG_10000) {
             p->qWorldY += Q_8_8(result);
@@ -315,7 +315,7 @@ void Task_FallingPlatformMain_Idle(void)
     s->y = posY - gCamera.y;
 
     p = &gPlayer;
-    result = sub_800CCB8(s, posX, posY, p);
+    result = Player_PlatformCollision(s, posX, posY, p);
 
     if (result & COLL_FLAG_10000) {
         p->qWorldY += Q_8_8(result);
@@ -374,7 +374,7 @@ void Task_FallingPlatformMain_FallDelay(void)
     s->y = posY - gCamera.y;
 
     p = &gPlayer;
-    result = sub_800CCB8(s, posX, posY, p);
+    result = Player_PlatformCollision(s, posX, posY, p);
 
     if (result & 0x10000) {
         p->qWorldY += Q_8_8(result);
@@ -469,7 +469,7 @@ void Task_FallingPlatformMain_Falling(void)
     }
 
     if (platform->timer < 32) {
-        result = sub_800CCB8(s, posX, posY + I(platform->offsetY), &gPlayer);
+        result = Player_PlatformCollision(s, posX, posY + I(platform->offsetY), &gPlayer);
         if (result & 0x10000) {
             gPlayer.qWorldY += Q_8_8(result);
         }

@@ -58,10 +58,6 @@ typedef struct {
     Sprite s;
 } EnemyBase;
 
-u32 sub_800CDBC(Sprite *, s32, s32, Player *);
-
-u32 sub_800DF38(Sprite *, s32, s32, Player *);
-
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
 // TODO:
 // Find out whether casting these to u8 can work while still matching!
@@ -196,13 +192,13 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     }
 
 #define ENEMY_DESTROY_IF_PLAYER_HIT(_s, _pos)                                                                                              \
-    if (sub_800C4FC(_s, _pos.x, _pos.y, 0) == TRUE) {                                                                                      \
+    if (Enemy_PlayerAttackCollision(_s, _pos.x, _pos.y, 0) == TRUE) {                                                                      \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }
 
 #define ENEMY_DESTROY_IF_PLAYER_HIT_2(_s, _pos)                                                                                            \
-    if (sub_800C4FC(_s, _pos.x, _pos.y, 0)) {                                                                                              \
+    if (Enemy_PlayerAttackCollision(_s, _pos.x, _pos.y, 0)) {                                                                              \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }

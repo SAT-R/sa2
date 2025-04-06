@@ -28,7 +28,7 @@ static const u16 sInt019_AnimationIds[]
 
 extern const struct SpriteTables *gRefSpriteTables;
 
-extern u32 sub_800C060(Sprite *, s32, s32, Player *);
+extern u32 Player_CrumblingPlatformCollision(Sprite *, s32, s32, Player *);
 
 static void Task_Interactable_019(void);
 
@@ -100,7 +100,7 @@ void Task_Interactable_019(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (sub_800C060(s, screenX, screenY, &gPlayer) & 0x8) {
+    if (Player_CrumblingPlatformCollision(s, screenX, screenY, &gPlayer) & 0x8) {
         gCurTask->main = Task_805E35C;
         platform->unk3C = 0;
     }
@@ -135,7 +135,7 @@ void Task_805E35C(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    sub_800C060(s, screenX, screenY, &gPlayer);
+    Player_CrumblingPlatformCollision(s, screenX, screenY, &gPlayer);
 
     if (IS_MULTI_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
@@ -175,7 +175,7 @@ void Task_805E480(void)
     s->y = screenY - gCamera.y;
     platform->unk3C++;
 
-    sub_800C060(s, screenX, screenY, &gPlayer);
+    Player_CrumblingPlatformCollision(s, screenX, screenY, &gPlayer);
 
     if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
         if ((u16)(s->x + (CAM_REGION_WIDTH / 2)) > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {

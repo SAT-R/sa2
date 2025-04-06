@@ -217,7 +217,7 @@ static void Task_Platform_Square(void)
         s->hitboxes[0].top -= 3;
         x = (posX + I(platform->offsetX));
         y = (posY + I(platform->offsetY));
-        result = sub_800CCB8(s, x, y, p);
+        result = Player_PlatformCollision(s, x, y, p);
 
         if (result & 0x30000) {
             if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.charState > 99 && gPlayer.charState <= 105) {
@@ -250,7 +250,7 @@ static void Task_Platform_Square(void)
                     s->hitboxes[0].left += 16;
                     s->hitboxes[0].right -= 16;
 
-                    otherRes = sub_800CCB8(s, posX + I(platform->offsetX), posY + I(platform->offsetY), p);
+                    otherRes = Player_PlatformCollision(s, posX + I(platform->offsetX), posY + I(platform->offsetY), p);
 
                     s->hitboxes[0].left -= 16;
                     s->hitboxes[0].right += 16;
@@ -367,7 +367,7 @@ static u32 UNUSED HandleSquarePlatformCollision(Sprite *s, s32 x, s32 y, Player 
     s->hitboxes[0].top++;
     s->hitboxes[0].bottom--;
 
-    result = sub_800CCB8(s, x, y, p);
+    result = Player_PlatformCollision(s, x, y, p);
 
     s->hitboxes[0].top--;
     s->hitboxes[0].bottom++;

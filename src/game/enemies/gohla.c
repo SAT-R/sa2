@@ -189,11 +189,11 @@ static bool8 CheckPlayerHit(Sprite_Gohla *gohla, s32 x, s32 y)
 {
     Sprite *s = &gohla->s;
     bool8 ret = FALSE;
-    if (sub_800C4FC(s, x, y, 0) != 0) {
+    if (Enemy_PlayerAttackCollision(s, x, y, 0) != 0) {
         ret = TRUE;
     } else {
-        sub_800CA20(s, x, y, 0, &gPlayer);
-        sub_800CA20(s, x, y, 1, &gPlayer);
+        Player_EnemyCollision(s, x, y, 0, &gPlayer);
+        Player_EnemyCollision(s, x, y, 1, &gPlayer);
     }
 
     return ret;

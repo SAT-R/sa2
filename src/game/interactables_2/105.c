@@ -73,7 +73,7 @@ static void Task_Interactable105(void)
     Sprite_IA105 *ia105 = TASK_DATA(gCurTask);
 
     if (sub_80809B8(ia105)) {
-        sub_800CBA4(&gPlayer);
+        Player_CollisionDamage(&gPlayer);
     }
 
     if (sub_8080A9C(ia105)) {

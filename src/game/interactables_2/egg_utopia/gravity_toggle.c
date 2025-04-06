@@ -4,17 +4,6 @@
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 
 typedef struct {
-    /* 0x00 */ u8 x;
-    /* 0x01 */ u8 y;
-    /* 0x02 */ u8 index;
-
-    /* 0x03 */ s8 offsetX;
-    /* 0x04 */ s8 offsetY;
-    /* 0x05 */ u8 width;
-    /* 0x06 */ u8 height;
-} Interactable_GravityToggle;
-
-typedef struct {
     /* 0x00 */ u32 x;
     /* 0x04 */ u32 y;
     /* 0x08 */ u16 left;
@@ -28,7 +17,7 @@ typedef struct {
     /* 0x18 */ s16 playerAirX;
     /* 0x1A */ s16 playerAirY;
     /* 0x1C */ u8 filler1C[8];
-    /* 0x24 */ Interactable_GravityToggle *me;
+    /* 0x24 */ MapEntity *me;
 
     // Tile-Pos inside spriteRegion
     /* 0x28 */ u8 spriteX;
@@ -37,7 +26,7 @@ typedef struct {
 
 static void CreateEntity_Toggle_Gravity(MapEntity *, u16, u16, u8, u8);
 static void Task_GravityToggleNoAliveCheck(void);
-static void TaskDestructor_8080230(struct Task *);
+static void TaskDestructor_GravityToggle(struct Task *);
 static void UpdateTogglePlayerSpeed(Sprite_GravityToggle *);
 static bool32 ToggleIsOffscreen(Sprite_GravityToggle *);
 static void DestroyGravityToggle(Sprite_GravityToggle *);
@@ -47,19 +36,18 @@ static void Task_GravityToggle(void);
 #define GRAVITY_KIND__UP     1
 #define GRAVITY_KIND__TOGGLE 2
 
-static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY, u8 id, u8 toggleKind)
+static void CreateEntity_Toggle_Gravity(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 id, u8 toggleKind)
 {
-    struct Task *t = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle), 0x2010, 0, TaskDestructor_8080230);
+    struct Task *t = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle), 0x2010, 0, TaskDestructor_GravityToggle);
     Sprite_GravityToggle *toggle = TASK_DATA(t);
-    Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
     toggle->kind = toggleKind;
     toggle->x = TO_WORLD_POS(me->x, spriteRegionX);
     toggle->y = TO_WORLD_POS(me->y, spriteRegionY);
-    toggle->left = (me->offsetX * TILE_WIDTH);
-    toggle->top = (me->offsetY * TILE_WIDTH);
-    toggle->right = toggle->left + (me->width * TILE_WIDTH);
-    toggle->bottom = toggle->top + (me->height * TILE_WIDTH);
+    toggle->left = (me->d.sData[0] * TILE_WIDTH);
+    toggle->top = (me->d.sData[1] * TILE_WIDTH);
+    toggle->right = toggle->left + (me->d.uData[2] * TILE_WIDTH);
+    toggle->bottom = toggle->top + (me->d.uData[3] * TILE_WIDTH);
 
     toggle->width = toggle->right - toggle->left;
     toggle->height = toggle->bottom - toggle->top;
@@ -133,7 +121,7 @@ void Task_GravityToggleNoAliveCheck(void)
     }
 }
 
-void TaskDestructor_8080230(UNUSED struct Task *t) { }
+void TaskDestructor_GravityToggle(UNUSED struct Task *t) { }
 
 void UpdateTogglePlayerSpeed(Sprite_GravityToggle *toggle)
 {

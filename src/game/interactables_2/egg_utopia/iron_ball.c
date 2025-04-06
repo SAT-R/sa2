@@ -15,136 +15,128 @@
 typedef struct {
     SpriteBase base;
     Sprite s;
-    s32 unk3C;
-    s32 unk40;
+    s32 posX;
+    s32 posY;
     s32 unk44;
     s32 unk48;
     s16 unk4C;
     s16 unk4E;
     u16 unk50;
-} Sprite_IA95;
+} Sprite_IronBall;
 
 static void Task_Interactable095Main(void);
 
-static void sub_807EFC4(Sprite_IA95 *);
-static void sub_807F0D8(Sprite_IA95 *);
-static bool32 sub_807F17C(Sprite_IA95 *);
-static bool32 sub_807F120(Sprite_IA95 *);
+static void UpdatePosition(Sprite_IronBall *);
+static void Render(Sprite_IronBall *);
+static bool32 IsTouchingPlayer(Sprite_IronBall *);
+static bool32 ShouldDespawn(Sprite_IronBall *);
 
-static void TaskDestructor_Interactable095(struct Task *);
-static void DestroyInteractable095(Sprite_IA95 *);
+static void TaskDestructor_IronBall(struct Task *);
+static void Despawn(Sprite_IronBall *);
 
 void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0, TaskDestructor_Interactable095);
-    Sprite_IA95 *ia95 = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IronBall), 0x2010, 0, TaskDestructor_IronBall);
+    Sprite_IronBall *ball = TASK_DATA(t);
     Sprite *s;
-    ia95->unk44 = 0;
-    ia95->unk48 = 0;
+    ball->unk44 = 0;
+    ball->unk48 = 0;
 
-    ia95->base.me = me;
-    ia95->base.regionX = spriteRegionX;
-    ia95->base.regionY = spriteRegionY;
-    ia95->base.spriteX = me->x;
-    ia95->base.id = spriteY;
+    ball->base.me = me;
+    ball->base.regionX = spriteRegionX;
+    ball->base.regionY = spriteRegionY;
+    ball->base.spriteX = me->x;
+    ball->base.id = spriteY;
 
-    s = &ia95->s;
-    s->oamFlags = SPRITE_OAM_ORDER(18);
-    s->graphics.size = 0;
-    s->animCursor = 0;
-    s->qAnimDelay = 0;
-    s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s->palId = 0;
-    s->hitboxes[0].index = -1;
-    s->frameFlags = 0x2000;
-    s->graphics.dest = VramMalloc(0x12);
+    s = &ball->s;
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 18, 2, 0);
+    s->graphics.dest = VramMalloc(18);
     s->graphics.anim = SA2_ANIM_IRON_BALL;
     s->variant = 0;
     UpdateSpriteAnimation(s);
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {
-            ia95->unk4C = 4;
-            ia95->unk4E = 0;
-            ia95->unk50 = 0;
+            ball->unk4C = 4;
+            ball->unk4E = 0;
+            ball->unk50 = 0;
         } else {
-            ia95->unk4C = 4;
-            ia95->unk4E = 0;
-            ia95->unk50 = 0x80;
+            ball->unk4C = 4;
+            ball->unk4E = 0;
+            ball->unk50 = 0x80;
         }
     } else {
         if (me->d.sData[1] >= 0) {
-            ia95->unk4C = 0;
-            ia95->unk4E = 4;
-            ia95->unk50 = 0;
+            ball->unk4C = 0;
+            ball->unk4E = 4;
+            ball->unk50 = 0;
         } else {
-            ia95->unk4C = 0;
-            ia95->unk4E = 4;
-            ia95->unk50 = 0x80;
+            ball->unk4C = 0;
+            ball->unk4E = 4;
+            ball->unk50 = 0x80;
         }
     }
-    sub_807EFC4(ia95);
-    sub_807F0D8(ia95);
+    UpdatePosition(ball);
+    Render(ball);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void sub_807EFC4(Sprite_IA95 *ia95)
+static void UpdatePosition(Sprite_IronBall *ball)
 {
-    MapEntity *me = ia95->base.me;
+    MapEntity *me = ball->base.me;
 
-    if (ia95->unk4C != 0) {
-        s32 temp = me->d.uData[2] * 0x800;
-        ia95->unk44 = (temp * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE)) >> 0xF;
+    if (ball->unk4C != 0) {
+        s32 temp = me->d.uData[2] * Q(8);
+        ball->unk44 = (temp * SIN((ball->unk4C * ((gStageTime + ball->unk50) & 255)) & ONE_CYCLE)) >> 15;
     }
 
-    if (ia95->unk4E != 0) {
-        s32 temp = (me->d.uData[3] * 0x800);
-        ia95->unk48 = (temp * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE)) >> 0xF;
+    if (ball->unk4E != 0) {
+        s32 temp = (me->d.uData[3] * Q(8));
+        ball->unk48 = (temp * SIN((ball->unk4E * ((gStageTime + ball->unk50) & 255)) & ONE_CYCLE)) >> 15;
     }
 
-    ia95->unk3C = TO_WORLD_POS(ia95->base.spriteX, ia95->base.regionX) + I(ia95->unk44);
-    ia95->unk40 = TO_WORLD_POS(me->y, ia95->base.regionY) + I(ia95->unk48);
+    ball->posX = TO_WORLD_POS(ball->base.spriteX, ball->base.regionX) + I(ball->unk44);
+    ball->posY = TO_WORLD_POS(me->y, ball->base.regionY) + I(ball->unk48);
 }
 
 static void Task_Interactable095Main(void)
 {
-    Sprite_IA95 *ia95 = TASK_DATA(gCurTask);
+    Sprite_IronBall *ball = TASK_DATA(gCurTask);
 
-    sub_807EFC4(ia95);
+    UpdatePosition(ball);
 
-    if (sub_807F17C(ia95)) {
-        sub_800CBA4(&gPlayer);
+    if (IsTouchingPlayer(ball)) {
+        Player_CollisionDamage(&gPlayer);
     }
 
-    if (sub_807F120(ia95)) {
-        DestroyInteractable095(ia95);
-    } else {
-        sub_807F0D8(ia95);
+    if (ShouldDespawn(ball)) {
+        Despawn(ball);
+        return;
     }
+    Render(ball);
 }
 
-static void TaskDestructor_Interactable095(struct Task *t)
+static void TaskDestructor_IronBall(struct Task *t)
 {
-    Sprite_IA95 *ia95 = TASK_DATA(t);
-    VramFree(ia95->s.graphics.dest);
+    Sprite_IronBall *ball = TASK_DATA(t);
+    VramFree(ball->s.graphics.dest);
 }
 
-static void sub_807F0D8(Sprite_IA95 *ia95)
+static void Render(Sprite_IronBall *ball)
 {
-    ia95->s.x = ia95->unk3C - gCamera.x;
-    ia95->s.y = ia95->unk40 - gCamera.y;
-    ia95->s.frameFlags &= ~0x400;
-    DisplaySprite(&ia95->s);
-    ia95->s.frameFlags |= 0x400;
-    DisplaySprite(&ia95->s);
+    ball->s.x = ball->posX - gCamera.x;
+    ball->s.y = ball->posY - gCamera.y;
+    ball->s.frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
+    DisplaySprite(&ball->s);
+    ball->s.frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
+    DisplaySprite(&ball->s);
 }
 
-static bool32 sub_807F120(Sprite_IA95 *ia95)
+static bool32 ShouldDespawn(Sprite_IronBall *ball)
 {
-    MapEntity *me = ia95->base.me;
-    s16 x = ia95->unk3C - gCamera.x;
-    s16 y = ia95->unk40 - gCamera.y;
+    MapEntity *me = ball->base.me;
+    s16 x = ball->posX - gCamera.x;
+    s16 y = ball->posY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_2(x, y, (me->d.uData[2] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2),
                           (me->d.uData[3] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2))) {
@@ -154,21 +146,22 @@ static bool32 sub_807F120(Sprite_IA95 *ia95)
     return FALSE;
 }
 
-static bool32 sub_807F17C(Sprite_IA95 *ia95)
+static bool32 IsTouchingPlayer(Sprite_IronBall *ball)
 {
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     }
 
-    if (sub_800DF38(&ia95->s, ia95->unk3C, ia95->unk40, &gPlayer) & 0xF0000) {
+    if (Player_IsSpriteColliding(&ball->s, ball->posX, ball->posY, &gPlayer)
+        & (COLL_FLAG_10000 | COLL_FLAG_20000 | COLL_FLAG_40000 | COLL_FLAG_80000)) {
         return TRUE;
     }
 
     return FALSE;
 }
 
-static void DestroyInteractable095(Sprite_IA95 *ia95)
+static void Despawn(Sprite_IronBall *ball)
 {
-    ia95->base.me->x = ia95->base.spriteX;
+    ball->base.me->x = ball->base.spriteX;
     TaskDestroy(gCurTask);
 }

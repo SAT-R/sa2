@@ -89,7 +89,7 @@ static void Task_StageGoalMain(void)
     }
 
     if (PLAYER_IS_ALIVE && !(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        if (sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
+        if (Player_HitboxCollision(s, x, y, 0, &gPlayer, 0) == 1) {
             s->graphics.anim = SA2_ANIM_GOAL_LEVER;
             s->variant = 0;
             s->prevVariant = -1;

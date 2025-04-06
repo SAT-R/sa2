@@ -335,7 +335,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
             sNeck->y = pos.y - gCamera.y;
         }
 
-        sub_800C84C(sNeck, pos.x, pos.y);
+        Player_EnemySpriteCollision(sNeck, pos.x, pos.y);
         DisplaySprite(sNeck);
     }
 
@@ -363,7 +363,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
         sHead->y = (pos.y - gCamera.y);
     }
 
-    sub_800C84C(sHead, pos.x, pos.y);
+    Player_EnemySpriteCollision(sHead, pos.x, pos.y);
 
     transform->qScaleX = Q(1);
     transform->qScaleY = Q(1);

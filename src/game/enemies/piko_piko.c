@@ -69,7 +69,7 @@ static void Task_PikoPiko(void)
     ENEMY_CLAMP_TO_GROUND(piko, piko->clampParam);
     ENEMY_UPDATE_POSITION(piko, s, pos.x, pos.y);
 
-    if (!(sub_800CA20(s, pos.x, pos.y, 1, &gPlayer) == TRUE)) {
+    if (!(Player_EnemyCollision(s, pos.x, pos.y, 1, &gPlayer) == TRUE)) {
         ENEMY_DESTROY_IF_PLAYER_HIT(s, pos);
     }
 

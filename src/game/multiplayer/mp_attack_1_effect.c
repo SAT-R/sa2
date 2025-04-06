@@ -66,7 +66,8 @@ void sub_80870E8(void)
     effect->unk0 += 1;
     if (effect->unk0 > 160) {
         if (!(gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT))
-            && !(gPlayer.itemEffect & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__TELEPORT)) && sub_800CBA4(&gPlayer) != 0) {
+            && !(gPlayer.itemEffect & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__TELEPORT))
+            && Player_CollisionDamage(&gPlayer) != 0) {
             m4aSongNumStart(SE_SPIKES);
         }
         gBldRegs.bldY = 0;

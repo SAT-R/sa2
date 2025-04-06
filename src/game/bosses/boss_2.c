@@ -782,7 +782,7 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
     if (distance < 600) {
         Sprite *s = &gPlayer.spriteInfoBody->s;
         if (!PLAYER_IS_ALIVE || s->hitboxes[1].index == -1) {
-            sub_800CBA4(&gPlayer);
+            Player_CollisionDamage(&gPlayer);
             return 0;
         }
 
@@ -800,7 +800,7 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
             ret = 1;
         }
 
-        Collision_AdjustPlayerSpeed(&gPlayer);
+        Player_AdjustSpeedAfterBossCollision(&gPlayer);
         boss->cannonHitTimer = 30;
     }
 
@@ -842,8 +842,8 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
         return 1;
     }
 
-    sub_800CA20(s, I(boss->qWorldX), I(boss->qWorldY), 1, player);
-    if (sub_800C320(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
+    Player_EnemyCollision(s, I(boss->qWorldX), I(boss->qWorldY), 1, player);
+    if (Player_AttackBossCollision(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
         if (boss->cannonHealth != 0) {
             Sprite *s = &boss->pilot;
             boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
@@ -853,12 +853,12 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
                 s->variant = 1;
                 s->prevVariant = -1;
             }
-            sub_800CBA4(player);
+            Player_CollisionDamage(player);
         } else {
             ret = HandleBossHit(boss);
         }
     } else {
-        if (sub_800CA20(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
+        if (Player_EnemyCollision(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
             Sprite *s = &boss->pilot;
             boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
             if (boss->bossHitTimer == 0) {
@@ -867,14 +867,14 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
                 s->variant = 1;
                 s->prevVariant = -1;
             }
-            sub_800CBA4(player);
+            Player_CollisionDamage(player);
         }
     }
 
     Player_UpdateHomingPosition(boss->qWorldX, boss->qWorldY);
 
     if (boss->bossHitTimer == 0) {
-        if (IsColliding_Cheese(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1 && boss->cannonHealth == 0) {
+        if (Cheese_IsSpriteColliding(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1 && boss->cannonHealth == 0) {
             ret = HandleBossHit(boss);
         }
     }
@@ -1149,7 +1149,7 @@ static void Task_EggBomberTankBombExplosion(void)
 
     if (bomb->boss->health != 0) {
         // If hit player
-        if (sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer) == 1) {
+        if (Player_EnemyCollision(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer) == 1) {
             if (bomb->boss->bossHitTimer == 0) {
                 Sprite *s = &bomb->boss->pilot;
                 bomb->boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
@@ -1227,7 +1227,7 @@ static void Task_BombExplosionMain(void)
     s->y = explosion->y;
 
     if (explosion->boss->health != 0) {
-        if (sub_800CA20(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0, &gPlayer) == 1) {
+        if (Player_EnemyCollision(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0, &gPlayer) == 1) {
             if (explosion->boss->bossHitTimer == 0) {
                 Sprite *s = &explosion->boss->pilot;
                 explosion->boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);

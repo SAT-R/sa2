@@ -92,14 +92,14 @@ static void Task_Hammerhead(void)
         p->qWorldY += ip;
     }
     if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
-        s32 flags = sub_800CCB8(s, posX, posY + I(hammerhead->unk48), p);
+        s32 flags = Player_PlatformCollision(s, posX, posY + I(hammerhead->unk48), p);
 
         if (flags & 0x10000) {
             p->qWorldY += (flags << 24) >> 16;
         }
     }
 
-    if (sub_800C4FC(s, posX, posY + I(hammerhead->unk48), 1) == TRUE) {
+    if (Enemy_PlayerAttackCollision(s, posX, posY + I(hammerhead->unk48), 1) == TRUE) {
         TaskDestroy(gCurTask);
     } else {
         posX -= gCamera.x;

@@ -35,7 +35,7 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 
 
 // (Link included because of register-match)
 // (100.00%) https://decomp.me/scratch/0Ro0I
-u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
+u32 Player_CrumblingPlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
@@ -90,7 +90,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
     return result;
 }
 
-bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
+bool32 Player_HitboxCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
@@ -114,7 +114,7 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
     return FALSE;
 }
 
-bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Player_AttackBossCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
@@ -132,14 +132,14 @@ bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
     }
 
     if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[1]))) {
-        Collision_AdjustPlayerSpeed(p);
+        Player_AdjustSpeedAfterBossCollision(p);
         return TRUE;
     }
 
     return FALSE;
 }
 
-bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Cheese_IsSpriteColliding(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     if (!IS_ALIVE(p)) {
         return FALSE;
@@ -164,7 +164,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
     return FALSE;
 }
 
-bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
+bool32 Enemy_PlayerAttackCollision(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
 {
     Player *player = &gPlayer;
     Sprite *sprPlayer = &player->spriteInfoBody->s;
@@ -199,7 +199,7 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
                         roomEvent->id = eb->base.id;
                     }
 
-                    Collision_AdjustPlayerSpeed(player);
+                    Player_AdjustSpeedAfterBossCollision(player);
 
                     CreateDustCloud(sx, sy);
                     CreateTrappedAnimal(sx, sy);
@@ -212,7 +212,7 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
             if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0])
                 && (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(player->qWorldX), I(player->qWorldY), sprPlayer->hitboxes[0]))) {
                 if (!(player->itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    sub_800CBA4(player);
+                    Player_CollisionDamage(player);
                 } else {
                     if (IS_MULTI_PLAYER) {
                         RoomEvent_EnemyDestroy *roomEvent = CreateRoomEvent();
@@ -255,7 +255,7 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
     return FALSE;
 }
 
-bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
+bool32 Player_EnemySpriteCollision(Sprite *s, s32 sx, s32 sy)
 {
     Player *p;
     Sprite *sprPlayer;
@@ -274,7 +274,7 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
         }
 
         if ((HB_COLLISION(sx, sy, s->hitboxes[0], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[0]))) {
-            sub_800CBA4(p);
+            Player_CollisionDamage(p);
             result = TRUE;
         }
     }
@@ -282,7 +282,7 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
     return result;
 }
 
-bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
+bool32 Player_ItemBoxCollision(Sprite *s, s32 sx, s32 sy)
 {
     bool32 result = FALSE;
 
@@ -299,14 +299,14 @@ bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
     return result;
 }
 
-bool32 sub_800CA20(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Player_EnemyCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (IS_ALIVE(p) && (HITBOX_IS_ACTIVE(s->hitboxes[hbIndex]) && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0]))) {
         if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[0])) {
-            sub_800CBA4(p);
+            Player_CollisionDamage(p);
             return TRUE;
         }
     }
@@ -314,7 +314,7 @@ bool32 sub_800CA20(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
     return FALSE;
 }
 
-void Collision_AdjustPlayerSpeed(Player *p)
+void Player_AdjustSpeedAfterBossCollision(Player *p)
 {
     if (p->moveState & MOVESTATE_BOOST_EFFECT_ON) {
         // Also triggered on homing-attack.
@@ -341,7 +341,7 @@ void Collision_AdjustPlayerSpeed(Player *p)
 
 // (100.00%) https://decomp.me/scratch/verla
 // TODO: Register fake-match
-bool32 sub_800CBA4(Player *p)
+bool32 Player_CollisionDamage(Player *p)
 {
     if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
         return FALSE;
@@ -368,7 +368,7 @@ bool32 sub_800CBA4(Player *p)
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
 
     if (!HAS_SHIELD(p)) {
-        if (gRingCount != 0) {
+        if (gRingCount > 0) {
             u32 rings = gRingCount;
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
 #ifndef NON_MATCHING
@@ -403,14 +403,11 @@ bool32 sub_800CBA4(Player *p)
     return TRUE;
 }
 
-// Called by: Boss 3,6,7, hammerhead, platform (square),
-//            spikes, spring bouncy, speeding platform,
-//            arrow platform, spike platform
-u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
+u32 Player_PlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
-    bool32 r4 = COLL_NONE;
+    bool32 stoodOnSprite = FALSE;
 
     u32 mask;
 
@@ -423,24 +420,24 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
     }
 
     if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
-        r4 = COLL_FLAG_1;
+        stoodOnSprite = TRUE;
         p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         p->moveState |= MOVESTATE_IN_AIR;
     }
 
     mask = sub_800CE94(s, sx, sy, (Rect8 *)rectPlayer, p);
 
-    if (mask) {
+    if (mask != 0) {
         if (mask & COLL_FLAG_10000) {
             p->moveState |= MOVESTATE_STOOD_ON_OBJ;
             p->moveState &= ~MOVESTATE_IN_AIR;
             p->stoodObj = s;
 
-            if (r4 == 0 && s == NULL) {
+            if (!stoodOnSprite && s == NULL) {
                 p->qSpeedGround = p->qSpeedAirX;
             }
         }
-    } else if (r4) {
+    } else if (stoodOnSprite) {
         if (!(p->moveState & MOVESTATE_STOOD_ON_OBJ)) {
             p->moveState &= ~MOVESTATE_20;
             p->moveState |= MOVESTATE_IN_AIR;
@@ -455,12 +452,16 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
     return mask;
 }
 
-// Called by IAs ramp, spring, floating spring, bounce block, spike platform
-u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
+/**
+ * Different to platform collision as never called in bosses
+ * and doesn't handle jumping onto moving platforms etc.
+ * Could be called static interactable collision?
+ */
+u32 Player_InteractableCollision(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
-    bool32 r4 = COLL_NONE;
+    bool32 stoodOnSprite = FALSE;
 
     u32 mask;
 
@@ -473,7 +474,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
     }
 
     if ((p->moveState & MOVESTATE_STOOD_ON_OBJ) && (p->stoodObj == s)) {
-        r4 = COLL_FLAG_1;
+        stoodOnSprite = TRUE;
         p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     }
 
@@ -482,7 +483,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
     if (mask & COLL_FLAG_10000) {
         p->moveState |= MOVESTATE_STOOD_ON_OBJ;
         p->stoodObj = s;
-    } else if (r4) {
+    } else if (stoodOnSprite) {
         p->stoodObj = NULL;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
@@ -765,11 +766,8 @@ bool32 sub_800DE44(Player *p)
     return TRUE;
 }
 
-// TODO: This might be an inline.
-//       Code identical to beginning of sub_800C060
-u32 sub_800DF38(Sprite *s, s32 x, s32 y, Player *p)
+u32 Player_IsSpriteColliding(Sprite *s, s32 x, s32 y, Player *p)
 {
-    // TODO: Could this match with a 'Rect8' instead of s8[4]?
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     return CheckRectCollision_SpritePlayer(s, x, y, p, (Rect8 *)&rectPlayer);

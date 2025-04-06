@@ -19,12 +19,11 @@
 typedef struct {
     // Completely unused, maybe the base?
     Sprite sprite1;
-
     Sprite sprite2;
     s32 x;
     s32 y;
     u16 facingRight;
-    u16 qCannonAngle;
+    u16 cannonAngle;
     u16 fireTimeout;
     u16 unk6E;
     MapEntity *me;
@@ -61,24 +60,14 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     cannon->spriteY = spriteY;
 
     if (!cannon->facingRight) {
-        cannon->qCannonAngle = Q(2);
+        cannon->cannonAngle = DEG_TO_SIN(180);
     } else {
-        cannon->qCannonAngle = 0;
+        cannon->cannonAngle = 0;
     }
 
     s = &cannon->sprite2;
-    s->oamFlags = SPRITE_OAM_ORDER(7);
-    s->graphics.size = 0;
-    s->animCursor = 0;
-    s->qAnimDelay = 0;
-    s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s->palId = 0;
-    s->hitboxes[0].index = -1;
-    s->frameFlags = 0x2000;
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 7, 2, 0);
     s->graphics.dest = (void *)OBJ_VRAM0 + 0x2C80;
-
-    // TODO: anim cannon?
     s->graphics.anim = SA2_ANIM_CANNON;
     s->variant = 1;
     UpdateSpriteAnimation(s);
@@ -128,16 +117,16 @@ static void Fire(Sprite_Cannon *cannon)
         gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
         gPlayer.transition = PLTRANS_UNCURL;
 
-        gPlayer.qWorldX += COS_24_8(cannon->qCannonAngle) * 32;
-        gPlayer.qWorldY += SIN_24_8(cannon->qCannonAngle) * 32;
-        gPlayer.qSpeedAirX = COS_24_8(cannon->qCannonAngle) * 15;
-        gPlayer.qSpeedAirY = SIN_24_8(cannon->qCannonAngle) * 15;
+        gPlayer.qWorldX += COS_24_8(cannon->cannonAngle) * 32;
+        gPlayer.qWorldY += SIN_24_8(cannon->cannonAngle) * 32;
+        gPlayer.qSpeedAirX = COS_24_8(cannon->cannonAngle) * 15;
+        gPlayer.qSpeedAirY = SIN_24_8(cannon->cannonAngle) * 15;
 
         if (GRAVITY_IS_INVERTED) {
             gPlayer.qSpeedAirY = -gPlayer.qSpeedAirY;
         }
 
-        gPlayer.rotation = cannon->qCannonAngle >> 2;
+        gPlayer.rotation = SIN_TO_TURNS(cannon->cannonAngle);
         gPlayer.timerInvulnerability = 4;
         m4aSongNumStart(SE_289);
     }
@@ -198,7 +187,7 @@ static void HandleMovement(Sprite_Cannon *cannon)
 
     r3 = (!cannon->facingRight) ? ((cannon->unk6E == 0) ? DEG_TO_SIN(225) : DEG_TO_SIN(135))
                                 : ((cannon->unk6E == 0) ? DEG_TO_SIN(45) : DEG_TO_SIN(315));
-    temp2 = sub_808558C(cannon->qCannonAngle, r3, 10);
+    temp2 = sub_808558C(cannon->cannonAngle, r3, 10);
     temp3 = temp2;
 
     if (abs(temp2) >= 5) {
@@ -211,7 +200,7 @@ static void HandleMovement(Sprite_Cannon *cannon)
         cannon->unk6E ^= 1;
     }
 
-    cannon->qCannonAngle = CLAMP_SIN_PERIOD(cannon->qCannonAngle + temp3);
+    cannon->cannonAngle = CLAMP_SIN_PERIOD(cannon->cannonAngle + temp3);
 }
 
 static void Render(Sprite_Cannon *cannon)
@@ -221,7 +210,7 @@ static void Render(Sprite_Cannon *cannon)
     s->x = cannon->x - gCamera.x;
     s->y = cannon->y - gCamera.y;
 
-    transform.rotation = cannon->qCannonAngle;
+    transform.rotation = cannon->cannonAngle;
     transform.qScaleX = +Q(1);
     transform.qScaleY = +Q(1);
     transform.x = s->x;
@@ -239,7 +228,8 @@ static void Render(Sprite_Cannon *cannon)
 // (68.07%) https://decomp.me/scratch/TDVLh
 // (72.09%) https://decomp.me/scratch/sgt5z
 // (87.28%) https://decomp.me/scratch/pAFRx
-NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/cannon__IsPlayerTouching.inc", bool32 IsPlayerTouching(Sprite_Cannon *cannon))
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/cannon__IsPlayerTouching.inc",
+         bool32 Cannon_IsPlayerTouching(Sprite_Cannon *cannon))
 {
     s16 x;
     s16 y;
@@ -280,7 +270,7 @@ END_NONMATCH
 static void Task_Idle(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
-    if (IsPlayerTouching(cannon)) {
+    if (Cannon_IsPlayerTouching(cannon)) {
         HandlePlayerEnter(cannon);
     }
 
@@ -381,7 +371,7 @@ static bool16 HandleResetMovement(Sprite_Cannon *cannon)
     s16 temp2, temp3;
 
     r3 = cannon->facingRight == 0 ? DEG_TO_SIN(180) : DEG_TO_SIN(0);
-    temp2 = sub_808558C(cannon->qCannonAngle, r3, 10);
+    temp2 = sub_808558C(cannon->cannonAngle, r3, 10);
     temp3 = temp2;
 
     if (abs(temp2) >= 5) {
@@ -394,7 +384,7 @@ static bool16 HandleResetMovement(Sprite_Cannon *cannon)
         ret = TRUE;
     }
 
-    cannon->qCannonAngle = CLAMP_SIN_PERIOD(cannon->qCannonAngle + temp3);
+    cannon->cannonAngle = CLAMP_SIN_PERIOD(cannon->cannonAngle + temp3);
 
     return ret;
 }

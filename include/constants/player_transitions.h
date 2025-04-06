@@ -2,7 +2,7 @@
 #define GUARD_PLAYER_TRANSITIONS_H
 
 //  0x07 = Set in Egg Utopia - Launcher
-//  0x08 = Set in Collision_AdjustPlayerSpeed (0x0800CB18 - collision.c)
+//  0x08 = Set in Player_AdjustSpeedAfterBossCollision (0x0800CB18 - collision.c)
 //  0x0A = Player cleared the stage (only for Acts, not Bosses?)
 //  0x0B = Something Grinding
 //  0x0C = Something Grinding

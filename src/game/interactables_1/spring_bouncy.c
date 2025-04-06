@@ -102,7 +102,7 @@ static void Task_Interactable_BouncySpring()
     s->y = screenY - gCamera.y;
     if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
         airSpeed = gPlayer.qSpeedAirY;
-        if ((sub_800CCB8(s, screenX, screenY, &gPlayer) != 0)) {
+        if ((Player_PlatformCollision(s, screenX, screenY, &gPlayer) != 0)) {
             u8 index;
 
             index = Div(airSpeed, 400);
