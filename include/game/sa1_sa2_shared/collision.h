@@ -16,7 +16,7 @@
 #define COLL_FLAG_80000  0x00080000
 #define COLL_FLAG_100000 0x00100000
 
-u32 Coll_Sprite_PlayerRect_Intersecting(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer);
+u32 Coll_Sprite_PlayerRect_Intersection(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer);
 
 // TODO: Include header this belongs to
 u32 Coll_Player_ItemBox(Sprite *, s32, s32);
@@ -27,7 +27,7 @@ bool32 Coll_Player_Enemy(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p);
 bool32 Coll_Cheese_Enemy_Attack(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p);
 u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED s32 param4, u8 layer);
 u32 sub_800CDBC(Sprite *, s32, s32, Player *);
-u32 Coll_Sprite_Player_Intersecting(Sprite *, s32, s32, Player *);
+u32 Coll_Sprite_Player_Intersection(Sprite *, s32, s32, Player *);
 u32 Coll_Player_Interactable(Sprite *s, s32 sx, s32 sy, Player *p);
 
 bool32 Coll_DamagePlayer(Player *);

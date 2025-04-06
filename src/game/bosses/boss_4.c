@@ -13,7 +13,7 @@
 #include "game/stage/player.h"
 #include "game/stage/terrain_collision.h"
 
-#include "game/entity.h" // Coll_Sprite_Player_Intersecting
+#include "game/entity.h" // Coll_Sprite_Player_Intersection
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/parameters/bosses.h"
@@ -351,7 +351,7 @@ static void sub_8041A08(AeroEgg *boss)
         Player *p = &gPlayer;
 
         if ((p->qSpeedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
-            if ((!Coll_Sprite_Player_Intersecting(s, worldX, worldY, p)) == COLL_NONE) {
+            if ((!Coll_Sprite_Player_Intersection(s, worldX, worldY, p)) == COLL_NONE) {
                 s16 v = -Q(4.75);
                 p->qSpeedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_STOOD_ON_OBJ);

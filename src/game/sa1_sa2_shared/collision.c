@@ -18,7 +18,7 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-u32 Coll_Sprite_PlayerRect_Intersecting(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
+u32 Coll_Sprite_PlayerRect_Intersection(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
 {
     u32 result = 0;
 
@@ -766,9 +766,9 @@ bool32 sub_800DE44(Player *p)
     return TRUE;
 }
 
-u32 Coll_Sprite_Player_Intersecting(Sprite *s, s32 x, s32 y, Player *p)
+u32 Coll_Sprite_Player_Intersection(Sprite *s, s32 x, s32 y, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
-    return Coll_Sprite_PlayerRect_Intersecting(s, x, y, p, (Rect8 *)&rectPlayer);
+    return Coll_Sprite_PlayerRect_Intersection(s, x, y, p, (Rect8 *)&rectPlayer);
 }
