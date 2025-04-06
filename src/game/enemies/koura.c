@@ -105,7 +105,7 @@ static void sub_8054224(void)
     ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
 
     if (gPlayer.qSpeedAirY >= 1 && (gPlayer.moveState & MOVESTATE_IN_AIR)) {
-        if (Player_IsSpriteColliding(s, pos.x, pos.y, &gPlayer) == 0x80000) {
+        if (Coll_Sprite_Player_Intersecting(s, pos.x, pos.y, &gPlayer) == 0x80000) {
             gPlayer.transition = 14;
             gPlayer.unk6E = 0;
             gPlayer.moveState &= ~MOVESTATE_100;
@@ -180,7 +180,7 @@ static void sub_805462C(void)
     ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
 
     if (gPlayer.qSpeedAirY >= 1 && (gPlayer.moveState & MOVESTATE_IN_AIR)) {
-        if (Player_IsSpriteColliding(s, pos.x, pos.y, &gPlayer) == 0x80000) {
+        if (Coll_Sprite_Player_Intersecting(s, pos.x, pos.y, &gPlayer) == 0x80000) {
             gPlayer.transition = 14;
             gPlayer.unk6E = 0;
             gPlayer.moveState &= ~MOVESTATE_100;

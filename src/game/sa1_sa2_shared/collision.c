@@ -18,7 +18,7 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
+u32 Coll_Sprite_PlayerRect_Intersecting(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
 {
     u32 result = 0;
 
@@ -35,7 +35,7 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 
 
 // (Link included because of register-match)
 // (100.00%) https://decomp.me/scratch/0Ro0I
-u32 Player_CrumblingPlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
+u32 Coll_Player_PlatformCrumbling(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
@@ -90,7 +90,7 @@ u32 Player_CrumblingPlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
     return result;
 }
 
-bool32 Player_HitboxCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
+bool32 Coll_Sprite_Player_HitboxIntersecting(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
@@ -114,7 +114,7 @@ bool32 Player_HitboxCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p,
     return FALSE;
 }
 
-bool32 Player_AttackBossCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Coll_Player_Boss_Attack(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
@@ -132,14 +132,14 @@ bool32 Player_AttackBossCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player
     }
 
     if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[1]))) {
-        Player_AdjustSpeedAfterBossCollision(p);
+        Coll_Player_Enemy_AdjustSpeed(p);
         return TRUE;
     }
 
     return FALSE;
 }
 
-bool32 Cheese_IsSpriteColliding(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Coll_Cheese_Enemy_Attack(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     if (!IS_ALIVE(p)) {
         return FALSE;
@@ -164,7 +164,7 @@ bool32 Cheese_IsSpriteColliding(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, 
     return FALSE;
 }
 
-bool32 Enemy_PlayerAttackCollision(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
+bool32 Coll_Player_Enemy_Attack(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
 {
     Player *player = &gPlayer;
     Sprite *sprPlayer = &player->spriteInfoBody->s;
@@ -199,7 +199,7 @@ bool32 Enemy_PlayerAttackCollision(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
                         roomEvent->id = eb->base.id;
                     }
 
-                    Player_AdjustSpeedAfterBossCollision(player);
+                    Coll_Player_Enemy_AdjustSpeed(player);
 
                     CreateDustCloud(sx, sy);
                     CreateTrappedAnimal(sx, sy);
@@ -212,7 +212,7 @@ bool32 Enemy_PlayerAttackCollision(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
             if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0])
                 && (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(player->qWorldX), I(player->qWorldY), sprPlayer->hitboxes[0]))) {
                 if (!(player->itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                    Player_CollisionDamage(player);
+                    Coll_DamagePlayer(player);
                 } else {
                     if (IS_MULTI_PLAYER) {
                         RoomEvent_EnemyDestroy *roomEvent = CreateRoomEvent();
@@ -255,7 +255,7 @@ bool32 Enemy_PlayerAttackCollision(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
     return FALSE;
 }
 
-bool32 Player_EnemySpriteCollision(Sprite *s, s32 sx, s32 sy)
+bool32 Coll_Player_Projectile(Sprite *s, s32 sx, s32 sy)
 {
     Player *p;
     Sprite *sprPlayer;
@@ -274,7 +274,7 @@ bool32 Player_EnemySpriteCollision(Sprite *s, s32 sx, s32 sy)
         }
 
         if ((HB_COLLISION(sx, sy, s->hitboxes[0], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[0]))) {
-            Player_CollisionDamage(p);
+            Coll_DamagePlayer(p);
             result = TRUE;
         }
     }
@@ -282,7 +282,7 @@ bool32 Player_EnemySpriteCollision(Sprite *s, s32 sx, s32 sy)
     return result;
 }
 
-bool32 Player_ItemBoxCollision(Sprite *s, s32 sx, s32 sy)
+bool32 Coll_Player_ItemBox(Sprite *s, s32 sx, s32 sy)
 {
     bool32 result = FALSE;
 
@@ -299,14 +299,14 @@ bool32 Player_ItemBoxCollision(Sprite *s, s32 sx, s32 sy)
     return result;
 }
 
-bool32 Player_EnemyCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
+bool32 Coll_Player_Enemy(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
     Sprite *sprPlayer = &psi->s;
 
     if (IS_ALIVE(p) && (HITBOX_IS_ACTIVE(s->hitboxes[hbIndex]) && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0]))) {
         if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->qWorldX), I(p->qWorldY), sprPlayer->hitboxes[0])) {
-            Player_CollisionDamage(p);
+            Coll_DamagePlayer(p);
             return TRUE;
         }
     }
@@ -314,7 +314,7 @@ bool32 Player_EnemyCollision(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
     return FALSE;
 }
 
-void Player_AdjustSpeedAfterBossCollision(Player *p)
+void Coll_Player_Enemy_AdjustSpeed(Player *p)
 {
     if (p->moveState & MOVESTATE_BOOST_EFFECT_ON) {
         // Also triggered on homing-attack.
@@ -341,7 +341,7 @@ void Player_AdjustSpeedAfterBossCollision(Player *p)
 
 // (100.00%) https://decomp.me/scratch/verla
 // TODO: Register fake-match
-bool32 Player_CollisionDamage(Player *p)
+bool32 Coll_DamagePlayer(Player *p)
 {
     if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
         return FALSE;
@@ -403,7 +403,7 @@ bool32 Player_CollisionDamage(Player *p)
     return TRUE;
 }
 
-u32 Player_PlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
+u32 Coll_Player_Platform(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
@@ -457,7 +457,7 @@ u32 Player_PlatformCollision(Sprite *s, s32 sx, s32 sy, Player *p)
  * and doesn't handle jumping onto moving platforms etc.
  * Could be called static interactable collision?
  */
-u32 Player_InteractableCollision(Sprite *s, s32 sx, s32 sy, Player *p)
+u32 Coll_Player_Interactable(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
@@ -766,9 +766,9 @@ bool32 sub_800DE44(Player *p)
     return TRUE;
 }
 
-u32 Player_IsSpriteColliding(Sprite *s, s32 x, s32 y, Player *p)
+u32 Coll_Sprite_Player_Intersecting(Sprite *s, s32 x, s32 y, Player *p)
 {
     s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
-    return CheckRectCollision_SpritePlayer(s, x, y, p, (Rect8 *)&rectPlayer);
+    return Coll_Sprite_PlayerRect_Intersecting(s, x, y, p, (Rect8 *)&rectPlayer);
 }

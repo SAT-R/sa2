@@ -72,7 +72,7 @@ static void Task_BouncyBarIdle(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (Player_HitboxCollision(s, screenX, screenY, 0, &gPlayer, 0) == 1)
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (Coll_Sprite_Player_HitboxIntersecting(s, screenX, screenY, 0, &gPlayer, 0) == 1)
         && (gPlayer.qSpeedAirY > 0) && (I(gPlayer.qWorldY) + 4) < screenY) {
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.transition = PLTRANS_UNCURL;

@@ -192,13 +192,13 @@ typedef struct {
     }
 
 #define ENEMY_DESTROY_IF_PLAYER_HIT(_s, _pos)                                                                                              \
-    if (Enemy_PlayerAttackCollision(_s, _pos.x, _pos.y, 0) == TRUE) {                                                                      \
+    if (Coll_Player_Enemy_Attack(_s, _pos.x, _pos.y, 0) == TRUE) {                                                                         \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }
 
 #define ENEMY_DESTROY_IF_PLAYER_HIT_2(_s, _pos)                                                                                            \
-    if (Enemy_PlayerAttackCollision(_s, _pos.x, _pos.y, 0)) {                                                                              \
+    if (Coll_Player_Enemy_Attack(_s, _pos.x, _pos.y, 0)) {                                                                                 \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }

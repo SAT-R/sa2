@@ -146,7 +146,7 @@ static void Task_PlatformThinMain(void)
     }
 
     if (!(player->moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
-        u32 temp2 = Player_PlatformCollision(s, x, y, player);
+        u32 temp2 = Coll_Player_Platform(s, x, y, player);
         if (temp2 & 0xC0000) {
             if (HandleThinPlatformCollision(s, x, y, player) & 0xC0000) {
                 player->qWorldX += (s16)(temp2 & 0xFF00);
@@ -457,7 +457,7 @@ static u32 HandleThinPlatformCollision(Sprite *s, s32 x, s32 y, Player *player)
     s->hitboxes[0].top += 1;
     s->hitboxes[0].bottom -= 1;
 
-    result = Player_PlatformCollision(s, x, y, player);
+    result = Coll_Player_Platform(s, x, y, player);
 
     s->hitboxes[0].top -= 1;
     s->hitboxes[0].bottom += 1;

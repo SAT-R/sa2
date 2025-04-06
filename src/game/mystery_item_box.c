@@ -490,10 +490,10 @@ static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)
 static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
 {
     if (PLAYER_IS_ALIVE) {
-        if (Player_ItemBoxCollision(&itemBox->box, itemBox->x, itemBox->y) != 0) {
+        if (Coll_Player_ItemBox(&itemBox->box, itemBox->x, itemBox->y) != 0) {
             itemBox->unk84 = 1;
             return TRUE;
-        } else if (Player_HitboxCollision(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0) == 0) {
+        } else if (Coll_Sprite_Player_HitboxIntersecting(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0) == 0) {
 #ifndef NON_MATCHING
         ret0:
 #endif
