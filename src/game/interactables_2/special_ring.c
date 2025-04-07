@@ -71,7 +71,7 @@ static bool32 sub_8081010(Sprite_SpecialRing *ring)
     Cheese *cheese = gCheese;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        u32 flags = Player_IsSpriteColliding(&ring->displayed, ring->worldX, ring->worldY, &gPlayer);
+        u32 flags = Coll_Player_Entity_Intersection(&ring->displayed, ring->worldX, ring->worldY, &gPlayer);
         if (flags & 0xF0000) {
             return TRUE;
         } else {

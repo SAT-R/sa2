@@ -394,7 +394,7 @@ static void UpdateProjectiles(EggGoRound *boss)
             }
 
             if (boss->health > 0) {
-                Player_EnemySpriteCollision(s, I(projPos->x), I(projPos->y));
+                Coll_Player_Projectile(s, I(projPos->x), I(projPos->y));
             }
 
             s->x = I(projPos->x) - gCamera.x;
@@ -836,7 +836,7 @@ static void sub_8046C28(EggGoRound *boss)
                 speedAirY = gPlayer.qSpeedAirY;
 
                 if (gPlayer.moveState & MOVESTATE_IN_AIR || (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s)) {
-                    val = Player_PlatformCollision(s, x, y, &gPlayer);
+                    val = Coll_Player_Platform(s, x, y, &gPlayer);
                 } else {
                     val = 0;
                 }
@@ -849,7 +849,7 @@ static void sub_8046C28(EggGoRound *boss)
 
                     if (boss->unk1E != 0 && !boss->unk24 && !(i % 2) && (boss->state == 0 || boss->state == 2)) {
                         sub_8047940(boss);
-                        Player_CollisionDamage(&gPlayer);
+                        Coll_DamagePlayer(&gPlayer);
                         return;
                     }
 
@@ -1184,7 +1184,7 @@ static void HandleCollisions(EggGoRound *boss)
 
     Player_UpdateHomingPosition(boss->x, boss->y);
 
-    if (Player_AttackBossCollision(s, x, y, 1, &gPlayer) != 0) {
+    if (Coll_Player_Boss_Attack(s, x, y, 1, &gPlayer) != 0) {
         if (gPlayer.qWorldX > boss->x) {
             gPlayer.qSpeedAirX += Q(2.25);
             gPlayer.qWorldX += Q(2);
@@ -1198,12 +1198,12 @@ static void HandleCollisions(EggGoRound *boss)
         return;
     }
 
-    if (Cheese_IsSpriteColliding(s, x, y, 0, &gPlayer) == TRUE || Player_AttackBossCollision(s, x, y, 0, &gPlayer) == TRUE) {
+    if (Coll_Cheese_Enemy_Attack(s, x, y, 0, &gPlayer) == TRUE || Coll_Player_Boss_Attack(s, x, y, 0, &gPlayer) == TRUE) {
         HandleHit(boss);
         return;
     }
 
-    if (Player_EnemyCollision(s, x, y, 0, &gPlayer) == TRUE) {
+    if (Coll_Player_Enemy(s, x, y, 0, &gPlayer) == TRUE) {
         Sprite *s2 = &boss->pilot;
 
         boss->unk29 = 30;

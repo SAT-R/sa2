@@ -99,7 +99,7 @@ static void Task_KikiMain(void)
         kiki->unk3C = -1;
     }
 
-    if (Enemy_PlayerAttackCollision(s, x, y, 0)) {
+    if (Coll_Player_Enemy_Attack(s, x, y, 0)) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -135,7 +135,7 @@ static void sub_8053A38(void)
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
-    if (Enemy_PlayerAttackCollision(s, x, y, 0)) {
+    if (Coll_Player_Enemy_Attack(s, x, y, 0)) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -237,7 +237,7 @@ static void Task_KikiProjMain(void)
 
     x = s->x;
     y = s->y;
-    if (Player_EnemySpriteCollision(s, x, y) != 0) {
+    if (Coll_Player_Projectile(s, x, y) != 0) {
         s->prevVariant = -1;
         s->graphics.anim = SA2_ANIM_DUST_CLOUD;
         s->variant = 0;
@@ -267,7 +267,7 @@ static void Task_KikiProjSplit(void)
         return;
     }
 
-    if (Player_EnemySpriteCollision(s, x, y) != 0) {
+    if (Coll_Player_Projectile(s, x, y) != 0) {
         CreateKikiProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
@@ -328,7 +328,7 @@ static void Task_ProjPieceMain(void)
             y2 = I(gPlayer.qWorldY) + s2->hitboxes[0].top;
             if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
                 || (y1 >= y2 && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
-                Player_CollisionDamage(&gPlayer);
+                Coll_DamagePlayer(&gPlayer);
             }
         }
     }

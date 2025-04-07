@@ -204,7 +204,7 @@ static bool32 CheckSpringPlayerCollisions(Sprite *s, MapEntity *me, Sprite_Sprin
     s->x = xPos - gCamera.x;
     s->y = yPos - gCamera.y;
 
-    if (((player->moveState & MOVESTATE_IA_OVERRIDE) == 0) && Player_InteractableCollision(s, xPos, yPos, player) != 0) {
+    if (((player->moveState & MOVESTATE_IA_OVERRIDE) == 0) && Coll_Player_Interactable(s, xPos, yPos, player) != 0) {
 
         player->transition = sSpringDirToPlayerTransition[spring->dir];
         player->unk6E = spring->speedId;

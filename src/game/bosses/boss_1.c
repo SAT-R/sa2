@@ -367,7 +367,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
             pos.y -= I(gPlayer.qWorldY);
             if ((SQUARE(pos.x) + SQUARE(pos.y)) < 0x1A4) {
                 sub_803CBFC(boss);
-                Player_CollisionDamage(&gPlayer);
+                Coll_DamagePlayer(&gPlayer);
             }
         }
 
@@ -378,17 +378,17 @@ static void sub_803A8E4(EggHammerTankII *boss)
         s->x = pos.x - gCamera.x;
         s->y = pos.y - gCamera.y;
 
-        Player_EnemyCollision(s, pos.x, pos.y, 1, &gPlayer);
+        Coll_Player_Enemy(s, pos.x, pos.y, 1, &gPlayer);
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
         if (boss->timerInvulnerability == 0 || ((gPlayer.qSpeedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
-            if (Player_AttackBossCollision(s, pos.x, pos.y, 0, &gPlayer) == 1) {
+            if (Coll_Player_Boss_Attack(s, pos.x, pos.y, 0, &gPlayer) == 1) {
                 HandleBossHit(boss);
             } else {
-                Player_EnemyCollision(s, pos.x, pos.y, 0, &gPlayer);
+                Coll_Player_Enemy(s, pos.x, pos.y, 0, &gPlayer);
             }
 
-            if (boss->timerInvulnerability == 0 && Cheese_IsSpriteColliding(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
+            if (boss->timerInvulnerability == 0 && Coll_Cheese_Enemy_Attack(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
                 HandleBossHit(boss);
             }
         }

@@ -113,11 +113,11 @@ static void Task_FlickeyMain(void)
         index = (flickey->unk2A4 - ((i + 1) * 16)) & 0x3F;
         s->x = flickey->positions[index].x - gCamera.x;
         s->y = flickey->positions[index].y - gCamera.y;
-        Player_EnemySpriteCollision(s, flickey->positions[index].x, flickey->positions[index].y);
+        Coll_Player_Projectile(s, flickey->positions[index].x, flickey->positions[index].y);
     }
 
     s = &flickey->s;
-    if (Enemy_PlayerAttackCollision(s, pos.x, pos.y, 0)) {
+    if (Coll_Player_Enemy_Attack(s, pos.x, pos.y, 0)) {
         flickey->unkA0 = 0x78;
         s = &flickey->s2;
         UpdateSpriteAnimation(s);
@@ -203,11 +203,11 @@ static void sub_8058EDC(void)
         index = (flickey->unk2A4 - ((i + 1) * 16)) & 0x3F;
         s->x = flickey->positions[index].x - gCamera.x;
         s->y = flickey->positions[index].y - gCamera.y;
-        Player_EnemySpriteCollision(s, flickey->positions[index].x, flickey->positions[index].y);
+        Coll_Player_Projectile(s, flickey->positions[index].x, flickey->positions[index].y);
     }
 
     s = &flickey->s;
-    if (Enemy_PlayerAttackCollision(s, pos.x, pos.y, 0)) {
+    if (Coll_Player_Enemy_Attack(s, pos.x, pos.y, 0)) {
         flickey->unkA0 = 0x78;
         gCurTask->main = sub_80591FC;
 

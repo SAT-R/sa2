@@ -80,7 +80,7 @@ static void Task_Idle(void)
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
-    if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD)) && Player_HitboxCollision(s, x, y, 0, &gPlayer, 0) == 1) {
+    if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD)) && Coll_Player_Entity_HitboxN(s, x, y, 0, &gPlayer, 0) == 1) {
 #ifndef NON_MATCHING
         register s32 temp1 asm("r0"), temp2;
 #else

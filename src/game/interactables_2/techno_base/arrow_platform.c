@@ -306,7 +306,7 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
 static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = Player_PlatformCollision(&ia75->s2, ia75->x + I(ia75->unk74), ia75->y + I(ia75->unk78), &gPlayer);
+        u32 temp = Coll_Player_Platform(&ia75->s2, ia75->x + I(ia75->unk74), ia75->y + I(ia75->unk78), &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.qWorldY += Q_8_8(temp);

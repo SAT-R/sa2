@@ -206,7 +206,7 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
 static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = Player_PlatformCollision(&platform->s, platform->x + I(platform->unk44), platform->y + I(platform->unk48), &gPlayer);
+        u32 temp = Coll_Player_Platform(&platform->s, platform->x + I(platform->unk44), platform->y + I(platform->unk48), &gPlayer);
 
         if (temp != 0) {
             if (temp & 0x10000) {

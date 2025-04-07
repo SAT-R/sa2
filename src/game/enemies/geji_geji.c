@@ -116,7 +116,7 @@ static void sub_8057F80(void)
         u8 index2 = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
         s2->x = gg->positions[0][index2] - gCamera.x;
         s2->y = gg->positions[1][index2] - gCamera.y;
-        Player_EnemyCollision(s2, gg->positions[0][index2], gg->positions[1][index2], 0, &gPlayer);
+        Coll_Player_Enemy(s2, gg->positions[0][index2], gg->positions[1][index2], 0, &gPlayer);
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);

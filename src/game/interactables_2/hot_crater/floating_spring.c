@@ -123,7 +123,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = Player_InteractableCollision(&floatingSpring->s, floatingSpring->unk3C, floatingSpring->unk40, &gPlayer);
+        u32 temp = Coll_Player_Interactable(&floatingSpring->s, floatingSpring->unk3C, floatingSpring->unk40, &gPlayer);
         if (temp != 0) {
             if (I(gPlayer.qWorldY) < floatingSpring->unk40) {
                 gPlayer.qWorldY += Q(floatingSpring->s.hitboxes[0].top);

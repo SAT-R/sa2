@@ -13,7 +13,7 @@
 #include "game/stage/player.h"
 #include "game/stage/terrain_collision.h"
 
-#include "game/entity.h" // Player_IsSpriteColliding
+#include "game/entity.h" // Coll_Player_Entity_Intersection
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/parameters/bosses.h"
@@ -351,7 +351,7 @@ static void sub_8041A08(AeroEgg *boss)
         Player *p = &gPlayer;
 
         if ((p->qSpeedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
-            if ((!Player_IsSpriteColliding(s, worldX, worldY, p)) == COLL_NONE) {
+            if ((!Coll_Player_Entity_Intersection(s, worldX, worldY, p)) == COLL_NONE) {
                 s16 v = -Q(4.75);
                 p->qSpeedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_STOOD_ON_OBJ);
@@ -398,16 +398,16 @@ static void sub_8041B44(AeroEgg *boss)
         s = &boss->sub.sprBody;
 
         if (PLAYER_IS_ALIVE) {
-            if (Player_AttackBossCollision(s, worldX, worldY, 0, &gPlayer) == 1) {
+            if (Coll_Player_Boss_Attack(s, worldX, worldY, 0, &gPlayer) == 1) {
                 if (I(gPlayer.qWorldY) > worldY) {
                     sub_8042774(boss);
-                    Player_CollisionDamage(&gPlayer);
+                    Coll_DamagePlayer(&gPlayer);
                 } else {
                     sub_80423EC(boss);
                 }
             } else {
-                Player_EnemyCollision(s, worldX, worldY, 0, &gPlayer);
-                Player_EnemyCollision(s, worldX, worldY, 1, &gPlayer);
+                Coll_Player_Enemy(s, worldX, worldY, 0, &gPlayer);
+                Coll_Player_Enemy(s, worldX, worldY, 1, &gPlayer);
             }
         }
 
@@ -417,7 +417,7 @@ static void sub_8041B44(AeroEgg *boss)
         Player_UpdateHomingPosition(Q(worldX), Q(worldY));
 
         if (boss->main.unk16 == 0) {
-            if (Cheese_IsSpriteColliding(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+            if (Coll_Cheese_Enemy_Attack(s, worldX, worldY, 0, &gPlayer) == TRUE) {
                 sub_80423EC(boss);
             }
         }
@@ -940,7 +940,7 @@ static void Task_CreateAeroEggBombMain(void)
     }
 
     if (eb->boss->main.lives > 0) {
-        if (Player_EnemyCollision(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
+        if (Coll_Player_Enemy(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (eb->boss->main.unk16 == 0) {
                 Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
@@ -971,7 +971,7 @@ static void Task_AeroEggBombHitGround(void)
     s->y = I(eb->screenY);
 
     if (eb->boss->main.lives > 0) {
-        if (Player_EnemyCollision(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
+        if (Coll_Player_Enemy(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (eb->boss->main.unk16 == 0) {
                 Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
@@ -1048,7 +1048,7 @@ static void Task_AeroEggBombDebris(void)
     }
 
     if (deb->boss->main.lives > 0) {
-        if (Player_EnemyCollision(s, I(deb->screenX) + gCamera.x, I(deb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
+        if (Coll_Player_Enemy(s, I(deb->screenX) + gCamera.x, I(deb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (deb->boss->main.unk16 == 0) {
                 Sprite *s2 = &deb->boss->sub.sprPilot;
                 deb->boss->main.unk15 = 30;

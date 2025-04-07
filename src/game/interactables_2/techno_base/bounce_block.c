@@ -129,7 +129,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
         if (temp3 < 49 && temp4 < 33) {
             s16 speedGround = gPlayer.qSpeedGround;
 
-            temp = Player_InteractableCollision(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40, &gPlayer);
+            temp = Coll_Player_Interactable(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40, &gPlayer);
             if (temp == 0) {
                 return 0;
             }

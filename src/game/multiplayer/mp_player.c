@@ -954,7 +954,7 @@ void sub_8017670(void)
                 mpp->unk60 = 30;
             }
 
-            if (CheckRectCollision_SpritePlayer(s, mpp->pos.x, mpp->pos.y, &gPlayer, (Rect8 *)rect)) {
+            if (Coll_Player_Entity_RectIntersection(s, mpp->pos.x, mpp->pos.y, &gPlayer, (Rect8 *)rect)) {
                 u8 temp = ((mpp->unk54 >> 7) & 1);
                 if ((temp == gPlayer.layer)
                     && (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_KNUCKLES)

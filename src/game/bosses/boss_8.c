@@ -421,7 +421,7 @@ static void Task_SuperEggRoboZTowersMain(void)
     }
 
     if (I(gPlayer.qWorldY) < 133) {
-        Player_CollisionDamage(&gPlayer);
+        Coll_DamagePlayer(&gPlayer);
     }
 
     if (towers->unk15F == 0 && towers->boss->livesCockpit == 0) {
@@ -471,7 +471,7 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        u32 result = Player_PlatformCollision(prop, pos.x, pos.y, &gPlayer);
+        u32 result = Coll_Player_Platform(prop, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
             gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
@@ -503,7 +503,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
     s->y = pos.y - gCamera.y;
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        s32 result = Player_HitboxCollision(s, pos.x, pos.y, 0, &gPlayer, 0);
+        s32 result = Coll_Player_Entity_HitboxN(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
             gPlayer.qWorldY -= Q(8);
             gPlayer.qSpeedAirY = -Q(3.5);
@@ -586,7 +586,7 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        u32 result = Player_PlatformCollision(s, pos.x, pos.y, &gPlayer);
+        u32 result = Coll_Player_Platform(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
             gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
@@ -636,7 +636,7 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        u32 result = Player_PlatformCollision(s, pos.x, pos.y, &gPlayer);
+        u32 result = Coll_Player_Platform(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
             gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
@@ -689,7 +689,7 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
     }
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        u32 result = Player_PlatformCollision(s, pos.x, pos.y, &gPlayer);
+        u32 result = Coll_Player_Platform(s, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
             gPlayer.qWorldY += Q(result << 0x10) >> 0x10;
@@ -922,7 +922,7 @@ void Task_804AB24(void)
     // TODO: maybe these are macros or inline functions?
     p = &gPlayer;
     if ((I(p->qWorldY) > 184) && (I(p->qWorldX) >= 43034)) {
-        Player_CollisionDamage(p);
+        Coll_DamagePlayer(p);
         // These are just hacks to make the read use the right register
         // if we use c it uses r2 on some of these
 #ifndef NON_MATCHING
@@ -954,7 +954,7 @@ void Task_804AB24(void)
 
     p = &gPlayer;
     if (I(p->qWorldX) >= 43088) {
-        Player_CollisionDamage(p);
+        Coll_DamagePlayer(p);
 #ifndef NON_MATCHING
         asm("mov r1, %2\n"
             "ldrsh %0, [%1, r1]"
@@ -1230,7 +1230,7 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
     r4 = SQUARE(r4);
 
     if ((r5 + r4) < 200) {
-        Player_CollisionDamage(&gPlayer);
+        Coll_DamagePlayer(&gPlayer);
 
         boss->unk40[arm] = 1;
 
@@ -1943,10 +1943,10 @@ static void sub_804C830(SuperEggRoboZ *boss)
 
         s = &boss->bsHead.s;
         p = &gPlayer;
-        if (Cheese_IsSpriteColliding(s, headPos.x, headPos.y, 0, p) == TRUE) {
+        if (Coll_Cheese_Enemy_Attack(s, headPos.x, headPos.y, 0, p) == TRUE) {
             Boss8_HitCockpit(boss);
             return;
-        } else if (Player_AttackBossCollision(s, headPos.x, headPos.y, 0, p) == TRUE) {
+        } else if (Coll_Player_Boss_Attack(s, headPos.x, headPos.y, 0, p) == TRUE) {
             Boss8_HitCockpit(boss);
 
             {
@@ -1955,7 +1955,7 @@ static void sub_804C830(SuperEggRoboZ *boss)
                     p->qSpeedAirX = -ABS(speed);
                 }
             }
-        } else if (Player_EnemyCollision(s, headPos.x, headPos.y, 0, p) == TRUE) {
+        } else if (Coll_Player_Enemy(s, headPos.x, headPos.y, 0, p) == TRUE) {
             s32 speed = p->qSpeedAirX;
             if (speed > 0) {
                 p->qSpeedAirX = -speed;
@@ -2117,7 +2117,7 @@ static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
     Vec2_32 pos = { boss->qPos.x + Q(190), boss->qPos.y + Q(40) };
 
     if ((I(gPlayer.qWorldY) < pos.x) && (gPlayer.qWorldY >= (pos.y - qP1)) && (gPlayer.qWorldY <= (qP1 + pos.y))) {
-        Player_CollisionDamage(&gPlayer);
+        Coll_DamagePlayer(&gPlayer);
     }
 }
 
