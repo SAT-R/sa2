@@ -503,7 +503,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
     s->y = pos.y - gCamera.y;
 
     if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
-        s32 result = Coll_Sprite_Player_HitboxIntersecting(s, pos.x, pos.y, 0, &gPlayer, 0);
+        s32 result = Coll_Player_Entity_HitboxN(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
             gPlayer.qWorldY -= Q(8);
             gPlayer.qSpeedAirY = -Q(3.5);

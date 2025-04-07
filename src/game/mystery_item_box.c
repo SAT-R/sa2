@@ -493,7 +493,7 @@ static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
         if (Coll_Player_ItemBox(&itemBox->box, itemBox->x, itemBox->y) != 0) {
             itemBox->unk84 = 1;
             return TRUE;
-        } else if (Coll_Sprite_Player_HitboxIntersecting(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0) == 0) {
+        } else if (Coll_Player_Entity_HitboxN(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0) == 0) {
 #ifndef NON_MATCHING
         ret0:
 #endif

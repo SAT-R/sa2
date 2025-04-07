@@ -512,7 +512,7 @@ bool32 CheckItemBoxPlayerCollision(Entity_ItemBox *itembox)
 
             return itembox->noPlayerBreakRecoil;
         } else {
-            if (!Coll_Sprite_Player_HitboxIntersecting(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
+            if (!Coll_Player_Entity_HitboxN(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
             CheckItemBoxPlayerCollision_Ret0:
                 return FALSE;
             } else {

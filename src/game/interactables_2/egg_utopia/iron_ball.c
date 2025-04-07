@@ -152,7 +152,7 @@ static bool32 IsTouchingPlayer(Sprite_IronBall *ball)
         return FALSE;
     }
 
-    if (Coll_Sprite_Player_Intersection(&ball->s, ball->posX, ball->posY, &gPlayer)
+    if (Coll_Player_Entity_Intersection(&ball->s, ball->posX, ball->posY, &gPlayer)
         & (COLL_FLAG_10000 | COLL_FLAG_20000 | COLL_FLAG_40000 | COLL_FLAG_80000)) {
         return TRUE;
     }

@@ -733,7 +733,7 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             UpdateSpriteAnimation(s);
 
-            if (Coll_Sprite_Player_Intersection(s, screenX, screenY, player) == 0x80000) {
+            if (Coll_Player_Entity_Intersection(s, screenX, screenY, player) == 0x80000) {
                 if ((HandleSpikePlayerCollision(s, screenX, screenY, player) & 0xD0000) != 0) {
                     u32 v = ((u8)player->spriteOffsetX + 5);
                     s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
@@ -896,7 +896,7 @@ static bool32 HandleSpikeMovementHidingDown(Sprite *s, MapEntity *me, Sprite_Spi
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             UpdateSpriteAnimation(s);
 
-            if ((Coll_Sprite_Player_Intersection(s, screenX, screenY, player) == 0x80000)
+            if ((Coll_Player_Entity_Intersection(s, screenX, screenY, player) == 0x80000)
                 && ((HandleSpikePlayerCollision(s, screenX, screenY, player) & 0xD0000) != 0)) {
 
                 u32 v = ((u8)player->spriteOffsetX + 5);
