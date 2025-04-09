@@ -30,6 +30,17 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+#define EGG_HAMMER_TANK_II_STATE_SLAM 4
+
+typedef struct {
+    s32 x;
+    s32 y;
+    s32 speedX;
+    s32 speedY;
+    s32 remainingBounces;
+    s32 despawnTimeout;
+} DestructionComponent;
+
 typedef struct {
     ScreenFade fade; /* 0xB4 */
 
@@ -50,7 +61,7 @@ typedef struct {
     s32 unkF0;
     s32 unkF4;
 
-    s32 unkF8[8][6];
+    DestructionComponent armSegments[8];
     s32 unk1B8[8][6];
     s32 unk278[4][6];
     u16 unk2D8;
@@ -69,15 +80,19 @@ typedef struct {
     s16 speedX;
     s16 speedY;
 
-    s32 unkC[2][8];
+    // Specifically, the positions along the arm
+    s32 armSegmentPositions[8];
+    // Specifically, the angles of the segment from the base
+    s32 armSegmentAngles[8];
     u32 unk4C;
     u32 unk50;
-    s32 unk54[2][8];
+    s32 hammerArmSegmentPositions[8];
+    s32 hammerArmSegmentAngles[8];
 
-    s32 unk94;
+    s32 hammerAngle;
     s32 unk98;
     s32 unk9C;
-    u32 state;
+    u32 hammerState;
     u32 unkA4;
     u32 sceneTimer;
 
@@ -107,23 +122,23 @@ typedef struct {
 typedef void (*HammertankFunc)(EggHammerTankII *);
 
 static void Task_EggHammerTankII_RollIn(void);
-static void TaskDestructor_EggHammerTankIIMain(struct Task *);
+static void TaskDestructor_EggHammerTankII(struct Task *);
 static void Task_803C980(void);
 static void Task_803CA1C(void);
 
 static void sub_803CB18(EggHammerTankII *);
-static void sub_803AC2C(EggHammerTankII *);
-static void sub_803CBFC(EggHammerTankII *boss);
+static void Render(EggHammerTankII *);
+static void PilotLaugh(EggHammerTankII *boss);
 static void HandleBossHit(EggHammerTankII *boss);
 static void sub_803CC3C(EggHammerTankII *boss);
-static void sub_803B17C(EggHammerTankII *boss);
-static void sub_803B264(EggHammerTankII *boss);
-static void sub_803CB84(EggHammerTankII *boss);
-static void sub_803B2F8(EggHammerTankII *boss);
-static void sub_803CBA4(EggHammerTankII *boss);
-static void sub_803B4A0(EggHammerTankII *boss);
-static void sub_803B57C(EggHammerTankII *boss);
-static void sub_803B62C(EggHammerTankII *boss);
+static void StateHandler_HammerReset(EggHammerTankII *boss);
+static void StateHandler_HammerExtend(EggHammerTankII *boss);
+static void StateHandler_HammerAim(EggHammerTankII *boss);
+static void StateHandler_HammerPlunge(EggHammerTankII *boss);
+static void StateHandler_HammerSlam(EggHammerTankII *boss);
+static void StateHandler_HammerSlamWait(EggHammerTankII *boss);
+static void StateHandler_HammerDrag(EggHammerTankII *boss);
+static void StateHandler_HammerRetract(EggHammerTankII *boss);
 
 static void sub_803CAC8(void);
 static void sub_803B018(void);
@@ -159,7 +174,14 @@ static const u8 gUnknown_080D7AA2[] = {
 static const TaskMain gUnknown_080D7AA8[] = { sub_803CAC8, sub_803B018 };
 
 static const HammertankFunc sBossStateHandlers[] = {
-    sub_803B17C, sub_803B264, sub_803CB84, sub_803B2F8, sub_803CBA4, sub_803B4A0, sub_803B57C, sub_803B62C,
+    StateHandler_HammerReset,
+    StateHandler_HammerExtend,
+    StateHandler_HammerAim,
+    StateHandler_HammerPlunge,
+    [EGG_HAMMER_TANK_II_STATE_SLAM] = StateHandler_HammerSlam,
+    StateHandler_HammerSlamWait,
+    StateHandler_HammerDrag,
+    StateHandler_HammerRetract,
 };
 
 static const u16 gUnknown_080D7AD0[][16] = {
@@ -177,7 +199,7 @@ void CreateEggHammerTankII(void)
 
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     gPseudoRandom = gStageTime;
-    t = TaskCreate(Task_EggHammerTankII_RollIn, sizeof(EggHammerTankII), 0x4000, 0, TaskDestructor_EggHammerTankIIMain);
+    t = TaskCreate(Task_EggHammerTankII_RollIn, sizeof(EggHammerTankII), 0x4000, 0, TaskDestructor_EggHammerTankII);
 
     boss = TASK_DATA(t);
     if (IS_FINAL_STAGE(gCurrentLevel)) {
@@ -195,7 +217,7 @@ void CreateEggHammerTankII(void)
 
     boss->sceneTimer = 0;
     boss->unkA4 = 2;
-    boss->state = 0;
+    boss->hammerState = 0;
     boss->timer = 120;
 
     boss->timerInvulnerability = 0;
@@ -215,19 +237,19 @@ void CreateEggHammerTankII(void)
     }
 
     for (i = 0; i < 8; i++) {
-        boss->unkC[1][i] = 0;
-        boss->unkC[0][i] = gUnknown_080D7A38[i];
+        boss->armSegmentAngles[i] = 0;
+        boss->armSegmentPositions[i] = gUnknown_080D7A38[i];
     }
 
     boss->unk4C = 0;
     boss->unk50 = 0;
 
     for (i = 0; i < 8; i++) {
-        boss->unk54[1][i] = 768;
-        boss->unk54[0][i] = gUnknown_080D7A58[i];
+        boss->hammerArmSegmentAngles[i] = 768;
+        boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
     }
 
-    boss->unk94 = 768;
+    boss->hammerAngle = DEG_TO_SIN(270);
     boss->unk98 = Q(18.5);
     boss->unk9C = Q(18.5);
 
@@ -337,16 +359,17 @@ static void Task_EggHammerTankII_RollIn(void)
 
     gUnknown_080D7AA8[sub_803CA40()]();
     sub_803CB18(boss);
-    sub_803AC2C(boss);
+    Render(boss);
 }
 
-static void sub_803A8E4(EggHammerTankII *boss)
+static void HandleCollision(EggHammerTankII *boss)
 {
     Vec2_32 pos;
     Sprite *s;
 
     if (boss->timerInvulnerability == 0) {
-        if (boss->state < 5 || boss->state == 6) {
+        // Check hammer collision
+        if (boss->hammerState < 5 || boss->hammerState == 6) {
             s32 r0;
 
 #ifndef NON_MATCHING
@@ -356,21 +379,22 @@ static void sub_803A8E4(EggHammerTankII *boss)
 #endif
 
             r2 = I(boss->x);
-            r0 = (((boss->unk54[0][5] * COS(boss->unk54[1][5] & (SIN_PERIOD - 1))) >> 0x17) - 8);
+            r0 = (((boss->hammerArmSegmentPositions[5] * COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1))) >> 0x17) - 8);
             pos.x = r2 + r0;
 
             r2 = I(boss->y);
-            r0 = ((boss->unk54[0][5] * SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) >> 0x17));
+            r0 = ((boss->hammerArmSegmentPositions[5] * SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) >> 0x17));
             pos.y = r2 + r0;
 
             pos.x -= I(gPlayer.qWorldX);
             pos.y -= I(gPlayer.qWorldY);
-            if ((SQUARE(pos.x) + SQUARE(pos.y)) < 0x1A4) {
-                sub_803CBFC(boss);
+            if ((SQUARE(pos.x) + SQUARE(pos.y)) < 420) {
+                PilotLaugh(boss);
                 Coll_DamagePlayer(&gPlayer);
             }
         }
 
+        // Check body collision
         s = &boss->body;
         pos.x = I(boss->x);
         pos.y = I(boss->y);
@@ -382,7 +406,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
         if (boss->timerInvulnerability == 0 || ((gPlayer.qSpeedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
-            if (Coll_Player_Boss_Attack(s, pos.x, pos.y, 0, &gPlayer) == 1) {
+            if (Coll_Player_Boss_Attack(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
                 HandleBossHit(boss);
             } else {
                 Coll_Player_Enemy(s, pos.x, pos.y, 0, &gPlayer);
@@ -395,7 +419,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
     }
 }
 
-static void sub_803AA40(void)
+static void Task_DestructionSceneOutro(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
     ScreenFade *fade = &boss->destructionScene.fade;
@@ -418,7 +442,7 @@ static void sub_803AA40(void)
         }
         UpdateScreenFade(fade);
     } else if (boss->sceneTimer < 121) {
-        Cheese *thing;
+        Cheese *cheese;
         fade->flags = SCREEN_FADE_FLAG_2;
         fade->brightness = Q(0);
         fade->speed = Q(0);
@@ -429,14 +453,14 @@ static void sub_803AA40(void)
             gPlayer.charState = CHARSTATE_SONIC_CATCHING_CREAM;
         }
 
-        if (IS_FINAL_STAGE(gCurrentLevel) && (boss->sceneTimer == 0x22)) {
+        if (IS_FINAL_STAGE(gCurrentLevel) && (boss->sceneTimer == 34)) {
             s32 x, y;
 
             x = gUnknown_080D6DE4[0][0] - I(gPlayer.qWorldX);
             y = gUnknown_080D6DE4[0][1] - I(gPlayer.qWorldY);
 
-            gPlayer.qWorldX += QS(x);
-            gPlayer.qWorldY += QS(y);
+            gPlayer.qWorldX += Q(x);
+            gPlayer.qWorldY += Q(y);
 
             gCamera.x += x;
             gCamera.y += y;
@@ -447,10 +471,10 @@ static void sub_803AA40(void)
             gCamera.unk10 += x;
             gCamera.unk14 += y;
 
-            thing = gCheese;
-            if (thing != NULL) {
-                thing->posX += QS(x);
-                thing->posY += QS(y);
+            cheese = gCheese;
+            if (cheese != NULL) {
+                cheese->posX += Q(x);
+                cheese->posY += Q(y);
             }
 
             gBossIndex++;
@@ -478,7 +502,7 @@ static void sub_803AA40(void)
     gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
 }
 
-static void sub_803AC2C(EggHammerTankII *boss)
+static void Render(EggHammerTankII *boss)
 {
     s8 i;
     s16 x, y;
@@ -525,19 +549,19 @@ static void sub_803AC2C(EggHammerTankII *boss)
     y = I(boss->y) - gCamera.y;
 
     for (i = 6; i >= 0; i--) {
-        s->x = x + ((COS((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 23);
-        s->y = y + ((SIN((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 23);
+        s->x = x + ((COS((boss->armSegmentAngles[i] + DEG_TO_SIN(28.125)) & (SIN_PERIOD - 1)) * boss->armSegmentPositions[i]) >> 23);
+        s->y = y + ((SIN((boss->armSegmentAngles[i] + DEG_TO_SIN(28.125)) & (SIN_PERIOD - 1)) * boss->armSegmentPositions[i]) >> 23);
         DisplaySprite(s);
 
         if (boss->health != 0) {
-            ds->unkF8[i][0] = s->x;
-            ds->unkF8[i][1] = s->y;
+            ds->armSegments[i].x = s->x;
+            ds->armSegments[i].y = s->y;
         }
     }
 
     s = &boss->hand;
-    s->x = x + ((COS((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
-    s->y = y + ((SIN((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
+    s->x = x + ((COS((boss->armSegmentAngles[7] + DEG_TO_SIN(28.125)) & (SIN_PERIOD - 1)) * boss->armSegmentPositions[7]) >> 23);
+    s->y = y + ((SIN((boss->armSegmentAngles[7] + DEG_TO_SIN(28.125)) & (SIN_PERIOD - 1)) * boss->armSegmentPositions[7]) >> 23);
 
     x3 = s->x;
     y3 = s->y;
@@ -561,20 +585,20 @@ static void sub_803AC2C(EggHammerTankII *boss)
     s->oamFlags = SPRITE_OAM_ORDER(25);
 
     for (i = 0; i < 6; i++) {
-        s->x = x - 8 + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
-        s->y = y + ((SIN((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
+        s->x = x - 8 + ((COS((boss->hammerArmSegmentAngles[i]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 23);
+        s->y = y + ((SIN((boss->hammerArmSegmentAngles[i]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 23);
         DisplaySprite(s);
     }
 
     s = &boss->hammer;
     transform = &boss->transform;
 
-    s->x = x - 8 + ((COS((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
-    s->y = y + ((SIN((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
+    s->x = x - 8 + ((COS((boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 23);
+    s->y = y + ((SIN((boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 23);
     s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
-    transform->rotation = (boss->unk54[1][5] - (boss->unk94) + boss->unk54[1][5]) & (SIN_PERIOD - 1);
-    if (transform->rotation != 768) {
+    transform->rotation = (boss->hammerArmSegmentAngles[5] - (boss->hammerAngle) + boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1);
+    if (transform->rotation != DEG_TO_SIN(270)) {
         transform->rotation += 10;
     }
 
@@ -625,13 +649,13 @@ static void sub_803B018(void)
 
     result = sub_801F100(I(y), I(x), 1, 8, sub_801EC3C);
     if (result < 1) {
-        boss->y += (result * 0x40);
+        boss->y += (result * Q(0.25));
 
         idx = -result;
         if (idx > 7) {
             idx = 7;
         }
-        boss->unk98 -= (idx * gUnknown_080D7A18[idx] - idx * 0x40);
+        boss->unk98 -= (idx * gUnknown_080D7A18[idx] - idx * Q(0.25));
     } else {
         boss->unk98 += 288;
     }
@@ -646,33 +670,34 @@ static void sub_803B018(void)
     }
 }
 
-static void sub_803B17C(EggHammerTankII *boss)
+static void StateHandler_HammerReset(EggHammerTankII *boss)
 {
     u8 i;
 
-    boss->unk94 -= 8;
+    boss->hammerAngle -= DEG_TO_SIN(2.8125);
 
-    if (boss->unk94 < 768) {
-        boss->unk94 = 768;
+    if (boss->hammerAngle < DEG_TO_SIN(270)) {
+        boss->hammerAngle = DEG_TO_SIN(270);
     }
-    boss->unk54[1][0] = boss->unk94;
+    boss->hammerArmSegmentAngles[0] = boss->hammerAngle;
 
-    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
+    for (i = 1; i < ARRAY_COUNT(boss->hammerArmSegmentPositions); i++) {
+        boss->hammerArmSegmentAngles[i]
+            += I((boss->hammerArmSegmentAngles[i - 1] - boss->hammerArmSegmentAngles[i]) * gUnknown_080D7A78[i + 8]);
     }
 
-    boss->timer -= 1;
+    boss->timer--;
 
     if (boss->timer == 0) {
         boss->timer = 10;
-        boss->state = 1;
+        boss->hammerState = 1;
 
-        for (i = 0; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-            boss->unk54[1][i] = 768;
-            boss->unk54[0][i] = gUnknown_080D7A58[i];
+        for (i = 0; i < ARRAY_COUNT(boss->hammerArmSegmentPositions); i++) {
+            boss->hammerArmSegmentAngles[i] = DEG_TO_SIN(270);
+            boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
         }
 
-        boss->unk94 = 768;
+        boss->hammerAngle = DEG_TO_SIN(270);
         if (boss->unkA4 & 2) {
             boss->unkA4 = 1;
         } else {
@@ -681,7 +706,7 @@ static void sub_803B17C(EggHammerTankII *boss)
     }
 }
 
-static void sub_803B264(EggHammerTankII *boss)
+static void StateHandler_HammerExtend(EggHammerTankII *boss)
 {
     u8 i, j;
     s16 acc, val;
@@ -696,16 +721,16 @@ static void sub_803B264(EggHammerTankII *boss)
     acc = 0;
     for (j = 0; j < 8; j++) {
         acc += val;
-        boss->unk54[0][j] += acc;
+        boss->hammerArmSegmentPositions[j] += acc;
     }
 
     if (--boss->timer == 0) {
         boss->timer = 15;
-        boss->state = 2;
+        boss->hammerState = 2;
     }
 }
 
-static void sub_803B2F8(EggHammerTankII *boss)
+static void StateHandler_HammerPlunge(EggHammerTankII *boss)
 {
     s32 x, y;
     u8 i, val;
@@ -719,48 +744,50 @@ static void sub_803B2F8(EggHammerTankII *boss)
         val <<= 1;
     }
 
-    boss->unk94 -= (SIN((60 - boss->timer) * 4) >> 9);
-    boss->unk94 &= (SIN_PERIOD - 1);
-    boss->unk54[1][0] = boss->unk94;
+    boss->hammerAngle -= (SIN(TURNS_TO_SIN(60 - boss->timer)) >> 9);
+    boss->hammerAngle &= (SIN_PERIOD - 1);
+    boss->hammerArmSegmentAngles[0] = boss->hammerAngle;
 
-    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
+    for (i = 1; i < ARRAY_COUNT(boss->hammerArmSegmentPositions); i++) {
+        boss->hammerArmSegmentAngles[i]
+            += I((boss->hammerArmSegmentAngles[i - 1] - boss->hammerArmSegmentAngles[i]) * gUnknown_080D7A78[i]);
     }
 
-    x = I(boss->x) + ((boss->unk54[0][7] * COS((boss->unk54[1][7] - val) & (SIN_PERIOD - 1))) >> 0x17);
-    y = I(boss->y) + ((boss->unk54[0][7] * SIN((boss->unk54[1][7] - val) & (SIN_PERIOD - 1))) >> 0x17);
+    x = I(boss->x) + ((boss->hammerArmSegmentPositions[7] * COS((boss->hammerArmSegmentAngles[7] - val) & (SIN_PERIOD - 1))) >> 0x17);
+    y = I(boss->y) + ((boss->hammerArmSegmentPositions[7] * SIN((boss->hammerArmSegmentAngles[7] - val) & (SIN_PERIOD - 1))) >> 0x17);
 
     result = sub_801E6D4(y, x, 1, 8, NULL, sub_801EE64);
 
     if (result < 1) {
         m4aSongNumStart(SE_238);
         boss->timer = 30;
-        boss->state = 4;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_SLAM;
 
-        result = sub_8004418(SIN((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6,
-                             (COS((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6) + result);
+        result = sub_8004418(SIN((boss->hammerArmSegmentAngles[7] + val) & (SIN_PERIOD - 1)) >> 6,
+                             (COS((boss->hammerArmSegmentAngles[7] + val) & (SIN_PERIOD - 1)) >> 6) + result);
 
-        for (i = 0; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-            boss->unk54[1][i] = result;
+        for (i = 0; i < ARRAY_COUNT(boss->hammerArmSegmentPositions); i++) {
+            boss->hammerArmSegmentAngles[i] = result;
         }
-        boss->unk94 = result;
+        boss->hammerAngle = result;
         CreateScreenShake(0x800, 0x10, 0x80, 0x14, 0x83);
     } else if (--boss->timer == 0) {
         boss->timer = 30;
-        boss->state = 4;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_SLAM;
     }
 }
 
-static void sub_803B4A0(EggHammerTankII *boss)
+static void StateHandler_HammerSlamWait(EggHammerTankII *boss)
 {
     u8 i;
     s32 val;
 
-    boss->unk94 += 8;
-    boss->unk54[1][0] = boss->unk94;
+    boss->hammerAngle += DEG_TO_SIN(2.8125);
+    boss->hammerArmSegmentAngles[0] = boss->hammerAngle;
 
-    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
+    for (i = 1; i < ARRAY_COUNT(boss->hammerArmSegmentAngles); i++) {
+        boss->hammerArmSegmentAngles[i]
+            += I((boss->hammerArmSegmentAngles[i - 1] - boss->hammerArmSegmentAngles[i]) * gUnknown_080D7A78[i + 8]);
     }
 
     for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7A98); i++) {
@@ -773,9 +800,9 @@ static void sub_803B4A0(EggHammerTankII *boss)
 
     if (boss->timer < 58) {
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D7A58); i++) {
-            boss->unk54[0][i] -= val;
-            if (boss->unk54[0][i] < gUnknown_080D7A58[i]) {
-                boss->unk54[0][i] = gUnknown_080D7A58[i];
+            boss->hammerArmSegmentPositions[i] -= val;
+            if (boss->hammerArmSegmentPositions[i] < gUnknown_080D7A58[i]) {
+                boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
             }
         }
     }
@@ -784,11 +811,11 @@ static void sub_803B4A0(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 0x50;
-        boss->state = 0;
+        boss->hammerState = 0;
     }
 }
 
-static void sub_803B57C(EggHammerTankII *boss)
+static void StateHandler_HammerDrag(EggHammerTankII *boss)
 {
     s32 i;
     s32 acc, val;
@@ -803,11 +830,11 @@ static void sub_803B57C(EggHammerTankII *boss)
     acc = val;
     for (i = 0; i < 8; i++) {
         acc += val;
-        boss->unk54[0][i] -= acc;
-        if (boss->unk54[0][i] < gUnknown_080D7A58[i]) {
-            boss->unk54[0][i] = gUnknown_080D7A58[i];
+        boss->hammerArmSegmentPositions[i] -= acc;
+        if (boss->hammerArmSegmentPositions[i] < gUnknown_080D7A58[i]) {
+            boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
             boss->timer = 68;
-            boss->state = 5;
+            boss->hammerState = 5;
         }
     }
 
@@ -815,28 +842,34 @@ static void sub_803B57C(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 68;
-        boss->state = 5;
+        boss->hammerState = 5;
     }
 }
 
-static void sub_803B62C(EggHammerTankII *boss)
+static void StateHandler_HammerRetract(EggHammerTankII *boss)
 {
     u8 i;
-    boss->unk94 += 0xC;
-    if (boss->timer > 768) {
-        boss->unk94 = 768;
+    boss->hammerAngle += DEG_TO_SIN(4.21875);
+#ifdef BUG_FIX
+    if (boss->hammerAngle > DEG_TO_SIN(270)) {
+#else
+    // shouldn't this be hammer angle?
+    if (boss->timer > DEG_TO_SIN(270)) {
+#endif
+        boss->hammerAngle = DEG_TO_SIN(270);
     }
 
-    boss->unk54[1][0] = boss->unk94;
+    boss->hammerArmSegmentAngles[0] = boss->hammerAngle;
     for (i = 1; i < 8; i++) {
-        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
+        boss->hammerArmSegmentAngles[i]
+            += I((boss->hammerArmSegmentAngles[i - 1] - boss->hammerArmSegmentAngles[i]) * gUnknown_080D7A78[i]);
     }
 
     boss->timer--;
 
     if (boss->timer == 0) {
         boss->timer = 80;
-        boss->state = 0;
+        boss->hammerState = 0;
     }
 }
 
@@ -979,27 +1012,27 @@ static void sub_803B84C(EggHammerTankII *boss)
     }
 
     for (i = 0; i < 8; i++) {
-        ds->unkF8[i][3] += Q(0.125);
-        if (ds->unkF8[i][2] > 0) {
-            ds->unkF8[i][0] += ds->unkF8[i][2];
+        ds->armSegments[i].speedY += Q(0.125);
+        if (ds->armSegments[i].speedX > 0) {
+            ds->armSegments[i].x += ds->armSegments[i].speedX;
         }
 
-        ds->unkF8[i][1] += ds->unkF8[i][3];
+        ds->armSegments[i].y += ds->armSegments[i].speedY;
 
-        result = sub_801F100(I(ds->unkF8[i][1]) + 5, I(ds->unkF8[i][0]), 1, 8, sub_801EC3C);
+        result = sub_801F100(I(ds->armSegments[i].y) + 5, I(ds->armSegments[i].x), 1, 8, sub_801EC3C);
 
         if (result < 0) {
-            if (ds->unkF8[i][4] != 0) {
-                ds->unkF8[i][4]--;
+            if (ds->armSegments[i].remainingBounces != 0) {
+                ds->armSegments[i].remainingBounces--;
             }
-            ds->unkF8[i][2] -= Q(0.125);
-            ds->unkF8[i][1] += QS(result);
-            ds->unkF8[i][3] = I(ds->unkF8[i][3] * ((i * 4) - Q(0.25)));
+            ds->armSegments[i].speedX -= Q(0.125);
+            ds->armSegments[i].y += QS(result);
+            ds->armSegments[i].speedY = I(ds->armSegments[i].speedY * ((i * 4) - Q(0.25)));
         }
 
-        if (ds->unkF8[i][4] == 0) {
-            if (ds->unkF8[i][5] != 0) {
-                ds->unkF8[i][5]--;
+        if (ds->armSegments[i].remainingBounces == 0) {
+            if (ds->armSegments[i].despawnTimeout != 0) {
+                ds->armSegments[i].despawnTimeout--;
             }
         }
 
@@ -1116,7 +1149,7 @@ static void InitDestructionScene(void)
     ds->bodyX = boss->x;
     ds->bodyY = boss->y;
     ds->bodySpeedX = boss->speedX;
-    ds->bodySpeedY = -768;
+    ds->bodySpeedY = -Q(3);
 
     for (i = 0; i < 4; i++) {
         if (i < 2) {
@@ -1139,33 +1172,37 @@ static void InitDestructionScene(void)
     }
 
     for (i = 0; i < 8; i++) {
-        ds->unkF8[i][0] += gCamera.x;
-        ds->unkF8[i][1] += gCamera.y;
+        ds->armSegments[i].x += gCamera.x;
+        ds->armSegments[i].y += gCamera.y;
 
-        ds->unkF8[i][0] = Q(ds->unkF8[i][0]);
-        ds->unkF8[i][1] = Q(ds->unkF8[i][1]);
+        ds->armSegments[i].x = Q(ds->armSegments[i].x);
+        ds->armSegments[i].y = Q(ds->armSegments[i].y);
 
-        ds->unkF8[i][2] = boss->speedX + ((COS(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18);
+        ds->armSegments[i].speedX
+            = boss->speedX + ((COS(boss->armSegmentAngles[i] & (SIN_PERIOD - 1)) * boss->armSegmentPositions[i]) >> 18);
 
-        ds->unkF8[i][3] = (SIN(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18;
-        ds->unkF8[i][4] = 3;
-        ds->unkF8[i][5] = 30;
+        ds->armSegments[i].speedY = (SIN(boss->armSegmentAngles[i] & (SIN_PERIOD - 1)) * boss->armSegmentPositions[i]) >> 18;
+        ds->armSegments[i].remainingBounces = 3;
+        ds->armSegments[i].despawnTimeout = 30;
     }
 
     x = boss->x;
     y = boss->y;
     for (i = 0; i < 8; i++) {
-        ds->unk1B8[i][0] = x + ((COS((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0xF);
-        ds->unk1B8[i][1] = y + ((SIN((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0xf);
-        ds->unk1B8[i][2] = boss->speedX + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0x12);
-        ds->unk1B8[i][3] = (SIN(boss->unk54[1][i] & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 18;
+        ds->unk1B8[i][0] = x
+            + ((COS((boss->hammerArmSegmentAngles[i] + DEG_TO_SIN(270)) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0xF);
+        ds->unk1B8[i][1] = y
+            + ((SIN((boss->hammerArmSegmentAngles[i] + DEG_TO_SIN(270)) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0xf);
+        ds->unk1B8[i][2]
+            = boss->speedX + ((COS((boss->hammerArmSegmentAngles[i]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0x12);
+        ds->unk1B8[i][3] = (SIN(boss->hammerArmSegmentAngles[i] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 18;
         ds->unk1B8[i][4] = 3;
         ds->unk1B8[i][5] = 30;
     }
 
     transform = &boss->transform;
-    ds->unkD0 = x + ((COS(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
-    ds->unkD4 = y + ((SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
+    ds->unkD0 = x + ((COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
+    ds->unkD4 = y + ((SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
     ds->unkD8 = boss->speedX;
     ds->unkDC = boss->speedY - Q(8);
     ds->unk2D8 = transform->rotation;
@@ -1173,7 +1210,7 @@ static void InitDestructionScene(void)
     ds->unkE4 = 0;
 }
 
-static void sub_803C198(EggHammerTankII *boss)
+static void DestructionScene_Main(EggHammerTankII *boss)
 {
     u8 result;
     s32 i;
@@ -1317,7 +1354,7 @@ static void sub_803C198(EggHammerTankII *boss)
         ds->fade.bldCnt = 0xBF;
         ds->fade.bldAlpha = 0;
         boss->sceneTimer = 0;
-        gCurTask->main = sub_803AA40;
+        gCurTask->main = Task_DestructionSceneOutro;
     }
 
     if (!*pilotEscaped) {
@@ -1362,9 +1399,9 @@ static void sub_803C198(EggHammerTankII *boss)
     s->oamFlags = SPRITE_OAM_ORDER(18);
 
     for (i = 6; i > -1; i--) {
-        s->x = I(ds->unkF8[i][0]) - gCamera.x;
-        s->y = I(ds->unkF8[i][1]) - gCamera.y;
-        if (ds->unkF8[i][4] != 0 || (ds->unkF8[i][5] != 0 && boss->sceneTimer & 1)) {
+        s->x = I(ds->armSegments[i].x) - gCamera.x;
+        s->y = I(ds->armSegments[i].y) - gCamera.y;
+        if (ds->armSegments[i].remainingBounces != 0 || (ds->armSegments[i].despawnTimeout != 0 && boss->sceneTimer & 1)) {
             DisplaySprite(s);
         }
     }
@@ -1416,8 +1453,8 @@ void EggHammerTankIIMove(s32 x, s32 y)
     }
 
     for (i = 0; i < 8; i++) {
-        ds->unkF8[i][0] += x;
-        ds->unkF8[i][1] += y;
+        ds->armSegments[i].x += x;
+        ds->armSegments[i].y += y;
     }
 
     for (i = 0; i < 8; i++) {
@@ -1429,7 +1466,7 @@ void EggHammerTankIIMove(s32 x, s32 y)
     ds->unkD4 += y;
 }
 
-static void TaskDestructor_EggHammerTankIIMain(struct Task *t)
+static void TaskDestructor_EggHammerTankII(struct Task *t)
 {
     EggHammerTankII *boss = TASK_DATA(t);
     VramFree(boss->body.graphics.dest);
@@ -1457,12 +1494,12 @@ static void Task_803C980(void)
     boss->y += boss->speedY;
 
     gUnknown_080D7AA8[sub_803CA40()]();
-    sBossStateHandlers[boss->state](boss);
+    sBossStateHandlers[boss->hammerState](boss);
 
     sub_803CB18(boss);
-    sub_803A8E4(boss);
+    HandleCollision(boss);
     sub_803B7B0(boss);
-    sub_803AC2C(boss);
+    Render(boss);
     sub_803CC3C(boss);
 
     if (boss->health == 0) {
@@ -1477,7 +1514,7 @@ static void Task_803CA1C(void)
     EggHammerTankII *boss = TASK_DATA(gCurTask);
 
     sub_803B84C(boss);
-    sub_803C198(boss);
+    DestructionScene_Main(boss);
 }
 
 bool8 sub_803CA40(void)
@@ -1523,36 +1560,40 @@ static void sub_803CB18(EggHammerTankII *boss)
     u8 i;
     boss->unk4C = (boss->unk4C + 8) & (SIN_PERIOD - 1);
     boss->unk50 = SIN(boss->unk4C) >> 8;
-    boss->unkC[1][0] = boss->unk50;
+    boss->armSegmentAngles[0] = boss->unk50;
 
-    for (i = 1; i < ARRAY_COUNT(boss->unkC[0]); i++) {
-        boss->unkC[1][i] += I((boss->unkC[1][i - 1] - boss->unkC[1][i]) * gUnknown_080D7A28[i] - Q(12));
+    for (i = 1; i < ARRAY_COUNT(boss->armSegmentPositions); i++) {
+        boss->armSegmentAngles[i] += I((boss->armSegmentAngles[i - 1] - boss->armSegmentAngles[i]) * gUnknown_080D7A28[i] - Q(12));
     }
 }
 
-static void sub_803CB84(EggHammerTankII *boss)
+/**
+ * Called hammer aim but really it's just a slight delay before
+ * slamming
+ */
+static void StateHandler_HammerAim(EggHammerTankII *boss)
 {
     if (--boss->timer == 0) {
         boss->timer = 60;
-        boss->state = 3;
+        boss->hammerState = 3;
     }
 }
 
-static void sub_803CBA4(EggHammerTankII *boss)
+static void StateHandler_HammerSlam(EggHammerTankII *boss)
 {
     if (--boss->timer == 0) {
         if (PseudoRandBetween(0, 4) != 0) {
             boss->timer = 68;
-            boss->state = 5;
+            boss->hammerState = 5;
         } else {
             m4aSongNumStart(SE_239);
             boss->timer = 60;
-            boss->state = 6;
+            boss->hammerState = 6;
         }
     }
 }
 
-static void sub_803CBFC(EggHammerTankII *boss)
+static void PilotLaugh(EggHammerTankII *boss)
 {
     boss->unkB2 = 30;
     if (boss->timerInvulnerability == 0) {
