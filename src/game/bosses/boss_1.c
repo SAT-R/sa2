@@ -74,8 +74,8 @@ typedef struct {
     // unused
     u8 filler2DA[2];
 
-    u8 unk2DC;
-    u8 unk2DD;
+    u8 axelsJoinedRemainingBounces;
+    u8 numPartsCreated;
 } DestructionScene;
 
 typedef struct {
@@ -954,7 +954,7 @@ static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
     ds->bodyY += ds->bodySpeedY;
 
     result = sub_801F100(I(ds->bodyY) + 28, I(ds->bodyX), 1, 8, sub_801EC3C);
-    if (ds->unk2DC != 0) {
+    if (ds->axelsJoinedRemainingBounces > 0) {
         ds->wheels[0].x = ds->bodyX - Q(22);
         ds->wheels[0].y = ds->bodyY + boss->frontAxelY + Q(14.5);
         ds->wheels[1].x = ds->bodyX + Q(24);
@@ -964,13 +964,14 @@ static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
         ds->wheels[3].x = ds->bodyX + Q(24);
         ds->wheels[3].y = ds->bodyY + boss->rearAxelY + Q(14.5);
     } else {
+        // Detect the axels
         for (i = 0; i < 4; i++) {
             s32 result1;
             ds->wheels[i].speedX--;
-            if (ds->wheels[i].speedX < 128) {
-                ds->wheels[i].speedX = 128;
+            if (ds->wheels[i].speedX < Q(0.5)) {
+                ds->wheels[i].speedX = Q(0.5);
             }
-            ds->wheels[i].speedY += 0x28;
+            ds->wheels[i].speedY += Q(0.15625);
             ds->wheels[i].x += ds->wheels[i].speedX;
             ds->wheels[i].y += ds->wheels[i].speedY;
 
@@ -996,12 +997,12 @@ static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
     }
 
     if (result < 0) {
-        if (ds->unk2DC != 0) {
-            ds->unk2DC--;
+        if (ds->axelsJoinedRemainingBounces > 0) {
+            ds->axelsJoinedRemainingBounces--;
             ds->bodySpeedY = -ds->bodySpeedY;
         } else {
             s32 r0;
-            ds->bodySpeedX -= 32;
+            ds->bodySpeedX -= Q(0.125);
             r0 = (ds->bodySpeedY * 27);
             ds->bodySpeedY = I(-(r0 * 8));
         }
@@ -1082,21 +1083,21 @@ static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
             parts.anim = SA2_ANIM_EXPLOSION;
             parts.variant = 0;
             parts.unk4 = 0;
-            CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
 
             rand = PseudoRandom32();
             parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
             rand = PseudoRandom32();
             parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
-            CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
 
             rand = PseudoRandom32();
             parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
             rand = PseudoRandom32();
             parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
-            CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
         }
 
         if (ds->hammerSpeedY < Q(3)) {
@@ -1141,8 +1142,8 @@ static void InitDestructionScene(void)
     ds = &boss->destructionScene;
 
     boss->sceneTimer = 0;
-    ds->unk2DC = 5;
-    ds->unk2DD = 0;
+    ds->axelsJoinedRemainingBounces = 5;
+    ds->numPartsCreated = 0;
     s = &boss->body;
     s->graphics.anim = SA2_ANIM_HAMMERTANK_BODY_DESTROYED;
     s->variant = 0;
@@ -1241,7 +1242,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
         init.anim = gTileInfoBossScrews[i][1];
         init.variant = gTileInfoBossScrews[i][2];
         init.unk4 = 1;
-        CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+        CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
     }
 
     if (Mod(boss->sceneTimer + PseudoRandom32(), 13) == 0) {
@@ -1269,7 +1270,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
             init.unk4 = 1;
-            CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
             result = 0;
         } else if (result > 60) {
             result -= 60;
@@ -1286,7 +1287,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
             init.unk4 = 1;
-            CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
             result = 0;
         } else if (result > 60) {
             result -= 60;
@@ -1303,7 +1304,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
             init.unk4 = 1;
-            CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
             result = 0;
         } else if (result > 60) {
             result -= 60;
@@ -1320,7 +1321,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
             init.unk4 = 1;
-            CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
             result = 0;
         } else if (result > 60) {
             result -= 60;
@@ -1337,7 +1338,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
             init.unk4 = 1;
-            CreateBossParticleWithExplosionUpdate(&init, &ds->unk2DD);
+            CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
             result = 0;
         } else if (result > 60) {
             result -= 60;
