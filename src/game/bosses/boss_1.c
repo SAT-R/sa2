@@ -30,7 +30,14 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
-#define EGG_HAMMER_TANK_II_STATE_SLAM 4
+#define EGG_HAMMER_TANK_II_STATE_RESET   0
+#define EGG_HAMMER_TANK_II_STATE_EXTEND  1
+#define EGG_HAMMER_TANK_II_STATE_AIM     2
+#define EGG_HAMMER_TANK_II_STATE_PLUNGE  3
+#define EGG_HAMMER_TANK_II_STATE_SLAM    4
+#define EGG_HAMMER_TANK_II_STATE_HOLD    5
+#define EGG_HAMMER_TANK_II_STATE_DRAG    6
+#define EGG_HAMMER_TANK_II_STATE_RETRACT 7
 
 typedef struct {
     s32 x;
@@ -49,26 +56,23 @@ typedef struct {
     s32 bodySpeedX;
     s32 bodySpeedY;
 
-    s32 unkD0;
-    s32 unkD4;
-    s32 unkD8;
-    s32 unkDC;
-    s32 unkE0;
-    s32 unkE4;
-
-    s32 unkE8;
-    s32 unkEC;
-    s32 unkF0;
-    s32 unkF4;
-
-    DestructionComponent armSegments[8];
-    s32 unk1B8[8][6];
-    s32 unk278[4][6];
-    u16 unk2D8;
+    s32 hammerX;
+    s32 hammerY;
+    s32 hammerSpeedX;
+    s32 hammerSpeedY;
+    s32 hammerBounceSide;
+    s32 hammerState;
 
     // unused
-    u8 filler2DA;
-    u8 filler2DB;
+    u8 fillerE8[16];
+
+    DestructionComponent armSegments[8];
+    DestructionComponent hammerArmSegments[8];
+    DestructionComponent wheels[4];
+    u16 hammerAngle;
+
+    // unused
+    u8 filler2DA[2];
 
     u8 unk2DC;
     u8 unk2DD;
@@ -84,23 +88,23 @@ typedef struct {
     s32 armSegmentPositions[8];
     // Specifically, the angles of the segment from the base
     s32 armSegmentAngles[8];
-    u32 unk4C;
-    u32 unk50;
+    u32 armBaseSin;
+    u32 armBaseAngle;
     s32 hammerArmSegmentPositions[8];
     s32 hammerArmSegmentAngles[8];
 
     s32 hammerAngle;
-    s32 unk98;
-    s32 unk9C;
+    s32 frontAxelY;
+    s32 rearAxelY;
     u32 hammerState;
-    u32 unkA4;
+    u32 hammerExtension;
     u32 sceneTimer;
 
     u32 timer;
 
     u8 health;
     u8 timerInvulnerability;
-    u8 unkB2;
+    u8 timerPilotLaugh;
     bool8 pilotEscaped;
 
     DestructionScene destructionScene;
@@ -123,32 +127,32 @@ typedef void (*HammertankFunc)(EggHammerTankII *);
 
 static void Task_EggHammerTankII_RollIn(void);
 static void TaskDestructor_EggHammerTankII(struct Task *);
-static void Task_803C980(void);
-static void Task_803CA1C(void);
+static void Task_EggHammerTankII_Main(void);
+static void Task_DestructionScene_Main(void);
 
-static void sub_803CB18(EggHammerTankII *);
+static void UpdateArmSegments(EggHammerTankII *);
 static void Render(EggHammerTankII *);
 static void PilotLaugh(EggHammerTankII *boss);
 static void HandleBossHit(EggHammerTankII *boss);
-static void sub_803CC3C(EggHammerTankII *boss);
+static void HandleBossHitPalette(EggHammerTankII *boss);
 static void StateHandler_HammerReset(EggHammerTankII *boss);
 static void StateHandler_HammerExtend(EggHammerTankII *boss);
 static void StateHandler_HammerAim(EggHammerTankII *boss);
 static void StateHandler_HammerPlunge(EggHammerTankII *boss);
 static void StateHandler_HammerSlam(EggHammerTankII *boss);
-static void StateHandler_HammerSlamWait(EggHammerTankII *boss);
+static void StateHandler_HammerHold(EggHammerTankII *boss);
 static void StateHandler_HammerDrag(EggHammerTankII *boss);
 static void StateHandler_HammerRetract(EggHammerTankII *boss);
 
-static void sub_803CAC8(void);
-static void sub_803B018(void);
-static bool8 sub_803CA40(void);
+static void PhysicsHandler_Falling(void);
+static void PhysicsHandler_OnTerrain(void);
+static bool8 IsBossTouchingTerrain(void);
 
 static const s16 gUnknown_080D7A18[] = {
     96, 104, 112, 120, 128, 136, 144, 152,
 };
-static const s16 gUnknown_080D7A28[] = {
-    160, 156, 152, 148, 144, 140, 136, 132,
+static const s16 sQArmSegmentAngleOffsets[] = {
+    Q(0.625), Q(0.609375), Q(0.59375), Q(0.578125), Q(0.5625), Q(0.546875), Q(0.53125), Q(0.515625),
 };
 
 static const s32 gUnknown_080D7A38[8] = {
@@ -171,17 +175,13 @@ static const u8 gUnknown_080D7AA2[] = {
     8, 13, 8, 13, 13,
 };
 
-static const TaskMain gUnknown_080D7AA8[] = { sub_803CAC8, sub_803B018 };
+static const TaskMain sGroundPhysicsHandlers[] = { PhysicsHandler_Falling, PhysicsHandler_OnTerrain };
 
 static const HammertankFunc sBossStateHandlers[] = {
-    StateHandler_HammerReset,
-    StateHandler_HammerExtend,
-    StateHandler_HammerAim,
-    StateHandler_HammerPlunge,
-    [EGG_HAMMER_TANK_II_STATE_SLAM] = StateHandler_HammerSlam,
-    StateHandler_HammerSlamWait,
-    StateHandler_HammerDrag,
-    StateHandler_HammerRetract,
+    [EGG_HAMMER_TANK_II_STATE_RESET] = StateHandler_HammerReset, [EGG_HAMMER_TANK_II_STATE_EXTEND] = StateHandler_HammerExtend,
+    [EGG_HAMMER_TANK_II_STATE_AIM] = StateHandler_HammerAim,     [EGG_HAMMER_TANK_II_STATE_PLUNGE] = StateHandler_HammerPlunge,
+    [EGG_HAMMER_TANK_II_STATE_SLAM] = StateHandler_HammerSlam,   [EGG_HAMMER_TANK_II_STATE_HOLD] = StateHandler_HammerHold,
+    [EGG_HAMMER_TANK_II_STATE_DRAG] = StateHandler_HammerDrag,   [EGG_HAMMER_TANK_II_STATE_RETRACT] = StateHandler_HammerRetract,
 };
 
 static const u16 gUnknown_080D7AD0[][16] = {
@@ -191,7 +191,6 @@ static const u16 gUnknown_080D7AD0[][16] = {
 
 void CreateEggHammerTankII(void)
 {
-
     struct Task *t;
     EggHammerTankII *boss;
     Sprite *s;
@@ -216,12 +215,12 @@ void CreateEggHammerTankII(void)
     }
 
     boss->sceneTimer = 0;
-    boss->unkA4 = 2;
-    boss->hammerState = 0;
+    boss->hammerExtension = 2;
+    boss->hammerState = EGG_HAMMER_TANK_II_STATE_RESET;
     boss->timer = 120;
 
     boss->timerInvulnerability = 0;
-    boss->unkB2 = 0;
+    boss->timerPilotLaugh = 0;
     boss->pilotEscaped = FALSE;
 
     i = Q(980);
@@ -241,17 +240,17 @@ void CreateEggHammerTankII(void)
         boss->armSegmentPositions[i] = gUnknown_080D7A38[i];
     }
 
-    boss->unk4C = 0;
-    boss->unk50 = 0;
+    boss->armBaseSin = 0;
+    boss->armBaseAngle = 0;
 
     for (i = 0; i < 8; i++) {
-        boss->hammerArmSegmentAngles[i] = 768;
+        boss->hammerArmSegmentAngles[i] = DEG_TO_SIN(270);
         boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
     }
 
     boss->hammerAngle = DEG_TO_SIN(270);
-    boss->unk98 = Q(18.5);
-    boss->unk9C = Q(18.5);
+    boss->frontAxelY = Q(18.5);
+    boss->rearAxelY = Q(18.5);
 
     s = &boss->body;
     s->x = 0;
@@ -293,7 +292,8 @@ void CreateEggHammerTankII(void)
     SPRITE_INIT_ANIM(s, SA2_ANIM_HAMMERTANK_HAMMER, 0, 24);
     SPRITE_INIT_SCRIPT(s, 1.0);
 
-    s->frameFlags = (gUnknown_030054B8++) | 0x2060;
+    s->frameFlags
+        = (gUnknown_030054B8++) | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
 
@@ -354,11 +354,11 @@ static void Task_EggHammerTankII_RollIn(void)
     if (sceneTimer > 126) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         boss->speedX = BOSS1_VELOCITY_X;
-        gCurTask->main = Task_803C980;
+        gCurTask->main = Task_EggHammerTankII_Main;
     }
 
-    gUnknown_080D7AA8[sub_803CA40()]();
-    sub_803CB18(boss);
+    sGroundPhysicsHandlers[IsBossTouchingTerrain()]();
+    UpdateArmSegments(boss);
     Render(boss);
 }
 
@@ -369,7 +369,9 @@ static void HandleCollision(EggHammerTankII *boss)
 
     if (boss->timerInvulnerability == 0) {
         // Check hammer collision
-        if (boss->hammerState < 5 || boss->hammerState == 6) {
+        if (boss->hammerState == EGG_HAMMER_TANK_II_STATE_RESET || boss->hammerState == EGG_HAMMER_TANK_II_STATE_EXTEND
+            || boss->hammerState == EGG_HAMMER_TANK_II_STATE_AIM || boss->hammerState == EGG_HAMMER_TANK_II_STATE_PLUNGE
+            || boss->hammerState == EGG_HAMMER_TANK_II_STATE_SLAM || boss->hammerState == EGG_HAMMER_TANK_II_STATE_DRAG) {
             s32 r0;
 
 #ifndef NON_MATCHING
@@ -379,11 +381,11 @@ static void HandleCollision(EggHammerTankII *boss)
 #endif
 
             r2 = I(boss->x);
-            r0 = (((boss->hammerArmSegmentPositions[5] * COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1))) >> 0x17) - 8);
+            r0 = (((boss->hammerArmSegmentPositions[5] * COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1))) >> 23) - 8);
             pos.x = r2 + r0;
 
             r2 = I(boss->y);
-            r0 = ((boss->hammerArmSegmentPositions[5] * SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) >> 0x17));
+            r0 = ((boss->hammerArmSegmentPositions[5] * SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) >> 23));
             pos.y = r2 + r0;
 
             pos.x -= I(gPlayer.qWorldX);
@@ -523,24 +525,24 @@ static void Render(EggHammerTankII *boss)
 
     s = &boss->wheel;
     s->x = I(boss->x - Q(22)) - gCamera.x;
-    s->y = I(boss->y + boss->unk98 + Q(14.5)) - gCamera.y;
+    s->y = I(boss->y + boss->frontAxelY + Q(14.5)) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     s = &boss->wheel;
     s->x = I(boss->x + Q(24)) - gCamera.x;
-    s->y = I(boss->y + boss->unk9C + Q(14.5)) - gCamera.y;
+    s->y = I(boss->y + boss->rearAxelY + Q(14.5)) - gCamera.y;
     DisplaySprite(s);
 
     s = &boss->brokenWheel;
     s->x = I(boss->x - Q(22)) - gCamera.x;
-    s->y = I(boss->y + boss->unk98 + Q(14.5)) - gCamera.y;
+    s->y = I(boss->y + boss->frontAxelY + Q(14.5)) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     s = &boss->brokenWheel;
     s->x = I(boss->x + Q(24)) - gCamera.x;
-    s->y = I(boss->y + boss->unk9C + Q(14.5)) - gCamera.y;
+    s->y = I(boss->y + boss->rearAxelY + Q(14.5)) - gCamera.y;
     DisplaySprite(s);
 
     s = &boss->armSegment;
@@ -611,7 +613,7 @@ static void Render(EggHammerTankII *boss)
     DisplaySprite(s);
 }
 
-static void sub_803B018(void)
+static void PhysicsHandler_OnTerrain(void)
 {
     s32 result;
     s32 x, y;
@@ -621,7 +623,7 @@ static void sub_803B018(void)
     boss->speedY = 0;
     origY = boss->y;
     x = (boss->x + Q(24));
-    y = (origY + boss->unk9C + Q(14.5));
+    y = (origY + boss->rearAxelY + Q(14.5));
 
     result = sub_801F100(I(y), I(x), 1, 8, sub_801EC3C);
     if (result < 1) {
@@ -630,22 +632,22 @@ static void sub_803B018(void)
         if (idx > 7) {
             idx = 7;
         }
-        boss->unk9C -= (idx * gUnknown_080D7A18[idx] - idx * 64);
+        boss->rearAxelY -= (idx * gUnknown_080D7A18[idx] - idx * 64);
     } else {
-        boss->unk9C += 288;
+        boss->rearAxelY += Q(1.125);
     }
 
-    boss->y -= I((Q(18.5) - boss->unk9C) * Q(0.375));
+    boss->y -= I((Q(18.5) - boss->rearAxelY) * Q(0.375));
 
-    if (boss->unk9C < Q(14.5)) {
-        boss->unk9C = Q(14.5);
+    if (boss->rearAxelY < Q(14.5)) {
+        boss->rearAxelY = Q(14.5);
     }
-    if (boss->unk9C > Q(23.5)) {
-        boss->unk9C = Q(23.5);
+    if (boss->rearAxelY > Q(23.5)) {
+        boss->rearAxelY = Q(23.5);
     }
 
     x = (boss->x - Q(22));
-    y = (origY + boss->unk98 + Q(14.5));
+    y = (origY + boss->frontAxelY + Q(14.5));
 
     result = sub_801F100(I(y), I(x), 1, 8, sub_801EC3C);
     if (result < 1) {
@@ -655,18 +657,18 @@ static void sub_803B018(void)
         if (idx > 7) {
             idx = 7;
         }
-        boss->unk98 -= (idx * gUnknown_080D7A18[idx] - idx * Q(0.25));
+        boss->frontAxelY -= (idx * gUnknown_080D7A18[idx] - idx * Q(0.25));
     } else {
-        boss->unk98 += 288;
+        boss->frontAxelY += Q(1.125);
     }
 
-    boss->y -= I((Q(18.5) - boss->unk98) * Q(0.375));
+    boss->y -= I((Q(18.5) - boss->frontAxelY) * Q(0.375));
 
-    if (boss->unk98 < Q(14.5)) {
-        boss->unk98 = Q(14.5);
+    if (boss->frontAxelY < Q(14.5)) {
+        boss->frontAxelY = Q(14.5);
     }
-    if (boss->unk98 > Q(23.5)) {
-        boss->unk98 = Q(23.5);
+    if (boss->frontAxelY > Q(23.5)) {
+        boss->frontAxelY = Q(23.5);
     }
 }
 
@@ -690,7 +692,7 @@ static void StateHandler_HammerReset(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 10;
-        boss->hammerState = 1;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_EXTEND;
 
         for (i = 0; i < ARRAY_COUNT(boss->hammerArmSegmentPositions); i++) {
             boss->hammerArmSegmentAngles[i] = DEG_TO_SIN(270);
@@ -698,10 +700,10 @@ static void StateHandler_HammerReset(EggHammerTankII *boss)
         }
 
         boss->hammerAngle = DEG_TO_SIN(270);
-        if (boss->unkA4 & 2) {
-            boss->unkA4 = 1;
+        if (boss->hammerExtension & 2) {
+            boss->hammerExtension = 1;
         } else {
-            boss->unkA4 = boss->unkA4 << 1;
+            boss->hammerExtension = boss->hammerExtension << 1;
         }
     }
 }
@@ -711,7 +713,7 @@ static void StateHandler_HammerExtend(EggHammerTankII *boss)
     u8 i, j;
     s16 acc, val;
     for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7A98); i++) {
-        if ((boss->unkA4 & val)) {
+        if ((boss->hammerExtension & val)) {
             val = gUnknown_080D7A98[i];
             break;
         }
@@ -726,7 +728,7 @@ static void StateHandler_HammerExtend(EggHammerTankII *boss)
 
     if (--boss->timer == 0) {
         boss->timer = 15;
-        boss->hammerState = 2;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_AIM;
     }
 }
 
@@ -737,7 +739,7 @@ static void StateHandler_HammerPlunge(EggHammerTankII *boss)
     s32 result;
 
     for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7AA2); i++) {
-        if (boss->unkA4 & val) {
+        if (boss->hammerExtension & val) {
             val = gUnknown_080D7AA2[i];
             break;
         }
@@ -777,7 +779,7 @@ static void StateHandler_HammerPlunge(EggHammerTankII *boss)
     }
 }
 
-static void StateHandler_HammerSlamWait(EggHammerTankII *boss)
+static void StateHandler_HammerHold(EggHammerTankII *boss)
 {
     u8 i;
     s32 val;
@@ -791,7 +793,7 @@ static void StateHandler_HammerSlamWait(EggHammerTankII *boss)
     }
 
     for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7A98); i++) {
-        if (boss->unkA4 & val) {
+        if (boss->hammerExtension & val) {
             val = gUnknown_080D7A98[i] * 2;
             break;
         }
@@ -811,7 +813,7 @@ static void StateHandler_HammerSlamWait(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 0x50;
-        boss->hammerState = 0;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_RESET;
     }
 }
 
@@ -820,7 +822,7 @@ static void StateHandler_HammerDrag(EggHammerTankII *boss)
     s32 i;
     s32 acc, val;
     for (i = 0, val = 1; i < 5; i++) {
-        if ((boss->unkA4 & val)) {
+        if ((boss->hammerExtension & val)) {
             val = gUnknown_080D7A98[i] >> 2;
             break;
         }
@@ -834,7 +836,7 @@ static void StateHandler_HammerDrag(EggHammerTankII *boss)
         if (boss->hammerArmSegmentPositions[i] < gUnknown_080D7A58[i]) {
             boss->hammerArmSegmentPositions[i] = gUnknown_080D7A58[i];
             boss->timer = 68;
-            boss->hammerState = 5;
+            boss->hammerState = EGG_HAMMER_TANK_II_STATE_HOLD;
         }
     }
 
@@ -842,7 +844,7 @@ static void StateHandler_HammerDrag(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 68;
-        boss->hammerState = 5;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_HOLD;
     }
 }
 
@@ -869,7 +871,7 @@ static void StateHandler_HammerRetract(EggHammerTankII *boss)
 
     if (boss->timer == 0) {
         boss->timer = 80;
-        boss->hammerState = 0;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_RESET;
     }
 }
 
@@ -905,11 +907,11 @@ static void HandleBossHit(EggHammerTankII *boss)
     }
 }
 
-static void sub_803B7B0(EggHammerTankII *boss)
+static void HandlePilotAnim(EggHammerTankII *boss)
 {
     Sprite *s = &boss->pilot;
     if (boss->timerInvulnerability > 0) {
-        boss->unkB2 = 0;
+        boss->timerPilotLaugh = 0;
 
         if (--boss->timerInvulnerability > 0) {
             return;
@@ -924,11 +926,11 @@ static void sub_803B7B0(EggHammerTankII *boss)
         }
         s->prevVariant = -1;
     } else {
-        if (boss->unkB2 == 0) {
+        if (boss->timerPilotLaugh == 0) {
             return;
         }
 
-        if (--boss->unkB2 != 0) {
+        if (--boss->timerPilotLaugh > 0) {
             return;
         }
 
@@ -938,7 +940,7 @@ static void sub_803B7B0(EggHammerTankII *boss)
     }
 }
 
-static void sub_803B84C(EggHammerTankII *boss)
+static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
 {
     s32 result;
     u8 i;
@@ -953,41 +955,41 @@ static void sub_803B84C(EggHammerTankII *boss)
 
     result = sub_801F100(I(ds->bodyY) + 28, I(ds->bodyX), 1, 8, sub_801EC3C);
     if (ds->unk2DC != 0) {
-        ds->unk278[0][0] = ds->bodyX - Q(22);
-        ds->unk278[0][1] = ds->bodyY + boss->unk98 + Q(14.5);
-        ds->unk278[1][0] = ds->bodyX + Q(24);
-        ds->unk278[1][1] = ds->bodyY + boss->unk9C + Q(14.5);
-        ds->unk278[2][0] = ds->bodyX - Q(22);
-        ds->unk278[2][1] = ds->bodyY + boss->unk98 + Q(14.5);
-        ds->unk278[3][0] = ds->bodyX + Q(24);
-        ds->unk278[3][1] = ds->bodyY + boss->unk9C + Q(14.5);
+        ds->wheels[0].x = ds->bodyX - Q(22);
+        ds->wheels[0].y = ds->bodyY + boss->frontAxelY + Q(14.5);
+        ds->wheels[1].x = ds->bodyX + Q(24);
+        ds->wheels[1].y = ds->bodyY + boss->rearAxelY + Q(14.5);
+        ds->wheels[2].x = ds->bodyX - Q(22);
+        ds->wheels[2].y = ds->bodyY + boss->frontAxelY + Q(14.5);
+        ds->wheels[3].x = ds->bodyX + Q(24);
+        ds->wheels[3].y = ds->bodyY + boss->rearAxelY + Q(14.5);
     } else {
         for (i = 0; i < 4; i++) {
             s32 result1;
-            ds->unk278[i][2]--;
-            if (ds->unk278[i][2] < 128) {
-                ds->unk278[i][2] = 128;
+            ds->wheels[i].speedX--;
+            if (ds->wheels[i].speedX < 128) {
+                ds->wheels[i].speedX = 128;
             }
-            ds->unk278[i][3] += 0x28;
-            ds->unk278[i][0] += ds->unk278[i][2];
-            ds->unk278[i][1] += ds->unk278[i][3];
+            ds->wheels[i].speedY += 0x28;
+            ds->wheels[i].x += ds->wheels[i].speedX;
+            ds->wheels[i].y += ds->wheels[i].speedY;
 
-            result1 = sub_801F100(I(ds->unk278[i][1]), I(ds->unk278[i][0]), 1, 8, sub_801EC3C);
+            result1 = sub_801F100(I(ds->wheels[i].y), I(ds->wheels[i].x), 1, 8, sub_801EC3C);
             if (result1 < 0) {
                 s32 r0;
-                if (ds->unk278[i][4] != 0) {
-                    ds->unk278[i][4]--;
+                if (ds->wheels[i].remainingBounces != 0) {
+                    ds->wheels[i].remainingBounces--;
                 }
-                ds->unk278[i][1] += Q(result1);
-                r0 = ds->unk278[i][3] * 3;
-                r0 = (r0 * 4) - ds->unk278[i][3];
+                ds->wheels[i].y += Q(result1);
+                r0 = ds->wheels[i].speedY * 3;
+                r0 = (r0 * 4) - ds->wheels[i].speedY;
                 r0 *= 16;
-                ds->unk278[i][3] = I(-r0);
+                ds->wheels[i].speedY = I(-r0);
             }
 
-            if (ds->unk278[i][4] == 0) {
-                if (ds->unk278[i][5] != 0) {
-                    ds->unk278[i][5]--;
+            if (ds->wheels[i].remainingBounces == 0) {
+                if (ds->wheels[i].despawnTimeout != 0) {
+                    ds->wheels[i].despawnTimeout--;
                 }
             }
         }
@@ -1036,92 +1038,92 @@ static void sub_803B84C(EggHammerTankII *boss)
             }
         }
 
-        ds->unk1B8[i][3] += 40;
-        if (ds->unk1B8[i][2] > 0) {
-            ds->unk1B8[i][0] += ds->unk1B8[i][2];
+        ds->hammerArmSegments[i].speedY += 40;
+        if (ds->hammerArmSegments[i].speedX > 0) {
+            ds->hammerArmSegments[i].x += ds->hammerArmSegments[i].speedX;
         }
 
-        ds->unk1B8[i][1] += ds->unk1B8[i][3];
+        ds->hammerArmSegments[i].y += ds->hammerArmSegments[i].speedY;
 
-        result = sub_801F100(I(ds->unk1B8[i][1]) + 5, I(ds->unk1B8[i][0]), 1, 8, sub_801EC3C);
+        result = sub_801F100(I(ds->hammerArmSegments[i].y) + 5, I(ds->hammerArmSegments[i].x), 1, 8, sub_801EC3C);
 
         if (result < 0) {
-            if (ds->unk1B8[i][4] != 0) {
-                ds->unk1B8[i][4]--;
+            if (ds->hammerArmSegments[i].remainingBounces != 0) {
+                ds->hammerArmSegments[i].remainingBounces--;
             }
-            ds->unk1B8[i][2] -= 32;
-            ds->unk1B8[i][1] += QS(result);
-            ds->unk1B8[i][3] = I(ds->unk1B8[i][3] * -((i * 4) + 64));
+            ds->hammerArmSegments[i].speedX -= 32;
+            ds->hammerArmSegments[i].y += QS(result);
+            ds->hammerArmSegments[i].speedY = I(ds->hammerArmSegments[i].speedY * -((i * 4) + 64));
         }
 
-        if (ds->unk1B8[i][4] == 0) {
-            if (ds->unk1B8[i][5] != 0) {
-                ds->unk1B8[i][5]--;
+        if (ds->hammerArmSegments[i].remainingBounces == 0) {
+            if (ds->hammerArmSegments[i].despawnTimeout != 0) {
+                ds->hammerArmSegments[i].despawnTimeout--;
             }
         }
     }
 
-    ds->unkDC += Q(0.375);
-    ds->unkD0 += ds->unkD8;
-    ds->unkD4 += ds->unkDC;
+    ds->hammerSpeedY += Q(0.375);
+    ds->hammerX += ds->hammerSpeedX;
+    ds->hammerY += ds->hammerSpeedY;
 
-    result = sub_801F100(I(ds->unkD4) + 24, I(ds->unkD0), 1, 8, sub_801EC3C);
+    result = sub_801F100(I(ds->hammerY) + 24, I(ds->hammerX), 1, 8, sub_801EC3C);
     if (result < 0) {
         ExplosionPartsInfo parts;
 
-        if (ds->unkE4 == 0) {
+        if (ds->hammerState == 0) {
             u32 rand;
-            parts.spawnX = I(ds->unkD0) - gCamera.x;
-            parts.spawnY = I(ds->unkD4) - gCamera.y;
+            parts.spawnX = I(ds->hammerX) - gCamera.x;
+            parts.spawnY = I(ds->hammerY) - gCamera.y;
             parts.velocity = 0;
             parts.rotation = 1000;
-            parts.speed = 768;
+            parts.speed = Q(3);
             parts.vram = (void *)OBJ_VRAM0 + 0x2980;
             parts.anim = SA2_ANIM_EXPLOSION;
             parts.variant = 0;
-            parts.unk4 = ds->unkE4;
+            parts.unk4 = 0;
             CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
 
             rand = PseudoRandom32();
-            parts.spawnX = (I(ds->unkD0) - gCamera.x) + (rand & 15);
+            parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
             rand = PseudoRandom32();
-            parts.spawnY = (I(ds->unkD4) - gCamera.y) + (rand & 15);
+            parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
             CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
 
             rand = PseudoRandom32();
-            parts.spawnX = (I(ds->unkD0) - gCamera.x) + (rand & 15);
+            parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
             rand = PseudoRandom32();
-            parts.spawnY = (I(ds->unkD4) - gCamera.y) + (rand & 15);
+            parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
             CreateBossParticleWithExplosionUpdate(&parts, &ds->unk2DD);
         }
 
-        if (ds->unkDC < 768) {
-            if (ds->unkE4 == 0) {
-                ds->unkE4 = 1;
+        if (ds->hammerSpeedY < Q(3)) {
+            if (ds->hammerState == 0) {
+                ds->hammerState = 1;
             }
-            ds->unkDC = 0;
+            ds->hammerSpeedY = 0;
         }
-        if (ds->unkE0 != 0) {
-            ds->unkE0 = 0;
+        if (ds->hammerBounceSide != 0) {
+            ds->hammerBounceSide = 0;
         } else {
-            ds->unkE0 = 1;
+            ds->hammerBounceSide = 1;
         }
-        ds->unkD8 -= 32;
+        ds->hammerSpeedX -= 32;
 
-        if (ds->unkD8 < 0) {
-            ds->unkD8 = 0;
+        if (ds->hammerSpeedX < 0) {
+            ds->hammerSpeedX = 0;
         }
 
-        ds->unkD4 += QS(result);
-        ds->unkDC = I(-(ds->unkDC * 192));
+        ds->hammerY += QS(result);
+        ds->hammerSpeedY = I(-(ds->hammerSpeedY * 192));
     }
 
-    if (ds->unkE0 != 0) {
-        ds->unk2D8 = CLAMP_SIN_PERIOD(ds->unk2D8 + 48);
+    if (ds->hammerBounceSide != 0) {
+        ds->hammerAngle = CLAMP_SIN_PERIOD(ds->hammerAngle + DEG_TO_SIN(16.875));
     } else {
-        ds->unk2D8 = CLAMP_SIN_PERIOD(ds->unk2D8 - 48);
+        ds->hammerAngle = CLAMP_SIN_PERIOD(ds->hammerAngle - DEG_TO_SIN(16.875));
     }
 }
 
@@ -1153,22 +1155,22 @@ static void InitDestructionScene(void)
 
     for (i = 0; i < 4; i++) {
         if (i < 2) {
-            ds->unk278[i][0] = boss->x - Q(22);
+            ds->wheels[i].x = boss->x - Q(22);
         } else {
-            ds->unk278[i][0] = boss->x + Q(24);
+            ds->wheels[i].x = boss->x + Q(24);
         }
 
-        ds->unk278[i][1] = boss->y + boss->unk98 + Q(14.5);
+        ds->wheels[i].y = boss->y + boss->frontAxelY + Q(14.5);
 
         if (i < 2) {
-            ds->unk278[i][2] = boss->speedX + (i + 2) * 5;
+            ds->wheels[i].speedX = boss->speedX + (i + 2) * 5;
         } else {
-            ds->unk278[i][2] = boss->speedX + i * 0x30;
+            ds->wheels[i].speedX = boss->speedX + i * 0x30;
         }
 
-        ds->unk278[i][3] = I((boss->unk98 * (-Q(0.375) - (i * 2))));
-        ds->unk278[i][4] = 4;
-        ds->unk278[i][5] = 60;
+        ds->wheels[i].speedY = I((boss->frontAxelY * (-Q(0.375) - (i * 2))));
+        ds->wheels[i].remainingBounces = 4;
+        ds->wheels[i].despawnTimeout = 60;
     }
 
     for (i = 0; i < 8; i++) {
@@ -1189,28 +1191,29 @@ static void InitDestructionScene(void)
     x = boss->x;
     y = boss->y;
     for (i = 0; i < 8; i++) {
-        ds->unk1B8[i][0] = x
+        ds->hammerArmSegments[i].x = x
             + ((COS((boss->hammerArmSegmentAngles[i] + DEG_TO_SIN(270)) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0xF);
-        ds->unk1B8[i][1] = y
+        ds->hammerArmSegments[i].y = y
             + ((SIN((boss->hammerArmSegmentAngles[i] + DEG_TO_SIN(270)) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0xf);
-        ds->unk1B8[i][2]
+        ds->hammerArmSegments[i].speedX
             = boss->speedX + ((COS((boss->hammerArmSegmentAngles[i]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 0x12);
-        ds->unk1B8[i][3] = (SIN(boss->hammerArmSegmentAngles[i] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 18;
-        ds->unk1B8[i][4] = 3;
-        ds->unk1B8[i][5] = 30;
+        ds->hammerArmSegments[i].speedY
+            = (SIN(boss->hammerArmSegmentAngles[i] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[i]) >> 18;
+        ds->hammerArmSegments[i].remainingBounces = 3;
+        ds->hammerArmSegments[i].despawnTimeout = 30;
     }
 
     transform = &boss->transform;
-    ds->unkD0 = x + ((COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
-    ds->unkD4 = y + ((SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
-    ds->unkD8 = boss->speedX;
-    ds->unkDC = boss->speedY - Q(8);
-    ds->unk2D8 = transform->rotation;
-    ds->unkE0 = 1;
-    ds->unkE4 = 0;
+    ds->hammerX = x + ((COS(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
+    ds->hammerY = y + ((SIN(boss->hammerArmSegmentAngles[5] & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 15);
+    ds->hammerSpeedX = boss->speedX;
+    ds->hammerSpeedY = boss->speedY - Q(8);
+    ds->hammerAngle = transform->rotation;
+    ds->hammerBounceSide = 1;
+    ds->hammerState = 0;
 }
 
-static void DestructionScene_Main(EggHammerTankII *boss)
+static void DestructionScene_Render(EggHammerTankII *boss)
 {
     u8 result;
     s32 i;
@@ -1261,7 +1264,7 @@ static void DestructionScene_Main(EggHammerTankII *boss)
             init.spawnY = s->y;
             init.velocity = 0;
             init.rotation = 1000;
-            init.speed = 768;
+            init.speed = Q_8_8(3);
             init.vram = (void *)OBJ_VRAM0 + 0x2980;
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
@@ -1278,7 +1281,7 @@ static void DestructionScene_Main(EggHammerTankII *boss)
             init.spawnY = s->y + 16;
             init.velocity = 0;
             init.rotation = 1000;
-            init.speed = 768;
+            init.speed = Q_8_8(3);
             init.vram = (void *)OBJ_VRAM0 + 0x2980;
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
@@ -1295,7 +1298,7 @@ static void DestructionScene_Main(EggHammerTankII *boss)
             init.spawnY = s->y + 8;
             init.velocity = 0;
             init.rotation = 1000;
-            init.speed = 768;
+            init.speed = Q_8_8(3);
             init.vram = (void *)OBJ_VRAM0 + 0x2980;
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
@@ -1312,7 +1315,7 @@ static void DestructionScene_Main(EggHammerTankII *boss)
             init.spawnY = s->y - 0x10;
             init.velocity = 0;
             init.rotation = 1000;
-            init.speed = 768;
+            init.speed = Q_8_8(3);
             init.vram = (void *)OBJ_VRAM0 + 0x2980;
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
@@ -1329,7 +1332,7 @@ static void DestructionScene_Main(EggHammerTankII *boss)
             init.spawnY = s->y - 8;
             init.velocity = 0;
             init.rotation = 1000;
-            init.speed = 768;
+            init.speed = Q_8_8(3);
             init.vram = (void *)OBJ_VRAM0 + 0x2980;
             init.anim = SA2_ANIM_EXPLOSION;
             init.variant = 0;
@@ -1365,33 +1368,33 @@ static void DestructionScene_Main(EggHammerTankII *boss)
         DisplaySprite(s);
     }
 
-    if (ds->unk278[0][4] != 0 || (ds->unk278[0][5] & 1)) {
+    if (ds->wheels[0].remainingBounces != 0 || (ds->wheels[0].despawnTimeout & 1)) {
         s = &boss->wheel;
-        s->x = I(ds->unk278[0][0]) - gCamera.x;
-        s->y = I(ds->unk278[0][1]) - gCamera.y;
+        s->x = I(ds->wheels[0].x) - gCamera.x;
+        s->y = I(ds->wheels[0].y) - gCamera.y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
 
-    if (ds->unk278[1][4] != 0 || (ds->unk278[1][5] & 1)) {
+    if (ds->wheels[1].remainingBounces != 0 || (ds->wheels[1].despawnTimeout & 1)) {
         s = &boss->wheel;
-        s->x = I(ds->unk278[1][0]) - gCamera.x;
-        s->y = I(ds->unk278[1][1]) - gCamera.y;
+        s->x = I(ds->wheels[1].x) - gCamera.x;
+        s->y = I(ds->wheels[1].y) - gCamera.y;
         DisplaySprite(s);
     }
 
-    if (ds->unk278[2][4] != 0 || (ds->unk278[2][5] & 1)) {
+    if (ds->wheels[2].remainingBounces != 0 || (ds->wheels[2].despawnTimeout & 1)) {
         s = &boss->brokenWheel;
-        s->x = I(ds->unk278[2][0]) - gCamera.x;
-        s->y = I(ds->unk278[2][1]) - gCamera.y;
+        s->x = I(ds->wheels[2].x) - gCamera.x;
+        s->y = I(ds->wheels[2].y) - gCamera.y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
 
-    if (ds->unk278[3][4] != 0 || (ds->unk278[3][5] & 1)) {
+    if (ds->wheels[3].remainingBounces != 0 || (ds->wheels[3].despawnTimeout & 1)) {
         s = &boss->brokenWheel;
-        s->x = I(ds->unk278[3][0]) - gCamera.x;
-        s->y = I(ds->unk278[3][1]) - gCamera.y;
+        s->x = I(ds->wheels[3].x) - gCamera.x;
+        s->y = I(ds->wheels[3].y) - gCamera.y;
         DisplaySprite(s);
     }
 
@@ -1409,9 +1412,9 @@ static void DestructionScene_Main(EggHammerTankII *boss)
     s = &boss->armSegment;
     s->oamFlags = SPRITE_OAM_ORDER(25);
     for (i = 0; i < 6; i++) {
-        s->x = I(ds->unk1B8[i][0]) - gCamera.x;
-        s->y = I(ds->unk1B8[i][1]) - gCamera.y;
-        if (ds->unk1B8[i][4] != 0 || (ds->unk1B8[i][5] != 0 && boss->sceneTimer & 1)) {
+        s->x = I(ds->hammerArmSegments[i].x) - gCamera.x;
+        s->y = I(ds->hammerArmSegments[i].y) - gCamera.y;
+        if (ds->hammerArmSegments[i].remainingBounces != 0 || (ds->hammerArmSegments[i].despawnTimeout != 0 && boss->sceneTimer & 1)) {
             DisplaySprite(s);
         }
     }
@@ -1419,16 +1422,16 @@ static void DestructionScene_Main(EggHammerTankII *boss)
     s = &boss->hammer;
     transform = &boss->transform;
 
-    s->x = I(ds->unkD0) - gCamera.x;
-    s->y = I(ds->unkD4) - gCamera.y;
+    s->x = I(ds->hammerX) - gCamera.x;
+    s->y = I(ds->hammerY) - gCamera.y;
     s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
-    if (ds->unkE4 != 0) {
-        ds->unkE4 = 2;
+    if (ds->hammerState != 0) {
+        ds->hammerState = 2;
     } else {
-        transform->rotation = ds->unk2D8;
-        transform->qScaleX = 256;
-        transform->qScaleY = 256;
+        transform->rotation = ds->hammerAngle;
+        transform->qScaleX = Q(1);
+        transform->qScaleY = Q(1);
         transform->x = s->x;
         transform->y = s->y;
         TransformSprite(s, transform);
@@ -1448,8 +1451,8 @@ void EggHammerTankIIMove(s32 x, s32 y)
     boss->y += y;
 
     for (i = 0; i < 4; i++) {
-        ds->unk278[i][0] += x;
-        ds->unk278[i][1] += y;
+        ds->wheels[i].x += x;
+        ds->wheels[i].y += y;
     }
 
     for (i = 0; i < 8; i++) {
@@ -1458,12 +1461,12 @@ void EggHammerTankIIMove(s32 x, s32 y)
     }
 
     for (i = 0; i < 8; i++) {
-        ds->unk1B8[i][0] += x;
-        ds->unk1B8[i][1] += y;
+        ds->hammerArmSegments[i].x += x;
+        ds->hammerArmSegments[i].y += y;
     }
 
-    ds->unkD0 += x;
-    ds->unkD4 += y;
+    ds->hammerX += x;
+    ds->hammerY += y;
 }
 
 static void TaskDestructor_EggHammerTankII(struct Task *t)
@@ -1487,48 +1490,48 @@ static void TaskDestructor_EggHammerTankII(struct Task *t)
     gActiveBossTask = NULL;
 }
 
-static void Task_803C980(void)
+static void Task_EggHammerTankII_Main(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
     boss->x += boss->speedX;
     boss->y += boss->speedY;
 
-    gUnknown_080D7AA8[sub_803CA40()]();
+    sGroundPhysicsHandlers[IsBossTouchingTerrain()]();
     sBossStateHandlers[boss->hammerState](boss);
 
-    sub_803CB18(boss);
+    UpdateArmSegments(boss);
     HandleCollision(boss);
-    sub_803B7B0(boss);
+    HandlePilotAnim(boss);
     Render(boss);
-    sub_803CC3C(boss);
+    HandleBossHitPalette(boss);
 
     if (boss->health == 0) {
         InitDestructionScene();
-        gCurTask->main = Task_803CA1C;
+        gCurTask->main = Task_DestructionScene_Main;
         Player_DisableInputAndBossTimer();
     }
 }
 
-static void Task_803CA1C(void)
+static void Task_DestructionScene_Main(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
 
-    sub_803B84C(boss);
-    DestructionScene_Main(boss);
+    DestructionScene_UpdateComponents(boss);
+    DestructionScene_Render(boss);
 }
 
-bool8 sub_803CA40(void)
+static bool8 IsBossTouchingTerrain(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
     s32 x, y;
     s32 result;
     x = (boss->x + Q(24));
-    y = (boss->y + boss->unk9C + Q(14.5));
+    y = (boss->y + boss->rearAxelY + Q(14.5));
 
     result = sub_801F100(I(y), I(x), 1, 8, sub_801EC3C);
     if (result > 0) {
         x = (boss->x - Q(22));
-        y = (boss->y + boss->unk98 + Q(14.5));
+        y = (boss->y + boss->frontAxelY + Q(14.5));
         result = sub_801F100(I(y), I(x), 1, 8, sub_801EC3C);
 
         if (result > 0) {
@@ -1539,43 +1542,43 @@ bool8 sub_803CA40(void)
     return TRUE;
 }
 
-static void sub_803CAC8(void)
+static void PhysicsHandler_Falling(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
     boss->speedY += Q(0.25);
-    boss->unk9C += Q(1.125);
-    boss->unk98 += Q(1.125);
+    boss->rearAxelY += Q(1.125);
+    boss->frontAxelY += Q(1.125);
 
-    if (boss->unk9C > Q(23.5)) {
-        boss->unk9C = Q(23.5);
+    if (boss->rearAxelY > Q(23.5)) {
+        boss->rearAxelY = Q(23.5);
     }
 
-    if (boss->unk98 > Q(23.5)) {
-        boss->unk98 = Q(23.5);
+    if (boss->frontAxelY > Q(23.5)) {
+        boss->frontAxelY = Q(23.5);
     }
 }
 
-static void sub_803CB18(EggHammerTankII *boss)
+static void UpdateArmSegments(EggHammerTankII *boss)
 {
     u8 i;
-    boss->unk4C = (boss->unk4C + 8) & (SIN_PERIOD - 1);
-    boss->unk50 = SIN(boss->unk4C) >> 8;
-    boss->armSegmentAngles[0] = boss->unk50;
+    boss->armBaseSin = (boss->armBaseSin + 8) & (SIN_PERIOD - 1);
+    boss->armBaseAngle = SIN(boss->armBaseSin) >> 8;
+    boss->armSegmentAngles[0] = boss->armBaseAngle;
 
     for (i = 1; i < ARRAY_COUNT(boss->armSegmentPositions); i++) {
-        boss->armSegmentAngles[i] += I((boss->armSegmentAngles[i - 1] - boss->armSegmentAngles[i]) * gUnknown_080D7A28[i] - Q(12));
+        boss->armSegmentAngles[i] += I((boss->armSegmentAngles[i - 1] - boss->armSegmentAngles[i]) * sQArmSegmentAngleOffsets[i] - Q(12));
     }
 }
 
 /**
  * Called hammer aim but really it's just a slight delay before
- * slamming
+ * plunging
  */
 static void StateHandler_HammerAim(EggHammerTankII *boss)
 {
     if (--boss->timer == 0) {
         boss->timer = 60;
-        boss->hammerState = 3;
+        boss->hammerState = EGG_HAMMER_TANK_II_STATE_PLUNGE;
     }
 }
 
@@ -1584,18 +1587,18 @@ static void StateHandler_HammerSlam(EggHammerTankII *boss)
     if (--boss->timer == 0) {
         if (PseudoRandBetween(0, 4) != 0) {
             boss->timer = 68;
-            boss->hammerState = 5;
+            boss->hammerState = EGG_HAMMER_TANK_II_STATE_HOLD;
         } else {
             m4aSongNumStart(SE_239);
             boss->timer = 60;
-            boss->hammerState = 6;
+            boss->hammerState = EGG_HAMMER_TANK_II_STATE_DRAG;
         }
     }
 }
 
 static void PilotLaugh(EggHammerTankII *boss)
 {
-    boss->unkB2 = 30;
+    boss->timerPilotLaugh = 30;
     if (boss->timerInvulnerability == 0) {
         Sprite *s = &boss->pilot;
         s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
@@ -1604,7 +1607,7 @@ static void PilotLaugh(EggHammerTankII *boss)
     }
 }
 
-static void sub_803CC3C(EggHammerTankII *boss)
+static void HandleBossHitPalette(EggHammerTankII *boss)
 {
     if (boss->timerInvulnerability > 0) {
         u8 i;
