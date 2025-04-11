@@ -213,8 +213,8 @@ void sub_806EA04(void)
     s16 i;
     s16 *unk1884;
 
-    gUnknown_03002A80 = sizeof(BgAffineReg);
-    gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
+    gHBlankCopySize = sizeof(BgAffineReg);
+    gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
     gBgOffsetsHBlank = world->bgTransforms;
 
     unk5A0 = stage->cameraRotX;
@@ -222,7 +222,7 @@ void sub_806EA04(void)
     cos = COS(unk5A0) * 4;
 
     worldScale = stage->worldScale;
-    gFlags |= FLAGS_4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     i = stage->horizonHeight;
     unk1884 = gBgOffsetsHBlank + (stage->horizonHeight * sizeof(BgAffineReg));

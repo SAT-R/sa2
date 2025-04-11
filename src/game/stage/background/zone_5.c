@@ -45,9 +45,9 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
     num = gStageTime * 2;
 
     if (IS_SINGLE_PLAYER) {
-        gFlags = gFlags | FLAGS_4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 2;
+        gFlags = gFlags | FLAGS_EXECUTE_HBLANK_COPY;
+        gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
+        gHBlankCopySize = 2;
         cursor = gBgOffsetsHBlank;
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_5, ACT_BOSS)) {

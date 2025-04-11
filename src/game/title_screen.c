@@ -1467,9 +1467,9 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gHBlankCallbacks[gNumHBlankCallbacks++] = BgPaletteEffectGradient;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    gFlags |= FLAGS_4;
-    gUnknown_03002A80 = 16;
-    gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+    gHBlankCopySize = 16;
+    gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
     gBgOffsetsHBlank = titleScreen->unk3F4;
@@ -1824,7 +1824,7 @@ void CreateTitleScreenAtSinglePlayerMenu(void)
 static void SkipIntro(TitleScreen *titleScreen)
 {
     ScreenFade *fade = &titleScreen->unk270;
-    gFlags &= ~FLAGS_4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 
     fade->window = 1;
     fade->brightness = 0;
@@ -1902,7 +1902,7 @@ static void Task_IntroWaitUntilTitleScreenFanfare(void)
     // Wait for the fanfare to start on the intro music
     // before playing annoucement
     if (titleScreen->animFrame > FRAME_TIME_SECONDS(1)) {
-        gFlags &= ~FLAGS_4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         titleScreen->animFrame = 0;
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         gCurTask->main = Task_PressStartMenuMain;

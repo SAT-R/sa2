@@ -97,10 +97,10 @@ _0801C9FE:
 	movs r2, #4
 	orrs r0, r2
 	str r0, [r1]
-	ldr r1, _0801CA60 @ =gUnknown_03002878
+	ldr r1, _0801CA60 @ =gHBlankCopyTarget
 	ldr r0, _0801CA64 @ =0x0400001C
 	str r0, [r1]
-	ldr r0, _0801CA68 @ =gUnknown_03002A80
+	ldr r0, _0801CA68 @ =gHBlankCopySize
 	strb r2, [r0]
 	ldr r0, _0801CA6C @ =gBgOffsetsHBlank
 	ldr r4, [r0]
@@ -142,9 +142,9 @@ _0801CA48:
 	b _0801CA82
 	.align 2, 0
 _0801CA5C: .4byte gFlags
-_0801CA60: .4byte gUnknown_03002878
+_0801CA60: .4byte gHBlankCopyTarget
 _0801CA64: .4byte 0x0400001C
-_0801CA68: .4byte gUnknown_03002A80
+_0801CA68: .4byte gHBlankCopySize
 _0801CA6C: .4byte gBgOffsetsHBlank
 _0801CA70: .4byte gStageTime
 _0801CA74:

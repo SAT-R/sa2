@@ -52,10 +52,10 @@ _0801DA1A:
 	movs r2, #4
 	orrs r0, r2
 	str r0, [r1]
-	ldr r1, _0801DB98 @ =gUnknown_03002878
+	ldr r1, _0801DB98 @ =gHBlankCopyTarget
 	ldr r0, _0801DB9C @ =0x0400001C
 	str r0, [r1]
-	ldr r0, _0801DBA0 @ =gUnknown_03002A80
+	ldr r0, _0801DBA0 @ =gHBlankCopySize
 	strb r2, [r0]
 	ldr r0, _0801DBA4 @ =gBgOffsetsHBlank
 	ldr r4, [r0]
@@ -231,9 +231,9 @@ _0801DB88: .4byte gBgScrollRegs
 _0801DB8C: .4byte gDispCnt
 _0801DB90: .4byte 0x0000FEFF
 _0801DB94: .4byte gFlags
-_0801DB98: .4byte gUnknown_03002878
+_0801DB98: .4byte gHBlankCopyTarget
 _0801DB9C: .4byte 0x0400001C
-_0801DBA0: .4byte gUnknown_03002A80
+_0801DBA0: .4byte gHBlankCopySize
 _0801DBA4: .4byte gBgOffsetsHBlank
 _0801DBA8: .4byte gStageTime
 _0801DBAC:

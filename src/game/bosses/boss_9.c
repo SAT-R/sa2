@@ -819,7 +819,7 @@ void Task_EggmanKidnapsVanilla(void)
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
 
     if (--boss->unk12 == 0) {
-        gFlags &= ~FLAGS_4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         TaskDestroy(gCurTask);
         return;
     }
@@ -832,9 +832,9 @@ void Task_EggmanKidnapsVanilla(void)
     gWinRegs[WINREG_WINOUT] = (WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0 | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2 | WINOUT_WIN01_CLR
                                | WINOUT_WIN01_OBJ | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
 
-    gFlags |= FLAGS_4;
-    gUnknown_03002878 = (void *)&REG_BG1VOFS;
-    gUnknown_03002A80 = 2;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+    gHBlankCopyTarget = (void *)&REG_BG1VOFS;
+    gHBlankCopySize = 2;
 
     offset = gBgOffsetsHBlank;
     for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {

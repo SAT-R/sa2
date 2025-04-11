@@ -22,9 +22,9 @@ void StageBgUpdate_ZoneFinalActTA53(void)
 
     if (aBool) {
         u16 *offset;
-        gFlags |= FLAGS_4;
-        gUnknown_03002878 = (void *)&REG_BG1HOFS;
-        gUnknown_03002A80 = 2;
+        gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+        gHBlankCopyTarget = (void *)&REG_BG1HOFS;
+        gHBlankCopySize = 2;
 
         offset = (u16 *)gBgOffsetsHBlank;
         for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {

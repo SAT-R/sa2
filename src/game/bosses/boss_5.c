@@ -1060,14 +1060,14 @@ void sub_8044784(EggSaucer *boss)
             fade->brightness = Q(SCREEN_FADE_BLEND_MAX);
             UpdateScreenFade(fade);
         }
-        gFlags &= ~FLAGS_4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         return;
     }
 
     if (boss->gunHealth == 0) {
         fade->brightness = Q(SCREEN_FADE_BLEND_MAX);
         UpdateScreenFade(fade);
-        gFlags &= ~FLAGS_4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         return;
     }
 

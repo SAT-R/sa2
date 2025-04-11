@@ -215,11 +215,11 @@ void CreateMultiplayerModeSelectScreen(void)
 static void Task_EnterAnimPart1(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, (0x10 - modeScreen->animFrame) * 20);
     if (gPressedKeys & A_BUTTON) {
@@ -247,11 +247,11 @@ static void Task_EnterAnimPart2(void)
     }
 
     // TODO: make a macro
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
@@ -315,11 +315,11 @@ static void Task_ScreenMain(void)
         gCurTask->main = Task_FadeOutAndExitToTitleScreen;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
@@ -356,17 +356,17 @@ static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
     if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
-        gFlags &= ~0x4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
         return;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
@@ -377,17 +377,17 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
     if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
-        gFlags &= ~0x4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
         return;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 

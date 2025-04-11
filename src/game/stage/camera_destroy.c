@@ -27,12 +27,12 @@ void TaskDestructor_Camera(struct Task *unused)
         gBgScrollRegs[i][1] = 0;
     }
 
-    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_40)) {
+    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_EXECUTE_HBLANK_COPY0)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
-        gFlags &= ~FLAGS_40;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY0;
     }
 
-    gFlags &= ~FLAGS_4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 }
 
 void Task_CallUpdateCamera(void)

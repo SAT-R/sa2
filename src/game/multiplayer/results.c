@@ -270,9 +270,9 @@ static void sub_805C0F0(void)
         u32 i;
         u16 j, x;
         u16 unk200 = selectionResultsScreen->animStep >> 8;
-        gFlags |= 0x4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 4;
+        gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+        gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
+        gHBlankCopySize = 4;
 
         for (x = 0, i = 0; i < 0x20; i++, x++) {
             *unk1884++ = 0;
@@ -345,7 +345,7 @@ static void sub_805C3D0(void)
     if (resultsScreen->animStep > 0x1000) {
         resultsScreen->animStep = 0x1000;
         gBldRegs.bldY = 0x10;
-        gFlags &= ~0x4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
@@ -395,9 +395,9 @@ static void sub_805C504(void)
     MultiPakHeartbeat();
 
     selectionResultsScreen = TASK_DATA(gCurTask);
-    gFlags |= 0x4;
-    gUnknown_03002878 = (void *)REG_ADDR_BG3VOFS;
-    gUnknown_03002A80 = 2;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+    gHBlankCopyTarget = (void *)REG_ADDR_BG3VOFS;
+    gHBlankCopySize = 2;
 
     for (x = 0, i = 0; i < 0x20; i++, x++) {
         *unk1884++ = selectionResultsScreen->unk204;

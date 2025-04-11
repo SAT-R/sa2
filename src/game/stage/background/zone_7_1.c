@@ -77,10 +77,10 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
     gDispCnt &= ~DISPCNT_BG0_ON;
     gDispCnt |= DISPCNT_BG3_ON;
 
-    gFlags |= FLAGS_4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
-    gUnknown_03002878 = (void *)&REG_BG3HOFS;
-    gUnknown_03002A80 = 4;
+    gHBlankCopyTarget = (void *)&REG_BG3HOFS;
+    gHBlankCopySize = 4;
 
     dst = (u16 *)gBgOffsetsHBlank;
 
@@ -250,10 +250,10 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
     gDispCnt &= ~DISPCNT_BG3_ON;
     gDispCnt |= DISPCNT_BG0_ON;
 
-    gFlags |= FLAGS_4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
-    gUnknown_03002878 = (void *)&REG_BG0HOFS;
-    gUnknown_03002A80 = 2;
+    gHBlankCopyTarget = (void *)&REG_BG0HOFS;
+    gHBlankCopySize = 2;
     lineShiftX = (u16 *)gBgOffsetsHBlank;
 
     stageTime = gStageTime;

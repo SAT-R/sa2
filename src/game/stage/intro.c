@@ -875,7 +875,7 @@ static void Task_IntroColorAnimation(void)
             p1->x = counter - 104;
         } else if (counter >= INTROFRAME_FADE_GAMEPLAY) {
             /* Clean up after the animation finished */
-            gFlags &= ~FLAGS_4;
+            gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 
             TaskDestroy(gCurTask);
             return;
@@ -891,10 +891,10 @@ static void Task_IntroColorAnimation(void)
         }
     }
 
-    gUnknown_03002A80 = 2 * sizeof(int_vcount);
-    gUnknown_03002878 = (void *)&REG_WIN0H;
+    gHBlankCopySize = 2 * sizeof(int_vcount);
+    gHBlankCopyTarget = (void *)&REG_WIN0H;
 
-    gFlags |= FLAGS_4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     InitHBlankBgOffsets(DISPLAY_WIDTH);
 

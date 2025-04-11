@@ -165,5 +165,5 @@ void TaskDestructor_SpotLightMain(struct Task *t)
     gWinRegs[WINREG_WIN1H] = 0;
     gWinRegs[WINREG_WIN1V] = 0;
 
-    gFlags &= ~0x4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 }

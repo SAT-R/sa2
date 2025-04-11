@@ -46,9 +46,9 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
             camFracX = 0x100;
         }
 
-        gFlags |= FLAGS_4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 4;
+        gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
+        gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
+        gHBlankCopySize = 4;
 
         cursor = gBgOffsetsHBlank;
         unk5590_1 = gStageTime * 0x18;

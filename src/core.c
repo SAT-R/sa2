@@ -93,14 +93,12 @@ u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
 union MultiSioData gMultiSioSend ALIGNED(8) = {};
 u8 gUnknown_03002874 = 0;
 
-// gHBlankCopyTarget
-void *gUnknown_03002878 ALIGNED(4) = NULL;
+void *gHBlankCopyTarget ALIGNED(4) = NULL;
 
 u8 gBackgroundsCopyQueueIndex = 0;
 u16 gBgPalette[] ALIGNED(16) = {};
 
-// gHBlankCopySize
-u8 gUnknown_03002A80 ALIGNED(4) = 0;
+u8 gHBlankCopySize ALIGNED(4) = 0;
 
 u8 gVramGraphicsCopyQueueIndex ALIGNED(4) = 0;
 u16 gPrevInput ALIGNED(4) = 0;
@@ -315,8 +313,8 @@ void EngineInit(void)
 
     gBgOffsetsHBlank = gBgOffsetsBuffer[0];
     gUnknown_030022AC = gBgOffsetsBuffer[1];
-    gUnknown_03002878 = NULL;
-    gUnknown_03002A80 = 0;
+    gHBlankCopyTarget = NULL;
+    gHBlankCopySize = 0;
     gNumHBlankCallbacks = 0;
     gNumHBlankIntrs = 0;
 
@@ -381,7 +379,7 @@ void EngineMainLoop(void)
 #endif
     {
         gExecSoundMain = FALSE;
-        if (!(gFlags & FLAGS_4000)) {
+        if (!(gFlags & FLAGS_EXECUTE_HBLANK_COPY000)) {
             m4aSoundMain();
         }
 
@@ -402,7 +400,7 @@ void EngineMainLoop(void)
         gNextFreeAffineIndex = 0;
 #endif
 
-        if (gFlags & FLAGS_4000) {
+        if (gFlags & FLAGS_EXECUTE_HBLANK_COPY000) {
             UpdateScreenCpuSet();
 
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
@@ -469,9 +467,9 @@ static void UpdateScreenDma(void)
         gNumHBlankIntrs = 0;
     }
 
-    if (gFlags & FLAGS_4) {
+    if (gFlags & FLAGS_EXECUTE_HBLANK_COPY) {
 
-        DmaCopy16(3, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
+        DmaCopy16(3, gBgOffsetsHBlank, gHBlankCopyTarget, gHBlankCopySize);
     }
 
     if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
@@ -554,7 +552,7 @@ static void ClearOamBufferDma(void)
         }
 #endif
     }
-    gFlags &= ~FLAGS_4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
     DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
@@ -647,20 +645,20 @@ static void VBlankIntr(void)
     INTR_CHECK |= 1;
     gExecSoundMain = TRUE;
 
-    if (gFlagsPreVBlank & FLAGS_4) {
+    if (gFlagsPreVBlank & FLAGS_EXECUTE_HBLANK_COPY) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
 
-        DmaCopy16(0, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
-        DmaSet(0, gBgOffsetsHBlank + gUnknown_03002A80, gUnknown_03002878,
-               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | (gUnknown_03002A80 >> 1));
+        DmaCopy16(0, gBgOffsetsHBlank, gHBlankCopyTarget, gHBlankCopySize);
+        DmaSet(0, gBgOffsetsHBlank + gHBlankCopySize, gHBlankCopyTarget,
+               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | (gHBlankCopySize >> 1));
 
-    } else if (gUnknown_03002878) {
+    } else if (gHBlankCopyTarget) {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gUnknown_03002878 = NULL;
+        gHBlankCopyTarget = NULL;
     }
 
-    if (gFlagsPreVBlank & FLAGS_40) {
+    if (gFlagsPreVBlank & FLAGS_EXECUTE_HBLANK_COPY0) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
         REG_DISPSTAT |= gUnknown_03002874 << 8;
@@ -682,7 +680,7 @@ static void VBlankIntr(void)
             REG_DISPSTAT = DISPCNT_MODE_0;
             m4aMPlayAllStop();
             m4aSoundVSyncOff();
-            gFlags &= ~FLAGS_4;
+            gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
             DmaStop(0);
             DmaStop(1);
             DmaStop(2);

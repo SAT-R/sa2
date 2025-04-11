@@ -74,8 +74,8 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 
         gBgScrollRegs[0][1] = gCamera.y >> 9;
         gFlags |= 4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 4;
+        gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
+        gHBlankCopySize = 4;
         cursor = gBgOffsetsHBlank;
         initial1 = 0;
 

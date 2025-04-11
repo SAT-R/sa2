@@ -717,7 +717,7 @@ void GoToNextLevel(void)
     REG_DISPSTAT = 0;
     REG_DISPSTAT;
 
-    gFlags &= ~FLAGS_4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 
     SlowDmaStop(0);
     SlowDmaStop(1);

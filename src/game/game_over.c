@@ -105,7 +105,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
     gBldRegs.bldAlpha = 0;
-    gFlags &= ~FLAGS_4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 
     memset(gBgPalette, 0, sizeof(gBgPalette));
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

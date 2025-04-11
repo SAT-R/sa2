@@ -92,7 +92,7 @@ void Task_802EE78(void)
         ts->bldAlpha = 0;
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
-            gFlags &= ~FLAGS_4;
+            gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         }
 
         if (IS_FINAL_STAGE(gCurrentLevel)) {

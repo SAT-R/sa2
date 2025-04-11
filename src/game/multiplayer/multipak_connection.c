@@ -656,7 +656,7 @@ UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
 void MultiPakCommunicationError(void)
 {
     m4aMPlayAllStop();
-    gFlags &= ~0x4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
     gDispCnt = 0x40;
     gMultiSioEnabled = FALSE;
     MultiSioStop();

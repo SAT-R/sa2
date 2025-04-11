@@ -121,10 +121,10 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     s32 sl;
     s32 p1_2;
 
-    gFlags |= FLAGS_4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
-    gUnknown_03002878 = (void *)&REG_BG0HOFS;
-    gUnknown_03002A80 = 4;
+    gHBlankCopyTarget = (void *)&REG_BG0HOFS;
+    gHBlankCopySize = 4;
 
     gWinRegs[WINREG_WINOUT] = WINOUT_WIN01_ALL;
     gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG0);
@@ -313,7 +313,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             if (r6 != 0) {
                 sub_801D24C(r6, 63 - r2, 1);
             } else {
-                gFlags &= ~FLAGS_4;
+                gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
                 gBldRegs.bldCnt = r6;
             }
         } break;

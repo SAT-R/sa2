@@ -430,7 +430,7 @@ static void Task_DestructionSceneOutro(void)
     if (boss->sceneTimer > 8) {
         switch (boss->sceneTimer) {
             case 9:
-                gFlags &= ~FLAGS_4;
+                gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
                 m4aSongNumStart(SE_333);
                 break;
         }

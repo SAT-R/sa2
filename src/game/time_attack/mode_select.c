@@ -2,6 +2,7 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "task.h"
+#include "flags.h"
 #include "lib/m4a/m4a.h"
 #include "game/character_select.h"
 #include "game/stage/boss_results_transition.h"
@@ -23,11 +24,10 @@ struct TimeAttackModeSelectionScreen {
     Sprite unkB0;
     Sprite unkE0;
     Sprite infoText;
-    ScreenFade unk140;
+    ScreenFade fade;
     u8 animFrame;
     u8 unk14D;
     u8 unk14E;
-    u8 filler14F;
 };
 
 static void Task_FadeInAndStartIntro(void);
@@ -114,7 +114,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     modeScreen->unk14D = 0;
     modeScreen->unk14E = 0;
 
-    fade = &modeScreen->unk140;
+    fade = &modeScreen->fade;
     fade->window = 1;
     fade->brightness = Q_8_8(0);
     fade->flags = 2;
@@ -138,7 +138,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = 0x1000;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkB0;
@@ -232,15 +232,15 @@ void Task_IntroSweepAnim(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
 
-    gWinRegs[4] = 0x1300;
-    gWinRegs[5] = 0x11;
+    gWinRegs[WINREG_WININ] = 0x1300;
+    gWinRegs[WINREG_WINOUT] = 0x11;
 
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E044(0x6400, modeScreen->animFrame * 20 + 700);
+    sub_802E044(Q(100), modeScreen->animFrame * 20 + 700);
 
     if (gPressedKeys & A_BUTTON) {
         modeScreen->animFrame = 0;
@@ -266,15 +266,15 @@ static void Task_IntroUIAnim(void)
         modeScreen->animFrame = 31;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
 
-    gWinRegs[4] = 0x1300;
-    gWinRegs[5] = 0x11;
+    gWinRegs[WINREG_WININ] = 0x1300;
+    gWinRegs[WINREG_WINOUT] = 0x11;
 
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E044(0x6400, 700);
+    sub_802E044(Q(100), 700);
 
     s = &modeScreen->unk80;
     if (modeScreen->animFrame < 10) {
@@ -317,7 +317,7 @@ static void Task_ScreenMain(void)
         if (modeScreen->unk14D && !gLoadedSaveGame->bossTimeAttackUnlocked) {
             m4aSongNumStart(SE_ABORT);
         } else {
-            fade = &modeScreen->unk140;
+            fade = &modeScreen->fade;
             fade->window = 1;
             fade->brightness = Q_8_8(0);
             fade->flags = 1;
@@ -328,7 +328,7 @@ static void Task_ScreenMain(void)
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
-        fade = &modeScreen->unk140;
+        fade = &modeScreen->fade;
         fade->window = 1;
         fade->brightness = Q_8_8(0);
         fade->flags = 1;
@@ -339,15 +339,15 @@ static void Task_ScreenMain(void)
         gCurTask->main = Task_FadeOutToTitleScreen;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
 
-    gWinRegs[4] = 0x1300;
-    gWinRegs[5] = 0x11;
+    gWinRegs[WINREG_WININ] = 0x1300;
+    gWinRegs[WINREG_WINOUT] = 0x11;
 
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E044(0x6400, 700);
+    sub_802E044(Q(100), 700);
 
     if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -398,22 +398,22 @@ static void Task_FadeOutModeSelected(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
-        gFlags &= ~0x4;
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_HandleModeSelectedExit;
         return;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
 
-    gWinRegs[4] = 0x3300;
-    gWinRegs[5] = 0x31;
+    gWinRegs[WINREG_WININ] = 0x3300;
+    gWinRegs[WINREG_WINOUT] = 0x31;
 
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E044(0x6400, 700);
+    sub_802E044(Q(100), 700);
     RenderUI(modeScreen);
 }
 
@@ -421,29 +421,29 @@ static void Task_FadeOutToTitleScreen(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
-        gFlags &= ~0x4;
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         CreateTitleScreenAtSinglePlayerMenu();
         TaskDestroy(gCurTask);
         return;
     }
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
+    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN1H;
 
-    gWinRegs[4] = 0x3300;
-    gWinRegs[5] = 0x31;
+    gWinRegs[WINREG_WININ] = 0x3300;
+    gWinRegs[WINREG_WINOUT] = 0x31;
 
-    gFlags |= 0x4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E044(0x6400, 700);
+    sub_802E044(Q(100), 700);
     RenderUI(modeScreen);
 }
 
 static void Task_FadeInAndStartIntro(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         modeScreen->animFrame = 0xF;
         gCurTask->main = Task_IntroSweepAnim;
     }

@@ -310,9 +310,9 @@ void sub_8081604(void)
             if (gPressedKeys & START_BUTTON) {
                 connectScreen->unkF0 = 1;
                 gFlags |= FLAGS_8000;
-                gFlags |= FLAGS_4000;
+                gFlags |= FLAGS_EXECUTE_HBLANK_COPY000;
                 m4aMPlayAllStop();
-                gFlags &= ~FLAGS_4;
+                gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
                 m4aSoundVSyncOff();
                 DmaStop(0);
                 DmaStop(1);
@@ -323,7 +323,7 @@ void sub_8081604(void)
         }
     } else {
         connectScreen->unkF0 = 0;
-        gFlags &= ~FLAGS_4000;
+        gFlags &= ~0x4000;
         gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
     }
@@ -343,7 +343,7 @@ void sub_8081604(void)
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
-        gFlags &= ~FLAGS_4000;
+        gFlags &= ~0x4000;
         gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
         MultiPakCommunicationError();
@@ -415,7 +415,7 @@ void sub_80818B8(void)
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            gFlags &= ~FLAGS_4000;
+            gFlags &= ~0x4000;
             gFlags &= ~FLAGS_8000;
             m4aSoundVSyncOn();
             MultiPakCommunicationError();

@@ -20,10 +20,10 @@
 	movs r3, #4
 	orrs r0, r3
 	str r0, [r4]
-	ldr r2, _0801D378 @ =gUnknown_03002878
+	ldr r2, _0801D378 @ =gHBlankCopyTarget
 	ldr r0, _0801D37C @ =0x04000010
 	str r0, [r2]
-	ldr r0, _0801D380 @ =gUnknown_03002A80
+	ldr r0, _0801D380 @ =gHBlankCopySize
 	strb r3, [r0]
 	ldr r2, _0801D384 @ =gWinRegs
 	movs r0, #0
@@ -158,9 +158,9 @@ _0801D332:
 	b _0801D3BE
 	.align 2, 0
 _0801D374: .4byte gFlags
-_0801D378: .4byte gUnknown_03002878
+_0801D378: .4byte gHBlankCopyTarget
 _0801D37C: .4byte 0x04000010
-_0801D380: .4byte gUnknown_03002A80
+_0801D380: .4byte gHBlankCopySize
 _0801D384: .4byte gWinRegs
 _0801D388: .4byte gBldRegs
 _0801D38C: .4byte 0x00003F41

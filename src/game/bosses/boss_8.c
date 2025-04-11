@@ -986,7 +986,7 @@ void Task_804AB24(void)
         u8 arm;
         // _0804ABF2
 
-        gFlags &= ~FLAGS_4;
+        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         gCurTask->main = Task_804AD68;
         boss->unk14 = 0xFF;
 
@@ -1068,7 +1068,7 @@ void sub_804AE40(SuperEggRoboZ *boss)
         if (boss->unkE == 0) {
             gBldRegs.bldY = 0;
             boss->fade.brightness = 0;
-            gFlags &= ~FLAGS_4;
+            gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         }
         boss->unkE = 2;
     }
@@ -1089,12 +1089,12 @@ void sub_804AE40(SuperEggRoboZ *boss)
             }
             // _0804AEC2
 
-            gFlags &= ~FLAGS_4;
+            gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         } else {
             // _0804AED4
             if (--boss->unk12 == 0) {
                 u32 livesCockpit;
-                gFlags &= ~FLAGS_4;
+                gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 
                 boss->fade.brightness = Q(32);
                 UpdateScreenFade(&boss->fade);

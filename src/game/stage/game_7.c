@@ -344,10 +344,10 @@ void sub_802DF18(u8 p0, u16 p1)
 
 void sub_802E044(s32 p0, u16 p1)
 {
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
     u16 r5 = ((unsigned)p1 << 22) >> 22;
 
-    if (r5 > Q(2.0)) {
+    if (r5 > 512) {
         s32 r3 = (COS(r5) * 15) >> 2;
         s32 r1 = SIN_24_8(r5);
         s16 i;
@@ -360,7 +360,7 @@ void sub_802E044(s32 p0, u16 p1)
             }
         }
 
-        bgOffsets = (u8 *)&((u16 *)bgOffsets)[DISPLAY_HEIGHT - 1];
+        bgOffsets = &bgOffsets[(DISPLAY_HEIGHT - 1) * 2];
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
             s32 val;
@@ -380,7 +380,7 @@ void sub_802E044(s32 p0, u16 p1)
             }
 
             *bgOffsets = val;
-            bgOffsets -= sizeof(u16);
+            bgOffsets -= 2;
         }
     }
 }
@@ -658,9 +658,9 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
     s16 limitY2, limitX2;
     s16 limitX1, limitY1;
 
-    gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void *)REG_ADDR_WIN0H;
-    gFlags |= FLAGS_4;
+    gHBlankCopySize = 2;
+    gHBlankCopyTarget = (void *)REG_ADDR_WIN0H;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (x > 0 && x < DISPLAY_WIDTH && y < DISPLAY_HEIGHT && x > 0) {
         u16 i;

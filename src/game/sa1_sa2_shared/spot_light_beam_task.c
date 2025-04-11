@@ -205,4 +205,4 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
 }
 END_NONMATCH
 
-void TaskDestructor_SpotlightBeamTask(struct Task *t) { gFlags &= ~FLAGS_4; }
+void TaskDestructor_SpotlightBeamTask(struct Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }
