@@ -379,7 +379,7 @@ void EngineMainLoop(void)
 #endif
     {
         gExecSoundMain = FALSE;
-        if (!(gFlags & FLAGS_EXECUTE_HBLANK_COPY000)) {
+        if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
         }
 
@@ -400,7 +400,7 @@ void EngineMainLoop(void)
         gNextFreeAffineIndex = 0;
 #endif
 
-        if (gFlags & FLAGS_EXECUTE_HBLANK_COPY000) {
+        if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
 
             if (!(gFlags & FLAGS_PAUSE_GAME)) {

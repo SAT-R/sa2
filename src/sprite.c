@@ -865,7 +865,7 @@ void CopyOamBufferToOam(void)
     }
 
     gOamFreeIndex = 0;
-    if (gFlags & FLAGS_EXECUTE_HBLANK_COPY000) {
+    if (gFlags & FLAGS_4000) {
         CpuFill32(-1, gUnknown_03001850, sizeof(gUnknown_03001850));
         CpuFill32(-1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
     } else {

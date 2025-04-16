@@ -17,7 +17,7 @@
 #define FLAGS_PAUSE_GAME                 0x400
 #define FLAGS_800                        0x800
 #define FLAGS_SKIP_INTRO                 0x1000
-#define FLAGS_EXECUTE_HBLANK_COPY000     0x4000
+#define FLAGS_4000                       0x4000
 #define FLAGS_8000                       0x8000
 
 extern u32 gFlags;

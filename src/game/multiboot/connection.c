@@ -310,7 +310,7 @@ void sub_8081604(void)
             if (gPressedKeys & START_BUTTON) {
                 connectScreen->unkF0 = 1;
                 gFlags |= FLAGS_8000;
-                gFlags |= FLAGS_EXECUTE_HBLANK_COPY000;
+                gFlags |= FLAGS_4000;
                 m4aMPlayAllStop();
                 gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
                 m4aSoundVSyncOff();
