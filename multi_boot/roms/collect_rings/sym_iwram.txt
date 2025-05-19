@@ -1,4 +1,4 @@
-. = 0x00000000; gUnknown_03000000 = .;
+. = 0x00000000; SoundMainRAM_Buffer = .;
 . = 0x00000001; gUnknown_03000001 = .;
 . = 0x00000004; gUnknown_03000004 = .;
 . = 0x00000006; gUnknown_03000006 = .;

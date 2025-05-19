@@ -1433,9 +1433,9 @@ _02000DC0:
 	str r2, [r4, #4]
 	str r0, [r4, #8]
 	ldr r0, [r4, #8]
-	bl sub_020137B8
+	bl m4aSoundInit
 	ldr r0, _02000FD4 @ =0x0092F400
-	bl sub_02013D54
+	bl m4aSoundMode
 	ldr r1, _02000FD8 @ =gUnknown_03005394
 	movs r0, #1
 	strb r0, [r1]
@@ -1597,7 +1597,7 @@ _0200101E:
 	ands r0, r1
 	cmp r0, #0
 	bne _02001036
-	bl sub_02013830
+	bl m4aSoundMain
 _02001036:
 	ldr r0, _0200109C @ =gUnknown_030026D4
 	ldrb r0, [r0]
@@ -2959,7 +2959,7 @@ _02001B10:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _02001B24
-	bl sub_02013830
+	bl m4aSoundMain
 	movs r0, #0
 	strb r0, [r4]
 _02001B24:
@@ -3002,7 +3002,7 @@ _02001B6A:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _02001B7E
-	bl sub_02013830
+	bl m4aSoundMain
 	movs r0, #0
 	strb r0, [r4]
 _02001B7E:
@@ -8794,7 +8794,7 @@ sub_0200470C: @ 0x0200470C
 	adds r2, #2
 	strh r2, [r1, #0x14]
 	ldrh r0, [r0, #4]
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r0, #1
 	pop {r1}
 	bx r1
@@ -9398,7 +9398,7 @@ _02004B8E:
 	ldr r0, _02004BB8 @ =gUnknown_03005544
 	strb r6, [r0]
 	movs r0, #0x17
-	bl sub_0201383C
+	bl m4aSongNumStart
 _02004B98:
 	pop {r4, r5, r6}
 	pop {r0}
@@ -9773,7 +9773,7 @@ sub_02004E54: @ 0x02004E54
 	ldr r1, _02004EE8 @ =0xFFFFBFFF
 	ands r0, r1
 	str r0, [r2]
-	bl sub_02013EBC
+	bl m4aSoundVSyncOn
 	ldr r1, _02004EEC @ =gUnknown_03005444
 	movs r0, #5
 	strb r0, [r1]
@@ -9801,7 +9801,7 @@ sub_02004E54: @ 0x02004E54
 	adds r0, r4, #0
 	bl sub_02005B04
 	movs r0, #3
-	bl sub_0201383C
+	bl m4aSongNumStart
 	b _02004F10
 	.align 2, 0
 _02004ED4: .4byte gUnknown_0300544C
@@ -9820,7 +9820,7 @@ _02004F04:
 	adds r0, r4, #0
 	bl sub_02005B5C
 	movs r0, #1
-	bl sub_0201383C
+	bl m4aSongNumStart
 _02004F10:
 	ldr r1, _02004F20 @ =gUnknown_030018C8
 	movs r0, #0
@@ -11177,16 +11177,16 @@ sub_020059D0: @ 0x020059D0
 	strh r0, [r4]
 	ldr r0, _02005A2C @ =0x0201F270
 	movs r1, #8
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _02005A30 @ =0x0201F2B0
 	movs r1, #8
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _02005A34 @ =0x0201F2F0
 	movs r1, #8
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _02005A38 @ =0x0201F340
 	movs r1, #8
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r1, _02005A3C @ =gUnknown_030018C8
 	movs r0, #0xff
 	strh r0, [r1]
@@ -14558,7 +14558,7 @@ _020072F2:
 	strb r4, [r0, #1]
 _02007310:
 	movs r0, #0x11
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r0, #1
 _02007318:
 	pop {r4, r5, r6}
@@ -15193,7 +15193,7 @@ _02007852:
 	movs r4, #0
 	strb r0, [r1, #4]
 	movs r0, #0x13
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, [r5, #0x78]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
@@ -15295,7 +15295,7 @@ _0200791A:
 	strh r0, [r1]
 _0200792E:
 	movs r0, #0xf
-	bl sub_0201383C
+	bl m4aSongNumStart
 	b _02007964
 	.align 2, 0
 _02007938: .4byte gUnknown_02015A98
@@ -15653,7 +15653,7 @@ sub_02007BF8: @ 0x02007BF8
 	push {r4, lr}
 	adds r4, r0, #0
 	movs r0, #0x13
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, [r4, #0x78]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
@@ -20299,16 +20299,16 @@ _0200A072:
 	strh r4, [r1, #4]
 	ldr r0, _0200A0D8 @ =0x0201F270
 	movs r1, #4
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _0200A0DC @ =0x0201F2B0
 	movs r1, #4
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _0200A0E0 @ =0x0201F2F0
 	movs r1, #4
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	ldr r0, _0200A0E4 @ =0x0201F340
 	movs r1, #4
-	bl sub_020139D4
+	bl m4aMPlayFadeOut
 	strh r4, [r5]
 	ldr r1, [r6]
 	ldr r0, _0200A0E8 @ =sub_0200A0EC
@@ -20374,7 +20374,7 @@ _0200A12C:
 	movs r1, #0
 	movs r2, #4
 	bl sub_02014EBC
-	bl sub_02013970
+	bl m4aMPlayAllStop
 	ldr r0, _0200A1EC @ =gUnknown_030053A8
 	ldr r0, [r0]
 	str r0, [sp, #4]
@@ -21045,7 +21045,7 @@ sub_0200A61C: @ 0x0200A61C
 	movs r0, #1
 	strb r0, [r1]
 	movs r0, #0x14
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r0, #1
 	b _0200A69E
 	.align 2, 0
@@ -22294,7 +22294,7 @@ _0200AFF8:
 	beq _0200B068
 _0200B002:
 	movs r0, #0x15
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r0, #1
 	b _0200B06A
 _0200B00C:
@@ -23183,7 +23183,7 @@ sub_0200B698: @ 0x0200B698
 	cmp r0, #0x3c
 	bls _0200B6C0
 	movs r0, #0x1a
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, [r4]
 	bl sub_02001A38
 _0200B6C0:
@@ -23509,7 +23509,7 @@ _0200B90A:
 	strh r0, [r1]
 _0200B91E:
 	movs r0, #4
-	bl sub_0201383C
+	bl m4aSongNumStart
 	bl sub_0200BAB8
 	ldr r0, _0200B944 @ =gUnknown_030053A4
 	ldr r0, [r0]
@@ -24081,19 +24081,19 @@ sub_0200BD0C: @ 0x0200BD0C
 	ldr r4, _0200BDE4 @ =0x0201F2F0
 	ldr r1, _0200BDE8 @ =gUnknown_0201C7C0
 	adds r0, r4, #0
-	bl sub_02013F70
+	bl MPlayStart
 	adds r0, r4, #0
-	bl sub_02013A2C
+	bl m4aMPlayImmInit
 	ldr r5, _0200BDEC @ =0x0000FFFF
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #0x80
-	bl sub_020147E4
+	bl m4aMPlayVolumeControl
 	movs r2, #0x40
 	rsbs r2, r2, #0
 	adds r0, r4, #0
 	adds r1, r5, #0
-	bl sub_020148C0
+	bl m4aMPlayPanpotControl
 	b _0200BE16
 	.align 2, 0
 _0200BDC0: .4byte gUnknown_030053CC
@@ -24112,18 +24112,18 @@ _0200BDF0:
 	ldr r4, _0200BE2C @ =0x0201F2B0
 	ldr r1, _0200BE30 @ =gUnknown_0201C7C0
 	adds r0, r4, #0
-	bl sub_02013F70
+	bl MPlayStart
 	adds r0, r4, #0
-	bl sub_02013A2C
+	bl m4aMPlayImmInit
 	ldr r5, _0200BE34 @ =0x0000FFFF
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #0x80
-	bl sub_020147E4
+	bl m4aMPlayVolumeControl
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #0x40
-	bl sub_020148C0
+	bl m4aMPlayPanpotControl
 _0200BE16:
 	ldr r1, _0200BE38 @ =gUnknown_030053CC
 	ldrb r0, [r1]
@@ -29762,7 +29762,7 @@ sub_0200E724: @ 0x0200E724
 	ldr r0, _0200E7D0 @ =0x0201F270
 	movs r1, #0x80
 	lsls r1, r1, #1
-	bl sub_020147BC
+	bl m4aMPlayTempoControl
 	str r6, [r5, #0x20]
 	ldr r2, _0200E7D4 @ =gUnknown_030053D4
 	ldrh r1, [r2]
@@ -32242,7 +32242,7 @@ _0200FA9A:
 	ands r0, r1
 	str r0, [r2, #0x1c]
 	movs r0, #0xe
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, _0200FAD4 @ =gUnknown_030056C0
 	ldr r1, _0200FAD8 @ =sub_0200FADC
 	str r1, [r0]
@@ -32674,7 +32674,7 @@ _0200FDEE:
 	ldr r0, _0200FE10 @ =sub_02011874
 	str r0, [r1]
 	movs r0, #0xc
-	bl sub_0201383C
+	bl m4aSongNumStart
 	b _0200FEBA
 	.align 2, 0
 _0200FE00: .4byte gUnknown_02015C50
@@ -32705,7 +32705,7 @@ _0200FE2C:
 	cmp r0, #0
 	beq _0200FE98
 	movs r0, #0xb
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r2, _0200FF18 @ =gUnknown_02016D5C
 	ldr r0, _0200FF1C @ =gUnknown_02016D8C
 	adds r0, #0x5c
@@ -32716,7 +32716,7 @@ _0200FE2C:
 	adds r0, r0, r2
 	ldr r5, [r0]
 	adds r0, r5, #0
-	bl sub_02013A2C
+	bl m4aMPlayImmInit
 	ldr r1, _0200FF20 @ =0x0000FFFF
 	lsls r4, r4, #0x10
 	asrs r4, r4, #0x10
@@ -32724,7 +32724,7 @@ _0200FE2C:
 	rsbs r2, r2, #0
 	ands r2, r4
 	adds r0, r5, #0
-	bl sub_0201484C
+	bl m4aMPlayPitchControl
 	movs r1, #0x80
 	lsls r1, r1, #2
 	adds r4, r4, r1
@@ -33160,7 +33160,7 @@ _020101B4:
 	adds r0, r4, #0
 	bl sub_02010088
 	movs r0, #0x1a
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, _020101D4 @ =gUnknown_030056C0
 	ldr r1, _020101D8 @ =sub_020101DC
 	str r1, [r0]
@@ -33209,7 +33209,7 @@ sub_020101DC: @ 0x020101DC
 	ands r0, r1
 	str r0, [r2, #0x20]
 	movs r0, #0x1a
-	bl sub_02013908
+	bl m4aSongNumStop
 	b _02010318
 	.align 2, 0
 _02010228: .4byte 0xFFFFCFFF
@@ -33289,7 +33289,7 @@ _020102AE:
 	adds r0, r4, #0
 	bl sub_0200E088
 	movs r0, #0x1a
-	bl sub_020138B4
+	bl m4aSongNumStartOrContinue
 	ldr r0, [r4, #0x20]
 	ands r0, r5
 	cmp r0, #0
@@ -33327,7 +33327,7 @@ _020102AE:
 	ands r0, r1
 	str r0, [r4, #0x20]
 	movs r0, #0x1a
-	bl sub_02013908
+	bl m4aSongNumStop
 	ldr r0, _02010330 @ =sub_0200FADC
 	str r0, [r4]
 _02010318:
@@ -33407,7 +33407,7 @@ sub_02010334: @ 0x02010334
 	ands r0, r1
 	str r0, [r4, #0x20]
 	movs r0, #0x1a
-	bl sub_02013908
+	bl m4aSongNumStop
 	ldr r1, _020103DC @ =sub_0200F330
 	str r1, [r4]
 	adds r0, r5, #0
@@ -33491,7 +33491,7 @@ sub_020103E0: @ 0x020103E0
 	ands r0, r1
 	str r0, [r5, #0x20]
 	movs r0, #0x1a
-	bl sub_02013908
+	bl m4aSongNumStop
 	movs r1, #0x10
 	ldrsh r0, [r4, r1]
 	cmp r0, #0
@@ -33511,7 +33511,7 @@ _0201047E:
 	str r0, [r4, #0x20]
 _0201048C:
 	movs r0, #0xe
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r1, _020104B8 @ =sub_02010984
 	str r1, [r5]
 	adds r0, r4, #0
@@ -34490,7 +34490,7 @@ _02010C0C:
 	strh r0, [r4, #0x10]
 _02010C1C:
 	movs r0, #0x19
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, _02010C38 @ =gUnknown_030056C0
 	ldr r1, _02010C3C @ =sub_02010C40
 	str r1, [r0]
@@ -34689,7 +34689,7 @@ sub_02010D4C: @ 0x02010D4C
 	strh r6, [r5, #0x12]
 	strh r6, [r5, #0x14]
 	movs r0, #0xb
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r1, _02010DC4 @ =sub_0200FD90
 	str r1, [r4]
 	adds r0, r5, #0
@@ -34879,7 +34879,7 @@ _02010EF6:
 _02010EFA:
 	strh r0, [r4, #0x14]
 	movs r0, #0xd
-	bl sub_0201383C
+	bl m4aSongNumStart
 	b _02010FBE
 _02010F04:
 	adds r0, r3, r7
@@ -36158,7 +36158,7 @@ _020117D8:
 	ldr r0, _02011808 @ =sub_02011874
 	str r0, [r1]
 	movs r0, #0xb
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r0, #1
 	b _0201180E
 	.align 2, 0
@@ -36318,7 +36318,7 @@ sub_020118F8: @ 0x020118F8
 	strh r5, [r4, #0x12]
 	strh r5, [r4, #0x14]
 	movs r0, #0xb
-	bl sub_0201383C
+	bl m4aSongNumStart
 	ldr r0, _02011948 @ =gUnknown_030056C0
 	ldr r1, _0201194C @ =sub_0200FD90
 	str r1, [r0]
@@ -36596,7 +36596,7 @@ sub_02011AF0: @ 0x02011AF0
 	ands r0, r1
 	str r0, [r2, #0x20]
 	movs r0, #0x1a
-	bl sub_02013908
+	bl m4aSongNumStop
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -36731,7 +36731,7 @@ _02011C46:
 	movs r7, #0x10
 _02011C54:
 	movs r0, #0x10
-	bl sub_0201383C
+	bl m4aSongNumStart
 	movs r3, #0x91
 	lsls r3, r3, #3
 	movs r0, #0
@@ -38161,7 +38161,7 @@ _020127BC: .4byte gUnknown_030057D0
 sub_020127C0: @ 0x020127C0
 	push {lr}
 	movs r0, #2
-	bl sub_0201383C
+	bl m4aSongNumStart
 	pop {r0}
 	bx r0
 
@@ -38169,7 +38169,7 @@ sub_020127C0: @ 0x020127C0
 sub_020127CC: @ 0x020127CC
 	push {lr}
 	movs r0, #2
-	bl sub_0201383C
+	bl m4aSongNumStart
 	pop {r0}
 	bx r0
 
@@ -38203,8 +38203,8 @@ sub_020127D8: @ 0x020127D8
 	lsls r0, r0, #0x12
 	adds r0, r0, r5
 	mov sb, r0
-	bl sub_02013970
-	bl sub_02013E40
+	bl m4aMPlayAllStop
+	bl m4aSoundVSyncOff
 	ldr r2, _020128DC @ =gUnknown_03001820
 	ldr r0, [r2]
 	movs r1, #5
@@ -39412,7 +39412,7 @@ _020131DC:
 	ldr r0, [r0]
 	mov r8, r0
 	adds r0, r7, #0
-	bl sub_02014094
+	bl FadeOutBody
 	ldr r0, [r7, #4]
 	cmp r0, #0
 	bge _020131F0
@@ -39457,7 +39457,7 @@ _02013216:
 	b _02013238
 _02013232:
 	adds r0, r4, #0
-	bl sub_02013B90
+	bl ClearChain
 _02013238:
 	ldr r4, [r4, #0x34]
 	cmp r4, #0
@@ -39468,7 +39468,7 @@ _0201323E:
 	tst r0, r3
 	beq _020132BC
 	adds r0, r5, #0
-	bl sub_02013BA4
+	bl Clear64byte
 	movs r0, #0x80
 	strb r0, [r5]
 	movs r0, #2
@@ -39623,7 +39623,7 @@ _0201334C:
 	mov sb, r2
 	adds r0, r7, #0
 	adds r1, r5, #0
-	bl sub_0201415C
+	bl TrkVolPitSet
 	ldr r4, [r5, #0x20]
 	cmp r4, #0
 	beq _020133DC
@@ -39633,7 +39633,7 @@ _0201336A:
 	tst r0, r1
 	bne _0201337A
 	adds r0, r4, #0
-	bl sub_02013B90
+	bl ClearChain
 	b _020133D6
 _0201337A:
 	ldrb r0, [r4, #1]
@@ -39680,7 +39680,7 @@ _020133CA:
 	adds r1, r2, #0
 	ldrb r2, [r5, #9]
 	ldr r0, [r4, #0x24]
-	bl sub_02013714
+	bl MidiKeyToFreq
 	str r0, [r4, #0x20]
 _020133D6:
 	ldr r4, [r4, #0x34]
@@ -39968,7 +39968,7 @@ _020135B8:
 	beq _0201366A
 _020135C4:
 	adds r0, r4, #0
-	bl sub_02013B90
+	bl ClearChain
 	movs r1, #0
 	str r1, [r4, #0x30]
 	ldr r3, [r5, #0x20]
@@ -39988,7 +39988,7 @@ _020135D8:
 _020135EA:
 	ldr r0, [sp]
 	adds r1, r5, #0
-	bl sub_0201415C
+	bl TrkVolPitSet
 	ldr r0, [r5, #4]
 	str r0, [r4, #0x10]
 	ldr r0, [sp, #0x10]
@@ -40042,7 +40042,7 @@ _02013652:
 	ldrb r2, [r5, #9]
 	adds r1, r3, #0
 	adds r0, r7, #0
-	bl sub_02013714
+	bl MidiKeyToFreq
 _0201365C:
 	str r0, [r4, #0x20]
 	movs r0, #0x80
@@ -40156,8 +40156,8 @@ _02013710:
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_02013714
-sub_02013714: @ 0x02013714
+	thumb_func_start MidiKeyToFreq
+MidiKeyToFreq: @ 0x02013714
 	push {r4, r5, r6, r7, lr}
 	mov ip, r0
 	lsls r1, r1, #0x18
@@ -40206,11 +40206,11 @@ _02013728:
 	.align 2, 0
 _02013770: .4byte gUnknown_02015EFC
 _02013774: .4byte gUnknown_02015FB0
-_02013778:
+UnusedFunc:
 	.byte 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start sub_0201377C
-sub_0201377C: @ 0x0201377C
+	thumb_func_start MPlayContinue
+MPlayContinue: @ 0x0201377C
 	adds r2, r0, #0
 	ldr r3, [r2, #0x34]
 	ldr r0, _02013790 @ =0x68736D53
@@ -40226,8 +40226,8 @@ _0201378E:
 _02013790: .4byte 0x68736D53
 _02013794: .4byte 0x7FFFFFFF
 
-	thumb_func_start sub_02013798
-sub_02013798: @ 0x02013798
+	thumb_func_start MPlayFadeOut
+MPlayFadeOut: @ 0x02013798
 	adds r2, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -40245,22 +40245,22 @@ _020137B0:
 	.align 2, 0
 _020137B4: .4byte 0x68736D53
 
-	thumb_func_start sub_020137B8
-sub_020137B8: @ 0x020137B8
+	thumb_func_start m4aSoundInit
+m4aSoundInit: @ 0x020137B8
 	push {r4, r5, r6, lr}
 	ldr r0, _0201380C @ =sub_02012B8C
 	movs r1, #2
 	rsbs r1, r1, #0
 	ands r0, r1
-	ldr r1, _02013810 @ =gUnknown_03000000
+	ldr r1, _02013810 @ =SoundMainRAM_Buffer
 	ldr r2, _02013814 @ =0x04000100
 	bl sub_02014CB4
 	ldr r0, _02013818 @ =0x0201E130
-	bl sub_02013BB8
+	bl SoundInit
 	ldr r0, _0201381C @ =0x0201F170
-	bl sub_02013A74
+	bl MPlayExtender
 	ldr r0, _02013820 @ =0x0092F400
-	bl sub_02013D54
+	bl m4aSoundMode
 	ldr r0, _02013824 @ =0x00000004
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
@@ -40273,7 +40273,7 @@ _020137EA:
 	ldr r1, [r5, #4]
 	ldrb r2, [r5, #8]
 	adds r0, r4, #0
-	bl sub_02013EF8
+	bl MPlayOpen
 	ldrh r0, [r5, #0xa]
 	strb r0, [r4, #0xb]
 	ldr r0, _0201382C @ =0x0201F330
@@ -40288,7 +40288,7 @@ _02013806:
 	bx r0
 	.align 2, 0
 _0201380C: .4byte sub_02012B8C
-_02013810: .4byte gUnknown_03000000
+_02013810: .4byte SoundMainRAM_Buffer
 _02013814: .4byte 0x04000100
 _02013818: .4byte 0x0201E130
 _0201381C: .4byte 0x0201F170
@@ -40297,16 +40297,16 @@ _02013824: .4byte 0x00000004
 _02013828: .4byte gUnknown_02016D5C
 _0201382C: .4byte 0x0201F330
 
-	thumb_func_start sub_02013830
-sub_02013830: @ 0x02013830
+	thumb_func_start m4aSoundMain
+m4aSoundMain: @ 0x02013830
 	push {lr}
 	bl sub_02012B08
 	pop {r0}
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0201383C
-sub_0201383C: @ 0x0201383C
+	thumb_func_start m4aSongNumStart
+m4aSongNumStart: @ 0x0201383C
 	push {lr}
 	lsls r0, r0, #0x10
 	ldr r2, _02013860 @ =gUnknown_02016D5C
@@ -40321,15 +40321,15 @@ sub_0201383C: @ 0x0201383C
 	ldr r2, [r1]
 	ldr r1, [r0]
 	adds r0, r2, #0
-	bl sub_02013F70
+	bl MPlayStart
 	pop {r0}
 	bx r0
 	.align 2, 0
 _02013860: .4byte gUnknown_02016D5C
 _02013864: .4byte gUnknown_02016D8C
 
-	thumb_func_start sub_02013868
-sub_02013868: @ 0x02013868
+	thumb_func_start m4aSongNumStartOrChange
+m4aSongNumStartOrChange: @ 0x02013868
 	push {lr}
 	lsls r0, r0, #0x10
 	ldr r2, _02013894 @ =gUnknown_02016D5C
@@ -40348,7 +40348,7 @@ sub_02013868: @ 0x02013868
 	beq _0201389C
 	adds r0, r1, #0
 	adds r1, r2, #0
-	bl sub_02013F70
+	bl MPlayStart
 	b _020138B0
 	.align 2, 0
 _02013894: .4byte gUnknown_02016D5C
@@ -40363,13 +40363,13 @@ _0201389C:
 _020138A8:
 	adds r0, r1, #0
 	adds r1, r3, #0
-	bl sub_02013F70
+	bl MPlayStart
 _020138B0:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_020138B4
-sub_020138B4: @ 0x020138B4
+	thumb_func_start m4aSongNumStartOrContinue
+m4aSongNumStartOrContinue: @ 0x020138B4
 	push {lr}
 	lsls r0, r0, #0x10
 	ldr r2, _020138E0 @ =gUnknown_02016D5C
@@ -40388,7 +40388,7 @@ sub_020138B4: @ 0x020138B4
 	beq _020138E8
 	adds r0, r1, #0
 	adds r1, r2, #0
-	bl sub_02013F70
+	bl MPlayStart
 	b _02013904
 	.align 2, 0
 _020138E0: .4byte gUnknown_02016D5C
@@ -40400,19 +40400,19 @@ _020138E8:
 	bne _020138FA
 	adds r0, r1, #0
 	adds r1, r3, #0
-	bl sub_02013F70
+	bl MPlayStart
 	b _02013904
 _020138FA:
 	cmp r2, #0
 	bge _02013904
 	adds r0, r1, #0
-	bl sub_0201377C
+	bl MPlayContinue
 _02013904:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_02013908
-sub_02013908: @ 0x02013908
+	thumb_func_start m4aSongNumStop
+m4aSongNumStop: @ 0x02013908
 	push {lr}
 	lsls r0, r0, #0x10
 	ldr r2, _02013934 @ =gUnknown_02016D5C
@@ -40430,7 +40430,7 @@ sub_02013908: @ 0x02013908
 	cmp r1, r0
 	bne _0201392E
 	adds r0, r2, #0
-	bl sub_02014054
+	bl MPlayStop
 _0201392E:
 	pop {r0}
 	bx r0
@@ -40438,8 +40438,8 @@ _0201392E:
 _02013934: .4byte gUnknown_02016D5C
 _02013938: .4byte gUnknown_02016D8C
 
-	thumb_func_start sub_0201393C
-sub_0201393C: @ 0x0201393C
+	thumb_func_start m4aSongNumContinue
+m4aSongNumContinue: @ 0x0201393C
 	push {lr}
 	lsls r0, r0, #0x10
 	ldr r2, _02013968 @ =gUnknown_02016D5C
@@ -40457,7 +40457,7 @@ sub_0201393C: @ 0x0201393C
 	cmp r1, r0
 	bne _02013962
 	adds r0, r2, #0
-	bl sub_0201377C
+	bl MPlayContinue
 _02013962:
 	pop {r0}
 	bx r0
@@ -40465,8 +40465,8 @@ _02013962:
 _02013968: .4byte gUnknown_02016D5C
 _0201396C: .4byte gUnknown_02016D8C
 
-	thumb_func_start sub_02013970
-sub_02013970: @ 0x02013970
+	thumb_func_start m4aMPlayAllStop
+m4aMPlayAllStop: @ 0x02013970
 	push {r4, r5, lr}
 	ldr r0, _02013994 @ =0x00000004
 	lsls r0, r0, #0x10
@@ -40477,7 +40477,7 @@ sub_02013970: @ 0x02013970
 	adds r4, r0, #0
 _02013980:
 	ldr r0, [r5]
-	bl sub_02014054
+	bl MPlayStop
 	adds r5, #0xc
 	subs r4, #1
 	cmp r4, #0
@@ -40490,16 +40490,16 @@ _0201398E:
 _02013994: .4byte 0x00000004
 _02013998: .4byte gUnknown_02016D5C
 
-	thumb_func_start sub_0201399C
-sub_0201399C: @ 0x0201399C
+	thumb_func_start m4aMPlayContinue
+m4aMPlayContinue: @ 0x0201399C
 	push {lr}
-	bl sub_0201377C
+	bl MPlayContinue
 	pop {r0}
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_020139A8
-sub_020139A8: @ 0x020139A8
+	thumb_func_start m4aMPlayAllContinue
+m4aMPlayAllContinue: @ 0x020139A8
 	push {r4, r5, lr}
 	ldr r0, _020139CC @ =0x00000004
 	lsls r0, r0, #0x10
@@ -40510,7 +40510,7 @@ sub_020139A8: @ 0x020139A8
 	adds r4, r0, #0
 _020139B8:
 	ldr r0, [r5]
-	bl sub_0201377C
+	bl MPlayContinue
 	adds r5, #0xc
 	subs r4, #1
 	cmp r4, #0
@@ -40523,18 +40523,18 @@ _020139C6:
 _020139CC: .4byte 0x00000004
 _020139D0: .4byte gUnknown_02016D5C
 
-	thumb_func_start sub_020139D4
-sub_020139D4: @ 0x020139D4
+	thumb_func_start m4aMPlayFadeOut
+m4aMPlayFadeOut: @ 0x020139D4
 	push {lr}
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
-	bl sub_02013798
+	bl MPlayFadeOut
 	pop {r0}
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_020139E4
-sub_020139E4: @ 0x020139E4
+	thumb_func_start m4aMPlayFadeOutTemporarily
+m4aMPlayFadeOutTemporarily: @ 0x020139E4
 	adds r2, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -40552,8 +40552,8 @@ _020139FA:
 _020139FC: .4byte 0x68736D53
 _02013A00: .4byte 0x00000101
 
-	thumb_func_start sub_02013A04
-sub_02013A04: @ 0x02013A04
+	thumb_func_start m4aMPlayFadeIn
+m4aMPlayFadeIn: @ 0x02013A04
 	adds r2, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -40575,8 +40575,8 @@ _02013A22:
 _02013A24: .4byte 0x68736D53
 _02013A28: .4byte 0x7FFFFFFF
 
-	thumb_func_start sub_02013A2C
-sub_02013A2C: @ 0x02013A2C
+	thumb_func_start m4aMPlayImmInit
+m4aMPlayImmInit: @ 0x02013A2C
 	push {r4, r5, r6, r7, lr}
 	ldrb r5, [r0, #8]
 	ldr r4, [r0, #0x2c]
@@ -40595,7 +40595,7 @@ _02013A38:
 	cmp r0, #0
 	beq _02013A66
 	adds r0, r4, #0
-	bl sub_02013BA4
+	bl Clear64byte
 	strb r7, [r4]
 	movs r0, #2
 	strb r0, [r4, #0xf]
@@ -40616,8 +40616,8 @@ _02013A6E:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_02013A74
-sub_02013A74: @ 0x02013A74
+	thumb_func_start MPlayExtender
+MPlayExtender: @ 0x02013A74
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r5, r0, #0
@@ -40654,33 +40654,33 @@ sub_02013A74: @ 0x02013A74
 	adds r0, r6, #1
 	str r0, [r4]
 	ldr r1, _02013B50 @ =0x0201F0E0
-	ldr r0, _02013B54 @ =sub_02014A30
+	ldr r0, _02013B54 @ =MP2K_event_memacc
 	str r0, [r1, #0x20]
 	ldr r0, _02013B58 @ =sub_020136EC
 	str r0, [r1, #0x44]
 	ldr r0, _02013B5C @ =sub_02013700
 	str r0, [r1, #0x4c]
-	ldr r0, _02013B60 @ =sub_02014B88
+	ldr r0, _02013B60 @ =MP2K_event_xcmd
 	str r0, [r1, #0x70]
 	ldr r0, _02013B64 @ =sub_02013684
 	str r0, [r1, #0x74]
-	ldr r0, _02013B68 @ =sub_02013CB0
+	ldr r0, _02013B68 @ =SampleFreqSet
 	str r0, [r1, #0x78]
 	ldr r0, _02013B6C @ =sub_02013410
 	str r0, [r1, #0x7c]
 	adds r2, r1, #0
 	adds r2, #0x80
-	ldr r0, _02013B70 @ =sub_02014094
+	ldr r0, _02013B70 @ =FadeOutBody
 	str r0, [r2]
 	adds r1, #0x84
-	ldr r0, _02013B74 @ =sub_0201415C
+	ldr r0, _02013B74 @ =TrkVolPitSet
 	str r0, [r1]
 	str r5, [r4, #0x1c]
-	ldr r0, _02013B78 @ =sub_02014370
+	ldr r0, _02013B78 @ =CgbSound
 	str r0, [r4, #0x28]
-	ldr r0, _02013B7C @ =sub_020142B8
+	ldr r0, _02013B7C @ =CgbOscOff
 	str r0, [r4, #0x2c]
-	ldr r0, _02013B80 @ =sub_02014210
+	ldr r0, _02013B80 @ =MidiKeyToCgbFreq
 	str r0, [r4, #0x30]
 	ldr r0, _02013B84 @ =0x00000000
 	movs r1, #0
@@ -40725,25 +40725,25 @@ _02013B44: .4byte 0x04000063
 _02013B48: .4byte gUnknown_03007FF0
 _02013B4C: .4byte 0x68736D53
 _02013B50: .4byte 0x0201F0E0
-_02013B54: .4byte sub_02014A30
+_02013B54: .4byte MP2K_event_memacc
 _02013B58: .4byte sub_020136EC
 _02013B5C: .4byte sub_02013700
-_02013B60: .4byte sub_02014B88
+_02013B60: .4byte MP2K_event_xcmd
 _02013B64: .4byte sub_02013684
-_02013B68: .4byte sub_02013CB0
+_02013B68: .4byte SampleFreqSet
 _02013B6C: .4byte sub_02013410
-_02013B70: .4byte sub_02014094
-_02013B74: .4byte sub_0201415C
-_02013B78: .4byte sub_02014370
-_02013B7C: .4byte sub_020142B8
-_02013B80: .4byte sub_02014210
+_02013B70: .4byte FadeOutBody
+_02013B74: .4byte TrkVolPitSet
+_02013B78: .4byte CgbSound
+_02013B7C: .4byte CgbOscOff
+_02013B80: .4byte MidiKeyToCgbFreq
 _02013B84: .4byte 0x00000000
 _02013B88: .4byte 0x05000040
-_02013B8C:
+MusicPlayerJumpTableCopy:
 	.byte 0x2A, 0xDF, 0x70, 0x47
 
-	thumb_func_start sub_02013B90
-sub_02013B90: @ 0x02013B90
+	thumb_func_start ClearChain
+ClearChain: @ 0x02013B90
 	push {lr}
 	ldr r1, _02013BA0 @ =0x0201F168
 	ldr r1, [r1]
@@ -40753,8 +40753,8 @@ sub_02013B90: @ 0x02013B90
 	.align 2, 0
 _02013BA0: .4byte 0x0201F168
 
-	thumb_func_start sub_02013BA4
-sub_02013BA4: @ 0x02013BA4
+	thumb_func_start Clear64byte
+Clear64byte: @ 0x02013BA4
 	push {lr}
 	ldr r1, _02013BB4 @ =0x0201F16C
 	ldr r1, [r1]
@@ -40764,8 +40764,8 @@ sub_02013BA4: @ 0x02013BA4
 	.align 2, 0
 _02013BB4: .4byte 0x0201F16C
 
-	thumb_func_start sub_02013BB8
-sub_02013BB8: @ 0x02013BB8
+	thumb_func_start SoundInit
+SoundInit: @ 0x02013BB8
 	push {r4, r5, lr}
 	sub sp, #4
 	adds r5, r0, #0
@@ -40850,7 +40850,7 @@ _02013BE2:
 	str r4, [r5, #0x34]
 	movs r0, #0x80
 	lsls r0, r0, #0xb
-	bl sub_02013CB0
+	bl SampleFreqSet
 	ldr r0, _02013CAC @ =0x68736D53
 	str r0, [r5]
 	add sp, #4
@@ -40875,8 +40875,8 @@ _02013CA4: .4byte 0x02014CA9
 _02013CA8: .4byte 0x0201F0E0
 _02013CAC: .4byte 0x68736D53
 
-	thumb_func_start sub_02013CB0
-sub_02013CB0: @ 0x02013CB0
+	thumb_func_start SampleFreqSet
+SampleFreqSet: @ 0x02013CB0
 	push {r4, r5, r6, lr}
 	adds r2, r0, #0
 	ldr r0, _02013D30 @ =gUnknown_03007FF0
@@ -40920,7 +40920,7 @@ sub_02013CB0: @ 0x02013CB0
 	bl sub_02014D04
 	rsbs r0, r0, #0
 	strh r0, [r4]
-	bl sub_02013EBC
+	bl m4aSoundVSyncOn
 	ldr r1, _02013D50 @ =0x04000006
 _02013D14:
 	ldrb r0, [r1]
@@ -40948,8 +40948,8 @@ _02013D48: .4byte 0x04000100
 _02013D4C: .4byte 0x00044940
 _02013D50: .4byte 0x04000006
 
-	thumb_func_start sub_02013D54
-sub_02013D54: @ 0x02013D54
+	thumb_func_start m4aSoundMode
+m4aSoundMode: @ 0x02013D54
 	push {r4, r5, lr}
 	adds r3, r0, #0
 	ldr r0, _02013DE0 @ =gUnknown_03007FF0
@@ -41015,9 +41015,9 @@ _02013DC2:
 	ands r4, r3
 	cmp r4, #0
 	beq _02013DD6
-	bl sub_02013E40
+	bl m4aSoundVSyncOff
 	adds r0, r4, #0
-	bl sub_02013CB0
+	bl SampleFreqSet
 _02013DD6:
 	ldr r0, _02013DE4 @ =0x68736D53
 	str r0, [r5]
@@ -41030,8 +41030,8 @@ _02013DE0: .4byte gUnknown_03007FF0
 _02013DE4: .4byte 0x68736D53
 _02013DE8: .4byte 0x04000089
 
-	thumb_func_start sub_02013DEC
-sub_02013DEC: @ 0x02013DEC
+	thumb_func_start SoundClear
+SoundClear: @ 0x02013DEC
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _02013E38 @ =gUnknown_03007FF0
 	ldr r6, [r0]
@@ -41077,8 +41077,8 @@ _02013E32:
 _02013E38: .4byte gUnknown_03007FF0
 _02013E3C: .4byte 0x68736D53
 
-	thumb_func_start sub_02013E40
-sub_02013E40: @ 0x02013E40
+	thumb_func_start m4aSoundVSyncOff
+m4aSoundVSyncOff: @ 0x02013E40
 	push {lr}
 	sub sp, #4
 	ldr r0, _02013EA0 @ =gUnknown_03007FF0
@@ -41137,8 +41137,8 @@ _02013EB0: .4byte 0x040000D0
 _02013EB4: .4byte 0x040000C6
 _02013EB8: .4byte 0x05000318
 
-	thumb_func_start sub_02013EBC
-sub_02013EBC: @ 0x02013EBC
+	thumb_func_start m4aSoundVSyncOn
+m4aSoundVSyncOn: @ 0x02013EBC
 	push {r4, lr}
 	ldr r0, _02013EEC @ =gUnknown_03007FF0
 	ldr r2, [r0]
@@ -41168,8 +41168,8 @@ _02013EEC: .4byte gUnknown_03007FF0
 _02013EF0: .4byte 0x68736D53
 _02013EF4: .4byte 0x040000C6
 
-	thumb_func_start sub_02013EF8
-sub_02013EF8: @ 0x02013EF8
+	thumb_func_start MPlayOpen
+MPlayOpen: @ 0x02013EF8
 	push {r4, r5, r6, r7, lr}
 	adds r7, r0, #0
 	adds r6, r1, #0
@@ -41190,7 +41190,7 @@ _02013F0C:
 	adds r0, r1, #1
 	str r0, [r5]
 	adds r0, r7, #0
-	bl sub_02013BA4
+	bl Clear64byte
 	str r6, [r7, #0x2c]
 	strb r4, [r7, #8]
 	movs r0, #0x80
@@ -41232,8 +41232,8 @@ _02013F64: .4byte gUnknown_03007FF0
 _02013F68: .4byte 0x68736D53
 _02013F6C: .4byte sub_020131A8
 
-	thumb_func_start sub_02013F70
-sub_02013F70: @ 0x02013F70
+	thumb_func_start MPlayStart
+MPlayStart: @ 0x02013F70
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -41342,7 +41342,7 @@ _02014032:
 	cmp r0, #0
 	beq _02014042
 	ldrb r0, [r7, #3]
-	bl sub_02013D54
+	bl m4aSoundMode
 _02014042:
 	ldr r0, _02014050 @ =0x68736D53
 	str r0, [r5, #0x34]
@@ -41355,8 +41355,8 @@ _02014046:
 	.align 2, 0
 _02014050: .4byte 0x68736D53
 
-	thumb_func_start sub_02014054
-sub_02014054: @ 0x02014054
+	thumb_func_start MPlayStop
+MPlayStop: @ 0x02014054
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
 	ldr r1, [r6, #0x34]
@@ -41392,8 +41392,8 @@ _0201408A:
 	.align 2, 0
 _02014090: .4byte 0x68736D53
 
-	thumb_func_start sub_02014094
-sub_02014094: @ 0x02014094
+	thumb_func_start FadeOutBody
+FadeOutBody: @ 0x02014094
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	ldrh r1, [r6, #0x24]
@@ -41503,8 +41503,8 @@ _02014156:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_0201415C
-sub_0201415C: @ 0x0201415C
+	thumb_func_start TrkVolPitSet
+TrkVolPitSet: @ 0x0201415C
 	push {r4, lr}
 	adds r2, r1, #0
 	movs r0, #1
@@ -41603,8 +41603,8 @@ _02014204:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_02014210
-sub_02014210: @ 0x02014210
+	thumb_func_start MidiKeyToCgbFreq
+MidiKeyToCgbFreq: @ 0x02014210
 	push {r4, r5, r6, r7, lr}
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
@@ -41694,8 +41694,8 @@ _020142AA:
 _020142B0: .4byte gUnknown_02015FF8
 _020142B4: .4byte gUnknown_0201607C
 
-	thumb_func_start sub_020142B8
-sub_020142B8: @ 0x020142B8
+	thumb_func_start CgbOscOff
+CgbOscOff: @ 0x020142B8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	adds r1, r0, #0
@@ -41743,8 +41743,8 @@ _020142FE:
 	.align 2, 0
 _02014304: .4byte 0x04000079
 
-	thumb_func_start sub_02014308
-sub_02014308: @ 0x02014308
+	thumb_func_start CgbModVol
+CgbModVol: @ 0x02014308
 	push {r4, lr}
 	adds r1, r0, #0
 	ldrb r0, [r1, #2]
@@ -41803,8 +41803,8 @@ _02014354:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_02014370
-sub_02014370: @ 0x02014370
+	thumb_func_start CgbSound
+CgbSound: @ 0x02014370
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -41933,7 +41933,7 @@ _02014430:
 	strb r0, [r4, #0x1d]
 	adds r0, r4, #0
 	str r3, [sp, #0x18]
-	bl sub_02014308
+	bl CgbModVol
 	ldr r3, [sp, #0x18]
 	cmp r6, #2
 	beq _02014498
@@ -42055,7 +42055,7 @@ _02014526:
 _0201454A:
 	lsls r0, r6, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_020142B8
+	bl CgbOscOff
 	movs r0, #0
 	strb r0, [r4]
 	b _0201479C
@@ -42104,7 +42104,7 @@ _02014598:
 	strb r0, [r4, #0x1d]
 _020145AA:
 	adds r0, r4, #0
-	bl sub_02014308
+	bl CgbModVol
 	movs r0, #3
 	ldrb r2, [r4]
 	ands r0, r2
@@ -42387,8 +42387,8 @@ _020147AA:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_020147BC
-sub_020147BC: @ 0x020147BC
+	thumb_func_start m4aMPlayTempoControl
+m4aMPlayTempoControl: @ 0x020147BC
 	push {r4, lr}
 	adds r2, r0, #0
 	lsls r1, r1, #0x10
@@ -42410,8 +42410,8 @@ _020147D8:
 	.align 2, 0
 _020147E0: .4byte 0x68736D53
 
-	thumb_func_start sub_020147E4
-sub_020147E4: @ 0x020147E4
+	thumb_func_start m4aMPlayVolumeControl
+m4aMPlayVolumeControl: @ 0x020147E4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -42469,8 +42469,8 @@ _0201483C:
 	.align 2, 0
 _02014848: .4byte 0x68736D53
 
-	thumb_func_start sub_0201484C
-sub_0201484C: @ 0x0201484C
+	thumb_func_start m4aMPlayPitchControl
+m4aMPlayPitchControl: @ 0x0201484C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -42534,8 +42534,8 @@ _020148AE:
 	.align 2, 0
 _020148BC: .4byte 0x68736D53
 
-	thumb_func_start sub_020148C0
-sub_020148C0: @ 0x020148C0
+	thumb_func_start m4aMPlayPanpotControl
+m4aMPlayPanpotControl: @ 0x020148C0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -42593,8 +42593,8 @@ _02014918:
 	.align 2, 0
 _02014924: .4byte 0x68736D53
 
-	thumb_func_start sub_02014928
-sub_02014928: @ 0x02014928
+	thumb_func_start ClearModM
+ClearModM: @ 0x02014928
 	adds r1, r0, #0
 	movs r2, #0
 	movs r0, #0
@@ -42614,8 +42614,8 @@ _0201493E:
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014948
-sub_02014948: @ 0x02014948
+	thumb_func_start m4aMPlayModDepthSet
+m4aMPlayModDepthSet: @ 0x02014948
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -42656,7 +42656,7 @@ _02014978:
 	cmp r1, #0
 	bne _0201499A
 	adds r0, r4, #0
-	bl sub_02014928
+	bl ClearModM
 _0201499A:
 	subs r5, #1
 	adds r4, #0x50
@@ -42677,8 +42677,8 @@ _020149A8:
 	.align 2, 0
 _020149B8: .4byte 0x68736D53
 
-	thumb_func_start sub_020149BC
-sub_020149BC: @ 0x020149BC
+	thumb_func_start m4aMPlayLFOSpeedSet
+m4aMPlayLFOSpeedSet: @ 0x020149BC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -42719,7 +42719,7 @@ _020149EC:
 	cmp r1, #0
 	bne _02014A0E
 	adds r0, r4, #0
-	bl sub_02014928
+	bl ClearModM
 _02014A0E:
 	subs r5, #1
 	adds r4, #0x50
@@ -42740,8 +42740,8 @@ _02014A1C:
 	.align 2, 0
 _02014A2C: .4byte 0x68736D53
 
-	thumb_func_start sub_02014A30
-sub_02014A30: @ 0x02014A30
+	thumb_func_start MP2K_event_memacc
+MP2K_event_memacc: @ 0x02014A30
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
 	adds r6, r1, #0
@@ -42917,8 +42917,8 @@ _02014B82:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_02014B88
-sub_02014B88: @ 0x02014B88
+	thumb_func_start MP2K_event_xcmd
+MP2K_event_xcmd: @ 0x02014B88
 	push {lr}
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -42934,8 +42934,8 @@ sub_02014B88: @ 0x02014B88
 	.align 2, 0
 _02014BA4: .4byte gUnknown_02016114
 
-	thumb_func_start sub_02014BA8
-sub_02014BA8: @ 0x02014BA8
+	thumb_func_start MP2K_event_xxx
+MP2K_event_xxx: @ 0x02014BA8
 	push {lr}
 	ldr r2, _02014BB8 @ =0x0201F0E0
 	ldr r2, [r2]
@@ -42945,8 +42945,8 @@ sub_02014BA8: @ 0x02014BA8
 	.align 2, 0
 _02014BB8: .4byte 0x0201F0E0
 
-	thumb_func_start sub_02014BBC
-sub_02014BBC: @ 0x02014BBC
+	thumb_func_start MP2K_event_xwave
+MP2K_event_xwave: @ 0x02014BBC
 	push {r4, lr}
 	ldr r2, [r1, #0x40]
 	ldr r0, _02014BF4 @ =0xFFFFFF00
@@ -42980,8 +42980,8 @@ _02014BF8: .4byte 0xFFFF00FF
 _02014BFC: .4byte 0xFF00FFFF
 _02014C00: .4byte 0x00FFFFFF
 
-	thumb_func_start sub_02014C04
-sub_02014C04: @ 0x02014C04
+	thumb_func_start MP2K_event_xtype
+MP2K_event_xtype: @ 0x02014C04
 	ldr r0, [r1, #0x40]
 	ldrb r2, [r0]
 	adds r0, r1, #0
@@ -42993,8 +42993,8 @@ sub_02014C04: @ 0x02014C04
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C18
-sub_02014C18: @ 0x02014C18
+	thumb_func_start MP2K_event_xatta
+MP2K_event_xatta: @ 0x02014C18
 	ldr r0, [r1, #0x40]
 	ldrb r2, [r0]
 	adds r0, r1, #0
@@ -43006,8 +43006,8 @@ sub_02014C18: @ 0x02014C18
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C2C
-sub_02014C2C: @ 0x02014C2C
+	thumb_func_start MP2K_event_xdeca
+MP2K_event_xdeca: @ 0x02014C2C
 	ldr r0, [r1, #0x40]
 	ldrb r0, [r0]
 	adds r2, r1, #0
@@ -43019,8 +43019,8 @@ sub_02014C2C: @ 0x02014C2C
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C40
-sub_02014C40: @ 0x02014C40
+	thumb_func_start MP2K_event_xsust
+MP2K_event_xsust: @ 0x02014C40
 	ldr r0, [r1, #0x40]
 	ldrb r0, [r0]
 	adds r2, r1, #0
@@ -43032,8 +43032,8 @@ sub_02014C40: @ 0x02014C40
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C54
-sub_02014C54: @ 0x02014C54
+	thumb_func_start MP2K_event_xrele
+MP2K_event_xrele: @ 0x02014C54
 	ldr r0, [r1, #0x40]
 	ldrb r0, [r0]
 	adds r2, r1, #0
@@ -43045,8 +43045,8 @@ sub_02014C54: @ 0x02014C54
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C68
-sub_02014C68: @ 0x02014C68
+	thumb_func_start MP2K_event_xiecv
+MP2K_event_xiecv: @ 0x02014C68
 	ldr r0, [r1, #0x40]
 	ldrb r2, [r0]
 	strb r2, [r1, #0x1e]
@@ -43054,8 +43054,8 @@ sub_02014C68: @ 0x02014C68
 	str r0, [r1, #0x40]
 	bx lr
 
-	thumb_func_start sub_02014C74
-sub_02014C74: @ 0x02014C74
+	thumb_func_start MP2K_event_xiecl
+MP2K_event_xiecl: @ 0x02014C74
 	ldr r0, [r1, #0x40]
 	ldrb r2, [r0]
 	strb r2, [r1, #0x1f]
@@ -43063,8 +43063,8 @@ sub_02014C74: @ 0x02014C74
 	str r0, [r1, #0x40]
 	bx lr
 
-	thumb_func_start sub_02014C80
-sub_02014C80: @ 0x02014C80
+	thumb_func_start MP2K_event_xleng
+MP2K_event_xleng: @ 0x02014C80
 	ldr r0, [r1, #0x40]
 	ldrb r0, [r0]
 	adds r2, r1, #0
@@ -43076,8 +43076,8 @@ sub_02014C80: @ 0x02014C80
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02014C94
-sub_02014C94: @ 0x02014C94
+	thumb_func_start MP2K_event_xswee
+MP2K_event_xswee: @ 0x02014C94
 	ldr r0, [r1, #0x40]
 	ldrb r0, [r0]
 	adds r2, r1, #0
@@ -43088,7 +43088,7 @@ sub_02014C94: @ 0x02014C94
 	str r0, [r1, #0x40]
 	bx lr
 	.align 2, 0
-_02014CA8:
+MP2K_event_null:
 	.byte 0x70, 0x47, 0x00, 0x00
 
 	thumb_func_start sub_02014CAC

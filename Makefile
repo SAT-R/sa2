@@ -129,7 +129,7 @@ ELF      := $(ROM:.exe=.elf)
 MAP      := $(ROM:.exe=.map)
 endif
 
-INCLUDE_DIRS = include
+INCLUDE_DIRS = include ../../../include
 INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
@@ -243,10 +243,6 @@ endif
 ifeq ($(PLATFORM),gba)
   ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
   CC1FLAGS += -mthumb-interwork
-  ifeq ($(THUMB_SUPPORT),1)
-    ASFLAGS  += -mthumb-interwork
-    CC1FLAGS += -mthumb-interwork
-  endif
 else
   ifeq ($(PLATFORM), sdl)
     # for modern we are using a modern compiler

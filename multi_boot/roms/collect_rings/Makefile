@@ -32,6 +32,9 @@ endif
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
+CC1       := ../../../tools/agbcc/bin/agbcc$(EXE)
+CC1_OLD   := ../../../tools/agbcc/bin/old_agbcc$(EXE)
+
 LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
@@ -63,13 +66,36 @@ ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 LDSCRIPT := ldscript.txt
 
-ASM_SUBDIR = asm
-DATA_ASM_SUBDIR = data
+INCLUDE_DIRS = include
+INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
+INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
+SA2_INCLUDE_DIRS = ../../../include
+SA2_INCLUDE_CPP_ARGS := $(SA2_INCLUDE_DIRS:%=-iquote %)
+
+ASM_SUBDIR = asm
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
+
+DATA_ASM_SUBDIR = data
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 
-$(shell mkdir -p $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
+C_SUBDIR = src
+C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
+
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
+
+# Moves any relevant sa2 c files to the build dir
+SA2_C_FILES := \
+	#sa2/lib/m4a/m4a.c
+
+SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
+SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
+
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
+C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
+C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
+C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
@@ -77,8 +103,52 @@ ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS)
+OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
+
+
+### COMPILER FLAGS ###
+
+# -P disables line markers (don't EVER use this, if you want proper debug info!)
+# -I sets an include path
+# -D defines a symbol
+CPPFLAGS ?= -D $(GAME_REGION)
+CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
+
+INCLUDE_SCANINC_ARGS += -I ../../../tools/agbcc/include
+CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I ../../../tools/agbcc/include
+CC1FLAGS += -fhex-asm
+
+ifeq ($(BUILD_NAME), sa1)
+    # It seems this bug was introduced to GCC after SA1 released.
+    PROLOGUE_FIX := -fprologue-bugfix
+endif # BUILD_NAME == sa1
+
+ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
+CC1FLAGS += -mthumb-interwork
+
+
+ifeq ($(DEBUG),1)
+  CC1FLAGS += -g3 -O0
+  CPPFLAGS += -D DEBUG=1
+else
+  CC1FLAGS += -O2
+  CPPFLAGS += -D DEBUG=0
+endif
+
+
+ifeq ($(NON_MATCHING),1)
+# TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
+#    CPPFLAGS += -D NON_MATCHING=1
+endif
+
+### LINKER FLAGS ###
+
+# GBA
+MAP_FLAG := -Map
+
+# Libs
+# LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 
 #### Main Targets ####
 
@@ -99,30 +169,63 @@ tidy:
 %.s: ;
 
 $(ELF): $(OBJS) $(LDSCRIPT)
-	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
+	@echo "$(LD) -T $(LD_SCRIPT) $(OBJS) -Map $(MAP) <objects> <lib>"
 	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
-ifeq ($(NODEP),1)
-$(ASM_BUILDDIR)/%.o: asm_dep :=
-else
-$(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
+
+$(C_BUILDDIR)/sa2/%.c: ../../../src/%.c
+	$(shell mkdir -p $(shell dirname '$@'))
+	cp $< $@
+
+# Build c sources, and ensure alignment
+$(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
+	@echo "$(CC1) <flags> -o $@ $<"
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/sa2/$*.i'))
+	@$(CPP) $(CPPFLAGS) $(SA2_INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/sa2/$*.i
+	@$(PREPROC) $(C_BUILDDIR)/sa2/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/sa2/$*.s -
+ifeq ($(PLATFORM), gba)
+	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/sa2/$*.s
 endif
+	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/sa2/$*.s -o $@
+
+# Build c sources, and ensure alignment
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
+	@echo "$(CC1) <flags> -o $@ $<"
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.i'))
+	@$(CPP) $(CPPFLAGS) $(INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/$*.i
+	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s -
+ifeq ($(PLATFORM), gba)
+	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
+endif
+	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
+
+# Scan the src dependencies to determine if any dependent files have changed
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.d'))
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
+
+# rule for sources from the src dir (parts of libraries)
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
-
-ifeq ($(NODEP),1)
-$(DATA_ASM_BUILDDIR)/%.o: data_dep :=
-else
-$(DATA_ASM_BUILDDIR)/%.o: data_dep = $(shell $(SCANINC) $(DATA_ASM_SUBDIR)/$*.s)
-endif
-
-$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
+$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+
+# Scan the ASM data dependencies to determine if any .inc files have changed
+$(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
+    
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
+-include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
+endif
