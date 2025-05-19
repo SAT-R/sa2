@@ -20,9 +20,9 @@
 struct TimeAttackModeSelectionScreen {
     Background unk0;
     Background unk40;
-    Sprite unk80;
-    Sprite unkB0;
-    Sprite unkE0;
+    Sprite title;
+    Sprite zoneItem;
+    Sprite bossItem;
     Sprite infoText;
     ScreenFade fade;
     u8 animFrame;
@@ -42,7 +42,7 @@ static void Task_HandleModeSelectedExit(void);
 
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *);
 
-const TileInfo gUnknown_080E0384[30] = {
+const TileInfo gUnknown_080E0384[] = {
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_ZONE, 12, SA2_ANIM_TIME_ATTACK_JP),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_BOSS, 8, SA2_ANIM_TIME_ATTACK_JP),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_CLEAR, 168, SA2_ANIM_TIME_ATTACK_JP),
@@ -118,13 +118,13 @@ void CreateTimeAttackModeSelectionScreen(void)
     fade->window = 1;
     fade->brightness = Q_8_8(0);
     fade->flags = 2;
-    fade->speed = 0x100;
+    fade->speed = Q_8_8(1);
     fade->bldCnt = 0x3FFF;
     fade->bldAlpha = 0;
 
     UpdateScreenFade(fade);
 
-    s = &modeScreen->unk80;
+    s = &modeScreen->title;
     s->graphics.dest = VramMalloc(0x6C);
     s->graphics.anim = SA2_ANIM_TIME_ATTACK_JP;
     s->variant = SA2_ANIM_VARIANT_TA_TITLE;
@@ -141,7 +141,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     UpdateSpriteAnimation(s);
 
-    s = &modeScreen->unkB0;
+    s = &modeScreen->zoneItem;
     s->graphics.dest = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
     s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
     s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
@@ -158,7 +158,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->frameFlags = 0x1000;
     UpdateSpriteAnimation(s);
 
-    s = &modeScreen->unkE0;
+    s = &modeScreen->bossItem;
     s->graphics.dest = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
     s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
     s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
@@ -180,8 +180,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
     s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
     s->prevVariant = -1;
-    s->x = 8;
-    s->y = 103;
+    s->x = DISPLAY_WIDTH / 2 - 112;
+    s->y = DISPLAY_HEIGHT - 57;
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -276,7 +276,7 @@ static void Task_IntroUIAnim(void)
     InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(Q(100), 700);
 
-    s = &modeScreen->unk80;
+    s = &modeScreen->title;
     if (modeScreen->animFrame < 10) {
         s->x = modeScreen->animFrame * 10 - 50;
     } else {
@@ -284,7 +284,7 @@ static void Task_IntroUIAnim(void)
     }
     s->y = 10;
 
-    s = &modeScreen->unkB0;
+    s = &modeScreen->zoneItem;
     if (modeScreen->animFrame < 10) {
         s->x = -80;
     } else if (modeScreen->animFrame < 20) {
@@ -294,7 +294,7 @@ static void Task_IntroUIAnim(void)
     }
     s->y = 60;
 
-    s = &modeScreen->unkE0;
+    s = &modeScreen->bossItem;
     if (modeScreen->animFrame < 20) {
         s->x = -90;
     } else if (modeScreen->animFrame < 30) {
@@ -360,10 +360,10 @@ static void Task_ScreenMain(void)
             lang = 0;
         }
 
-        s = &modeScreen->unkB0;
+        s = &modeScreen->zoneItem;
         s->palId = 1;
 
-        s = &modeScreen->unkE0;
+        s = &modeScreen->bossItem;
         s->palId = 0xFF;
 
         s = &modeScreen->infoText;
@@ -380,10 +380,10 @@ static void Task_ScreenMain(void)
         if (lang < 0) {
             lang = 0;
         }
-        s = &modeScreen->unkB0;
+        s = &modeScreen->zoneItem;
         s->palId = 0;
 
-        s = &modeScreen->unkE0;
+        s = &modeScreen->bossItem;
         s->palId = 0;
 
         s = &modeScreen->infoText;
@@ -469,11 +469,11 @@ static void Task_HandleModeSelectedExit(void)
 static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 {
     Sprite *s;
-    s = &modeScreen->unk80;
+    s = &modeScreen->title;
     DisplaySprite(s);
-    s = &modeScreen->unkB0;
+    s = &modeScreen->zoneItem;
     DisplaySprite(s);
-    s = &modeScreen->unkE0;
+    s = &modeScreen->bossItem;
     DisplaySprite(s);
 
     if (modeScreen->unk14E != 0) {
@@ -486,8 +486,8 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(t);
-    VramFree(modeScreen->unk80.graphics.dest);
-    VramFree(modeScreen->unkB0.graphics.dest);
-    VramFree(modeScreen->unkE0.graphics.dest);
+    VramFree(modeScreen->title.graphics.dest);
+    VramFree(modeScreen->zoneItem.graphics.dest);
+    VramFree(modeScreen->bossItem.graphics.dest);
     VramFree(modeScreen->infoText.graphics.dest);
 }
