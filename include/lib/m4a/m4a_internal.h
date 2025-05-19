@@ -101,7 +101,6 @@
 struct MP2KTrack;
 struct MP2KPlayerState;
 
-typedef void (*MPlayFunc)();
 typedef void (*MP2KEventNoteFunc)(u8, struct MP2KPlayerState *, struct MP2KTrack *);
 typedef void (*MP2KEventFunc)(struct MP2KPlayerState *, struct MP2KTrack *);
 typedef void (*CgbSoundFunc)(void);
@@ -225,7 +224,7 @@ struct SoundMixerState {
     CgbSoundFunc CgbSound;
     CgbOscOffFunc CgbOscOff;
     MidiKeyToCgbFreqFunc MidiKeyToCgbFreq;
-    MPlayFunc *MPlayJumpTable;
+    void **MPlayJumpTable;
     MP2KEventNoteFunc plynote;
     ExtVolPitFunc ExtVolPit;
     void *reserved2;
@@ -364,7 +363,7 @@ typedef void (*XcmdFunc)(struct MP2KPlayerState *, struct MP2KTrack *);
 
 extern char SoundMainRAM[];
 extern u8 gMPlayMemAccArea[];
-extern MPlayFunc gMPlayJumpTable[];
+extern void *gMPlayJumpTable[];
 extern struct MixerSource gCgbChans[];
 
 extern const struct MusicPlayer gMPlayTable[];

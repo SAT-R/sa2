@@ -28,7 +28,7 @@ EWRAM_DATA struct MP2KTrack gMPlayTrack_SE3[16] = {};
 // };
 
 EWRAM_DATA struct SoundMixerState gSoundInfo = {};
-EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};
+EWRAM_DATA void *gMPlayJumpTable[36] = {};
 EWRAM_DATA struct MixerSource gCgbChans[4] = {};
 
 // For some reason these were declared in this order
