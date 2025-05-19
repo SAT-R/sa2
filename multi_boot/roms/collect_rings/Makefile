@@ -86,7 +86,7 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
 
 # Moves any relevant sa2 c files to the build dir
 SA2_C_FILES := \
-	#sa2/lib/m4a/m4a.c
+	sa2/lib/m4a/m4a.c
 
 SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
@@ -112,7 +112,7 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -D $(GAME_REGION)
+CPPFLAGS ?= -D $(GAME_REGION) -D COLLECT_RINGS_ROM
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 INCLUDE_SCANINC_ARGS += -I ../../../tools/agbcc/include
@@ -150,6 +150,8 @@ MAP_FLAG := -Map
 # Libs
 # LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 
+$(C_BUILDDIR)/sa2/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
+
 #### Main Targets ####
 
 MAKEFLAGS += --no-print-directory
@@ -169,7 +171,7 @@ tidy:
 %.s: ;
 
 $(ELF): $(OBJS) $(LDSCRIPT)
-	@echo "$(LD) -T $(LD_SCRIPT) $(OBJS) -Map $(MAP) <objects> <lib>"
+	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
 	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
 
 %.gba: %.elf
@@ -187,9 +189,7 @@ $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
 	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/sa2/$*.i'))
 	@$(CPP) $(CPPFLAGS) $(SA2_INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/sa2/$*.i
 	@$(PREPROC) $(C_BUILDDIR)/sa2/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/sa2/$*.s -
-ifeq ($(PLATFORM), gba)
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/sa2/$*.s
-endif
 	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/sa2/$*.s -o $@
 
 # Build c sources, and ensure alignment
@@ -198,9 +198,7 @@ $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
 	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.i'))
 	@$(CPP) $(CPPFLAGS) $(INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/$*.i
 	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s -
-ifeq ($(PLATFORM), gba)
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
-endif
 	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
 
 # Scan the src dependencies to determine if any dependent files have changed

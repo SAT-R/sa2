@@ -132,40 +132,40 @@ gScaleTable:
 gFreqTable:
     .incbin "data/rom_data.bin", 0x00015EF0, 0x30
 
-    .global gUnknown_02015FE0
-gUnknown_02015FE0:
+    .global gPcmSamplesPerVBlankTable
+gPcmSamplesPerVBlankTable:
     .incbin "data/rom_data.bin", 0x00015F20, 0x18
 
-    .global gUnknown_02015FF8
-gUnknown_02015FF8:
+    .global gCgbScaleTable
+gCgbScaleTable:
     .incbin "data/rom_data.bin", 0x00015F38, 0x84
 
-    .global gUnknown_0201607C
-gUnknown_0201607C:
+    .global gCgbFreqTable
+gCgbFreqTable:
     .incbin "data/rom_data.bin", 0x00015FBC, 0x18
 
-    .global gUnknown_02016094
-gUnknown_02016094:
+    .global gNoiseTable
+gNoiseTable:
     .incbin "data/rom_data.bin", 0x00015FD4, 0x3C
 
-    .global gUnknown_020160D0
-gUnknown_020160D0:
+    .global gCgb3Vol
+gCgb3Vol:
     .incbin "data/rom_data.bin", 0x00016010, 0x10
 
     .global gUnknown_020160E0
 gUnknown_020160E0:
     .incbin "data/rom_data.bin", 0x00016020, 0x34
 
-    .global gUnknown_02016114
-gUnknown_02016114:
+    .global gXcmdTable
+gXcmdTable:
     .incbin "data/rom_data.bin", 0x00016054, 0xC48
 
     .global gMPlayTable
 gMPlayTable:
     .incbin "data/rom_data.bin", 0x00016C9C, 0x30
 
-    .global gUnknown_02016D8C
-gUnknown_02016D8C:
+    .global gSongTable
+gSongTable:
     .incbin "data/rom_data.bin", 0x00016CCC, 0x5A34
 
     .global gUnknown_0201C7C0

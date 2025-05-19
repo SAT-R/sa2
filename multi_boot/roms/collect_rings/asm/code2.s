@@ -41,13 +41,13 @@ sub_02014CC8: @ 0x02014CC8
 	bx r0
 	nop
 
-	thumb_func_start sub_02014CCC
-sub_02014CCC: @ 0x02014CCC
+	thumb_func_start _call_via_r1
+_call_via_r1: @ 0x02014CCC
 	bx r1
 	nop
 
-	thumb_func_start sub_02014CD0
-sub_02014CD0: @ 0x02014CD0
+	thumb_func_start _call_via_r2
+_call_via_r2: @ 0x02014CD0
 	bx r2
 	nop
 
@@ -102,8 +102,8 @@ sub_02014CFC: @ 0x02014CFC
 _02014D00:
 	.byte 0x70, 0x47, 0xC0, 0x46
 
-	thumb_func_start sub_02014D04
-sub_02014D04: @ 0x02014D04
+	thumb_func_start __divsi3
+__divsi3: @ 0x02014D04
 	cmp r1, #0
 	beq _02014D8C
 	push {r4}

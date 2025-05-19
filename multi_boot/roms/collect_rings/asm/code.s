@@ -2513,7 +2513,7 @@ _020017CC:
 	adds r0, r0, r6
 	ldr r1, [r0]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
@@ -2865,7 +2865,7 @@ sub_02001A38: @ 0x02001A38
 	cmp r1, #0
 	beq _02001A6A
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 _02001A6A:
 	ldr r1, _02001ABC @ =gUnknown_0300229C
 	ldr r0, [r1]
@@ -5109,7 +5109,7 @@ _02002B0C:
 	ldr r2, [r0]
 	adds r0, r3, #0
 	adds r1, r4, #0
-	bl sub_02014CD0
+	bl _call_via_r2
 	adds r1, r0, #0
 	cmp r1, #1
 	beq _02002B46
@@ -5806,7 +5806,7 @@ _02003022:
 	lsls r0, r4, #0x10
 	asrs r0, r0, #0x10
 _02003026:
-	bl sub_02014D04
+	bl __divsi3
 	lsls r0, r0, #0x10
 	lsrs r2, r0, #0x10
 _0200302E:
@@ -5955,7 +5955,7 @@ _0200312A:
 	ldr r2, [r0]
 	adds r0, r3, #0
 	adds r1, r4, #0
-	bl sub_02014CD0
+	bl _call_via_r2
 	adds r1, r0, #0
 	cmp r1, #1
 	beq _02003164
@@ -9296,7 +9296,7 @@ _02004A80:
 	ldr r2, [r1]
 	adds r0, r3, #0
 	adds r1, r5, #0
-	bl sub_02014CD0
+	bl _call_via_r2
 _02004AD4:
 	ldrh r0, [r7, #8]
 	eors r4, r0
@@ -21644,7 +21644,7 @@ _0200AAE6:
 	lsls r0, r7, #8
 	adds r1, r2, #0
 	str r2, [sp, #0x10]
-	bl sub_02014D04
+	bl __divsi3
 	muls r0, r4, r0
 	asrs r3, r0, #8
 	ldr r2, [sp, #0x10]
@@ -24971,7 +24971,7 @@ _0200C464:
 	beq _0200C49E
 	adds r0, r6, #0
 	adds r1, r7, #0
-	bl sub_02014CD0
+	bl _call_via_r2
 _0200C49E:
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -29944,7 +29944,7 @@ sub_0200E8B0: @ 0x0200E8B0
 	bne _0200E904
 	ldr r1, [r5]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	b _0200E92A
 	.align 2, 0
 _0200E8F8: .4byte gUnknown_030056C0
@@ -31243,7 +31243,7 @@ _0200F316:
 	ldr r1, _0200F32C @ =sub_0200F330
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -31983,7 +31983,7 @@ _0200F8AA:
 	ldr r1, _0200F8C4 @ =sub_0200F2BC
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	b _0200F9A6
 	.align 2, 0
 _0200F8C0: .4byte gUnknown_030056C0
@@ -32247,7 +32247,7 @@ _0200FA9A:
 	ldr r1, _0200FAD8 @ =sub_0200FADC
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -32479,7 +32479,7 @@ _0200FC54:
 	ldr r1, _0200FC98 @ =sub_0200FC9C
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -32707,7 +32707,7 @@ _0200FE2C:
 	movs r0, #0xb
 	bl m4aSongNumStart
 	ldr r2, _0200FF18 @ =gMPlayTable
-	ldr r0, _0200FF1C @ =gUnknown_02016D8C
+	ldr r0, _0200FF1C @ =gSongTable
 	adds r0, #0x5c
 	ldrh r1, [r0]
 	lsls r0, r1, #1
@@ -32813,7 +32813,7 @@ _0200FEF0:
 	.align 2, 0
 _0200FF14: .4byte gUnknown_030057C8
 _0200FF18: .4byte gMPlayTable
-_0200FF1C: .4byte gUnknown_02016D8C
+_0200FF1C: .4byte gSongTable
 _0200FF20: .4byte 0x0000FFFF
 _0200FF24:
 	cmp r1, #0
@@ -33165,7 +33165,7 @@ _020101B4:
 	ldr r1, _020101D8 @ =sub_020101DC
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -33411,7 +33411,7 @@ sub_02010334: @ 0x02010334
 	ldr r1, _020103DC @ =sub_0200F330
 	str r1, [r4]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -33515,7 +33515,7 @@ _0201048C:
 	ldr r1, _020104B8 @ =sub_02010984
 	str r1, [r5]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -33568,7 +33568,7 @@ sub_020104BC: @ 0x020104BC
 	ldr r1, _0201051C @ =sub_0200F7EC
 	str r1, [r0]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	b _02010540
 	.align 2, 0
 _02010514: .4byte 0xFFFFBFFF
@@ -33589,7 +33589,7 @@ _02010528:
 	ldr r1, _02010550 @ =sub_02010554
 	str r1, [r0]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 _02010540:
 	pop {r4, r5, r6}
 	pop {r0}
@@ -33779,7 +33779,7 @@ _0201065C:
 	ldr r1, _020106C4 @ =sub_020106C8
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -34135,7 +34135,7 @@ _0201095E:
 	ldr r1, _02010980 @ =sub_02010984
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -34379,7 +34379,7 @@ _02010B3E:
 _02010B4A:
 	rsbs r0, r0, #0
 	movs r1, #6
-	bl sub_02014D04
+	bl __divsi3
 	lsls r1, r5, #0x10
 	asrs r1, r1, #0x10
 	movs r2, #0xf0
@@ -34410,7 +34410,7 @@ _02010B7A:
 _02010B86:
 	rsbs r0, r0, #0
 	movs r1, #6
-	bl sub_02014D04
+	bl __divsi3
 	lsls r1, r5, #0x10
 	asrs r1, r1, #0x10
 	movs r2, #0xf0
@@ -34441,7 +34441,7 @@ _02010BB6:
 _02010BC2:
 	rsbs r0, r0, #0
 	movs r1, #6
-	bl sub_02014D04
+	bl __divsi3
 	lsls r1, r5, #0x10
 	asrs r1, r1, #0x10
 	movs r2, #0xb4
@@ -34465,7 +34465,7 @@ _02010BE2:
 _02010BEE:
 	rsbs r0, r0, #0
 	movs r1, #6
-	bl sub_02014D04
+	bl __divsi3
 	lsls r1, r5, #0x10
 	asrs r1, r1, #0x10
 	movs r2, #0xb4
@@ -34495,7 +34495,7 @@ _02010C1C:
 	ldr r1, _02010C3C @ =sub_02010C40
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -34693,7 +34693,7 @@ sub_02010D4C: @ 0x02010D4C
 	ldr r1, _02010DC4 @ =sub_0200FD90
 	str r1, [r4]
 	adds r0, r5, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	movs r0, #1
 	b _02010DCA
 	.align 2, 0
@@ -36257,7 +36257,7 @@ sub_02011874: @ 0x02011874
 	ldr r1, _020118C4 @ =sub_0200F7EC
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -36283,7 +36283,7 @@ sub_020118C8: @ 0x020118C8
 	ldr r1, _020118F0 @ =gUnknown_030056C0
 	ldr r2, _020118F4 @ =sub_0200F684
 	str r2, [r1]
-	bl sub_02014CD0
+	bl _call_via_r2
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -36323,7 +36323,7 @@ sub_020118F8: @ 0x020118F8
 	ldr r1, _0201194C @ =sub_0200FD90
 	str r1, [r0]
 	adds r0, r4, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -36467,7 +36467,7 @@ _02011A18:
 	ldr r1, _02011A4C @ =sub_0200F420
 	str r1, [r0]
 	adds r0, r3, #0
-	bl sub_02014CCC
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -36499,7 +36499,7 @@ sub_02011A50: @ 0x02011A50
 	ldr r1, _02011A88 @ =gUnknown_030056C0
 	ldr r2, _02011A8C @ =sub_0200F520
 	str r2, [r1]
-	bl sub_02014CD0
+	bl _call_via_r2
 	pop {r0}
 	bx r0
 	.align 2, 0

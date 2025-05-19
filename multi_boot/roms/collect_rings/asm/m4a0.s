@@ -524,8 +524,8 @@ _02012F8C:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_02012F98
-sub_02012F98: @ 0x02012F98
+	thumb_func_start MPlayJumpTableCopy
+MPlayJumpTableCopy: @ 0x02012F98
 	mov ip, lr
 	movs r1, #0x24
 	ldr r2, _02012FC8 @ =gUnknown_02015E6C
@@ -843,8 +843,8 @@ _0201319C:
 _020131A0: .4byte 0x040000BC
 _020131A4: .4byte 0x84400004
 
-	thumb_func_start sub_020131A8
-sub_020131A8: @ 0x020131A8
+	thumb_func_start MP2KPlayerMain
+MP2KPlayerMain: @ 0x020131A8
 	ldr r2, _0201340C @ =0x68736D53
 	ldr r3, [r0, #0x34]
 	cmp r2, r3
@@ -1181,8 +1181,8 @@ _02013404: .4byte gUnknown_020160E0
 _02013408: .4byte gUnknown_03007FF0
 _0201340C: .4byte 0x68736D53
 
-	thumb_func_start sub_02013410
-sub_02013410: @ 0x02013410
+	thumb_func_start TrackStop
+TrackStop: @ 0x02013410
 	push {r4, r5, r6, lr}
 	adds r5, r1, #0
 	ldrb r1, [r5]
@@ -1250,8 +1250,8 @@ _02013480:
 	strb r0, [r4, #3]
 	bx lr
 
-	thumb_func_start sub_02013484
-sub_02013484: @ 0x02013484
+	thumb_func_start MP2K_event_nxx
+MP2K_event_nxx: @ 0x02013484
 	push {r4, r5, r6, r7, lr}
 	mov r4, r8
 	mov r5, sb
@@ -1588,8 +1588,8 @@ _020136D6:
 	bx lr
 	.align 2, 0
 
-	thumb_func_start MP2K_event_lfos
-MP2K_event_lfos: @ 0x020136E0
+	thumb_func_start ld_r3_tp_adr_i_unchecked
+ld_r3_tp_adr_i_unchecked: @ 0x020136E0
 	ldr r2, [r1, #0x40]
 	adds r3, r2, #1
 	str r3, [r1, #0x40]
@@ -1597,10 +1597,10 @@ MP2K_event_lfos: @ 0x020136E0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start MP2K_event_mod
-MP2K_event_mod: @ 0x020136EC
+	thumb_func_start MP2K_event_lfos
+MP2K_event_lfos: @ 0x020136EC
 	mov ip, lr
-	bl MP2K_event_lfos
+	bl ld_r3_tp_adr_i_unchecked
 	strb r3, [r1, #0x19]
 	cmp r3, #0
 	bne _020136FC
@@ -1609,10 +1609,10 @@ _020136FC:
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_02013700
-sub_02013700: @ 0x02013700
+	thumb_func_start MP2K_event_mod
+MP2K_event_mod: @ 0x02013700
 	mov ip, lr
-	bl MP2K_event_lfos
+	bl ld_r3_tp_adr_i_unchecked
 	strb r3, [r1, #0x17]
 	cmp r3, #0
 	bne _02013710
