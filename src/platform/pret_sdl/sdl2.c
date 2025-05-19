@@ -205,7 +205,7 @@ int main(int argc, char **argv)
     }
 #endif
 
-    SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
     SDL_RenderClear(sdlRenderer);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
