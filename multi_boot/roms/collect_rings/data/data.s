@@ -124,12 +124,12 @@ gUnknown_02015E5E:
 gUnknown_02015E6C:
     .incbin "data/rom_data.bin", 0x00015DAC, 0x90
 
-    .global gUnknown_02015EFC
-gUnknown_02015EFC:
+    .global gScaleTable
+gScaleTable:
     .incbin "data/rom_data.bin", 0x00015E3C, 0xB4
 
-    .global gUnknown_02015FB0
-gUnknown_02015FB0:
+    .global gFreqTable
+gFreqTable:
     .incbin "data/rom_data.bin", 0x00015EF0, 0x30
 
     .global gUnknown_02015FE0

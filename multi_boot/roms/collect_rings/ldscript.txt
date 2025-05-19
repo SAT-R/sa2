@@ -12,6 +12,9 @@ SECTIONS {
         build/collect_rings/asm/rom_header.o(.text);
         build/collect_rings/asm/crt0.o(.text);
         build/collect_rings/asm/code.o(.text);
+        build/collect_rings/asm/m4a0.o(.text);
+        build/collect_rings/asm/m4a.o(.text);
+        build/collect_rings/asm/code2.o(.text);
     }
 
     .rodata :
