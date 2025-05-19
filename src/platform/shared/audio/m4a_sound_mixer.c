@@ -565,7 +565,7 @@ void MP2KPlayerMain(struct MP2KPlayerState *player)
                     mixer->plynote(event - 0xCF, player, currentTrack);
                 } else if (event >= 0xB1) {
                     player->cmd = event - 0xB1;
-                    MP2KEventFunc eventFunc = mixer->MPlayJumpTable[player->cmd];
+                    MP2KEventFunc eventFunc = (MP2KEventFunc *)mixer->MPlayJumpTable[player->cmd];
                     eventFunc(player, currentTrack);
 
                     if (currentTrack->status == 0) {
