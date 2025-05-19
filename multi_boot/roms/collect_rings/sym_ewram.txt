@@ -1,0 +1,4 @@
+. = 0x00000000; gSoundInfo = .;
+. = 0x00000FB0; gMPlayJumpTable = .;
+. = 0x00001040; gCgbChans = .;
+. = 0x00001200; gMPlayMemAccArea = .;

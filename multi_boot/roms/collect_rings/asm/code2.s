@@ -14,8 +14,8 @@ sub_02014CB0: @ 0x02014CB0
 	svc #0xc
 	bx lr
 
-	thumb_func_start sub_02014CB4
-sub_02014CB4: @ 0x02014CB4
+	thumb_func_start CpuSet
+CpuSet: @ 0x02014CB4
 	svc #0xb
 	bx lr
 

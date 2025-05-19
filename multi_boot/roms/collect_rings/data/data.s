@@ -160,8 +160,8 @@ gUnknown_020160E0:
 gUnknown_02016114:
     .incbin "data/rom_data.bin", 0x00016054, 0xC48
 
-    .global gUnknown_02016D5C
-gUnknown_02016D5C:
+    .global gMPlayTable
+gMPlayTable:
     .incbin "data/rom_data.bin", 0x00016C9C, 0x30
 
     .global gUnknown_02016D8C

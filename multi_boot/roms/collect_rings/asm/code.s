@@ -138,15 +138,15 @@ sub_020003EC: @ 0x020003EC
 	ldr r2, _020004C4 @ =0x0500007A
 	mov r0, sp
 	adds r1, r4, #0
-	bl sub_02014CB4
+	bl CpuSet
 	ldr r0, _020004C8 @ =sub_0200028C
 	ldr r1, _020004CC @ =gUnknown_03000730
 	ldr r2, _020004D0 @ =0x04000010
-	bl sub_02014CB4
+	bl CpuSet
 	ldr r0, _020004D4 @ =sub_020002CC
 	ldr r1, _020004D8 @ =gUnknown_03000420
 	ldr r2, _020004DC @ =0x04000048
-	bl sub_02014CB4
+	bl CpuSet
 	strb r5, [r4, #2]
 	movs r0, #0xd
 	str r0, [r4, #0x14]
@@ -419,7 +419,7 @@ sub_020005F8: @ 0x020005F8
 	ldr r1, [r5, #0x28]
 	adds r1, #4
 	ldr r2, _020006C0 @ =0x04000005
-	bl sub_02014CB4
+	bl CpuSet
 	movs r2, #0
 	ldr r1, [r5, #0x28]
 _02000674:
@@ -546,7 +546,7 @@ _02000708:
 	ldr r2, [sp, #0xc]
 	adds r1, r2, r1
 	ldr r2, _020007DC @ =0x04000005
-	bl sub_02014CB4
+	bl CpuSet
 _0200076A:
 	movs r0, #0
 	str r0, [sp, #8]
@@ -556,7 +556,7 @@ _0200076A:
 	adds r1, #4
 	mov r0, sb
 	ldr r2, _020007E0 @ =0x05000005
-	bl sub_02014CB4
+	bl CpuSet
 	ldr r4, [sp, #0x10]
 	cmp r4, #3
 	ble _020006F8
@@ -1077,7 +1077,7 @@ sub_02000B4C: @ 0x02000B4C
 	ldr r2, _02000BD8 @ =0x05000006
 	mov r0, sp
 	adds r1, r4, #0
-	bl sub_02014CB4
+	bl CpuSet
 	ldr r1, _02000BDC @ =0x04000128
 	ldr r0, _02000BE0 @ =0x00002003
 	str r0, [r1]
@@ -8665,12 +8665,12 @@ _020045F8:
 	ldr r5, _02004634 @ =0x05000008
 	ldr r1, _02004638 @ =gUnknown_03001830
 	adds r2, r5, #0
-	bl sub_02014CB4
+	bl CpuSet
 	str r4, [sp, #8]
 	ldr r1, _0200463C @ =gUnknown_03004D40
 	ldr r0, [sp, #0xc]
 	adds r2, r5, #0
-	bl sub_02014CB4
+	bl CpuSet
 	b _02004664
 	.align 2, 0
 _0200462C: .4byte gUnknown_030018D0
@@ -32706,7 +32706,7 @@ _0200FE2C:
 	beq _0200FE98
 	movs r0, #0xb
 	bl m4aSongNumStart
-	ldr r2, _0200FF18 @ =gUnknown_02016D5C
+	ldr r2, _0200FF18 @ =gMPlayTable
 	ldr r0, _0200FF1C @ =gUnknown_02016D8C
 	adds r0, #0x5c
 	ldrh r1, [r0]
@@ -32812,7 +32812,7 @@ _0200FEF0:
 	b _0200FF2E
 	.align 2, 0
 _0200FF14: .4byte gUnknown_030057C8
-_0200FF18: .4byte gUnknown_02016D5C
+_0200FF18: .4byte gMPlayTable
 _0200FF1C: .4byte gUnknown_02016D8C
 _0200FF20: .4byte 0x0000FFFF
 _0200FF24:

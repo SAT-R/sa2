@@ -103,10 +103,10 @@ m4aSoundInit: @ 0x020137B8
 	ands r0, r1
 	ldr r1, _02013810 @ =SoundMainRAM_Buffer
 	ldr r2, _02013814 @ =0x04000100
-	bl sub_02014CB4
-	ldr r0, _02013818 @ =0x0201E130
+	bl CpuSet
+	ldr r0, _02013818 @ =gSoundInfo
 	bl SoundInit
-	ldr r0, _0201381C @ =0x0201F170
+	ldr r0, _0201381C @ =gCgbChans
 	bl MPlayExtender
 	ldr r0, _02013820 @ =0x0092F400
 	bl m4aSoundMode
@@ -115,7 +115,7 @@ m4aSoundInit: @ 0x020137B8
 	lsrs r0, r0, #0x10
 	cmp r0, #0
 	beq _02013806
-	ldr r5, _02013828 @ =gUnknown_02016D5C
+	ldr r5, _02013828 @ =gMPlayTable
 	adds r6, r0, #0
 _020137EA:
 	ldr r4, [r5]
@@ -125,7 +125,7 @@ _020137EA:
 	bl MPlayOpen
 	ldrh r0, [r5, #0xa]
 	strb r0, [r4, #0xb]
-	ldr r0, _0201382C @ =0x0201F330
+	ldr r0, _0201382C @ =gMPlayMemAccArea
 	str r0, [r4, #0x18]
 	adds r5, #0xc
 	subs r6, #1
@@ -139,12 +139,12 @@ _02013806:
 _0201380C: .4byte SoundMainRAM
 _02013810: .4byte SoundMainRAM_Buffer
 _02013814: .4byte 0x04000100
-_02013818: .4byte 0x0201E130
-_0201381C: .4byte 0x0201F170
+_02013818: .4byte gSoundInfo
+_0201381C: .4byte gCgbChans
 _02013820: .4byte 0x0092F400
 _02013824: .4byte 0x00000004
-_02013828: .4byte gUnknown_02016D5C
-_0201382C: .4byte 0x0201F330
+_02013828: .4byte gMPlayTable
+_0201382C: .4byte gMPlayMemAccArea
 
 	thumb_func_start m4aSoundMain
 m4aSoundMain: @ 0x02013830
@@ -158,7 +158,7 @@ m4aSoundMain: @ 0x02013830
 m4aSongNumStart: @ 0x0201383C
 	push {lr}
 	lsls r0, r0, #0x10
-	ldr r2, _02013860 @ =gUnknown_02016D5C
+	ldr r2, _02013860 @ =gMPlayTable
 	ldr r1, _02013864 @ =gUnknown_02016D8C
 	lsrs r0, r0, #0xd
 	adds r0, r0, r1
@@ -174,14 +174,14 @@ m4aSongNumStart: @ 0x0201383C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02013860: .4byte gUnknown_02016D5C
+_02013860: .4byte gMPlayTable
 _02013864: .4byte gUnknown_02016D8C
 
 	thumb_func_start m4aSongNumStartOrChange
 m4aSongNumStartOrChange: @ 0x02013868
 	push {lr}
 	lsls r0, r0, #0x10
-	ldr r2, _02013894 @ =gUnknown_02016D5C
+	ldr r2, _02013894 @ =gMPlayTable
 	ldr r1, _02013898 @ =gUnknown_02016D8C
 	lsrs r0, r0, #0xd
 	adds r0, r0, r1
@@ -200,7 +200,7 @@ m4aSongNumStartOrChange: @ 0x02013868
 	bl MPlayStart
 	b _020138B0
 	.align 2, 0
-_02013894: .4byte gUnknown_02016D5C
+_02013894: .4byte gMPlayTable
 _02013898: .4byte gUnknown_02016D8C
 _0201389C:
 	ldr r2, [r1, #4]
@@ -221,7 +221,7 @@ _020138B0:
 m4aSongNumStartOrContinue: @ 0x020138B4
 	push {lr}
 	lsls r0, r0, #0x10
-	ldr r2, _020138E0 @ =gUnknown_02016D5C
+	ldr r2, _020138E0 @ =gMPlayTable
 	ldr r1, _020138E4 @ =gUnknown_02016D8C
 	lsrs r0, r0, #0xd
 	adds r0, r0, r1
@@ -240,7 +240,7 @@ m4aSongNumStartOrContinue: @ 0x020138B4
 	bl MPlayStart
 	b _02013904
 	.align 2, 0
-_020138E0: .4byte gUnknown_02016D5C
+_020138E0: .4byte gMPlayTable
 _020138E4: .4byte gUnknown_02016D8C
 _020138E8:
 	ldr r2, [r1, #4]
@@ -264,7 +264,7 @@ _02013904:
 m4aSongNumStop: @ 0x02013908
 	push {lr}
 	lsls r0, r0, #0x10
-	ldr r2, _02013934 @ =gUnknown_02016D5C
+	ldr r2, _02013934 @ =gMPlayTable
 	ldr r1, _02013938 @ =gUnknown_02016D8C
 	lsrs r0, r0, #0xd
 	adds r0, r0, r1
@@ -284,14 +284,14 @@ _0201392E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02013934: .4byte gUnknown_02016D5C
+_02013934: .4byte gMPlayTable
 _02013938: .4byte gUnknown_02016D8C
 
 	thumb_func_start m4aSongNumContinue
 m4aSongNumContinue: @ 0x0201393C
 	push {lr}
 	lsls r0, r0, #0x10
-	ldr r2, _02013968 @ =gUnknown_02016D5C
+	ldr r2, _02013968 @ =gMPlayTable
 	ldr r1, _0201396C @ =gUnknown_02016D8C
 	lsrs r0, r0, #0xd
 	adds r0, r0, r1
@@ -311,7 +311,7 @@ _02013962:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02013968: .4byte gUnknown_02016D5C
+_02013968: .4byte gMPlayTable
 _0201396C: .4byte gUnknown_02016D8C
 
 	thumb_func_start m4aMPlayAllStop
@@ -322,7 +322,7 @@ m4aMPlayAllStop: @ 0x02013970
 	lsrs r0, r0, #0x10
 	cmp r0, #0
 	beq _0201398E
-	ldr r5, _02013998 @ =gUnknown_02016D5C
+	ldr r5, _02013998 @ =gMPlayTable
 	adds r4, r0, #0
 _02013980:
 	ldr r0, [r5]
@@ -337,7 +337,7 @@ _0201398E:
 	bx r0
 	.align 2, 0
 _02013994: .4byte 0x00000004
-_02013998: .4byte gUnknown_02016D5C
+_02013998: .4byte gMPlayTable
 
 	thumb_func_start m4aMPlayContinue
 m4aMPlayContinue: @ 0x0201399C
@@ -355,7 +355,7 @@ m4aMPlayAllContinue: @ 0x020139A8
 	lsrs r0, r0, #0x10
 	cmp r0, #0
 	beq _020139C6
-	ldr r5, _020139D0 @ =gUnknown_02016D5C
+	ldr r5, _020139D0 @ =gMPlayTable
 	adds r4, r0, #0
 _020139B8:
 	ldr r0, [r5]
@@ -370,7 +370,7 @@ _020139C6:
 	bx r0
 	.align 2, 0
 _020139CC: .4byte 0x00000004
-_020139D0: .4byte gUnknown_02016D5C
+_020139D0: .4byte gMPlayTable
 
 	thumb_func_start m4aMPlayFadeOut
 m4aMPlayFadeOut: @ 0x020139D4
@@ -502,7 +502,7 @@ MPlayExtender: @ 0x02013A74
 	bne _02013B34
 	adds r0, r6, #1
 	str r0, [r4]
-	ldr r1, _02013B50 @ =0x0201F0E0
+	ldr r1, _02013B50 @ =gMPlayJumpTable
 	ldr r0, _02013B54 @ =MP2K_event_memacc
 	str r0, [r1, #0x20]
 	ldr r0, _02013B58 @ =MP2K_event_mod
@@ -538,7 +538,7 @@ MPlayExtender: @ 0x02013A74
 	ldr r2, _02013B88 @ =0x05000040
 	mov r0, sp
 	adds r1, r5, #0
-	bl sub_02014CB4
+	bl CpuSet
 	movs r0, #1
 	strb r0, [r5, #1]
 	movs r0, #0x11
@@ -573,7 +573,7 @@ _02013B40: .4byte 0x04000080
 _02013B44: .4byte 0x04000063
 _02013B48: .4byte gUnknown_03007FF0
 _02013B4C: .4byte 0x68736D53
-_02013B50: .4byte 0x0201F0E0
+_02013B50: .4byte gMPlayJumpTable
 _02013B54: .4byte MP2K_event_memacc
 _02013B58: .4byte MP2K_event_mod
 _02013B5C: .4byte sub_02013700
@@ -594,24 +594,24 @@ MusicPlayerJumpTableCopy:
 	thumb_func_start ClearChain
 ClearChain: @ 0x02013B90
 	push {lr}
-	ldr r1, _02013BA0 @ =0x0201F168
+	ldr r1, _02013BA0 @ =gMPlayJumpTable + (0x4 * 34)
 	ldr r1, [r1]
 	bl sub_02014CCC
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02013BA0: .4byte 0x0201F168
+_02013BA0: .4byte gMPlayJumpTable + (0x4 * 34)
 
 	thumb_func_start Clear64byte
 Clear64byte: @ 0x02013BA4
 	push {lr}
-	ldr r1, _02013BB4 @ =0x0201F16C
+	ldr r1, _02013BB4 @ =gMPlayJumpTable + (0x4 * 35)
 	ldr r1, [r1]
 	bl sub_02014CCC
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02013BB4: .4byte 0x0201F16C
+_02013BB4: .4byte gMPlayJumpTable + (0x4 * 35)
 
 	thumb_func_start SoundInit
 SoundInit: @ 0x02013BB8
@@ -681,7 +681,7 @@ _02013BE2:
 	ldr r2, _02013C9C @ =0x050003EC
 	mov r0, sp
 	adds r1, r5, #0
-	bl sub_02014CB4
+	bl CpuSet
 	movs r0, #8
 	strb r0, [r5, #6]
 	movs r0, #0xf
@@ -693,7 +693,7 @@ _02013BE2:
 	str r0, [r5, #0x2c]
 	str r0, [r5, #0x30]
 	str r0, [r5, #0x3c]
-	ldr r4, _02013CA8 @ =0x0201F0E0
+	ldr r4, _02013CA8 @ =gMPlayJumpTable
 	adds r0, r4, #0
 	bl sub_02012F98
 	str r4, [r5, #0x34]
@@ -721,7 +721,7 @@ _02013C98: .4byte gUnknown_03007FF0
 _02013C9C: .4byte 0x050003EC
 _02013CA0: .4byte sub_02013484
 _02013CA4: .4byte 0x02014CA9
-_02013CA8: .4byte 0x0201F0E0
+_02013CA8: .4byte gMPlayJumpTable
 _02013CAC: .4byte 0x68736D53
 
 	thumb_func_start SampleFreqSet
@@ -972,7 +972,7 @@ _02013E78:
 	adds r1, r2, r0
 	ldr r2, _02013EB8 @ =0x05000318
 	mov r0, sp
-	bl sub_02014CB4
+	bl CpuSet
 _02013E98:
 	add sp, #4
 	pop {r0}
@@ -2749,14 +2749,14 @@ _02014B5C:
 	cmp r3, r0
 	bhs _02014B7C
 _02014B68:
-	ldr r0, _02014B78 @ =0x0201F0E4
+	ldr r0, _02014B78 @ =gMPlayJumpTable + 0x4
 	ldr r2, [r0]
 	adds r0, r4, #0
 	adds r1, r6, #0
 	bl sub_02014CD0
 	b _02014B82
 	.align 2, 0
-_02014B78: .4byte 0x0201F0E4
+_02014B78: .4byte gMPlayJumpTable + 0x4
 _02014B7C:
 	ldr r0, [r6, #0x40]
 	adds r0, #4
@@ -2786,13 +2786,13 @@ _02014BA4: .4byte gUnknown_02016114
 	thumb_func_start MP2K_event_xxx
 MP2K_event_xxx: @ 0x02014BA8
 	push {lr}
-	ldr r2, _02014BB8 @ =0x0201F0E0
+	ldr r2, _02014BB8 @ =gMPlayJumpTable
 	ldr r2, [r2]
 	bl sub_02014CD0
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02014BB8: .4byte 0x0201F0E0
+_02014BB8: .4byte gMPlayJumpTable
 
 	thumb_func_start MP2K_event_xwave
 MP2K_event_xwave: @ 0x02014BBC
