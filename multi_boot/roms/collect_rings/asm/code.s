@@ -1361,7 +1361,7 @@ _02000D9C:
 	mov r2, ip
 	str r0, [r2]
 	movs r2, #0
-	ldr r4, _02000FA4 @ =gUnknown_03000790
+	ldr r4, _02000FA4 @ =gIntrTable
 	ldr r3, _02000FA8 @ =gUnknown_02014F44
 _02000DC0:
 	lsls r1, r2, #0x10
@@ -1455,7 +1455,7 @@ _02000DC0:
 	lsls r1, r1, #1
 	orrs r0, r1
 	str r0, [r2]
-	ldr r0, _02000FEC @ =sub_020001BC
+	ldr r0, _02000FEC @ =IntrMain
 	str r0, [r4]
 	ldr r1, _02000FF0 @ =gUnknown_030007D0
 	str r1, [r4, #4]
@@ -1552,7 +1552,7 @@ _02000F94: .4byte gUnknown_0300228C
 _02000F98: .4byte gUnknown_03002858
 _02000F9C: .4byte gUnknown_030026E0
 _02000FA0: .4byte gUnknown_03002830
-_02000FA4: .4byte gUnknown_03000790
+_02000FA4: .4byte gIntrTable
 _02000FA8: .4byte gUnknown_02014F44
 _02000FAC: .4byte 0x85000140
 _02000FB0: .4byte gUnknown_03002A60
@@ -1570,7 +1570,7 @@ _02000FDC: .4byte gUnknown_03001868
 _02000FE0: .4byte gUnknown_03001920
 _02000FE4: .4byte 0x06014000
 _02000FE8: .4byte gUnknown_03001820
-_02000FEC: .4byte sub_020001BC
+_02000FEC: .4byte IntrMain
 _02000FF0: .4byte gUnknown_030007D0
 _02000FF4: .4byte 0x84000080
 _02000FF8: .4byte gUnknown_03007FFC
@@ -2136,7 +2136,7 @@ sub_020014B4: @ 0x020014B4
 	ands r0, r1
 	strh r0, [r4, #0xa]
 	ldrh r0, [r4, #0xa]
-	bl sub_0201315C
+	bl m4aSoundVSync
 	ldr r1, _02001550 @ =gUnknown_03007FF8
 	ldrh r0, [r1]
 	movs r2, #1
@@ -2638,8 +2638,8 @@ _02001890: .4byte 0x04000202
 _02001894:
 	.byte 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start sub_02001898
-sub_02001898: @ 0x02001898
+	thumb_func_start AgbMain
+AgbMain: @ 0x02001898
 	push {lr}
 	bl sub_02000BE8
 	bl sub_02012A20

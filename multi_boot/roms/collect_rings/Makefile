@@ -86,13 +86,21 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
 
 # Moves any relevant sa2 c files to the build dir
 SA2_C_FILES := \
-	sa2/lib/m4a/m4a.c
+	sa2/lib/m4a/m4a.c \
+	# sa2/lib/m4a/m4a_tables.c
+
+SA2_C_ASM_FILES := \
+	sa2/lib/m4a/m4a0.s \
+	sa2/crt0.s
 
 SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
 
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
+SA2_C_ASM_SRCS = $(patsubst sa2/%.s,$(C_BUILDDIR)/sa2/%.s,$(SA2_C_ASM_FILES))
+SA2_C_ASM_OBJS = $(patsubst %.s,%.o,$(SA2_C_ASM_SRCS))
 
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
@@ -103,7 +111,7 @@ ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS)
+OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 
@@ -168,8 +176,6 @@ tidy:
 
 #### Recipes ####
 
-%.s: ;
-
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
 	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
@@ -178,12 +184,16 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 	$(OBJCOPY) -O binary $< $@
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
-
+# Copy asm and C files from SA2
 $(C_BUILDDIR)/sa2/%.c: ../../../src/%.c
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
-# Build c sources, and ensure alignment
+$(C_BUILDDIR)/sa2/%.s: ../../../src/%.s
+	$(shell mkdir -p $(shell dirname '$@'))
+	cp $< $@
+
+# Build C and ASM sources from SA2
 $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/sa2/$*.i'))
@@ -191,6 +201,10 @@ $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
 	@$(PREPROC) $(C_BUILDDIR)/sa2/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/sa2/$*.s -
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/sa2/$*.s
 	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/sa2/$*.s -o $@
+
+$(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.s
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -I ../../../ -o $@ $<
 
 # Build c sources, and ensure alignment
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
@@ -211,7 +225,7 @@ $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
