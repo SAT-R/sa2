@@ -480,7 +480,7 @@ _02001036:
 	ldrb r0, [r0]
 	cmp r0, #0xff
 	bne _0200105C
-	bl sub_020016E8
+	bl GetInput
 	ldr r0, _020010A0 @ =gMultiSioEnabled
 	ldrb r0, [r0]
 	cmp r0, #0
@@ -499,14 +499,14 @@ _0200105C:
 	ldr r1, [r4]
 	str r1, [r0]
 	bl VBlankIntrWait
-	bl sub_020010DC
+	bl UpdateScreenDma
 	ldr r0, [r4]
 	movs r5, #0x80
 	lsls r5, r5, #3
 	ands r0, r5
 	cmp r0, #0
 	bne _02001086
-	bl sub_020013CC
+	bl ClearOamBufferDma
 	ldr r1, [r4]
 	adds r0, r1, #0
 	ands r0, r5
@@ -551,8 +551,8 @@ _020010C8:
 _020010D4: .4byte 0xFFFFF7FF
 _020010D8: .4byte 0x04000004
 
-	thumb_func_start sub_020010DC
-sub_020010DC: @ 0x020010DC
+	thumb_func_start UpdateScreenDma
+UpdateScreenDma: @ 0x020010DC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	movs r4, #0
@@ -890,8 +890,8 @@ _020013C0:
 	.align 2, 0
 _020013C8: .4byte sLastCalledVblankFuncId
 
-	thumb_func_start sub_020013CC
-sub_020013CC: @ 0x020013CC
+	thumb_func_start ClearOamBufferDma
+ClearOamBufferDma: @ 0x020013CC
 	push {r4, lr}
 	sub sp, #4
 	ldr r1, _02001404 @ =gNumHBlankCallbacks
@@ -1000,8 +1000,8 @@ _020014A8: .4byte gOamBuffer
 _020014AC: .4byte 0x81000080
 _020014B0: .4byte gNumVBlankCallbacks
 
-	thumb_func_start sub_020014B4
-sub_020014B4: @ 0x020014B4
+	thumb_func_start VBlankIntr
+VBlankIntr: @ 0x020014B4
 	push {r4, r5, r6, r7, lr}
 	ldr r4, _02001544 @ =0x040000B0
 	ldrh r1, [r4, #0xa]
@@ -1174,8 +1174,8 @@ _02001624: .4byte 0x0000FFDF
 _02001628: .4byte 0x04000200
 _0200162C: .4byte 0x04000202
 
-	thumb_func_start sub_02001630
-sub_02001630: @ 0x02001630
+	thumb_func_start ProcessVramGraphicsCopyQueue
+ProcessVramGraphicsCopyQueue: @ 0x02001630
 	push {r4, r5, r6, r7, lr}
 	ldr r2, _0200167C @ =gVramGraphicsCopyCursor
 	ldr r0, _02001680 @ =gVramGraphicsCopyQueueIndex
@@ -1272,8 +1272,8 @@ _020016E0:
 	bx r1
 	.align 2, 0
 
-	thumb_func_start sub_020016E8
-sub_020016E8: @ 0x020016E8
+	thumb_func_start GetInput
+GetInput: @ 0x020016E8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -1372,7 +1372,7 @@ _0200179A:
 	bx r0
 
 	thumb_func_start sub_020017B4
-sub_020017B4: @ 0x020017B4
+HBlankIntr: @ 0x020017B4
 	push {r4, r5, r6, lr}
 	ldr r0, _020017F4 @ =0x04000006
 	ldrb r0, [r0]
@@ -1515,6 +1515,7 @@ _02001890: .4byte 0x04000202
 _02001894:
 	.byte 0x70, 0x47, 0x00, 0x00
 
+/* main.c */
 	thumb_func_start AgbMain
 AgbMain: @ 0x02001898
 	push {lr}
@@ -1525,6 +1526,7 @@ AgbMain: @ 0x02001898
 	bx r0
 	.align 2, 0
 
+/* task.c */
 	thumb_func_start sub_020018AC
 sub_020018AC: @ 0x020018AC
 	push {r4, r5, lr}

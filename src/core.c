@@ -399,19 +399,22 @@ void EngineMainLoop(void)
 #if (ENGINE >= ENGINE_3)
         gNextFreeAffineIndex = 0;
 #endif
-
+#ifndef COLLECT_RINGS_ROM
         if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
 
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferCpuSet();
             }
-        } else {
+        } else
+#endif
+        {
             UpdateScreenDma();
-
+#ifndef COLLECT_RINGS_ROM
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferDma();
             }
+#endif
         }
         if (gFlags & FLAGS_PAUSE_GAME) {
             gFlags |= FLAGS_800;
@@ -562,6 +565,7 @@ static void ClearOamBufferDma(void)
     gFlags &= ~FLAGS_10;
 }
 
+#ifndef COLLECT_RINGS_ROM
 static void UpdateScreenCpuSet(void)
 {
     u8 i, j = 0;
@@ -636,6 +640,7 @@ static void UpdateScreenCpuSet(void)
         }
     }
 }
+#endif
 
 static void VBlankIntr(void)
 {
@@ -872,6 +877,7 @@ static void ClearOamBufferCpuSet(void)
     gFlags &= ~FLAGS_10;
 }
 #else
+#ifndef COLLECT_RINGS_ROM
 static void ClearOamBufferCpuSet(void)
 {
     gNumHBlankCallbacks = 0;
@@ -891,4 +897,5 @@ static void ClearOamBufferCpuSet(void)
     gNumVBlankCallbacks = 0;
     gFlags &= ~FLAGS_10;
 }
+#endif
 #endif
