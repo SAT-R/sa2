@@ -45,13 +45,13 @@
 . = 0x00000378; gUnknown_03000378 = .;
 . = 0x00000400; gUnknown_03000400 = .;
 . = 0x00000410; gUnknown_03000410 = .;
-. = 0x00000420; gUnknown_03000420 = .;
+. = 0x00000420; gMultiSioIntrFuncBuf = .;
 . = 0x00000430; gUnknown_03000430 = .;
 . = 0x00000434; gUnknown_03000434 = .;
 . = 0x0000043C; gUnknown_0300043C = .;
-. = 0x00000540; gUnknown_03000540 = .;
-. = 0x00000730; gUnknown_03000730 = .;
-. = 0x00000770; gUnknown_03000770 = .;
+. = 0x00000540; gMultiSioArea = .;
+. = 0x00000730; gMultiSioRecvFuncBuf = .;
+. = 0x00000770; gSio32MultiLoadArea = .;
 . = 0x00000790; gIntrTable = .;
 . = 0x000007D0; gUnknown_030007D0 = .;
 . = 0x000009D0; gUnknown_030009D0 = .;
@@ -139,7 +139,7 @@
 . = 0x00005378; gUnknown_03005378 = .;
 . = 0x00005380; gUnknown_03005380 = .;
 . = 0x00005394; gUnknown_03005394 = .;
-. = 0x00005398; gUnknown_03005398 = .;
+. = 0x00005398; gPseudoRandom = .;
 . = 0x000053A0; gUnknown_030053A0 = .;
 . = 0x000053A4; gUnknown_030053A4 = .;
 . = 0x000053A8; gUnknown_030053A8 = .;

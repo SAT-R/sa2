@@ -87,11 +87,13 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
 # Moves any relevant sa2 c files to the build dir
 SA2_C_FILES := \
 	sa2/lib/m4a/m4a.c \
-	# sa2/lib/m4a/m4a_tables.c
+	sa2/lib/m4a/m4a_tables.c \
+	sa2/multi_sio.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
-	sa2/crt0.s
+	sa2/crt0.s \
+	sa2/multi_sio_asm.s
 
 SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
@@ -169,6 +171,7 @@ compare: $(ROM)
 
 clean: tidy
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+	@$(MAKE) clean -C ../../../libagbsyscall
 
 tidy:
 	$(RM) -f $(ROM) $(ELF) $(MAP)
@@ -176,9 +179,9 @@ tidy:
 
 #### Recipes ####
 
-$(ELF): $(OBJS) $(LDSCRIPT)
+$(ELF): $(OBJS) $(LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -L../../../libagbsyscall -lagbsyscall -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@
@@ -241,3 +244,6 @@ ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 -include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
 endif
+
+libagbsyscall:
+	@$(MAKE) -C ../../../libagbsyscall MODERN=0 PLATFORM=gba CPU_ARCH=arm

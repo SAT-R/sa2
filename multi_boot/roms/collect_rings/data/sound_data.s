@@ -1,7 +1,7 @@
 	.section .rodata
 
-.global gUnknown_02016144
-    .incbin "data/rom_data.bin", 0x00016144, 0xB58
+.global gUnknown_02016084
+    .incbin "data/rom_data.bin", 0x00016084, 0xC18
 
     .global gMPlayTable
 gMPlayTable:

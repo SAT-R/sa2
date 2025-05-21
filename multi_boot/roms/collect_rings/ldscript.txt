@@ -14,17 +14,30 @@ SECTIONS {
     ALIGN(4) {
         build/collect_rings/asm/rom_header.o(.text);
         build/collect_rings/src/sa2/crt0.o(.text);
+        build/collect_rings/src/sa2/multi_sio_asm.o(.text);
+        build/collect_rings/src/sa2/multi_sio.o(.text);
         build/collect_rings/asm/code.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a0.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a.o(.text);
-        build/collect_rings/asm/code2.o(.text);
+        *libagbsyscall.a:ArcTan2.o(.text);
+        *libagbsyscall.a:CpuFastSet.o(.text);
+        *libagbsyscall.a:CpuSet.o(.text);
+        *libagbsyscall.a:Div.o(.text);
+        *libagbsyscall.a:Mod.o(.text);
+        *libagbsyscall.a:RLUnCompWram.o(.text);
+        *libagbsyscall.a:VBlankIntrWait.o(.text);
+        *libgcc.a:_call_via_rX.o(.text);
+        *libgcc.a:_divsi3.o(.text);
+        *libgcc.a:_dvmd_tls.o(.text);
+        *libgcc.a:_umodsi3.o(.text);
+        *libc.a:memcpy.o(.text);
+        *libc.a:memset.o(.text);
     }
 
     .rodata :
     ALIGN(4) {
         build/collect_rings/data/data.o(.rodata);
-        build/collect_rings/data/m4a_tables.o(.rodata);
-        /* build/collect_rings/src/sa2/lib/m4a/m4a_tables.o(.rodata); */
+        build/collect_rings/src/sa2/lib/m4a/m4a_tables.o(.rodata);
         build/collect_rings/data/sound_data.o(.rodata);
     }
 
