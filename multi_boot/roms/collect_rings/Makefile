@@ -88,7 +88,8 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
 SA2_C_FILES := \
 	sa2/lib/m4a/m4a.c \
 	sa2/lib/m4a/m4a_tables.c \
-	sa2/multi_sio.c
+	sa2/multi_sio.c \
+	sa2/sio32_multi_load.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
