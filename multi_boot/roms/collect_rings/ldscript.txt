@@ -20,6 +20,7 @@ SECTIONS {
         build/collect_rings/src/sa2/core.o(.text);
         build/collect_rings/src/sa2/main.o(.text);
         build/collect_rings/src/sa2/task.o(.text);
+        build/collect_rings/src/sa2/background.o(.text);
         build/collect_rings/asm/code.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a0.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a.o(.text);

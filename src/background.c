@@ -7,6 +7,7 @@
 
 #include "animation_commands.h"
 
+#ifndef COLLECT_RINGS_ROM
 static AnimCmdResult animCmd_GetTiles_BG(void *, Sprite *);
 static AnimCmdResult animCmd_GetPalette_BG(void *, Sprite *);
 static AnimCmdResult animCmd_JumpBack_BG(void *, Sprite *);
@@ -25,6 +26,9 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
     animCmd_PlaySoundEffect_BG, animCmd_AddHitbox_BG,  animCmd_TranslateSprite_BG,   animCmd_8_BG,
     animCmd_SetIdAndVariant_BG, animCmd_10_BG,         animCmd_SetSpritePriority_BG, animCmd_SetOamOrder_BG,
 };
+#else
+extern const AnimationCommandFunc animCmdTable_BG[];
+#endif
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
@@ -744,6 +748,7 @@ s32 sub_80036E0(Sprite *s)
     return 1;
 }
 
+#ifndef COLLECT_RINGS_ROM
 // (-1)
 // No differences to animCmd_GetTiles
 static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
@@ -1031,6 +1036,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6, BgAffin
         affine->y = (r1 + r3) + p4 * 256;
     }
 }
+#endif
 
 // (57.61%) https://decomp.me/scratch/6Xm6S
 // (58.36%) https://decomp.me/scratch/ClyxP
@@ -1235,7 +1241,11 @@ s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *te
         u16 *copyDest = dest + (i * TILE_SIZE_4BPP);
         u16 tile;
         u16 *addr;
+#if COLLECT_RINGS_ROM
+        CpuFastCopy(font + ((text[i] - 0x30) * TILE_SIZE_4BPP), copyDest, TILE_SIZE_4BPP);
+#else
         CpuFastCopy(font + (text[i] * TILE_SIZE_4BPP), copyDest, TILE_SIZE_4BPP);
+#endif
 
         tile = (copyDest - vramTiles) / 16u;
 #ifndef NON_MATCHING
@@ -1250,6 +1260,15 @@ s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *te
 
     return i * TILE_SIZE_4BPP;
 }
+
+#if COLLECT_RINGS_ROM
+UNUSED AnimCmdResult animCmd_unknown(void *cursor, Sprite *s)
+{
+    ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
+    s->animCursor += 3;
+    return 1;
+}
+#endif
 
 // (-2)
 // This is different to animCmd_GetPalette in that:
@@ -1295,11 +1314,13 @@ static AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
     ACmd_PlaySoundEffect *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
+#ifndef COLLECT_RINGS_ROM
     m4aSongNumStart(cmd->songId);
-
+#endif
     return 1;
 }
 
+#ifndef COLLECT_RINGS_ROM
 // (-7)
 static AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 {
@@ -1360,3 +1381,55 @@ static AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(*cmd);
     return 1;
 }
+#else
+static AnimCmdResult animCmd_unknown2(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 3;
+
+    return 1;
+}
+
+static AnimCmdResult animCmd_unknown3(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 2;
+
+    return 1;
+}
+static AnimCmdResult animCmd_unknown4(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 3;
+
+    return 1;
+}
+static AnimCmdResult animCmd_unknown5(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 2;
+
+    return -1;
+}
+static AnimCmdResult animCmd_unknown6(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 4;
+
+    return (s32)cursor;
+}
+static AnimCmdResult animCmd_unknown7(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 2;
+
+    return 1;
+}
+static AnimCmdResult animCmd_unknown8(void *cursor, Sprite *s)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    s->animCursor += 2;
+
+    return 1;
+}
+#endif

@@ -92,7 +92,8 @@ SA2_C_FILES := \
 	sa2/sio32_multi_load.c \
 	sa2/core.c \
 	sa2/main.c \
-	sa2/task.c
+	sa2/task.c \
+	sa2/background.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
@@ -207,7 +208,7 @@ $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
 	@$(CPP) $(CPPFLAGS) $(SA2_INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/sa2/$*.i
 	@$(PREPROC) $(C_BUILDDIR)/sa2/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/sa2/$*.s -
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/sa2/$*.s
-	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/sa2/$*.s -o $@
+	@$(AS) $(ASFLAGS) -I ../../../ $(C_BUILDDIR)/sa2/$*.s -o $@
 
 $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.s
 	@echo "$(AS) <flags> -o $@ $<"

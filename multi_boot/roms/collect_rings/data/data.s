@@ -1,7 +1,7 @@
 	.section .rodata
 
-    .global gUnknown_02014F88
-gUnknown_02014F88:
+    .global animCmdTable_BG
+animCmdTable_BG:
     .incbin "data/rom_data.bin", 0x00014EC8, 0x30
 
     .global gUnknown_02014FB8
