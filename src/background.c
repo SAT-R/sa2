@@ -7,7 +7,6 @@
 
 #include "animation_commands.h"
 
-#ifndef COLLECT_RINGS_ROM
 static AnimCmdResult animCmd_GetTiles_BG(void *, Sprite *);
 static AnimCmdResult animCmd_GetPalette_BG(void *, Sprite *);
 static AnimCmdResult animCmd_JumpBack_BG(void *, Sprite *);
@@ -26,9 +25,6 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
     animCmd_PlaySoundEffect_BG, animCmd_AddHitbox_BG,  animCmd_TranslateSprite_BG,   animCmd_8_BG,
     animCmd_SetIdAndVariant_BG, animCmd_10_BG,         animCmd_SetSpritePriority_BG, animCmd_SetOamOrder_BG,
 };
-#else
-extern const AnimationCommandFunc animCmdTable_BG[];
-#endif
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
@@ -1262,10 +1258,10 @@ s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *te
 }
 
 #if COLLECT_RINGS_ROM
-UNUSED AnimCmdResult animCmd_unknown(void *cursor, Sprite *s)
+UNUSED AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 {
-    ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    s->animCursor += 3;
+    ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
     return 1;
 }
 #endif
@@ -1382,53 +1378,53 @@ static AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
     return 1;
 }
 #else
-static AnimCmdResult animCmd_unknown2(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 3;
+    ACmd_Hitbox *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
 
-static AnimCmdResult animCmd_unknown3(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 2;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
-static AnimCmdResult animCmd_unknown4(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 3;
+    ACmd_8 *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
-static AnimCmdResult animCmd_unknown5(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 2;
+    ACmd_SetIdAndVariant *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return -1;
 }
-static AnimCmdResult animCmd_unknown6(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 4;
+    ACmd_10 *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return (s32)cursor;
 }
-static AnimCmdResult animCmd_unknown7(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetSpritePriority_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 2;
+    ACmd_SetSpritePriority *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
-static AnimCmdResult animCmd_unknown8(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
 {
-    ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += 2;
+    ACmd_SetOamOrder *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
