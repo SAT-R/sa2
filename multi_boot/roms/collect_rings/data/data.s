@@ -1,17 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_02014F10
-gUnknown_02014F10:
-    .incbin "data/rom_data.bin", 0x00014E50, 0x34
-
-    .global gUnknown_02014F44
-gUnknown_02014F44:
-    .incbin "data/rom_data.bin", 0x00014E84, 0x38
-
-    .global gUnknown_02014F7C
-gUnknown_02014F7C:
-    .incbin "data/rom_data.bin", 0x00014EBC, 0xC
-
     .global gUnknown_02014F88
 gUnknown_02014F88:
     .incbin "data/rom_data.bin", 0x00014EC8, 0x30

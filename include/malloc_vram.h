@@ -11,8 +11,13 @@
 #define VRAM_TILE_SEGMENTS   156
 #define VRAM_HEAP_TILE_COUNT 112
 #elif (ENGINE == ENGINE_2)
+#if COLLECT_RINGS_ROM
+#define VRAM_TILE_SEGMENTS   128
+#define VRAM_HEAP_TILE_COUNT 0
+#else
 #define VRAM_TILE_SEGMENTS   140
 #define VRAM_HEAP_TILE_COUNT 48
+#endif
 #endif
 
 void *VramMalloc(u32);

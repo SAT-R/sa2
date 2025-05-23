@@ -4,1531 +4,9 @@
 .syntax unified
 .arm
 
-	thumb_func_start EngineInit
-EngineInit: @ 0x02000BE8
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	ldr r1, _02000C18 @ =0x04000204
-	ldr r2, _02000C1C @ =0x00004014
-	adds r0, r2, #0
-	strh r0, [r1]
-	ldr r2, _02000C20 @ =gFlags
-	movs r1, #0
-	str r1, [r2]
-	ldr r0, _02000C24 @ =gFlagsPreVBlank
-	str r1, [r0]
-	ldr r0, _02000C28 @ =gInput
-	ldrh r0, [r0]
-	cmp r0, #0xf
-	bne _02000C2C
-	movs r0, #0x80
-	lsls r0, r0, #5
-	str r0, [r2]
-	b _02000C2E
-	.align 2, 0
-_02000C18: .4byte 0x04000204
-_02000C1C: .4byte 0x00004014
-_02000C20: .4byte gFlags
-_02000C24: .4byte gFlagsPreVBlank
-_02000C28: .4byte gInput
-_02000C2C:
-	str r1, [r2]
-_02000C2E:
-	ldr r0, _02000EE0 @ =0x040000D4
-	ldr r1, _02000EE4 @ =0x06010000
-	str r1, [r0]
-	ldr r1, _02000EE8 @ =0x0203B000
-	str r1, [r0, #4]
-	ldr r1, _02000EEC @ =0x80002800
-	str r1, [r0, #8]
-	ldr r1, [r0, #8]
-	movs r2, #0
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	movs r1, #0xe0
-	lsls r1, r1, #0x13
-	str r1, [r0, #4]
-	ldr r3, _02000EF0 @ =0x85000100
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	movs r1, #0xa0
-	lsls r1, r1, #0x13
-	str r1, [r0, #4]
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	ldr r3, _02000EF4 @ =sLastCalledVblankFuncId
-	movs r1, #0xff
-	strb r1, [r3]
-	ldr r1, _02000EF8 @ =gBackgroundsCopyQueueCursor
-	strb r2, [r1]
-	ldr r1, _02000EFC @ =gBackgroundsCopyQueueIndex
-	strb r2, [r1]
-	ldr r1, _02000F00 @ =gUnknown_03005390
-	strb r2, [r1]
-	ldr r1, _02000F04 @ =gVramGraphicsCopyCursor
-	strb r2, [r1]
-	ldr r1, _02000F08 @ =gVramGraphicsCopyQueueIndex
-	strb r2, [r1]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F0C @ =gUnknown_03002280
-	str r1, [r0, #4]
-	ldr r3, _02000F10 @ =0x85000004
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	ldr r1, _02000F14 @ =gUnknown_03004D60
-	str r2, [r1]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F18 @ =gBgScrollRegs
-	str r1, [r0, #4]
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	ldr r1, _02000F1C @ =gUnknown_030017F4
-	movs r4, #0
-	strh r2, [r1]
-	strh r2, [r1, #2]
-	ldr r3, _02000F20 @ =gDispCnt
-	movs r1, #0x80
-	strh r1, [r3]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F24 @ =gVramGraphicsCopyQueue
-	str r1, [r0, #4]
-	ldr r1, _02000F28 @ =0x85000020
-	str r1, [r0, #8]
-	ldr r1, [r0, #8]
-	ldr r1, _02000F2C @ =gOamFreeIndex
-	strb r4, [r1]
-	ldr r1, _02000F30 @ =gOamFirstPausedIndex
-	strb r4, [r1]
-	add r3, sp, #4
-	movs r1, #0x80
-	lsls r1, r1, #2
-	adds r5, r1, #0
-	strh r5, [r3]
-	str r3, [r0]
-	ldr r1, _02000F34 @ =gOamBuffer
-	str r1, [r0, #4]
-	ldr r4, _02000F38 @ =0x81000200
-	str r4, [r0, #8]
-	ldr r1, [r0, #8]
-	strh r5, [r3]
-	str r3, [r0]
-	ldr r1, _02000F3C @ =gOamBuffer2
-	str r1, [r0, #4]
-	str r4, [r0, #8]
-	ldr r1, [r0, #8]
-	movs r4, #1
-	rsbs r4, r4, #0
-	str r4, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F40 @ =gUnknown_03001850
-	str r1, [r0, #4]
-	ldr r3, _02000F44 @ =0x85000008
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	str r4, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F48 @ =gUnknown_03004D40
-	str r1, [r0, #4]
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F4C @ =gObjPalette
-	str r1, [r0, #4]
-	adds r3, #0x78
-	str r3, [r0, #8]
-	ldr r1, [r0, #8]
-	str r2, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02000F50 @ =gBgPalette
-	str r1, [r0, #4]
-	str r3, [r0, #8]
-	ldr r0, [r0, #8]
-	ldr r0, _02000F54 @ =gBgAffineRegs
-	movs r1, #0x80
-	lsls r1, r1, #1
-	strh r1, [r0]
-	strh r2, [r0, #2]
-	strh r2, [r0, #4]
-	strh r1, [r0, #6]
-	str r2, [r0, #8]
-	str r2, [r0, #0xc]
-	strh r1, [r0, #0x10]
-	strh r2, [r0, #0x12]
-	strh r2, [r0, #0x14]
-	strh r1, [r0, #0x16]
-	str r2, [r0, #0x18]
-	str r2, [r0, #0x1c]
-	ldr r0, _02000F58 @ =gUnknown_03001944
-	strh r2, [r0]
-	ldr r0, _02000F5C @ =gUnknown_030017F0
-	strh r1, [r0]
-	ldr r0, _02000F60 @ =gUnknown_03005394
-	strh r1, [r0]
-	ldr r0, _02000F64 @ =gUnknown_03002A8C
-	strh r2, [r0]
-	ldr r0, _02000F68 @ =gNumVBlankCallbacks + 0x8
-	strh r2, [r0]
-	ldr r0, _02000F6C @ =gUnknown_0300194C
-	strh r2, [r0]
-	ldr r0, _02000F70 @ =gUnknown_03002820
-	strh r2, [r0]
-	ldr r0, _02000F74 @ =gUnknown_03005398
-	strh r1, [r0]
-	ldr r0, _02000F78 @ =gWinRegs
-	strh r2, [r0]
-	strh r2, [r0, #2]
-	strh r2, [r0, #4]
-	strh r2, [r0, #6]
-	strh r2, [r0, #8]
-	strh r2, [r0, #0xa]
-	ldr r0, _02000F7C @ =gBldRegs
-	strh r2, [r0]
-	strh r2, [r0, #2]
-	strh r2, [r0, #4]
-	ldr r0, _02000F80 @ =gMosaicReg
-	strh r2, [r0]
-	ldr r0, _02000F84 @ =gPseudoRandom
-	str r2, [r0]
-	ldr r0, _02000F88 @ =gFrameCount
-	mov ip, r0
-	ldr r7, _02000F8C @ =gBgOffsetsBuffer
-	ldr r1, _02000F90 @ =gBgOffsetsHBlank
-	mov r8, r1
-	ldr r0, _02000F94 @ =gUnknown_030022AC
-	mov sb, r0
-	ldr r1, _02000F98 @ =gHBlankCopyTarget
-	mov sl, r1
-	ldr r6, _02000F9C @ =gKeysFirstRepeatIntervals
-	movs r5, #0x14
-	ldr r4, _02000FA0 @ =gKeysContinuedRepeatIntervals
-	movs r3, #8
-_02000D9C:
-	lsls r0, r2, #0x10
-	asrs r0, r0, #0x10
-	adds r1, r0, r6
-	strb r5, [r1]
-	adds r1, r0, r4
-	strb r3, [r1]
-	adds r0, #1
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #9
-	ble _02000D9C
-	movs r0, #0
-	mov r2, ip
-	str r0, [r2]
-	movs r2, #0
-	ldr r4, _02000FA4 @ =gIntrTable
-	ldr r3, _02000FA8 @ =gUnknown_02014F44
-_02000DC0:
-	lsls r1, r2, #0x10
-	asrs r1, r1, #0x10
-	lsls r0, r1, #2
-	adds r2, r0, r4
-	adds r0, r0, r3
-	ldr r0, [r0]
-	str r0, [r2]
-	adds r1, #1
-	lsls r1, r1, #0x10
-	lsrs r2, r1, #0x10
-	asrs r1, r1, #0x10
-	cmp r1, #0xe
-	ble _02000DC0
-	movs r5, #0
-	str r5, [sp]
-	ldr r4, _02000EE0 @ =0x040000D4
-	mov r0, sp
-	str r0, [r4]
-	str r7, [r4, #4]
-	ldr r0, _02000FAC @ =0x85000140
-	str r0, [r4, #8]
-	ldr r0, [r4, #8]
-	mov r1, r8
-	str r7, [r1]
-	movs r2, #0xa0
-	lsls r2, r2, #2
-	adds r0, r7, r2
-	mov r1, sb
-	str r0, [r1]
-	mov r2, sl
-	str r5, [r2]
-	ldr r0, _02000FB0 @ =gHBlankCopySize
-	strb r5, [r0]
-	ldr r1, _02000FB4 @ =gNumHBlankCallbacks
-	strb r5, [r1]
-	ldr r2, _02000FB8 @ =gNumHBlankIntrs
-	strb r5, [r2]
-	str r5, [sp]
-	mov r0, sp
-	str r0, [r4]
-	ldr r1, _02000FBC @ =gHBlankCallbacks
-	str r1, [r4, #4]
-	ldr r0, _02000F10 @ =0x85000004
-	str r0, [r4, #8]
-	ldr r1, [r4, #8]
-	str r5, [sp]
-	mov r2, sp
-	str r2, [r4]
-	ldr r1, _02000FC0 @ =gHBlankIntrs
-	str r1, [r4, #4]
-	str r0, [r4, #8]
-	ldr r1, [r4, #8]
-	ldr r2, _02000FC4 @ =gNumVBlankCallbacks
-	strb r5, [r2]
-	ldr r1, _02000FC8 @ =gNumVBlankIntrs
-	strb r5, [r1]
-	str r5, [sp]
-	mov r2, sp
-	str r2, [r4]
-	ldr r1, _02000FCC @ =gVBlankCallbacks
-	str r1, [r4, #4]
-	str r0, [r4, #8]
-	ldr r1, [r4, #8]
-	str r5, [sp]
-	str r2, [r4]
-	ldr r2, _02000FD0 @ =gVBlankIntrs
-	str r2, [r4, #4]
-	str r0, [r4, #8]
-	ldr r0, [r4, #8]
-	bl m4aSoundInit
-	ldr r0, _02000FD4 @ =0x0092F400
-	bl m4aSoundMode
-	ldr r1, _02000FD8 @ =gExecSoundMain
-	movs r0, #1
-	strb r0, [r1]
-	bl sub_020018AC
-	ldr r1, _02000FDC @ =gVramHeapMaxTileSlots
-	movs r2, #0x80
-	lsls r2, r2, #2
-	adds r0, r2, #0
-	strh r0, [r1]
-	ldr r1, _02000FE0 @ =gVramHeapStartAddr
-	ldr r0, _02000FE4 @ =0x06014000
-	str r0, [r1]
-	bl sub_02004854
-	ldr r2, _02000FE8 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #0x80
-	lsls r1, r1, #1
-	orrs r0, r1
-	str r0, [r2]
-	ldr r0, _02000FEC @ =IntrMain
-	str r0, [r4]
-	ldr r1, _02000FF0 @ =gIntrMainBuf
-	str r1, [r4, #4]
-	ldr r0, _02000FF4 @ =0x84000080
-	str r0, [r4, #8]
-	ldr r0, [r4, #8]
-	ldr r0, _02000FF8 @ =gUnknown_03007FFC
-	str r1, [r0]
-	ldr r0, _02000FFC @ =0x04000208
-	movs r1, #1
-	strh r1, [r0]
-	subs r0, #8
-	strh r1, [r0]
-	ldr r1, _02001000 @ =0x04000004
-	movs r0, #0x18
-	strh r0, [r1]
-	str r5, [sp]
-	mov r0, sp
-	str r0, [r4]
-	ldr r0, _02001004 @ =gMultiSioSend
-	str r0, [r4, #4]
-	ldr r0, _02001008 @ =0x85000005
-	str r0, [r4, #8]
-	ldr r0, [r4, #8]
-	str r5, [sp]
-	mov r1, sp
-	str r1, [r4]
-	ldr r0, _0200100C @ =gMultiSioRecv
-	str r0, [r4, #4]
-	ldr r0, _02001010 @ =0x85000014
-	str r0, [r4, #8]
-	ldr r0, [r4, #8]
-	ldr r0, _02001014 @ =gMultiSioStatusFlags
-	str r5, [r0]
-	ldr r0, _02001018 @ =gMultiSioEnabled
-	strb r5, [r0]
-	movs r0, #0
-	bl MultiSioInit
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02000EE0: .4byte 0x040000D4
-_02000EE4: .4byte 0x06010000
-_02000EE8: .4byte 0x0203B000
-_02000EEC: .4byte 0x80002800
-_02000EF0: .4byte 0x85000100
-_02000EF4: .4byte sLastCalledVblankFuncId
-_02000EF8: .4byte gBackgroundsCopyQueueCursor
-_02000EFC: .4byte gBackgroundsCopyQueueIndex
-_02000F00: .4byte gUnknown_03005390
-_02000F04: .4byte gVramGraphicsCopyCursor
-_02000F08: .4byte gVramGraphicsCopyQueueIndex
-_02000F0C: .4byte gUnknown_03002280
-_02000F10: .4byte 0x85000004
-_02000F14: .4byte gUnknown_03004D60
-_02000F18: .4byte gBgScrollRegs
-_02000F1C: .4byte gUnknown_030017F4
-_02000F20: .4byte gDispCnt
-_02000F24: .4byte gVramGraphicsCopyQueue
-_02000F28: .4byte 0x85000020
-_02000F2C: .4byte gOamFreeIndex
-_02000F30: .4byte gOamFirstPausedIndex
-_02000F34: .4byte gOamBuffer
-_02000F38: .4byte 0x81000200
-_02000F3C: .4byte gOamBuffer2
-_02000F40: .4byte gUnknown_03001850
-_02000F44: .4byte 0x85000008
-_02000F48: .4byte gUnknown_03004D40
-_02000F4C: .4byte gObjPalette
-_02000F50: .4byte gBgPalette
-_02000F54: .4byte gBgAffineRegs
-_02000F58: .4byte gUnknown_03001944
-_02000F5C: .4byte gUnknown_030017F0
-_02000F60: .4byte gUnknown_03005394
-_02000F64: .4byte gUnknown_03002A8C
-_02000F68: .4byte gNumVBlankCallbacks + 0x8
-_02000F6C: .4byte gUnknown_0300194C
-_02000F70: .4byte gUnknown_03002820
-_02000F74: .4byte gUnknown_03005398
-_02000F78: .4byte gWinRegs
-_02000F7C: .4byte gBldRegs
-_02000F80: .4byte gMosaicReg
-_02000F84: .4byte gPseudoRandom
-_02000F88: .4byte gFrameCount
-_02000F8C: .4byte gBgOffsetsBuffer
-_02000F90: .4byte gBgOffsetsHBlank
-_02000F94: .4byte gUnknown_030022AC
-_02000F98: .4byte gHBlankCopyTarget
-_02000F9C: .4byte gKeysFirstRepeatIntervals
-_02000FA0: .4byte gKeysContinuedRepeatIntervals
-_02000FA4: .4byte gIntrTable
-_02000FA8: .4byte gUnknown_02014F44
-_02000FAC: .4byte 0x85000140
-_02000FB0: .4byte gHBlankCopySize
-_02000FB4: .4byte gNumHBlankCallbacks
-_02000FB8: .4byte gNumHBlankIntrs
-_02000FBC: .4byte gHBlankCallbacks
-_02000FC0: .4byte gHBlankIntrs
-_02000FC4: .4byte gNumVBlankCallbacks
-_02000FC8: .4byte gNumVBlankIntrs
-_02000FCC: .4byte gVBlankCallbacks
-_02000FD0: .4byte gVBlankIntrs
-_02000FD4: .4byte 0x0092F400
-_02000FD8: .4byte gExecSoundMain
-_02000FDC: .4byte gVramHeapMaxTileSlots
-_02000FE0: .4byte gVramHeapStartAddr
-_02000FE4: .4byte 0x06014000
-_02000FE8: .4byte gFlags
-_02000FEC: .4byte IntrMain
-_02000FF0: .4byte gIntrMainBuf
-_02000FF4: .4byte 0x84000080
-_02000FF8: .4byte gUnknown_03007FFC
-_02000FFC: .4byte 0x04000208
-_02001000: .4byte 0x04000004
-_02001004: .4byte gMultiSioSend
-_02001008: .4byte 0x85000005
-_0200100C: .4byte gMultiSioRecv
-_02001010: .4byte 0x85000014
-_02001014: .4byte gMultiSioStatusFlags
-_02001018: .4byte gMultiSioEnabled
-
-	thumb_func_start EngineMainLoop
-EngineMainLoop: @ 0x0200101C
-	push {r4, r5, lr}
-_0200101E:
-	ldr r1, _02001094 @ =gExecSoundMain
-	movs r0, #0
-	strb r0, [r1]
-	ldr r0, _02001098 @ =gFlags
-	ldr r0, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	bne _02001036
-	bl m4aSoundMain
-_02001036:
-	ldr r0, _0200109C @ =sLastCalledVblankFuncId
-	ldrb r0, [r0]
-	cmp r0, #0xff
-	bne _0200105C
-	bl GetInput
-	ldr r0, _020010A0 @ =gMultiSioEnabled
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _02001058
-	ldr r0, _020010A4 @ =gMultiSioSend
-	ldr r1, _020010A8 @ =gMultiSioRecv
-	movs r2, #0
-	bl MultiSioMain
-	ldr r1, _020010AC @ =gMultiSioStatusFlags
-	str r0, [r1]
-_02001058:
-	bl sub_02001ACC
-_0200105C:
-	ldr r0, _020010B0 @ =gFlagsPreVBlank
-	ldr r4, _02001098 @ =gFlags
-	ldr r1, [r4]
-	str r1, [r0]
-	bl VBlankIntrWait
-	bl UpdateScreenDma
-	ldr r0, [r4]
-	movs r5, #0x80
-	lsls r5, r5, #3
-	ands r0, r5
-	cmp r0, #0
-	bne _02001086
-	bl ClearOamBufferDma
-	ldr r1, [r4]
-	adds r0, r1, #0
-	ands r0, r5
-	cmp r0, #0
-	beq _020010B4
-_02001086:
-	ldr r0, [r4]
-	movs r1, #0x80
-	lsls r1, r1, #4
-	orrs r0, r1
-	str r0, [r4]
-	b _020010BA
-	.align 2, 0
-_02001094: .4byte gExecSoundMain
-_02001098: .4byte gFlags
-_0200109C: .4byte sLastCalledVblankFuncId
-_020010A0: .4byte gMultiSioEnabled
-_020010A4: .4byte gMultiSioSend
-_020010A8: .4byte gMultiSioRecv
-_020010AC: .4byte gMultiSioStatusFlags
-_020010B0: .4byte gFlagsPreVBlank
-_020010B4:
-	ldr r0, _020010D4 @ =0xFFFFF7FF
-	ands r1, r0
-	str r1, [r4]
-_020010BA:
-	ldr r2, _020010D8 @ =0x04000004
-	ldrh r1, [r2]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0200101E
-	movs r3, #1
-_020010C8:
-	ldrh r1, [r2]
-	adds r0, r3, #0
-	ands r0, r1
-	cmp r0, #0
-	bne _020010C8
-	b _0200101E
-	.align 2, 0
-_020010D4: .4byte 0xFFFFF7FF
-_020010D8: .4byte 0x04000004
-
-	thumb_func_start UpdateScreenDma
-UpdateScreenDma: @ 0x020010DC
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	movs r4, #0
-	movs r1, #0x80
-	lsls r1, r1, #0x13
-	ldr r0, _020011CC @ =gDispCnt
-	ldrh r0, [r0]
-	strh r0, [r1]
-	ldr r3, _020011D0 @ =0x040000D4
-	ldr r0, _020011D4 @ =gBgCntRegs
-	str r0, [r3]
-	ldr r0, _020011D8 @ =0x04000008
-	str r0, [r3, #4]
-	ldr r0, _020011DC @ =0x84000002
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r1, _020011E0 @ =gFlags
-	ldr r2, [r1]
-	movs r5, #1
-	adds r0, r2, #0
-	ands r0, r5
-	adds r6, r1, #0
-	cmp r0, #0
-	beq _02001120
-	ldr r0, _020011E4 @ =gBgPalette
-	str r0, [r3]
-	movs r0, #0xa0
-	lsls r0, r0, #0x13
-	str r0, [r3, #4]
-	ldr r0, _020011E8 @ =0x84000080
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	eors r2, r5
-	str r2, [r6]
-_02001120:
-	ldr r0, [r6]
-	movs r1, #2
-	ands r0, r1
-	cmp r0, #0
-	beq _0200113E
-	ldr r0, _020011EC @ =gObjPalette
-	str r0, [r3]
-	ldr r0, _020011F0 @ =0x05000200
-	str r0, [r3, #4]
-	ldr r0, _020011E8 @ =0x84000080
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, [r6]
-	eors r0, r1
-	str r0, [r6]
-_0200113E:
-	ldr r0, _020011F4 @ =gWinRegs
-	str r0, [r3]
-	ldr r0, _020011F8 @ =0x04000040
-	str r0, [r3, #4]
-	ldr r0, _020011FC @ =0x84000003
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, _02001200 @ =gBldRegs
-	str r0, [r3]
-	ldr r0, _02001204 @ =0x04000050
-	str r0, [r3, #4]
-	ldr r0, _02001208 @ =0x80000003
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, _0200120C @ =gMosaicReg
-	str r0, [r3]
-	ldr r0, _02001210 @ =0x0400004C
-	str r0, [r3, #4]
-	ldr r0, _02001214 @ =0x80000002
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, _02001218 @ =gBgScrollRegs
-	str r0, [r3]
-	ldr r0, _0200121C @ =0x04000010
-	str r0, [r3, #4]
-	ldr r0, _02001220 @ =0x80000008
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, _02001224 @ =gBgAffineRegs
-	str r0, [r3]
-	ldr r0, _02001228 @ =0x04000020
-	str r0, [r3, #4]
-	ldr r0, _0200122C @ =0x84000008
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r0, [r6]
-	movs r1, #8
-	ands r0, r1
-	cmp r0, #0
-	beq _02001248
-	ldr r2, _02001230 @ =0x04000200
-	ldrh r0, [r2]
-	movs r1, #2
-	orrs r0, r1
-	strh r0, [r2]
-	str r4, [sp]
-	mov r0, sp
-	str r0, [r3]
-	ldr r1, _02001234 @ =gHBlankIntrs
-	str r1, [r3, #4]
-	ldr r0, _02001238 @ =0x85000004
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r2, _0200123C @ =gNumHBlankCallbacks
-	ldrb r0, [r2]
-	cmp r0, #0
-	beq _020011C2
-	ldr r0, _02001240 @ =gHBlankCallbacks
-	str r0, [r3]
-	str r1, [r3, #4]
-	ldrb r0, [r2]
-	movs r1, #0x84
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-_020011C2:
-	ldr r1, _02001244 @ =gNumHBlankIntrs
-	ldrb r0, [r2]
-	strb r0, [r1]
-	b _02001256
-	.align 2, 0
-_020011CC: .4byte gDispCnt
-_020011D0: .4byte 0x040000D4
-_020011D4: .4byte gBgCntRegs
-_020011D8: .4byte 0x04000008
-_020011DC: .4byte 0x84000002
-_020011E0: .4byte gFlags
-_020011E4: .4byte gBgPalette
-_020011E8: .4byte 0x84000080
-_020011EC: .4byte gObjPalette
-_020011F0: .4byte 0x05000200
-_020011F4: .4byte gWinRegs
-_020011F8: .4byte 0x04000040
-_020011FC: .4byte 0x84000003
-_02001200: .4byte gBldRegs
-_02001204: .4byte 0x04000050
-_02001208: .4byte 0x80000003
-_0200120C: .4byte gMosaicReg
-_02001210: .4byte 0x0400004C
-_02001214: .4byte 0x80000002
-_02001218: .4byte gBgScrollRegs
-_0200121C: .4byte 0x04000010
-_02001220: .4byte 0x80000008
-_02001224: .4byte gBgAffineRegs
-_02001228: .4byte 0x04000020
-_0200122C: .4byte 0x84000008
-_02001230: .4byte 0x04000200
-_02001234: .4byte gHBlankIntrs
-_02001238: .4byte 0x85000004
-_0200123C: .4byte gNumHBlankCallbacks
-_02001240: .4byte gHBlankCallbacks
-_02001244: .4byte gNumHBlankIntrs
-_02001248:
-	ldr r2, _02001334 @ =0x04000200
-	ldrh r1, [r2]
-	ldr r0, _02001338 @ =0x0000FFFD
-	ands r0, r1
-	strh r0, [r2]
-	ldr r0, _0200133C @ =gNumHBlankIntrs
-	strb r4, [r0]
-_02001256:
-	ldr r0, [r6]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0200127E
-	ldr r2, _02001340 @ =0x040000D4
-	ldr r0, _02001344 @ =gBgOffsetsHBlank
-	ldr r0, [r0]
-	str r0, [r2]
-	ldr r0, _02001348 @ =gHBlankCopyTarget
-	ldr r0, [r0]
-	str r0, [r2, #4]
-	ldr r0, _0200134C @ =gHBlankCopySize
-	ldrb r0, [r0]
-	lsrs r0, r0, #1
-	movs r1, #0x80
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-_0200127E:
-	ldr r0, _02001350 @ =sLastCalledVblankFuncId
-	ldrb r0, [r0]
-	cmp r0, #0xff
-	bne _020012CC
-	bl sub_02004494
-	ldr r0, _02001340 @ =0x040000D4
-	ldr r3, _02001354 @ =gOamBuffer
-	str r3, [r0]
-	movs r1, #0xe0
-	lsls r1, r1, #0x13
-	str r1, [r0, #4]
-	ldr r2, _02001358 @ =0x80000080
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	movs r4, #0x80
-	lsls r4, r4, #1
-	adds r1, r3, r4
-	str r1, [r0]
-	ldr r1, _0200135C @ =0x07000100
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	movs r4, #0x80
-	lsls r4, r4, #2
-	adds r1, r3, r4
-	str r1, [r0]
-	ldr r1, _02001360 @ =0x07000200
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	movs r4, #0xc0
-	lsls r4, r4, #2
-	adds r1, r3, r4
-	str r1, [r0]
-	ldr r1, _02001364 @ =0x07000300
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r0, [r0, #8]
-_020012CC:
-	movs r4, #0
-	ldr r0, _02001368 @ =gNumVBlankIntrs
-	ldrb r1, [r0]
-	cmp r4, r1
-	bhs _020012F0
-	ldr r6, _0200136C @ =gVBlankIntrs
-	adds r5, r0, #0
-_020012DA:
-	lsls r0, r4, #2
-	adds r0, r0, r6
-	ldr r0, [r0]
-	bl _call_via_r0
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	ldrb r0, [r5]
-	cmp r4, r0
-	blo _020012DA
-_020012F0:
-	ldr r0, _02001370 @ =gFlags
-	ldr r1, [r0]
-	movs r0, #0x10
-	ands r1, r0
-	cmp r1, #0
-	beq _02001380
-	movs r0, #0
-	str r0, [sp]
-	ldr r2, _02001340 @ =0x040000D4
-	mov r1, sp
-	str r1, [r2]
-	ldr r1, _0200136C @ =gVBlankIntrs
-	str r1, [r2, #4]
-	ldr r0, _02001374 @ =0x85000004
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-	ldr r3, _02001378 @ =gNumVBlankCallbacks
-	ldrb r0, [r3]
-	cmp r0, #0
-	beq _0200132A
-	ldr r0, _0200137C @ =gVBlankCallbacks
-	str r0, [r2]
-	str r1, [r2, #4]
-	ldrb r0, [r3]
-	movs r1, #0x84
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-_0200132A:
-	ldr r1, _02001368 @ =gNumVBlankIntrs
-	ldrb r0, [r3]
-	strb r0, [r1]
-	b _02001384
-	.align 2, 0
-_02001334: .4byte 0x04000200
-_02001338: .4byte 0x0000FFFD
-_0200133C: .4byte gNumHBlankIntrs
-_02001340: .4byte 0x040000D4
-_02001344: .4byte gBgOffsetsHBlank
-_02001348: .4byte gHBlankCopyTarget
-_0200134C: .4byte gHBlankCopySize
-_02001350: .4byte sLastCalledVblankFuncId
-_02001354: .4byte gOamBuffer
-_02001358: .4byte 0x80000080
-_0200135C: .4byte 0x07000100
-_02001360: .4byte 0x07000200
-_02001364: .4byte 0x07000300
-_02001368: .4byte gNumVBlankIntrs
-_0200136C: .4byte gVBlankIntrs
-_02001370: .4byte gFlags
-_02001374: .4byte 0x85000004
-_02001378: .4byte gNumVBlankCallbacks
-_0200137C: .4byte gVBlankCallbacks
-_02001380:
-	ldr r0, _02001398 @ =gNumVBlankIntrs
-	strb r1, [r0]
-_02001384:
-	ldr r1, _0200139C @ =sLastCalledVblankFuncId
-	ldrb r4, [r1]
-	cmp r4, #0xff
-	bne _0200138E
-	movs r4, #0
-_0200138E:
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r5, _020013A0 @ =gUnknown_02014F7C
-	b _020013AA
-	.align 2, 0
-_02001398: .4byte gNumVBlankIntrs
-_0200139C: .4byte sLastCalledVblankFuncId
-_020013A0: .4byte gUnknown_02014F7C
-_020013A4:
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-_020013AA:
-	cmp r4, #2
-	bhi _020013C0
-	lsls r0, r4, #2
-	adds r0, r0, r5
-	ldr r0, [r0]
-	bl _call_via_r0
-	cmp r0, #0
-	bne _020013A4
-	ldr r0, _020013C8 @ =sLastCalledVblankFuncId
-	strb r4, [r0]
-_020013C0:
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_020013C8: .4byte sLastCalledVblankFuncId
-
-	thumb_func_start ClearOamBufferDma
-ClearOamBufferDma: @ 0x020013CC
-	push {r4, lr}
-	sub sp, #4
-	ldr r1, _02001404 @ =gNumHBlankCallbacks
-	movs r0, #0
-	strb r0, [r1]
-	ldr r2, _02001408 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #9
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r2]
-	movs r1, #0x20
-	ands r0, r1
-	adds r4, r2, #0
-	cmp r0, #0
-	bne _02001426
-	ldr r3, _0200140C @ =gBgOffsetsHBlank
-	ldr r0, _02001410 @ =gNumVBlankCallbacks + 0x4
-	ldr r1, [r3]
-	ldr r2, [r0]
-	cmp r1, r2
-	bne _0200141C
-	ldr r0, _02001414 @ =gUnknown_030022C0
-	ldr r0, [r0]
-	str r0, [r3]
-	ldr r0, _02001418 @ =gUnknown_030022AC
-	str r2, [r0]
-	b _02001426
-	.align 2, 0
-_02001404: .4byte gNumHBlankCallbacks
-_02001408: .4byte gFlags
-_0200140C: .4byte gBgOffsetsHBlank
-_02001410: .4byte gNumVBlankCallbacks + 0x4
-_02001414: .4byte gUnknown_030022C0
-_02001418: .4byte gUnknown_030022AC
-_0200141C:
-	str r2, [r3]
-	ldr r0, _0200149C @ =gUnknown_030022AC
-	ldr r1, _020014A0 @ =gUnknown_030022C0
-	ldr r1, [r1]
-	str r1, [r0]
-_02001426:
-	ldr r0, [r4]
-	movs r1, #5
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4]
-	mov r0, sp
-	movs r1, #0x80
-	lsls r1, r1, #2
-	adds r3, r1, #0
-	strh r3, [r0]
-	ldr r0, _020014A4 @ =0x040000D4
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _020014A8 @ =gOamBuffer
-	mov ip, r1
-	str r1, [r0, #4]
-	ldr r2, _020014AC @ =0x81000080
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	mov r1, sp
-	strh r3, [r1]
-	str r1, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #1
-	add r1, ip
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	mov r1, sp
-	strh r3, [r1]
-	str r1, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #2
-	add r1, ip
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	mov r1, sp
-	strh r3, [r1]
-	str r1, [r0]
-	movs r1, #0xc0
-	lsls r1, r1, #2
-	add r1, ip
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r0, [r0, #8]
-	ldr r1, _020014B0 @ =gNumVBlankCallbacks
-	movs r0, #0
-	strb r0, [r1]
-	ldr r0, [r4]
-	movs r1, #0x11
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4]
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200149C: .4byte gUnknown_030022AC
-_020014A0: .4byte gUnknown_030022C0
-_020014A4: .4byte 0x040000D4
-_020014A8: .4byte gOamBuffer
-_020014AC: .4byte 0x81000080
-_020014B0: .4byte gNumVBlankCallbacks
-
-	thumb_func_start VBlankIntr
-VBlankIntr: @ 0x020014B4
-	push {r4, r5, r6, r7, lr}
-	ldr r4, _02001544 @ =0x040000B0
-	ldrh r1, [r4, #0xa]
-	ldr r0, _02001548 @ =0x0000C5FF
-	ands r0, r1
-	strh r0, [r4, #0xa]
-	ldrh r1, [r4, #0xa]
-	ldr r0, _0200154C @ =0x00007FFF
-	ands r0, r1
-	strh r0, [r4, #0xa]
-	ldrh r0, [r4, #0xa]
-	bl m4aSoundVSync
-	ldr r1, _02001550 @ =gUnknown_03007FF8
-	ldrh r0, [r1]
-	movs r2, #1
-	orrs r0, r2
-	strh r0, [r1]
-	ldr r0, _02001554 @ =gExecSoundMain
-	strb r2, [r0]
-	ldr r5, _02001558 @ =gFlagsPreVBlank
-	ldr r3, [r5]
-	movs r0, #4
-	ands r3, r0
-	cmp r3, #0
-	beq _02001574
-	ldr r2, _0200155C @ =0x04000200
-	ldrh r0, [r2]
-	movs r1, #2
-	orrs r0, r1
-	strh r0, [r2]
-	adds r2, r4, #0
-	ldr r0, [r2, #8]
-	movs r1, #0x80
-	lsls r1, r1, #0x18
-	adds r6, r5, #0
-	ldr r4, _02001560 @ =gBgOffsetsHBlank
-	ldr r5, _02001564 @ =gHBlankCopyTarget
-	ldr r3, _02001568 @ =gHBlankCopySize
-	ldr r7, _0200156C @ =gFrameCount
-	cmp r0, #0
-	bge _02001510
-_02001508:
-	ldr r0, [r2, #8]
-	ands r0, r1
-	cmp r0, #0
-	bne _02001508
-_02001510:
-	ldr r2, _02001544 @ =0x040000B0
-	ldr r0, [r4]
-	str r0, [r2]
-	ldr r0, [r5]
-	str r0, [r2, #4]
-	ldrb r0, [r3]
-	lsrs r0, r0, #1
-	movs r1, #0x80
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-	ldrb r1, [r3]
-	ldr r0, [r4]
-	adds r0, r0, r1
-	str r0, [r2]
-	ldr r0, [r5]
-	str r0, [r2, #4]
-	ldrb r0, [r3]
-	lsrs r0, r0, #1
-	ldr r1, _02001570 @ =0xA2600000
-	orrs r0, r1
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-	b _0200158C
-	.align 2, 0
-_02001544: .4byte 0x040000B0
-_02001548: .4byte 0x0000C5FF
-_0200154C: .4byte 0x00007FFF
-_02001550: .4byte gUnknown_03007FF8
-_02001554: .4byte gExecSoundMain
-_02001558: .4byte gFlagsPreVBlank
-_0200155C: .4byte 0x04000200
-_02001560: .4byte gBgOffsetsHBlank
-_02001564: .4byte gHBlankCopyTarget
-_02001568: .4byte gHBlankCopySize
-_0200156C: .4byte gFrameCount
-_02001570: .4byte 0xA2600000
-_02001574:
-	ldr r4, _020015D0 @ =gHBlankCopyTarget
-	ldr r0, [r4]
-	adds r6, r5, #0
-	ldr r7, _020015D4 @ =gFrameCount
-	cmp r0, #0
-	beq _0200158C
-	ldr r2, _020015D8 @ =0x04000200
-	ldrh r1, [r2]
-	ldr r0, _020015DC @ =0x0000FFFD
-	ands r0, r1
-	strh r0, [r2]
-	str r3, [r4]
-_0200158C:
-	ldr r0, [r6]
-	movs r1, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _020015EC
-	ldr r2, _020015E0 @ =0x04000004
-	ldrh r0, [r2]
-	movs r3, #0x20
-	orrs r0, r3
-	strh r0, [r2]
-	ldrh r1, [r2]
-	movs r0, #0xff
-	ands r0, r1
-	strh r0, [r2]
-	ldr r0, _020015E4 @ =gUnknown_03002874
-	ldrb r0, [r0]
-	lsls r0, r0, #8
-	ldrh r1, [r2]
-	orrs r0, r1
-	strh r0, [r2]
-	ldrh r1, [r2]
-	ldr r0, _020015E8 @ =0x0000FFFB
-	ands r0, r1
-	strh r0, [r2]
-	ldrh r0, [r2]
-	orrs r0, r3
-	strh r0, [r2]
-	ldr r2, _020015D8 @ =0x04000200
-	ldrh r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	strh r0, [r2]
-	b _02001608
-	.align 2, 0
-_020015D0: .4byte gHBlankCopyTarget
-_020015D4: .4byte gFrameCount
-_020015D8: .4byte 0x04000200
-_020015DC: .4byte 0x0000FFFD
-_020015E0: .4byte 0x04000004
-_020015E4: .4byte gUnknown_03002874
-_020015E8: .4byte 0x0000FFFB
-_020015EC:
-	ldr r2, _0200161C @ =0x04000004
-	ldrh r3, [r2]
-	ldr r1, _02001620 @ =0x0000FFFB
-	adds r0, r1, #0
-	ands r0, r3
-	strh r0, [r2]
-	ldrh r3, [r2]
-	ldr r0, _02001624 @ =0x0000FFDF
-	ands r0, r3
-	strh r0, [r2]
-	ldr r2, _02001628 @ =0x04000200
-	ldrh r0, [r2]
-	ands r1, r0
-	strh r1, [r2]
-_02001608:
-	ldr r0, [r7]
-	adds r0, #1
-	str r0, [r7]
-	ldr r1, _0200162C @ =0x04000202
-	movs r0, #1
-	strh r0, [r1]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200161C: .4byte 0x04000004
-_02001620: .4byte 0x0000FFFB
-_02001624: .4byte 0x0000FFDF
-_02001628: .4byte 0x04000200
-_0200162C: .4byte 0x04000202
-
-	thumb_func_start ProcessVramGraphicsCopyQueue
-ProcessVramGraphicsCopyQueue: @ 0x02001630
-	push {r4, r5, r6, r7, lr}
-	ldr r2, _0200167C @ =gVramGraphicsCopyCursor
-	ldr r0, _02001680 @ =gVramGraphicsCopyQueueIndex
-	ldrb r1, [r2]
-	adds r7, r0, #0
-	ldrb r0, [r7]
-	cmp r1, r0
-	beq _020016DE
-	ldr r1, _02001684 @ =gVramGraphicsCopyQueue
-	mov ip, r1
-	adds r6, r2, #0
-_02001646:
-	ldrb r0, [r6]
-	lsls r0, r0, #2
-	add r0, ip
-	ldr r2, [r0]
-	ldrh r0, [r2, #8]
-	cmp r0, #0
-	beq _020016BA
-	movs r4, #0
-	movs r5, #0x80
-	lsls r5, r5, #3
-	ldr r3, _02001688 @ =0x040000D4
-_0200165C:
-	cmp r0, r5
-	bls _02001694
-	ldr r0, [r2]
-	adds r0, r0, r4
-	str r0, [r3]
-	ldr r0, [r2, #4]
-	adds r0, r0, r4
-	str r0, [r3, #4]
-	ldr r0, _0200168C @ =0x80000200
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	ldr r1, _02001690 @ =0xFFFFFC00
-	adds r0, r1, #0
-	ldrh r1, [r2, #8]
-	adds r0, r0, r1
-	b _020016B0
-	.align 2, 0
-_0200167C: .4byte gVramGraphicsCopyCursor
-_02001680: .4byte gVramGraphicsCopyQueueIndex
-_02001684: .4byte gVramGraphicsCopyQueue
-_02001688: .4byte 0x040000D4
-_0200168C: .4byte 0x80000200
-_02001690: .4byte 0xFFFFFC00
-_02001694:
-	ldr r0, [r2]
-	adds r0, r0, r4
-	str r0, [r3]
-	ldr r0, [r2, #4]
-	adds r0, r0, r4
-	str r0, [r3, #4]
-	ldrh r0, [r2, #8]
-	lsrs r0, r0, #1
-	movs r1, #0x80
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	movs r0, #0
-_020016B0:
-	strh r0, [r2, #8]
-	adds r4, r4, r5
-	ldrh r0, [r2, #8]
-	cmp r0, #0
-	bne _0200165C
-_020016BA:
-	ldrb r0, [r6]
-	adds r2, r0, #1
-	movs r0, #0x1f
-	ands r2, r0
-	strb r2, [r6]
-	ldr r0, _020016D4 @ =0x04000004
-	ldrh r1, [r0]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	bne _020016D8
-	movs r0, #0
-	b _020016E0
-	.align 2, 0
-_020016D4: .4byte 0x04000004
-_020016D8:
-	ldrb r0, [r7]
-	cmp r2, r0
-	bne _02001646
-_020016DE:
-	movs r0, #1
-_020016E0:
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start GetInput
-GetInput: @ 0x020016E8
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	ldr r7, _02001750 @ =gRepeatedKeysTestCounter
-	ldr r0, _02001754 @ =gKeysFirstRepeatIntervals
-	mov sb, r0
-	ldr r1, _02001758 @ =gKeysContinuedRepeatIntervals
-	mov r8, r1
-	ldr r6, _0200175C @ =gInput
-	ldr r0, _02001760 @ =0x04000130
-	ldrh r0, [r0]
-	ldr r2, _02001764 @ =0x000003FF
-	adds r1, r2, #0
-	bics r1, r0
-	strh r1, [r6]
-	ldr r0, _02001768 @ =gPhysicalInput
-	strh r1, [r0]
-	ldr r3, _0200176C @ =gPressedKeys
-	ldr r5, _02001770 @ =gPrevInput
-	ldrh r4, [r5]
-	adds r0, r1, #0
-	eors r0, r4
-	adds r2, r1, #0
-	ands r2, r0
-	strh r2, [r3]
-	ldr r3, _02001774 @ =gReleasedKeys
-	ands r0, r4
-	strh r0, [r3]
-	strh r1, [r5]
-	ldr r0, _02001778 @ =gRepeatedKeys
-	strh r2, [r0]
-	movs r1, #0
-	mov ip, r6
-	movs r6, #1
-	adds r5, r0, #0
-_02001730:
-	mov r3, ip
-	ldrh r0, [r3]
-	lsls r1, r1, #0x18
-	asrs r2, r1, #0x18
-	asrs r0, r2
-	ands r0, r6
-	adds r4, r1, #0
-	cmp r0, #0
-	bne _0200177C
-	adds r0, r7, r2
-	mov r3, sb
-	adds r1, r3, r2
-	ldrb r1, [r1]
-	strb r1, [r0]
-	b _0200179A
-	.align 2, 0
-_02001750: .4byte gRepeatedKeysTestCounter
-_02001754: .4byte gKeysFirstRepeatIntervals
-_02001758: .4byte gKeysContinuedRepeatIntervals
-_0200175C: .4byte gInput
-_02001760: .4byte 0x04000130
-_02001764: .4byte 0x000003FF
-_02001768: .4byte gPhysicalInput
-_0200176C: .4byte gPressedKeys
-_02001770: .4byte gPrevInput
-_02001774: .4byte gReleasedKeys
-_02001778: .4byte gRepeatedKeys
-_0200177C:
-	adds r3, r7, r2
-	ldrb r0, [r3]
-	cmp r0, #0
-	beq _02001788
-	subs r0, #1
-	b _02001798
-_02001788:
-	adds r0, r6, #0
-	lsls r0, r2
-	ldrh r1, [r5]
-	orrs r0, r1
-	strh r0, [r5]
-	mov r1, r8
-	adds r0, r1, r2
-	ldrb r0, [r0]
-_02001798:
-	strb r0, [r3]
-_0200179A:
-	movs r2, #0x80
-	lsls r2, r2, #0x11
-	adds r0, r4, r2
-	lsrs r1, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #9
-	ble _02001730
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_020017B4
-HBlankIntr: @ 0x020017B4
-	push {r4, r5, r6, lr}
-	ldr r0, _020017F4 @ =0x04000006
-	ldrb r0, [r0]
-	adds r5, r0, #0
-	cmp r5, #0x9f
-	bhi _020017E6
-	movs r4, #0
-	ldr r0, _020017F8 @ =gNumHBlankIntrs
-	ldrb r0, [r0]
-	cmp r4, r0
-	bhs _020017E6
-	ldr r6, _020017FC @ =gHBlankIntrs
-_020017CC:
-	lsls r0, r4, #2
-	adds r0, r0, r6
-	ldr r1, [r0]
-	adds r0, r5, #0
-	bl _call_via_r1
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	ldr r0, _020017F8 @ =gNumHBlankIntrs
-	ldrb r0, [r0]
-	cmp r4, r0
-	blo _020017CC
-_020017E6:
-	ldr r1, _02001800 @ =0x04000202
-	movs r0, #2
-	strh r0, [r1]
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_020017F4: .4byte 0x04000006
-_020017F8: .4byte gNumHBlankIntrs
-_020017FC: .4byte gHBlankIntrs
-_02001800: .4byte 0x04000202
-
-	thumb_func_start sub_02001804
-sub_02001804: @ 0x02001804
-	ldr r1, _0200180C @ =0x04000202
-	movs r0, #4
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_0200180C: .4byte 0x04000202
-
-	thumb_func_start sub_02001810
-sub_02001810: @ 0x02001810
-	ldr r1, _0200181C @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #1
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_0200181C: .4byte 0x04000202
-
-	thumb_func_start sub_02001820
-sub_02001820: @ 0x02001820
-	ldr r1, _0200182C @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #2
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_0200182C: .4byte 0x04000202
-
-	thumb_func_start sub_02001830
-sub_02001830: @ 0x02001830
-	ldr r1, _0200183C @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #3
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_0200183C: .4byte 0x04000202
-
-	thumb_func_start sub_02001840
-sub_02001840: @ 0x02001840
-	ldr r1, _0200184C @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #4
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_0200184C: .4byte 0x04000202
-
-	thumb_func_start sub_02001850
-sub_02001850: @ 0x02001850
-	ldr r1, _02001858 @ =0x04000202
-	movs r0, #8
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_02001858: .4byte 0x04000202
-
-	thumb_func_start sub_0200185C
-sub_0200185C: @ 0x0200185C
-	ldr r1, _02001864 @ =0x04000202
-	movs r0, #0x10
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_02001864: .4byte 0x04000202
-
-	thumb_func_start sub_02001868
-sub_02001868: @ 0x02001868
-	ldr r1, _02001870 @ =0x04000202
-	movs r0, #0x20
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_02001870: .4byte 0x04000202
-
-	thumb_func_start sub_02001874
-sub_02001874: @ 0x02001874
-	ldr r1, _02001880 @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #5
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_02001880: .4byte 0x04000202
-
-	thumb_func_start sub_02001884
-sub_02001884: @ 0x02001884
-	ldr r1, _02001890 @ =0x04000202
-	movs r2, #0x80
-	lsls r2, r2, #6
-	adds r0, r2, #0
-	strh r0, [r1]
-	bx lr
-	.align 2, 0
-_02001890: .4byte 0x04000202
-_02001894:
-	.byte 0x70, 0x47, 0x00, 0x00
-
-/* main.c */
-	thumb_func_start AgbMain
-AgbMain: @ 0x02001898
-	push {lr}
-	bl EngineInit
-	bl GameInit
-	bl EngineMainLoop
-	pop {r0}
-	bx r0
-	.align 2, 0
-
 /* task.c */
-	thumb_func_start sub_020018AC
-sub_020018AC: @ 0x020018AC
+	thumb_func_start TasksInit
+TasksInit: @ 0x020018AC
 	push {r4, r5, lr}
 	sub sp, #4
 	ldr r0, _02001944 @ =gCurTask
@@ -1795,8 +273,8 @@ _02001AC0: .4byte gTaskPtrs
 _02001AC4: .4byte gNumTasks
 _02001AC8: .4byte 0x02001DE1
 
-	thumb_func_start sub_02001ACC
-sub_02001ACC: @ 0x02001ACC
+	thumb_func_start TasksExec
+TasksExec: @ 0x02001ACC
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -2340,8 +818,8 @@ _02001EBC: .4byte gFlags
 _02001EC0: .4byte gBackgroundsCopyQueue
 _02001EC4: .4byte gBackgroundsCopyQueueIndex
 
-	thumb_func_start sub_02001EC8
-sub_02001EC8: @ 0x02001EC8
+	thumb_func_start sub_8002B20
+sub_8002B20: @ 0x02001EC8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -4066,8 +2544,8 @@ _02002BA2:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_02002BA8
-sub_02002BA8: @ 0x02002BA8
+	thumb_func_start sub_8004010
+sub_8004010: @ 0x02002BA8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -4143,7 +2621,7 @@ _02002BEE:
 	mov r2, ip
 	cmp r2, #0xff
 	bne _02002C90
-	ldr r0, _02002C88 @ =gUnknown_03004D60
+	ldr r0, _02002C88 @ =gUnknown_03004D80
 	add r0, r8
 	ldrb r1, [r0]
 	lsls r0, r1, #8
@@ -4178,7 +2656,7 @@ _02002C78: .4byte gUnknown_03002280 + 0x3
 _02002C7C: .4byte gUnknown_03002280 + 0x2
 _02002C80: .4byte gBgCntRegs
 _02002C84: .4byte gDispCnt
-_02002C88: .4byte gUnknown_03004D60
+_02002C88: .4byte gUnknown_03004D80
 _02002C8C: .4byte 0x040000D4
 _02002C90:
 	add r6, sp, #4
@@ -4189,7 +2667,7 @@ _02002C90:
 	bls _02002C9E
 	b _02002DC4
 _02002C9E:
-	ldr r0, _02002CF4 @ =gUnknown_03004D60
+	ldr r0, _02002CF4 @ =gUnknown_03004D80
 	add r0, r8
 	mov ip, r0
 	ldr r2, _02002CF8 @ =0x040000D4
@@ -4234,7 +2712,7 @@ _02002CB0:
 	bls _02002CB0
 	b _02002DC4
 	.align 2, 0
-_02002CF4: .4byte gUnknown_03004D60
+_02002CF4: .4byte gUnknown_03004D80
 _02002CF8: .4byte 0x040000D4
 _02002CFC: .4byte gUnknown_03002280 + 0x2
 _02002D00:
@@ -4257,7 +2735,7 @@ _02002D1A:
 	ldrb r0, [r1]
 	cmp r0, #0xff
 	bne _02002D70
-	ldr r0, _02002D64 @ =gUnknown_03004D60
+	ldr r0, _02002D64 @ =gUnknown_03004D80
 	add r0, r8
 	ldrb r1, [r0]
 	lsls r0, r3, #1
@@ -4289,7 +2767,7 @@ _02002D58:
 	b _02002DC4
 	.align 2, 0
 _02002D60: .4byte gUnknown_03002280 + 0x2
-_02002D64: .4byte gUnknown_03004D60
+_02002D64: .4byte gUnknown_03004D80
 _02002D68: .4byte 0x040000D4
 _02002D6C: .4byte gUnknown_03002280 + 0x3
 _02002D70:
@@ -4302,7 +2780,7 @@ _02002D70:
 	ldrb r6, [r0]
 	cmp r4, r6
 	bhi _02002DC4
-	ldr r2, _02002DFC @ =gUnknown_03004D60
+	ldr r2, _02002DFC @ =gUnknown_03004D80
 	add r8, r2
 	ldr r2, _02002E00 @ =0x040000D4
 	mov ip, r1
@@ -4367,7 +2845,7 @@ _02002DE6:
 	bx r1
 	.align 2, 0
 _02002DF8: .4byte gUnknown_03002280 + 0x3
-_02002DFC: .4byte gUnknown_03004D60
+_02002DFC: .4byte gUnknown_03004D80
 _02002E00: .4byte 0x040000D4
 _02002E04: .4byte gUnknown_03002280
 _02002E08: .4byte 0x85000001
@@ -7308,7 +5786,7 @@ _02004424:
 	strb r1, [r0, #6]
 	ldrb r0, [r4]
 	strb r0, [r2]
-	ldr r0, _02004450 @ =gUnknown_03004D40
+	ldr r0, _02004450 @ =gUnknown_03004D60
 	adds r0, r5, r0
 	ldrb r1, [r4]
 	strb r1, [r0]
@@ -7316,7 +5794,7 @@ _02004424:
 	.align 2, 0
 _02004448: .4byte gUnknown_03001850
 _0200444C: .4byte gOamBuffer2
-_02004450: .4byte gUnknown_03004D40
+_02004450: .4byte gUnknown_03004D60
 _02004454:
 	ldr r3, _02004488 @ =gOamBuffer2
 	ldrb r0, [r4]
@@ -7324,7 +5802,7 @@ _02004454:
 	adds r0, r0, r3
 	movs r1, #0xff
 	strb r1, [r0, #6]
-	ldr r2, _0200448C @ =gUnknown_03004D40
+	ldr r2, _0200448C @ =gUnknown_03004D60
 	adds r2, r5, r2
 	ldrb r0, [r2]
 	lsls r0, r0, #3
@@ -7347,11 +5825,11 @@ _02004480:
 	bx r1
 	.align 2, 0
 _02004488: .4byte gOamBuffer2
-_0200448C: .4byte gUnknown_03004D40
+_0200448C: .4byte gUnknown_03004D60
 _02004490: .4byte gUnknown_030022C0 + 0x8
 
-	thumb_func_start sub_02004494
-sub_02004494: @ 0x02004494
+	thumb_func_start CopyOamBufferToOam
+CopyOamBufferToOam: @ 0x02004494
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -7546,7 +6024,7 @@ _020045F8:
 	adds r2, r5, #0
 	bl CpuSet
 	str r4, [sp, #8]
-	ldr r1, _0200463C @ =gUnknown_03004D40
+	ldr r1, _0200463C @ =gUnknown_03004D60
 	ldr r0, [sp, #0xc]
 	adds r2, r5, #0
 	bl CpuSet
@@ -7556,7 +6034,7 @@ _0200462C: .4byte gOamFreeIndex
 _02004630: .4byte gFlags
 _02004634: .4byte 0x05000008
 _02004638: .4byte gUnknown_03001850
-_0200463C: .4byte gUnknown_03004D40
+_0200463C: .4byte gUnknown_03004D60
 _02004640:
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -7572,7 +6050,7 @@ _02004640:
 	str r1, [sp, #8]
 	ldr r1, [sp, #0xc]
 	str r1, [r0]
-	ldr r1, _02004680 @ =gUnknown_03004D40
+	ldr r1, _02004680 @ =gUnknown_03004D60
 	str r1, [r0, #4]
 	str r2, [r0, #8]
 	ldr r0, [r0, #8]
@@ -7589,7 +6067,7 @@ _02004664:
 _02004674: .4byte 0x040000D4
 _02004678: .4byte gUnknown_03001850
 _0200467C: .4byte 0x85000008
-_02004680: .4byte gUnknown_03004D40
+_02004680: .4byte gUnknown_03004D60
 
 	thumb_func_start sub_02004684
 sub_02004684: @ 0x02004684
@@ -7859,8 +6337,8 @@ _0200483E:
 _0200484C: .4byte 0x0000FFFF
 _02004850: .4byte gUnknown_030057D8
 
-	thumb_func_start sub_02004854
-sub_02004854: @ 0x02004854
+	thumb_func_start VramResetHeapState
+VramResetHeapState: @ 0x02004854
 	sub sp, #4
 	mov r1, sp
 	movs r0, #0
@@ -8726,7 +7204,7 @@ sub_02004F24: @ 0x02004F24
 	strh r0, [r1, #6]
 	ldr r0, _02004F90 @ =0x00001C0C
 	strh r0, [r1, #4]
-	ldr r3, _02004F94 @ =gUnknown_03004D60
+	ldr r3, _02004F94 @ =gUnknown_03004D80
 	movs r0, #0x7f
 	strb r0, [r3, #2]
 	ldr r0, _02004F98 @ =gUnknown_03002280
@@ -8767,7 +7245,7 @@ _02004F84: .4byte gDispCnt
 _02004F88: .4byte gBgCntRegs
 _02004F8C: .4byte 0x00005E0B
 _02004F90: .4byte 0x00001C0C
-_02004F94: .4byte gUnknown_03004D60
+_02004F94: .4byte gUnknown_03004D80
 _02004F98: .4byte gUnknown_03002280
 _02004F9C: .4byte 0x040000D4
 _02004FA0: .4byte 0x06009FE0
@@ -9003,7 +7481,7 @@ _0200516A:
 	movs r0, #0
 	strh r0, [r1]
 	strh r0, [r1, #4]
-	ldr r0, _020051D8 @ =gUnknown_03000430
+	ldr r0, _020051D8 @ =IWRAM_START + 0x430
 	adds r1, r3, r0
 	ldrh r0, [r1]
 	adds r0, #1
@@ -9012,7 +7490,7 @@ _0200516A:
 	lsrs r0, r0, #0x10
 	cmp r0, #0xf0
 	bls _02005240
-	ldr r1, _020051DC @ =gUnknown_03000434
+	ldr r1, _020051DC @ =IWRAM_START + 0x434
 	adds r0, r3, r1
 	ldr r0, [r0]
 	cmp r0, #0
@@ -9045,8 +7523,8 @@ _020051C8: .4byte gMultiSioRecv
 _020051CC: .4byte gUnknown_030053AC
 _020051D0: .4byte gCurTask
 _020051D4: .4byte gBldRegs
-_020051D8: .4byte gUnknown_03000430
-_020051DC: .4byte gUnknown_03000434
+_020051D8: .4byte IWRAM_START + 0x430
+_020051DC: .4byte IWRAM_START + 0x434
 _020051E0: .4byte gUnknown_03000378
 _020051E4: .4byte 0x06012500
 _020051E8:
@@ -9096,7 +7574,7 @@ _02005240:
 	movs r6, #0
 	movs r0, #1
 	mov r8, r0
-	ldr r1, _02005288 @ =gUnknown_03000430
+	ldr r1, _02005288 @ =IWRAM_START + 0x430
 	adds r7, r3, r1
 _0200524A:
 	ldr r2, _0200528C @ =gMultiSioStatusFlags
@@ -9130,7 +7608,7 @@ _0200524A:
 	subs r3, r3, r0
 	b _020052AC
 	.align 2, 0
-_02005288: .4byte gUnknown_03000430
+_02005288: .4byte IWRAM_START + 0x430
 _0200528C: .4byte gMultiSioStatusFlags
 _02005290: .4byte gUnknown_0300542C
 _02005294:
@@ -9265,7 +7743,7 @@ sub_02005350: @ 0x02005350
 _02005388:
 	ldr r0, _020053DC @ =gUnknown_03005468
 	strb r5, [r0]
-	ldr r1, _020053E0 @ =gUnknown_03000434
+	ldr r1, _020053E0 @ =IWRAM_START + 0x434
 	adds r0, r2, r1
 	ldr r0, [r0]
 	cmp r0, #0
@@ -9301,7 +7779,7 @@ _020053D0: .4byte gMultiSioStatusFlags
 _020053D4: .4byte gMultiSioRecv
 _020053D8: .4byte 0x00004012
 _020053DC: .4byte gUnknown_03005468
-_020053E0: .4byte gUnknown_03000434
+_020053E0: .4byte IWRAM_START + 0x434
 _020053E4: .4byte gUnknown_03000040
 _020053E8: .4byte gBgScrollRegs
 _020053EC: .4byte 0x0600C000
@@ -9491,7 +7969,7 @@ sub_02005558: @ 0x02005558
 	ldr r5, _02005594 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r0, [r0, #6]
-	ldr r1, _02005598 @ =gUnknown_03000430
+	ldr r1, _02005598 @ =IWRAM_START + 0x430
 	adds r4, r0, r1
 	ldrh r0, [r4]
 	adds r0, #0x20
@@ -9519,7 +7997,7 @@ _02005586:
 	bx r0
 	.align 2, 0
 _02005594: .4byte gCurTask
-_02005598: .4byte gUnknown_03000430
+_02005598: .4byte IWRAM_START + 0x430
 _0200559C: .4byte gBldRegs
 _020055A0: .4byte sub_020055A4
 
@@ -10043,7 +8521,7 @@ sub_020059D0: @ 0x020059D0
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
 	bl sub_020056B0
-	ldr r0, _02005A28 @ =gUnknown_03000430
+	ldr r0, _02005A28 @ =IWRAM_START + 0x430
 	adds r4, r4, r0
 	ldrh r0, [r4]
 	adds r1, r0, #1
@@ -10078,7 +8556,7 @@ _02005A1E:
 	bx r0
 	.align 2, 0
 _02005A24: .4byte gCurTask
-_02005A28: .4byte gUnknown_03000430
+_02005A28: .4byte IWRAM_START + 0x430
 _02005A2C: .4byte 0x0201F270
 _02005A30: .4byte 0x0201F2B0
 _02005A34: .4byte 0x0201F2F0
@@ -10106,19 +8584,19 @@ sub_02005A44: @ 0x02005A44
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r2, r0
-	ldr r3, _02005A98 @ =gUnknown_03000434
+	ldr r3, _02005A98 @ =IWRAM_START + 0x434
 	adds r1, r2, r3
 	lsls r4, r4, #0x10
 	asrs r4, r4, #0x10
 	str r4, [r1]
-	ldr r4, _02005A9C @ =gUnknown_03000430
+	ldr r4, _02005A9C @ =IWRAM_START + 0x430
 	adds r1, r2, r4
 	movs r3, #0
 	strh r5, [r1]
 	adds r4, #8
 	adds r1, r2, r4
 	strb r3, [r1]
-	ldr r1, _02005AA0 @ =gUnknown_0300043C
+	ldr r1, _02005AA0 @ =IWRAM_START + 0x43C
 	adds r2, r2, r1
 	ldr r1, _02005AA4 @ =gFrameCount
 	ldr r1, [r1]
@@ -10129,9 +8607,9 @@ sub_02005A44: @ 0x02005A44
 	bx r1
 	.align 2, 0
 _02005A94: .4byte sub_02005078
-_02005A98: .4byte gUnknown_03000434
-_02005A9C: .4byte gUnknown_03000430
-_02005AA0: .4byte gUnknown_0300043C
+_02005A98: .4byte IWRAM_START + 0x434
+_02005A9C: .4byte IWRAM_START + 0x430
+_02005AA0: .4byte IWRAM_START + 0x43C
 _02005AA4: .4byte gFrameCount
 
 	thumb_func_start sub_02005AA8
@@ -23386,7 +21864,7 @@ sub_0200C040: @ 0x0200C040
 	mov r0, sl
 	adds r0, #0xe8
 	strh r1, [r0]
-	ldr r3, _0200C240 @ =gUnknown_03004D60
+	ldr r3, _0200C240 @ =gUnknown_03004D80
 	movs r0, #0
 	strb r0, [r3, #1]
 	ldr r0, _0200C244 @ =gUnknown_03002280
@@ -23529,7 +22007,7 @@ _0200C230: .4byte 0x00001E01
 _0200C234: .4byte 0x00001F02
 _0200C238: .4byte gUnknown_03005550
 _0200C23C: .4byte gUnknown_02015B44
-_0200C240: .4byte gUnknown_03004D60
+_0200C240: .4byte gUnknown_03004D80
 _0200C244: .4byte gUnknown_03002280
 _0200C248: .4byte gUnknown_030056B8
 _0200C24C: .4byte 0x02033004
@@ -36582,7 +35060,7 @@ _020123AA:
 	ldr r0, _0201247C @ =gUnknown_03002A8C
 	movs r2, #0x78
 	strh r2, [r0]
-	ldr r0, _02012480 @ =gNumVBlankCallbacks + 0x8
+	ldr r0, _02012480 @ =gUnknown_03004D58
 	movs r1, #0x50
 	strh r1, [r0]
 	ldr r0, _02012484 @ =gUnknown_0300194C
@@ -36647,7 +35125,7 @@ _02012470: .4byte gUnknown_03001944
 _02012474: .4byte gUnknown_030017F0
 _02012478: .4byte gUnknown_03005394
 _0201247C: .4byte gUnknown_03002A8C
-_02012480: .4byte gNumVBlankCallbacks + 0x8
+_02012480: .4byte gUnknown_03004D58
 _02012484: .4byte gUnknown_0300194C
 _02012488: .4byte gUnknown_03002820
 _0201248C: .4byte gUnknown_03005398
@@ -37116,7 +35594,7 @@ sub_020127D8: @ 0x020127D8
 	ldr r0, _020128F0 @ =0x85000010
 	str r0, [r2, #8]
 	ldr r0, [r2, #8]
-	ldr r0, _020128F4 @ =gUnknown_03004D60
+	ldr r0, _020128F4 @ =gUnknown_03004D80
 	strb r6, [r0]
 	ldr r1, _020128F8 @ =gUnknown_03002280
 	strb r6, [r1]
@@ -37181,7 +35659,7 @@ _020128E4: .4byte gBldRegs
 _020128E8: .4byte 0x040000D4
 _020128EC: .4byte gBgCntRegs
 _020128F0: .4byte 0x85000010
-_020128F4: .4byte gUnknown_03004D60
+_020128F4: .4byte gUnknown_03004D80
 _020128F8: .4byte gUnknown_03002280
 _020128FC: .4byte 0x00001E01
 _02012900: .4byte gBgScrollRegs
@@ -37316,7 +35794,7 @@ GameInit: @ 0x02012A20
 	ldr r1, _02012A7C @ =gUnknown_03005444
 	movs r0, #5
 	strb r0, [r1]
-	ldr r1, _02012A80 @ =gNumVBlankCallbacks + 0x4
+	ldr r1, _02012A80 @ =gUnknown_03004D54
 	ldr r0, _02012A84 @ =gBgOffsetsBuffer
 	str r0, [r1]
 	ldr r1, _02012A88 @ =gUnknown_030022C0
@@ -37358,7 +35836,7 @@ _02012A4A:
 	bx r0
 	.align 2, 0
 _02012A7C: .4byte gUnknown_03005444
-_02012A80: .4byte gNumVBlankCallbacks + 0x4
+_02012A80: .4byte gUnknown_03004D54
 _02012A84: .4byte gBgOffsetsBuffer
 _02012A88: .4byte gUnknown_030022C0
 _02012A8C: .4byte gMultiSioEnabled

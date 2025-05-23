@@ -89,7 +89,9 @@ SA2_C_FILES := \
 	sa2/lib/m4a/m4a.c \
 	sa2/lib/m4a/m4a_tables.c \
 	sa2/multi_sio.c \
-	sa2/sio32_multi_load.c
+	sa2/sio32_multi_load.c \
+	sa2/core.c \
+	sa2/main.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
