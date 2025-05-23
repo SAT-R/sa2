@@ -4,708 +4,7 @@
 .syntax unified
 .arm
 
-/* task.c */
-	thumb_func_start TasksInit
-TasksInit: @ 0x020018AC
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _02001944 @ =gCurTask
-	movs r1, #0
-	str r1, [r0]
-	ldr r0, _02001948 @ =gNextTask
-	str r1, [r0]
-	ldr r0, _0200194C @ =gNumTasks
-	str r1, [r0]
-	str r1, [sp]
-	ldr r1, _02001950 @ =0x040000D4
-	mov r0, sp
-	str r0, [r1]
-	ldr r2, _02001954 @ =gTasks
-	str r2, [r1, #4]
-	ldr r0, _02001958 @ =0x85000080
-	str r0, [r1, #8]
-	ldr r0, [r1, #8]
-	ldr r1, _0200195C @ =gTaskPtrs
-	ldr r3, _02001960 @ =0x00000DE4
-	adds r2, r2, r3
-	movs r3, #0xfe
-	lsls r3, r3, #1
-	adds r0, r1, r3
-_020018DC:
-	str r2, [r0]
-	subs r2, #0x1c
-	subs r0, #4
-	cmp r0, r1
-	bge _020018DC
-	bl sub_02001D50
-	adds r4, r0, #0
-	cmp r4, #0
-	beq _02001980
-	ldr r0, _02001964 @ =sub_02001DD8
-	str r0, [r4, #8]
-	movs r5, #0
-	strh r5, [r4, #0x10]
-	strh r5, [r4, #0x12]
-	strh r5, [r4]
-	strh r5, [r4, #2]
-	bl sub_02001D50
-	strh r0, [r4, #4]
-	ldrh r1, [r4, #4]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r1, r1, r0
-	cmp r1, r0
-	beq _02001980
-	strh r4, [r1, #2]
-	ldrh r0, [r4, #4]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r4, r0, r1
-	ldr r0, _02001968 @ =0x02001DDD
-	str r0, [r4, #8]
-	ldr r0, _0200196C @ =0x0000FFFF
-	strh r0, [r4, #0x10]
-	strh r5, [r4, #0x12]
-	strh r5, [r4]
-	strh r5, [r4, #4]
-	ldr r1, _02001970 @ =gEmptyTask
-	strh r5, [r1]
-	strh r5, [r1, #2]
-	strh r5, [r1, #4]
-	ldr r0, _02001974 @ =gUnknown_030057D8
-	ldr r0, [r0]
-	strh r0, [r1, #6]
-	ldr r1, _02001978 @ =gIwramHeap
-	strh r5, [r1]
-	ldr r0, _0200197C @ =0x00002204
-	strh r0, [r1, #2]
-	movs r0, #1
-	b _02001982
-	.align 2, 0
-_02001944: .4byte gCurTask
-_02001948: .4byte gNextTask
-_0200194C: .4byte gNumTasks
-_02001950: .4byte 0x040000D4
-_02001954: .4byte gTasks
-_02001958: .4byte 0x85000080
-_0200195C: .4byte gTaskPtrs
-_02001960: .4byte 0x00000DE4
-_02001964: .4byte sub_02001DD8
-_02001968: .4byte 0x02001DDD
-_0200196C: .4byte 0x0000FFFF
-_02001970: .4byte gEmptyTask
-_02001974: .4byte gUnknown_030057D8
-_02001978: .4byte gIwramHeap
-_0200197C: .4byte 0x00002204
-_02001980:
-	movs r0, #0
-_02001982:
-	add sp, #4
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_0200198C
-sub_0200198C: @ 0x0200198C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	mov ip, r0
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov r8, r1
-	lsls r2, r2, #0x10
-	lsrs r5, r2, #0x10
-	lsls r3, r3, #0x10
-	lsrs r7, r3, #0x10
-	movs r4, #0
-	movs r3, #0
-	ldr r6, _020019C4 @ =gNumTasks
-	ldr r2, [r6]
-	cmp r2, #0x7f
-	bgt _020019BC
-	ldr r1, _020019C8 @ =gTaskPtrs
-	lsls r0, r2, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r2, #1
-	str r0, [r6]
-	adds r4, r1, #0
-_020019BC:
-	cmp r4, #0
-	bne _020019DC
-	ldr r0, _020019CC @ =gEmptyTask
-	b _02001A26
-	.align 2, 0
-_020019C4: .4byte gNumTasks
-_020019C8: .4byte gTaskPtrs
-_020019CC: .4byte gEmptyTask
-_020019D0:
-	strh r4, [r1, #2]
-	ldrh r0, [r3, #4]
-	strh r0, [r4, #4]
-	strh r3, [r4, #2]
-	strh r4, [r3, #4]
-	b _02001A24
-_020019DC:
-	mov r0, ip
-	str r0, [r4, #8]
-	ldr r0, [sp, #0x18]
-	str r0, [r4, #0xc]
-	movs r0, #0
-	strh r5, [r4, #0x10]
-	strh r7, [r4, #0x12]
-	strb r0, [r4, #0x15]
-	strh r3, [r4, #0x16]
-	strh r3, [r4, #0x18]
-	mov r0, r8
-	bl sub_02001BA0
-	strh r0, [r4, #6]
-	ldr r0, _02001A30 @ =gCurTask
-	ldr r0, [r0]
-	strh r0, [r4]
-	ldr r0, _02001A34 @ =gTaskPtrs
-	ldr r3, [r0]
-	ldrh r1, [r3, #4]
-	movs r2, #0xc0
-	lsls r2, r2, #0x12
-	adds r0, r1, r2
-	cmp r0, r2
-	beq _02001A24
-_02001A0E:
-	adds r1, r1, r2
-	ldrh r0, [r1, #0x10]
-	cmp r0, r5
-	bhi _020019D0
-	adds r3, r1, #0
-	ldrh r1, [r3, #4]
-	movs r6, #0xc0
-	lsls r6, r6, #0x12
-	adds r0, r1, r6
-	cmp r0, r2
-	bne _02001A0E
-_02001A24:
-	adds r0, r4, #0
-_02001A26:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_02001A30: .4byte gCurTask
-_02001A34: .4byte gTaskPtrs
-
-	thumb_func_start sub_02001A38
-sub_02001A38: @ 0x02001A38
-	push {r4, r5, r6, lr}
-	adds r4, r0, #0
-	ldrh r1, [r4, #0x12]
-	movs r0, #2
-	ands r0, r1
-	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
-	cmp r5, #0
-	bne _02001AB6
-	ldrh r0, [r4, #2]
-	movs r6, #0xc0
-	lsls r6, r6, #0x12
-	adds r1, r0, r6
-	ldrh r0, [r4, #4]
-	adds r0, r0, r6
-	cmp r1, r6
-	beq _02001AB6
-	cmp r0, r6
-	beq _02001AB6
-	ldr r1, [r4, #0xc]
-	cmp r1, #0
-	beq _02001A6A
-	adds r0, r4, #0
-	bl _call_via_r1
-_02001A6A:
-	ldr r1, _02001ABC @ =gNextTask
-	ldr r0, [r1]
-	ldrh r2, [r4, #4]
-	cmp r4, r0
-	bne _02001A7A
-	adds r0, r2, r6
-	str r0, [r1]
-	ldrh r2, [r4, #4]
-_02001A7A:
-	ldrh r0, [r4, #2]
-	adds r1, r0, r6
-	adds r0, r2, r6
-	strh r0, [r1, #4]
-	strh r1, [r0, #2]
-	ldrh r0, [r4, #6]
-	cmp r0, #0
-	beq _02001A90
-	adds r0, r0, r6
-	bl sub_02001C08
-_02001A90:
-	ldr r2, _02001AC0 @ =gTaskPtrs
-	ldr r1, _02001AC4 @ =gNumTasks
-	ldr r0, [r1]
-	subs r0, #1
-	str r0, [r1]
-	lsls r0, r0, #2
-	adds r0, r0, r2
-	str r4, [r0]
-	strh r5, [r4]
-	strh r5, [r4, #2]
-	ldr r0, _02001AC8 @ =0x02001DE1
-	str r0, [r4, #8]
-	strh r5, [r4, #0x10]
-	strh r5, [r4, #0x12]
-	strh r5, [r4, #6]
-	movs r0, #0
-	strb r0, [r4, #0x15]
-	strh r5, [r4, #0x16]
-	strh r5, [r4, #0x18]
-_02001AB6:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02001ABC: .4byte gNextTask
-_02001AC0: .4byte gTaskPtrs
-_02001AC4: .4byte gNumTasks
-_02001AC8: .4byte 0x02001DE1
-
-	thumb_func_start TasksExec
-TasksExec: @ 0x02001ACC
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r2, _02001B30 @ =gCurTask
-	ldr r0, _02001B34 @ =gTaskPtrs
-	ldr r3, [r0]
-	str r3, [r2]
-	ldr r0, _02001B38 @ =gFlags
-	ldr r0, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #4
-	ands r0, r1
-	mov r8, r2
-	cmp r0, #0
-	bne _02001B44
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	cmp r3, r0
-	beq _02001B84
-	ldr r7, _02001B3C @ =gNextTask
-	mov r5, r8
-	adds r6, r0, #0
-_02001AF8:
-	ldr r2, [r5]
-	ldrh r0, [r2, #4]
-	adds r0, r0, r6
-	str r0, [r7]
-	ldrh r1, [r2, #0x12]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	bne _02001B10
-	ldr r0, [r2, #8]
-	bl _call_via_r0
-_02001B10:
-	ldr r0, [r7]
-	str r0, [r5]
-	ldr r4, _02001B40 @ =gExecSoundMain
-	ldrb r0, [r4]
-	cmp r0, #0
-	beq _02001B24
-	bl m4aSoundMain
-	movs r0, #0
-	strb r0, [r4]
-_02001B24:
-	ldr r0, [r5]
-	cmp r0, r6
-	bne _02001AF8
-	ldr r0, _02001B30 @ =gCurTask
-	mov r8, r0
-	b _02001B84
-	.align 2, 0
-_02001B30: .4byte gCurTask
-_02001B34: .4byte gTaskPtrs
-_02001B38: .4byte gFlags
-_02001B3C: .4byte gNextTask
-_02001B40: .4byte gExecSoundMain
-_02001B44:
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	cmp r3, r0
-	beq _02001B84
-	ldr r7, _02001B98 @ =gNextTask
-	mov r5, r8
-	adds r6, r0, #0
-_02001B52:
-	ldr r2, [r5]
-	ldrh r0, [r2, #4]
-	adds r0, r0, r6
-	str r0, [r7]
-	ldrh r1, [r2, #0x12]
-	movs r0, #5
-	ands r0, r1
-	cmp r0, #4
-	bne _02001B6A
-	ldr r0, [r2, #8]
-	bl _call_via_r0
-_02001B6A:
-	ldr r0, [r7]
-	str r0, [r5]
-	ldr r4, _02001B9C @ =gExecSoundMain
-	ldrb r0, [r4]
-	cmp r0, #0
-	beq _02001B7E
-	bl m4aSoundMain
-	movs r0, #0
-	strb r0, [r4]
-_02001B7E:
-	ldr r0, [r5]
-	cmp r0, r6
-	bne _02001B52
-_02001B84:
-	movs r1, #0
-	mov r0, r8
-	str r1, [r0]
-	ldr r0, _02001B98 @ =gNextTask
-	str r1, [r0]
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02001B98: .4byte gNextTask
-_02001B9C: .4byte gExecSoundMain
-
-	thumb_func_start sub_02001BA0
-sub_02001BA0: @ 0x02001BA0
-	push {r4, lr}
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	adds r0, r2, #3
-	lsrs r2, r0, #2
-	cmp r2, #0
-	beq _02001C00
-	lsls r0, r2, #0x12
-	movs r1, #0x80
-	lsls r1, r1, #0xb
-	adds r0, r0, r1
-	lsrs r2, r0, #0x10
-	ldr r3, _02001BEC @ =gIwramHeap
-_02001BBA:
-	lsls r0, r2, #0x10
-	asrs r0, r0, #0x10
-	movs r4, #2
-	ldrsh r1, [r3, r4]
-	cmp r0, r1
-	bgt _02001BF0
-	cmp r0, r1
-	beq _02001BE2
-	adds r0, r2, #4
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, r1
-	bgt _02001BF0
-	adds r1, r3, r2
-	ldrh r0, [r3]
-	strh r0, [r1]
-	ldrh r0, [r3, #2]
-	subs r0, r0, r2
-	strh r0, [r1, #2]
-	strh r1, [r3]
-_02001BE2:
-	rsbs r0, r2, #0
-	strh r0, [r3, #2]
-	adds r0, r3, #4
-	b _02001C02
-	.align 2, 0
-_02001BEC: .4byte gIwramHeap
-_02001BF0:
-	ldrh r1, [r3]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r1, r1, r0
-	cmp r1, r0
-	beq _02001C00
-	adds r3, r1, #0
-	b _02001BBA
-_02001C00:
-	movs r0, #0
-_02001C02:
-	pop {r4}
-	pop {r1}
-	bx r1
-
-	thumb_func_start sub_02001C08
-sub_02001C08: @ 0x02001C08
-	push {r4, r5, lr}
-	adds r2, r0, #0
-	subs r2, #4
-	ldr r1, _02001C80 @ =gIwramHeap
-	adds r3, r1, #0
-	cmp r2, r1
-	beq _02001C24
-	movs r4, #0xc0
-	lsls r4, r4, #0x12
-_02001C1A:
-	adds r1, r3, #0
-	ldrh r0, [r1]
-	adds r3, r0, r4
-	cmp r2, r3
-	bne _02001C1A
-_02001C24:
-	ldrh r4, [r2, #2]
-	movs r5, #2
-	ldrsh r0, [r2, r5]
-	cmp r0, #0
-	bge _02001C32
-	rsbs r0, r4, #0
-	strh r0, [r2, #2]
-_02001C32:
-	movs r4, #2
-	ldrsh r0, [r1, r4]
-	adds r0, r1, r0
-	cmp r0, r2
-	bne _02001C52
-	ldrh r4, [r1, #2]
-	movs r5, #2
-	ldrsh r0, [r1, r5]
-	cmp r0, #0
-	ble _02001C52
-	ldrh r0, [r3]
-	strh r0, [r1]
-	ldrh r0, [r2, #2]
-	adds r0, r4, r0
-	strh r0, [r1, #2]
-	adds r2, r1, #0
-_02001C52:
-	movs r1, #2
-	ldrsh r0, [r2, r1]
-	adds r3, r2, r0
-	ldrh r0, [r2]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	cmp r3, r0
-	bne _02001C78
-	ldrh r1, [r3, #2]
-	movs r4, #2
-	ldrsh r0, [r3, r4]
-	cmp r0, #0
-	ble _02001C78
-	ldrh r5, [r2, #2]
-	adds r0, r1, r5
-	strh r0, [r2, #2]
-	ldrh r0, [r3]
-	strh r0, [r2]
-_02001C78:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02001C80: .4byte gIwramHeap
-
-	thumb_func_start sub_02001C84
-sub_02001C84: @ 0x02001C84
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r2, _02001CCC @ =gIwramHeap
-	ldrh r0, [r2]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	cmp r0, r1
-	beq _02001D46
-	mov r8, r1
-	ldr r0, _02001CD0 @ =0x040000D4
-	mov ip, r0
-_02001C9E:
-	ldrh r4, [r2, #2]
-	movs r1, #2
-	ldrsh r0, [r2, r1]
-	cmp r0, #0
-	blt _02001D38
-	ldrh r1, [r2]
-	mov r3, r8
-	adds r0, r1, r3
-	ldrh r3, [r0, #2]
-	movs r5, #2
-	ldrsh r0, [r0, r5]
-	cmp r0, #0
-	blt _02001CD8
-	adds r0, r4, r3
-	strh r0, [r2, #2]
-	adds r0, r1, #0
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	strh r0, [r2]
-	b _02001D3E
-	.align 2, 0
-_02001CCC: .4byte gIwramHeap
-_02001CD0: .4byte 0x040000D4
-_02001CD4:
-	strh r6, [r1, #6]
-	b _02001D04
-_02001CD8:
-	ldr r0, _02001D30 @ =gUnknown_03000004
-	adds r5, r1, r0
-	adds r6, r2, #4
-	movs r0, #2
-	ldrsh r7, [r2, r0]
-	strh r3, [r2, #2]
-	movs r3, #0xc0
-	lsls r3, r3, #0x12
-	adds r0, r1, r3
-	ldrh r0, [r0]
-	strh r0, [r2]
-	movs r3, #0
-	lsls r0, r5, #0x10
-	lsrs r4, r0, #0x10
-	ldr r1, _02001D34 @ =gTasks
-_02001CF6:
-	ldrh r0, [r1, #6]
-	cmp r0, r4
-	beq _02001CD4
-	adds r1, #0x1c
-	adds r3, #1
-	cmp r3, #0x7f
-	ble _02001CF6
-_02001D04:
-	mov r0, ip
-	str r5, [r0]
-	str r6, [r0, #4]
-	movs r1, #2
-	ldrsh r0, [r2, r1]
-	adds r0, #4
-	lsrs r0, r0, #2
-	movs r1, #0x84
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	mov r3, ip
-	str r0, [r3, #8]
-	ldr r0, [r3, #8]
-	movs r5, #2
-	ldrsh r1, [r2, r5]
-	adds r1, r2, r1
-	ldrh r0, [r2]
-	strh r0, [r1]
-	strh r7, [r1, #2]
-	adds r2, r1, #0
-	strh r2, [r2]
-	b _02001D3E
-	.align 2, 0
-_02001D30: .4byte gUnknown_03000004
-_02001D34: .4byte gTasks
-_02001D38:
-	ldrh r0, [r2]
-	mov r1, r8
-	adds r2, r0, r1
-_02001D3E:
-	ldrh r0, [r2]
-	add r0, r8
-	cmp r0, r8
-	bne _02001C9E
-_02001D46:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_02001D50
-sub_02001D50: @ 0x02001D50
-	push {lr}
-	ldr r3, _02001D68 @ =gNumTasks
-	ldr r2, [r3]
-	cmp r2, #0x7f
-	bgt _02001D70
-	ldr r1, _02001D6C @ =gTaskPtrs
-	lsls r0, r2, #2
-	adds r0, r0, r1
-	ldr r0, [r0]
-	adds r1, r2, #1
-	str r1, [r3]
-	b _02001D72
-	.align 2, 0
-_02001D68: .4byte gNumTasks
-_02001D6C: .4byte gTaskPtrs
-_02001D70:
-	movs r0, #0
-_02001D72:
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_02001D78
-sub_02001D78: @ 0x02001D78
-	push {r4, r5, lr}
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	ldr r0, _02001DC0 @ =gTaskPtrs
-	ldr r4, [r0]
-	ldrh r0, [r0]
-	cmp r0, #0
-	beq _02001DD0
-_02001D8C:
-	ldrh r0, [r4, #0x10]
-	cmp r0, r2
-	blo _02001DC4
-_02001D92:
-	cmp r0, r5
-	bhs _02001DD0
-	adds r1, r4, #0
-	ldrh r0, [r1, #4]
-	movs r2, #0xc0
-	lsls r2, r2, #0x12
-	adds r4, r0, r2
-	ldr r2, _02001DC0 @ =gTaskPtrs
-	ldr r0, [r2]
-	cmp r1, r0
-	beq _02001DB4
-	ldr r0, [r2, #4]
-	cmp r1, r0
-	beq _02001DB4
-	adds r0, r1, #0
-	bl sub_02001A38
-_02001DB4:
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	cmp r4, r0
-	beq _02001DD0
-	ldrh r0, [r4, #0x10]
-	b _02001D92
-	.align 2, 0
-_02001DC0: .4byte gTaskPtrs
-_02001DC4:
-	ldrh r0, [r4, #4]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r4, r0, r1
-	cmp r0, #0
-	bne _02001D8C
-_02001DD0:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_02001DD8
-sub_02001DD8: @ 0x02001DD8
-	bx lr
-	.align 2, 0
-_02001DDC:
-	.byte 0x70, 0x47, 0x00, 0x00
-	.byte 0x70, 0x47, 0x00, 0x00
-
+/* background.c */
 	thumb_func_start sub_02001DE4
 sub_02001DE4: @ 0x02001DE4
 	push {r4, r5, r6, lr}
@@ -5025,7 +4324,7 @@ _02003E48:
 	lsrs r0, r0, #6
 	bl sub_020043FC
 	adds r4, r0, #0
-	ldr r0, _02003F18 @ =gUnknown_030057D8
+	ldr r0, _02003F18 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
 	bne _02003E72
@@ -5114,7 +4413,7 @@ _02003EFE:
 	.align 2, 0
 _02003F10: .4byte gMosaicReg
 _02003F14: .4byte gRefSpriteTables
-_02003F18: .4byte gUnknown_030057D8
+_02003F18: .4byte iwram_end
 _02003F1C: .4byte gOamFreeIndex
 _02003F20: .4byte 0x040000D4
 _02003F24: .4byte 0x80000003
@@ -5456,7 +4755,7 @@ _0200418A:
 	lsrs r0, r0, #6
 	bl sub_020043FC
 	adds r6, r0, #0
-	ldr r0, _02004248 @ =gUnknown_030057D8
+	ldr r0, _02004248 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r6
 	bne _020041B6
@@ -5536,7 +4835,7 @@ _02004232:
 	b _020042CE
 	.align 2, 0
 _02004244: .4byte gRefSpriteTables
-_02004248: .4byte gUnknown_030057D8
+_02004248: .4byte iwram_end
 _0200424C: .4byte 0x040000D4
 _02004250: .4byte 0x80000003
 _02004254: .4byte 0x000001FF
@@ -5672,7 +4971,7 @@ _02004344:
 	lsrs r0, r0, #6
 	bl sub_020043FC
 	adds r5, r0, #0
-	ldr r0, _020043F4 @ =gUnknown_030057D8
+	ldr r0, _020043F4 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r6
 	beq _020043D0
@@ -5748,7 +5047,7 @@ _020043E4: .4byte 0x000001FF
 _020043E8: .4byte 0x000003FF
 _020043EC: .4byte 0xF9FF0000
 _020043F0: .4byte 0x040000D4
-_020043F4: .4byte gUnknown_030057D8
+_020043F4: .4byte iwram_end
 _020043F8: .4byte 0x80000003
 
 	thumb_func_start sub_020043FC
@@ -5766,12 +5065,12 @@ _02004408:
 	adds r4, r0, #0
 	cmp r1, #0
 	bge _02004424
-	ldr r0, _02004420 @ =gUnknown_030057D8
+	ldr r0, _02004420 @ =iwram_end
 	ldr r0, [r0]
 	b _02004480
 	.align 2, 0
 _0200441C: .4byte gOamFreeIndex
-_02004420: .4byte gUnknown_030057D8
+_02004420: .4byte iwram_end
 _02004424:
 	ldr r0, _02004448 @ =gUnknown_03001850
 	adds r2, r5, r0
@@ -6267,12 +5566,12 @@ _020047BE:
 	mov ip, r7
 	ldr r0, _020047DC @ =gVramHeapState
 	mov sl, r0
-	ldr r6, _020047E0 @ =gUnknown_030057D8
+	ldr r6, _020047E0 @ =iwram_end
 	b _020047EA
 	.align 2, 0
 _020047D8: .4byte gVramHeapMaxTileSlots
 _020047DC: .4byte gVramHeapState
-_020047E0: .4byte gUnknown_030057D8
+_020047E0: .4byte iwram_end
 _020047E4:
 	adds r0, r3, #1
 	lsls r0, r0, #0x10
@@ -6323,7 +5622,7 @@ _0200482A:
 	cmp r4, r0
 	blo _020047BE
 _0200483A:
-	ldr r0, _02004850 @ =gUnknown_030057D8
+	ldr r0, _02004850 @ =iwram_end
 	ldr r0, [r0]
 _0200483E:
 	pop {r3, r4, r5}
@@ -6335,7 +5634,7 @@ _0200483E:
 	bx r1
 	.align 2, 0
 _0200484C: .4byte 0x0000FFFF
-_02004850: .4byte gUnknown_030057D8
+_02004850: .4byte iwram_end
 
 	thumb_func_start VramResetHeapState
 VramResetHeapState: @ 0x02004854
@@ -6362,7 +5661,7 @@ _02004878: .4byte 0x81000100
 sub_0200487C: @ 0x0200487C
 	push {lr}
 	adds r1, r0, #0
-	ldr r0, _020048A0 @ =gUnknown_030057D8
+	ldr r0, _020048A0 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r1
 	beq _0200489C
@@ -6380,7 +5679,7 @@ _0200489C:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020048A0: .4byte gUnknown_030057D8
+_020048A0: .4byte iwram_end
 _020048A4: .4byte gVramHeapStartAddr
 _020048A8: .4byte gVramHeapState
 
@@ -6779,7 +6078,7 @@ sub_02004BBC: @ 0x02004BBC
 	str r4, [sp]
 	movs r1, #0
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	str r4, [sp, #4]
 	ldr r2, _02004C1C @ =0x040000D4
 	add r1, sp, #4
@@ -6836,7 +6135,7 @@ sub_02004C40: @ 0x02004C40
 	movs r1, #0
 	movs r2, #1
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	str r4, [sp, #4]
 	ldr r2, _02004C9C @ =0x040000D4
 	add r1, sp, #4
@@ -7406,7 +6705,7 @@ _020050B6:
 	bls _02005124
 	movs r0, #0
 	ldr r1, _02005108 @ =0x0000FFFF
-	bl sub_02001D78
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0200510C @ =gBackgroundsCopyQueueCursor
 	ldr r0, _02005110 @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
@@ -8044,7 +7343,7 @@ _020055D0:
 	cmp r4, #0
 	beq _0200561C
 	ldr r0, [r6]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	bl sub_02004E54
 	b _02005690
@@ -8058,7 +7357,7 @@ _02005614: .4byte gUnknown_0300542C
 _02005618: .4byte 0x00000434
 _0200561C:
 	ldr r0, [r6]
-	bl sub_02001A38
+	bl TaskDestroy
 	ldr r0, _02005634 @ =gBldRegs
 	strh r4, [r0]
 	strh r4, [r0, #4]
@@ -8163,7 +7462,7 @@ _020056D8:
 	bls _02005740
 	movs r0, #0
 	ldr r1, _02005724 @ =0x0000FFFF
-	bl sub_02001D78
+	bl TasksDestroyInPriorityRange
 	ldr r1, _02005728 @ =gBackgroundsCopyQueueCursor
 	ldr r0, _0200572C @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
@@ -8579,7 +7878,7 @@ sub_02005A44: @ 0x02005A44
 	movs r5, #0
 	str r5, [sp]
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
@@ -9549,7 +8848,7 @@ sub_02006168: @ 0x02006168
 	str r1, [sp]
 	movs r1, #0x1c
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	adds r6, r0, #0
 	ldrh r4, [r6, #6]
 	movs r0, #0xc0
@@ -11973,7 +11272,7 @@ _0200737E:
 	str r1, [sp]
 	movs r1, #0x88
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	adds r2, r0, #0
 	movs r0, #4
 	ldrsb r0, [r7, r0]
@@ -12339,7 +11638,7 @@ _02007698:
 	ldrb r0, [r4, #8]
 	strb r0, [r5]
 	ldr r0, [r7]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _02007704
 _020076AE:
 	adds r0, r4, #0
@@ -12467,7 +11766,7 @@ _020077A4:
 	strb r0, [r4]
 	ldr r0, _020077BC @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200780C
 	.align 2, 0
 _020077BC: .4byte gCurTask
@@ -12734,7 +12033,7 @@ _020079D8:
 	ldrb r0, [r4, #8]
 	strb r0, [r5]
 	ldr r0, [r6]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _020079F6
 _020079EE:
 	adds r0, r4, #0
@@ -12905,7 +12204,7 @@ _02007B1C:
 	strb r0, [r4]
 	ldr r0, _02007B38 @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 _02007B32:
 	pop {r4, r5}
 	pop {r0}
@@ -13190,7 +12489,7 @@ sub_02007D38: @ 0x02007D38
 	str r5, [sp]
 	movs r1, #0x34
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	adds r6, r0, #0
 	ldr r0, _02007DC0 @ =0x0203300C
 	ldr r0, [r0]
@@ -13999,7 +13298,7 @@ _02008358:
 	lsrs r0, r0, #6
 	bl sub_020043FC
 	adds r4, r0, #0
-	ldr r0, _0200842C @ =gUnknown_030057D8
+	ldr r0, _0200842C @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
 	beq _02008418
@@ -14096,7 +13395,7 @@ _02008418:
 	bx r0
 	.align 2, 0
 _02008428: .4byte gOamBuffer2
-_0200842C: .4byte gUnknown_030057D8
+_0200842C: .4byte iwram_end
 _02008430: .4byte 0x040000D4
 _02008434: .4byte 0x80000003
 _02008438: .4byte gUnknown_03005650
@@ -14117,7 +13416,7 @@ sub_02008440: @ 0x02008440
 	ldr r3, _02008508 @ =sub_020089CC
 	str r3, [sp]
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldr r1, _0200850C @ =gUnknown_0300553C
 	movs r2, #0
 	str r2, [r1]
@@ -14806,7 +14105,7 @@ sub_020089E8: @ 0x020089E8
 	str r1, [sp]
 	movs r1, #0x40
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
@@ -14883,7 +14182,7 @@ sub_02008A9C: @ 0x02008A9C
 	str r4, [sp]
 	movs r1, #0x30
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r3, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
@@ -15508,7 +14807,7 @@ sub_02008F50: @ 0x02008F50
 	str r1, [sp]
 	movs r1, #0x6c
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	adds r6, r0, #0
 	ldrh r3, [r6, #6]
 	movs r0, #0xc0
@@ -16336,7 +15635,7 @@ _02009608:
 	bls _02009684
 	ldr r1, _0200966C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_02001D78
+	bl TasksDestroyInPriorityRange
 	ldr r1, _02009670 @ =gBackgroundsCopyQueueCursor
 	ldr r0, _02009674 @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
@@ -17853,7 +17152,7 @@ _0200A22A:
 _0200A232:
 	ldr r1, _0200A264 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_02001D78
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0200A268 @ =gBackgroundsCopyQueueCursor
 	ldr r0, _0200A26C @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
@@ -17894,7 +17193,7 @@ sub_0200A27C: @ 0x0200A27C
 	str r4, [sp]
 	movs r1, #4
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -17996,7 +17295,7 @@ _0200A328:
 _0200A34E:
 	strb r7, [r6]
 	ldr r0, [r3]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200A356:
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -18023,7 +17322,7 @@ sub_0200A364: @ 0x0200A364
 	str r1, [sp]
 	movs r1, #0xc
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -18071,7 +17370,7 @@ sub_0200A3B0: @ 0x0200A3B0
 	str r1, [sp]
 	movs r1, #0x40
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r0, [r0, #6]
 	mov r8, r0
 	movs r0, #0xc0
@@ -18250,7 +17549,7 @@ _0200A54C:
 	strb r0, [r1]
 	ldr r0, _0200A55C @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200A572
 	.align 2, 0
 _0200A55C: .4byte gCurTask
@@ -18310,7 +17609,7 @@ _0200A5C6:
 	strb r0, [r7]
 	ldr r0, _0200A5D4 @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200A608
 	.align 2, 0
 _0200A5D4: .4byte gCurTask
@@ -18693,7 +17992,7 @@ sub_0200A870: @ 0x0200A870
 	str r1, [sp]
 	movs r1, #0x40
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r6, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -19204,7 +18503,7 @@ _0200AC72:
 	strb r0, [r1]
 	ldr r0, _0200AC88 @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200AC92
 	.align 2, 0
 _0200AC84: .4byte gUnknown_03005650
@@ -19261,7 +18560,7 @@ sub_0200ACB8: @ 0x0200ACB8
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r3, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -19406,7 +18705,7 @@ _0200AE0E:
 	strb r0, [r6]
 	ldr r0, _0200AE1C @ =gCurTask
 	ldr r0, [r0]
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200AE2E
 	.align 2, 0
 _0200AE1C: .4byte gCurTask
@@ -20108,7 +19407,7 @@ _0200B34C:
 	strb r3, [r2]
 	ldr r1, _0200B36C @ =gCurTask
 	ldr r0, [r1]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200B35C:
 	add sp, #0x18
 	pop {r3, r4, r5}
@@ -20361,7 +19660,7 @@ _0200B53E:
 	strb r3, [r2]
 	ldr r7, _0200B564 @ =gCurTask
 	ldr r0, [r7]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200B54E:
 	add sp, #0x14
 	pop {r3, r4, r5}
@@ -20397,7 +19696,7 @@ sub_0200B568: @ 0x0200B568
 	str r1, [sp]
 	movs r1, #0xa
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r1, [r0, #6]
 	ldr r2, _0200B5E0 @ =gUnknown_03000009
 	adds r1, r1, r2
@@ -20459,7 +19758,7 @@ sub_0200B5E8: @ 0x0200B5E8
 	str r1, [sp]
 	movs r1, #0xa
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r1, [r0, #6]
 	ldr r2, _0200B660 @ =gUnknown_03000009
 	adds r1, r1, r2
@@ -20509,7 +19808,7 @@ sub_0200B668: @ 0x0200B668
 	str r4, [sp]
 	movs r1, #2
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -20542,7 +19841,7 @@ sub_0200B698: @ 0x0200B698
 	movs r0, #0x1a
 	bl m4aSongNumStart
 	ldr r0, [r4]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200B6C0:
 	pop {r4}
 	pop {r0}
@@ -20713,7 +20012,7 @@ sub_0200B7CC: @ 0x0200B7CC
 	str r5, [sp]
 	movs r1, #0x24
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
@@ -21081,7 +20380,7 @@ sub_0200BAB8: @ 0x0200BAB8
 	str r1, [sp]
 	movs r1, #0x34
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r5, [r0, #6]
 	movs r4, #0xc0
 	lsls r4, r4, #0x12
@@ -21201,7 +20500,7 @@ sub_0200BBA0: @ 0x0200BBA0
 	cmp r0, r1
 	bne _0200BBCC
 	adds r0, r3, #0
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200BBDA
 	.align 2, 0
 _0200BBC4: .4byte gCurTask
@@ -21274,7 +20573,7 @@ sub_0200BC1C: @ 0x0200BC1C
 	movs r1, #0x30
 	mov r2, sb
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r2, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -21353,7 +20652,7 @@ sub_0200BCB8: @ 0x0200BCB8
 	adds r0, r4, #0
 	bl sub_02003D30
 	ldr r0, [r7]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200BCF2:
 	adds r0, r4, #0
 	bl sub_02003D30
@@ -21389,7 +20688,7 @@ sub_0200BD0C: @ 0x0200BD0C
 	movs r1, #0x34
 	mov r2, r8
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r3, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -21535,7 +20834,7 @@ sub_0200BE3C: @ 0x0200BE3C
 	strb r1, [r0]
 	mov r1, r8
 	ldr r0, [r1]
-	bl sub_02001A38
+	bl TaskDestroy
 _0200BE88:
 	adds r0, r5, #0
 	bl sub_02003D30
@@ -21597,7 +20896,7 @@ _0200BEF4:
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
@@ -21678,7 +20977,7 @@ _0200BF9A:
 	cmp r2, #0
 	bne _0200BFA8
 	adds r0, r3, #0
-	bl sub_02001A38
+	bl TaskDestroy
 	b _0200BFEE
 _0200BFA8:
 	ldrh r0, [r1, #4]
@@ -21976,7 +21275,7 @@ _0200C18C:
 	str r1, [sp]
 	movs r1, #0
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	str r0, [r7, #0x5c]
 	ldr r0, _0200C25C @ =gUnknown_02015C48
 	ldr r2, [sp, #4]
@@ -22436,7 +21735,7 @@ sub_0200C574: @ 0x0200C574
 	push {r4, lr}
 	ldr r4, _0200C588 @ =gUnknown_03005650
 	ldr r0, [r4, #0x5c]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	str r0, [r4, #0x5c]
 	pop {r4}
@@ -32583,7 +31882,7 @@ sub_0201114C: @ 0x0201114C
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	adds r1, r5, #0
 	adds r1, #0x8c
 	str r0, [r1]
@@ -32631,7 +31930,7 @@ sub_020111CC: @ 0x020111CC
 	adds r5, r4, #0
 	adds r5, #0x8c
 	ldr r0, [r5]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	str r0, [r5]
 	adds r4, #0x60
@@ -33973,7 +33272,7 @@ sub_02011B44: @ 0x02011B44
 	ldr r3, _02011BE4 @ =sub_0201226C
 	str r3, [sp]
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	str r0, [r4]
 	ldrh r3, [r0, #6]
 	movs r1, #0xc0
@@ -34769,7 +34068,7 @@ _0201218C:
 	lsrs r0, r0, #6
 	bl sub_020043FC
 	adds r3, r0, #0
-	ldr r0, _02012234 @ =gUnknown_030057D8
+	ldr r0, _02012234 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _020121FA
@@ -34843,7 +34142,7 @@ _02012220:
 	bx r0
 	.align 2, 0
 _02012230: .4byte gOamBuffer2
-_02012234: .4byte gUnknown_030057D8
+_02012234: .4byte iwram_end
 _02012238: .4byte 0x040000D4
 _0201223C: .4byte 0x80000003
 _02012240: .4byte 0x000001FF
@@ -34854,7 +34153,7 @@ sub_02012248: @ 0x02012248
 	push {r4, lr}
 	ldr r4, _0201225C @ =gUnknown_030057C4
 	ldr r0, [r4]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	str r0, [r4]
 	pop {r4}
@@ -34977,7 +34276,7 @@ sub_02012308: @ 0x02012308
 	str r1, [sp]
 	movs r1, #0
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldr r1, _0201242C @ =gUnknown_030057D0
 	str r0, [r1]
 	ldr r0, _02012430 @ =gUnknown_030053CC
@@ -35492,7 +34791,7 @@ sub_0201278C: @ 0x0201278C
 	push {r4, lr}
 	ldr r4, _020127AC @ =gUnknown_030057D0
 	ldr r0, [r4]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	str r0, [r4]
 	ldr r0, _020127B0 @ =gUnknown_030056C0
@@ -35554,7 +34853,7 @@ sub_020127D8: @ 0x020127D8
 	str r4, [sp]
 	movs r1, #0x80
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldrh r5, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
@@ -35857,7 +35156,7 @@ sub_02012AA4: @ 0x02012AA4
 	str r1, [sp]
 	movs r1, #0
 	movs r3, #0
-	bl sub_0200198C
+	bl TaskCreate
 	ldr r1, _02012ACC @ =gUnknown_030057D4
 	str r0, [r1]
 	add sp, #4
@@ -35873,7 +35172,7 @@ sub_02012AD0: @ 0x02012AD0
 	push {r4, lr}
 	ldr r4, _02012AE4 @ =gUnknown_030057D4
 	ldr r0, [r4]
-	bl sub_02001A38
+	bl TaskDestroy
 	movs r0, #0
 	str r0, [r4]
 	pop {r4}

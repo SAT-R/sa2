@@ -106,7 +106,7 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x000057C8; gUnknown_030057C8 = .;
 . = 0x000057D0; gUnknown_030057D0 = .;
 . = 0x000057D4; gUnknown_030057D4 = .;
-. = 0x000057D8; gUnknown_030057D8 = .;
+. = 0x000057D8; iwram_end = .;
 . = 0x00007F00; gUnknown_03007F00 = .;
 . = 0x00007FA0; gUnknown_03007FA0 = .;
 . = 0x00007FF0; gUnknown_03007FF0 = .;

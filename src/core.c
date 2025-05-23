@@ -441,7 +441,7 @@ void EngineMainLoop(void)
     };
 }
 
-void UpdateScreenDma(void)
+static void UpdateScreenDma(void)
 {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
@@ -541,7 +541,7 @@ void UpdateScreenDma(void)
     }
 }
 
-void ClearOamBufferDma(void)
+static void ClearOamBufferDma(void)
 {
     gNumHBlankCallbacks = 0;
 
@@ -655,7 +655,7 @@ static void UpdateScreenCpuSet(void)
 }
 #endif
 
-void VBlankIntr(void)
+static void VBlankIntr(void)
 {
     u16 keys;
     DmaStop(0);
