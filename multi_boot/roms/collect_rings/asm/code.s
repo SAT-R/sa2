@@ -4,154 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200479C
-sub_0200479C: @ 0x0200479C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	adds r5, r0, #0
-	adds r0, r5, #3
-	lsrs r5, r0, #2
-	movs r4, #0
-	ldr r1, _020047D8 @ =gVramHeapMaxTileSlots
-	ldrh r0, [r1]
-	lsrs r0, r0, #2
-	mov sb, r1
-	cmp r4, r0
-	bhs _0200483A
-	ldr r0, _020047DC @ =gVramHeapState
-	mov r8, r0
-_020047BE:
-	lsls r1, r4, #1
-	mov r2, r8
-	adds r0, r1, r2
-	ldrh r2, [r0]
-	cmp r2, #0
-	bne _02004820
-	movs r3, #0
-	ldr r7, _020047D8 @ =gVramHeapMaxTileSlots
-	mov ip, r7
-	ldr r0, _020047DC @ =gVramHeapState
-	mov sl, r0
-	ldr r6, _020047E0 @ =iwram_end
-	b _020047EA
-	.align 2, 0
-_020047D8: .4byte gVramHeapMaxTileSlots
-_020047DC: .4byte gVramHeapState
-_020047E0: .4byte iwram_end
-_020047E4:
-	adds r0, r3, #1
-	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
-_020047EA:
-	cmp r3, r5
-	bhs _02004808
-	adds r2, r4, r3
-	mov r7, ip
-	ldrh r0, [r7]
-	lsrs r0, r0, #2
-	cmp r2, r0
-	blt _020047FE
-	ldr r0, [r6]
-	b _0200483E
-_020047FE:
-	lsls r0, r2, #1
-	add r0, sl
-	ldrh r0, [r0]
-	cmp r0, #0
-	beq _020047E4
-_02004808:
-	cmp r3, r5
-	bne _0200482A
-	mov r2, r8
-	adds r0, r1, r2
-	strh r5, [r0]
-	ldr r0, _0200481C @ =gVramHeapStartAddr
-	lsls r1, r4, #7
-	ldr r0, [r0]
-	adds r0, r0, r1
-	b _0200483E
-	.align 2, 0
-_0200481C: .4byte gVramHeapStartAddr
-_02004820:
-	ldr r7, _0200484C @ =0x0000FFFF
-	adds r0, r4, r7
-	adds r0, r2, r0
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-_0200482A:
-	adds r0, r4, #1
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	mov r1, sb
-	ldrh r0, [r1]
-	lsrs r0, r0, #2
-	cmp r4, r0
-	blo _020047BE
-_0200483A:
-	ldr r0, _02004850 @ =iwram_end
-	ldr r0, [r0]
-_0200483E:
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0200484C: .4byte 0x0000FFFF
-_02004850: .4byte iwram_end
-
-	thumb_func_start VramResetHeapState
-VramResetHeapState: @ 0x02004854
-	sub sp, #4
-	mov r1, sp
-	movs r0, #0
-	strh r0, [r1]
-	ldr r1, _02004870 @ =0x040000D4
-	mov r0, sp
-	str r0, [r1]
-	ldr r0, _02004874 @ =gVramHeapState
-	str r0, [r1, #4]
-	ldr r0, _02004878 @ =0x81000100
-	str r0, [r1, #8]
-	ldr r0, [r1, #8]
-	add sp, #4
-	bx lr
-	.align 2, 0
-_02004870: .4byte 0x040000D4
-_02004874: .4byte gVramHeapState
-_02004878: .4byte 0x81000100
-
-	thumb_func_start sub_0200487C
-sub_0200487C: @ 0x0200487C
-	push {lr}
-	adds r1, r0, #0
-	ldr r0, _020048A0 @ =iwram_end
-	ldr r0, [r0]
-	cmp r0, r1
-	beq _0200489C
-	ldr r0, _020048A4 @ =gVramHeapStartAddr
-	ldr r0, [r0]
-	subs r0, r1, r0
-	lsls r0, r0, #9
-	lsrs r0, r0, #0x10
-	ldr r1, _020048A8 @ =gVramHeapState
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	movs r1, #0
-	strh r1, [r0]
-_0200489C:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_020048A0: .4byte iwram_end
-_020048A4: .4byte gVramHeapStartAddr
-_020048A8: .4byte gVramHeapState
-
 	thumb_func_start sub_020048AC
 sub_020048AC: @ 0x020048AC
 	push {r4, r5, r6, r7, lr}
@@ -5826,7 +5678,7 @@ _020073A0:
 	mov r8, r1
 	str r1, [r7, #0x10]
 	movs r0, #0x10
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r7, #4]
 	movs r0, #0x68
 	strh r0, [r7, #0xa]
@@ -5862,7 +5714,7 @@ _020073A0:
 	mov r1, r8
 	str r1, [r7, #0x10]
 	movs r0, #4
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r7, #4]
 	ldr r2, _02007510 @ =gUnknown_02015AAE
 	ldrb r0, [r6]
@@ -6726,9 +6578,9 @@ sub_02007B88: @ 0x02007B88
 	lsls r0, r0, #0x12
 	adds r4, r4, r0
 	ldr r0, [r4, #0x10]
-	bl sub_0200487C
+	bl VramFree
 	ldr r0, [r4, #0x40]
-	bl sub_0200487C
+	bl VramFree
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -7918,7 +7770,7 @@ sub_02008440: @ 0x02008440
 	mov r2, r8
 	str r0, [r2, #0x10]
 	movs r0, #0xc
-	bl sub_0200479C
+	bl VramMalloc
 	mov r1, r8
 	str r0, [r1, #4]
 	movs r0, #0x6e
@@ -7962,7 +7814,7 @@ _020084CC:
 	cmp r6, #0
 	bne _0200852C
 	movs r0, #0x16
-	bl sub_0200479C
+	bl VramMalloc
 	b _02008534
 	.align 2, 0
 _02008500: .4byte sub_02008978
@@ -8552,9 +8404,9 @@ sub_020089CC: @ 0x020089CC
 	lsls r0, r0, #0x12
 	adds r4, r4, r0
 	ldr r0, [r4, #4]
-	bl sub_0200487C
+	bl VramFree
 	ldr r0, [r4, #0x34]
-	bl sub_0200487C
+	bl VramFree
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -9454,7 +9306,7 @@ _0200907C:
 	cmp r1, r0
 	beq _020090E8
 	movs r0, #0x40
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r4, #4]
 	ldr r0, [r4, #0x10]
 	movs r1, #0x80
@@ -11381,7 +11233,7 @@ sub_0200A02C: @ 0x0200A02C
 	movs r1, #0
 	str r1, [r0]
 	ldr r0, [r2, #4]
-	bl sub_0200487C
+	bl VramFree
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -11895,7 +11747,7 @@ sub_0200A3B0: @ 0x0200A3B0
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
 	movs r0, #0x14
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r7, #4]
 	movs r0, #0x66
 	strh r0, [r7, #0xa]
@@ -12191,7 +12043,7 @@ sub_0200A6A4: @ 0x0200A6A4
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
 	ldr r0, [r0, #0x10]
-	bl sub_0200487C
+	bl VramFree
 	pop {r0}
 	bx r0
 
@@ -12498,7 +12350,7 @@ sub_0200A870: @ 0x0200A870
 	ands r4, r0
 	strh r4, [r1, #0x3c]
 	movs r0, #0x14
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r7, #4]
 	movs r0, #0x67
 	strh r0, [r7, #0xa]
@@ -12999,7 +12851,7 @@ sub_0200ACA4: @ 0x0200ACA4
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
 	ldr r0, [r0, #0x10]
-	bl sub_0200487C
+	bl VramFree
 	pop {r0}
 	bx r0
 
@@ -13495,7 +13347,7 @@ sub_0200B07C: @ 0x0200B07C
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
 	ldr r0, [r0, #0x10]
-	bl sub_0200487C
+	bl VramFree
 	pop {r0}
 	bx r0
 
@@ -14881,7 +14733,7 @@ sub_0200BAB8: @ 0x0200BAB8
 	lsls r0, r0, #5
 	str r0, [r4, #0x10]
 	movs r0, #0x1a
-	bl sub_0200479C
+	bl VramMalloc
 	str r0, [r4, #4]
 	movs r0, #0x70
 	strh r0, [r4, #0xa]
@@ -14994,7 +14846,7 @@ sub_0200BBE0: @ 0x0200BBE0
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
 	ldr r0, [r0, #4]
-	bl sub_0200487C
+	bl VramFree
 	pop {r0}
 	bx r0
 
@@ -18073,7 +17925,7 @@ sub_0200D2D8: @ 0x0200D2D8
 _0200D2F0: .4byte 0x06010000
 _0200D2F4:
 	movs r0, #0x40
-	bl sub_0200479C
+	bl VramMalloc
 _0200D2FA:
 	str r0, [r4, #4]
 	movs r2, #0
@@ -27151,7 +27003,7 @@ sub_020116D4: @ 0x020116D4
 	adds r0, #0x90
 	ldr r0, [r0]
 	ldr r0, [r0, #0x10]
-	bl sub_0200487C
+	bl VramFree
 _020116FA:
 	pop {r0}
 	bx r0
