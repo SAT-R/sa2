@@ -94,6 +94,7 @@ s16 sub_8004418(s16 x, s16 y)
     return result;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void numToASCII(u8 digits[5], u16 number)
 {
     u8 i;
@@ -109,6 +110,7 @@ void numToASCII(u8 digits[5], u16 number)
 
     digits[i] = 0;
 }
+#endif
 
 // This function takes a 16bit decimal number
 // and returns a 32bit number which, viewed as hex,

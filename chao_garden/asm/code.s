@@ -3,7 +3,7 @@
 
 .syntax unified
 .arm
-
+/* bg_triangles */
 	thumb_func_start sub_02000248
 sub_02000248: @ 0x02000248
 	push {r4, r5, r6, r7, lr}

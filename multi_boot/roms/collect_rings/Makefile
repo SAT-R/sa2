@@ -94,7 +94,8 @@ SA2_C_FILES := \
 	sa2/main.c \
 	sa2/task.c \
 	sa2/background.c \
-	sa2/trig.c
+	sa2/trig.c \
+	sa2/sprite.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
