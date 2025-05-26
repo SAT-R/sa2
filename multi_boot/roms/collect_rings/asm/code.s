@@ -4,216 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_020048AC
-sub_020048AC: @ 0x020048AC
-	push {r4, r5, r6, r7, lr}
-	sub sp, #4
-	ldr r4, [sp, #0x18]
-	lsls r0, r0, #0x18
-	lsls r1, r1, #0x18
-	lsrs r5, r1, #0x18
-	lsls r2, r2, #0x18
-	lsrs r7, r2, #0x18
-	lsls r3, r3, #0x10
-	lsrs r6, r3, #0x10
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	ldr r2, _02004914 @ =gFlags
-	ldr r1, [r2]
-	movs r3, #4
-	orrs r1, r3
-	str r1, [r2]
-	ldr r1, _02004918 @ =gHBlankCopyTarget
-	lsrs r0, r0, #0x16
-	ldr r2, _0200491C @ =0x04000010
-	adds r0, r0, r2
-	str r0, [r1]
-	ldr r0, _02004920 @ =gHBlankCopySize
-	strb r3, [r0]
-	cmp r5, r7
-	bhs _0200490C
-	ldr r2, _02004924 @ =0x000001FF
-	adds r1, r6, #0
-	ands r1, r2
-	adds r0, r4, #0
-	ands r0, r2
-	lsls r0, r0, #0x10
-	orrs r1, r0
-	str r1, [sp]
-	ldr r2, _02004928 @ =0x040000D4
-	mov r0, sp
-	str r0, [r2]
-	ldr r0, _0200492C @ =gBgOffsetsHBlank
-	lsls r1, r5, #2
-	ldr r0, [r0]
-	adds r0, r0, r1
-	str r0, [r2, #4]
-	subs r0, r7, r5
-	movs r1, #0x85
-	lsls r1, r1, #0x18
-	orrs r0, r1
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-_0200490C:
-	add sp, #4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02004914: .4byte gFlags
-_02004918: .4byte gHBlankCopyTarget
-_0200491C: .4byte 0x04000010
-_02004920: .4byte gHBlankCopySize
-_02004924: .4byte 0x000001FF
-_02004928: .4byte 0x040000D4
-_0200492C: .4byte gBgOffsetsHBlank
-
-	thumb_func_start sub_02004930
-sub_02004930: @ 0x02004930
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	ldr r0, _020049E4 @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	mov sl, r0
-	ldr r0, _020049E8 @ =gMultiSioSend
-	mov r8, r0
-	ldrh r5, [r0, #8]
-	movs r3, #0x80
-	lsls r3, r3, #5
-	mov r1, sl
-	lsls r3, r1
-	ands r5, r3
-	movs r4, #0
-	ldr r2, _020049EC @ =gUnknown_03005528
-	ldrb r0, [r2]
-	movs r1, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _020049BE
-	ldr r0, _020049F0 @ =gMultiSioStatusFlags
-	movs r6, #1
-	ldr r0, [r0]
-	mov ip, r0
-	movs r2, #0xa0
-	lsls r2, r2, #7
-	mov sb, r2
-	adds r7, r3, #0
-_02004974:
-	adds r0, r6, #0
-	lsls r0, r4
-	mov r1, ip
-	ands r0, r1
-	cmp r0, #0
-	beq _02004A3A
-	lsls r0, r4, #2
-	adds r0, r0, r4
-	lsls r0, r0, #2
-	ldr r1, _020049F4 @ =gMultiSioRecv
-	adds r1, r0, r1
-	ldrh r0, [r1]
-	cmp r0, sb
-	bne _020049A8
-	movs r2, #0
-	cmp r5, #0
-	bne _02004998
-	movs r2, #1
-_02004998:
-	movs r3, #0
-	ldrh r0, [r1, #8]
-	ands r0, r7
-	cmp r0, #0
-	bne _020049A4
-	movs r3, #1
-_020049A4:
-	cmp r2, r3
-	bne _02004A3A
-_020049A8:
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #3
-	bhi _020049BE
-	ldr r2, _020049EC @ =gUnknown_03005528
-	ldrb r0, [r2]
-	asrs r0, r4
-	ands r0, r6
-	cmp r0, #0
-	bne _02004974
-_020049BE:
-	ldr r0, _020049F8 @ =gUnknown_030053EC
-	ldr r3, _020049FC @ =gUnknown_030053D0
-	ldrb r4, [r3]
-	ldrb r0, [r0]
-	cmp r0, r4
-	bne _02004A0C
-	mov r1, sp
-	movs r0, #0
-	strh r0, [r1]
-	ldr r1, _02004A00 @ =0x040000D4
-	mov r0, sp
-	str r0, [r1]
-	ldr r0, _02004A04 @ =gMultiSioSend + 0xE
-	str r0, [r1, #4]
-	ldr r0, _02004A08 @ =0x81000003
-	str r0, [r1, #8]
-	ldr r0, [r1, #8]
-	b _02004A3A
-	.align 2, 0
-_020049E4: .4byte 0x04000128
-_020049E8: .4byte gMultiSioSend
-_020049EC: .4byte gUnknown_03005528
-_020049F0: .4byte gMultiSioStatusFlags
-_020049F4: .4byte gMultiSioRecv
-_020049F8: .4byte gUnknown_030053EC
-_020049FC: .4byte gUnknown_030053D0
-_02004A00: .4byte 0x040000D4
-_02004A04: .4byte gMultiSioSend + 0xE
-_02004A08: .4byte 0x81000003
-_02004A0C:
-	ldr r2, _02004A4C @ =0x040000D4
-	ldrb r0, [r3]
-	lsls r0, r0, #3
-	ldr r1, _02004A50 @ =gUnknown_03005480
-	adds r0, r0, r1
-	str r0, [r2]
-	ldr r0, _02004A54 @ =gMultiSioSend + 0xE
-	str r0, [r2, #4]
-	ldr r0, _02004A58 @ =0x80000003
-	str r0, [r2, #8]
-	ldr r0, [r2, #8]
-	adds r0, r4, #1
-	movs r1, #0xf
-	ands r0, r1
-	strb r0, [r3]
-	movs r0, #0x80
-	lsls r0, r0, #5
-	mov r1, sl
-	lsls r0, r1
-	mov r2, r8
-	ldrh r1, [r2, #8]
-	eors r0, r1
-	strh r0, [r2, #8]
-_02004A3A:
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02004A4C: .4byte 0x040000D4
-_02004A50: .4byte gUnknown_03005480
-_02004A54: .4byte gMultiSioSend + 0xE
-_02004A58: .4byte 0x80000003
-
 	thumb_func_start sub_02004A5C
 sub_02004A5C: @ 0x02004A5C
 	push {r4, r5, r6, r7, lr}
@@ -225,13 +15,13 @@ sub_02004A5C: @ 0x02004A5C
 	movs r5, #0
 	cmp r5, r6
 	beq _02004ADA
-	ldr r0, _02004A7C @ =gUnknown_03005528
+	ldr r0, _02004A7C @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	b _02004AEE
 	.align 2, 0
 _02004A74: .4byte 0x04000128
 _02004A78: .4byte gMultiSioSend
-_02004A7C: .4byte gUnknown_03005528
+_02004A7C: .4byte gMultiplayerConnections
 _02004A80:
 	ldr r0, _02004AFC @ =gMultiSioStatusFlags
 	movs r1, #1
@@ -286,7 +76,7 @@ _02004ADA:
 	bhi _02004AF6
 	cmp r5, r6
 	beq _02004ADA
-	ldr r0, _02004B08 @ =gUnknown_03005528
+	ldr r0, _02004B08 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	asrs r0, r5
 _02004AEE:
@@ -302,7 +92,7 @@ _02004AF6:
 _02004AFC: .4byte gMultiSioStatusFlags
 _02004B00: .4byte gMultiSioRecv
 _02004B04: .4byte gUnknown_02015A08
-_02004B08: .4byte gUnknown_03005528
+_02004B08: .4byte gMultiplayerConnections
 
 	thumb_func_start sub_02004B0C
 sub_02004B0C: @ 0x02004B0C
@@ -310,7 +100,7 @@ sub_02004B0C: @ 0x02004B0C
 	adds r3, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r5, r1, #0x18
-	ldr r1, _02004BA0 @ =gRoomEventQueue
+	ldr r1, _02004BA0 @ =gRoomEventQueue_unknown
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
 	ldr r4, _02004BA4 @ =0x04000128
@@ -351,7 +141,7 @@ sub_02004B0C: @ 0x02004B0C
 	ldrb r0, [r0]
 	cmp r0, #4
 	bne _02004B8E
-	ldr r0, _02004BB4 @ =gUnknown_03005528
+	ldr r0, _02004BB4 @ =gMultiplayerConnections
 	ldrb r3, [r0]
 	movs r2, #0x10
 	adds r1, r2, #0
@@ -381,19 +171,19 @@ _02004B98:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02004BA0: .4byte gRoomEventQueue
+_02004BA0: .4byte gRoomEventQueue_unknown
 _02004BA4: .4byte 0x04000128
 _02004BA8: .4byte gUnknown_030056C0
 _02004BAC: .4byte gUnknown_0300542C
 _02004BB0: .4byte gUnknown_03005444
-_02004BB4: .4byte gUnknown_03005528
+_02004BB4: .4byte gMultiplayerConnections
 _02004BB8: .4byte gUnknown_03005544
 
 	thumb_func_start sub_02004BBC
 sub_02004BBC: @ 0x02004BBC
 	push {r4, lr}
 	sub sp, #8
-	ldr r0, _02004C14 @ =sub_02004930
+	ldr r0, _02004C14 @ =Task_MultiplayerEventMgr_Send
 	ldr r2, _02004C18 @ =0x0000FFFE
 	movs r4, #0
 	str r4, [sp]
@@ -420,13 +210,13 @@ sub_02004BBC: @ 0x02004BBC
 	str r4, [sp, #4]
 	add r1, sp, #4
 	str r1, [r2]
-	ldr r1, _02004C30 @ =gUnknown_03005480
+	ldr r1, _02004C30 @ =gRoomEventQueue
 	str r1, [r2, #4]
 	ldr r1, _02004C34 @ =0x85000020
 	str r1, [r2, #8]
 	ldr r1, [r2, #8]
-	ldr r2, _02004C38 @ =gUnknown_030053EC
-	ldr r1, _02004C3C @ =gUnknown_030053D0
+	ldr r2, _02004C38 @ =gRoomEventQueueWritePos
+	ldr r1, _02004C3C @ =gRoomEventQueueSendPos
 	strb r4, [r1]
 	strb r4, [r2]
 	add sp, #8
@@ -434,17 +224,17 @@ sub_02004BBC: @ 0x02004BBC
 	pop {r1}
 	bx r1
 	.align 2, 0
-_02004C14: .4byte sub_02004930
+_02004C14: .4byte Task_MultiplayerEventMgr_Send
 _02004C18: .4byte 0x0000FFFE
 _02004C1C: .4byte 0x040000D4
 _02004C20: .4byte gMultiSioSend
 _02004C24: .4byte 0x85000005
 _02004C28: .4byte gMultiSioRecv
 _02004C2C: .4byte 0x85000014
-_02004C30: .4byte gUnknown_03005480
+_02004C30: .4byte gRoomEventQueue
 _02004C34: .4byte 0x85000020
-_02004C38: .4byte gUnknown_030053EC
-_02004C3C: .4byte gUnknown_030053D0
+_02004C38: .4byte gRoomEventQueueWritePos
+_02004C3C: .4byte gRoomEventQueueSendPos
 
 	thumb_func_start sub_02004C40
 sub_02004C40: @ 0x02004C40
@@ -477,14 +267,14 @@ sub_02004C40: @ 0x02004C40
 	str r4, [sp, #4]
 	add r1, sp, #4
 	str r1, [r2]
-	ldr r1, _02004CB0 @ =gUnknown_03005480
+	ldr r1, _02004CB0 @ =gRoomEventQueue
 	str r1, [r2, #4]
 	ldr r1, _02004CB4 @ =0x85000020
 	str r1, [r2, #8]
 	ldr r1, [r2, #8]
-	ldr r1, _02004CB8 @ =gUnknown_030053D0
+	ldr r1, _02004CB8 @ =gRoomEventQueueSendPos
 	strb r4, [r1]
-	ldr r1, _02004CBC @ =gUnknown_030053EC
+	ldr r1, _02004CBC @ =gRoomEventQueueWritePos
 	strb r4, [r1]
 	add sp, #8
 	pop {r4}
@@ -497,17 +287,17 @@ _02004CA0: .4byte gMultiSioSend
 _02004CA4: .4byte 0x85000005
 _02004CA8: .4byte gMultiSioRecv
 _02004CAC: .4byte 0x85000014
-_02004CB0: .4byte gUnknown_03005480
+_02004CB0: .4byte gRoomEventQueue
 _02004CB4: .4byte 0x85000020
-_02004CB8: .4byte gUnknown_030053D0
-_02004CBC: .4byte gUnknown_030053EC
+_02004CB8: .4byte gRoomEventQueueSendPos
+_02004CBC: .4byte gRoomEventQueueWritePos
 
 	thumb_func_start sub_02004CC0
 sub_02004CC0: @ 0x02004CC0
-	ldr r3, _02004CD4 @ =gUnknown_030053EC
+	ldr r3, _02004CD4 @ =gRoomEventQueueWritePos
 	ldrb r1, [r3]
 	lsls r0, r1, #3
-	ldr r2, _02004CD8 @ =gUnknown_03005480
+	ldr r2, _02004CD8 @ =gRoomEventQueue
 	adds r0, r0, r2
 	adds r1, #1
 	movs r2, #0xf
@@ -515,8 +305,8 @@ sub_02004CC0: @ 0x02004CC0
 	strb r1, [r3]
 	bx lr
 	.align 2, 0
-_02004CD4: .4byte gUnknown_030053EC
-_02004CD8: .4byte gUnknown_03005480
+_02004CD4: .4byte gRoomEventQueueWritePos
+_02004CD8: .4byte gRoomEventQueue
 
 	thumb_func_start sub_02004CDC
 sub_02004CDC: @ 0x02004CDC
@@ -990,7 +780,7 @@ sub_02005078: @ 0x02005078
 	adds r1, r3, #0
 	orrs r0, r1
 	strh r0, [r2]
-	ldr r2, _020050F8 @ =gUnknown_03005528
+	ldr r2, _020050F8 @ =gMultiplayerConnections
 	ldr r3, _020050FC @ =gMultiSioStatusFlags
 	ldr r0, [r3]
 	movs r1, #0xf0
@@ -1041,7 +831,7 @@ _020050B6:
 	b _02005342
 	.align 2, 0
 _020050F4: .4byte gDispCnt
-_020050F8: .4byte gUnknown_03005528
+_020050F8: .4byte gMultiplayerConnections
 _020050FC: .4byte gMultiSioStatusFlags
 _02005100: .4byte gUnknown_03005444
 _02005104: .4byte gUnknown_0300544C
@@ -1346,7 +1136,7 @@ sub_02005350: @ 0x02005350
 	lsls r0, r0, #0x12
 	adds r0, r0, r2
 	mov r8, r0
-	ldr r6, _020053CC @ =gUnknown_03005528
+	ldr r6, _020053CC @ =gMultiplayerConnections
 	ldr r7, _020053D0 @ =gMultiSioStatusFlags
 	ldr r0, [r7]
 	movs r1, #0xf0
@@ -1394,7 +1184,7 @@ _02005388:
 	b _02005402
 	.align 2, 0
 _020053C8: .4byte gCurTask
-_020053CC: .4byte gUnknown_03005528
+_020053CC: .4byte gMultiplayerConnections
 _020053D0: .4byte gMultiSioStatusFlags
 _020053D4: .4byte gMultiSioRecv
 _020053D8: .4byte 0x00004012
@@ -1701,7 +1491,7 @@ _02005638:
 	cmp r0, #0
 	beq _02005690
 	movs r1, #0
-	ldr r0, _020056A4 @ =gUnknown_03005528
+	ldr r0, _020056A4 @ =gMultiplayerConnections
 	ldrb r2, [r0]
 	adds r6, r4, #0
 	movs r5, #1
@@ -1741,7 +1531,7 @@ _02005690:
 _02005698: .4byte gMultiSioSend
 _0200569C: .4byte 0x00004051
 _020056A0: .4byte gMultiSioStatusFlags
-_020056A4: .4byte gUnknown_03005528
+_020056A4: .4byte gMultiplayerConnections
 _020056A8: .4byte gMultiSioRecv
 _020056AC: .4byte 0x0000043C
 
@@ -1758,7 +1548,7 @@ sub_020056B0: @ 0x020056B0
 	cmp r0, #2
 	bls _02005752
 	movs r5, #0
-	ldr r2, _02005718 @ =gUnknown_03005528
+	ldr r2, _02005718 @ =gMultiplayerConnections
 	ldrb r1, [r2]
 	movs r0, #1
 	ands r1, r0
@@ -1798,7 +1588,7 @@ _020056D8:
 	b _020059BE
 	.align 2, 0
 _02005714: .4byte gUnknown_03005444
-_02005718: .4byte gUnknown_03005528
+_02005718: .4byte gMultiplayerConnections
 _0200571C: .4byte gMultiSioStatusFlags
 _02005720: .4byte gUnknown_0300544C
 _02005724: .4byte 0x0000FFFF
@@ -5058,7 +4848,7 @@ sub_02006F50: @ 0x02006F50
 	ands r1, r0
 	cmp r1, #0
 	bne _02006FAE
-	ldr r1, _02006FB8 @ =gRoomEventQueue
+	ldr r1, _02006FB8 @ =gRoomEventQueue_unknown
 	ldr r0, _02006FBC @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -5081,7 +4871,7 @@ _02006FAE:
 	b _02007248
 	.align 2, 0
 _02006FB4: .4byte gUnknown_030056C0
-_02006FB8: .4byte gRoomEventQueue
+_02006FB8: .4byte gRoomEventQueue_unknown
 _02006FBC: .4byte 0x04000128
 _02006FC0:
 	ldr r0, [r2, #0x10]
@@ -7217,7 +7007,7 @@ _02008054:
 	bne _02008066
 	b _02008270
 _02008066:
-	ldr r1, _02008124 @ =gRoomEventQueue
+	ldr r1, _02008124 @ =gRoomEventQueue_unknown
 	lsls r0, r2, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -7309,7 +7099,7 @@ _02008114: .4byte gUnknown_030053B0
 _02008118: .4byte gUnknown_03005444
 _0200811C: .4byte gUnknown_030053FC
 _02008120: .4byte 0x04000128
-_02008124: .4byte gRoomEventQueue
+_02008124: .4byte gRoomEventQueue_unknown
 _02008128: .4byte gUnknown_03000052
 _0200812C: .4byte gUnknown_0300002F
 _02008130: .4byte gUnknown_03000050
@@ -8083,7 +7873,7 @@ sub_0200872C: @ 0x0200872C
 	sub sp, #4
 	mov sb, r0
 	movs r2, #0
-	ldr r0, _020087E4 @ =gUnknown_03005528
+	ldr r0, _020087E4 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	movs r1, #1
 	ands r0, r1
@@ -8150,7 +7940,7 @@ _0200878A:
 	lsrs r2, r0, #0x10
 	cmp r2, #3
 	bhi _020087D2
-	ldr r0, _020087E4 @ =gUnknown_03005528
+	ldr r0, _020087E4 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	asrs r0, r2
 	movs r1, #1
@@ -8167,7 +7957,7 @@ _020087D2:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020087E4: .4byte gUnknown_03005528
+_020087E4: .4byte gMultiplayerConnections
 _020087E8: .4byte gUnknown_030053A8
 _020087EC: .4byte 0xFFF80000
 
@@ -8565,7 +8355,7 @@ sub_02008B1C: @ 0x02008B1C
 	movs r3, #0xc0
 	lsls r3, r3, #0x12
 	adds r0, r1, r3
-	ldr r2, _02008BB0 @ =gRoomEventQueue
+	ldr r2, _02008BB0 @ =gRoomEventQueue_unknown
 	ldrb r0, [r0]
 	lsls r0, r0, #2
 	adds r0, r0, r2
@@ -8628,7 +8418,7 @@ _02008B78:
 	b _02008BD2
 	.align 2, 0
 _02008BAC: .4byte gCurTask
-_02008BB0: .4byte gRoomEventQueue
+_02008BB0: .4byte gRoomEventQueue_unknown
 _02008BB4: .4byte gUnknown_03000010
 _02008BB8: .4byte gUnknown_03000004
 _02008BBC: .4byte gUnknown_03005650
@@ -9322,7 +9112,7 @@ _020090E8:
 _020090EC:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
-	ldr r1, _02009108 @ =gRoomEventQueue
+	ldr r1, _02009108 @ =gRoomEventQueue_unknown
 	ldrb r0, [r5]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -9333,7 +9123,7 @@ _020090EC:
 	bx r0
 	.align 2, 0
 _02009104: .4byte 0x06010000
-_02009108: .4byte gRoomEventQueue
+_02009108: .4byte gRoomEventQueue_unknown
 
 	thumb_func_start sub_0200910C
 sub_0200910C: @ 0x0200910C
@@ -9627,7 +9417,7 @@ _0200933C:
 	lsrs r0, r0, #0x1e
 	cmp r0, r2
 	beq _020093F4
-	ldr r1, _0200943C @ =gRoomEventQueue
+	ldr r1, _0200943C @ =gRoomEventQueue_unknown
 	lsls r0, r2, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -9749,7 +9539,7 @@ _0200942E:
 	strb r2, [r3]
 	b _020095E2
 	.align 2, 0
-_0200943C: .4byte gRoomEventQueue
+_0200943C: .4byte gRoomEventQueue_unknown
 _02009440: .4byte gUnknown_03000064
 _02009444: .4byte gUnknown_030056C0
 _02009448: .4byte 0xFFFFFBFF
@@ -10340,7 +10130,7 @@ _0200992E:
 	ldrb r0, [r0]
 	cmp r0, #4
 	bne _0200997A
-	ldr r0, _020099F0 @ =gUnknown_03005528
+	ldr r0, _020099F0 @ =gMultiplayerConnections
 	ldrb r3, [r0]
 	adds r0, r7, #0
 	adds r0, #0x56
@@ -10419,7 +10209,7 @@ _020099E0: .4byte gUnknown_03005500
 _020099E4: .4byte gUnknown_0300542C
 _020099E8: .4byte 0xFFFFFE7F
 _020099EC: .4byte gUnknown_03005444
-_020099F0: .4byte gUnknown_03005528
+_020099F0: .4byte gMultiplayerConnections
 _020099F4: .4byte 0x04000128
 _020099F8: .4byte gDispCnt
 _020099FC: .4byte gWinRegs
@@ -10564,7 +10354,7 @@ sub_02009ADC: @ 0x02009ADC
 	lsls r0, r0, #8
 	adds r1, r1, r0
 	str r1, [r3, #0xc]
-	ldr r1, _02009B88 @ =gRoomEventQueue
+	ldr r1, _02009B88 @ =gRoomEventQueue_unknown
 	ldr r0, _02009B8C @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -10620,7 +10410,7 @@ _02009B78:
 	.align 2, 0
 _02009B80: .4byte gCurTask
 _02009B84: .4byte gUnknown_030056C0
-_02009B88: .4byte gRoomEventQueue
+_02009B88: .4byte gRoomEventQueue_unknown
 _02009B8C: .4byte 0x04000128
 _02009B90: .4byte gUnknown_03000054
 _02009B94: .4byte gUnknown_03000056
@@ -11173,7 +10963,7 @@ sub_02009FCC: @ 0x02009FCC
 	ldrb r0, [r0]
 	cmp r0, #2
 	bls _0200A018
-	ldr r1, _0200A024 @ =gRoomEventQueue
+	ldr r1, _0200A024 @ =gRoomEventQueue_unknown
 	ldr r0, [r1]
 	ldr r7, _0200A028 @ =gUnknown_030056C0
 	cmp r0, #0
@@ -11214,7 +11004,7 @@ _0200A018:
 	bx r0
 	.align 2, 0
 _0200A020: .4byte gUnknown_03005444
-_0200A024: .4byte gRoomEventQueue
+_0200A024: .4byte gRoomEventQueue_unknown
 _0200A028: .4byte gUnknown_030056C0
 
 	thumb_func_start sub_0200A02C
@@ -11224,7 +11014,7 @@ sub_0200A02C: @ 0x0200A02C
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
 	adds r2, r0, r2
-	ldr r1, _0200A050 @ =gRoomEventQueue
+	ldr r1, _0200A050 @ =gRoomEventQueue_unknown
 	ldr r3, _0200A054 @ =gUnknown_03000056
 	adds r0, r0, r3
 	ldrb r0, [r0]
@@ -11237,7 +11027,7 @@ sub_0200A02C: @ 0x0200A02C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0200A050: .4byte gRoomEventQueue
+_0200A050: .4byte gRoomEventQueue_unknown
 _0200A054: .4byte gUnknown_03000056
 
 	thumb_func_start sub_0200A058
@@ -11256,8 +11046,8 @@ sub_0200A058: @ 0x0200A058
 	beq _0200A072
 	movs r2, #0xf0
 _0200A072:
-	ldr r0, _0200A0CC @ =gUnknown_030053EC
-	ldr r1, _0200A0D0 @ =gUnknown_030053D0
+	ldr r0, _0200A0CC @ =gRoomEventQueueWritePos
+	ldr r1, _0200A0D0 @ =gRoomEventQueueSendPos
 	ldrb r0, [r0]
 	ldrb r1, [r1]
 	cmp r0, r1
@@ -11297,8 +11087,8 @@ _0200A0BE:
 	.align 2, 0
 _0200A0C4: .4byte gCurTask
 _0200A0C8: .4byte gUnknown_03005444
-_0200A0CC: .4byte gUnknown_030053EC
-_0200A0D0: .4byte gUnknown_030053D0
+_0200A0CC: .4byte gRoomEventQueueWritePos
+_0200A0D0: .4byte gRoomEventQueueSendPos
 _0200A0D4: .4byte gBldRegs
 _0200A0D8: .4byte 0x0201F270
 _0200A0DC: .4byte 0x0201F2B0
@@ -21878,7 +21668,7 @@ _0200F076:
 	b _0200F2A4
 _0200F080:
 	ldr r5, _0200F10C @ =gMultiSioSend
-	ldr r2, _0200F110 @ =gRoomEventQueue
+	ldr r2, _0200F110 @ =gRoomEventQueue_unknown
 	ldr r0, _0200F114 @ =0x04000128
 	ldr r0, [r0]
 	lsls r0, r0, #0x1a
@@ -21947,7 +21737,7 @@ _0200F100: .4byte 0xFFFFFBFF
 _0200F104: .4byte 0xFFFFF7FF
 _0200F108: .4byte gUnknown_03005444
 _0200F10C: .4byte gMultiSioSend
-_0200F110: .4byte gRoomEventQueue
+_0200F110: .4byte gRoomEventQueue_unknown
 _0200F114: .4byte 0x04000128
 _0200F118: .4byte gUnknown_030053B0
 _0200F11C:
@@ -28114,7 +27904,7 @@ _02011F76:
 	lsrs r0, r0, #0x1e
 	cmp ip, r0
 	beq _02012050
-	ldr r1, _02012038 @ =gRoomEventQueue
+	ldr r1, _02012038 @ =gRoomEventQueue_unknown
 	mov r3, ip
 	lsls r0, r3, #2
 	adds r0, r0, r1
@@ -28208,7 +27998,7 @@ _02012020:
 	b _02012212
 	.align 2, 0
 _02012034: .4byte 0x04000128
-_02012038: .4byte gRoomEventQueue
+_02012038: .4byte gRoomEventQueue_unknown
 _0201203C: .4byte gUnknown_0300006A
 _02012040: .4byte gUnknown_03000054
 _02012044: .4byte gUnknown_03000050
@@ -28703,7 +28493,7 @@ _020123F4:
 	adds r0, r4, r0
 	movs r1, #0
 	strb r1, [r0]
-	ldr r0, _02012498 @ =gUnknown_03005528
+	ldr r0, _02012498 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	asrs r0, r4
 	movs r1, #1
@@ -28751,7 +28541,7 @@ _02012488: .4byte gUnknown_03002820
 _0201248C: .4byte gUnknown_03005398
 _02012490: .4byte gUnknown_03005460
 _02012494: .4byte gUnknown_030053A8
-_02012498: .4byte gUnknown_03005528
+_02012498: .4byte gMultiplayerConnections
 _0201249C: .4byte 0x04000128
 _020124A0:
 	bl sub_02008A9C
@@ -28951,7 +28741,7 @@ _0201262E:
 	adds r0, #0x66
 	strb r7, [r0]
 _02012634:
-	ldr r0, _02012694 @ =gUnknown_03005528
+	ldr r0, _02012694 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	adds r1, r2, #0
 	adds r1, #0x66
@@ -29002,7 +28792,7 @@ _0201268E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02012694: .4byte gUnknown_03005528
+_02012694: .4byte gMultiplayerConnections
 _02012698: .4byte gUnknown_030053A0
 _0201269C: .4byte gUnknown_03005400
 _020126A0: .4byte gUnknown_030053D4
@@ -29373,7 +29163,7 @@ sub_020129A0: @ 0x020129A0
 	strb r1, [r0]
 	ldr r0, _02012A14 @ =gUnknown_03005454
 	str r1, [r0]
-	ldr r3, _02012A18 @ =gRoomEventQueue
+	ldr r3, _02012A18 @ =gRoomEventQueue_unknown
 	movs r2, #0
 _020129CC:
 	lsls r0, r1, #2
@@ -29405,7 +29195,7 @@ _02012A08: .4byte gUnknown_030056C0
 _02012A0C: .4byte gUnknown_03005650
 _02012A10: .4byte gUnknown_030053F0
 _02012A14: .4byte gUnknown_03005454
-_02012A18: .4byte gRoomEventQueue
+_02012A18: .4byte gRoomEventQueue_unknown
 _02012A1C: .4byte gUnknown_030057C8
 
 	thumb_func_start GameInit
