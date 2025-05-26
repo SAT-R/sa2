@@ -60,8 +60,10 @@ void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
+#ifndef COLLECT_RINGS_ROM
     const u8 *tilemaps = gCollectRingsTilemaps;
     const u8 *bgStageTileset = gCollectRingsBgStageTileset;
+#endif
 
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
@@ -79,11 +81,18 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     m4aSoundVSyncOn();
     gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
 
+#ifndef COLLECT_RINGS_ROM
     CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
     CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
+#endif
 
     gTilemapsRef = *((Tilemap ***)(EWRAM_START + 0x33000));
+#if COLLECT_RINGS_ROM
+    gRefSpriteTables = (const struct SpriteTables *)(EWRAM_START + 0x20000);
+    gMultiplayerLanguage = 0;
+#else
     gMultiplayerLanguage = gLoadedSaveGame->language;
+#endif
 
     sub_8081FB0();
     resultsScreen = InitAndGetResultsScreenObject(a);
@@ -104,6 +113,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gBldRegs.bldY = 0;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8081FB0(void)
 {
     gDispCnt = 0x40;
@@ -618,3 +628,4 @@ void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y
     s->frameFlags = unk10;
     UpdateSpriteAnimation(s);
 }
+#endif

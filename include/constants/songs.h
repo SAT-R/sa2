@@ -65,9 +65,17 @@
 #define MUS_CONNECTION_PENDING 61
 // 62
 // 63
+#ifndef COLLECT_RINGS_ROM
 #define MUS_VS_LOBBY 64
+#else
+#define MUS_VS_LOBBY 3
+#endif
 // 65
+#ifndef COLLECT_RINGS_ROM
 #define MUS_VS_SELECT_PAK_MODE 66
+#else
+#define MUS_VS_SELECT_PAK_MODE 1
+#endif
 
 /* 67 - 101: Dummies */
 
@@ -159,13 +167,19 @@
 #define SE_MAP_MOVE                       213
 #define SE_MAP_214                        214
 #define SE_MAP_MOVE_END                   215
-#define SE_216                            216
-#define SE_ITEM_CONFUSION                 217
-#define SE_218                            218
-#define SE_219                            219
-#define SE_DELETE_GAME_DATA               220
-#define SE_221                            221
-#define SE_222                            222
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_216 216
+#else
+#define SE_216 23
+#endif
+
+#define SE_ITEM_CONFUSION   217
+#define SE_218              218
+#define SE_219              219
+#define SE_DELETE_GAME_DATA 220
+#define SE_221              221
+#define SE_222              222
 // Plays when Sonic does his "Bound" trick and collides with the ground
 #define SE_SONIC_BOUND_IMPACT      223
 #define SE_224                     224

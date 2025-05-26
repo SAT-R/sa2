@@ -97,7 +97,10 @@ SA2_C_FILES := \
 	sa2/trig.c \
 	sa2/sprite.c \
 	sa2/malloc_vram.c \
-	sa2/bg_triangles.c
+	sa2/bg_triangles.c \
+	sa2/game/multiplayer/multiplayer_event_mgr.c \
+	sa2/game/multiplayer/multiplayer_event_recv_mgr.c \
+	sa2/game/multiboot/collect_rings/results.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

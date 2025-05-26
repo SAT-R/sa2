@@ -26,9 +26,11 @@ const RoomEventHandler gRoomEventHandlers[] = {
     [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = ReceiveRoomEvent_PlayerRingLoss,
     [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = ReceiveRoomEvent_MysteryItemBoxBreak,
     [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = ReceiveRoomEvent_ItemEffect,
+#ifndef COLLECT_RINGS_ROM
     [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = ReceiveRoomEvent_ReachedStageGoal,
     [ROOMEVENT_TYPE_UNKNOWN - 1] = ReceiveRoomEvent_Unknown,
-    [8] = NULL,
+#endif
+    NULL,
 };
 
 void Task_MultiplayerEventMgr_Send(void)
@@ -82,8 +84,7 @@ void Task_MultiplayerEventMgr_Receive(void)
 
         recv = &gMultiSioRecv[i];
         if (recv->pat0.unk0 == 0x5000 && (recv->pat0.unk8[0] & (0x1000 << i)) != (send->unk8[0] & (0x1000 << i))) {
-            if ((u8)(recv->pat0.unkE - 1) < 8) {
-
+            if (recv->pat0.unkE > 0 && recv->pat0.unkE < ARRAY_COUNT(gRoomEventHandlers)) {
                 gRoomEventHandlers[recv->pat0.unkE - 1](recv, i);
             }
             send->unk8[0] ^= (0x1000 << i);
@@ -98,6 +99,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 
     if (!(us->unk5C & 1) && PLAYER_IS_ALIVE && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
         switch (recv->pat0.unkF) {
+#ifndef COLLECT_RINGS_ROM
             case 0: {
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
@@ -160,6 +162,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                 }
                 break;
             }
+#endif
             case 4: {
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
@@ -173,6 +176,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 {
     u32 j;
@@ -284,6 +288,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
         }
     }
 }
+#endif
 
 struct Task *CreateMultiplayerSendEventMgr(void)
 {
