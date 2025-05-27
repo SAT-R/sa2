@@ -23,7 +23,7 @@ SECTIONS {
         build/collect_rings/src/sa2/background.o(.text);
         build/collect_rings/src/sa2/sprite.o(.text);
         build/collect_rings/src/sa2/malloc_vram.o(.text);
-        build/collect_rings/src/unknown_background.o(.text);
+        build/collect_rings/src/sa2/bg_triangles.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/multiplayer_event_mgr.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/multiplayer_event_recv_mgr.o(.text);
         build/collect_rings/src/sa2/game/multiboot/collect_rings/results.o(.text);

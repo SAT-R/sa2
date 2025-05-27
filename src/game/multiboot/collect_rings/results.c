@@ -50,11 +50,23 @@ struct MultiplayerSinglePakResultsScreen {
 struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16);
 
 void sub_8081FB0(void);
+void sub_80823FC(void);
+void sub_8082AA8(void);
+void Task_8082630(void);
+void sub_8082788(void);
+void sub_808267C(void);
+void sub_8082788(void);
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
+
+void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10);
+
+#if COLLECT_RINGS_ROM
+extern const u16 gUnknown_02015B18[];
+#endif
 
 // TODO: Maybe rename because this is also called before the 1st round?
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
@@ -113,7 +125,6 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gBldRegs.bldY = 0;
 }
 
-#ifndef COLLECT_RINGS_ROM
 void sub_8081FB0(void)
 {
     gDispCnt = 0x40;
@@ -154,7 +165,21 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     DrawBackground(background);
 }
 
-void sub_80823FC(void);
+#if COLLECT_RINGS_ROM
+void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
+{
+    s16 i;
+    for (i = 0; i < 4; i++) {
+        u16 val;
+        if (i == SIO_MULTI_CNT->id) {
+            val = 0;
+        } else {
+            val = gUnknown_02015B18[i];
+        }
+        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78, i * 40 + 20, SPRITE_OAM_ORDER(16), i, 0x1000);
+    }
+}
+#endif
 
 void Task_MultiplayerSinglePakResultsScreenInit(void)
 {
@@ -169,6 +194,11 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         gMultiSioSend.pat0.unk3 = gMultiplayerLanguage;
     }
+#if COLLECT_RINGS_ROM
+    else if (gMultiSioRecv->pat0.unk0 == 0x4010) {
+        gMultiplayerLanguage = gMultiSioRecv->pat0.unk3;
+    }
+#endif
 
     resultsScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
@@ -179,13 +209,12 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     gBldRegs.bldY = 0;
 
     if (++resultsScreen->unk430 > 0xF0) {
+#ifndef COLLECT_RINGS_ROM
         gFlags &= ~0x8000;
+#endif
 
         if (resultsScreen->unk434) {
             for (i = 0; i < 3; i++) {
-#ifndef NON_MATCHING
-                s32 var;
-#endif
                 s = &resultsScreen->unk370[i];
                 s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
 
@@ -193,9 +222,20 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
                 s->y = 0;
                 s->oamFlags = SPRITE_OAM_ORDER(4);
                 s->graphics.size = 0;
+
 #ifndef NON_MATCHING
-                var = 0x44c;
-                asm("" ::"r"(var));
+#if COLLECT_RINGS_ROM
+                do
+#endif
+                {
+
+                    s16 var = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
+                    asm("" ::"r"(var));
+                }
+#if COLLECT_RINGS_ROM
+
+                while (0);
+#endif
 #endif
                 switch (gMultiplayerLanguage) {
 #ifdef JAPAN
@@ -226,7 +266,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
                 UpdateSpriteAnimation(s);
             }
         }
-
+#ifndef COLLECT_RINGS_ROM
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             s = &resultsScreen->unk400;
             s->x = (DISPLAY_WIDTH / 2);
@@ -267,6 +307,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
             s->frameFlags = 0;
             UpdateSpriteAnimation(s);
         }
+#endif
         resultsScreen->unk430 = 0;
         gCurTask->main = sub_80823FC;
         sub_80823FC();
@@ -299,9 +340,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     }
 }
 
-void sub_8082AA8(void);
-void Task_8082630(void);
-void sub_8082788(void);
+#ifndef COLLECT_RINGS_ROM
 
 void sub_80823FC(void)
 {
@@ -389,9 +428,6 @@ void sub_80823FC(void)
         }
     }
 }
-
-void sub_808267C(void);
-void sub_8082788(void);
 
 void Task_8082630(void)
 {
@@ -575,8 +611,6 @@ struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode
 
     return resultsScreen;
 }
-
-void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10);
 
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {

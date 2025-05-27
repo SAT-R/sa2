@@ -4,616 +4,8 @@
 .syntax unified
 .arm
 
-@ 	thumb_func_start CreateMultiplayerSinglePakResultsScreen
-@ CreateMultiplayerSinglePakResultsScreen: @ 0x02004E54
-@ 	push {r4, r5, lr}
-@ 	adds r5, r0, #0
-@ 	ldr r1, _02004ED4 @ =gMultiplayerMissingHeartbeats
-@ 	movs r0, #0
-@ 	strb r0, [r1, #3]
-@ 	strb r0, [r1, #2]
-@ 	strb r0, [r1, #1]
-@ 	strb r0, [r1]
-@ 	ldr r1, _02004ED8 @ =gWinRegs
-@ 	movs r4, #0
-@ 	strh r0, [r1, #8]
-@ 	strh r0, [r1, #0xa]
-@ 	strh r0, [r1]
-@ 	strh r0, [r1, #4]
-@ 	strh r0, [r1, #2]
-@ 	strh r0, [r1, #6]
-@ 	ldr r1, _02004EDC @ =gStageFlags
-@ 	strh r0, [r1]
-@ 	ldr r1, _02004EE0 @ =gMultiSioEnabled
-@ 	movs r0, #1
-@ 	strb r0, [r1]
-@ 	ldr r2, _02004EE4 @ =gFlags
-@ 	ldr r0, [r2]
-@ 	ldr r1, _02004EE8 @ =0xFFFFBFFF
-@ 	ands r0, r1
-@ 	str r0, [r2]
-@ 	bl m4aSoundVSyncOn
-@ 	ldr r1, _02004EEC @ =gGameMode
-@ 	movs r0, #5
-@ 	strb r0, [r1]
-@ 	ldr r1, _02004EF0 @ =gTilemapsRef
-@ 	ldr r0, _02004EF4 @ =0x02033000
-@ 	ldr r0, [r0]
-@ 	str r0, [r1]
-@ 	ldr r1, _02004EF8 @ =gRefSpriteTables
-@ 	ldr r0, _02004EFC @ =0x02020000
-@ 	str r0, [r1]
-@ 	ldr r0, _02004F00 @ =gMultiplayerLanguage
-@ 	strb r4, [r0]
-@ 	bl sub_8081FB0
-@ 	lsls r0, r5, #0x10
-@ 	asrs r0, r0, #0x10
-@ 	bl InitAndGetResultsScreenObject
-@ 	adds r4, r0, #0
-@ 	bl sub_8082038
-@ 	adds r0, r4, #0
-@ 	bl sub_8082B80
-@ 	adds r0, r4, #0
-@ 	bl sub_8082BF8
-@ 	cmp r5, #0
-@ 	beq _02004F04
-@ 	adds r0, r4, #0
-@ 	bl sub_8082C58
-@ 	movs r0, #3
-@ 	bl m4aSongNumStart
-@ 	b _02004F10
-@ 	.align 2, 0
-@ _02004ED4: .4byte gMultiplayerMissingHeartbeats
-@ _02004ED8: .4byte gWinRegs
-@ _02004EDC: .4byte gStageFlags
-@ _02004EE0: .4byte gMultiSioEnabled
-@ _02004EE4: .4byte gFlags
-@ _02004EE8: .4byte 0xFFFFBFFF
-@ _02004EEC: .4byte gGameMode
-@ _02004EF0: .4byte gTilemapsRef
-@ _02004EF4: .4byte 0x02033000
-@ _02004EF8: .4byte gRefSpriteTables
-@ _02004EFC: .4byte 0x02020000
-@ _02004F00: .4byte gMultiplayerLanguage
-@ _02004F04:
-@ 	adds r0, r4, #0
-@ 	bl sub_8082CB4
-@ 	movs r0, #1
-@ 	bl m4aSongNumStart
-@ _02004F10:
-@ 	ldr r1, _02004F20 @ =gBldRegs
-@ 	movs r0, #0
-@ 	strh r0, [r1]
-@ 	strh r0, [r1, #2]
-@ 	strh r0, [r1, #4]
-@ 	pop {r4, r5}
-@ 	pop {r0}
-@ 	bx r0
-@ 	.align 2, 0
-@ _02004F20: .4byte gBldRegs
-
-	thumb_func_start sub_8081FB0
-sub_8081FB0: @ 0x02004F24
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _02004F84 @ =gDispCnt
-	movs r4, #0x40
-	strh r4, [r0]
-	ldr r1, _02004F88 @ =gBgCntRegs
-	movs r2, #0
-	movs r5, #0
-	ldr r0, _02004F8C @ =0x00005E0B
-	strh r0, [r1, #6]
-	ldr r0, _02004F90 @ =0x00001C0C
-	strh r0, [r1, #4]
-	ldr r3, _02004F94 @ =gUnknown_03004D80
-	movs r0, #0x7f
-	strb r0, [r3, #2]
-	ldr r0, _02004F98 @ =gUnknown_03002280
-	strb r2, [r0, #8]
-	strb r2, [r0, #9]
-	movs r1, #0xff
-	strb r1, [r0, #0xa]
-	movs r1, #0x20
-	strb r1, [r0, #0xb]
-	subs r1, #0x21
-	strb r1, [r3, #3]
-	strb r2, [r0, #0xc]
-	strb r2, [r0, #0xd]
-	strb r1, [r0, #0xe]
-	strb r4, [r0, #0xf]
-	str r5, [sp]
-	ldr r0, _02004F9C @ =0x040000D4
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02004FA0 @ =0x06009FE0
-	str r1, [r0, #4]
-	ldr r2, _02004FA4 @ =0x85000010
-	str r2, [r0, #8]
-	ldr r1, [r0, #8]
-	str r5, [sp]
-	mov r1, sp
-	str r1, [r0]
-	ldr r1, _02004FA8 @ =0x0600CFE0
-	str r1, [r0, #4]
-	str r2, [r0, #8]
-	ldr r0, [r0, #8]
-	add sp, #4
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02004F84: .4byte gDispCnt
-_02004F88: .4byte gBgCntRegs
-_02004F8C: .4byte 0x00005E0B
-_02004F90: .4byte 0x00001C0C
-_02004F94: .4byte gUnknown_03004D80
-_02004F98: .4byte gUnknown_03002280
-_02004F9C: .4byte 0x040000D4
-_02004FA0: .4byte 0x06009FE0
-_02004FA4: .4byte 0x85000010
-_02004FA8: .4byte 0x0600CFE0
-
-	thumb_func_start sub_8082038
-sub_8082038: @ 0x02004FAC
-	push {lr}
-	ldr r1, _02004FE8 @ =0x06008000
-	str r1, [r0, #4]
-	movs r3, #0
-	movs r1, #0
-	strh r1, [r0, #0xa]
-	ldr r2, _02004FEC @ =0x0600F000
-	str r2, [r0, #0xc]
-	strh r1, [r0, #0x18]
-	strh r1, [r0, #0x1a]
-	movs r2, #5
-	strh r2, [r0, #0x1c]
-	strh r1, [r0, #0x1e]
-	strh r1, [r0, #0x20]
-	strh r1, [r0, #0x22]
-	strh r1, [r0, #0x24]
-	movs r1, #0x1e
-	strh r1, [r0, #0x26]
-	movs r1, #0x19
-	strh r1, [r0, #0x28]
-	adds r1, r0, #0
-	adds r1, #0x2a
-	strb r3, [r1]
-	movs r1, #3
-	strh r1, [r0, #0x2e]
-	bl DrawBackground
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02004FE8: .4byte 0x06008000
-_02004FEC: .4byte 0x0600F000
-
-	thumb_func_start sub_8082B80
-sub_8082B80: @ 0x02004FF0
-	push {r4, r5, r6, r7, lr}
-	sub sp, #0x14
-	adds r6, r0, #0
-	movs r5, #0
-_02004FF8:
-	lsls r1, r5, #0x10
-	asrs r2, r1, #0x10
-	ldr r0, _02005010 @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	adds r4, r1, #0
-	cmp r2, r0
-	bne _02005014
-	movs r3, #0
-	b _0200501C
-	.align 2, 0
-_02005010: .4byte 0x04000128
-_02005014:
-	ldr r1, _02005070 @ =gUnknown_02015B18
-	lsls r0, r2, #1
-	adds r0, r0, r1
-	ldrh r3, [r0]
-_0200501C:
-	asrs r4, r4, #0x10
-	lsls r0, r4, #3
-	subs r0, r0, r4
-	lsls r0, r0, #3
-	adds r0, #0x80
-	adds r0, r6, r0
-	lsls r1, r4, #0xb
-	ldr r2, _02005074 @ =0x06010000
-	adds r1, r1, r2
-	movs r2, #0x78
-	str r2, [sp]
-	lsls r2, r4, #2
-	adds r2, r2, r4
-	lsls r2, r2, #0x13
-	movs r7, #0xa0
-	lsls r7, r7, #0xd
-	adds r2, r2, r7
-	asrs r2, r2, #0x10
-	str r2, [sp, #4]
-	movs r2, #0x80
-	lsls r2, r2, #3
-	str r2, [sp, #8]
-	lsls r2, r5, #0x18
-	lsrs r2, r2, #0x18
-	str r2, [sp, #0xc]
-	movs r2, #0x80
-	lsls r2, r2, #5
-	str r2, [sp, #0x10]
-	adds r2, r3, #0
-	movs r3, #0
-	bl sub_02005B90
-	adds r4, #1
-	lsls r4, r4, #0x10
-	lsrs r5, r4, #0x10
-	asrs r4, r4, #0x10
-	cmp r4, #3
-	ble _02004FF8
-	add sp, #0x14
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02005070: .4byte gUnknown_02015B18
-_02005074: .4byte 0x06010000
-
-	thumb_func_start sub_02005078
-sub_02005078: @ 0x02005078
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #0xc
-	ldr r2, _020050F4 @ =gDispCnt
-	ldrh r0, [r2]
-	movs r3, #0xc0
-	lsls r3, r3, #5
-	adds r1, r3, #0
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r2, _020050F8 @ =gMultiplayerConnections
-	ldr r3, _020050FC @ =gMultiSioStatusFlags
-	ldr r0, [r3]
-	movs r1, #0xf0
-	lsls r1, r1, #4
-	ands r0, r1
-	lsrs r0, r0, #8
-	strb r0, [r2]
-	ldr r0, _02005100 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _02005136
-	movs r6, #0
-	ldrb r0, [r2]
-	movs r1, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _02005136
-	movs r7, #1
-	ldr r5, _02005104 @ =gMultiplayerMissingHeartbeats
-_020050B6:
-	adds r0, r7, #0
-	lsls r0, r6
-	ldr r4, [r3]
-	ands r4, r0
-	cmp r4, #0
-	bne _02005120
-	ldrb r0, [r5]
-	adds r1, r0, #1
-	strb r1, [r5]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #0xb4
-	bls _02005124
-	movs r0, #0
-	ldr r1, _02005108 @ =0x0000FFFF
-	bl TasksDestroyInPriorityRange
-	ldr r1, _0200510C @ =gBackgroundsCopyQueueCursor
-	ldr r0, _02005110 @ =gBackgroundsCopyQueueIndex
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r0, _02005114 @ =gUnknown_03005390
-	strb r4, [r0]
-	ldr r1, _02005118 @ =gVramGraphicsCopyCursor
-	ldr r0, _0200511C @ =gVramGraphicsCopyQueueIndex
-	ldrb r0, [r0]
-	strb r0, [r1]
-	bl sub_020127D8
-	b _02005342
-	.align 2, 0
-_020050F4: .4byte gDispCnt
-_020050F8: .4byte gMultiplayerConnections
-_020050FC: .4byte gMultiSioStatusFlags
-_02005100: .4byte gGameMode
-_02005104: .4byte gMultiplayerMissingHeartbeats
-_02005108: .4byte 0x0000FFFF
-_0200510C: .4byte gBackgroundsCopyQueueCursor
-_02005110: .4byte gBackgroundsCopyQueueIndex
-_02005114: .4byte gUnknown_03005390
-_02005118: .4byte gVramGraphicsCopyCursor
-_0200511C: .4byte gVramGraphicsCopyQueueIndex
-_02005120:
-	movs r0, #0
-	strb r0, [r5]
-_02005124:
-	adds r5, #1
-	adds r6, #1
-	cmp r6, #3
-	bhi _02005136
-	ldrb r0, [r2]
-	asrs r0, r6
-	ands r0, r7
-	cmp r0, #0
-	bne _020050B6
-_02005136:
-	ldr r2, _02005150 @ =gMultiSioSend
-	ldr r4, _02005154 @ =0x00004010
-	strh r4, [r2]
-	ldr r0, [r3]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _0200515C
-	ldr r0, _02005158 @ =gMultiplayerLanguage
-	ldrb r0, [r0]
-	strb r0, [r2, #3]
-	b _0200516A
-	.align 2, 0
-_02005150: .4byte gMultiSioSend
-_02005154: .4byte 0x00004010
-_02005158: .4byte gMultiplayerLanguage
-_0200515C:
-	ldr r2, _020051C8 @ =gMultiSioRecv
-	ldrh r0, [r2]
-	cmp r0, r4
-	bne _0200516A
-	ldr r1, _020051CC @ =gMultiplayerLanguage
-	ldrb r0, [r2, #3]
-	strb r0, [r1]
-_0200516A:
-	ldr r0, _020051D0 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r3, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r0, r3
-	mov r8, r0
-	ldr r1, _020051D4 @ =gBldRegs
-	movs r0, #0
-	strh r0, [r1]
-	strh r0, [r1, #4]
-	ldr r0, _020051D8 @ =IWRAM_START + 0x430
-	adds r1, r3, r0
-	ldrh r0, [r1]
-	adds r0, #1
-	strh r0, [r1]
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #0xf0
-	bls _02005240
-	ldr r1, _020051DC @ =IWRAM_START + 0x434
-	adds r0, r3, r1
-	ldr r0, [r0]
-	cmp r0, #0
-	beq _0200521E
-	movs r6, #0
-	movs r7, #0
-	ldr r0, _020051E0 @ =gUnknown_03000378
-	adds r4, r3, r0
-	ldr r1, _020051E4 @ =0x06012500
-	subs r0, #8
-	adds r5, r3, r0
-	movs r2, #0x72
-_020051AC:
-	str r1, [r5, #4]
-	strh r7, [r4, #0xe]
-	strh r7, [r4, #0x10]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r4, #0x12]
-	strh r7, [r4]
-	ldr r0, _020051CC @ =gMultiplayerLanguage
-	ldrb r0, [r0]
-	cmp r0, #1
-	bne _020051E8
-	movs r0, #0x71
-	strh r0, [r4, #2]
-	b _020051EA
-	.align 2, 0
-_020051C8: .4byte gMultiSioRecv
-_020051CC: .4byte gMultiplayerLanguage
-_020051D0: .4byte gCurTask
-_020051D4: .4byte gBldRegs
-_020051D8: .4byte IWRAM_START + 0x430
-_020051DC: .4byte IWRAM_START + 0x434
-_020051E0: .4byte gUnknown_03000378
-_020051E4: .4byte 0x06012500
-_020051E8:
-	strh r2, [r4, #2]
-_020051EA:
-	strb r6, [r4, #0x18]
-	strh r7, [r4, #0xc]
-	strh r7, [r4, #0x14]
-	movs r0, #0xff
-	strb r0, [r4, #0x19]
-	movs r0, #0x10
-	strb r0, [r4, #0x1a]
-	strb r7, [r4, #0x1d]
-	movs r0, #0x80
-	lsls r0, r0, #5
-	str r0, [r4, #8]
-	adds r0, r5, #0
-	str r1, [sp, #4]
-	str r2, [sp, #8]
-	bl UpdateSpriteAnimation
-	adds r4, #0x30
-	ldr r1, [sp, #4]
-	movs r3, #0xc0
-	lsls r3, r3, #1
-	adds r1, r1, r3
-	adds r5, #0x30
-	adds r6, #1
-	ldr r2, [sp, #8]
-	cmp r6, #2
-	bls _020051AC
-_0200521E:
-	movs r1, #0x86
-	lsls r1, r1, #3
-	add r1, r8
-	movs r0, #0
-	strh r0, [r1]
-	ldr r0, _02005238 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0200523C @ =sub_02005350
-	str r0, [r1, #8]
-	bl _call_via_r0
-	b _02005342
-	.align 2, 0
-_02005238: .4byte gCurTask
-_0200523C: .4byte sub_02005350
-_02005240:
-	movs r6, #0
-	movs r0, #1
-	mov r8, r0
-	ldr r1, _02005288 @ =IWRAM_START + 0x430
-	adds r7, r3, r1
-_0200524A:
-	ldr r2, _0200528C @ =gMultiSioStatusFlags
-	adds r0, r6, #0
-	adds r0, #8
-	mov r1, r8
-	lsls r1, r0
-	ldr r0, [r2]
-	ands r0, r1
-	cmp r0, #0
-	bne _020052C2
-	ldr r0, _02005290 @ =gUnknown_030054B4
-	adds r0, r6, r0
-	ldrb r1, [r0]
-	mov r0, r8
-	ands r0, r1
-	cmp r0, #0
-	beq _02005294
-	lsls r1, r6, #2
-	adds r1, r1, r6
-	lsls r5, r1, #3
-	lsls r1, r1, #0x1b
-	lsrs r1, r1, #0x18
-	adds r4, r6, #1
-	lsls r2, r4, #2
-	adds r2, r2, r4
-	lsls r2, r2, #0x1b
-	lsrs r2, r2, #0x18
-	ldrh r0, [r7]
-	movs r3, #0xf0
-	subs r3, r3, r0
-	b _020052AC
-	.align 2, 0
-_02005288: .4byte IWRAM_START + 0x430
-_0200528C: .4byte gMultiSioStatusFlags
-_02005290: .4byte gUnknown_030054B4
-_02005294:
-	lsls r1, r6, #2
-	adds r1, r1, r6
-	lsls r5, r1, #3
-	lsls r1, r1, #0x1b
-	lsrs r1, r1, #0x18
-	adds r4, r6, #1
-	lsls r2, r4, #2
-	adds r2, r2, r4
-	lsls r2, r2, #0x1b
-	lsrs r2, r2, #0x18
-	ldrh r3, [r7]
-	subs r3, #0xf0
-_020052AC:
-	lsls r3, r3, #0x10
-	lsrs r3, r3, #0x10
-	movs r0, #0xa0
-	subs r0, r0, r5
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	str r0, [sp]
-	movs r0, #3
-	bl sub_020048AC
-	b _0200533A
-_020052C2:
-	ldr r0, _02005304 @ =gUnknown_030054B4
-	adds r2, r6, r0
-	ldrb r1, [r2]
-	mov r0, r8
-	ands r0, r1
-	cmp r0, #0
-	beq _02005308
-	movs r0, #0
-	ldrsb r0, [r2, r0]
-	lsls r4, r0, #2
-	adds r4, r4, r0
-	lsls r1, r4, #0x1b
-	lsrs r1, r1, #0x18
-	adds r0, #1
-	lsls r2, r0, #2
-	adds r2, r2, r0
-	lsls r2, r2, #0x1b
-	lsrs r2, r2, #0x18
-	ldrh r0, [r7]
-	movs r3, #0xf0
-	subs r3, r3, r0
-	lsls r3, r3, #0x10
-	lsrs r3, r3, #0x10
-	lsls r0, r6, #2
-	adds r0, r0, r6
-	subs r0, r0, r4
-	lsls r0, r0, #0x13
-	lsrs r0, r0, #0x10
-	str r0, [sp]
-	movs r0, #3
-	bl sub_020048AC
-	b _02005338
-	.align 2, 0
-_02005304: .4byte gUnknown_030054B4
-_02005308:
-	movs r0, #0
-	ldrsb r0, [r2, r0]
-	lsls r4, r0, #2
-	adds r4, r4, r0
-	lsls r1, r4, #0x1b
-	lsrs r1, r1, #0x18
-	adds r0, #1
-	lsls r2, r0, #2
-	adds r2, r2, r0
-	lsls r2, r2, #0x1b
-	lsrs r2, r2, #0x18
-	ldrh r3, [r7]
-	subs r3, #0xf0
-	lsls r3, r3, #0x10
-	lsrs r3, r3, #0x10
-	lsls r0, r6, #2
-	adds r0, r0, r6
-	subs r0, r0, r4
-	lsls r0, r0, #0x13
-	lsrs r0, r0, #0x10
-	str r0, [sp]
-	movs r0, #3
-	bl sub_020048AC
-_02005338:
-	adds r4, r6, #1
-_0200533A:
-	adds r6, r4, #0
-	cmp r6, #3
-	bhi _02005342
-	b _0200524A
-_02005342:
-	add sp, #0xc
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_02005350
-sub_02005350: @ 0x02005350
+	thumb_func_start sub_80823FC
+sub_80823FC: @ 0x02005350
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1076,7 +468,7 @@ _020056D8:
 	ldr r0, _02005738 @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_020127D8
+	bl MultiPakCommunicationError
 	b _020059BE
 	.align 2, 0
 _02005714: .4byte gGameMode
@@ -1141,7 +533,7 @@ _02005764:
 	str r0, [sp]
 	movs r0, #3
 	movs r3, #0
-	bl sub_020048AC
+	bl sub_80078D4
 	b _020059B6
 	.align 2, 0
 _020057A4: .4byte gCurTask
@@ -1173,7 +565,7 @@ _020057AC:
 	str r3, [sp]
 	movs r0, #3
 	movs r3, #0
-	bl sub_020048AC
+	bl sub_80078D4
 	ldr r0, _02005904 @ =0x00000434
 	add r0, sb
 	ldr r0, [r0]
@@ -1473,7 +865,7 @@ InitAndGetResultsScreenObject: @ 0x02005A44
 	adds r4, r0, #0
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
-	ldr r0, _02005A94 @ =sub_02005078
+	ldr r0, _02005A94 @ =Task_MultiplayerSinglePakResultsScreenInit
 	movs r1, #0x88
 	lsls r1, r1, #3
 	movs r2, #0x80
@@ -1508,7 +900,7 @@ InitAndGetResultsScreenObject: @ 0x02005A44
 	pop {r1}
 	bx r1
 	.align 2, 0
-_02005A94: .4byte sub_02005078
+_02005A94: .4byte Task_MultiplayerSinglePakResultsScreenInit
 _02005A98: .4byte IWRAM_START + 0x434
 _02005A9C: .4byte IWRAM_START + 0x430
 _02005AA0: .4byte IWRAM_START + 0x43C
@@ -1548,7 +940,7 @@ _02005AB6:
 	lsls r2, r2, #5
 	str r2, [sp, #0x10]
 	movs r2, #0x73
-	bl sub_02005B90
+	bl sub_8082CEC
 	adds r4, #1
 	lsls r4, r4, #0x10
 	lsrs r3, r4, #0x10
@@ -1594,7 +986,7 @@ _02005B0E:
 	lsls r2, r2, #5
 	str r2, [sp, #0x10]
 	movs r2, #0x71
-	bl sub_02005B90
+	bl sub_8082CEC
 	adds r4, #1
 	lsls r4, r4, #0x10
 	lsrs r3, r4, #0x10
@@ -1628,15 +1020,15 @@ sub_8082CB4: @ 0x02005B5C
 	str r2, [sp, #0x10]
 	movs r2, #0x71
 	movs r3, #3
-	bl sub_02005B90
+	bl sub_8082CEC
 	add sp, #0x14
 	pop {r0}
 	bx r0
 	.align 2, 0
 _02005B8C: .4byte 0x06012C80
 
-	thumb_func_start sub_02005B90
-sub_02005B90: @ 0x02005B90
+	thumb_func_start sub_8082CEC
+sub_8082CEC: @ 0x02005B90
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -9250,7 +8642,7 @@ _02009608:
 	ldr r0, _02009680 @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_020127D8
+	bl MultiPakCommunicationError
 	b _02009AC8
 	.align 2, 0
 _0200966C: .4byte 0x0000FFFF
@@ -28432,8 +27824,8 @@ sub_020127CC: @ 0x020127CC
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_020127D8
-sub_020127D8: @ 0x020127D8
+	thumb_func_start MultiPakCommunicationError
+MultiPakCommunicationError: @ 0x020127D8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
