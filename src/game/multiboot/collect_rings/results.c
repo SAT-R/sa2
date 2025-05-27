@@ -340,8 +340,6 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
-
 void sub_80823FC(void)
 {
     Background *background;
@@ -354,7 +352,11 @@ void sub_80823FC(void)
     gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     packet = &gMultiSioRecv[0];
     if (packet->pat0.unk0 == 0x4012) {
+#if COLLECT_RINGS_ROM
+        gSelectedCharacter = 0;
+#else
         gSelectedCharacter = SIO_MULTI_CNT->id;
+#endif
         if (!resultsScreen->unk434) {
             background = &resultsScreen->unk40;
             gBgScrollRegs[2][0] = 0;
@@ -402,9 +404,11 @@ void sub_80823FC(void)
     } else {
         sub_8082788();
 
+#ifndef COLLECT_RINGS_ROM
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             DisplaySprite(&resultsScreen->unk400);
         }
+#endif
 
         for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
             if (!(MULTI_SIO_RECV_ID(i) & gMultiSioStatusFlags)) {
@@ -612,6 +616,7 @@ struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode
     return resultsScreen;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;
@@ -621,13 +626,15 @@ void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
         sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), anim, 0, 0x78, (i * 40) + 20, SPRITE_OAM_ORDER(16), i, 0x1000);
     }
 }
+#endif
 
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;
 
     for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk160); i++) {
-        sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451, i, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
+        sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, SA2_ANIM_DIGITS, i, 0, 0, SPRITE_OAM_ORDER(4), 0,
+                    0x1000);
     }
 }
 
@@ -636,13 +643,22 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *resultsScreen)
     s16 i;
 
     for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk370); i++) {
-        sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
+        sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE, i, 0, 0,
+                    SPRITE_OAM_ORDER(4), 0, 0x1000);
     }
 }
 
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
-    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
+    sub_8082CEC(&resultsScreen->unk340,
+                OBJ_VRAM0 +
+#if COLLECT_RINGS_ROM
+                    0x2C80
+#else
+                    0x2F00
+#endif
+                ,
+                SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE, 3, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
 }
 
 void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10)
@@ -662,4 +678,3 @@ void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y
     s->frameFlags = unk10;
     UpdateSpriteAnimation(s);
 }
-#endif

@@ -746,9 +746,15 @@
 #define SA2_ANIM_MP_RESULT_4TH  6
 
 // We can infer this Chao is Cheese, since they have a red bow
-#define SA2_ANIM_MP_CHEESE_WAVING                1103
-#define SA2_ANIM_MP_CHEESE_SITTING               1104
-#define SA2_ANIM_DIGITS                          1105
+#define SA2_ANIM_MP_CHEESE_WAVING  1103
+#define SA2_ANIM_MP_CHEESE_SITTING 1104
+
+#if COLLECT_RINGS_ROM
+#define SA2_ANIM_DIGITS 115
+#else
+#define SA2_ANIM_DIGITS 1105
+#endif
+
 #define SA2_ANIM_PRESS_START_MSG_JP              1106
 #define SA2_ANIM_PRESS_START_MSG_EN              1107
 #define SA2_ANIM_PRESS_START_MSG_DE              1108
