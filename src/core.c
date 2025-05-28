@@ -184,7 +184,7 @@ IntrFunc const gIntrTableTemplate[] = {
 static VBlankFunc const sVblankFuncs[] = {
     ProcessVramGraphicsCopyQueue,
     sub_8004010,
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     sub_80039E4,
 #endif
     sub_8002B20,
@@ -198,7 +198,7 @@ void EngineInit(void)
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     gFlags = 0;
     gFlagsPreVBlank = 0;
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     if ((REG_RCNT & 0xC000) != 0x8000) {
         gFlags = FLAGS_200;
         DmaCopy16(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x5000);
@@ -302,7 +302,7 @@ void EngineInit(void)
         gKeysContinuedRepeatIntervals[i] = 8;
     }
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     gInputRecorder.mode = RECORDER_DISABLED;
     gPhysicalInput = 0;
     gInputPlaybackData = NULL;
@@ -342,7 +342,7 @@ void EngineInit(void)
     gExecSoundMain = TRUE;
 
     TasksInit();
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     EwramInitHeap();
 #endif
 
@@ -414,7 +414,7 @@ void EngineMainLoop(void)
 #if (ENGINE >= ENGINE_3)
         gNextFreeAffineIndex = 0;
 #endif
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
         if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
 
@@ -578,7 +578,7 @@ static void ClearOamBufferDma(void)
     gFlags &= ~FLAGS_10;
 }
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 static void UpdateScreenCpuSet(void)
 {
     u8 i, j = 0;
@@ -689,7 +689,7 @@ static void VBlankIntr(void)
         REG_IE &= ~INTR_FLAG_VCOUNT;
     }
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     if (!(gFlagsPreVBlank & FLAGS_8000)) {
         keys = ~REG_KEYINPUT & (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
@@ -800,7 +800,7 @@ void GetInput(void)
     // to exit the demo
     gPhysicalInput = gInput;
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     if (gInputRecorder.mode == RECORDER_RECORD) {
         InputRecorderWrite(gInput);
     } else if (gInputRecorder.mode == RECORDER_PLAYBACK) {
@@ -894,7 +894,7 @@ static void ClearOamBufferCpuSet(void)
     gFlags &= ~FLAGS_10;
 }
 #else
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 static void ClearOamBufferCpuSet(void)
 {
     gNumHBlankCallbacks = 0;

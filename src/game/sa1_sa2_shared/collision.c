@@ -18,6 +18,7 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
+#ifndef COLLECT_RINGS_ROM
 u32 Coll_Player_Entity_RectIntersection(Sprite *s, s32 sx, s32 sy, Player *p, Rect8 *rectPlayer)
 {
     u32 result = 0;
@@ -89,6 +90,7 @@ u32 Coll_Player_PlatformCrumbling(Sprite *s, s32 sx, s32 sy, Player *p)
 
     return result;
 }
+#endif
 
 bool32 Coll_Player_Entity_HitboxN(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
 {
@@ -114,6 +116,7 @@ bool32 Coll_Player_Entity_HitboxN(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player
     return FALSE;
 }
 
+#ifndef COLLECT_RINGS_ROM
 bool32 Coll_Player_Boss_Attack(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
@@ -281,6 +284,7 @@ bool32 Coll_Player_Projectile(Sprite *s, s32 sx, s32 sy)
 
     return result;
 }
+#endif
 
 bool32 Coll_Player_ItemBox(Sprite *s, s32 sx, s32 sy)
 {
@@ -299,6 +303,7 @@ bool32 Coll_Player_ItemBox(Sprite *s, s32 sx, s32 sy)
     return result;
 }
 
+#ifndef COLLECT_RINGS_ROM
 bool32 Coll_Player_Enemy(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
 {
     PlayerSpriteInfo *psi = p->spriteInfoBody;
@@ -338,6 +343,7 @@ void Coll_Player_Enemy_AdjustSpeed(Player *p)
 
     gPlayer.moveState |= MOVESTATE_4000;
 }
+#endif
 
 // (100.00%) https://decomp.me/scratch/verla
 // TODO: Register fake-match
@@ -395,10 +401,13 @@ bool32 Coll_DamagePlayer(Player *p)
         } else if (!(gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
             p->moveState |= MOVESTATE_DEAD;
         }
-    } else {
+    }
+#ifndef COLLECT_RINGS_ROM
+    else {
         m4aSongNumStart(SE_LIFE_LOST);
         p->itemEffect &= ~(PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL);
     }
+#endif
 
     return TRUE;
 }
@@ -442,10 +451,11 @@ u32 Coll_Player_Platform(Sprite *s, s32 sx, s32 sy, Player *p)
             p->moveState &= ~MOVESTATE_20;
             p->moveState |= MOVESTATE_IN_AIR;
             p->stoodObj = NULL;
-
+#ifndef COLLECT_RINGS_ROM
             if (IS_BOSS_STAGE(gCurrentLevel)) {
                 p->qSpeedGround -= Q(gCamera.dx);
             }
+#endif
         }
     }
 
@@ -485,10 +495,11 @@ u32 Coll_Player_Interactable(Sprite *s, s32 sx, s32 sy, Player *p)
         p->stoodObj = s;
     } else if (stoodOnSprite) {
         p->stoodObj = NULL;
-
+#ifndef COLLECT_RINGS_ROM
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             p->qSpeedGround -= Q(gCamera.dx);
         }
+#endif
     }
 
     return mask;
@@ -578,8 +589,13 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *inRect, Player *p)
     return result;
 }
 
-NONMATCH("asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0.inc",
-         u32 sub_800D0A0(Sprite *s, s16 param1, s16 param2, s16 param3, s16 param4, u8 param5, u32 param6))
+NONMATCH(
+#ifndef COLLECT_RINGS_ROM
+    "asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0.inc",
+#else
+    "asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0_collect_rings.inc",
+#endif
+    u32 sub_800D0A0(Sprite *s, s16 param1, s16 param2, s16 param3, s16 param4, u8 param5, u32 param6))
 {
     return 0;
 }
@@ -658,10 +674,12 @@ bool32 sub_800DD54(Player *p)
 
     p->qSpeedAirY = -Q(3.0);
 
+#ifndef COLLECT_RINGS_ROM
     if (p->moveState & MOVESTATE_IN_WATER) {
         HALVE(p->qSpeedAirY);
         HALVE(p->qSpeedAirX);
     }
+#endif
 
     p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     p->moveState &= ~MOVESTATE_20;
@@ -704,6 +722,7 @@ bool32 sub_800DD54(Player *p)
     return TRUE;
 }
 
+#ifndef COLLECT_RINGS_ROM
 bool32 sub_800DE44(Player *p)
 {
     if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
@@ -772,3 +791,4 @@ u32 Coll_Player_Entity_Intersection(Sprite *s, s32 x, s32 y, Player *p)
 
     return Coll_Player_Entity_RectIntersection(s, x, y, p, (Rect8 *)&rectPlayer);
 }
+#endif

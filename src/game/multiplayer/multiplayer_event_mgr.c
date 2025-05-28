@@ -26,7 +26,7 @@ const RoomEventHandler gRoomEventHandlers[] = {
     [ROOMEVENT_TYPE_PLAYER_RING_LOSS - 1] = ReceiveRoomEvent_PlayerRingLoss,
     [ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK - 1] = ReceiveRoomEvent_MysteryItemBoxBreak,
     [ROOMEVENT_TYPE_ITEMEFFECT_APPLIED - 1] = ReceiveRoomEvent_ItemEffect,
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
     [ROOMEVENT_TYPE_REACHED_STAGE_GOAL - 1] = ReceiveRoomEvent_ReachedStageGoal,
     [ROOMEVENT_TYPE_UNKNOWN - 1] = ReceiveRoomEvent_Unknown,
 #endif
@@ -99,7 +99,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 
     if (!(us->unk5C & 1) && PLAYER_IS_ALIVE && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
         switch (recv->pat0.unkF) {
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
             case 0: {
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
@@ -176,7 +176,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
     }
 }
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 {
     u32 j;

@@ -65,13 +65,13 @@
 #define MUS_CONNECTION_PENDING 61
 // 62
 // 63
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 #define MUS_VS_LOBBY 64
 #else
 #define MUS_VS_LOBBY 3
 #endif
 // 65
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 #define MUS_VS_SELECT_PAK_MODE 66
 #else
 #define MUS_VS_SELECT_PAK_MODE 1
@@ -97,9 +97,15 @@
 #define SE_JUMP                    116
 #define SE_RING_COPY               117
 #define SE_RINGS_LOST              118
-#define SE_LIFE_LOST               119
-#define SE_TAILS_PROPELLER_FLYING  120
-#define SE_TAILS_TAIL_SWIPE        121
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_LIFE_LOST 119
+#else
+#define SE_LIFE_LOST 17
+#endif
+
+#define SE_TAILS_PROPELLER_FLYING 120
+#define SE_TAILS_TAIL_SWIPE       121
 // 122
 // 123
 // 124
@@ -168,7 +174,7 @@
 #define SE_MAP_214                        214
 #define SE_MAP_MOVE_END                   215
 
-#if !COLLECT_RINGS_ROM
+#ifndef COLLECT_RINGS_ROM
 #define SE_216 216
 #else
 #define SE_216 23

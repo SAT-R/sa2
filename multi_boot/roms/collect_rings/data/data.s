@@ -1,9 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_02015A24
-gUnknown_02015A24:
-    .incbin "data/rom_data.bin", 0x00015964, 0x74
-
     .global gUnknown_02015A98
 gUnknown_02015A98:
     .incbin "data/rom_data.bin", 0x000159D8, 0x6
