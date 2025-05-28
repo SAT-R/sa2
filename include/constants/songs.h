@@ -65,13 +65,13 @@
 #define MUS_CONNECTION_PENDING 61
 // 62
 // 63
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 #define MUS_VS_LOBBY 64
 #else
 #define MUS_VS_LOBBY 3
 #endif
 // 65
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 #define MUS_VS_SELECT_PAK_MODE 66
 #else
 #define MUS_VS_SELECT_PAK_MODE 1
@@ -168,7 +168,7 @@
 #define SE_MAP_214                        214
 #define SE_MAP_MOVE_END                   215
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 #define SE_216 216
 #else
 #define SE_216 23

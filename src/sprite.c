@@ -94,7 +94,7 @@ s16 sub_8004418(s16 x, s16 y)
     return result;
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 void numToASCII(u8 digits[5], u16 number)
 {
     u8 i;

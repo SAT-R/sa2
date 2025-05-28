@@ -744,7 +744,7 @@ s32 sub_80036E0(Sprite *s)
     return 1;
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 // (-1)
 // No differences to animCmd_GetTiles
 static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
@@ -1310,13 +1310,13 @@ static AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
     ACmd_PlaySoundEffect *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
     m4aSongNumStart(cmd->songId);
 #endif
     return 1;
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 // (-7)
 static AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 {

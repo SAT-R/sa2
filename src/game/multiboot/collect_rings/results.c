@@ -72,7 +72,7 @@ extern const u16 gUnknown_02015B18[];
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
     const u8 *tilemaps = gCollectRingsTilemaps;
     const u8 *bgStageTileset = gCollectRingsBgStageTileset;
 #endif
@@ -93,7 +93,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     m4aSoundVSyncOn();
     gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
     CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
     CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 #endif
@@ -209,7 +209,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     gBldRegs.bldY = 0;
 
     if (++resultsScreen->unk430 > 0xF0) {
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
         gFlags &= ~0x8000;
 #endif
 
@@ -266,7 +266,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
                 UpdateSpriteAnimation(s);
             }
         }
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             s = &resultsScreen->unk400;
             s->x = (DISPLAY_WIDTH / 2);
@@ -404,7 +404,7 @@ void sub_80823FC(void)
     } else {
         sub_8082788();
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             DisplaySprite(&resultsScreen->unk400);
         }
@@ -616,7 +616,7 @@ struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode
     return resultsScreen;
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;

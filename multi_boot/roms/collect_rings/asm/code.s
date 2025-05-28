@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_02005BE8
-sub_02005BE8: @ 0x02005BE8
+	thumb_func_start SpawnMapEntities
+SpawnMapEntities: @ 0x02005BE8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -355,7 +355,7 @@ _02005E72:
 	cmp r0, #0
 	beq _02005E82
 _02005E7C:
-	bl sub_02005BE8
+	bl SpawnMapEntities
 	b _02006150
 _02005E82:
 	ldr r0, [r4, #4]
@@ -763,8 +763,8 @@ _02006150:
 _02006160: .4byte gUnknown_02015A24
 _02006164: .4byte gUnknown_03005650
 
-	thumb_func_start sub_02006168
-sub_02006168: @ 0x02006168
+	thumb_func_start CreateStageEntitiesManager
+CreateStageEntitiesManager: @ 0x02006168
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	ldr r0, _020061B0 @ =sub_02005DC8
@@ -26191,8 +26191,8 @@ sub_020122F8: @ 0x020122F8
 	.align 2, 0
 _02012304: .4byte gUnknown_030057C8
 
-	thumb_func_start sub_02012308
-sub_02012308: @ 0x02012308
+	thumb_func_start CreateGameStage
+CreateGameStage: @ 0x02012308
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	ldr r0, _02012424 @ =sub_020124F0
@@ -26271,7 +26271,7 @@ _02012372:
 	strh r0, [r5]
 _020123AA:
 	bl sub_02007D38
-	bl sub_02006168
+	bl CreateStageEntitiesManager
 	ldr r0, _02012470 @ =gUnknown_03001944
 	movs r4, #0
 	strh r4, [r0]
@@ -26692,7 +26692,7 @@ _02012724:
 	ldr r1, _02012784 @ =gUnknown_03005408
 	ldr r0, _02012788 @ =0x00002A30
 	str r0, [r1]
-	bl sub_02012308
+	bl CreateGameStage
 	pop {r0}
 	bx r0
 	.align 2, 0

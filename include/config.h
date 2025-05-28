@@ -13,6 +13,12 @@
 #define ENGINE_3 3
 #define ENGINE_4 4
 
+// The collect rings rom is
+// a subset of the main game
+#ifndef COLLECT_RINGS_ROM
+#define COLLECT_RINGS_ROM 0
+#endif
+
 // TODO: Define this in Makefile through a compiler macro?
 #define GAME GAME_SA2
 

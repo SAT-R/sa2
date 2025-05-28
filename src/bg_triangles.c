@@ -9,7 +9,7 @@
 /* TODO: Rename this module to something background-related */
 #include "bg_triangles.h"
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 const u16 gUnknown_080984F4[] = {
     // Zone 1
     0x0001,
@@ -734,7 +734,7 @@ void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 of
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4, u16 param5, u16 param6)
 {
     u16 *cursor;

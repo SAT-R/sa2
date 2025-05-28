@@ -151,7 +151,7 @@ void ReceiveRoomEvent_MysteryItemBoxBreak(union MultiSioData *msioData, u8 UNUSE
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
+#if !COLLECT_RINGS_ROM
 // Type of this is determined by it being referenced in a C func-array
 void ReceiveRoomEvent_Unknown(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }
 #endif

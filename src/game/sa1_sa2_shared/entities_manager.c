@@ -10,6 +10,7 @@
 #include "game/entity.h"
 #include "game/sa1_sa2_shared/item_box.h"
 #include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/sa1_sa2_shared/enemy_defeat_score.h"
 
 #include "game/sa1_sa2_shared/interactables/platform_thin.h"
 #include "game/sa1_sa2_shared/interactables/ceiling_slope.h"
@@ -114,8 +115,8 @@
 #include "constants/zones.h"
 #include "constants/songs.h"
 
-// Unknown task
-extern void CreateEnemyDefeatScore(s16, s16);
+#define NUM_ENEMY_DEFEAT_SCORES          5
+#define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
 
 typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
@@ -134,6 +135,7 @@ void Task_8008DCC(void);
 
 void sub_80095FC(struct Task *);
 
+#if !COLLECT_RINGS_ROM
 const RLCompressed *const gSpritePosData_interactables[NUM_LEVEL_IDS] = {
     (void *)&zone1_act1_interactables,
     (void *)&zone1_act2_interactables,
@@ -382,7 +384,6 @@ const MapEntityInit gSpriteInits_Enemies[] = {
     CreateEntity_Kyura,    CreateEntity_Star,     CreateEntity_BulletBuzzer,
 };
 
-#define NUM_ENEMY_DEFEAT_SCORES 5
 const u16 enemyDefeatScores[NUM_ENEMY_DEFEAT_SCORES] = {
     100, 200, 400, 800, 1000,
 };
@@ -431,8 +432,6 @@ const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
     NULL,        NULL,
 };
 
-#define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
-
 void CreateStageEntitiesManager(void)
 {
     void *decompBuf;
@@ -475,6 +474,7 @@ void CreateStageEntitiesManager(void)
     em->unk14 = 1;
     gEntitiesManagerTask = t;
 }
+#endif
 
 void SpawnMapEntities()
 {

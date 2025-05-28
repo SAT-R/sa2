@@ -1,0 +1,6 @@
+#ifndef GUARD_GAME_ENEMY_DEFEAT_SCORE_H
+#define GUARD_GAME_ENEMY_DEFEAT_SCORE_H
+
+void CreateEnemyDefeatScore(s16, s16);
+
+#endif // GUARD_GAME_ENEMY_DEFEAT_SCORE_H
