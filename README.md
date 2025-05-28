@@ -23,7 +23,7 @@ This is a work in progress matching decompilation of Sonic Advance 2
 It so far builds the following ROMs:
 * [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d` (USA) (En,Ja,Fr,De,Es,It)
 * [**sa2_europe.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0900) `sha1: b0f64bdca097f2de8f05ac4c8caea2b80c5faeb1` (Europe) (En,Ja,Fr,De,Es,It)
-* :construction: [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It) (Work in Progress)
+* :construction: [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It) (WIP)
 
 It can also build:
 * **sa2.sdl** `make sdl` (Linux/MacOS SDL 64bit port)
@@ -32,13 +32,23 @@ It can also build:
 
 ## Current state
 
-- :tada: The build is 100% from C files with [~80 functions which currently don't match](./asm/non_matching)
+- :tada: The build is 100% from C files with [~60 functions which currently don't match](./asm/non_matching)
 - All assembly code extracted, disassembled, and decompiled by hand to their C equivilent
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
 - All sprite animation frames have been [extracted to PNGs and are used to build the matching rom](./graphics/obj_tiles)
 - All tilemaps (backgrounds) have been documented and [had their tiles extracted](./data/tilemaps)
+- Most aspects of core game play have been documented, but >600 functions are still unnamed
 - The game compiles to a widescreen port (*426x240*) for multiple platforms
-- The "sub games" (Chao Garden and Collect The Rings) have been disassembled but not yet decompiled
+
+## Sub games
+
+Within the Sonic Advance 2 rom there are some "Sub games" which we have begun to decompile as part of this project. These sub games are automatically compiled and bundled during the main build process, as they are necessary to create a matching binary.
+
+| Multiboot rom | Decompilation |
+| --- | --- |
+| [**mb_chao_garden.gba**](./chao_garden) | ![Decompilation Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-mb_chao_garden-shield.json) |
+| [**collect_rings.gba**](./multi_boot/roms/collect_rings/) | ![Decompilation Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-collect_rings-shield.json) |
+
 
 ## Setting up the repo
 
@@ -59,7 +69,7 @@ Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping ou
 
 - [JaceCear](https://github.com/JaceCear) for his dedication to understanding the internals of the graphics engine, writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter), as well as massive effort in contributing towards the decompilation process, *and* setting up the PC ports
 - Shout out to [@froggestspirit](https://github.com/froggestspirit) for the drive to set this project up
-- Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds decompilation
+- Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds disassembly
 
 - [Pokemon Reverse Engineering Tools](https://github.com/pret) community for their help with the project, and tooling for GBA decompilations
 - [Kermalis](https://github.com/Kermalis) for [their tool](https://github.com/Kermalis/VGMusicStudio) which was used to dump the game midis

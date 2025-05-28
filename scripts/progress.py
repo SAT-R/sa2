@@ -32,14 +32,14 @@ def collect_non_matching_funcs():
     return result
 
 
-def parse_map(non_matching_funcs):
+def parse_map(non_matching_funcs, map_file):
     src = 0
     asm = 0
     src_data = 0
     data = 0
     non_matching = 0
 
-    with open('sa2.map', 'r') as map:
+    with open(map_file, 'r') as map:
         # Skip to the linker script section
         line = map.readline()
         while not line.startswith('Linker script and memory map'):
@@ -57,11 +57,16 @@ def parse_map(non_matching_funcs):
                 section = arr[0]
                 size = int(arr[2], 16)
                 filepath = arr[3]
-
-                # (asm|data|sound|src|...)/*/
-                #  ^
-                #  0                       1
-                dir = filepath.split('/')[0]
+                if filepath.startswith('build'):
+                    # build/*/(asm|data|sound|src|...)/*/
+                    #  ^    ^   ^
+                    #  0    1   2                      3  
+                    dir = filepath.split("/")[2]
+                else:
+                    # (asm|data|sound|src|...)/*/
+                    #  ^
+                    #  0                       1               
+                    dir = filepath.split('/')[0]
 
                 if section == '.text':
                     if dir == 'src':
@@ -111,6 +116,7 @@ def main():
     parser.add_argument("format", nargs="?", default="text", choices=["text", "csv", "shield-json"])
     parser.add_argument("-m", "--matching", dest='matching', action='store_true',
                         help="Output matching progress instead of decompilation progress")
+    parser.add_argument("-f", "--file", dest='map_file', default="sa2.map")
     args = parser.parse_args()
 
     matching = args.matching
@@ -126,7 +132,7 @@ def main():
             if func[0] == 'ASM_FUNC':
                 non_matching_funcs.append(func[1])
 
-    (src, asm, src_data, data) = parse_map(non_matching_funcs)
+    (src, asm, src_data, data) = parse_map(non_matching_funcs, args.map_file)
 
     total = src + asm
     data_total = src_data + data
@@ -140,7 +146,7 @@ def main():
 
     if args.format == 'csv':
         version = 2
-        git_object = git.Repo().head.object
+        git_object = git.Repo(search_parent_directories=True).head.object
         timestamp = str(git_object.committed_date)
         git_hash = git_object.hexsha
 

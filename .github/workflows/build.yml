@@ -77,6 +77,14 @@ jobs:
         run: |
           python3 scripts/progress.py text
 
+      - name: Collect Rings Progress
+        run: |
+          cd multi_boot/roms/collect_rings && python3 ../../../scripts/progress.py -f collect_rings.map text
+
+      - name: Chao Garden Progress
+        run: |
+          cd chao_garden && python3 ../scripts/progress.py -f mb_chao_garden.map text
+
       - name: Generate reports
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -88,6 +96,23 @@ jobs:
           python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa2-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
           cp sa2.map gh-pages/maps/${GITHUB_SHA}.map
+      - name: Generate reports (Collect Rings)
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          cd multi_boot/roms/collect_rings
+          python3 ../../../scripts/progress.py csv -f collect_rings.map >> ../../../gh-pages/reports/progress-collect_rings-nonmatching.csv
+          python3 ../../../scripts/progress.py csv -m -f collect_rings.map >> ../../../gh-pages/reports/progress-collect_rings-matching.csv
+          python3 ../../../scripts/progress.py shield-json -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-shield.json
+          python3 ../../../scripts/progress.py shield-json -m -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-shield-matching.json
+
+      - name: Generate reports (Chao Garden)
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          cd chao_garden
+          python3 ../scripts/progress.py csv -f mb_chao_garden.map >> ../gh-pages/reports/progress-mb_chao_garden-nonmatching.csv
+          python3 ../scripts/progress.py csv -m -f mb_chao_garden.map >> ../gh-pages/reports/progress-mb_chao_garden-matching.csv
+          python3 ../scripts/progress.py shield-json -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield.json
+          python3 ../scripts/progress.py shield-json -m -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield-matching.json
 
       #- name: Japan
         #run: |

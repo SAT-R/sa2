@@ -231,7 +231,7 @@ SECTIONS {
     }
 
 	. = 0x2000000;
-	.text :
+	ROM :
 	ALIGN(4)
 	{
 		build/mb_chao_garden/asm/rom_header.o(.text);
@@ -251,11 +251,8 @@ SECTIONS {
         *libgcc.a:_dvmd_tls.o(.text);
         *libgcc.a:_modsi3.o(.text);
 		*libc.a:memcpy.o(.text);
-	} =0
 
-	.rodata :
-	ALIGN(4)
-	{
+        /* Data */
 	    build/mb_chao_garden/data/data.o(.rodata);
 		build/mb_chao_garden/src/m4a_tables.o(.rodata);
 		build/mb_chao_garden/data/sound_data.o(.rodata);

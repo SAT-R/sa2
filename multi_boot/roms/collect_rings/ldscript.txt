@@ -10,7 +10,7 @@ SECTIONS {
     }
 
     . = 0x20000C0;
-    .text :
+    ROM :
     ALIGN(4) {
         build/collect_rings/asm/rom_header.o(.text);
         build/collect_rings/src/sa2/crt0.o(.text);
@@ -43,10 +43,8 @@ SECTIONS {
         *libgcc.a:_umodsi3.o(.text);
         *libc.a:memcpy.o(.text);
         *libc.a:memset.o(.text);
-    }
 
-    .rodata :
-    ALIGN(4) {
+        /* Data */
         build/collect_rings/data/data0.o(.rodata);
         build/collect_rings/src/sa2/core.o(.rodata);
         build/collect_rings/src/sa2/background.o(.rodata);
