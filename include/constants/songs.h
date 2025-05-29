@@ -95,8 +95,14 @@
 #define SE_GRINDING                114
 #define SE_BRAKE                   115
 #define SE_JUMP                    116
-#define SE_RING_COPY               117
-#define SE_RINGS_LOST              118
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_RING_COPY 117
+#else
+#define SE_RING_COPY 15
+#endif
+
+#define SE_RINGS_LOST 118
 
 #ifndef COLLECT_RINGS_ROM
 #define SE_LIFE_LOST 119
@@ -134,27 +140,33 @@
 #define SE_SPIN                      147
 #define SE_148                       148
 #define SE_TIME_UP                   149
-#define SE_ITEM_BOX_2                150
-#define SE_ACTIVATE_SHIELD           151
-#define SE_CHECKPOINT                152
-#define SE_SPRING                    153
-#define SE_SPIKES                    154
-#define SE_SPEED_BOOSTER             155
-#define SE_WATERFALL_SURFACE_HIT     156
-#define SE_157                       157
-#define SE_AIR_BUBBLE                158
-#define SE_ALARM_1                   159
-#define SE_ALARM_2                   160
-#define SE_ALARM_3                   161
-#define SE_ALARM_4                   162
-#define SE_ALARM_5                   163
-#define SE_ALARM_6                   164
-#define SE_ALARM_7                   165
-#define SE_ALARM_8                   166
-#define SE_ALARM_9                   167
-#define SE_ALARM_10                  168
-#define SE_SPRINGY_POLE              169
-#define SE_SPRINGY_SPRING            170
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_ITEM_BOX_2 150
+#else
+#define SE_ITEM_BOX_2 19
+#endif
+
+#define SE_ACTIVATE_SHIELD       151
+#define SE_CHECKPOINT            152
+#define SE_SPRING                153
+#define SE_SPIKES                154
+#define SE_SPEED_BOOSTER         155
+#define SE_WATERFALL_SURFACE_HIT 156
+#define SE_157                   157
+#define SE_AIR_BUBBLE            158
+#define SE_ALARM_1               159
+#define SE_ALARM_2               160
+#define SE_ALARM_3               161
+#define SE_ALARM_4               162
+#define SE_ALARM_5               163
+#define SE_ALARM_6               164
+#define SE_ALARM_7               165
+#define SE_ALARM_8               166
+#define SE_ALARM_9               167
+#define SE_ALARM_10              168
+#define SE_SPRINGY_POLE          169
+#define SE_SPRINGY_SPRING        170
 
 /* 171 - 200: Dummies */
 

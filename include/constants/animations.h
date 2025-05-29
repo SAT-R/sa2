@@ -422,8 +422,25 @@
 #define SA2_ANIM_TRUE_AREA_53_BOSS_PARTICLE_2        722
 #define SA2_ANIM_TRUE_AREA_53_BOSS_COCKPIT_SEPERATED 723
 
-#define SA2_ANIM_ITEMBOX      724
+#ifndef COLLECT_RINGS_ROM
+#define SA2_ANIM_ITEMBOX 724
+#else
+#define SA2_ANIM_ITEMBOX 104
+#endif
+
+#ifndef COLLECT_RINGS_ROM
 #define SA2_ANIM_ITEMBOX_TYPE 725
+#else
+#define SA2_ANIM_ITEMBOX_TYPE 105
+#endif
+
+#ifndef COLLECT_RINGS_ROM
+#define SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_1 9
+#define SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_2 12
+#else
+#define SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_1 0
+#define SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_2 1
+#endif
 
 // Used both for rings placed in the stage and
 // ones the player loses when hit.

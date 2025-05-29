@@ -102,7 +102,8 @@ SA2_C_FILES := \
 	sa2/game/multiplayer/multiplayer_event_recv_mgr.c \
 	sa2/game/multiboot/collect_rings/results.c \
 	sa2/game/sa1_sa2_shared/entities_manager.c \
-	sa2/game/sa1_sa2_shared/collision.c
+	sa2/game/sa1_sa2_shared/collision.c \
+	sa2/game/mystery_item_box.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

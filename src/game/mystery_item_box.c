@@ -16,6 +16,9 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+#define ITEM_ICON_DISPLAY_TIME  (1 * GBA_FRAMES_PER_SECOND)
+#define ITEM_ICON_DISPLAY_DELAY (int)(0.5 * GBA_FRAMES_PER_SECOND)
+
 typedef struct {
     SpriteBase base; /* 0x00 */
     Sprite box; /* 0x0C*/
@@ -49,12 +52,9 @@ static const u8 sRingBonuses[] = { 1, 5, 10, 30, 50 };
 
 static const u16 gUnknown_080E029A[] = { 0, 1, 1, 0, 1, 1, 0, 1 };
 
-static const u16 gUnknown_080E02AA[][3] = { { SA2_ANIM_ITEMBOX_TYPE, 9, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 12, 4 } };
-
-static const u16 unused = 0;
-
-#define ITEM_ICON_DISPLAY_TIME  (1 * GBA_FRAMES_PER_SECOND)
-#define ITEM_ICON_DISPLAY_DELAY (int)(0.5 * GBA_FRAMES_PER_SECOND)
+static const u16 gUnknown_080E02AA[][3] = { { SA2_ANIM_ITEMBOX_TYPE, SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_1, 4 },
+                                            { SA2_ANIM_ITEMBOX_TYPE, SA2_ANIM_VARIANT_ITEM_BOX_MYSTERY_2, 4 } };
+static const u8 unused = 0;
 
 void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -292,8 +292,14 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
 
             if (!IS_EXTRA_STAGE(gCurrentLevel)) {
                 if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+#ifndef COLLECT_RINGS_ROM
                     gNumLives = MIN(gNumLives + 1, 255u);
                     gMusicManagerState.unk3 = 0x10;
+#else
+                    if (gNumLives < 255) {
+                        gNumLives++;
+                    }
+#endif
                 }
             }
 
