@@ -462,7 +462,11 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
+#ifndef COLLECT_RINGS_ROM
 #define SA2_ANIM_MULTIPLAYER_UI_RING 729
+#else
+#define SA2_ANIM_MULTIPLAYER_UI_RING 110
+#endif
 
 #define SA2_ANIM_SPECIAL_RING             730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
@@ -791,11 +795,21 @@
 #define SA2_ANIM_STAGE_INTRO_ZONE_NAMES          1117
 #define SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS      1118
 
-#define SA2_ANIM_ASCII            1119
+#ifndef COLLECT_RINGS_ROM
+#define SA2_ANIM_ASCII 1119
+#else
+#define SA2_ANIM_ASCII 111
+#endif
+
+#ifndef COLLECT_RINGS_ROM
 #define SA2_ANIM_ASCII_FIRST_CHAR '!'
-#define SA2_ANIM_ASCII_YEN        '\\'
-#define SA2_ANIM_ASCII_CHAR(c)    ((c)-SA2_ANIM_ASCII_FIRST_CHAR + 1)
-#define SA2_ANIM_NUM_ASCII_CHARS  94
+#else
+#define SA2_ANIM_ASCII_FIRST_CHAR '0' - 1
+#endif
+
+#define SA2_ANIM_ASCII_YEN       '\\'
+#define SA2_ANIM_ASCII_CHAR(c)   ((c)-SA2_ANIM_ASCII_FIRST_CHAR + 1)
+#define SA2_ANIM_NUM_ASCII_CHARS 94
 
 // Used in Time Attack and stage results screen (/ stage outro)
 #define SA2_ANIM_TA_WHITE_BAR                      1120

@@ -84,6 +84,10 @@ C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
 
+ifneq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
+NODEP ?= 1
+endif
+
 # Moves any relevant sa2 c files to the build dir
 SA2_C_FILES := \
 	sa2/lib/m4a/m4a.c \
@@ -104,7 +108,8 @@ SA2_C_FILES := \
 	sa2/game/sa1_sa2_shared/entities_manager.c \
 	sa2/game/sa1_sa2_shared/collision.c \
 	sa2/game/mystery_item_box.c \
-	sa2/game/sa1_sa2_shared/rings_manager.c
+	sa2/game/sa1_sa2_shared/rings_manager.c \
+	sa2/game/multiboot/collect_rings/time_display.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
@@ -186,7 +191,7 @@ compare: $(ROM)
 	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
-	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -iname 'graphics/*.pal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 	@$(MAKE) clean -C ../../../libagbsyscall
 
 tidy:
@@ -194,6 +199,13 @@ tidy:
 	$(RM) -r build/*
 
 #### Recipes ####
+
+%.pal:
+	$(shell mkdir -p $(shell dirname '$@'))
+	cp ../../../$@ $@;
+
+%.gbapal: %.pal ; $(GFX) $< $@
+%.gbapal: %.png ; $(GFX) $< $@
 
 $(ELF): $(OBJS) $(LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
@@ -220,6 +232,10 @@ $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.c
 	@$(PREPROC) $(C_BUILDDIR)/sa2/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/sa2/$*.s -
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/sa2/$*.s
 	@$(AS) $(ASFLAGS) -I ../../../ $(C_BUILDDIR)/sa2/$*.s -o $@
+
+$(C_BUILDDIR)/sa2/%.d: $(C_BUILDDIR)/sa2/%.c
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/sa2/$*.d'))
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
 
 $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.s
 	@echo "$(AS) <flags> -o $@ $<"
@@ -257,6 +273,7 @@ $(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
     
 ifneq ($(NODEP),1)
+-include $(SA2_C_SRCS:.c=.d)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 -include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
 endif
