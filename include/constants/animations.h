@@ -444,7 +444,12 @@
 
 // Used both for rings placed in the stage and
 // ones the player loses when hit.
-#define SA2_ANIM_RING                 726
+#ifndef COLLECT_RINGS_ROM
+#define SA2_ANIM_RING 726
+#else
+#define SA2_ANIM_RING 106
+#endif
+
 #define SA2_ANIM_RING_COLLECT_EFFECT  727
 #define TILE_COUNT__ANIM_ITEMBOX      16 // TODO: Automate
 #define TILE_COUNT__ANIM_ITEMBOX_TYPE 4 // TODO: Automate

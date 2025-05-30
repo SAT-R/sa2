@@ -46,6 +46,7 @@ void TaskDestructor_RingsMgr(struct Task *);
         TO_REGION(b + a + offset);                                                                                                         \
     })
 
+#ifndef COLLECT_RINGS_ROM
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     zone1_act1_rings,
     zone1_act2_rings,
@@ -82,6 +83,7 @@ const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     NULL,
     NULL,
 };
+#endif
 
 void CreateStageRingsManager(void)
 {
@@ -93,6 +95,7 @@ void CreateStageRingsManager(void)
     const u8 *compressedRingPosData;
     u32 dataSize;
 
+#ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0, TaskDestructor_RingsMgr);
 
@@ -101,7 +104,14 @@ void CreateStageRingsManager(void)
         ewramBuffer = EwramMalloc(dataSize);
 
         RLUnCompWram(gSpritePosData_rings[gCurrentLevel], ewramBuffer);
-    } else {
+    } else
+#endif
+    {
+#if COLLECT_RINGS_ROM
+#ifndef NON_MATCHING
+        register u32 dataSize asm("r4");
+#endif
+#endif
         t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0, NULL);
 
         compressedRingPosData = (u8 *)(*MP_COLLECT_RINGS_COMPRESSED_SIZE);
@@ -133,6 +143,7 @@ void CreateStageRingsManager(void)
     s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
+#ifndef COLLECT_RINGS_ROM
 // Required for match, but probably fake
 // leaving this in to ensure build consistency
 static inline s32 getCameraY(void) { return gCamera.y; }
@@ -411,3 +422,4 @@ void TaskDestructor_RingsMgr(struct Task *t)
     void *rings = *(void **)(TASK_DATA(t) + offsetof(RingsManager, rings));
     EwramFree(rings);
 }
+#endif

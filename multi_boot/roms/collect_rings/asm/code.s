@@ -4,88 +4,8 @@
 .syntax unified
 .arm
 
-
-	thumb_func_start sub_02007D38
-sub_02007D38: @ 0x02007D38
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	ldr r0, _02007DBC @ =sub_02007DE8
-	movs r2, #0x80
-	lsls r2, r2, #6
-	movs r5, #0
-	str r5, [sp]
-	movs r1, #0x34
-	movs r3, #0
-	bl TaskCreate
-	adds r6, r0, #0
-	ldr r0, _02007DC0 @ =0x0203300C
-	ldr r0, [r0]
-	ldr r4, [r0]
-	lsrs r4, r4, #8
-	adds r4, #3
-	lsrs r4, r4, #2
-	lsls r4, r4, #4
-	ldr r0, _02007DC4 @ =0x0203F000
-	adds r4, r4, r0
-	ldr r0, _02007DC8 @ =0x02033008
-	ldr r0, [r0]
-	adds r1, r4, #0
-	bl RLUnCompWram
-	ldrh r0, [r6, #6]
-	ldr r1, _02007DCC @ =gUnknown_03000030
-	adds r0, r0, r1
-	str r4, [r0]
-	ldrh r2, [r6, #6]
-	subs r1, #0x30
-	adds r1, r2, r1
-	movs r4, #0
-	strh r5, [r1, #0x16]
-	strh r5, [r1, #0x18]
-	ldr r0, _02007DD0 @ =0x06012E40
-	str r0, [r1, #4]
-	movs r0, #0xa0
-	lsls r0, r0, #3
-	strh r0, [r1, #0x1a]
-	strh r5, [r1, #8]
-	movs r0, #0x6a
-	strh r0, [r1, #0xa]
-	ldr r3, _02007DD4 @ =gUnknown_03000020
-	adds r0, r2, r3
-	strb r4, [r0]
-	strh r5, [r1, #0x14]
-	strh r5, [r1, #0x1c]
-	ldr r0, _02007DD8 @ =gUnknown_03000021
-	adds r3, r2, r0
-	movs r0, #0xff
-	strb r0, [r3]
-	ldr r0, _02007DDC @ =gUnknown_03000022
-	adds r3, r2, r0
-	movs r0, #0x10
-	strb r0, [r3]
-	ldr r3, _02007DE0 @ =gUnknown_03000025
-	adds r2, r2, r3
-	strb r4, [r2]
-	ldr r0, _02007DE4 @ =0x00042200
-	str r0, [r1, #0x10]
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02007DBC: .4byte sub_02007DE8
-_02007DC0: .4byte 0x0203300C
-_02007DC4: .4byte 0x0203F000
-_02007DC8: .4byte 0x02033008
-_02007DCC: .4byte gUnknown_03000030
-_02007DD0: .4byte 0x06012E40
-_02007DD4: .4byte gUnknown_03000020
-_02007DD8: .4byte gUnknown_03000021
-_02007DDC: .4byte gUnknown_03000022
-_02007DE0: .4byte gUnknown_03000025
-_02007DE4: .4byte 0x00042200
-
-	thumb_func_start sub_02007DE8
-sub_02007DE8: @ 0x02007DE8
+	thumb_func_start Task_RingsMgrMain
+Task_RingsMgrMain: @ 0x02007DE8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -146,7 +66,7 @@ _02007E2A:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0xc]
-	ldr r6, _02008100 @ =gPlayer
+	ldr r6, _02008100 @ =gPlayChew
 	ldr r1, [r6, #0xc]
 	asrs r1, r1, #8
 	mov r0, sp
@@ -21871,7 +21791,7 @@ _02012372:
 	orrs r0, r1
 	strh r0, [r5]
 _020123AA:
-	bl sub_02007D38
+	bl CreateStageRingsManager
 	bl CreateStageEntitiesManager
 	ldr r0, _02012470 @ =gUnknown_03001944
 	movs r4, #0
