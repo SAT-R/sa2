@@ -128,9 +128,11 @@ struct MultiSioArea {
     // Receive Buffer (Triple Buffer)
 };
 
+#ifdef MULTI_SIO_DI_FUNC_FAST
 extern u32 gMultiSioRecvFuncBuf[0x40 / 4]; // Receive Data/Check Buffer Change Routine
                                            // RAM Execution Buffer
 extern u32 gMultiSioIntrFuncBuf[0x120 / 4]; // Interrupt Routine RAM Execution Buffer
+#endif
 
 extern struct MultiSioArea gMultiSioArea; // Multi-play Communication Work Area
 
