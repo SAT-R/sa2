@@ -390,3 +390,16 @@ void Task_TransitionToResultsScreen(void)
         return;
     }
 }
+
+#if COLLECT_RINGS_ROM
+void CreateMultiplayerFinishHandler(void)
+{
+    u32 i;
+    u32 r2;
+    u8 r6;
+    struct Task *mpt;
+    struct Task *t = TaskCreate(Task_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
+    Finish2 *f2 = TASK_DATA(t);
+    f2->unk0 = 0;
+}
+#endif
