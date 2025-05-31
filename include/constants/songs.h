@@ -92,9 +92,15 @@
 #define SE_SONIC_SKID_ATTACK       111
 #define SE_SONIC_MIDAIR_SOMERSAULT 112
 #define SE_SONIC_INSTA_SHIELD      113
-#define SE_GRINDING                114
-#define SE_BRAKE                   115
-#define SE_JUMP                    116
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_GRINDING 114
+#else
+#define SE_GRINDING 26
+#endif
+
+#define SE_BRAKE 115
+#define SE_JUMP  116
 
 #ifndef COLLECT_RINGS_ROM
 #define SE_RING_COPY 117

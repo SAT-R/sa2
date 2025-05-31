@@ -29,15 +29,22 @@ typedef struct {
 #define INITIALIZE_RAIL_AIR(type) CreateEntity_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
 
 static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType);
-
-static void Task_GrindRail(void);
 static void GrindRailAudioDelay(void);
 
+#if COLLECT_RINGS_ROM
+// https://decomp.me/scratch/K8DDZ (97%)
+// it logically matches, just some compiler side effects
+NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/Task_GrindRail_CollectRings.inc", void Task_GrindRail(void))
+#else
 static void Task_GrindRail(void)
+#endif
 {
     Player *p = &gPlayer;
-
+#ifndef COLLECT_RINGS_ROM
     s32 r7 = GRAVITY_IS_INVERTED ? I(p->qWorldY) - p->spriteOffsetY : I(p->qWorldY) + p->spriteOffsetY;
+#else
+    s32 r7 = I(p->qWorldY) + p->spriteOffsetY;
+#endif
 
     s16 x, y;
 
@@ -62,14 +69,16 @@ static void Task_GrindRail(void)
             && (y + (me->d.sData[1] * TILE_WIDTH) <= r7 && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= r7)) {
             bool32 r6 = FALSE;
 
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 if (r7 >= y)
                     r6 = TRUE;
-            } else {
+            } else
+#endif
+            {
                 if (r7 <= y)
                     r6 = TRUE;
             }
-
             if ((p->qSpeedAirY >= 0) && r6 && !(kind & RAIL_KIND_80)) {
                 if ((p->moveState & MOVESTATE_1000000)) {
                     if ((!(kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
@@ -119,6 +128,9 @@ static void Task_GrindRail(void)
         TaskDestroy(gCurTask);
     }
 }
+#if COLLECT_RINGS_ROM
+END_NONMATCH
+#endif
 
 static void Task_GrindRail_Air(void)
 {
