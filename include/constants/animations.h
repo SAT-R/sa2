@@ -223,7 +223,13 @@
 #define SA2_ANIM_PLATFORM_LF_WIDE        539
 #define SA2_ANIM_BOOSTER                 540
 #define SA2_ANIM_PLATFORM_LEA_FOR        541
-#define SA2_ANIM_SPIKES                  542
+
+#ifndef COLLECT_RINGS_ROM
+#define SA2_ANIM_SPIKES 542
+#else
+#define SA2_ANIM_SPIKES 101
+#endif
+
 // TODO: Rename
 #define SA2_ANIM_VARIANT_SPIKES_UP       0
 #define SA2_ANIM_VARIANT_SPIKES_UP_LOW   1

@@ -156,7 +156,12 @@
 #define SE_SPRING 20
 #endif
 
-#define SE_SPIKES                154
+#ifndef COLLECT_RINGS_ROM
+#define SE_SPIKES 154
+#else
+#define SE_SPIKES 21
+#endif
+
 #define SE_SPEED_BOOSTER         155
 #define SE_WATERFALL_SURFACE_HIT 156
 #define SE_157                   157

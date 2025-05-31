@@ -1,12 +1,6 @@
 	.section .rodata
 
-    .global gUnknown_02015B24
-gUnknown_02015B24:
-    .incbin "data/rom_data.bin", 0x00015A64, 0x14
-
-    .global sSpringDirToPlayerTransition
-sSpringDirToPlayerTransition:
-    .incbin "data/rom_data.bin", 0x00015A78, 0xC
+.align 2, 0
 
     .global gUnknown_02015B44
 gUnknown_02015B44:

@@ -50,7 +50,7 @@ build/collect_rings/src/sa2/multi_sio.o(.data);
 build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);
 build/collect_rings/src/sa2/core.o(.data);
 
-. = 0x000053A0; gUnknown_030053A0 = .;
+. = 0x000053A0; gUnknown_030053E0 = .;
 . = 0x000053A4; gUnknown_030053A4 = .;
 . = 0x000053A8; gMultiplayerCharRings = .;
 . = 0x000053AC; gMultiplayerLanguage = .;
@@ -59,7 +59,7 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x000053D0; gRoomEventQueueSendPos = .;
 . = 0x000053D4; gStageFlags = .;
 . = 0x000053D8; gMPRingCollectWins = .;
-. = 0x000053E0; gUnknown_030053E0 = .;
+. = 0x000053E0; gUnknown_030053E0_old = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gMultiplayerPseudoRandom = .;
 . = 0x000053EC; gRoomEventQueueWritePos = .;

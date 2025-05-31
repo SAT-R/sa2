@@ -89,6 +89,12 @@ static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
         [SPRINGTYPE_SMALL_UPRIGHT] = { SA2_ANIM_SPRING_TEC_BAS, 6, 12, 0x0000 },
     },
 };
+#else
+static const u8 gUnknown_02015B24[SPRINGTYPE_COUNT][2] = {
+    { 0x00, 0x00 }, { 0x00, 0x02 }, { 0x02, 0x01 }, { 0x02, 0x00 }, { 0x04, 0x01 },
+    { 0x04, 0x00 }, { 0x04, 0x03 }, { 0x04, 0x02 }, { 0x06, 0x01 }, { 0x06, 0x00 },
+};
+#endif
 
 // Effects applied onto the player-state.
 // These trigger the player acceleration when touching each of the spring directions
@@ -96,12 +102,9 @@ static const u8 sSpringDirToPlayerTransition[SPRINGTYPE_COUNT]
     = { PLTRANS_SPRING_UP,       PLTRANS_SPRING_DOWN,      PLTRANS_SPRING_LEFT,       PLTRANS_SPRING_RIGHT,   PLTRANS_SPRING_UP_LEFT,
         PLTRANS_SPRING_UP_RIGHT, PLTRANS_SPRING_DOWN_LEFT, PLTRANS_SPRING_DOWN_RIGHT, PLTRANS_SPRING_UP_LEFT, PLTRANS_SPRING_UP_RIGHT };
 
+#ifndef COLLECT_RINGS_ROM
 static const u16 sSpring_MusicPlant_Soundeffects[5]
     = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3, SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY };
-#else
-extern const u8 gUnknown_02015B24[SPRINGTYPE_COUNT][2];
-extern const u8 sSpringDirToPlayerTransition[SPRINGTYPE_COUNT];
-extern const u16 sSpring_MusicPlant_Soundeffects[5];
 #endif
 
 void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
