@@ -147,9 +147,15 @@
 #define SE_ITEM_BOX_2 19
 #endif
 
-#define SE_ACTIVATE_SHIELD       151
-#define SE_CHECKPOINT            152
-#define SE_SPRING                153
+#define SE_ACTIVATE_SHIELD 151
+#define SE_CHECKPOINT      152
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_SPRING 153
+#else
+#define SE_SPRING 20
+#endif
+
 #define SE_SPIKES                154
 #define SE_SPEED_BOOSTER         155
 #define SE_WATERFALL_SURFACE_HIT 156

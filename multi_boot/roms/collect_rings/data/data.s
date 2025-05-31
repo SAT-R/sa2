@@ -4,8 +4,8 @@
 gUnknown_02015B24:
     .incbin "data/rom_data.bin", 0x00015A64, 0x14
 
-    .global gUnknown_02015B38
-gUnknown_02015B38:
+    .global sSpringDirToPlayerTransition
+sSpringDirToPlayerTransition:
     .incbin "data/rom_data.bin", 0x00015A78, 0xC
 
     .global gUnknown_02015B44
