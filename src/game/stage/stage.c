@@ -429,9 +429,9 @@ void Task_GameStage(void)
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
 #if (GAME == GAME_SA1)
-            sa2__sub_8019F08();
+            sa2__CreateMultiplayerFinishHandler();
 #elif (GAME == GAME_SA2)
-            sub_8019F08();
+            CreateMultiplayerFinishHandler();
 #endif
         }
     } else {
@@ -465,9 +465,9 @@ void Task_GameStage(void)
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
 #if (GAME == GAME_SA1)
-            sa2__sub_8019F08();
+            sa2__CreateMultiplayerFinishHandler();
 #elif (GAME == GAME_SA2)
-            sub_8019F08();
+            CreateMultiplayerFinishHandler();
 #endif
         }
     }

@@ -212,7 +212,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
     }
 
     if (gUnknown_030054B4[i] == -1) {
-        sub_8019CCC(i, count2);
+        CreateMultiplayerFinishResult(i, count2);
     } else {
         somebool = 1;
     }
@@ -221,7 +221,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
         for (j = 0; j < 4 && gMultiplayerPlayerTasks[j] != NULL; j++) {
             if (j != i && gUnknown_030054B4[j] == -1
                 && (gMultiplayerConnections & (0x10 << (j))) >> ((j + 4)) == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
-                sub_8019CCC(j, count2);
+                CreateMultiplayerFinishResult(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
                     Player_TransitionCancelFlyingAndBoost(&gPlayer);
                     gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
@@ -265,11 +265,11 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
             mpp2 = TASK_DATA(gMultiplayerPlayerTasks[j]);
             if (gUnknown_030054B4[j] == -1) {
                 if (gGameMode == GAME_MODE_TEAM_PLAY) {
-                    sub_8019CCC(j, 1);
+                    CreateMultiplayerFinishResult(j, 1);
                 } else {
                     u32 temp;
                     RoomEvent *roomEvent;
-                    sub_8019CCC(j, count - 1);
+                    CreateMultiplayerFinishResult(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                     gPlayer.heldInput = 0;
@@ -284,7 +284,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
         }
 
         if (!somebool) {
-            sub_8019F08();
+            CreateMultiplayerFinishHandler();
         }
     }
 }

@@ -35,6 +35,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/indicators.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.text);
+        build/collect_rings/src/sa2/game/multiplayer/finish.o(.text);
         build/collect_rings/asm/code.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a0.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a.o(.text);
@@ -62,6 +63,8 @@ SECTIONS {
         build/collect_rings/src/sa2/game/sa1_sa2_shared/entities_manager.o(.rodata);
         build/collect_rings/src/sa2/game/mystery_item_box.o(.rodata);
         build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.rodata);
+        build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.rodata);
+        build/collect_rings/src/sa2/game/multiplayer/finish.o(.rodata);
         build/collect_rings/data/data.o(.rodata);
         build/collect_rings/src/sa2/lib/m4a/m4a_tables.o(.rodata);
         build/collect_rings/data/sound_data.o(.rodata);

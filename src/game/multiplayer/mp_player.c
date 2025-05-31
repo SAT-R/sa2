@@ -43,6 +43,12 @@ void sub_8017670(void);
 void sub_8017C28(void);
 void LaunchPlayer(s16);
 
+#if COLLECT_RINGS_ROM
+// Can't be sure this was defined here, but it works as it
+// may have something to do with the characters
+const u16 gUnknown_02015B18[] = { 0x55, 0x59, 0x5D, 0x61 };
+#endif
+
 void CreateMultiplayerPlayer(u8 id)
 {
     u16 *p;

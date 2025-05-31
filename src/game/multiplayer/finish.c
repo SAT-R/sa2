@@ -9,6 +9,12 @@
 
 #include "game/multiplayer/finish.h"
 #include "game/multiplayer/mp_player.h"
+#include "game/multiplayer/results.h"
+#include "game/multiplayer/multiplayer_event_mgr.h"
+
+#include "game/multiboot/collect_rings/results.h"
+
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/text.h"
@@ -19,9 +25,19 @@ typedef struct {
     u8 unk31;
 } MpFinish1; /* size: 0x34 */
 
+typedef struct {
+    u16 unk0;
+} Finish2; /* size: 4 */
+
+void Task_801A04C(void);
+void Task_TransitionToResultsScreen(void);
+
 void Task_8019E70(void);
 void TaskDestructor_8019EF4(struct Task *);
 
+#ifndef COLLECT_RINGS_ROM
+
+// TODO: split finish result
 const TileInfo gUnknown_080D5768[2][7] = { {
                                                // Japanese
                                                { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
@@ -57,7 +73,7 @@ const TileInfo gUnknown_080D5768[2][7] = { {
         (source + (_id));                                                                                                                  \
     })
 
-void sub_8019CCC(u8 sioId, u8 count)
+void CreateMultiplayerFinishResult(u8 sioId, u8 count)
 {
     u32 i = 0;
 
@@ -136,19 +152,7 @@ void TaskDestructor_8019EF4(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-#include "game/multiboot/collect_rings/results.h"
-#include "game/multiplayer/results.h"
-#include "game/multiplayer/multiplayer_event_mgr.h"
-#include "lib/m4a/m4a.h"
-
-typedef struct {
-    u16 unk0;
-} Finish2; /* size: 4 */
-
-void Task_801A04C(void);
-void Task_TransitionToResultsScreen(void);
-
-void sub_8019F08(void)
+void CreateMultiplayerFinishHandler(void)
 {
     u32 i;
     u32 r2;
@@ -205,10 +209,11 @@ void sub_8019F08(void)
             mpt = gMultiplayerPlayerTasks[i];
             mpp = TASK_DATA(mpt);
             mpp->unk5C |= 1;
-            sub_8019CCC(i, r6);
+            CreateMultiplayerFinishResult(i, r6);
         }
     }
 }
+#endif
 
 void Task_801A04C(void)
 {
@@ -325,6 +330,7 @@ void Task_TransitionToResultsScreen(void)
         }
         // _0801A232
 
+#ifndef COLLECT_RINGS_ROM
         {
             s16 pid;
             s32 foeResult;
@@ -356,6 +362,7 @@ void Task_TransitionToResultsScreen(void)
             RecordOwnMultiplayerResult(ownResult);
             WriteSaveGame();
         }
+#endif
 #ifndef NON_MATCHING
     _0801A2DA:
 #endif
@@ -367,11 +374,16 @@ void Task_TransitionToResultsScreen(void)
             PAUSE_GRAPHICS_QUEUE();
         }
 
+#ifndef COLLECT_RINGS_ROM
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
             CreateMultiplayerResultsScreen(1);
-        } else {
+        } else
+#endif
+        {
+#ifndef COLLECT_RINGS_ROM
             DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+#endif
             CreateMultiplayerSinglePakResultsScreen(1);
         }
 

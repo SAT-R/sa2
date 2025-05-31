@@ -19,6 +19,10 @@
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
 
+#if COLLECT_RINGS_ROM
+#include "game/multiplayer/mp_player.h"
+#endif
+
 #include "data/collect_rings.h"
 
 #include "constants/animations.h"
@@ -63,10 +67,6 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
 void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10);
-
-#if COLLECT_RINGS_ROM
-extern const u16 gUnknown_02015B18[];
-#endif
 
 // TODO: Maybe rename because this is also called before the 1st round?
 void CreateMultiplayerSinglePakResultsScreen(u32 a)

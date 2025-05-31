@@ -35,4 +35,8 @@ void sub_8018818(void);
 
 extern bool8 gShouldSpawnMPAttack2Effect;
 
+#if COLLECT_RINGS_ROM
+extern const u16 gUnknown_02015B18[];
+#endif
+
 #endif
