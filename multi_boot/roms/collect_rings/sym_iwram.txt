@@ -103,7 +103,7 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x000056C0; gPlayer = .;
 . = 0x00005780; gUnknown_03005780 = .;
 . = 0x000057C4; gUnknown_030057C4 = .;
-. = 0x000057C8; gUnknown_030057C8 = .;
+. = 0x000057C8; gPlayerControls = .;
 . = 0x000057D0; gActiveCollectRingEffectCount = .;
 . = 0x000057D4; gUnknown_030057D4 = .;
 . = 0x000057D8; iwram_end = .;

@@ -114,7 +114,8 @@ SA2_C_FILES := \
 	sa2/game/multiplayer/mp_player.c \
 	sa2/game/multiplayer/finish.c \
 	sa2/game/interactables_1/toggle_player_layer.c \
-	sa2/game/sa1_sa2_shared/interactables/spring.c
+	sa2/game/sa1_sa2_shared/interactables/spring.c \
+	sa2/game/sa1_sa2_shared/interactables/ramp.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \
