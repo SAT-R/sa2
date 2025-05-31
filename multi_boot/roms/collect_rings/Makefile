@@ -110,7 +110,8 @@ SA2_C_FILES := \
 	sa2/game/mystery_item_box.c \
 	sa2/game/sa1_sa2_shared/rings_manager.c \
 	sa2/game/multiboot/collect_rings/time_display.c \
-	sa2/game/multiplayer/indicators.c
+	sa2/game/multiplayer/indicators.c \
+	sa2/game/multiplayer/mp_player.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

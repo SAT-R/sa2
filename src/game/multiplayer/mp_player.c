@@ -75,10 +75,13 @@ void CreateMultiplayerPlayer(u8 id)
     mpp->pos.x = 0;
     mpp->pos.y = 0;
 
-    if (gGameMode < GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#ifndef COLLECT_RINGS_ROM
+    if (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY) {
         mpp->pos.x = gSpawnPositions[gCurrentLevel][0];
         mpp->pos.y = gSpawnPositions[gCurrentLevel][1];
-    } else {
+    } else
+#endif
+    {
         switch (SIO_MULTI_CNT->id) {
             case 0: {
                 mpp->pos.x = 232;
@@ -120,7 +123,9 @@ void CreateMultiplayerPlayer(u8 id)
     s->y = 0;
 
     mpp->transform.qScaleY = 256;
+#ifndef COLLECT_RINGS_ROM
     s->graphics.anim = gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
+#endif
 
     if (mpp->unk56 != SIO_MULTI_CNT->id) {
         s->graphics.dest = VramMalloc(64);
@@ -133,8 +138,13 @@ void CreateMultiplayerPlayer(u8 id)
     gMultiplayerPlayerTasks[mpp->unk56] = t;
 }
 
+#ifndef COLLECT_RINGS_ROM
 // around 70%: https://decomp.me/scratch/KNjEN
-NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer())
+NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer(void))
+#else
+NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
+         void Task_CreateMultiplayerPlayer(void))
+#endif
 {
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
@@ -489,6 +499,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 }
 END_NONMATCH
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8016D20(void)
 {
     Sprite *sprPlayer = &gPlayer.spriteInfoBody->s;
@@ -1280,6 +1291,7 @@ void sub_8017F34(void)
         return;
     }
 }
+#endif
 
 void sub_8018120(void)
 {
@@ -1304,6 +1316,7 @@ void sub_8018120(void)
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 bool32 sub_80181E0(void)
 {
     Sprite *sprPlayer = &gPlayer.spriteInfoBody->s;
@@ -1342,6 +1355,7 @@ bool32 sub_80181E0(void)
     }
     return FALSE;
 }
+#endif
 
 bool32 sub_8018300(void)
 {
@@ -1386,6 +1400,7 @@ bool32 sub_8018300(void)
             }
         }
         if (val2 & 2) {
+#ifndef COLLECT_RINGS_ROM
             if (val2 & 1) {
                 if (mpp->pos.x < I(gPlayer.qWorldX)) {
                     gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
@@ -1393,7 +1408,9 @@ bool32 sub_8018300(void)
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 }
                 sub_800DE44(&gPlayer);
-            } else {
+            } else
+#endif
+            {
                 if (mpp->pos.x < I(gPlayer.qWorldX)) {
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 } else {
@@ -1476,6 +1493,7 @@ bool32 sub_8018300(void)
     return FALSE;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void Task_HandleLaunchPlayer(void)
 {
     PlayerSpriteInfo *psi = gPlayer.spriteInfoBody;
@@ -1503,6 +1521,7 @@ void Task_HandleLaunchPlayer(void)
         TaskDestroy(gCurTask);
     }
 }
+#endif
 
 void sub_8018818(void)
 {
@@ -1529,6 +1548,7 @@ void TaskDestructor_MultiplayerPlayer(struct Task *t)
     VramFree(mpp->s.graphics.dest);
 }
 
+#ifndef COLLECT_RINGS_ROM
 void LaunchPlayer(s16 airSpeedY)
 {
     struct Task *t = TaskCreate(Task_HandleLaunchPlayer, sizeof(s16), 0x2000, 0, NULL);
@@ -1539,3 +1559,4 @@ void LaunchPlayer(s16 airSpeedY)
     gPlayer.charState = CHARSTATE_AMY_SA1_JUMP;
     gPlayer.moveState |= MOVESTATE_800000;
 }
+#endif
