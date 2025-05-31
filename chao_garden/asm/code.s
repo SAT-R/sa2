@@ -14617,12 +14617,12 @@ _020074EE:
 	strb r0, [r1, #0x18]
 	movs r0, #4
 	strb r0, [r1, #0x1c]
-	ldr r0, _020074FC @ =sub_02008b1c
+	ldr r0, _020074FC @ =Task_8019898
 	str r0, [r1]
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020074FC: .4byte sub_02008b1c
+_020074FC: .4byte Task_8019898
 
 	thumb_func_start sub_02007500
 sub_02007500: @ 0x02007500
@@ -17481,8 +17481,8 @@ _02008B12:
 	.align 2, 0
 _02008B18: .4byte gUnknown_03004400
 
-	thumb_func_start sub_02008b1c
-sub_02008b1c: @ 0x02008b1c
+	thumb_func_start Task_8019898
+Task_8019898: @ 0x02008b1c
 	push {lr}
 	adds r2, r0, #0
 	ldr r0, _02008B38 @ =gUnknown_03003330

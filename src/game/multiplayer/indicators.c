@@ -9,22 +9,11 @@
 
 #include "constants/animations.h"
 
-typedef struct {
-    /* 0x00 */ u8 playerId;
-    /* 0x04 */ SpriteTransform transform;
-    /* 0x10 */ Sprite spr;
-} OpponentIndicator; /* size: 0x40 */
-
-typedef struct {
-    /* 0x00 */ Sprite spr;
-} SelfIndicator; /* size: 0x40 */
-
-static void Task_801951C(void);
-static void Task_8019898(void);
-static void Task_SelfPositionIndicator(void);
-static void TaskDestructor_8019CC8(struct Task *);
-
+#ifndef COLLECT_RINGS_ROM
 #define RESERVED_INDICATOR_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2700)
+#else
+#define RESERVED_INDICATOR_TILES_VRAM (void *)(OBJ_VRAM0 + 0x3640)
+#endif
 
 #define RETURN_IF_PLAYER_ONSCREEN(posX, posY, camX, camY)                                                                                  \
     if (((posX) - (camX) >= 0) && ((posX) - (camX) <= DISPLAY_WIDTH)) {                                                                    \
@@ -173,6 +162,23 @@ static void TaskDestructor_8019CC8(struct Task *);
         DisplaySprite((s));                                                                                                                \
     })
 
+typedef struct {
+    /* 0x00 */ u8 playerId;
+    /* 0x04 */ SpriteTransform transform;
+    /* 0x10 */ Sprite spr;
+} OpponentIndicator; /* size: 0x40 */
+
+typedef struct {
+    /* 0x00 */ Sprite spr;
+} SelfIndicator; /* size: 0x40 */
+
+#ifndef COLLECT_RINGS_ROM
+static void Task_801951C(void);
+#endif
+static void Task_8019898(void);
+static void Task_SelfPositionIndicator(void);
+static void TaskDestructor_8019CC8(struct Task *);
+
 void CreateOpponentPositionIndicator(u8 sid)
 {
     struct Task *t;
@@ -180,9 +186,12 @@ void CreateOpponentPositionIndicator(u8 sid)
     SpriteTransform *transform;
     OpponentIndicator *pi;
 
+#ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         t = TaskCreate(Task_801951C, sizeof(OpponentIndicator), 0x2001, 0, TaskDestructor_8019CC8);
-    } else {
+    } else
+#endif
+    {
         t = TaskCreate(Task_8019898, sizeof(OpponentIndicator), 0x2001, 0, TaskDestructor_8019CC8);
     }
 
@@ -237,6 +246,7 @@ void CreateSelfPositionIndicator(void)
     UpdateSpriteAnimation(spr);
 }
 
+#ifndef COLLECT_RINGS_ROM
 static void Task_801951C(void)
 {
     OpponentIndicator *pi = TASK_DATA(gCurTask);
@@ -254,8 +264,9 @@ static void Task_801951C(void)
 
     UPDATE_INDICATOR(opponentX2, opponentY2, spr, transform);
 }
+#endif
 
-static void Task_8019898()
+static void Task_8019898(void)
 {
     OpponentIndicator *pi = TASK_DATA(gCurTask);
     struct Task *t = gMultiplayerPlayerTasks[pi->playerId];

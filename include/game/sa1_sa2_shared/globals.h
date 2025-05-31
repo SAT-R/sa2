@@ -19,6 +19,14 @@
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
 #endif
 
+// TODO: not verfied yet but all instances of this condition
+// seem to be compiled out in collect rings
+#ifndef COLLECT_RINGS_ROM
+#define IS_COLLECT_RINGS_MINIGAME (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+#else
+#define IS_COLLECT_RINGS_MINIGAME TRUE
+#endif
+
 // TODO: Improve this name; SA1 only?
 #define IS_MP_OR_TEAM_PLAY ((gGameMode == GAME_MODE_MULTI_PLAYER) || (gGameMode == GAME_MODE_TEAM_PLAY))
 
