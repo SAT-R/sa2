@@ -127,7 +127,9 @@ void MultiSioSendDataSet(void *sendp, u32 loadRequest)
 
 u32 MultiSioRecvDataCheck(void *recvp)
 {
+#ifdef MULTI_SIO_DI_FUNC_FAST
     u32 (*multiSioRecvBufChangeOnRam)(void) = (u32(*)(void))gMultiSioRecvFuncBuf;
+#endif
     s32 checkSum;
     vu32 UNUSED recvCheck = 0;
     u8 syncRecvFlagBak[4];
