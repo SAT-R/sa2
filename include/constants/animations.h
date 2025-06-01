@@ -145,7 +145,11 @@
 #define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET           475
 #define SA2_ANIM_SUPER_SONIC_FROZEN                    476
 // Defeating enemies / opening item boxes
+#ifndef COLLECT_RINGS_ROM
 #define SA2_ANIM_DUST_CLOUD 477
+#else
+#define SA2_ANIM_DUST_CLOUD 108
+#endif
 
 // Enemies
 #define SA2_ANIM_MON                    478

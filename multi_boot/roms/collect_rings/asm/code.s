@@ -4,123 +4,8 @@
 .syntax unified
 .arm
 
-
-	thumb_func_start CreateDustCloud
-CreateDustCloud: @ 0x0200BC1C
-	push {r4, r5, r6, lr}
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6}
-	sub sp, #4
-	adds r4, r0, #0
-	adds r5, r1, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _0200BCA0 @ =sub_0200BCB8
-	movs r1, #0x80
-	lsls r1, r1, #6
-	mov sb, r1
-	movs r6, #0
-	str r6, [sp]
-	movs r1, #0x30
-	mov r2, sb
-	movs r3, #0
-	bl TaskCreate
-	ldrh r2, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r2, r1
-	movs r3, #0
-	mov r8, r3
-	strh r4, [r1, #0x16]
-	strh r5, [r1, #0x18]
-	ldr r0, _0200BCA4 @ =0x06013240
-	str r0, [r1, #4]
-	movs r0, #0xf0
-	lsls r0, r0, #2
-	strh r0, [r1, #0x1a]
-	strh r6, [r1, #8]
-	movs r0, #0x6c
-	strh r0, [r1, #0xa]
-	ldr r3, _0200BCA8 @ =gUnknown_03000020
-	adds r0, r2, r3
-	mov r3, r8
-	strb r3, [r0]
-	strh r6, [r1, #0x14]
-	strh r6, [r1, #0x1c]
-	ldr r0, _0200BCAC @ =gUnknown_03000021
-	adds r3, r2, r0
-	movs r0, #0xff
-	strb r0, [r3]
-	ldr r0, _0200BCB0 @ =gUnknown_03000022
-	adds r3, r2, r0
-	movs r0, #0x10
-	strb r0, [r3]
-	ldr r3, _0200BCB4 @ =gUnknown_03000025
-	adds r2, r2, r3
-	mov r0, r8
-	strb r0, [r2]
-	mov r3, sb
-	str r3, [r1, #0x10]
-	add sp, #4
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BCA0: .4byte sub_0200BCB8
-_0200BCA4: .4byte 0x06013240
-_0200BCA8: .4byte gUnknown_03000020
-_0200BCAC: .4byte gUnknown_03000021
-_0200BCB0: .4byte gUnknown_03000022
-_0200BCB4: .4byte gUnknown_03000025
-
-	thumb_func_start sub_0200BCB8
-sub_0200BCB8: @ 0x0200BCB8
-	push {r4, r5, r6, r7, lr}
-	ldr r7, _0200BD04 @ =gCurTask
-	ldr r0, [r7]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldrh r0, [r4, #0x16]
-	adds r5, r0, #0
-	ldrh r6, [r4, #0x18]
-	ldr r1, _0200BD08 @ =gCamera
-	ldr r0, [r1]
-	subs r0, r5, r0
-	strh r0, [r4, #0x16]
-	ldr r1, [r1, #4]
-	ldrh r0, [r4, #0x18]
-	subs r0, r0, r1
-	strh r0, [r4, #0x18]
-	adds r0, r4, #0
-	bl UpdateSpriteAnimation
-	cmp r0, #0
-	bne _0200BCF2
-	adds r0, r4, #0
-	bl DisplaySprite
-	ldr r0, [r7]
-	bl TaskDestroy
-_0200BCF2:
-	adds r0, r4, #0
-	bl DisplaySprite
-	strh r5, [r4, #0x16]
-	strh r6, [r4, #0x18]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BD04: .4byte gCurTask
-_0200BD08: .4byte gCamera
-
-	thumb_func_start sub_0200BD0C
-sub_0200BD0C: @ 0x0200BD0C
+	thumb_func_start CreateCollectRingEffect
+CreateCollectRingEffect: @ 0x0200BD0C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -133,7 +18,7 @@ sub_0200BD0C: @ 0x0200BD0C
 	ldrb r0, [r0]
 	cmp r0, #7
 	bhi _0200BE1E
-	ldr r0, _0200BDC4 @ =sub_0200BE3C
+	ldr r0, _0200BDC4 @ =Task_CollectRingEffect
 	movs r1, #0x80
 	lsls r1, r1, #6
 	mov r8, r1
@@ -188,8 +73,8 @@ sub_0200BD0C: @ 0x0200BD0C
 	strb r0, [r3]
 	cmp r0, #0
 	beq _0200BDF0
-	ldr r4, _0200BDE4 @ =0x0201F2F0
-	ldr r1, _0200BDE8 @ =gUnknown_0201C7C0
+	ldr r4, _0200BDE4 @ =gMPlayInfo_SE2
+	ldr r1, _0200BDE8 @ =se_ring_copy
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -207,7 +92,7 @@ sub_0200BD0C: @ 0x0200BD0C
 	b _0200BE16
 	.align 2, 0
 _0200BDC0: .4byte gSpecialRingCount
-_0200BDC4: .4byte sub_0200BE3C
+_0200BDC4: .4byte Task_CollectRingEffect
 _0200BDC8: .4byte gUnknown_03000031
 _0200BDCC: .4byte 0x06013040
 _0200BDD0: .4byte gUnknown_03000021
@@ -215,12 +100,12 @@ _0200BDD4: .4byte gUnknown_03000022
 _0200BDD8: .4byte gUnknown_03000025
 _0200BDDC: .4byte gRingCount
 _0200BDE0: .4byte gUnknown_03000030
-_0200BDE4: .4byte 0x0201F2F0
-_0200BDE8: .4byte gUnknown_0201C7C0
+_0200BDE4: .4byte gMPlayInfo_SE2
+_0200BDE8: .4byte se_ring_copy
 _0200BDEC: .4byte 0x0000FFFF
 _0200BDF0:
 	ldr r4, _0200BE2C @ =0x0201F2B0
-	ldr r1, _0200BE30 @ =gUnknown_0201C7C0
+	ldr r1, _0200BE30 @ =se_ring_copy
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -248,12 +133,12 @@ _0200BE1E:
 	bx r0
 	.align 2, 0
 _0200BE2C: .4byte 0x0201F2B0
-_0200BE30: .4byte gUnknown_0201C7C0
+_0200BE30: .4byte se_ring_copy
 _0200BE34: .4byte 0x0000FFFF
 _0200BE38: .4byte gSpecialRingCount
 
-	thumb_func_start sub_0200BE3C
-sub_0200BE3C: @ 0x0200BE3C
+	thumb_func_start Task_CollectRingEffect
+Task_CollectRingEffect: @ 0x0200BE3C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -13170,7 +13055,7 @@ _02011ED0:
 	asrs r0, r0, #0x10
 	lsls r1, r7, #0x10
 	asrs r1, r1, #0x10
-	bl sub_0200BD0C
+	bl CreateCollectRingEffect
 	ldr r1, _02011F50 @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
@@ -13336,7 +13221,7 @@ _02012020:
 	lsls r1, r7, #0x10
 	asrs r0, r0, #0x10
 	asrs r1, r1, #0x10
-	bl sub_0200BD0C
+	bl CreateCollectRingEffect
 	movs r0, #0
 	b _02012212
 	.align 2, 0

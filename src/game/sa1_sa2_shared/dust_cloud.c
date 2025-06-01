@@ -5,6 +5,12 @@
 
 #include "constants/animations.h"
 
+#ifndef COLLECT_RINGS_ROM
+#define DUST_CLOUD_VRAM_ADDRESS (void *)(OBJ_VRAM0 + 0x1000);
+#else
+#define DUST_CLOUD_VRAM_ADDRESS (void *)(OBJ_VRAM0 + 0x3240);
+#endif
+
 static void Task_CreateDustCloud(void);
 
 // Create cloud that appears when defeating enemies / opening item boxes
@@ -15,7 +21,7 @@ void CreateDustCloud(s16 x, s16 y)
 
     s->x = x;
     s->y = y;
-    s->graphics.dest = (void *)(OBJ_VRAM0 + 0x1000);
+    s->graphics.dest = DUST_CLOUD_VRAM_ADDRESS;
     s->oamFlags = SPRITE_OAM_ORDER(15);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_DUST_CLOUD;

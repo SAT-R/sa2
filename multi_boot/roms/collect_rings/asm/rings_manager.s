@@ -276,7 +276,7 @@ _02007FE0:
 	mov r2, r8
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
-	bl sub_0200BD0C
+	bl CreateCollectRingEffect
 	movs r0, #0xfe
 	strb r0, [r5]
 _02007FF4:
@@ -557,7 +557,7 @@ _02008208:
 	mov r2, r8
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
-	bl sub_0200BD0C
+	bl CreateCollectRingEffect
 	movs r0, #0xfe
 	strb r0, [r5]
 _0200821C:

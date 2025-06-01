@@ -144,9 +144,6 @@ void CreateStageRingsManager(void)
 }
 
 #ifndef COLLECT_RINGS_ROM
-// Required for match, but probably fake
-// leaving this in to ensure build consistency
-static inline s32 getCameraY(void) { return gCamera.y; }
 
 void Task_RingsMgrMain(void)
 {
@@ -298,7 +295,11 @@ void Task_RingsMgrMain(void)
         // Draw rings
         regionY = TO_REGION(gCamera.y);
         if (gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            for (; TO_WORLD_POS(0, regionY) < getCameraY() + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
+            for (; TO_WORLD_POS(0, regionY) < gCamera.y + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
+#ifndef NON_MATCHING
+                while (0)
+                    ;
+#endif
                 for (regionX = TO_REGION(gCamera.x); TO_WORLD_POS(0, regionX) < gCamera.x + DISPLAY_WIDTH; regionX++) {
                     u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
 
@@ -364,7 +365,11 @@ void Task_RingsMgrMain(void)
                 }
             }
         } else {
-            for (; TO_WORLD_POS(0, regionY) < getCameraY() + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
+            for (; TO_WORLD_POS(0, regionY) < gCamera.y + DISPLAY_HEIGHT && regionY < v_regionCount; regionY++) {
+#ifndef NON_MATCHING
+                while (0)
+                    ;
+#endif
                 for (regionX = TO_REGION(gCamera.x); TO_WORLD_POS(0, regionX) < gCamera.x + DISPLAY_WIDTH && regionX < h_regionCount;
                      regionX++) {
                     u32 offset = READ_START_INDEX(rings, h_regionCount, regionX, regionY);
