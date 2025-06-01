@@ -5,6 +5,7 @@
 #include "game/stage/camera.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
+#include "game/interactables_2/multiplayer_teleport.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
@@ -35,13 +36,13 @@ typedef struct {
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
-extern void sub_80803FC(Sprite_MultiplayerTeleport *);
-extern bool32 sub_808055C(Sprite_MultiplayerTeleport *);
-extern void sub_80805D0(Sprite_MultiplayerTeleport *);
-extern void CreateSprite_Notif_RingBonus(void);
+static void sub_80803FC(Sprite_MultiplayerTeleport *);
+static bool32 sub_808055C(Sprite_MultiplayerTeleport *);
+static void sub_80805D0(Sprite_MultiplayerTeleport *);
+static void CreateSprite_Notif_RingBonus(void);
 
-void Task_80806F4(void);
-void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s);
+static void Task_80806F4(void);
+static void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s);
 static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
@@ -70,7 +71,7 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX, u16 spri
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
+static void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 {
     if ((sprite->someX < Q(sprite->posX + sprite->unk8)) && (gPlayer.qWorldX > Q(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
@@ -100,10 +101,16 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 
                 if (!IS_EXTRA_STAGE(gCurrentLevel) && (Div(gRingCount, 100) != Div(prevRingCount, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+#ifndef COLLECT_RINGS_ROM
                     u32 lives = gNumLives + 1;
                     LIVES_BOUND_CHECK_B(lives);
 
                     gMusicManagerState.unk3 = 0x10;
+#else
+                    if (gNumLives < 255) {
+                        gNumLives++;
+                    }
+#endif
                 }
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -134,7 +141,7 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
     gCurTask->main = Task_80806F4;
 }
 
-bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
+static bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
 {
     s16 spriteX, spriteY;
     s16 playerX, playerY;
@@ -152,7 +159,7 @@ bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
     }
 }
 
-void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
+static void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
 {
     if (sprite->unk1C != 0) {
         s32 xValue, yValue;
@@ -182,7 +189,7 @@ void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
     }
 }
 
-void CreateSprite_Notif_RingBonus(void)
+static void CreateSprite_Notif_RingBonus(void)
 {
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0, TaskDestructor_8080790);
     Sprite_Notif_RingBonus *notif = TASK_DATA(t);
@@ -198,7 +205,7 @@ void CreateSprite_Notif_RingBonus(void)
     UpdateSpriteAnimation(s);
 }
 
-void Task_80806F4(void)
+static void Task_80806F4(void)
 {
     Sprite_MultiplayerTeleport *sprite = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
@@ -212,9 +219,9 @@ void Task_80806F4(void)
     sub_80805D0(sprite);
 }
 
-void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_80807A4; }
+static void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_80807A4; }
 
-void Task_8080750(void)
+static void Task_8080750(void)
 {
     Sprite_Notif_RingBonus *sprite = TASK_DATA(gCurTask);
     if (--sprite->framesVisible == (u16)-1) {

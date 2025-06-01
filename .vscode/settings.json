@@ -370,7 +370,8 @@
     "french_horn.h": "c",
     "pipe_sequence.h": "c",
     "terrain_collision.h": "c",
-    "indicators.h": "c"
+    "indicators.h": "c",
+    "multiplayer_teleport.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

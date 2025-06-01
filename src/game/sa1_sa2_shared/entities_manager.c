@@ -81,7 +81,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/105.h"
 #include "game/interactables_2/special_ring.h"
-#include "game/interactables_2/notification_ring_bonus.h"
+#include "game/interactables_2/multiplayer_teleport.h"
 #include "game/interactables_2/sky_canyon_init.h"
 
 #include "game/mystery_item_box.h"

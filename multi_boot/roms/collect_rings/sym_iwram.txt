@@ -51,7 +51,7 @@ build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);
 build/collect_rings/src/sa2/core.o(.data);
 
 . = 0x000053A0; gUnknown_030053E0 = .;
-. = 0x000053A4; gUnknown_030053A4 = .;
+. = 0x000053A4; gCheckpointTime = .;
 . = 0x000053A8; gMultiplayerCharRings = .;
 . = 0x000053AC; gMultiplayerLanguage = .;
 . = 0x000053B0; gRingCount = .;

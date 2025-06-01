@@ -344,11 +344,17 @@
 #define MUS_MESSAGE_2     408
 
 #define MUS_GOT_ALL_CHAOS_EMERALDS 410
-#define MUS_FANFARE                411
-#define MUS_VS_EXIT                412
-#define MUS_VS_SUCCESS             413
-#define MUS_VS_MISS                414
-#define MUS_MESSAGE                415
+
+#ifndef COLLECT_RINGS_ROM
+#define MUS_FANFARE 411
+#else
+#define MUS_FANFARE 4
+#endif
+
+#define MUS_VS_EXIT    412
+#define MUS_VS_SUCCESS 413
+#define MUS_VS_MISS    414
+#define MUS_MESSAGE    415
 
 /* 416 - 503: Dummies */
 

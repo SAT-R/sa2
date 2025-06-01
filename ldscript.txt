@@ -306,7 +306,7 @@ SECTIONS
         src/game/interactables_2/egg_utopia/flying_handle.o(.text);
         src/game/interactables_2/egg_utopia/speeding_platform.o(.text);
         src/game/interactables_2/egg_utopia/gravity_toggle.o(.text);
-        src/game/interactables_2/notification_ring_bonus.o(.text);
+        src/game/interactables_2/multiplayer_teleport.o(.text);
         src/game/interactables_2/sky_canyon_init.o(.text);
         src/game/interactables_2/105.o(.text);
         src/game/interactables_2/note_particle.o(.text);
