@@ -9,8 +9,9 @@
 
 #include "constants/zones.h"
 
-static void Task_CallUpdateCameraInternal(void);
+void Task_CallUpdateCameraInternal(void);
 
+#ifndef COLLECT_RINGS_ROM
 void DestroyCameraMovementTask(void)
 {
     TaskDestroy(gCamera.movementTask);
@@ -52,8 +53,9 @@ void Task_CallUpdateCamera(void)
     gCurTask->main = Task_CallUpdateCameraInternal;
 }
 
-static void Task_CallUpdateCameraInternal(void)
+void Task_CallUpdateCameraInternal(void)
 {
     UpdateCamera();
     gUnknown_030054B8 = 4;
 }
+#endif

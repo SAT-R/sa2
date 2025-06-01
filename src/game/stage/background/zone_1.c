@@ -12,14 +12,13 @@
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
 
-extern const Background gStageCameraBgTemplates[4];
-
 void CreateStageBg_Zone1(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1B0F;
 
+#ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], sizeof(Background));
@@ -30,7 +29,9 @@ void CreateStageBg_Zone1(void)
 
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x20;
-    } else {
+    } else
+#endif
+    {
         const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], sizeof(Background));
         background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
@@ -46,6 +47,8 @@ void CreateStageBg_Zone1(void)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 }
+
+#ifndef COLLECT_RINGS_ROM
 
 void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 {
@@ -114,3 +117,4 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
         }
     }
 }
+#endif

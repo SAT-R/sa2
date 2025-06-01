@@ -8,8 +8,6 @@
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
 
-extern const Background gStageCameraBgTemplates[4];
-
 #define SCREENBASE_SKY_CANYON_CLOUDS 27
 
 void CreateStageBg_Zone5(void)

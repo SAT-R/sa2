@@ -10,8 +10,6 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gStageCameraBgTemplates[4];
-
 // TODO: make this static!
 extern const u8 gUnknown_080D5B20[16][3];
 

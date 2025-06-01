@@ -4,678 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start InitCamera
-InitCamera: @ 0x0200C040
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	mov r8, r0
-	ldr r7, _0200C220 @ =gCamera
-	lsls r0, r0, #2
-	str r0, [sp, #4]
-	ldr r6, _0200C224 @ =gUnknown_02015C4C
-	adds r6, r0, r6
-	ldr r1, _0200C228 @ =gDispCnt
-	movs r2, #0xf9
-	lsls r2, r2, #6
-	adds r0, r2, #0
-	strh r0, [r1]
-	ldr r3, _0200C22C @ =gBgCntRegs
-	movs r0, #0
-	mov sb, r0
-	ldr r0, _0200C230 @ =0x00001E01
-	strh r0, [r3, #2]
-	ldr r0, _0200C234 @ =0x00001F02
-	strh r0, [r3, #4]
-	movs r1, #0
-	ldrsb r1, [r6, r1]
-	adds r1, #0x1f
-	asrs r1, r1, #6
-	movs r0, #1
-	ldrsb r0, [r6, r0]
-	adds r0, #0x1f
-	asrs r0, r0, #6
-	lsls r0, r0, #1
-	orrs r1, r0
-	lsls r1, r1, #0xe
-	movs r0, #3
-	ldrsb r0, [r6, r0]
-	lsls r0, r0, #8
-	movs r2, #3
-	orrs r0, r2
-	orrs r1, r0
-	movs r0, #2
-	ldrsb r0, [r6, r0]
-	lsls r0, r0, #2
-	orrs r1, r0
-	strh r1, [r3, #6]
-	ldr r1, _0200C238 @ =gUnknown_03005550
-	mov sl, r1
-	ldr r5, _0200C23C @ =gUnknown_02015B44
-	mov r0, sl
-	adds r0, #0x40
-	adds r1, r5, #0
-	movs r2, #0x40
-	bl memcpy
-	mov r2, r8
-	lsls r4, r2, #1
-	add r4, r8
-	mov r0, sl
-	adds r0, #0x5c
-	strh r4, [r0]
-	adds r0, #0x24
-	adds r1, r5, #0
-	adds r1, #0x40
-	movs r2, #0x40
-	bl memcpy
-	adds r1, r4, #1
-	mov r0, sl
-	adds r0, #0x9c
-	strh r1, [r0]
-	adds r0, #0x24
-	adds r5, #0x80
-	adds r1, r5, #0
-	movs r2, #0x40
-	bl memcpy
-	adds r4, #2
-	mov r0, sl
-	adds r0, #0xdc
-	strh r4, [r0]
-	mov r2, sl
-	adds r2, #0xc4
-	movs r0, #2
-	ldrsb r0, [r6, r0]
-	lsls r0, r0, #0xe
-	movs r1, #0xc0
-	lsls r1, r1, #0x13
-	adds r0, r0, r1
-	str r0, [r2]
-	adds r2, #8
-	movs r0, #3
-	ldrsb r0, [r6, r0]
-	lsls r0, r0, #0xb
-	adds r0, r0, r1
-	str r0, [r2]
-	movs r0, #0
-	ldrsb r0, [r6, r0]
-	mov r1, sl
-	adds r1, #0xe6
-	strh r0, [r1]
-	movs r1, #1
-	ldrsb r1, [r6, r1]
-	mov r0, sl
-	adds r0, #0xe8
-	strh r1, [r0]
-	ldr r3, _0200C240 @ =gUnknown_03004D80
-	movs r0, #0
-	strb r0, [r3, #1]
-	ldr r0, _0200C244 @ =gUnknown_03002280
-	movs r1, #0
-	strb r1, [r0, #4]
-	strb r1, [r0, #5]
-	movs r1, #0xff
-	strb r1, [r0, #6]
-	movs r2, #0x20
-	strb r2, [r0, #7]
-	movs r1, #0
-	strb r1, [r3, #2]
-	strb r1, [r0, #8]
-	strb r1, [r0, #9]
-	movs r1, #1
-	rsbs r1, r1, #0
-	strb r1, [r0, #0xa]
-	strb r2, [r0, #0xb]
-	mov r1, sl
-	adds r1, #0x6e
-	ldrh r0, [r1]
-	movs r3, #0x82
-	lsls r3, r3, #2
-	adds r2, r3, #0
-	orrs r0, r2
-	strh r0, [r1]
-	adds r1, #0x40
-	ldrh r0, [r1]
-	orrs r0, r2
-	strh r0, [r1]
-	ldr r2, _0200C248 @ =gUnknown_030056B8
-	ldr r0, _0200C24C @ =0x02033004
-	ldr r1, [r0]
-	str r1, [r2]
-	mov r0, sb
-	str r0, [r7, #0x28]
-	ldr r0, [r1, #0x20]
-	str r0, [r7, #0x2c]
-	mov r2, sb
-	str r2, [r7, #0x30]
-	ldr r0, [r1, #0x1c]
-	str r0, [r7, #0x34]
-	ldr r3, _0200C250 @ =gPlayer
-	ldr r1, [r3, #8]
-	asrs r1, r1, #8
-	subs r1, #0x78
-	str r1, [r7]
-	ldr r0, [r3, #0xc]
-	asrs r0, r0, #8
-	subs r0, #0x54
-	str r0, [r7, #4]
-	cmp r1, #0
-	bge _0200C182
-	str r2, [r7]
-_0200C182:
-	ldr r0, [r7, #4]
-	cmp r0, #0
-	bge _0200C18C
-	mov r0, sb
-	str r0, [r7, #4]
-_0200C18C:
-	ldr r0, [r7]
-	str r0, [r7, #0x10]
-	ldr r0, [r7, #4]
-	str r0, [r7, #0x14]
-	ldr r1, _0200C250 @ =gPlayer
-	movs r0, #0x17
-	ldrsb r0, [r1, r0]
-	subs r0, #4
-	adds r1, r7, #0
-	adds r1, #0x64
-	strh r0, [r1]
-	movs r0, #0x80
-	lsls r0, r0, #5
-	str r0, [r7, #8]
-	movs r0, #0xc
-	str r0, [r7, #0xc]
-	adds r0, r7, #0
-	adds r0, #0x56
-	mov r2, sb
-	strh r2, [r0]
-	mov r3, sb
-	str r3, [r7, #0x18]
-	str r3, [r7, #0x1c]
-	str r3, [r7, #0x20]
-	str r3, [r7, #0x24]
-	subs r0, #0x16
-	strh r3, [r0]
-	movs r0, #8
-	str r0, [r7, #0x44]
-	str r3, [r7, #0x48]
-	str r3, [r7, #0x4c]
-	adds r0, r7, #0
-	adds r0, #0x50
-	mov r1, sb
-	strh r1, [r0]
-	adds r0, #2
-	strh r1, [r0]
-	adds r0, #2
-	strh r1, [r0]
-	adds r0, #0xc
-	strh r1, [r0]
-	adds r0, #2
-	strh r1, [r0]
-	ldr r0, _0200C254 @ =sub_0200C5C4
-	movs r2, #0xf0
-	lsls r2, r2, #4
-	ldr r1, _0200C258 @ =sub_0200C58C
-	str r1, [sp]
-	movs r1, #0
-	movs r3, #0
-	bl TaskCreate
-	str r0, [r7, #0x5c]
-	ldr r0, _0200C25C @ =gUnknown_02015C48
-	ldr r2, [sp, #4]
-	adds r0, r2, r0
-	ldr r0, [r0]
-	str r0, [r7, #0x58]
-	ldr r0, _0200C260 @ =gUnknown_02015C44
-	adds r0, r2, r0
-	ldr r0, [r0]
-	cmp r0, #0
-	beq _0200C20E
-	bl _call_via_r0
-_0200C20E:
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C220: .4byte gCamera
-_0200C224: .4byte gUnknown_02015C4C
-_0200C228: .4byte gDispCnt
-_0200C22C: .4byte gBgCntRegs
-_0200C230: .4byte 0x00001E01
-_0200C234: .4byte 0x00001F02
-_0200C238: .4byte gUnknown_03005550
-_0200C23C: .4byte gUnknown_02015B44
-_0200C240: .4byte gUnknown_03004D80
-_0200C244: .4byte gUnknown_03002280
-_0200C248: .4byte gUnknown_030056B8
-_0200C24C: .4byte 0x02033004
-_0200C250: .4byte gPlayer
-_0200C254: .4byte sub_0200C5C4
-_0200C258: .4byte sub_0200C58C
-_0200C25C: .4byte gUnknown_02015C48
-_0200C260: .4byte gUnknown_02015C44
-
-	thumb_func_start sub_0200C264
-sub_0200C264: @ 0x0200C264
-	push {r4, r5, r6, r7, lr}
-	ldr r0, _0200C2B4 @ =gPlayer
-	mov ip, r0
-	ldr r5, _0200C2B8 @ =gCamera
-	ldr r6, [r5]
-	ldr r7, [r5, #4]
-	str r6, [r5, #0x38]
-	str r7, [r5, #0x3c]
-	ldr r0, [r5, #0x30]
-	cmp r6, r0
-	blt _0200C288
-	ldr r0, [r5, #0x34]
-	adds r1, r0, #0
-	subs r1, #0xf1
-	adds r0, r6, #0
-	cmp r0, r1
-	ble _0200C288
-	adds r0, r1, #0
-_0200C288:
-	adds r6, r0, #0
-	ldr r0, [r5, #0x28]
-	cmp r7, r0
-	blt _0200C29A
-	ldr r0, [r5, #0x2c]
-	subs r0, #0xa1
-	adds r1, r7, #0
-	cmp r1, r0
-	ble _0200C29C
-_0200C29A:
-	adds r1, r0, #0
-_0200C29C:
-	adds r7, r1, #0
-	adds r1, r5, #0
-	adds r1, #0x40
-	ldrh r2, [r1]
-	movs r3, #0
-	ldrsh r0, [r1, r3]
-	cmp r0, #0
-	beq _0200C2BC
-	subs r0, r2, #1
-	strh r0, [r1]
-	b _0200C356
-	.align 2, 0
-_0200C2B4: .4byte gPlayer
-_0200C2B8: .4byte gCamera
-_0200C2BC:
-	adds r4, r5, #0
-	adds r4, #0x50
-	ldrh r1, [r4]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	bne _0200C2FA
-	mov r0, ip
-	ldrh r1, [r0, #0x10]
-	ldr r0, [r0, #8]
-	asrs r0, r0, #8
-	ldr r2, [r5, #0x18]
-	adds r0, r0, r2
-	subs r0, #0x78
-	str r0, [r5, #0x10]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	adds r3, r5, #0
-	adds r3, #0x56
-	movs r0, #0
-	ldrsh r2, [r3, r0]
-	lsls r0, r2, #4
-	subs r0, r0, r2
-	adds r1, r1, r0
-	asrs r1, r1, #4
-	strh r1, [r3]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x15
-	ldr r0, [r5, #0x10]
-	adds r0, r0, r1
-	str r0, [r5, #0x10]
-_0200C2FA:
-	ldrh r1, [r4]
-	movs r0, #2
-	ands r0, r1
-	cmp r0, #0
-	bne _0200C356
-	adds r2, r5, #0
-	adds r2, #0x64
-	movs r1, #0
-	ldrsh r4, [r2, r1]
-	mov r3, ip
-	movs r0, #0x17
-	ldrsb r0, [r3, r0]
-	subs r3, r0, #4
-	ldr r0, _0200C334 @ =gStageFlags
-	ldrh r1, [r0]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _0200C322
-	rsbs r3, r3, #0
-_0200C322:
-	cmp r4, r3
-	beq _0200C342
-	cmp r4, r3
-	bge _0200C338
-	adds r4, #5
-	cmp r4, r3
-	ble _0200C340
-	b _0200C33E
-	.align 2, 0
-_0200C334: .4byte gStageFlags
-_0200C338:
-	subs r4, #5
-	cmp r4, r3
-	bge _0200C340
-_0200C33E:
-	adds r4, r3, #0
-_0200C340:
-	strh r4, [r2]
-_0200C342:
-	mov r1, ip
-	ldr r0, [r1, #0xc]
-	asrs r0, r0, #8
-	ldr r1, [r5, #0x1c]
-	adds r0, r0, r1
-	ldr r1, [r5, #0x4c]
-	subs r1, #0x50
-	adds r0, r0, r1
-	adds r0, r0, r4
-	str r0, [r5, #0x14]
-_0200C356:
-	ldr r0, [r5, #0x10]
-	subs r1, r0, r6
-	ldr r0, [r5, #0x44]
-	cmp r1, r0
-	ble _0200C372
-	subs r2, r1, r0
-	ldr r0, [r5, #8]
-	asrs r1, r0, #8
-	adds r3, r0, #0
-	cmp r1, r2
-	ble _0200C36E
-	adds r1, r2, #0
-_0200C36E:
-	adds r6, r6, r1
-	b _0200C386
-_0200C372:
-	ldr r3, [r5, #8]
-	cmn r1, r0
-	bge _0200C386
-	adds r1, r1, r0
-	asrs r0, r3, #8
-	rsbs r0, r0, #0
-	cmp r0, r1
-	bge _0200C384
-	adds r0, r1, #0
-_0200C384:
-	adds r6, r6, r0
-_0200C386:
-	ldr r4, [r5, #0x30]
-	cmp r6, r4
-	bge _0200C390
-	adds r0, r4, #0
-	b _0200C39E
-_0200C390:
-	ldr r0, [r5, #0x34]
-	adds r1, r0, #0
-	subs r1, #0xf0
-	adds r0, r6, #0
-	cmp r0, r1
-	ble _0200C39E
-	adds r0, r1, #0
-_0200C39E:
-	adds r6, r0, #0
-	ldr r0, _0200C3E4 @ =0x00000FFF
-	cmp r3, r0
-	bgt _0200C3AC
-	adds r0, r3, #0
-	adds r0, #0x20
-	str r0, [r5, #8]
-_0200C3AC:
-	mov r2, ip
-	ldr r0, [r2, #0x20]
-	movs r1, #2
-	ands r0, r1
-	cmp r0, #0
-	beq _0200C3E8
-	mov r0, ip
-	adds r0, #0x85
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #3
-	bne _0200C3D4
-	mov r0, ip
-	adds r0, #0x61
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #9
-	beq _0200C3E8
-_0200C3D4:
-	ldr r0, [r5, #0x48]
-	adds r0, #4
-	str r0, [r5, #0x48]
-	cmp r0, #0x18
-	ble _0200C3F4
-	movs r0, #0x18
-	b _0200C3F4
-	.align 2, 0
-_0200C3E4: .4byte 0x00000FFF
-_0200C3E8:
-	ldr r0, [r5, #0x48]
-	subs r0, #4
-	str r0, [r5, #0x48]
-	cmp r0, #0
-	bge _0200C3F4
-	movs r0, #0
-_0200C3F4:
-	str r0, [r5, #0x48]
-	ldr r0, [r5, #0x14]
-	subs r1, r0, r7
-	ldr r0, [r5, #0x48]
-	cmp r1, r0
-	ble _0200C40E
-	subs r0, r1, r0
-	ldr r1, [r5, #0xc]
-	cmp r1, r0
-	ble _0200C40A
-	adds r1, r0, #0
-_0200C40A:
-	adds r7, r7, r1
-	b _0200C420
-_0200C40E:
-	cmn r1, r0
-	bge _0200C420
-	adds r1, r1, r0
-	ldr r0, [r5, #0xc]
-	rsbs r0, r0, #0
-	cmp r0, r1
-	bge _0200C41E
-	adds r0, r1, #0
-_0200C41E:
-	adds r7, r7, r0
-_0200C420:
-	ldr r2, [r5, #0x28]
-	cmp r7, r2
-	bge _0200C42A
-	adds r1, r2, #0
-	b _0200C436
-_0200C42A:
-	ldr r0, [r5, #0x2c]
-	subs r0, #0xa0
-	adds r1, r7, #0
-	cmp r1, r0
-	ble _0200C436
-	adds r1, r0, #0
-_0200C436:
-	adds r7, r1, #0
-	cmp r6, r4
-	bge _0200C440
-	adds r0, r4, #0
-	b _0200C44E
-_0200C440:
-	ldr r0, [r5, #0x34]
-	adds r1, r0, #0
-	subs r1, #0xf0
-	adds r0, r6, #0
-	cmp r0, r1
-	ble _0200C44E
-	adds r0, r1, #0
-_0200C44E:
-	adds r6, r0, #0
-	cmp r7, r2
-	bge _0200C458
-	adds r1, r2, #0
-	b _0200C464
-_0200C458:
-	ldr r0, [r5, #0x2c]
-	subs r0, #0xa0
-	adds r1, r7, #0
-	cmp r1, r0
-	ble _0200C464
-	adds r1, r0, #0
-_0200C464:
-	adds r0, r5, #0
-	adds r0, #0x60
-	movs r3, #0
-	ldrsh r0, [r0, r3]
-	adds r6, r6, r0
-	adds r0, r5, #0
-	adds r0, #0x62
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	adds r7, r1, r0
-	str r6, [r5]
-	str r7, [r5, #4]
-	ldr r0, [r5, #0x38]
-	subs r0, r0, r6
-	str r0, [r5, #0x38]
-	ldr r0, [r5, #0x3c]
-	subs r0, r0, r7
-	str r0, [r5, #0x3c]
-	adds r0, r6, #0
-	adds r1, r7, #0
-	bl sub_0200C4A4
-	ldr r2, [r5, #0x58]
-	cmp r2, #0
-	beq _0200C49E
-	adds r0, r6, #0
-	adds r1, r7, #0
-	bl _call_via_r2
-_0200C49E:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_0200C4A4
-sub_0200C4A4: @ 0x0200C4A4
-	push {r4, r5, r6, lr}
-	mov r6, sl
-	mov r5, sb
-	mov r4, r8
-	push {r4, r5, r6}
-	mov sb, r0
-	mov sl, r1
-	ldr r4, _0200C500 @ =gUnknown_03005590
-	ldr r0, _0200C504 @ =gBgScrollRegs
-	mov r8, r0
-	movs r0, #7
-	mov r6, sb
-	ands r6, r0
-	mov r1, r8
-	strh r6, [r1, #4]
-	mov r5, sl
-	ands r5, r0
-	strh r5, [r1, #6]
-	mov r0, sb
-	strh r0, [r4, #0x30]
-	mov r1, sl
-	strh r1, [r4, #0x32]
-	adds r0, r4, #0
-	bl DrawBackground
-	adds r0, r4, #0
-	bl UpdateBgAnimationTiles
-	adds r4, #0x40
-	mov r0, r8
-	strh r6, [r0, #8]
-	strh r5, [r0, #0xa]
-	mov r1, sb
-	strh r1, [r4, #0x30]
-	mov r0, sl
-	strh r0, [r4, #0x32]
-	adds r0, r4, #0
-	bl DrawBackground
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C500: .4byte gUnknown_03005590
-_0200C504: .4byte gBgScrollRegs
-
-	thumb_func_start sub_0200C508
-sub_0200C508: @ 0x0200C508
-	push {r4, r5, lr}
-	ldr r4, _0200C554 @ =gUnknown_03005550
-	ldr r2, _0200C558 @ =gDispCnt
-	ldrh r0, [r2]
-	movs r3, #0x80
-	lsls r3, r3, #1
-	adds r1, r3, #0
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r1, _0200C55C @ =gBgCntRegs
-	movs r5, #0
-	ldr r0, _0200C560 @ =0x00001B0F
-	strh r0, [r1]
-	ldr r1, _0200C564 @ =gUnknown_02015B44
-	adds r1, #0xc0
-	adds r0, r4, #0
-	movs r2, #0x40
-	bl memcpy
-	movs r0, #2
-	strh r0, [r4, #0x1c]
-	ldr r0, _0200C568 @ =0x0600C000
-	str r0, [r4, #4]
-	ldr r0, _0200C56C @ =0x0600D800
-	str r0, [r4, #0xc]
-	movs r0, #0x20
-	strh r0, [r4, #0x26]
-	movs r0, #0x1e
-	strh r0, [r4, #0x28]
-	adds r0, r4, #0
-	bl DrawBackground
-	ldr r0, _0200C570 @ =gBgScrollRegs
-	strh r5, [r0]
-	strh r5, [r0, #2]
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C554: .4byte gUnknown_03005550
-_0200C558: .4byte gDispCnt
-_0200C55C: .4byte gBgCntRegs
-_0200C560: .4byte 0x00001B0F
-_0200C564: .4byte gUnknown_02015B44
-_0200C568: .4byte 0x0600C000
-_0200C56C: .4byte 0x0600D800
-_0200C570: .4byte gBgScrollRegs
-
 	thumb_func_start sub_0200C574
 sub_0200C574: @ 0x0200C574
 	push {r4, lr}
@@ -690,8 +18,8 @@ sub_0200C574: @ 0x0200C574
 	.align 2, 0
 _0200C588: .4byte gCamera
 
-	thumb_func_start sub_0200C58C
-sub_0200C58C: @ 0x0200C58C
+	thumb_func_start TaskDestructor_Camera
+TaskDestructor_Camera: @ 0x0200C58C
 	push {lr}
 	ldr r1, _0200C5B8 @ =gCamera
 	movs r0, #0
@@ -719,8 +47,8 @@ _0200C5B8: .4byte gCamera
 _0200C5BC: .4byte gFlags
 _0200C5C0: .4byte gBgScrollRegs
 
-	thumb_func_start sub_0200C5C4
-sub_0200C5C4: @ 0x0200C5C4
+	thumb_func_start Task_CallUpdateCamera
+Task_CallUpdateCamera: @ 0x0200C5C4
 	push {lr}
 	ldr r2, _0200C5F0 @ =gDispCnt
 	ldrh r1, [r2]
@@ -753,7 +81,7 @@ _0200C600: .4byte sub_0200C604
 	thumb_func_start sub_0200C604
 sub_0200C604: @ 0x0200C604
 	push {lr}
-	bl sub_0200C264
+	bl UpdateCamera
 	ldr r1, _0200C614 @ =gUnknown_030054B8
 	movs r0, #4
 	strb r0, [r1]
@@ -1696,7 +1024,7 @@ sub_0200CCC0: @ 0x0200CCC0
 	adds r7, r2, #0
 	cmp r3, #0
 	blt _0200CCE8
-	ldr r0, _0200CCE4 @ =gUnknown_030056B8
+	ldr r0, _0200CCE4 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x1c]
 	subs r1, r0, #1
@@ -1706,14 +1034,14 @@ sub_0200CCC0: @ 0x0200CCC0
 	adds r0, r1, #0
 	b _0200CCEA
 	.align 2, 0
-_0200CCE4: .4byte gUnknown_030056B8
+_0200CCE4: .4byte gRefCollision
 _0200CCE8:
 	movs r0, #0
 _0200CCEA:
 	adds r3, r0, #0
 	cmp r4, #0
 	blt _0200CD08
-	ldr r0, _0200CD04 @ =gUnknown_030056B8
+	ldr r0, _0200CD04 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x20]
 	subs r0, #1
@@ -1723,7 +1051,7 @@ _0200CCEA:
 	adds r1, r0, #0
 	b _0200CD0A
 	.align 2, 0
-_0200CD04: .4byte gUnknown_030056B8
+_0200CD04: .4byte gRefCollision
 _0200CD08:
 	movs r1, #0
 _0200CD0A:
@@ -1747,7 +1075,7 @@ _0200CD0A:
 	beq _0200CD32
 	subs r2, r6, r2
 _0200CD32:
-	ldr r0, _0200CDA4 @ =gUnknown_030056B8
+	ldr r0, _0200CDA4 @ =gRefCollision
 	ldr r4, [r0]
 	lsls r0, r3, #3
 	ldr r1, [r4]
@@ -1806,7 +1134,7 @@ _0200CD80:
 	b _0200CDAA
 	.align 2, 0
 _0200CDA0: .4byte 0x000003FF
-_0200CDA4: .4byte gUnknown_030056B8
+_0200CDA4: .4byte gRefCollision
 _0200CDA8:
 	adds r0, r2, #0
 _0200CDAA:
@@ -1829,7 +1157,7 @@ sub_0200CDB8: @ 0x0200CDB8
 	adds r7, r2, #0
 	cmp r4, #0
 	blt _0200CDE0
-	ldr r0, _0200CDDC @ =gUnknown_030056B8
+	ldr r0, _0200CDDC @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x1c]
 	subs r1, r0, #1
@@ -1839,14 +1167,14 @@ sub_0200CDB8: @ 0x0200CDB8
 	adds r0, r1, #0
 	b _0200CDE2
 	.align 2, 0
-_0200CDDC: .4byte gUnknown_030056B8
+_0200CDDC: .4byte gRefCollision
 _0200CDE0:
 	movs r0, #0
 _0200CDE2:
 	adds r4, r0, #0
 	cmp r3, #0
 	blt _0200CE00
-	ldr r0, _0200CDFC @ =gUnknown_030056B8
+	ldr r0, _0200CDFC @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x20]
 	subs r1, r0, #1
@@ -1856,7 +1184,7 @@ _0200CDE2:
 	adds r0, r1, #0
 	b _0200CE02
 	.align 2, 0
-_0200CDFC: .4byte gUnknown_030056B8
+_0200CDFC: .4byte gRefCollision
 _0200CE00:
 	movs r0, #0
 _0200CE02:
@@ -1881,7 +1209,7 @@ _0200CE02:
 	beq _0200CE2C
 	subs r2, r6, r2
 _0200CE2C:
-	ldr r0, _0200CE8C @ =gUnknown_030056B8
+	ldr r0, _0200CE8C @ =gRefCollision
 	ldr r4, [r0]
 	lsls r0, r3, #3
 	ldr r1, [r4]
@@ -1931,7 +1259,7 @@ _0200CE6A:
 	b _0200CE92
 	.align 2, 0
 _0200CE88: .4byte 0x000003FF
-_0200CE8C: .4byte gUnknown_030056B8
+_0200CE8C: .4byte gRefCollision
 _0200CE90:
 	adds r0, r2, #0
 _0200CE92:
@@ -1957,7 +1285,7 @@ sub_0200CEA0: @ 0x0200CEA0
 	mov sl, r3
 	cmp r4, #0
 	blt _0200CECC
-	ldr r0, _0200CEC8 @ =gUnknown_030056B8
+	ldr r0, _0200CEC8 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x1c]
 	subs r1, r0, #1
@@ -1967,14 +1295,14 @@ sub_0200CEA0: @ 0x0200CEA0
 	adds r0, r1, #0
 	b _0200CECE
 	.align 2, 0
-_0200CEC8: .4byte gUnknown_030056B8
+_0200CEC8: .4byte gRefCollision
 _0200CECC:
 	movs r0, #0
 _0200CECE:
 	adds r4, r0, #0
 	cmp r5, #0
 	blt _0200CEEC
-	ldr r0, _0200CEE8 @ =gUnknown_030056B8
+	ldr r0, _0200CEE8 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x20]
 	subs r0, #1
@@ -1984,7 +1312,7 @@ _0200CECE:
 	adds r1, r0, #0
 	b _0200CEEE
 	.align 2, 0
-_0200CEE8: .4byte gUnknown_030056B8
+_0200CEE8: .4byte gRefCollision
 _0200CEEC:
 	movs r1, #0
 _0200CEEE:
@@ -2008,7 +1336,7 @@ _0200CEEE:
 	beq _0200CF16
 	subs r3, r7, r3
 _0200CF16:
-	ldr r2, _0200CF8C @ =gUnknown_030056B8
+	ldr r2, _0200CF8C @ =gRefCollision
 	ldr r5, [r2]
 	lsls r0, r6, #3
 	ldr r1, [r5]
@@ -2069,7 +1397,7 @@ _0200CF68:
 	b _0200CF92
 	.align 2, 0
 _0200CF88: .4byte 0x000003FF
-_0200CF8C: .4byte gUnknown_030056B8
+_0200CF8C: .4byte gRefCollision
 _0200CF90:
 	adds r0, r3, #0
 _0200CF92:
@@ -2131,7 +1459,7 @@ sub_0200CFE0: @ 0x0200CFE0
 	mov sl, r3
 	cmp r5, #0
 	blt _0200D00C
-	ldr r0, _0200D008 @ =gUnknown_030056B8
+	ldr r0, _0200D008 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x1c]
 	subs r1, r0, #1
@@ -2141,14 +1469,14 @@ sub_0200CFE0: @ 0x0200CFE0
 	adds r0, r1, #0
 	b _0200D00E
 	.align 2, 0
-_0200D008: .4byte gUnknown_030056B8
+_0200D008: .4byte gRefCollision
 _0200D00C:
 	movs r0, #0
 _0200D00E:
 	adds r5, r0, #0
 	cmp r4, #0
 	blt _0200D02C
-	ldr r0, _0200D028 @ =gUnknown_030056B8
+	ldr r0, _0200D028 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x20]
 	subs r1, r0, #1
@@ -2158,7 +1486,7 @@ _0200D00E:
 	adds r0, r1, #0
 	b _0200D02E
 	.align 2, 0
-_0200D028: .4byte gUnknown_030056B8
+_0200D028: .4byte gRefCollision
 _0200D02C:
 	movs r0, #0
 _0200D02E:
@@ -2183,7 +1511,7 @@ _0200D02E:
 	beq _0200D058
 	subs r3, r6, r3
 _0200D058:
-	ldr r2, _0200D0BC @ =gUnknown_030056B8
+	ldr r2, _0200D0BC @ =gRefCollision
 	ldr r5, [r2]
 	lsls r0, r7, #3
 	ldr r1, [r5]
@@ -2235,7 +1563,7 @@ _0200D09A:
 	b _0200D0C2
 	.align 2, 0
 _0200D0B8: .4byte 0x000003FF
-_0200D0BC: .4byte gUnknown_030056B8
+_0200D0BC: .4byte gRefCollision
 _0200D0C0:
 	adds r0, r3, #0
 _0200D0C2:
@@ -2340,7 +1668,7 @@ _0200D160:
 	str r1, [r6, #8]
 	adds r5, r1, #0
 _0200D17A:
-	ldr r0, _0200D1BC @ =gUnknown_030056B8
+	ldr r0, _0200D1BC @ =gRefCollision
 	ldr r4, [r0]
 	mov r1, sb
 	lsls r0, r1, #2
@@ -2373,7 +1701,7 @@ _0200D17A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0200D1BC: .4byte gUnknown_030056B8
+_0200D1BC: .4byte gRefCollision
 
 	thumb_func_start sub_0200D1C0
 sub_0200D1C0: @ 0x0200D1C0

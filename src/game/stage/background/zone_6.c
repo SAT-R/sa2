@@ -9,8 +9,6 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gStageCameraBgTemplates[4];
-
 void CreateStageBg_Zone6_Boss(void);
 
 const s16 gUnknown_080D5BF0[] = {

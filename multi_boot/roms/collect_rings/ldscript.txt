@@ -45,6 +45,8 @@ SECTIONS {
         build/collect_rings/src/sa2/game/sa1_sa2_shared/dust_cloud.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/collect_ring_effect.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/mp_attack_2_effect.o(.text);
+        build/collect_rings/src/sa2/game/stage/camera.o(.text);
+        build/collect_rings/src/sa2/game/stage/background/zone_1.o(.text);
         build/collect_rings/asm/code.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a0.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a.o(.text);
@@ -76,6 +78,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/multiplayer/finish.o(.rodata);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/interactables/spring.o(.rodata);
         build/collect_rings/src/sa2/game/interactables_1/spikes.o(.rodata);
+        build/collect_rings/src/sa2/game/stage/camera.o(.rodata);
         build/collect_rings/data/data.o(.rodata);
         build/collect_rings/src/sa2/lib/m4a/m4a_tables.o(.rodata);
         build/collect_rings/data/sound_data.o(.rodata);
