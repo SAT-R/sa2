@@ -120,7 +120,8 @@ SA2_C_FILES := \
 	sa2/game/sa1_sa2_shared/interactables/grind_rail.c \
 	sa2/game/interactables_2/multiplayer_teleport.c \
 	sa2/game/sa1_sa2_shared/dust_cloud.c \
-	sa2/game/sa1_sa2_shared/collect_ring_effect.c
+	sa2/game/sa1_sa2_shared/collect_ring_effect.c \
+	sa2/game/multiplayer/mp_attack_2_effect.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

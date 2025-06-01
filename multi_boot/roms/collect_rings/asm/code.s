@@ -4,214 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200BEA8
-sub_0200BEA8: @ 0x0200BEA8
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _0200BEE4 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0200BF3C
-	ldr r0, _0200BEE8 @ =gCurrentLevel
-	ldrb r1, [r0]
-	movs r0, #3
-	ands r0, r1
-	cmp r0, #2
-	beq _0200BF3C
-	lsls r0, r1, #0x18
-	asrs r1, r0, #0x18
-	cmp r1, #0x1c
-	bne _0200BED0
-	ldr r0, _0200BEEC @ =gUnknown_03005428
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0200BF3C
-_0200BED0:
-	cmp r1, #0x1d
-	beq _0200BF3C
-	ldr r5, _0200BEF0 @ =gUnknown_03005548
-	ldr r4, [r5]
-	cmp r4, #0
-	beq _0200BEF4
-	movs r0, #0x96
-	lsls r0, r0, #2
-	strh r0, [r4, #2]
-	b _0200BF3C
-	.align 2, 0
-_0200BEE4: .4byte gGameMode
-_0200BEE8: .4byte gCurrentLevel
-_0200BEEC: .4byte gUnknown_03005428
-_0200BEF0: .4byte gUnknown_03005548
-_0200BEF4:
-	ldr r0, _0200BF44 @ =sub_0200BF54
-	movs r2, #0xe0
-	lsls r2, r2, #8
-	ldr r1, _0200BF48 @ =sub_0200BFFC
-	str r1, [sp]
-	movs r1, #8
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	str r0, [r5]
-	strh r4, [r0]
-	movs r1, #0x96
-	lsls r1, r1, #2
-	strh r1, [r0, #2]
-	strh r4, [r0, #4]
-	strh r4, [r0, #6]
-	ldr r0, _0200BF4C @ =gMosaicReg
-	strh r4, [r0]
-	ldr r1, _0200BF50 @ =gBgCntRegs
-	ldrh r0, [r1]
-	movs r2, #0x40
-	orrs r0, r2
-	strh r0, [r1]
-	ldrh r0, [r1, #2]
-	orrs r0, r2
-	strh r0, [r1, #2]
-	ldrh r0, [r1, #4]
-	orrs r0, r2
-	strh r0, [r1, #4]
-	ldrh r0, [r1, #6]
-	orrs r2, r0
-	strh r2, [r1, #6]
-_0200BF3C:
-	add sp, #4
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BF44: .4byte sub_0200BF54
-_0200BF48: .4byte sub_0200BFFC
-_0200BF4C: .4byte gMosaicReg
-_0200BF50: .4byte gBgCntRegs
-
-	thumb_func_start sub_0200BF54
-sub_0200BF54: @ 0x0200BF54
-	push {r4, lr}
-	ldr r0, _0200BF90 @ =gCurTask
-	ldr r3, [r0]
-	ldrh r1, [r3, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r1, r1, r0
-	ldrh r0, [r1]
-	adds r0, #1
-	strh r0, [r1]
-	ldrh r0, [r1, #2]
-	adds r4, r0, #0
-	cmp r4, #0
-	beq _0200BF9A
-	ldrh r2, [r1, #6]
-	cmp r2, #0xe
-	bhi _0200BF94
-	ldrh r0, [r1, #4]
-	adds r0, #1
-	strh r0, [r1, #4]
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #3
-	bls _0200BFBC
-	adds r0, r2, #1
-	strh r0, [r1, #6]
-	movs r0, #0
-	strh r0, [r1, #4]
-	b _0200BFBC
-	.align 2, 0
-_0200BF90: .4byte gCurTask
-_0200BF94:
-	subs r0, #1
-	strh r0, [r1, #2]
-	b _0200BFBC
-_0200BF9A:
-	ldrh r2, [r1, #6]
-	cmp r2, #0
-	bne _0200BFA8
-	adds r0, r3, #0
-	bl TaskDestroy
-	b _0200BFEE
-_0200BFA8:
-	ldrh r0, [r1, #4]
-	adds r0, #1
-	strh r0, [r1, #4]
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #3
-	bls _0200BFBC
-	subs r0, r2, #1
-	strh r0, [r1, #6]
-	strh r4, [r1, #4]
-_0200BFBC:
-	ldrh r1, [r1, #6]
-	movs r0, #0xf
-	ands r0, r1
-	ldr r3, _0200BFF4 @ =gMosaicReg
-	lsls r1, r0, #0xc
-	lsls r2, r0, #8
-	orrs r1, r2
-	lsls r2, r0, #4
-	orrs r1, r2
-	orrs r0, r1
-	strh r0, [r3]
-	ldr r1, _0200BFF8 @ =gBgCntRegs
-	ldrh r0, [r1]
-	movs r2, #0x40
-	orrs r0, r2
-	strh r0, [r1]
-	ldrh r0, [r1, #2]
-	orrs r0, r2
-	strh r0, [r1, #2]
-	ldrh r0, [r1, #4]
-	orrs r0, r2
-	strh r0, [r1, #4]
-	ldrh r0, [r1, #6]
-	orrs r2, r0
-	strh r2, [r1, #6]
-_0200BFEE:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BFF4: .4byte gMosaicReg
-_0200BFF8: .4byte gBgCntRegs
-
-	thumb_func_start sub_0200BFFC
-sub_0200BFFC: @ 0x0200BFFC
-	push {r4, lr}
-	ldr r0, _0200C030 @ =gUnknown_03005548
-	movs r4, #0
-	str r4, [r0]
-	ldr r2, _0200C034 @ =gBgCntRegs
-	ldrh r3, [r2]
-	ldr r1, _0200C038 @ =0x0000FFBF
-	adds r0, r1, #0
-	ands r0, r3
-	strh r0, [r2]
-	ldrh r3, [r2, #2]
-	adds r0, r1, #0
-	ands r0, r3
-	strh r0, [r2, #2]
-	ldrh r3, [r2, #4]
-	adds r0, r1, #0
-	ands r0, r3
-	strh r0, [r2, #4]
-	ldrh r0, [r2, #6]
-	ands r1, r0
-	strh r1, [r2, #6]
-	ldr r0, _0200C03C @ =gMosaicReg
-	strh r4, [r0]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C030: .4byte gUnknown_03005548
-_0200C034: .4byte gBgCntRegs
-_0200C038: .4byte 0x0000FFBF
-_0200C03C: .4byte gMosaicReg
-
 	thumb_func_start InitCamera
 InitCamera: @ 0x0200C040
 	push {r4, r5, r6, r7, lr}
@@ -2997,7 +2789,7 @@ _0200D4BA:
 	bne _0200D4BA
 	movs r0, #0x7f
 	strb r0, [r4]
-	ldr r0, _0200D4E4 @ =gUnknown_03005548
+	ldr r0, _0200D4E4 @ =gMPAttackEffect2Regs
 	str r2, [r0]
 	ldr r0, _0200D4E8 @ =gShouldSpawnMPAttack2Effect
 	strb r2, [r0]
@@ -3008,7 +2800,7 @@ _0200D4BA:
 _0200D4D8: .4byte sub_0200F2BC
 _0200D4DC: .4byte gPlayerControls
 _0200D4E0: .4byte 0x0000FFFF
-_0200D4E4: .4byte gUnknown_03005548
+_0200D4E4: .4byte gMPAttackEffect2Regs
 _0200D4E8: .4byte gShouldSpawnMPAttack2Effect
 
 	thumb_func_start sub_0200D4EC
@@ -5195,7 +4987,7 @@ _0200E4BA:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200E4D6
-	ldr r0, _0200E4F4 @ =gUnknown_03005428
+	ldr r0, _0200E4F4 @ =gUnknown_030054B0
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200E4DA
@@ -5213,7 +5005,7 @@ _0200E4E4: .4byte gCamera
 _0200E4E8: .4byte 0x80000080
 _0200E4EC: .4byte 0x0000FB20
 _0200E4F0: .4byte gCurrentLevel
-_0200E4F4: .4byte gUnknown_03005428
+_0200E4F4: .4byte gUnknown_030054B0
 _0200E4F8: .4byte gUnknown_030053F4
 _0200E4FC: .4byte gUnknown_03005434
 _0200E500:
@@ -5551,7 +5343,7 @@ sub_0200E724: @ 0x0200E724
 	ldr r0, _0200E7C0 @ =gRingCount
 	movs r1, #0
 	strh r6, [r0]
-	ldr r0, _0200E7C4 @ =gUnknown_030054B0
+	ldr r0, _0200E7C4 @ =gSpecialRingCount
 	strb r1, [r0]
 	ldr r5, _0200E7C8 @ =gPlayer
 	adds r0, r5, #0
@@ -5615,7 +5407,7 @@ sub_0200E724: @ 0x0200E724
 	.align 2, 0
 _0200E7BC: .4byte gCurTask
 _0200E7C0: .4byte gRingCount
-_0200E7C4: .4byte gUnknown_030054B0
+_0200E7C4: .4byte gSpecialRingCount
 _0200E7C8: .4byte gPlayer
 _0200E7CC: .4byte gCamera
 _0200E7D0: .4byte 0x0201F270
@@ -5771,7 +5563,7 @@ _0200E904:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200E920
-	ldr r0, _0200E98C @ =gUnknown_03005428
+	ldr r0, _0200E98C @ =gUnknown_030054B0
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200E924
@@ -5830,7 +5622,7 @@ _0200E95A:
 	b _0200E9A6
 	.align 2, 0
 _0200E988: .4byte gCurrentLevel
-_0200E98C: .4byte gUnknown_03005428
+_0200E98C: .4byte gUnknown_030054B0
 _0200E990: .4byte gCamera
 _0200E994: .4byte gCurTask
 _0200E998: .4byte sub_0200E7F8
@@ -8029,7 +7821,7 @@ _0200FA22:
 	asrs r1, r0, #0x18
 	cmp r1, #0x1c
 	bne _0200FA8A
-	ldr r0, _0200FAC8 @ =gUnknown_03005428
+	ldr r0, _0200FAC8 @ =gUnknown_030054B0
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0200FA8E
@@ -8064,7 +7856,7 @@ _0200FA9A:
 	.align 2, 0
 _0200FAC0: .4byte gSineTable
 _0200FAC4: .4byte gCurrentLevel
-_0200FAC8: .4byte gUnknown_03005428
+_0200FAC8: .4byte gUnknown_030054B0
 _0200FACC: .4byte gCamera
 _0200FAD0: .4byte 0xFFFFBFFF
 _0200FAD4: .4byte gPlayer
@@ -13436,9 +13228,9 @@ CreateGameStage: @ 0x02012308
 	ldr r0, _02012430 @ =gActiveCollectRingEffectCount
 	movs r4, #0
 	strb r4, [r0]
-	ldr r0, _02012434 @ =gUnknown_030054B0
+	ldr r0, _02012434 @ =gSpecialRingCount
 	strb r4, [r0]
-	ldr r0, _02012438 @ =gUnknown_03005428
+	ldr r0, _02012438 @ =gUnknown_030054B0
 	strb r4, [r0]
 	ldr r5, _0201243C @ =gStageFlags
 	ldrh r0, [r5]
@@ -13559,8 +13351,8 @@ _02012424: .4byte Task_GameStage
 _02012428: .4byte TaskDestructor_GameStage
 _0201242C: .4byte gUnknown_030057D0
 _02012430: .4byte gActiveCollectRingEffectCount
-_02012434: .4byte gUnknown_030054B0
-_02012438: .4byte gUnknown_03005428
+_02012434: .4byte gSpecialRingCount
+_02012438: .4byte gUnknown_030054B0
 _0201243C: .4byte gStageFlags
 _02012440: .4byte 0x0000FF7F
 _02012444: .4byte gUnknown_030053E4
@@ -13848,7 +13640,7 @@ sub_020126AC: @ 0x020126AC
 	ldr r0, _020126DC @ =gUnknown_03005404
 	movs r1, #0
 	str r1, [r0]
-	ldr r0, _020126E0 @ =gUnknown_03005428
+	ldr r0, _020126E0 @ =gUnknown_030054B0
 	strb r1, [r0]
 	ldr r1, _020126E4 @ =gNumLives
 	movs r0, #3
@@ -13869,7 +13661,7 @@ _020126CA:
 	bx r0
 	.align 2, 0
 _020126DC: .4byte gUnknown_03005404
-_020126E0: .4byte gUnknown_03005428
+_020126E0: .4byte gUnknown_030054B0
 _020126E4: .4byte gNumLives
 _020126E8: .4byte gGameMode
 

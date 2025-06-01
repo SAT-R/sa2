@@ -1184,7 +1184,7 @@ _02009AB8:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _02009AC8
-	bl sub_0200BEA8
+	bl CreateMPAttack2Effect
 	movs r0, #0
 	strb r0, [r4]
 _02009AC8:

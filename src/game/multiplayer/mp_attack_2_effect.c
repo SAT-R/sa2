@@ -10,8 +10,8 @@
 // Not clear why this is 16 aligned
 MultiPlayerBgCtrlRegs ALIGNED(16) *gMPAttackEffect2Regs = NULL;
 
-void Task_MPAttackEffect2(void);
-void TaskDestructor_MPAttackEffect2(struct Task *);
+static void Task_MPAttackEffect2(void);
+static void TaskDestructor_MPAttackEffect2(struct Task *);
 
 void CreateMPAttack2Effect(void)
 {
@@ -42,7 +42,7 @@ void CreateMPAttack2Effect(void)
     }
 }
 
-void Task_MPAttackEffect2(void)
+static void Task_MPAttackEffect2(void)
 {
     MultiPlayerBgCtrlRegs *regs = TASK_DATA(gCurTask);
     s16 *p;
@@ -82,7 +82,7 @@ void Task_MPAttackEffect2(void)
     gBgCntRegs[3] |= 0x40;
 }
 
-void TaskDestructor_MPAttackEffect2(struct Task *t)
+static void TaskDestructor_MPAttackEffect2(struct Task *t)
 {
     gMPAttackEffect2Regs = NULL;
 
