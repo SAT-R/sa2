@@ -15,7 +15,11 @@
 #define RESERVED_RING_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2E40)
 #endif
 
+#ifndef COLLECT_RINGS_ROM
 #define RESERVED_RING_EFFECT_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2100)
+#else
+#define RESERVED_RING_EFFECT_TILES_VRAM (void *)(OBJ_VRAM0 + 0x3040)
+#endif
 
 #define RECT_TOUCHING_RING(posX, posY, ringIntX, ringIntY, rect)                                                                           \
     ((((ringIntX - TILE_WIDTH) <= RECT_LEFT((posX), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT((posX), rect))                           \

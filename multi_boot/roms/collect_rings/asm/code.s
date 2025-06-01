@@ -4,191 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateCollectRingEffect
-CreateCollectRingEffect: @ 0x0200BD0C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	lsls r0, r0, #0x10
-	lsrs r6, r0, #0x10
-	lsls r1, r1, #0x10
-	lsrs r7, r1, #0x10
-	ldr r0, _0200BDC0 @ =gSpecialRingCount
-	ldrb r0, [r0]
-	cmp r0, #7
-	bhi _0200BE1E
-	ldr r0, _0200BDC4 @ =Task_CollectRingEffect
-	movs r1, #0x80
-	lsls r1, r1, #6
-	mov r8, r1
-	movs r4, #0
-	str r4, [sp]
-	movs r1, #0x34
-	mov r2, r8
-	movs r3, #0
-	bl TaskCreate
-	ldrh r3, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r3, r1
-	ldr r2, _0200BDC8 @ =gUnknown_03000031
-	adds r0, r3, r2
-	strb r4, [r0]
-	movs r5, #0
-	strh r6, [r1, #0x16]
-	strh r7, [r1, #0x18]
-	ldr r0, _0200BDCC @ =0x06013040
-	str r0, [r1, #4]
-	movs r0, #0xf0
-	lsls r0, r0, #2
-	strh r0, [r1, #0x1a]
-	strh r4, [r1, #8]
-	movs r0, #0x6b
-	strh r0, [r1, #0xa]
-	subs r2, #0x11
-	adds r0, r3, r2
-	strb r5, [r0]
-	strh r4, [r1, #0x14]
-	strh r4, [r1, #0x1c]
-	ldr r0, _0200BDD0 @ =gUnknown_03000021
-	adds r2, r3, r0
-	movs r0, #0xff
-	strb r0, [r2]
-	ldr r0, _0200BDD4 @ =gUnknown_03000022
-	adds r2, r3, r0
-	movs r0, #0x10
-	strb r0, [r2]
-	ldr r2, _0200BDD8 @ =gUnknown_03000025
-	adds r0, r3, r2
-	strb r5, [r0]
-	mov r0, r8
-	str r0, [r1, #0x10]
-	ldr r0, _0200BDDC @ =gRingCount
-	ldrb r1, [r0]
-	movs r0, #1
-	ands r0, r1
-	ldr r1, _0200BDE0 @ =gUnknown_03000030
-	adds r3, r3, r1
-	strb r0, [r3]
-	cmp r0, #0
-	beq _0200BDF0
-	ldr r4, _0200BDE4 @ =gMPlayInfo_SE2
-	ldr r1, _0200BDE8 @ =se_ring_copy
-	adds r0, r4, #0
-	bl MPlayStart
-	adds r0, r4, #0
-	bl m4aMPlayImmInit
-	ldr r5, _0200BDEC @ =0x0000FFFF
-	adds r0, r4, #0
-	adds r1, r5, #0
-	movs r2, #0x80
-	bl m4aMPlayVolumeControl
-	movs r2, #0x40
-	rsbs r2, r2, #0
-	adds r0, r4, #0
-	adds r1, r5, #0
-	bl m4aMPlayPanpotControl
-	b _0200BE16
-	.align 2, 0
-_0200BDC0: .4byte gSpecialRingCount
-_0200BDC4: .4byte Task_CollectRingEffect
-_0200BDC8: .4byte gUnknown_03000031
-_0200BDCC: .4byte 0x06013040
-_0200BDD0: .4byte gUnknown_03000021
-_0200BDD4: .4byte gUnknown_03000022
-_0200BDD8: .4byte gUnknown_03000025
-_0200BDDC: .4byte gRingCount
-_0200BDE0: .4byte gUnknown_03000030
-_0200BDE4: .4byte gMPlayInfo_SE2
-_0200BDE8: .4byte se_ring_copy
-_0200BDEC: .4byte 0x0000FFFF
-_0200BDF0:
-	ldr r4, _0200BE2C @ =0x0201F2B0
-	ldr r1, _0200BE30 @ =se_ring_copy
-	adds r0, r4, #0
-	bl MPlayStart
-	adds r0, r4, #0
-	bl m4aMPlayImmInit
-	ldr r5, _0200BE34 @ =0x0000FFFF
-	adds r0, r4, #0
-	adds r1, r5, #0
-	movs r2, #0x80
-	bl m4aMPlayVolumeControl
-	adds r0, r4, #0
-	adds r1, r5, #0
-	movs r2, #0x40
-	bl m4aMPlayPanpotControl
-_0200BE16:
-	ldr r1, _0200BE38 @ =gSpecialRingCount
-	ldrb r0, [r1]
-	adds r0, #1
-	strb r0, [r1]
-_0200BE1E:
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BE2C: .4byte 0x0201F2B0
-_0200BE30: .4byte se_ring_copy
-_0200BE34: .4byte 0x0000FFFF
-_0200BE38: .4byte gSpecialRingCount
-
-	thumb_func_start Task_CollectRingEffect
-Task_CollectRingEffect: @ 0x0200BE3C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r0, _0200BE9C @ =gCurTask
-	mov r8, r0
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r5, r4, #0
-	ldrh r0, [r4, #0x16]
-	adds r6, r0, #0
-	ldrh r7, [r4, #0x18]
-	ldr r1, _0200BEA0 @ =gCamera
-	ldr r0, [r1]
-	subs r0, r6, r0
-	strh r0, [r4, #0x16]
-	ldr r1, [r1, #4]
-	ldrh r0, [r4, #0x18]
-	subs r0, r0, r1
-	strh r0, [r4, #0x18]
-	adds r0, r4, #0
-	bl UpdateSpriteAnimation
-	cmp r0, #0
-	bne _0200BE88
-	adds r0, r4, #0
-	bl DisplaySprite
-	ldr r0, _0200BEA4 @ =gSpecialRingCount
-	ldrb r1, [r0]
-	subs r1, #1
-	strb r1, [r0]
-	mov r1, r8
-	ldr r0, [r1]
-	bl TaskDestroy
-_0200BE88:
-	adds r0, r5, #0
-	bl DisplaySprite
-	strh r6, [r5, #0x16]
-	strh r7, [r5, #0x18]
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200BE9C: .4byte gCurTask
-_0200BEA0: .4byte gCamera
-_0200BEA4: .4byte gSpecialRingCount
-
 	thumb_func_start sub_0200BEA8
 sub_0200BEA8: @ 0x0200BEA8
 	push {r4, r5, lr}
@@ -13616,9 +13431,9 @@ CreateGameStage: @ 0x02012308
 	movs r1, #0
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _0201242C @ =gActiveCollectRingEffectCount
+	ldr r1, _0201242C @ =gUnknown_030057D0
 	str r0, [r1]
-	ldr r0, _02012430 @ =gSpecialRingCount
+	ldr r0, _02012430 @ =gActiveCollectRingEffectCount
 	movs r4, #0
 	strb r4, [r0]
 	ldr r0, _02012434 @ =gUnknown_030054B0
@@ -13742,8 +13557,8 @@ _020123F4:
 	.align 2, 0
 _02012424: .4byte Task_GameStage
 _02012428: .4byte TaskDestructor_GameStage
-_0201242C: .4byte gActiveCollectRingEffectCount
-_02012430: .4byte gSpecialRingCount
+_0201242C: .4byte gUnknown_030057D0
+_02012430: .4byte gActiveCollectRingEffectCount
 _02012434: .4byte gUnknown_030054B0
 _02012438: .4byte gUnknown_03005428
 _0201243C: .4byte gStageFlags
@@ -14128,7 +13943,7 @@ _02012788: .4byte 0x00002A30
 	thumb_func_start sub_0201278C
 sub_0201278C: @ 0x0201278C
 	push {r4, lr}
-	ldr r4, _020127AC @ =gActiveCollectRingEffectCount
+	ldr r4, _020127AC @ =gUnknown_030057D0
 	ldr r0, [r4]
 	bl TaskDestroy
 	movs r0, #0
@@ -14140,17 +13955,17 @@ sub_0201278C: @ 0x0201278C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020127AC: .4byte gActiveCollectRingEffectCount
+_020127AC: .4byte gUnknown_030057D0
 _020127B0: .4byte gPlayer
 
 	thumb_func_start TaskDestructor_GameStage
 TaskDestructor_GameStage: @ 0x020127B4
-	ldr r1, _020127BC @ =gActiveCollectRingEffectCount
+	ldr r1, _020127BC @ =gUnknown_030057D0
 	movs r0, #0
 	str r0, [r1]
 	bx lr
 	.align 2, 0
-_020127BC: .4byte gActiveCollectRingEffectCount
+_020127BC: .4byte gUnknown_030057D0
 
 	thumb_func_start StageInit_CollectRings
 StageInit_CollectRings: @ 0x020127C0
@@ -14380,7 +14195,7 @@ sub_8081200: @ 0x020129A0
 	str r1, [r0]
 	ldr r0, _02012A00 @ =gUnknown_030057D4
 	str r1, [r0]
-	ldr r0, _02012A04 @ =gActiveCollectRingEffectCount
+	ldr r0, _02012A04 @ =gUnknown_030057D0
 	str r1, [r0]
 	ldr r0, _02012A08 @ =gPlayer
 	adds r0, #0x8c
@@ -14418,7 +14233,7 @@ _020129CC:
 _020129F8: .4byte gGameMode
 _020129FC: .4byte gUnknown_030057C4
 _02012A00: .4byte gUnknown_030057D4
-_02012A04: .4byte gActiveCollectRingEffectCount
+_02012A04: .4byte gUnknown_030057D0
 _02012A08: .4byte gPlayer
 _02012A0C: .4byte gCamera
 _02012A10: .4byte gUnknown_030053F0
