@@ -1,5 +1,3 @@
-.include "constants/gba_constants.inc"
-
 .syntax unified
 .text
 	push {r4, r5, r6, r7, lr}

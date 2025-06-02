@@ -22,10 +22,7 @@ SECTIONS
         src/multi_boot.o(.bss);
         
         . = 0x00000408;
-        src/game/stage/background/zone_3.o(.data);
-        src/game/stage/background/zone_3.o(.bss);
-        src/game/stage/background/zone_4.o(.data);
-        src/game/stage/background/zone_4.o(.bss);
+        src/game/stage/camera.o(.bss);
 
         . = 0x00000410;
         src/game/stage/terrain_collision.o(.bss);
@@ -149,27 +146,6 @@ SECTIONS
     
         src/game/stage/stage.o(.text);
         src/game/stage/camera.o(.text);
-        src/game/stage/background/zone_1.o(.text);
-        src/game/stage/background/zone_2.o(.text);
-        src/game/stage/background/zone_3.o(.text);
-        src/game/stage/background/zone_4.o(.text);
-        src/game/stage/background/zone_5.o(.text);
-        src/game/stage/background/zone_6.o(.text);
-        src/game/stage/background/zone_7_1.o(.text);
-        src/game/stage/background/zone_final.o(.text);
-        src/game/stage/camera_destroy.o(.text);
-        src/game/stage/background/zone_2_init.o(.text);
-        src/game/stage/background/dummy.o(.text);
-        src/game/stage/background/zone_1_boss.o(.text);
-        src/game/stage/background/zone_2_boss.o(.text);
-        src/game/stage/background/zone_3_boss.o(.text);
-        src/game/stage/background/zone_5_boss.o(.text);
-        src/game/stage/background/zone_6_boss.o(.text);
-        src/game/stage/background/zone_7_2.o(.text);
-        src/game/stage/background/zone_7_boss.o(.text);
-        src/game/stage/background/zone_final_boss.o(.text);
-        src/game/stage/background/zone_extra_boss.o(.text);
-        src/game/stage/background/callbacks.o(.text);
         src/game/stage/terrain_collision.o(.text);
         src/game/stage/mp_sprite_task.o(.text);
         src/game/stage/dust_effect_braking.o(.text);
@@ -430,15 +406,6 @@ SECTIONS
 
         src/game/stage/stage.o(.rodata);
         src/game/stage/camera.o(.rodata);
-        src/game/stage/background/zone_1.o(.rodata);
-        src/game/stage/background/zone_2.o(.rodata);
-        src/game/stage/background/zone_3.o(.rodata);
-        src/game/stage/background/zone_4.o(.rodata);
-        src/game/stage/background/zone_5.o(.rodata);
-        src/game/stage/background/zone_6.o(.rodata);
-        src/game/stage/background/zone_7_1.o(.rodata);
-        src/game/stage/background/zone_7_2.o(.rodata);
-        src/game/stage/background/zone_final.o(.rodata);
         src/game/stage/tilemap_table.o(.rodata);
         src/game/stage/terrain_collision.o(.rodata);
         src/game/stage/mp_sprite_task.o(.rodata);
