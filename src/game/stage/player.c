@@ -533,7 +533,7 @@ static inline void Player_CameraShift_inline(Player *p)
         gCamera.shiftY--;
 }
 
-void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
+void CreatePlayer(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
     struct Task *t;
     player_0_Task *gt;

@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200D2D8
-sub_0200D2D8: @ 0x0200D2D8
+	thumb_func_start AllocateCharacterStageGfx
+AllocateCharacterStageGfx: @ 0x0200D2D8
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
 	adds r6, r1, #0
@@ -95,8 +95,8 @@ _0200D35A:
 	.align 2, 0
 _0200D380: .4byte 0x000C2020
 
-	thumb_func_start sub_0200D384
-sub_0200D384: @ 0x0200D384
+	thumb_func_start InitializePlayer
+InitializePlayer: @ 0x0200D384
 	push {r4, r5, lr}
 	adds r5, r0, #0
 	ldr r0, [r5, #8]
@@ -2819,7 +2819,7 @@ sub_0200E724: @ 0x0200E724
 	strb r1, [r0]
 	ldr r5, _0200E7C8 @ =gPlayer
 	adds r0, r5, #0
-	bl sub_0200D384
+	bl InitializePlayer
 	ldr r4, _0200E7CC @ =gCamera
 	ldr r0, [r5, #8]
 	asrs r0, r0, #8
@@ -2871,7 +2871,7 @@ sub_0200E724: @ 0x0200E724
 	ands r0, r1
 	strh r0, [r4]
 	ldr r1, [r7]
-	ldr r0, _0200E7E4 @ =sub_0200E8B0
+	ldr r0, _0200E7E4 @ =Task_PlayerMain
 	str r0, [r1, #8]
 	ldr r0, _0200E7E8 @ =sub_0200F2BC
 	str r0, [r5]
@@ -2887,7 +2887,7 @@ _0200E7D4: .4byte gStageFlags
 _0200E7D8: .4byte 0x0000FF7F
 _0200E7DC: .4byte 0xFFFFCFFF
 _0200E7E0: .4byte 0x0000FFFC
-_0200E7E4: .4byte sub_0200E8B0
+_0200E7E4: .4byte Task_PlayerMain
 _0200E7E8: .4byte sub_0200F2BC
 _0200E7EC:
 	subs r6, #1
@@ -2989,8 +2989,8 @@ _0200E8A8:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0200E8B0
-sub_0200E8B0: @ 0x0200E8B0
+	thumb_func_start Task_PlayerMain
+Task_PlayerMain: @ 0x0200E8B0
 	push {r4, r5, r6, lr}
 	ldr r5, _0200E8F8 @ =gPlayer
 	adds r0, r5, #0
@@ -8284,8 +8284,8 @@ sub_02011140: @ 0x02011140
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0201114C
-sub_0201114C: @ 0x0201114C
+	thumb_func_start CreatePlayer
+CreatePlayer: @ 0x0201114C
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r5, r2, #0
@@ -8293,10 +8293,10 @@ sub_0201114C: @ 0x0201114C
 	adds r0, #0x60
 	movs r6, #0
 	ldrsb r6, [r0, r6]
-	ldr r0, _020111B0 @ =sub_0200E8B0
+	ldr r0, _020111B0 @ =Task_PlayerMain
 	movs r2, #0xc0
 	lsls r2, r2, #6
-	ldr r1, _020111B4 @ =sub_020116D4
+	ldr r1, _020111B4 @ =TaskDestructor_Player
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
@@ -8312,7 +8312,7 @@ sub_0201114C: @ 0x0201114C
 	strb r6, [r0]
 	str r4, [r0, #4]
 	adds r0, r5, #0
-	bl sub_0200D384
+	bl InitializePlayer
 	ldr r1, _020111B8 @ =gPlayer
 	ldr r0, _020111BC @ =sub_0200F2BC
 	str r0, [r1]
@@ -8327,14 +8327,14 @@ sub_0201114C: @ 0x0201114C
 	adds r0, #0x90
 	ldr r1, [r0]
 	adds r0, r5, #0
-	bl sub_0200D2D8
+	bl AllocateCharacterStageGfx
 	add sp, #4
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020111B0: .4byte sub_0200E8B0
-_020111B4: .4byte sub_020116D4
+_020111B0: .4byte Task_PlayerMain
+_020111B4: .4byte TaskDestructor_Player
 _020111B8: .4byte gPlayer
 _020111BC: .4byte sub_0200F2BC
 _020111C0: .4byte gUnknown_03005448
@@ -9081,8 +9081,8 @@ sub_020116C0: @ 0x020116C0
 _020116CC: .4byte gPlayer
 _020116D0: .4byte 0xBFFFFFFF
 
-	thumb_func_start sub_020116D4
-sub_020116D4: @ 0x020116D4
+	thumb_func_start TaskDestructor_Player
+TaskDestructor_Player: @ 0x020116D4
 	push {lr}
 	ldr r2, _02011700 @ =gPlayer
 	adds r1, r2, #0
@@ -10734,7 +10734,7 @@ CreateGameStage: @ 0x02012308
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18
 	ldr r2, _0201245C @ =gPlayer
-	bl sub_0201114C
+	bl CreatePlayer
 _02012372:
 	movs r0, #0
 	bl InitCamera

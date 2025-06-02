@@ -40,7 +40,7 @@ void Task_GameStage(void);
 void TaskDestructor_GameStage(struct Task *);
 void sub_801F044(void);
 
-void sub_80213C0(u32, u32, Player *);
+void CreatePlayer(u32, u32, Player *);
 void CreateBossRunManager(u8);
 void StageInit_CollectRings(void);
 
@@ -197,7 +197,7 @@ void CreateGameStage(void)
     gUnknown_030053E0 = 0;
 
     if (!IS_EXTRA_STAGE(gCurrentLevel)) {
-        sub_80213C0(gSelectedCharacter, gCurrentLevel, &gPlayer);
+        CreatePlayer(gSelectedCharacter, gCurrentLevel, &gPlayer);
     }
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
