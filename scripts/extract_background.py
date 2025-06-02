@@ -30,43 +30,45 @@ typedef struct {
     // T = Tile-Index
     //
     // NOTE: It does NOT point to the tileset!
-    // NOTE/TODO (Jace): Should this also be const?
-    //                   It's in VRAM, so it doesn't make much sense?
-    u16 *tilesVram;
-    u16 *unk10;
+    u16 *layoutVram;
 
-    u16 unk14;
-    u16 unk16;
+    // Stage-Map: Metatiles
+    // Common Tilemaps: Tilemap-Tiles
+    u16 *layout;
+
+    // Tile-count on each axis
+    // - Stage maps: should be 12 (# per metatile)
+    // - Common Tilemaps: should be .targetTilesX/Y
+    u16 xTiles;
+    u16 yTiles;
+
     u16 unk18;
     u16 unk1A;
-
-    // assetId
-    u16 unk1C;
+    u16 tilemapId;
     u16 unk1E;
 
     u16 unk20;
     u16 unk22;
     u16 unk24;
-    u16 unk26;
-    u16 unk28;
-    u8 unk2A;
+
+    u16 targetTilesX;
+    u16 targetTilesY;
+
+    u8 paletteOffset;
     u8 animFrameCounter;
     u8 animDelayCounter;
 
-    u8 unk2D;
-
-    // Flags
-    // 0x200 = something about updating animations (sub_8003638)
-    u16 unk2E;
+    u16 flags;
 
     // apparently NOT signed?
     u16 scrollX;
     u16 scrollY;
     u16 prevScrollX;
     u16 prevScrollY;
-    u16 *unk38;
-    u16 unk3C;
-    u16 unk3E;
+
+    u16 *metatileMap;
+    u16 mapWidth;
+    u16 mapHeight;
 } Background;
 """
 
@@ -133,7 +135,7 @@ for line in background_reference.split("\n")[2:]:
             background_schema.append((field, key))
             break
 
-with open('baserom.gba', 'rb') as rom:
+with open('rom_data.bin', 'rb') as rom:
     end = address + length
     rom.seek(address)
     while rom.tell() < end:

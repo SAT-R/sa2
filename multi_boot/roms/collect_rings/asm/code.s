@@ -4,97 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200C574
-sub_0200C574: @ 0x0200C574
-	push {r4, lr}
-	ldr r4, _0200C588 @ =gCamera
-	ldr r0, [r4, #0x5c]
-	bl TaskDestroy
-	movs r0, #0
-	str r0, [r4, #0x5c]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C588: .4byte gCamera
-
-	thumb_func_start TaskDestructor_Camera
-TaskDestructor_Camera: @ 0x0200C58C
-	push {lr}
-	ldr r1, _0200C5B8 @ =gCamera
-	movs r0, #0
-	str r0, [r1, #0x5c]
-	ldr r3, _0200C5BC @ =gFlags
-	movs r2, #0
-	ldr r0, _0200C5C0 @ =gBgScrollRegs
-	movs r1, #3
-_0200C59C:
-	strh r2, [r0]
-	strh r2, [r0, #2]
-	adds r0, #4
-	subs r1, #1
-	cmp r1, #0
-	bge _0200C59C
-	ldr r0, [r3]
-	movs r1, #5
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r3]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C5B8: .4byte gCamera
-_0200C5BC: .4byte gFlags
-_0200C5C0: .4byte gBgScrollRegs
-
-	thumb_func_start Task_CallUpdateCamera
-Task_CallUpdateCamera: @ 0x0200C5C4
-	push {lr}
-	ldr r2, _0200C5F0 @ =gDispCnt
-	ldrh r1, [r2]
-	movs r3, #0xf0
-	lsls r3, r3, #5
-	adds r0, r3, #0
-	orrs r1, r0
-	strh r1, [r2]
-	ldr r0, _0200C5F4 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	bne _0200C5E2
-	ldr r0, _0200C5F8 @ =0x0000DFFF
-	ands r1, r0
-	strh r1, [r2]
-_0200C5E2:
-	ldr r0, _0200C5FC @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0200C600 @ =sub_0200C604
-	str r0, [r1, #8]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C5F0: .4byte gDispCnt
-_0200C5F4: .4byte gGameMode
-_0200C5F8: .4byte 0x0000DFFF
-_0200C5FC: .4byte gCurTask
-_0200C600: .4byte sub_0200C604
-
-	thumb_func_start sub_0200C604
-sub_0200C604: @ 0x0200C604
-	push {lr}
-	bl UpdateCamera
-	ldr r1, _0200C614 @ =gUnknown_030054B8
-	movs r0, #4
-	strb r0, [r1]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200C614: .4byte gUnknown_030054B8
-
-	thumb_func_start sub_0200C618
-sub_0200C618: @ 0x0200C618
-	bx lr
-	.align 2, 0
-
 	thumb_func_start sub_0200C61C
 sub_0200C61C: @ 0x0200C61C
 	push {lr}
@@ -13070,7 +12979,7 @@ sub_0201278C: @ 0x0201278C
 	str r0, [r4]
 	ldr r0, _020127B0 @ =gPlayer
 	bl sub_020111CC
-	bl sub_0200C574
+	bl DestroyCameraMovementTask
 	pop {r4}
 	pop {r0}
 	bx r0

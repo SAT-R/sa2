@@ -2,22 +2,6 @@
 
 .align 2, 0
 
-    .global gStageCameraBgTemplates
-gStageCameraBgTemplates:
-    .incbin "data/rom_data.bin", 0x00015A84, 0x100
-
-    .global sStageBgInitProcedures
-sStageBgInitProcedures:
-    .incbin "data/rom_data.bin", 0x00015B84, 0x4
-
-    .global sStageBgUpdateFuncs
-sStageBgUpdateFuncs:
-    .incbin "data/rom_data.bin", 0x00015B88, 0x4
-
-    .global sStageBgDimensions
-sStageBgDimensions:
-    .incbin "data/rom_data.bin", 0x00015B8C, 0x4
-
     .global gUnknown_02015C50
 gUnknown_02015C50:
     .incbin "data/rom_data.bin", 0x00015B90, 0x2

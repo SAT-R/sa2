@@ -5,6 +5,7 @@
 #include "trig.h"
 
 #include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/spot_light.h"
 
 #include "game/stage/player_super_sonic.h"
 
@@ -12,17 +13,6 @@
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/terrain_collision.h"
-#include "game/sa1_sa2_shared/spot_light.h"
-#include "game/stage/background/callbacks.h"
-#include "game/stage/background/dummy.h"
-#include "game/stage/background/zone_1.h"
-#include "game/stage/background/zone_2.h"
-#include "game/stage/background/zone_3.h"
-#include "game/stage/background/zone_4.h"
-#include "game/stage/background/zone_5.h"
-#include "game/stage/background/zone_6.h"
-#include "game/stage/background/zone_7.h"
-#include "game/stage/background/zone_final.h"
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
@@ -39,6 +29,32 @@
 #define STGBG_CHARBASE(arr)   ((arr)[2])
 #define STGBG_SCREENBASE(arr) ((arr)[3])
 
+#define CAMBG_MAP_FRONT_LAYER 0
+#define CAMBG_MAP_BACK_LAYER  1
+#define CAMBG_BACK_A_LAYER    2
+#define CAMBG_BACK_B_LAYER    3
+
+#if !WIDESCREEN_HACK
+#define CAM_SCREENBASE_BACK_A    28
+#define CAM_SCREENBASE_BACK_B    29
+#define CAM_SCREENBASE_BACK_C    26
+#define CAM_SCREENBASE_MAP_FRONT 30
+#define CAM_SCREENBASE_MAP_BACK  31
+#else
+#define CAM_SCREENBASE_BACK_A    48
+#define CAM_SCREENBASE_BACK_B    50
+#define CAM_SCREENBASE_BACK_C    58
+#define CAM_SCREENBASE_MAP_FRONT 52
+#define CAM_SCREENBASE_MAP_BACK  56
+#endif
+
+struct Backgrounds {
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
+};
+
 // Probably a array (as it's aligned 16)
 struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
 
@@ -51,9 +67,58 @@ void RenderMetatileLayers(s32, s32);
 
 void Task_CallUpdateCamera(void);
 void TaskDestructor_Camera(struct Task *);
-void CreateStageBg_Default(void);
+void Task_CallUpdateCameraInternal(void);
 
-#ifndef COLLECT_RINGS_ROM
+// Dummy callbacks
+void CreateStageBg_Default(void);
+void CreateStageBg_Dummy(void);
+void StageBgUpdate_Dummy(s32 x, s32 y);
+
+// Hblank utils
+void sub_801E3F0(void);
+void HBlankCB_801E434(int_vcount vcount);
+void HBlankCB_801E454(int_vcount vcount);
+void nullsub_801E494(void);
+void HBlankCB_BgUpdateZone5ActBoss(int_vcount vcount);
+void HBlankCB_BgUpdateZoneFinalActXX(int_vcount vcount);
+
+// SA2 Zone specific backgrounds
+void CreateStageBg_Zone1(void);
+void StageBgUpdate_Zone1Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone1ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone2(void);
+void StageBgUpdate_Zone2Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone2ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone3(void);
+void StageBgUpdate_Zone3Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone3ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone4(void);
+void StageBgUpdate_Zone4Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone4ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone5(void);
+void StageBgUpdate_Zone5Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone5ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone6_Acts(void);
+void CreateStageBg_Zone6_Boss(void);
+void StageBgUpdate_Zone6Acts12(s32 a, s32 b);
+void StageBgUpdate_Zone6ActBoss(s32 a, s32 b);
+
+void CreateStageBg_Zone7(void);
+void StageBgUpdate_Zone7Acts12(s32, s32);
+void StageBgUpdate_Zone7ActBoss(s32, s32);
+void Zone7BgUpdate_Inside(s32, s32);
+void Zone7BgUpdate_Outside(s32, s32);
+
+void CreateStageBg_ZoneFinal_0(void);
+void StageBgUpdate_Dummy(s32, s32);
+void StageBgUpdate_ZoneFinalActXX(s32, s32);
+void StageBgUpdate_ZoneFinalActTA53(s32, s32);
+
 const Background gStageCameraBgTemplates[4] = {
     [CAMBG_MAP_FRONT_LAYER] = {
         .graphics = {  
@@ -185,14 +250,18 @@ const Background gStageCameraBgTemplates[4] = {
     },
 };
 
+#ifndef COLLECT_RINGS_ROM
+
 const u16 gBossCameraYClamps[][2] = {
     [ZONE_1] = { 32, DISPLAY_HEIGHT + 56 },  [ZONE_2] = { 32, DISPLAY_HEIGHT + 44 },      [ZONE_3] = { 32, DISPLAY_HEIGHT + 56 },
     [ZONE_4] = { 32, DISPLAY_HEIGHT + 48 },  [ZONE_5] = { 32, DISPLAY_HEIGHT + 48 },      [ZONE_6] = { 32, DISPLAY_HEIGHT + 72 },
     [ZONE_7] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL + 1] = { 32, DISPLAY_HEIGHT + 104 },
 };
+#endif
 
-static const VoidFn sStageBgInitProcedures[] = {
+static const VoidFn sStageBgInitProcedures[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
+#ifndef COLLECT_RINGS_ROM
     [LEVEL_INDEX(ZONE_1, ACT_2)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = NULL, // Anti-Formatting
@@ -226,9 +295,13 @@ static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = NULL,
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
+#endif
 };
 
 static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
+#if COLLECT_RINGS_ROM
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdate_Dummy,
+#else
     // Zone 1
     [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdate_Zone1Acts12,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdate_Zone1Acts12,
@@ -280,10 +353,13 @@ static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone Unused
     [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = StageBgUpdate_Zone1Acts12,
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = StageBgUpdate_Zone6Acts12,
+#endif
 };
 
 static const s8 sStageBgDimensions[NUM_LEVEL_IDS][4] = {
+
     [LEVEL_INDEX(ZONE_1, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+#ifndef COLLECT_RINGS_ROM
     [LEVEL_INDEX(ZONE_1, ACT_2)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
     [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
     [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
@@ -317,16 +393,8 @@ static const s8 sStageBgDimensions[NUM_LEVEL_IDS][4] = {
     [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
     [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = STGBG_SCRN_DIM(512, 256, 2, CAM_SCREENBASE_BACK_A),
-};
-
-#else
-extern const Background gStageCameraBgTemplates[4];
-extern const u16 gBossCameraYClamps[][2];
-extern const VoidFn sStageBgInitProcedures[];
-extern const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS];
-extern const Background gStageCameraBgTemplates[4];
-extern const s8 sStageBgDimensions[NUM_LEVEL_IDS][4];
 #endif
+};
 
 void InitCamera(u32 level)
 {
@@ -742,7 +810,6 @@ void CreateStageBg_Zone1(void)
 
 void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 {
-
     s32 i;
     s32 initial1, initial2;
     s16 camY;
@@ -1249,8 +1316,6 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
 }
 
 /************************************ ZONE 6 ************************************/
-
-void CreateStageBg_Zone6_Boss(void);
 
 const s16 gUnknown_080D5BF0[] = {
     Q_8_8(0.00), Q_8_8(0.25), Q_8_8(2.25), Q_8_8(2.50), Q_8_8(3.50), Q_8_8(3.625), Q_8_8(5.625), Q_8_8(5.75), Q_8_8(6.75),
@@ -1948,7 +2013,14 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
 /************************************ ZONE FINAL ************************************/
 
-extern const u16 gUnknown_080D5CC2[16];
+#define NUM_ZONE7_BG_TRANSITION_POSITIONS 8
+
+const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
+    { 697, 1849, 8857, 11832, 18553, 22009, 25369, 27673 }, // ACT 1
+    { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
+};
+
+const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void CreateStageBg_ZoneFinal_0(void)
 {
@@ -2009,10 +2081,9 @@ void CreateStageBg_ZoneFinal_0(void)
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
+#endif // COLLECT_RINGS_ROM
 
 /************************************ MISC TASKS ************************************/
-
-void Task_CallUpdateCameraInternal(void);
 
 void DestroyCameraMovementTask(void)
 {
@@ -2030,10 +2101,12 @@ void TaskDestructor_Camera(struct Task *unused)
         gBgScrollRegs[i][1] = 0;
     }
 
+#ifndef COLLECT_RINGS_ROM
     if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_EXECUTE_HBLANK_COPY0)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
         gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY0;
     }
+#endif
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
 }
@@ -2043,9 +2116,11 @@ void Task_CallUpdateCamera(void)
     gDispCnt |= (DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON);
 
 #if (GAME == GAME_SA2)
+#ifndef COLLECT_RINGS_ROM
     if (IS_EXTRA_STAGE(gCurrentLevel)) {
         gDispCnt &= ~DISPCNT_BG3_ON;
     }
+#endif
 #endif
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -2061,6 +2136,7 @@ void Task_CallUpdateCameraInternal(void)
     gUnknown_030054B8 = 4;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void CreateStageBg_Default(void)
 {
     gBgScrollRegs[0][0] = 0;
@@ -2068,9 +2144,12 @@ void CreateStageBg_Default(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 }
-void CreateStageBg_Dummy(void) { }
-void StageBgUpdate_Dummy(s32 x, s32 y) { }
 
+void CreateStageBg_Dummy(void) { }
+#endif
+
+void StageBgUpdate_Dummy(s32 x, s32 y) { }
+#ifndef COLLECT_RINGS_ROM
 /************************************ BOSS 1 ************************************/
 
 void StageBgUpdate_Zone1ActBoss(UNUSED s32 x, UNUSED s32 y)
@@ -2128,18 +2207,10 @@ void StageBgUpdate_Zone6ActBoss(UNUSED s32 a, UNUSED s32 b)
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] + 1) & 0xFF;
 }
 
-/************************************ BOSS 7 ************************************/
+/*********************************** BOSS/ZONE 7 ********************************/
 
-#define NUM_ZONE7_BG_TRANSITION_POSITIONS 8
-
-const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
-    { 697, 1849, 8857, 11832, 18553, 22009, 25369, 27673 }, // ACT 1
-    { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
-};
-
-const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
-
-// Not sure why this is defined here
+// Not sure why this is defined here, it's possible the function name was confused
+// and this was defined twice in the same function
 void StageBgUpdate_Zone7Acts12(s32 x, s32 y)
 {
     u32 act = !!(gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1)));
@@ -2228,6 +2299,9 @@ void sub_801E3F0(void)
         cam->shiftY = rand - 8;
     }
 }
+#endif
+
+#ifndef COLLECT_RINGS_ROM
 
 void HBlankCB_801E434(int_vcount vcount)
 {

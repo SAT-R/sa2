@@ -51,7 +51,11 @@
 #define NUM_LEVEL_IDS_MP 4
 #define NUM_LEVEL_IDS    18
 #elif (GAME == GAME_SA2)
+#ifndef COLLECT_RINGS_ROM
 #define NUM_LEVEL_IDS 34
+#else
+#define NUM_LEVEL_IDS 1
+#endif
 #endif
 
 #define LEVEL_TO_ZONE(level) ((level) >> 2)
