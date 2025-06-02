@@ -26199,8 +26199,8 @@ _0200D274:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_0200d27c
-sub_0200d27c: @ 0x0200d27c
+	thumb_func_start sub_801F100
+sub_801F100: @ 0x0200d27c
 	ldr r1, _0200D28C @ =gUnknown_03001AB2
 	movs r0, #0
 	strb r0, [r1]

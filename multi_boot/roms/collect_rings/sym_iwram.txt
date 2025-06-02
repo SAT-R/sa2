@@ -43,8 +43,8 @@
 . = 0x000002B4; gUnknown_030002B4 = .;
 . = 0x000002B6; gUnknown_030002B6 = .;
 . = 0x00000378; gUnknown_03000378 = .;
-. = 0x00000400; gUnknown_03000400 = .;
-. = 0x00000410; gUnknown_03000410 = .;
+. = 0x00000400; gUnknown_3000410 = .;
+. = 0x00000410; gUnknown_3000420 = .;
 . = 0x00000420; 
 build/collect_rings/src/sa2/multi_sio.o(.data);
 build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);

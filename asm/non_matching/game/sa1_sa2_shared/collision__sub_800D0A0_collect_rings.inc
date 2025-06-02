@@ -288,11 +288,11 @@ _02006A3E:
 	subs r0, r0, r1
 	movs r3, #8
 	rsbs r3, r3, #0
-	ldr r1, _02006AB0 @ =sub_0200CDB8
+	ldr r1, _02006AB0 @ =sub_801EC3C
 	str r1, [sp]
 	mov r1, sb
 	ldr r2, [sp, #0x2c]
-	bl sub_0200D27C
+	bl sub_801F100
 	adds r5, r0, #0
 	cmp r5, #0
 	bge _02006AB4
@@ -320,7 +320,7 @@ _02006A3E:
 	.align 2, 0
 _02006AA8: .4byte gPlayer
 _02006AAC: .4byte 0xFFFFFF00
-_02006AB0: .4byte sub_0200CDB8
+_02006AB0: .4byte sub_801EC3C
 _02006AB4:
 	movs r1, #8
 	mov r0, sl
@@ -364,12 +364,12 @@ _02006AEE:
 	movs r0, #0x17
 	ldrsb r0, [r6, r0]
 	add r0, r8
-	ldr r1, _02006B44 @ =sub_0200CDB8
+	ldr r1, _02006B44 @ =sub_801EC3C
 	str r1, [sp]
 	mov r1, sb
 	ldr r2, [sp, #0x2c]
 	movs r3, #8
-	bl sub_0200D27C
+	bl sub_801F100
 	adds r5, r0, #0
 	cmp r5, #0
 	bge _02006B48
@@ -394,7 +394,7 @@ _02006AEE:
 	adds r0, r0, r1
 	b _02006B4C
 	.align 2, 0
-_02006B44: .4byte sub_0200CDB8
+_02006B44: .4byte sub_801EC3C
 _02006B48:
 	str r7, [r6, #8]
 	ldr r0, [sp, #0x34]
@@ -591,10 +591,10 @@ _02006CA6:
 	subs r1, r2, r1
 	movs r3, #8
 	rsbs r3, r3, #0
-	ldr r2, _02006CF0 @ =sub_0200CCC0
+	ldr r2, _02006CF0 @ =sub_801EB44
 	str r2, [sp]
 	ldr r2, [sp, #0x2c]
-	bl sub_0200D27C
+	bl sub_801F100
 	adds r5, r0, #0
 	cmp r5, #0
 	bge _02006CF4
@@ -619,7 +619,7 @@ _02006CA6:
 	str r0, [r6, #8]
 	b _02006F1C
 	.align 2, 0
-_02006CF0: .4byte sub_0200CCC0
+_02006CF0: .4byte sub_801EB44
 _02006CF4:
 	ldr r1, [r6, #0x20]
 	movs r0, #2
@@ -793,11 +793,11 @@ _02006E28:
 	movs r1, #0x16
 	ldrsb r1, [r4, r1]
 	add r1, r8
-	ldr r2, _02006E74 @ =sub_0200CCC0
+	ldr r2, _02006E74 @ =sub_801EB44
 	str r2, [sp]
 	ldr r2, [sp, #0x2c]
 	movs r3, #8
-	bl sub_0200D27C
+	bl sub_801F100
 	adds r5, r0, #0
 	cmp r5, #0
 	bge _02006E78
@@ -823,7 +823,7 @@ _02006E6E:
 	str r0, [r4, #8]
 	b _02006F1C
 	.align 2, 0
-_02006E74: .4byte sub_0200CCC0
+_02006E74: .4byte sub_801EB44
 _02006E78:
 	ldr r1, [r4, #0x20]
 	movs r0, #2

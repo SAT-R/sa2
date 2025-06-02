@@ -40,7 +40,7 @@ extern void sub_02000248(void);
 extern void sub_02000480(void);
 extern void sub_02000c6c(void);
 extern void sub_0200be24(void);
-extern void sub_0200d27c(void);
+extern void sub_801F100(void);
 extern void sub_020018a0(void);
 
 void sub_020000c4(void)
@@ -71,7 +71,7 @@ void sub_020000c4(void)
     sub_02000c6c();
     sub_020018a0();
     sub_0200be24();
-    sub_0200d27c();
+    sub_801F100();
     gUnknown_03003330.unkF = 0;
     gUnknown_03003330.unkC = 0;
     gUnknown_03003330.unk8 = 0;

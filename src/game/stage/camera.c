@@ -2290,6 +2290,8 @@ void StageBgUpdate_ZoneFinalActTA53(UNUSED s32 a, UNUSED s32 b)
 
 /************************************ CALLBACKS ************************************/
 
+#endif
+
 // Unused
 void sub_801E3F0(void)
 {
@@ -2299,7 +2301,6 @@ void sub_801E3F0(void)
         cam->shiftY = rand - 8;
     }
 }
-#endif
 
 #ifndef COLLECT_RINGS_ROM
 
