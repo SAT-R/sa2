@@ -4,1066 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start AllocateCharacterStageGfx
-AllocateCharacterStageGfx: @ 0x0200D2D8
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0
-	adds r6, r1, #0
-	adds r0, #0x60
-	movs r7, #0
-	ldrsb r7, [r0, r7]
-	adds r4, r6, #0
-	adds r4, #0xc
-	cmp r7, #0
-	bne _0200D2F4
-	ldr r0, _0200D2F0 @ =0x06010000
-	b _0200D2FA
-	.align 2, 0
-_0200D2F0: .4byte 0x06010000
-_0200D2F4:
-	movs r0, #0x40
-	bl VramMalloc
-_0200D2FA:
-	str r0, [r4, #4]
-	movs r2, #0
-	strh r2, [r4, #8]
-	adds r0, r5, #0
-	adds r0, #0x68
-	ldrh r0, [r0]
-	strh r0, [r4, #0xa]
-	adds r0, r5, #0
-	adds r0, #0x6a
-	ldrh r1, [r0]
-	adds r0, r4, #0
-	adds r0, #0x20
-	strb r1, [r0]
-	adds r1, r4, #0
-	adds r1, #0x21
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, [r5, #8]
-	asrs r0, r0, #8
-	strh r0, [r4, #0x16]
-	ldr r0, [r5, #0xc]
-	asrs r0, r0, #8
-	strh r0, [r4, #0x18]
-	adds r0, r7, #0
-	adds r0, #0x10
-	lsls r0, r0, #6
-	strh r0, [r4, #0x1a]
-	strh r2, [r4, #0x1c]
-	adds r1, #1
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _0200D34C @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0200D354
-	ldr r0, _0200D350 @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	adds r1, #3
-	b _0200D35A
-	.align 2, 0
-_0200D34C: .4byte gGameMode
-_0200D350: .4byte 0x04000128
-_0200D354:
-	adds r1, r4, #0
-	adds r1, #0x25
-	movs r0, #0
-_0200D35A:
-	strb r0, [r1]
-	ldr r0, _0200D380 @ =0x000C2020
-	orrs r0, r7
-	str r0, [r4, #0x10]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r4, #0x28]
-	str r0, [r4, #0x30]
-	movs r1, #0
-	strh r1, [r6]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r6, #2]
-	strh r0, [r6, #4]
-	strh r1, [r6, #6]
-	strh r1, [r6, #8]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200D380: .4byte 0x000C2020
-
-	thumb_func_start InitializePlayer
-InitializePlayer: @ 0x0200D384
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	ldr r0, [r5, #8]
-	ldr r1, [r5, #0xc]
-	ands r0, r1
-	adds r0, #1
-	cmp r0, #0
-	beq _0200D39A
-	movs r0, #0xe6
-	lsls r0, r0, #9
-	b _0200D3A4
-_0200D39A:
-	adds r0, r5, #0
-	adds r0, #0x74
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	lsls r0, r0, #8
-_0200D3A4:
-	str r0, [r5, #8]
-	adds r0, r5, #0
-	adds r0, #0x76
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	lsls r0, r0, #8
-	str r0, [r5, #0xc]
-	ldr r0, _0200D4D8 @ =sub_0200F2BC
-	str r0, [r5]
-	ldr r0, _0200D4DC @ =gPlayerControls
-	ldrh r2, [r0]
-	ldrh r1, [r0, #2]
-	orrs r2, r1
-	ldrh r0, [r0, #4]
-	orrs r2, r0
-	adds r0, r5, #0
-	adds r0, #0x5c
-	movs r3, #0
-	movs r4, #0
-	strh r2, [r0]
-	adds r0, #2
-	strh r2, [r0]
-	strh r4, [r5, #0x10]
-	strh r4, [r5, #0x12]
-	strh r4, [r5, #0x14]
-	movs r0, #0x80
-	lsls r0, r0, #0xe
-	str r0, [r5, #0x20]
-	adds r0, r5, #0
-	adds r0, #0x24
-	strb r3, [r0]
-	movs r0, #6
-	strb r0, [r5, #0x16]
-	movs r0, #0xe
-	strb r0, [r5, #0x17]
-	adds r1, r5, #0
-	adds r1, #0x25
-	movs r0, #0x78
-	strb r0, [r1]
-	strh r4, [r5, #0x26]
-	adds r0, r5, #0
-	adds r0, #0x29
-	strb r3, [r0]
-	subs r0, #1
-	strb r3, [r0]
-	adds r1, #0x13
-	movs r0, #1
-	strb r0, [r1]
-	movs r0, #0x90
-	lsls r0, r0, #4
-	str r0, [r5, #0x40]
-	movs r0, #0xc0
-	lsls r0, r0, #3
-	str r0, [r5, #0x44]
-	movs r0, #8
-	str r0, [r5, #0x48]
-	movs r0, #0x40
-	str r0, [r5, #0x4c]
-	adds r0, r5, #0
-	adds r0, #0x64
-	strh r4, [r0]
-	adds r1, #0x2e
-	ldr r0, _0200D4E0 @ =0x0000FFFF
-	strh r0, [r1]
-	adds r1, #2
-	movs r0, #1
-	rsbs r0, r0, #0
-	strh r0, [r1]
-	adds r1, #2
-	strh r0, [r1]
-	strh r4, [r5, #0x2c]
-	strh r4, [r5, #0x2e]
-	strh r4, [r5, #0x30]
-	strh r4, [r5, #0x32]
-	str r4, [r5, #0x3c]
-	adds r0, r5, #0
-	adds r0, #0x37
-	strb r3, [r0]
-	strh r4, [r5, #0x2a]
-	adds r1, #8
-	movs r0, #0xb4
-	lsls r0, r0, #1
-	strh r0, [r1]
-	adds r0, r5, #0
-	adds r0, #0x7e
-	strh r4, [r0]
-	subs r0, #2
-	strh r4, [r0]
-	adds r0, #6
-	movs r1, #0x80
-	lsls r1, r1, #1
-	strh r1, [r0]
-	subs r0, #2
-	strh r1, [r0]
-	adds r0, #4
-	strb r3, [r0]
-	subs r0, #0x23
-	strb r3, [r0]
-	adds r0, #1
-	strb r3, [r0]
-	adds r0, #1
-	strb r3, [r0]
-	adds r1, r5, #0
-	adds r1, #0x86
-	movs r0, #0x1e
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0x3c
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0xa
-	strb r0, [r1]
-	adds r0, r5, #0
-	adds r0, #0x6d
-	strb r3, [r0]
-	adds r0, #1
-	strb r3, [r0]
-	adds r0, #1
-	strb r3, [r0]
-	subs r0, #0x15
-	strb r3, [r0]
-	subs r0, #2
-	strh r4, [r0]
-	adds r0, #0x14
-	strb r3, [r0]
-	adds r0, #5
-	strb r3, [r0]
-	subs r0, #1
-	strb r3, [r0]
-	subs r0, #0x3a
-	strb r3, [r0]
-	adds r0, r5, #0
-	bl sub_02010FF4
-	adds r0, r5, #0
-	adds r0, #0x99
-	movs r1, #3
-	adds r4, r0, #0
-	movs r3, #0
-_0200D4BA:
-	stm r0!, {r3}
-	adds r2, r1, #0
-	subs r1, #1
-	cmp r2, #0
-	bne _0200D4BA
-	movs r0, #0x7f
-	strb r0, [r4]
-	ldr r0, _0200D4E4 @ =gMPAttackEffect2Regs
-	str r2, [r0]
-	ldr r0, _0200D4E8 @ =gShouldSpawnMPAttack2Effect
-	strb r2, [r0]
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200D4D8: .4byte sub_0200F2BC
-_0200D4DC: .4byte gPlayerControls
-_0200D4E0: .4byte 0x0000FFFF
-_0200D4E4: .4byte gMPAttackEffect2Regs
-_0200D4E8: .4byte gShouldSpawnMPAttack2Effect
-
-	thumb_func_start sub_0200D4EC
-sub_0200D4EC: @ 0x0200D4EC
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r6, r1, #0
-	adds r7, r2, #0
-	cmp r6, #0
-	bne _0200D504
-	add r6, sp, #8
-_0200D504:
-	cmp r7, #0
-	bne _0200D50A
-	add r7, sp, #0xc
-_0200D50A:
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r3, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	subs r1, r0, r1
-	movs r0, #0x38
-	adds r0, r0, r4
-	mov r8, r0
-	ldrb r2, [r0]
-	movs r5, #0x12
-	ldrsh r0, [r4, r5]
-	ldr r5, _0200D5A0 @ =0x000002FF
-	cmp r0, r5
-	bgt _0200D536
-	movs r0, #0x80
-	orrs r2, r0
-_0200D536:
-	movs r0, #9
-	add r0, sp
-	mov sb, r0
-	str r0, [sp]
-	ldr r5, _0200D5A4 @ =sub_801ED24
-	mov sl, r5
-	str r5, [sp, #4]
-	adds r0, r3, #0
-	movs r3, #8
-	rsbs r3, r3, #0
-	bl sub_801E4E4
-	adds r5, r0, #0
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r0, r0, r1
-	mov ip, r0
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	adds r1, r0, r1
-	mov r0, r8
-	ldrb r2, [r0]
-	movs r3, #0x12
-	ldrsh r0, [r4, r3]
-	ldr r3, _0200D5A0 @ =0x000002FF
-	cmp r0, r3
-	bgt _0200D57A
-	movs r0, #0x80
-	orrs r2, r0
-_0200D57A:
-	mov r4, sp
-	adds r4, #0xa
-	str r4, [sp]
-	mov r0, sl
-	str r0, [sp, #4]
-	mov r0, ip
-	movs r3, #8
-	rsbs r3, r3, #0
-	bl sub_801E4E4
-	adds r1, r0, #0
-	cmp r5, r1
-	bge _0200D5A8
-	adds r2, r5, #0
-	mov r3, sb
-	ldrb r0, [r3]
-	strb r0, [r6]
-	str r1, [r7]
-	b _0200D5B0
-	.align 2, 0
-_0200D5A0: .4byte 0x000002FF
-_0200D5A4: .4byte sub_801ED24
-_0200D5A8:
-	adds r2, r1, #0
-	ldrb r0, [r4]
-	strb r0, [r6]
-	str r5, [r7]
-_0200D5B0:
-	adds r0, r2, #0
-	add sp, #0x10
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_0200D5C4
-sub_0200D5C4: @ 0x0200D5C4
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r6, r1, #0
-	adds r7, r2, #0
-	cmp r6, #0
-	bne _0200D5DC
-	add r6, sp, #8
-_0200D5DC:
-	cmp r7, #0
-	bne _0200D5E2
-	add r7, sp, #0xc
-_0200D5E2:
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	adds r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	adds r3, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	subs r1, r0, r1
-	movs r0, #0x38
-	adds r0, r0, r4
-	mov r8, r0
-	ldrb r2, [r0]
-	movs r5, #0x12
-	ldrsh r0, [r4, r5]
-	ldr r5, _0200D674 @ =0x000002FF
-	cmp r0, r5
-	bgt _0200D60E
-	movs r0, #0x80
-	orrs r2, r0
-_0200D60E:
-	movs r0, #9
-	add r0, sp
-	mov sb, r0
-	str r0, [sp]
-	ldr r5, _0200D678 @ =sub_801ED24
-	mov sl, r5
-	str r5, [sp, #4]
-	adds r0, r3, #0
-	movs r3, #8
-	bl sub_801E4E4
-	adds r5, r0, #0
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	adds r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	adds r0, r0, r1
-	mov ip, r0
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	adds r1, r0, r1
-	mov r0, r8
-	ldrb r2, [r0]
-	movs r3, #0x12
-	ldrsh r0, [r4, r3]
-	ldr r3, _0200D674 @ =0x000002FF
-	cmp r0, r3
-	bgt _0200D650
-	movs r0, #0x80
-	orrs r2, r0
-_0200D650:
-	mov r4, sp
-	adds r4, #0xa
-	str r4, [sp]
-	mov r0, sl
-	str r0, [sp, #4]
-	mov r0, ip
-	movs r3, #8
-	bl sub_801E4E4
-	adds r1, r0, #0
-	cmp r5, r1
-	bge _0200D67C
-	adds r2, r5, #0
-	mov r3, sb
-	ldrb r0, [r3]
-	strb r0, [r6]
-	str r1, [r7]
-	b _0200D684
-	.align 2, 0
-_0200D674: .4byte 0x000002FF
-_0200D678: .4byte sub_801ED24
-_0200D67C:
-	adds r2, r1, #0
-	ldrb r0, [r4]
-	strb r0, [r6]
-	str r5, [r7]
-_0200D684:
-	adds r0, r2, #0
-	add sp, #0x10
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_0200D698
-sub_0200D698: @ 0x0200D698
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r6, r1, #0
-	adds r7, r2, #0
-	cmp r6, #0
-	bne _0200D6B0
-	add r6, sp, #8
-_0200D6B0:
-	cmp r7, #0
-	bne _0200D6B6
-	add r7, sp, #0xc
-_0200D6B6:
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	subs r3, r0, r1
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r1, r0, r1
-	movs r0, #0x38
-	adds r0, r0, r4
-	mov r8, r0
-	ldrb r2, [r0]
-	movs r5, #0x12
-	ldrsh r0, [r4, r5]
-	ldr r5, _0200D74C @ =0x000002FF
-	cmp r0, r5
-	bgt _0200D6E2
-	movs r0, #0x80
-	orrs r2, r0
-_0200D6E2:
-	movs r0, #9
-	add r0, sp
-	mov sb, r0
-	str r0, [sp]
-	ldr r5, _0200D750 @ =sub_801EE64
-	mov sl, r5
-	str r5, [sp, #4]
-	adds r0, r3, #0
-	movs r3, #8
-	rsbs r3, r3, #0
-	bl sub_801E4E4
-	adds r5, r0, #0
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	subs r0, r0, r1
-	mov ip, r0
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	adds r0, #2
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	adds r1, r0, r1
-	mov r0, r8
-	ldrb r2, [r0]
-	movs r3, #0x12
-	ldrsh r0, [r4, r3]
-	ldr r3, _0200D74C @ =0x000002FF
-	cmp r0, r3
-	bgt _0200D726
-	movs r0, #0x80
-	orrs r2, r0
-_0200D726:
-	mov r4, sp
-	adds r4, #0xa
-	str r4, [sp]
-	mov r0, sl
-	str r0, [sp, #4]
-	mov r0, ip
-	movs r3, #8
-	rsbs r3, r3, #0
-	bl sub_801E4E4
-	adds r1, r0, #0
-	cmp r5, r1
-	bge _0200D754
-	adds r2, r5, #0
-	mov r3, sb
-	ldrb r0, [r3]
-	strb r0, [r6]
-	str r1, [r7]
-	b _0200D75C
-	.align 2, 0
-_0200D74C: .4byte 0x000002FF
-_0200D750: .4byte sub_801EE64
-_0200D754:
-	adds r2, r1, #0
-	ldrb r0, [r4]
-	strb r0, [r6]
-	str r5, [r7]
-_0200D75C:
-	adds r0, r2, #0
-	add sp, #0x10
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_0200D770
-sub_0200D770: @ 0x0200D770
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r2, [r4, #0x20]
-	movs r0, #0x80
-	lsls r0, r0, #2
-	ands r0, r2
-	cmp r0, #0
-	bne _0200D7C4
-	movs r0, #0x80
-	lsls r0, r0, #0x10
-	ands r0, r2
-	cmp r0, #0
-	bne _0200D798
-	ldr r0, _0200D7BC @ =gPlayer
-	ldr r1, _0200D7C0 @ =sub_0200F2BC
-	str r1, [r0]
-	movs r0, #0x13
-	rsbs r0, r0, #0
-	ands r2, r0
-	str r2, [r4, #0x20]
-_0200D798:
-	ldr r1, [r4, #0x20]
-	movs r0, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0200D7B2
-	movs r0, #5
-	rsbs r0, r0, #0
-	ands r1, r0
-	str r1, [r4, #0x20]
-	adds r0, r4, #0
-	movs r1, #0xe
-	bl Player_HandleSpriteYOffsetChange
-_0200D7B2:
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #0xe
-	strb r0, [r4, #0x17]
-	b _0200D7CC
-	.align 2, 0
-_0200D7BC: .4byte gPlayer
-_0200D7C0: .4byte sub_0200F2BC
-_0200D7C4:
-	movs r0, #0x13
-	rsbs r0, r0, #0
-	ands r2, r0
-	str r2, [r4, #0x20]
-_0200D7CC:
-	adds r1, r4, #0
-	adds r1, #0x84
-	movs r0, #0
-	strb r0, [r1]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_0200D7DC
-sub_0200D7DC: @ 0x0200D7DC
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r0, #0x38
-	ldrb r5, [r0]
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #3
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r6, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r1, r0, #8
-	adds r2, r5, #0
-	movs r3, #0x12
-	ldrsh r0, [r4, r3]
-	ldr r3, _0200D8CC @ =0x000002FF
-	mov sb, r3
-	cmp r0, sb
-	bgt _0200D80E
-	movs r2, #0x80
-	orrs r2, r5
-_0200D80E:
-	movs r3, #8
-	rsbs r3, r3, #0
-	movs r7, #0
-	str r7, [sp]
-	ldr r0, _0200D8D0 @ =sub_801ED24
-	mov r8, r0
-	str r0, [sp, #4]
-	adds r0, r6, #0
-	bl sub_801E4E4
-	adds r2, r0, #0
-	cmp r2, #0
-	bgt _0200D832
-	lsls r1, r2, #8
-	ldr r0, [r4, #8]
-	subs r0, r0, r1
-	str r0, [r4, #8]
-	strh r7, [r4, #0x10]
-_0200D832:
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	adds r0, #3
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	adds r3, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r1, r0, #8
-	adds r2, r5, #0
-	movs r5, #0x12
-	ldrsh r0, [r4, r5]
-	cmp r0, sb
-	bgt _0200D850
-	movs r0, #0x80
-	orrs r2, r0
-_0200D850:
-	str r7, [sp]
-	mov r0, r8
-	str r0, [sp, #4]
-	adds r0, r3, #0
-	movs r3, #8
-	bl sub_801E4E4
-	adds r2, r0, #0
-	cmp r2, #0
-	bgt _0200D86E
-	lsls r1, r2, #8
-	ldr r0, [r4, #8]
-	adds r0, r0, r1
-	str r0, [r4, #8]
-	strh r7, [r4, #0x10]
-_0200D86E:
-	add r2, sp, #0xc
-	adds r0, r4, #0
-	add r1, sp, #8
-	bl sub_02011370
-	adds r2, r0, #0
-	cmp r2, #0
-	bge _0200D90A
-	ldrh r0, [r4, #0x12]
-	lsls r0, r0, #0x10
-	asrs r1, r0, #0x18
-	adds r1, #6
-	rsbs r1, r1, #0
-	cmp r2, r1
-	bge _0200D892
-	ldr r0, [sp, #0xc]
-	cmp r0, r1
-	blt _0200D90A
-_0200D892:
-	add r0, sp, #8
-	ldrb r1, [r0]
-	adds r0, r4, #0
-	adds r0, #0x24
-	strb r1, [r0]
-	lsls r1, r2, #8
-	ldr r0, [r4, #0xc]
-	adds r0, r0, r1
-	str r0, [r4, #0xc]
-	adds r0, r4, #0
-	bl sub_0200D770
-	add r0, sp, #8
-	ldrb r2, [r0]
-	adds r0, r2, #0
-	adds r0, #0x20
-	movs r1, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0200D8D4
-	strh r7, [r4, #0x10]
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	movs r1, #0xbd
-	lsls r1, r1, #4
-	cmp r0, r1
-	ble _0200D8EE
-	strh r1, [r4, #0x12]
-	b _0200D8EE
-	.align 2, 0
-_0200D8CC: .4byte 0x000002FF
-_0200D8D0: .4byte sub_801ED24
-_0200D8D4:
-	adds r1, r2, #0
-	adds r1, #0x10
-	movs r0, #0x20
-	ands r1, r0
-	cmp r1, #0
-	bne _0200D8E6
-	strh r1, [r4, #0x12]
-	ldrh r0, [r4, #0x10]
-	b _0200D908
-_0200D8E6:
-	ldrh r0, [r4, #0x12]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x11
-	strh r0, [r4, #0x12]
-_0200D8EE:
-	movs r3, #0x12
-	ldrsh r1, [r4, r3]
-	cmp r1, #0
-	bge _0200D8F8
-	rsbs r1, r1, #0
-_0200D8F8:
-	strh r1, [r4, #0x14]
-	add r0, sp, #8
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #0
-	bge _0200D90A
-	rsbs r0, r1, #0
-_0200D908:
-	strh r0, [r4, #0x14]
-_0200D90A:
-	add sp, #0x10
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_0200D918
-sub_0200D918: @ 0x0200D918
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r0, #0x38
-	ldrb r5, [r0]
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #3
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r7, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r1, r0, #8
-	adds r2, r5, #0
-	movs r3, #0x12
-	ldrsh r0, [r4, r3]
-	ldr r3, _0200D9F4 @ =0x000002FF
-	mov sb, r3
-	cmp r0, sb
-	bgt _0200D94A
-	movs r2, #0x80
-	orrs r2, r5
-_0200D94A:
-	movs r3, #8
-	rsbs r3, r3, #0
-	movs r6, #0
-	str r6, [sp]
-	ldr r0, _0200D9F8 @ =sub_801ED24
-	mov r8, r0
-	str r0, [sp, #4]
-	adds r0, r7, #0
-	bl sub_801E4E4
-	cmp r0, #0
-	bgt _0200D96C
-	lsls r1, r0, #8
-	ldr r0, [r4, #8]
-	subs r0, r0, r1
-	str r0, [r4, #8]
-	strh r6, [r4, #0x10]
-_0200D96C:
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	adds r0, #3
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	adds r3, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r1, r0, #8
-	adds r2, r5, #0
-	movs r5, #0x12
-	ldrsh r0, [r4, r5]
-	cmp r0, sb
-	bgt _0200D98A
-	movs r0, #0x80
-	orrs r2, r0
-_0200D98A:
-	str r6, [sp]
-	mov r0, r8
-	str r0, [sp, #4]
-	adds r0, r3, #0
-	movs r3, #8
-	bl sub_801E4E4
-	cmp r0, #0
-	bgt _0200D9A6
-	lsls r1, r0, #8
-	ldr r0, [r4, #8]
-	adds r0, r0, r1
-	str r0, [r4, #8]
-	strh r6, [r4, #0x10]
-_0200D9A6:
-	add r2, sp, #0xc
-	adds r0, r4, #0
-	add r1, sp, #8
-	bl sub_02011324
-	cmp r0, #0
-	bgt _0200DA00
-	lsls r1, r0, #8
-	ldr r0, [r4, #0xc]
-	subs r0, r0, r1
-	str r0, [r4, #0xc]
-	add r0, sp, #8
-	ldrb r2, [r0]
-	adds r0, r2, #0
-	adds r0, #0x20
-	movs r1, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0200D9FC
-	add r0, sp, #8
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	subs r0, #0x40
-	cmp r0, #0
-	ble _0200D9FC
-	adds r0, r4, #0
-	adds r0, #0x24
-	strb r2, [r0]
-	adds r0, r4, #0
-	bl sub_0200D770
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	cmp r0, #0
-	bge _0200D9F0
-	rsbs r0, r0, #0
-_0200D9F0:
-	strh r0, [r4, #0x14]
-	b _0200DA00
-	.align 2, 0
-_0200D9F4: .4byte 0x000002FF
-_0200D9F8: .4byte sub_801ED24
-_0200D9FC:
-	movs r0, #0
-	strh r0, [r4, #0x12]
-_0200DA00:
-	add sp, #0x10
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_0200DA10
-sub_0200DA10: @ 0x0200DA10
-	push {r4, r5, r6, r7, lr}
-	sub sp, #0x10
-	adds r4, r0, #0
-	adds r2, r4, #0
-	adds r2, #0x38
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	subs r0, #3
-	movs r1, #0x16
-	ldrsb r1, [r4, r1]
-	subs r6, r0, r1
-	ldr r0, [r4, #0xc]
-	asrs r5, r0, #8
-	ldrb r2, [r2]
-	movs r0, #0x12
-	ldrsh r1, [r4, r0]
-	ldr r0, _0200DA84 @ =0x000002FF
-	cmp r1, r0
-	bgt _0200DA3A
-	movs r0, #0x80
-	orrs r2, r0
-_0200DA3A:
-	movs r3, #8
-	rsbs r3, r3, #0
-	movs r7, #0
-	str r7, [sp]
-	ldr r0, _0200DA88 @ =sub_801ED24
-	str r0, [sp, #4]
-	adds r0, r6, #0
-	adds r1, r5, #0
-	bl sub_801E4E4
-	cmp r0, #0
-	bgt _0200DA60
-	lsls r0, r0, #8
-	ldr r1, [r4, #8]
-	subs r1, r1, r0
-	str r1, [r4, #8]
-	strh r7, [r4, #0x10]
-	ldrh r0, [r4, #0x12]
-	strh r0, [r4, #0x14]
-_0200DA60:
-	add r5, sp, #0xc
-	adds r0, r4, #0
-	add r1, sp, #8
-	adds r2, r5, #0
-	bl sub_02011324
-	cmp r0, #0
-	bgt _0200DA8C
-	lsls r0, r0, #8
-	ldr r1, [r4, #0xc]
-	subs r1, r1, r0
-	str r1, [r4, #0xc]
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	cmp r0, #0
-	bge _0200DAC0
-	strh r7, [r4, #0x12]
-	b _0200DAC0
-	.align 2, 0
-_0200DA84: .4byte 0x000002FF
-_0200DA88: .4byte sub_801ED24
-_0200DA8C:
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	cmp r0, #0
-	blt _0200DAC0
-	adds r0, r4, #0
-	add r1, sp, #8
-	adds r2, r5, #0
-	bl sub_02011370
-	cmp r0, #0
-	bgt _0200DAC0
-	lsls r1, r0, #8
-	ldr r0, [r4, #0xc]
-	adds r0, r0, r1
-	str r0, [r4, #0xc]
-	add r0, sp, #8
-	ldrb r1, [r0]
-	adds r0, r4, #0
-	adds r0, #0x24
-	strb r1, [r0]
-	adds r0, r4, #0
-	bl sub_0200D770
-	strh r7, [r4, #0x12]
-	ldrh r0, [r4, #0x10]
-	strh r0, [r4, #0x14]
-_0200DAC0:
-	add sp, #0x10
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
 	thumb_func_start sub_0200DAC8
 sub_0200DAC8: @ 0x0200DAC8
 	push {r4, r5, r6, lr}
@@ -1110,7 +50,7 @@ _0200DB16:
 	adds r0, r4, #0
 	add r1, sp, #8
 	adds r2, r5, #0
-	bl sub_02011324
+	bl sub_8029AC0
 	cmp r0, #0
 	bgt _0200DB44
 	lsls r0, r0, #8
@@ -1134,7 +74,7 @@ _0200DB44:
 	adds r0, r4, #0
 	add r1, sp, #8
 	adds r2, r5, #0
-	bl sub_02011370
+	bl sub_8029B0C
 	cmp r0, #0
 	bgt _0200DB78
 	lsls r1, r0, #8
@@ -1147,7 +87,7 @@ _0200DB44:
 	adds r0, #0x24
 	strb r1, [r0]
 	adds r0, r4, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	strh r6, [r4, #0x12]
 	ldrh r0, [r4, #0x10]
 	strh r0, [r4, #0x14]
@@ -1164,7 +104,7 @@ sub_0200DB80: @ 0x0200DB80
 	adds r4, r0, #0
 	add r2, sp, #4
 	mov r1, sp
-	bl sub_02011324
+	bl sub_8029AC0
 	cmp r0, #0
 	bgt _0200DBD8
 	lsls r1, r0, #8
@@ -1177,7 +117,7 @@ sub_0200DB80: @ 0x0200DB80
 	adds r0, #0x24
 	strb r1, [r0]
 	adds r0, r4, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	movs r0, #0x12
 	ldrsh r1, [r4, r0]
 	cmp r1, #0
@@ -1221,7 +161,7 @@ sub_0200DBE0: @ 0x0200DBE0
 	add r2, sp, #4
 	adds r0, r5, #0
 	mov r1, sp
-	bl sub_02011370
+	bl sub_8029B0C
 	cmp r0, #0
 	bgt _0200DC1C
 	lsls r1, r0, #8
@@ -1235,7 +175,7 @@ sub_0200DBE0: @ 0x0200DBE0
 	movs r4, #0
 	strb r1, [r0]
 	adds r0, r5, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	strh r4, [r5, #0x12]
 	ldrh r0, [r5, #0x10]
 	strh r0, [r5, #0x14]
@@ -1249,7 +189,7 @@ _0200DC24:
 	add r2, sp, #8
 	adds r0, r5, #0
 	mov r1, sp
-	bl sub_02011370
+	bl sub_8029B0C
 	cmp r0, #0
 	bgt _0200DC58
 	lsls r1, r0, #8
@@ -1263,7 +203,7 @@ _0200DC24:
 	movs r4, #0
 	strb r1, [r0]
 	adds r0, r5, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	strh r4, [r5, #0x12]
 	ldrh r0, [r5, #0x10]
 	strh r0, [r5, #0x14]
@@ -1978,7 +918,7 @@ _0200E156:
 	add r2, sp, #8
 	adds r0, r3, #0
 	mov r1, sp
-	bl sub_0200D4EC
+	bl sub_802195C
 	adds r3, r0, #0
 	ldrb r2, [r5]
 	ands r4, r2
@@ -2005,14 +945,14 @@ _0200E18C:
 	add r2, sp, #0xc
 	adds r0, r3, #0
 	mov r1, sp
-	bl sub_0200D698
+	bl sub_8021B08
 	b _0200E148
 _0200E19A:
 	mov r4, sp
 	add r2, sp, #0x10
 	adds r0, r3, #0
 	mov r1, sp
-	bl sub_0200D5C4
+	bl sub_8021A34
 	adds r3, r0, #0
 	ldrb r2, [r4]
 	movs r0, #1
@@ -2873,7 +1813,7 @@ sub_0200E724: @ 0x0200E724
 	ldr r1, [r7]
 	ldr r0, _0200E7E4 @ =Task_PlayerMain
 	str r0, [r1, #8]
-	ldr r0, _0200E7E8 @ =sub_0200F2BC
+	ldr r0, _0200E7E8 @ =Player_TouchGround
 	str r0, [r5]
 	b _0200E7F0
 	.align 2, 0
@@ -2888,7 +1828,7 @@ _0200E7D8: .4byte 0x0000FF7F
 _0200E7DC: .4byte 0xFFFFCFFF
 _0200E7E0: .4byte 0x0000FFFC
 _0200E7E4: .4byte Task_PlayerMain
-_0200E7E8: .4byte sub_0200F2BC
+_0200E7E8: .4byte Player_TouchGround
 _0200E7EC:
 	subs r6, #1
 	str r6, [r1, #4]
@@ -2994,7 +1934,7 @@ Task_PlayerMain: @ 0x0200E8B0
 	push {r4, r5, r6, lr}
 	ldr r5, _0200E8F8 @ =gPlayer
 	adds r0, r5, #0
-	bl sub_02010FF4
+	bl Player_HandleBoostThreshold
 	adds r0, r5, #0
 	bl sub_02011034
 	adds r0, r5, #0
@@ -3199,11 +2139,11 @@ _0200EA28: @ jump table
 	.4byte _0200EC04 @ case 22
 _0200EA84:
 	ldr r1, _0200EA8C @ =gPlayer
-	ldr r0, _0200EA90 @ =sub_0200F2BC
+	ldr r0, _0200EA90 @ =Player_TouchGround
 	b _0200EC08
 	.align 2, 0
 _0200EA8C: .4byte gPlayer
-_0200EA90: .4byte sub_0200F2BC
+_0200EA90: .4byte Player_TouchGround
 _0200EA94:
 	ldr r1, _0200EA9C @ =gPlayer
 	ldr r0, _0200EAA0 @ =sub_02011874
@@ -4266,8 +3206,8 @@ _0200F2B0: .4byte 0x0000F7FF
 _0200F2B4: .4byte 0x04000128
 _0200F2B8: .4byte 0x0000F9FF
 
-	thumb_func_start sub_0200F2BC
-sub_0200F2BC: @ 0x0200F2BC
+	thumb_func_start Player_TouchGround
+Player_TouchGround: @ 0x0200F2BC
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r0, [r4, #0x20]
@@ -4467,7 +3407,7 @@ sub_0200F420: @ 0x0200F420
 	cmp r0, #0
 	beq _0200F44E
 	ldr r1, _0200F4C8 @ =gPlayer
-	ldr r0, _0200F4CC @ =sub_0200F2BC
+	ldr r0, _0200F4CC @ =Player_TouchGround
 	str r0, [r1]
 _0200F44E:
 	adds r0, r4, #0
@@ -4532,7 +3472,7 @@ _0200F4A8:
 	b _0200F4FC
 	.align 2, 0
 _0200F4C8: .4byte gPlayer
-_0200F4CC: .4byte sub_0200F2BC
+_0200F4CC: .4byte Player_TouchGround
 _0200F4D0: .4byte gSineTable
 _0200F4D4:
 	ldrb r0, [r5]
@@ -4633,7 +3573,7 @@ _0200F588:
 	cmp r1, #0x40
 	beq _0200F592
 	ldr r1, _0200F62C @ =gPlayer
-	ldr r0, _0200F630 @ =sub_0200F2BC
+	ldr r0, _0200F630 @ =Player_TouchGround
 	str r0, [r1]
 _0200F592:
 	cmp r5, #1
@@ -4650,7 +3590,7 @@ _0200F592:
 	cmp r0, #0
 	beq _0200F5B2
 	ldr r1, _0200F62C @ =gPlayer
-	ldr r0, _0200F630 @ =sub_0200F2BC
+	ldr r0, _0200F630 @ =Player_TouchGround
 	str r0, [r1]
 _0200F5B2:
 	adds r0, r4, #0
@@ -4715,7 +3655,7 @@ _0200F60C:
 	b _0200F660
 	.align 2, 0
 _0200F62C: .4byte gPlayer
-_0200F630: .4byte sub_0200F2BC
+_0200F630: .4byte Player_TouchGround
 _0200F634: .4byte gSineTable
 _0200F638:
 	ldrb r0, [r5]
@@ -4817,7 +3757,7 @@ _0200F6F0:
 	cmp r1, #0x80
 	beq _0200F6FA
 	ldr r1, _0200F794 @ =gPlayer
-	ldr r0, _0200F798 @ =sub_0200F2BC
+	ldr r0, _0200F798 @ =Player_TouchGround
 	str r0, [r1]
 _0200F6FA:
 	cmp r6, #2
@@ -4834,7 +3774,7 @@ _0200F6FA:
 	cmp r0, #0
 	beq _0200F71A
 	ldr r1, _0200F794 @ =gPlayer
-	ldr r0, _0200F798 @ =sub_0200F2BC
+	ldr r0, _0200F798 @ =Player_TouchGround
 	str r0, [r1]
 _0200F71A:
 	adds r0, r4, #0
@@ -4899,7 +3839,7 @@ _0200F774:
 	b _0200F7C8
 	.align 2, 0
 _0200F794: .4byte gPlayer
-_0200F798: .4byte sub_0200F2BC
+_0200F798: .4byte Player_TouchGround
 _0200F79C: .4byte gSineTable
 _0200F7A0:
 	ldrb r0, [r5]
@@ -5054,14 +3994,14 @@ _0200F8AA:
 	cmp r0, #0
 	bne _0200F8C8
 	ldr r0, _0200F8C0 @ =gPlayer
-	ldr r1, _0200F8C4 @ =sub_0200F2BC
+	ldr r1, _0200F8C4 @ =Player_TouchGround
 	str r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
 	b _0200F9A6
 	.align 2, 0
 _0200F8C0: .4byte gPlayer
-_0200F8C4: .4byte sub_0200F2BC
+_0200F8C4: .4byte Player_TouchGround
 _0200F8C8:
 	movs r0, #0x14
 	ldrsh r3, [r4, r0]
@@ -5455,15 +4395,15 @@ _0200FBB6:
 	b _0200FBDE
 _0200FBC0:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _0200FBDE
 _0200FBC8:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _0200FBDE
 _0200FBD0:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _0200FBDE
 _0200FBD8:
 	adds r0, r4, #0
@@ -5475,7 +4415,7 @@ _0200FBDE:
 	cmp r0, #8
 	bne _0200FBF6
 	ldr r1, _0200FBFC @ =gPlayer
-	ldr r0, _0200FC00 @ =sub_0200F2BC
+	ldr r0, _0200FC00 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -5487,7 +4427,7 @@ _0200FBF6:
 	bx r0
 	.align 2, 0
 _0200FBFC: .4byte gPlayer
-_0200FC00: .4byte sub_0200F2BC
+_0200FC00: .4byte Player_TouchGround
 
 	thumb_func_start sub_0200FC04
 sub_0200FC04: @ 0x0200FC04
@@ -5658,15 +4598,15 @@ _0200FD42:
 	b _0200FD6A
 _0200FD4C:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _0200FD6A
 _0200FD54:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _0200FD6A
 _0200FD5C:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _0200FD6A
 _0200FD64:
 	adds r0, r4, #0
@@ -5678,7 +4618,7 @@ _0200FD6A:
 	cmp r0, #8
 	bne _0200FD82
 	ldr r1, _0200FD88 @ =gPlayer
-	ldr r0, _0200FD8C @ =sub_0200F2BC
+	ldr r0, _0200FD8C @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -5690,7 +4630,7 @@ _0200FD82:
 	bx r0
 	.align 2, 0
 _0200FD88: .4byte gPlayer
-_0200FD8C: .4byte sub_0200F2BC
+_0200FD8C: .4byte Player_TouchGround
 
 	thumb_func_start sub_0200FD90
 sub_0200FD90: @ 0x0200FD90
@@ -5938,15 +4878,15 @@ _0200FF6E:
 	b _0200FF96
 _0200FF78:
 	adds r0, r6, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _0200FF96
 _0200FF80:
 	adds r0, r6, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _0200FF96
 _0200FF88:
 	adds r0, r6, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _0200FF96
 _0200FF90:
 	adds r0, r6, #0
@@ -5958,7 +4898,7 @@ _0200FF96:
 	cmp r0, #8
 	bne _02010078
 	ldr r1, _0200FFB0 @ =gPlayer
-	ldr r0, _0200FFB4 @ =sub_0200F2BC
+	ldr r0, _0200FFB4 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r6, #0x10]
 	movs r1, #0
@@ -5967,7 +4907,7 @@ _0200FF96:
 	b _02010078
 	.align 2, 0
 _0200FFB0: .4byte gPlayer
-_0200FFB4: .4byte sub_0200F2BC
+_0200FFB4: .4byte Player_TouchGround
 _0200FFB8:
 	movs r4, #0x14
 	ldrsh r3, [r6, r4]
@@ -6650,7 +5590,7 @@ _02010518: .4byte gPlayer
 _0201051C: .4byte sub_0200F7EC
 _02010520:
 	adds r0, r5, #0
-	bl sub_0200F2BC
+	bl Player_TouchGround
 	b _02010540
 _02010528:
 	movs r0, #0x80
@@ -6736,7 +5676,7 @@ _020105BC:
 	cmp r0, #8
 	bne _020105DC
 	ldr r1, _020105E4 @ =gPlayer
-	ldr r0, _020105E8 @ =sub_0200F2BC
+	ldr r0, _020105E8 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -6748,7 +5688,7 @@ _020105DC:
 	bx r0
 	.align 2, 0
 _020105E4: .4byte gPlayer
-_020105E8: .4byte sub_0200F2BC
+_020105E8: .4byte Player_TouchGround
 
 	thumb_func_start sub_020105EC
 sub_020105EC: @ 0x020105EC
@@ -6930,15 +5870,15 @@ _02010736:
 	b _0201075E
 _02010740:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _0201075E
 _02010748:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _0201075E
 _02010750:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _0201075E
 _02010758:
 	adds r0, r4, #0
@@ -6950,7 +5890,7 @@ _0201075E:
 	cmp r0, #8
 	bne _0201077A
 	ldr r1, _02010780 @ =gPlayer
-	ldr r0, _02010784 @ =sub_0200F2BC
+	ldr r0, _02010784 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -6964,7 +5904,7 @@ _0201077A:
 	bx r0
 	.align 2, 0
 _02010780: .4byte gPlayer
-_02010784: .4byte sub_0200F2BC
+_02010784: .4byte Player_TouchGround
 
 	thumb_func_start sub_02010788
 sub_02010788: @ 0x02010788
@@ -7314,15 +6254,15 @@ _02010A2A:
 	b _02010A52
 _02010A34:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _02010A52
 _02010A3C:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _02010A52
 _02010A44:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _02010A52
 _02010A4C:
 	adds r0, r4, #0
@@ -7334,7 +6274,7 @@ _02010A52:
 	cmp r0, #8
 	bne _02010A6A
 	ldr r1, _02010A70 @ =gPlayer
-	ldr r0, _02010A74 @ =sub_0200F2BC
+	ldr r0, _02010A74 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -7346,7 +6286,7 @@ _02010A6A:
 	bx r0
 	.align 2, 0
 _02010A70: .4byte gPlayer
-_02010A74: .4byte sub_0200F2BC
+_02010A74: .4byte Player_TouchGround
 
 	thumb_func_start sub_02010A78
 sub_02010A78: @ 0x02010A78
@@ -7686,15 +6626,15 @@ _02010CFC:
 	b _02010D24
 _02010D06:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _02010D24
 _02010D0E:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _02010D24
 _02010D16:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _02010D24
 _02010D1E:
 	adds r0, r4, #0
@@ -7706,7 +6646,7 @@ _02010D24:
 	cmp r0, #8
 	bne _02010D3C
 	ldr r1, _02010D44 @ =gPlayer
-	ldr r0, _02010D48 @ =sub_0200F2BC
+	ldr r0, _02010D48 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r4, #0x10]
 	movs r1, #0
@@ -7718,7 +6658,7 @@ _02010D3C:
 	bx r0
 	.align 2, 0
 _02010D44: .4byte gPlayer
-_02010D48: .4byte sub_0200F2BC
+_02010D48: .4byte Player_TouchGround
 
 	thumb_func_start sub_02010D4C
 sub_02010D4C: @ 0x02010D4C
@@ -8088,8 +7028,8 @@ _02010FE6:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_02010FF4
-sub_02010FF4: @ 0x02010FF4
+	thumb_func_start Player_HandleBoostThreshold
+Player_HandleBoostThreshold: @ 0x02010FF4
 	push {lr}
 	adds r1, r0, #0
 	ldr r0, _02011008 @ =gRingCount
@@ -8314,7 +7254,7 @@ CreatePlayer: @ 0x0201114C
 	adds r0, r5, #0
 	bl InitializePlayer
 	ldr r1, _020111B8 @ =gPlayer
-	ldr r0, _020111BC @ =sub_0200F2BC
+	ldr r0, _020111BC @ =Player_TouchGround
 	str r0, [r1]
 	bl sub_02011B44
 	ldr r0, _020111C0 @ =gUnknown_03005448
@@ -8336,7 +7276,7 @@ CreatePlayer: @ 0x0201114C
 _020111B0: .4byte Task_PlayerMain
 _020111B4: .4byte TaskDestructor_Player
 _020111B8: .4byte gPlayer
-_020111BC: .4byte sub_0200F2BC
+_020111BC: .4byte Player_TouchGround
 _020111C0: .4byte gUnknown_03005448
 _020111C4: .4byte gUnknown_03005474
 _020111C8: .4byte gUnknown_03005458
@@ -8429,15 +7369,15 @@ _0201125C:
 	b _02011284
 _02011266:
 	adds r0, r4, #0
-	bl sub_0200D7DC
+	bl sub_8021C4C
 	b _02011284
 _0201126E:
 	adds r0, r4, #0
-	bl sub_0200D918
+	bl sub_8021DB8
 	b _02011284
 _02011276:
 	adds r0, r4, #0
-	bl sub_0200DA10
+	bl sub_8021EE4
 	b _02011284
 _0201127E:
 	adds r0, r4, #0
@@ -8462,7 +7402,7 @@ _02011298:
 	add r2, sp, #4
 _0201129E:
 	adds r1, r4, #0
-	bl sub_0200D4EC
+	bl sub_802195C
 	adds r3, r0, #0
 	ldrb r2, [r4]
 	movs r0, #1
@@ -8506,7 +7446,7 @@ _020112E4:
 	add r2, sp, #4
 _020112EA:
 	adds r1, r4, #0
-	bl sub_0200D5C4
+	bl sub_8021A34
 	adds r3, r0, #0
 	ldrb r2, [r4]
 	movs r0, #1
@@ -8536,8 +7476,8 @@ _02011314:
 	.align 2, 0
 _02011320: .4byte gStageFlags
 
-	thumb_func_start sub_02011324
-sub_02011324: @ 0x02011324
+	thumb_func_start sub_8029AC0
+sub_8029AC0: @ 0x02011324
 	push {r4, lr}
 	sub sp, #8
 	adds r4, r1, #0
@@ -8550,7 +7490,7 @@ _02011330:
 	add r2, sp, #4
 _02011336:
 	adds r1, r4, #0
-	bl sub_0200D698
+	bl sub_8021B08
 	adds r3, r0, #0
 	ldrb r2, [r4]
 	movs r0, #1
@@ -8580,8 +7520,8 @@ _02011360:
 	.align 2, 0
 _0201136C: .4byte gStageFlags
 
-	thumb_func_start sub_02011370
-sub_02011370: @ 0x02011370
+	thumb_func_start sub_8029B0C
+sub_8029B0C: @ 0x02011370
 	push {r4, lr}
 	sub sp, #8
 	adds r4, r1, #0
@@ -8627,7 +7567,7 @@ _020113B8: .4byte gStageFlags
 	thumb_func_start sub_020113BC
 sub_020113BC: @ 0x020113BC
 	push {lr}
-	bl sub_02011324
+	bl sub_8029AC0
 	pop {r1}
 	bx r1
 	.align 2, 0
@@ -8635,7 +7575,7 @@ sub_020113BC: @ 0x020113BC
 	thumb_func_start sub_020113C8
 sub_020113C8: @ 0x020113C8
 	push {lr}
-	bl sub_02011370
+	bl sub_8029B0C
 	pop {r1}
 	bx r1
 	.align 2, 0
@@ -9413,7 +8353,7 @@ sub_02011950: @ 0x02011950
 	adds r5, r0, #0
 	add r2, sp, #4
 	mov r1, sp
-	bl sub_02011370
+	bl sub_8029B0C
 	cmp r0, #0
 	bgt _02011982
 	lsls r1, r0, #8
@@ -9427,7 +8367,7 @@ sub_02011950: @ 0x02011950
 	movs r4, #0
 	strb r1, [r0]
 	adds r0, r5, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	strh r4, [r5, #0x12]
 	ldrh r0, [r5, #0x10]
 	strh r0, [r5, #0x14]
@@ -9448,7 +8388,7 @@ sub_0201198C: @ 0x0201198C
 	cmp r0, #8
 	bne _020119AC
 	ldr r1, _020119B0 @ =gPlayer
-	ldr r0, _020119B4 @ =sub_0200F2BC
+	ldr r0, _020119B4 @ =Player_TouchGround
 	str r0, [r1]
 	ldrh r0, [r2, #0x10]
 	movs r1, #0
@@ -9461,7 +8401,7 @@ _020119AC:
 	bx r0
 	.align 2, 0
 _020119B0: .4byte gPlayer
-_020119B4: .4byte sub_0200F2BC
+_020119B4: .4byte Player_TouchGround
 
 	thumb_func_start sub_020119B8
 sub_020119B8: @ 0x020119B8

@@ -123,7 +123,8 @@ SA2_C_FILES := \
 	sa2/game/sa1_sa2_shared/collect_ring_effect.c \
 	sa2/game/multiplayer/mp_attack_2_effect.c \
 	sa2/game/stage/camera.c \
-	sa2/game/stage/terrain_collision.c
+	sa2/game/stage/terrain_collision.c \
+	sa2/game/stage/player.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

@@ -343,7 +343,7 @@ _02006AB4:
 	b _02006F22
 _02006ADA:
 	adds r0, r6, #0
-	bl sub_0200D770
+	bl sub_8021BE0
 	ldrh r0, [r6, #0x10]
 	strh r0, [r6, #0x14]
 	adds r1, r6, #0
@@ -646,7 +646,7 @@ _02006CF4:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _02006D48 @ =sub_0200F2BC
+	ldr r0, _02006D48 @ =Player_TouchGround
 	str r0, [r6]
 _02006D2C:
 	ldr r0, [r6, #0x20]
@@ -664,7 +664,7 @@ _02006D2C:
 	str r0, [r6, #0xc]
 	b _02006F1C
 	.align 2, 0
-_02006D48: .4byte sub_0200F2BC
+_02006D48: .4byte Player_TouchGround
 _02006D4C:
 	movs r0, #0x80
 	lsls r0, r0, #0xb
@@ -843,7 +843,7 @@ _02006E78:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _02006ED0 @ =sub_0200F2BC
+	ldr r0, _02006ED0 @ =Player_TouchGround
 	str r0, [r4]
 	adds r0, r4, #0
 	movs r1, #0xe
@@ -870,7 +870,7 @@ _02006EB0:
 	str r2, [r4, #0xc]
 	b _02006F1C
 	.align 2, 0
-_02006ED0: .4byte sub_0200F2BC
+_02006ED0: .4byte Player_TouchGround
 _02006ED4:
 	movs r0, #0x80
 	lsls r0, r0, #0xa

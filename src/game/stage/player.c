@@ -246,6 +246,19 @@ void CallPlayerTransition(Player *p);
         _s->animSpeed = speed;                                                                                                             \
     }
 
+#define TRICK_DIR_UP       0
+#define TRICK_DIR_DOWN     1
+#define TRICK_DIR_FORWARD  2
+#define TRICK_DIR_BACKWARD 3
+#define NUM_TRICK_DIRS     4
+
+#define MASK_80D6992_1  0x1
+#define MASK_80D6992_2  0x2
+#define MASK_80D6992_4  0x4
+#define MASK_80D6992_8  0x8
+#define MASK_80D6992_10 0x10
+
+#ifndef COLLECT_RINGS_ROM
 const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
     SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
     SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
@@ -395,12 +408,6 @@ static const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 8 * (3. / 8.)), //
 };
 
-#define TRICK_DIR_UP       0
-#define TRICK_DIR_DOWN     1
-#define TRICK_DIR_FORWARD  2
-#define TRICK_DIR_BACKWARD 3
-#define NUM_TRICK_DIRS     4
-
 // NOTE(Jace): It appears that they originally planned
 //             to give the player a different amount of score points
 //             depending on the direction of the trick.
@@ -440,12 +447,6 @@ static const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2] = {
 
 static const u16 sTrickDirToCharstate[NUM_TRICK_DIRS]
     = { CHARSTATE_TRICK_UP, CHARSTATE_TRICK_DOWN, CHARSTATE_TRICK_FORWARD, CHARSTATE_TRICK_BACKWARD };
-
-#define MASK_80D6992_1  0x1
-#define MASK_80D6992_2  0x2
-#define MASK_80D6992_4  0x4
-#define MASK_80D6992_8  0x8
-#define MASK_80D6992_10 0x10
 
 static const u8 sTrickMasks[NUM_TRICK_DIRS][NUM_CHARACTERS] = {
     [TRICK_DIR_UP] = {
@@ -499,6 +500,41 @@ static const s16 sSpringAccelX[4] = {
 
 static const u8 disableTrickTimerTable[4] = { 4, 3, 2, 2 };
 
+#else
+extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
+
+// TODO: This is unaligned in-ROM.
+//       Can we somehow change this to be using a struct instead?
+//
+// TODO: Tidy up the macros, not just here, but everywhere!
+//       This isn't intuitive to read.
+//
+// The index is the same as Player.unk64
+extern const u16 sCharStateAnimInfo[][2];
+extern const s16 playerBoostPhysicsTable[5][2];
+extern const s16 playerBoostThresholdTable[5];
+
+extern const s16 sSpinDashSpeeds[9];
+
+// NOTE(Jace): It appears that they originally planned
+//             to give the player a different amount of score points
+//             depending on the direction of the trick.
+extern const u16 sTrickPoints[NUM_TRICK_DIRS];
+
+extern const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2];
+
+extern const u16 sTrickDirToCharstate[NUM_TRICK_DIRS];
+
+extern const u8 sTrickMasks[NUM_TRICK_DIRS][NUM_CHARACTERS];
+
+static const u16 gUnknown_080D69A6[2][3];
+
+extern const s16 sSpringAccelY[4];
+extern const s16 sSpringAccelX[4];
+
+extern const u8 disableTrickTimerTable[4];
+#endif
+
 // TODO: Find a compiler-flag or another way to inline without defining functions twice.
 
 static inline void Player_InitIceSlide_inline(Player *p)
@@ -533,6 +569,7 @@ static inline void Player_CameraShift_inline(Player *p)
         gCamera.shiftY--;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void CreatePlayer(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
     struct Task *t;
@@ -579,6 +616,7 @@ void CreatePlayer(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     AllocateCharacterStageGfx(p, p->spriteInfoBody);
     AllocateCharacterMidAirGfx(p, p->spriteInfoLimbs);
 }
+#endif
 
 void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
 {
@@ -609,9 +647,13 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
 
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-    if (IS_MULTI_PLAYER) {
+#ifndef COLLECT_RINGS_ROM
+    if (IS_MULTI_PLAYER)
+#endif
+    {
         s->frameFlags |= (SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_19);
     }
+
     SPRITE_FLAG_SET(s, ROT_SCALE_ENABLE);
     s->frameFlags |= playerID;
 
@@ -625,6 +667,7 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     param2->transform.y = 0;
 }
 
+#ifndef COLLECT_RINGS_ROM
 // Allocate VRAM for Tails' tails and Cream's ears while mid-air
 void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
 {
@@ -687,10 +730,15 @@ void SetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p)
     p->spriteInfoBody = &gPlayerBodyPSI;
     p->spriteInfoLimbs = &gPlayerLimbsPSI;
 }
+#endif
 
 void InitializePlayer(Player *p)
 {
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->qWorldX & p->qWorldY) + 1) != 0)) {
+    if (
+#ifndef COLLECT_RINGS_ROM
+        (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) &&
+#endif
+        (p->qWorldX & p->qWorldY) + 1 != 0) {
         p->qWorldX = Q(460);
     } else {
         p->qWorldX = Q(p->checkPointX);
@@ -766,15 +814,17 @@ void InitializePlayer(Player *p)
     p->unk70 = FALSE;
     p->disableTrickTimer = 0;
 
+#ifndef COLLECT_RINGS_ROM
     sub_8015750();
     sub_801561C();
+#endif
     Player_HandleBoostThreshold(p);
 #endif
 
     {
         u32 *ptr = (u32 *)(&p->SA2_LABEL(unk99)[0]);
         s32 i = 3;
-#if (GAME == GAME_SA2) && !defined(NON_MATCHING)
+#if (GAME == GAME_SA2) && !defined(COLLECT_RINGS_ROM) && !defined(NON_MATCHING)
         register u8 *u99_r6 asm("r6") = (void *)ptr;
 #endif
         do {
@@ -783,13 +833,14 @@ void InitializePlayer(Player *p)
             //       >> writes unk98 - unk99[14]
             *ptr++ = 0;
         } while (i-- != 0);
-#if (GAME == GAME_SA2) && !defined(NON_MATCHING)
+#if (GAME == GAME_SA2) && !defined(COLLECT_RINGS_ROM) && !defined(NON_MATCHING)
         *u99_r6 = 0x7F;
 #else
         p->SA2_LABEL(unk99)[0] = 0x7F;
 #endif
     }
 
+#ifndef COLLECT_RINGS_ROM
     if ((p->playerID == 0) && IS_SINGLE_PLAYER) {
         if (gCourseTime >= MAX_COURSE_TIME) {
             gCheckpointTime = 0;
@@ -834,10 +885,13 @@ void InitializePlayer(Player *p)
     }
 
     gShouldSpawnMPAttackEffect = FALSE;
+#endif
+
     gMPAttackEffect2Regs = NULL;
     gShouldSpawnMPAttack2Effect = FALSE;
 }
 
+#ifndef COLLECT_RINGS_ROM
 // Called anytime the player actively jumps, "autojumps" through touching an IA,
 // touches a Boost Pad or a Rotating Handle, touches the ground, etc.
 // TODO: Find a better name.
@@ -869,6 +923,7 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
         p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
     }
 }
+#endif
 
 // Very similar to sub_8029BB8
 s32 sub_802195C(Player *p, u8 *rot, s32 *out)
@@ -1084,9 +1139,12 @@ void sub_8021C4C(Player *p)
     }
 
     ptr = &fnOut;
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029AC0(p, &rotation, ptr);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029B0C(p, &rotation, ptr);
     }
 
@@ -1100,9 +1158,11 @@ void sub_8021C4C(Player *p)
             s32 airY;
             p->rotation = rotation;
 
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 result = -result;
             }
+#endif
 
             p->qWorldY += result << 8;
 
@@ -1180,16 +1240,21 @@ void sub_8021DB8(Player *p)
     }
 
     ptr = &fnOut;
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, &rotation, ptr);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029AC0(p, &rotation, ptr);
     }
 
     if (result <= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             result = -result;
         }
+#endif
 
         p->qWorldY -= result << 8;
 
@@ -1226,12 +1291,15 @@ void sub_8021EE4(Player *p)
     u32 mask;
     u32 mask2 = p->layer;
 
+#ifndef COLLECT_RINGS_ROM
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
         playerX = I(p->qWorldX) - (3 + p->spriteOffsetX);
         playerY = I(p->qWorldY);
         result = sub_801E4E4(playerX, playerY, mask2, -8, NULL, sub_801ED24);
-    } else {
+    } else
+#endif
+    {
         playerX2 = I(p->qWorldX) - (3 + p->spriteOffsetX);
         playerY2 = I(p->qWorldY);
 
@@ -1249,16 +1317,21 @@ void sub_8021EE4(Player *p)
     }
 
     ptr = &fnOut;
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, &rotation, ptr);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029AC0(p, &rotation, ptr);
     }
 
     if (result <= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             result = -result;
         }
+#endif
 
         p->qWorldY -= Q(result);
 
@@ -1266,16 +1339,21 @@ void sub_8021EE4(Player *p)
             p->qSpeedAirY = 0;
         }
     } else if (p->qSpeedAirY >= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             result = sub_8029AC0(p, &rotation, &fnOut);
-        } else {
+        } else
+#endif
+        {
             result = sub_8029B0C(p, &rotation, &fnOut);
         }
 
         if (result <= 0) {
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 result = -result;
             }
+#endif
 
             p->qWorldY += Q(result);
 
@@ -1287,6 +1365,8 @@ void sub_8021EE4(Player *p)
         }
     }
 }
+
+#ifndef COLLECT_RINGS_ROM
 
 void sub_802203C(Player *p)
 {
@@ -7047,3 +7127,4 @@ void Player_InitAttack(Player *p)
         } break;
     }
 }
+#endif

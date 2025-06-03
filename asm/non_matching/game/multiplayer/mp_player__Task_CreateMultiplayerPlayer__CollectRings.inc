@@ -353,7 +353,7 @@ _0200933C:
 	strh r0, [r1]
 	movs r0, #0x3c
 	strh r0, [r4, #0x2c]
-	ldr r0, _02009450 @ =sub_0200F2BC
+	ldr r0, _02009450 @ =Player_TouchGround
 	str r0, [r4]
 	ldr r0, [r4, #0x20]
 	ldr r2, _02009454 @ =0xFFBFFFFF
@@ -420,7 +420,7 @@ _02009440: .4byte gUnknown_03000064
 _02009444: .4byte gPlayer
 _02009448: .4byte 0xFFFFFBFF
 _0200944C: .4byte 0xFFFFFEFF
-_02009450: .4byte sub_0200F2BC
+_02009450: .4byte Player_TouchGround
 _02009454: .4byte 0xFFBFFFFF
 _02009458: .4byte 0x04000128
 _0200945C: .4byte gMultiplayerCharRings
