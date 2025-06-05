@@ -1366,8 +1366,6 @@ void sub_8021EE4(Player *p)
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
-
 void sub_802203C(Player *p)
 {
     u8 rotation;
@@ -1380,13 +1378,15 @@ void sub_802203C(Player *p)
 
     u32 mask;
     u32 mask2 = p->layer;
-
+#ifndef COLLECT_RINGS_ROM
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
         playerX = I(p->qWorldX) + (3 + p->spriteOffsetX);
         playerY = I(p->qWorldY);
         result = sub_801E4E4(playerX, playerY, mask2, +8, NULL, sub_801ED24);
-    } else {
+    } else
+#endif
+    {
         playerX2 = I(p->qWorldX) + (3 + p->spriteOffsetX);
         playerY2 = I(p->qWorldY);
 
@@ -1404,16 +1404,21 @@ void sub_802203C(Player *p)
     }
 
     ptr = &fnOut;
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, &rotation, ptr);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029AC0(p, &rotation, ptr);
     }
 
     if (result <= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             result = -result;
         }
+#endif
 
         p->qWorldY -= Q(result);
 
@@ -1421,17 +1426,21 @@ void sub_802203C(Player *p)
             p->qSpeedAirY = 0;
         }
     } else if (p->qSpeedAirY >= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             result = sub_8029AC0(p, &rotation, &fnOut);
-        } else {
+        } else
+#endif
+        {
             result = sub_8029B0C(p, &rotation, &fnOut);
         }
 
         if (result <= 0) {
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 result = -result;
             }
-
+#endif
             p->qWorldY += Q(result);
 
             p->rotation = rotation;
@@ -1443,6 +1452,7 @@ void sub_802203C(Player *p)
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8022190(Player *p)
 {
     s16 airY = p->qSpeedAirY;
@@ -1502,6 +1512,7 @@ void sub_8022218(Player *p)
         p->qSpeedGround = p->qSpeedAirX;
     }
 }
+#endif
 
 void sub_8022284(Player *p)
 {
@@ -1512,17 +1523,21 @@ void sub_8022284(Player *p)
 
     // u8 *pRot = &rotation;
     s32 *pSp04 = &sp04;
-
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         res = sub_8029B0C(p, &rotation, pSp04);
-    } else {
+    } else
+#endif
+    {
         res = sub_8029AC0(p, &rotation, pSp04);
     }
 
     if (res <= 0) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             res = -res;
         }
+#endif
 
         p->qWorldY -= Q(res);
         p->rotation = rotation;
@@ -1544,6 +1559,38 @@ void sub_8022284(Player *p)
     }
 }
 
+#if COLLECT_RINGS_ROM
+void sub_0200DBE0(Player *p)
+{
+    u8 rotation;
+    s32 sp04;
+    s32 sp08;
+    s32 res;
+    if (p->qSpeedAirY >= 0) {
+        res = sub_8029B0C(p, &rotation, &sp04);
+        if (res <= 0) {
+            p->qWorldY += Q(res);
+            p->rotation = rotation;
+            sub_8021BE0(p);
+            p->qSpeedAirY = 0;
+            p->qSpeedGround = p->qSpeedAirX;
+        }
+        sub_8022284(p);
+    } else {
+        sub_8022284(p);
+        res = sub_8029B0C(p, &rotation, &sp08);
+        if (res <= 0) {
+            p->qWorldY += Q(res);
+            p->rotation = rotation;
+            sub_8021BE0(p);
+            p->qSpeedAirY = 0;
+            p->qSpeedGround = p->qSpeedAirX;
+        }
+    }
+}
+#endif
+
+#ifndef COLLECT_RINGS_ROM
 void sub_8022318(Player *p)
 {
     s32 offsetY;
@@ -1881,6 +1928,7 @@ void sub_8022838(Player *p)
         }
     }
 }
+#endif
 
 void sub_80228C0(Player *p)
 {
@@ -1970,7 +2018,7 @@ void sub_80228C0(Player *p)
     if (!(r1 & 0x1)) {
         vu8 *pRot = &p->rotation;
         *pRot = r1;
-
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             // TODO: CLEANUP (effectively *pRot = -r1)
             r1 = *pRot;
@@ -1986,6 +2034,7 @@ void sub_80228C0(Player *p)
 
             *pRot = r0;
         }
+#endif
     }
 }
 
@@ -2082,7 +2131,7 @@ void sub_80229EC(Player *p)
     if (!(r1 & 0x1)) {
         vu8 *pRot = &p->rotation;
         *pRot = r1;
-
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             // TODO: CLEANUP (effectively *pRot = 128-r1)
             r1 = *pRot;
@@ -2098,6 +2147,7 @@ void sub_80229EC(Player *p)
 
             *pRot = r0;
         }
+#endif
     }
 }
 
@@ -2194,7 +2244,7 @@ void sub_8022B18(Player *p)
     if (!(r1 & 0x1)) {
         vu8 *pRot = &p->rotation;
         *pRot = r1;
-
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             // TODO: CLEANUP (effectively *pRot = 128-r1)
             r1 = *pRot;
@@ -2210,6 +2260,7 @@ void sub_8022B18(Player *p)
 
             *pRot = r0;
         }
+#endif
     }
 }
 
@@ -2304,7 +2355,7 @@ void sub_8022C44(Player *p)
     if (!(r1 & 0x1)) {
         vu8 *pRot = &p->rotation;
         *pRot = r1;
-
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
 #ifndef NON_MATCHING
             r1 = *pRot;
@@ -2323,6 +2374,7 @@ void sub_8022C44(Player *p)
             *pRot = 128 - r1;
 #endif
         }
+#endif
     }
 }
 
@@ -2336,7 +2388,7 @@ void sub_8022D6C(Player *p)
     }
 
     // NOTE/TODO: Not in SA1, but likely in SA3, so assuming >= GAME_SA2!
-#if (GAME >= GAME_SA2)
+#if (GAME >= GAME_SA2) && !defined(COLLECT_RINGS_ROM)
     if ((gCurrentLevel == 0) && (gWater.isActive == TRUE)) {
         s32 r5 = Q(p->qWorldY) >> 16;
         u32 mask = ~0x3;
@@ -2376,6 +2428,7 @@ void sub_8022D6C(Player *p)
     }
 #endif
 
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         s8 rot = p->rotation;
         rot += 0x40;
@@ -2413,7 +2466,9 @@ void sub_8022D6C(Player *p)
                 sub_8022C44(p);
             } break;
         }
-    } else {
+    } else
+#endif
+    {
         s8 rot = p->rotation;
 
         if (rot + 0x20 > 0) {
@@ -2725,13 +2780,13 @@ void sub_80231C0(Player *p)
                 p->moveState &= ~MOVESTATE_4;
 
                 PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
-
                 p->qSpeedGround = 0;
             } break;
         }
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8023260(Player *p)
 {
     s32 maxSpeed = p->maxSpeed;
