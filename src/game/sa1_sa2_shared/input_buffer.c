@@ -59,7 +59,7 @@ const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
 // Letting go of a button does not trigger the index increase.
 //
 // This is likely used for trick timings
-void InputBuffer_HandleFrameInput(Player *p)
+void CallPlayerTransition(Player *p)
 {
     const u8 **unk0;
     const u8 *data;

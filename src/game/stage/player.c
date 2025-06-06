@@ -192,6 +192,7 @@ void CallPlayerTransition(Player *p);
         player->rotation = rot;                                                                                                            \
     }
 
+#ifndef COLLECT_RINGS_ROM
 #define PLAYERFN_UPDATE_POSITION(player)                                                                                                   \
     {                                                                                                                                      \
         player->qWorldX += player->qSpeedAirX;                                                                                             \
@@ -204,6 +205,16 @@ void CallPlayerTransition(Player *p);
                                                                                                                                            \
         player->qWorldY = GRAVITY_IS_INVERTED ? player->qWorldY - player->qSpeedAirY : player->qWorldY + player->qSpeedAirY;               \
     }
+#else
+#define PLAYERFN_UPDATE_POSITION(player)                                                                                                   \
+    {                                                                                                                                      \
+        player->qWorldX += player->qSpeedAirX;                                                                                             \
+                                                                                                                                           \
+        player->qSpeedAirY = MIN(player->qSpeedAirY, Q(PLAYER_AIR_SPEED_MAX));                                                             \
+                                                                                                                                           \
+        player->qWorldY = player->qWorldY + player->qSpeedAirY;                                                                            \
+    }
+#endif
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
 #define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                                                                   \
@@ -221,12 +232,16 @@ void CallPlayerTransition(Player *p);
         PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player);                                                                                  \
     }
 
+#ifndef COLLECT_RINGS_ROM
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                                                                             \
     if (player->moveState & MOVESTATE_IN_WATER) {                                                                                          \
         player->qSpeedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);                                                                               \
     } else {                                                                                                                               \
         player->qSpeedAirY += Q(PLAYER_GRAVITY);                                                                                           \
     }
+#else
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED(player) player->qSpeedAirY += Q(PLAYER_GRAVITY);
+#endif
 
 #define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                                                                    \
     {                                                                                                                                      \
@@ -2786,7 +2801,6 @@ void sub_80231C0(Player *p)
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
 void sub_8023260(Player *p)
 {
     s32 maxSpeed = p->maxSpeed;
@@ -2822,7 +2836,7 @@ void sub_80232D0(Player *p)
     s32 qPY = p->qWorldY;
     s32 ix, iy;
     s32 ox, oy;
-
+#ifndef COLLECT_RINGS_ROM
     if (p->playerID == 0) {
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gCurrentLevel & 0x2) {
@@ -2889,7 +2903,7 @@ void sub_80232D0(Player *p)
             }
         }
     }
-
+#endif
     if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
@@ -2898,6 +2912,7 @@ void sub_80232D0(Player *p)
         if ((s32)p->moveState >= 0) {
             s32 r1;
 
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 if (p->qWorldY > Q(gCamera.minY)) {
                     goto lbl0;
@@ -2914,17 +2929,36 @@ void sub_80232D0(Player *p)
                     r1 = 0;
                 }
             }
+#else
+            {
+                s32 qMaxY = Q(cam2->maxY) - 1;
+
+                r1 = 0;
+
+                if (p->qWorldY >= qMaxY) {
+                lbl0:
+                    r1 = 1;
+                }
+            }
+#endif
 
             if (r1 != 0) {
                 p->moveState |= MOVESTATE_DEAD;
 
+#ifndef COLLECT_RINGS_ROM
                 if (p->moveState & MOVESTATE_IN_WATER) {
                     p->qSpeedAirY = -Q(2.625);
-                } else {
+                } else
+#endif
+                {
                     p->qSpeedAirY = -Q(4.875);
                 }
 
+#ifndef COLLECT_RINGS_ROM
                 qPY = GRAVITY_IS_INVERTED ? Q(cam->minY) : Q(cam->maxY) - 1;
+#else
+                qPY = Q(cam->maxY) - 1;
+#endif
             }
         }
 
@@ -2954,6 +2988,7 @@ void sub_80232D0(Player *p)
                 p->qSpeedGround = 0;
             }
 
+#ifndef COLLECT_RINGS_ROM
             if (IS_BOSS_STAGE(gCurrentLevel)) {
                 s32 qPXMin = (Q(cam->unk10));
                 if (qPX < qPXMin + Q(8.0)) {
@@ -2968,6 +3003,7 @@ void sub_80232D0(Player *p)
                     p->qSpeedAirX = BOSS_VELOCITY_X;
                 }
             }
+#endif
 
             p->qWorldX = qPX;
             p->qWorldY = qPY;
@@ -3079,6 +3115,8 @@ void sub_8023708(Player *p)
         p->qSpeedAirX = airX;
     }
 }
+
+#ifndef COLLECT_RINGS_ROM
 
 void sub_8023748(Player *p)
 {
@@ -3246,6 +3284,7 @@ void Player_HandleWater(Player *p)
         p->framesUntilWaterSurfaceEffect--;
     }
 }
+#endif
 
 void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
 {
@@ -3255,11 +3294,13 @@ void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
     }
 
     rot = p->rotation;
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         rot += Q(1. / 4.);
         rot = -rot;
         rot -= Q(1. / 4.);
     }
+#endif
 
     if ((s32)(rot + Q(1. / 8.)) > 0) {
         if (rot != 0) {
@@ -3295,6 +3336,7 @@ void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 // 0x08023C10
 void Player_Debug_TestRingScatter(Player *p)
 {
@@ -3342,12 +3384,14 @@ void Player_Debug_TestRingScatter(Player *p)
         }
     }
 }
+#endif
 
 void Task_PlayerHandleDeath(void)
 {
     player_0_Task *gt = TASK_DATA(gCurTask);
     u32 val = gt->unk4;
     if (val == 0) {
+#ifndef COLLECT_RINGS_ROM
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
 
@@ -3360,12 +3404,16 @@ void Task_PlayerHandleDeath(void)
                 gSpecialRingCount = 0;
                 HandleLifeLost();
             }
-        } else {
-            gRingCount = 0;
+        } else
+#endif
+        {
 
+            gRingCount = 0;
+#ifndef COLLECT_RINGS_ROM
             if (gGameMode == GAME_MODE_MULTI_PLAYER) {
                 gRingCount = 1;
             }
+#endif
 
             gSpecialRingCount = 0;
             InitializePlayer(&gPlayer);
@@ -3381,10 +3429,12 @@ void Task_PlayerHandleDeath(void)
             gPlayer.spriteInfoLimbs->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
 
             gCamera.unk50 &= ~0x3;
+#ifndef COLLECT_RINGS_ROM
             if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
                 gCheese->posX = gPlayer.qWorldX;
                 gCheese->posY = gPlayer.qWorldY;
             }
+#endif
 
             gCurTask->main = Task_PlayerMain;
             gPlayer.callback = Player_TouchGround;
@@ -3401,11 +3451,14 @@ static inline bool32 DeadPlayerLeftScreen(Player *p, struct Camera *cam, s32 pla
         return FALSE;
     }
 
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         if (playerY <= Q(cam->y - 80)) {
             return TRUE;
         }
-    } else {
+    } else
+#endif
+    {
         if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1) {
             return TRUE;
         }
@@ -3435,7 +3488,9 @@ void Task_PlayerDied(void)
     PLAYERFN_UPDATE_POSITION(p);
     sub_802486C(p, psi1);
     sub_8024B10(p, psi1);
+#ifndef COLLECT_RINGS_ROM
     sub_8024F74(p, psi2);
+#endif
 }
 
 void Task_PlayerMain(void)
@@ -3449,8 +3504,10 @@ void Task_PlayerMain(void)
     gUnknown_030054FC = 0;
     gUnknown_030054E0 = 0;
     Player_HandleInputs(p);
+#ifndef COLLECT_RINGS_ROM
     InputBuffer_HandleFrameInput(p);
     Player_HandleWater(p);
+#endif
     CallPlayerTransition(p);
 
     if (!(p->moveState & MOVESTATE_IA_OVERRIDE)) {
@@ -3461,16 +3518,20 @@ void Task_PlayerMain(void)
 
     sub_802486C(p, p->spriteInfoBody);
     sub_8024B10(p, p->spriteInfoBody);
+#ifndef COLLECT_RINGS_ROM
     sub_8024F74(p, p->spriteInfoLimbs);
+#endif
 
     if (p->charState != CHARSTATE_HIT_AIR && p->timerInvulnerability > 0) {
         p->timerInvulnerability--;
     }
-
+#ifndef COLLECT_RINGS_ROM
     if (p->disableTrickTimer != 0) {
         p->disableTrickTimer--;
     }
+#endif
 
+#ifndef COLLECT_RINGS_ROM
     sub_8023748(p);
 
     // from boost_effect.c
@@ -3482,6 +3543,7 @@ void Task_PlayerMain(void)
     gHomingTarget.angle = 0;
     gCheeseTarget.squarePlayerDistance = SQUARE(CHEESE_DISTANCE_MAX);
     gCheeseTarget.task = NULL;
+#endif
 
     if (p->moveState & MOVESTATE_DEAD) {
         struct Camera *cam = &gCamera;
@@ -3501,16 +3563,17 @@ void Task_PlayerMain(void)
         p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
         p->stoodObj = NULL;
         cam->unk50 |= 3;
-
+#ifndef COLLECT_RINGS_ROM
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
         }
+#endif
 
         p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
         p->spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         p->unk80 = 0x100;
         p->unk82 = 0x100;
-
+#ifndef COLLECT_RINGS_ROM
         // TODO: macro IS_SONG_PLAYING(...)
         if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
             m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
@@ -3534,6 +3597,7 @@ void Task_PlayerMain(void)
         } else {
             m4aSongNumStart(SE_LIFE_LOST);
         }
+#endif
     }
 }
 
@@ -3551,27 +3615,41 @@ void CallPlayerTransition(Player *p)
                 p->moveState &= ~(MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(Player_InitJump);
             } break;
+#ifndef COLLECT_RINGS_ROM
             case PLTRANS_PT4 - 1: {
                 p->moveState &= ~(MOVESTATE_IA_OVERRIDE | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(Player_8025F84);
             } break;
-            case PLTRANS_PT7 - 1: {
+#endif
+
+            case PLTRANS_PT7
+                - 1:
+#ifndef COLLECT_RINGS_ROM
+            {
                 PLAYERFN_SET(Player_8028D74);
             } break;
-            case PLTRANS_PT6 - 1: {
+#endif
+            case PLTRANS_PT6
+                - 1:
+#ifndef COLLECT_RINGS_ROM
+            {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(Player_8026060);
             } break;
+#endif
             case PLTRANS_UNCURL - 1: {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(Player_InitUncurl);
             } break;
+#ifndef COLLECT_RINGS_ROM
             case PLTRANS_HOMING_ATTACK_RECOIL - 1: {
                 PLAYERFN_SET(Player_InitHomingAttackRecoil);
             } break;
+#endif
             case PLTRANS_HURT - 1: {
                 PLAYERFN_SET(Player_InitHurt);
             } break;
+#ifndef COLLECT_RINGS_ROM
             case PLTRANS_REACHED_GOAL - 1: {
                 if (gGameMode == GAME_MODE_TIME_ATTACK) {
                     gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
@@ -3587,17 +3665,24 @@ void CallPlayerTransition(Player *p)
                     PLAYERFN_SET(Player_InitReachedGoal);
                 }
             } break;
+#endif
             case PLTRANS_SPRING_UP - 1: {
+#ifndef COLLECT_RINGS_ROM
                 // NOTE: Set to 0 or 3 in floating_spring.c
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
+#endif
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_DOWN - 1: {
-                if (!GRAVITY_IS_INVERTED) {
+#ifndef COLLECT_RINGS_ROM
+                if (!GRAVITY_IS_INVERTED)
+#endif
+                {
                     p->unk6E |= 0x10;
                 }
+
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_LEFT - 1: {
@@ -3609,33 +3694,45 @@ void CallPlayerTransition(Player *p)
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_UP_LEFT - 1: {
+#ifndef COLLECT_RINGS_ROM
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x60;
-                } else {
+                } else
+#endif
+                {
                     p->unk6E |= 0x40;
                 }
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_UP_RIGHT - 1: {
+#ifndef COLLECT_RINGS_ROM
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x70;
-                } else {
+                } else
+#endif
+                {
                     p->unk6E |= 0x50;
                 }
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_DOWN_LEFT - 1: {
+#ifndef COLLECT_RINGS_ROM
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x40;
-                } else {
+                } else
+#endif
+                {
                     p->unk6E |= 0x60;
                 }
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_SPRING_DOWN_RIGHT - 1: {
+#ifndef COLLECT_RINGS_ROM
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x50;
-                } else {
+                } else
+#endif
+                {
                     p->unk6E |= 0x70;
                 }
                 PLAYERFN_SET(Player_TouchNormalSpring);
@@ -3643,9 +3740,11 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_RAMP_AND_DASHRING - 1: {
                 PLAYERFN_SET(Player_InitRampOrDashRing);
             } break;
+#ifndef COLLECT_RINGS_ROM
             case PLTRANS_DASHRING - 1: {
                 PLAYERFN_SET(Player_InitDashRing);
             } break;
+#endif
             case PLTRANS_GRINDING - 1: {
                 PLAYERFN_SET(Player_InitGrinding);
             } break;
@@ -3658,6 +3757,7 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_PT23 - 1: {
                 PLAYERFN_SET(Player_802A258);
             } break;
+#ifndef COLLECT_RINGS_ROM
             case PLTRANS_PIPE_ENTRY - 1: {
                 PLAYERFN_SET(Player_InitPipeEntry);
             } break;
@@ -3670,6 +3770,7 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_CORKSCREW - 1: {
                 PLAYERFN_SET(Player_InitCorkscrew);
             } break;
+#endif
         }
     }
 
@@ -3677,6 +3778,7 @@ void CallPlayerTransition(Player *p)
     p->transition = 0;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void Player_HandleInputs(Player *p)
 {
     u32 input;

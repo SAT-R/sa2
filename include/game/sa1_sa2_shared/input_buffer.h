@@ -4,7 +4,7 @@
 #include "game/sa1_sa2_shared/player.h"
 
 void InputBuffer_NewFrameInput(u16 param0, u16 param1);
-void InputBuffer_HandleFrameInput(Player *p);
+void CallPlayerTransition(Player *p);
 
 extern const u8 *unk_8C87198[3];
 extern const u8 *unk_8C871A4[3];
