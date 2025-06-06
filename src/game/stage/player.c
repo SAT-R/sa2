@@ -261,6 +261,37 @@ void CallPlayerTransition(Player *p);
         _s->animSpeed = speed;                                                                                                             \
     }
 
+#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
+    ({                                                                                                                                     \
+        s32 x, y;                                                                                                                          \
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
+            psi->transform.qScaleX = -Q(1.0);                                                                                              \
+        } else {                                                                                                                           \
+            psi->transform.qScaleX = +Q(1.0);                                                                                              \
+        }                                                                                                                                  \
+        if (GRAVITY_IS_INVERTED) {                                                                                                         \
+            psi->transform.qScaleX = -psi->transform.qScaleX;                                                                              \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (psi->transform.qScaleX < 0) {                                                                                                  \
+            psi->transform.x--;                                                                                                            \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (GRAVITY_IS_INVERTED) {                                                                                                         \
+            psi->transform.qScaleY = Q(1.0);                                                                                               \
+            /* requires double clamp to match */                                                                                           \
+            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(-Q(1.0) - (psi->transform.rotation + psi->transform.qScaleY)));    \
+        } else {                                                                                                                           \
+            psi->transform.qScaleY = Q(1.0);                                                                                               \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        x = I(psi->transform.qScaleX * p->unk80);                                                                                          \
+        y = I(psi->transform.qScaleY * p->unk82);                                                                                          \
+        psi->transform.qScaleX = x;                                                                                                        \
+        psi->transform.qScaleY = y;                                                                                                        \
+        UpdateSpriteAnimation(s);                                                                                                          \
+    })
+
 #define TRICK_DIR_UP       0
 #define TRICK_DIR_DOWN     1
 #define TRICK_DIR_FORWARD  2
@@ -3778,7 +3809,6 @@ void CallPlayerTransition(Player *p)
     p->transition = 0;
 }
 
-#ifndef COLLECT_RINGS_ROM
 void Player_HandleInputs(Player *p)
 {
     u32 input;
@@ -3829,15 +3859,23 @@ void sub_80246DC(Player *p)
 {
     Sprite *s = &p->spriteInfoBody->s;
     u16 charState = p->charState;
+#ifndef COLLECT_RINGS_ROM
     u32 anim = p->anim;
+#else
+    u16 anim = p->anim;
+#endif
     u32 variant = p->variant;
     u32 sl = variant;
 
+#ifndef COLLECT_RINGS_ROM
     AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
+#else
+    AnimId baseAnim = gPlayerCharacterIdleAnims[0];
+#endif
     anim = (u16)(anim - baseAnim);
 
     if ((charState == CHARSTATE_JUMP_1) || (charState == CHARSTATE_JUMP_2)) {
-        if (variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) && (((u16)anim - 10) == 0 || ((u16)anim - 10) == 1)) {
+        if (p->variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) && (((u16)anim - 10) == 0 || ((u16)anim - 10) == 1)) {
             p->variant = 1;
             p->moveState |= MOVESTATE_4;
 
@@ -3860,22 +3898,30 @@ void sub_80246DC(Player *p)
                     if (p->qSpeedAirY > 0) {
                         p->variant = 1;
                     }
-                } else if (variant == 1) {
+                } else if (p->variant == 1) {
                     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->variant = 2;
                     }
                 }
             }
-        } else if (charState == CHARSTATE_SPRING_C) {
+        }
+
+        else if (charState == CHARSTATE_SPRING_C) {
             if (anim == SA2_CHAR_ANIM_53) {
-                if (variant == 0) {
+                if (sl == 0) {
                     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+#ifndef COLLECT_RINGS_ROM
                         p->anim = (gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_52);
+#else
+                        p->anim = (gPlayerCharacterIdleAnims[0] + SA2_CHAR_ANIM_52);
+#endif
                         p->variant = 2;
                     }
                 }
             }
-        } else if (charState == CHARSTATE_SPRING_MUSIC_PLANT) {
+        }
+#ifndef COLLECT_RINGS_ROM
+        else if (charState == CHARSTATE_SPRING_MUSIC_PLANT) {
             if (anim == SA2_CHAR_ANIM_SPRING_MUSIC_PLANT) {
                 if (variant == 0) {
                     if (p->qSpeedAirY > 0) {
@@ -3900,9 +3946,11 @@ void sub_80246DC(Player *p)
                 }
             }
         }
+#endif
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_802486C(Player *p, PlayerSpriteInfo *p2)
 {
 #ifndef NON_MATCHING
@@ -3998,37 +4046,6 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
 
     p->prevCharState = p->charState;
 }
-
-#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
-    ({                                                                                                                                     \
-        s32 x, y;                                                                                                                          \
-        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
-            psi->transform.qScaleX = -Q(1.0);                                                                                              \
-        } else {                                                                                                                           \
-            psi->transform.qScaleX = +Q(1.0);                                                                                              \
-        }                                                                                                                                  \
-        if (GRAVITY_IS_INVERTED) {                                                                                                         \
-            psi->transform.qScaleX = -psi->transform.qScaleX;                                                                              \
-        }                                                                                                                                  \
-                                                                                                                                           \
-        if (psi->transform.qScaleX < 0) {                                                                                                  \
-            psi->transform.x--;                                                                                                            \
-        }                                                                                                                                  \
-                                                                                                                                           \
-        if (GRAVITY_IS_INVERTED) {                                                                                                         \
-            psi->transform.qScaleY = Q(1.0);                                                                                               \
-            /* requires double clamp to match */                                                                                           \
-            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(-Q(1.0) - (psi->transform.rotation + psi->transform.qScaleY)));    \
-        } else {                                                                                                                           \
-            psi->transform.qScaleY = Q(1.0);                                                                                               \
-        }                                                                                                                                  \
-                                                                                                                                           \
-        x = I(psi->transform.qScaleX * p->unk80);                                                                                          \
-        y = I(psi->transform.qScaleY * p->unk82);                                                                                          \
-        psi->transform.qScaleX = x;                                                                                                        \
-        psi->transform.qScaleY = y;                                                                                                        \
-        UpdateSpriteAnimation(s);                                                                                                          \
-    })
 
 void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 {

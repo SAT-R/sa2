@@ -523,7 +523,7 @@ _020081C2:
 	blt _0200821C
 _020081D0:
 	ldrb r1, [r4, #0xa]
-	ldr r3, _020082D0 @ =gUnknown_02015C50
+	ldr r3, _020082D0 @ =gPlayerCharacterIdleAnims
 	ldr r2, _020082D4 @ =gMultiplayerCharacters
 	adds r0, r4, #0
 	adds r0, #0x56
@@ -663,7 +663,7 @@ _020082CA:
 	adds r5, r2, r0
 	b _020083D6
 	.align 2, 0
-_020082D0: .4byte gUnknown_02015C50
+_020082D0: .4byte gPlayerCharacterIdleAnims
 _020082D4: .4byte gMultiplayerCharacters
 _020082D8: .4byte gCamera
 _020082DC:

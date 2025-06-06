@@ -645,7 +645,7 @@ _0200967C: .4byte gVramGraphicsCopyCursor
 _02009680: .4byte gVramGraphicsCopyQueueIndex
 _02009684:
 	movs r2, #3
-	ldr r3, _0200975C @ =gUnknown_02015C50
+	ldr r3, _0200975C @ =gPlayerCharacterIdleAnims
 	movs r6, #6
 	ldrsh r0, [r3, r6]
 	ldrh r1, [r5, #0xa]
@@ -753,7 +753,7 @@ _020096FA:
 	bl sub_8018120
 	b _020097E2
 	.align 2, 0
-_0200975C: .4byte gUnknown_02015C50
+_0200975C: .4byte gPlayerCharacterIdleAnims
 _02009760: .4byte gCamera
 _02009764: .4byte gStageFlags
 _02009768: .4byte 0x80000004

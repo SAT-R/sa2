@@ -371,7 +371,8 @@
     "pipe_sequence.h": "c",
     "terrain_collision.h": "c",
     "indicators.h": "c",
-    "multiplayer_teleport.h": "c"
+    "multiplayer_teleport.h": "c",
+    "input_buffer.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

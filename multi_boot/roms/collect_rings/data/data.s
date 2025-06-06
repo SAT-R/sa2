@@ -2,8 +2,8 @@
 
 .align 2, 0
 
-    .global gUnknown_02015C50
-gUnknown_02015C50:
+    .global gPlayerCharacterIdleAnims
+gPlayerCharacterIdleAnims:
     .incbin "data/rom_data.bin", 0x00015B90, 0x2
 
     .global gUnknown_02015C52

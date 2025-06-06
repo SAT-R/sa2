@@ -4,282 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start Player_HandleInputs
-Player_HandleInputs: @ 0x0200EC28
-	push {r4, r5, r6, r7, lr}
-	adds r3, r0, #0
-	ldr r0, _0200EC58 @ =gGameMode
-	ldrb r1, [r0]
-	adds r7, r0, #0
-	cmp r1, #2
-	bls _0200EC64
-	ldr r0, _0200EC5C @ =0x04000128
-	ldr r1, [r0]
-	lsls r1, r1, #0x1a
-	ldr r0, _0200EC60 @ =gCamera
-	adds r0, #0x66
-	lsrs r1, r1, #0x1e
-	ldrb r0, [r0]
-	cmp r1, r0
-	beq _0200EC64
-	adds r1, r3, #0
-	adds r1, #0x5c
-	movs r0, #0
-	strh r0, [r1]
-	movs r6, #0
-	adds r5, r1, #0
-	b _0200ECDA
-	.align 2, 0
-_0200EC58: .4byte gGameMode
-_0200EC5C: .4byte 0x04000128
-_0200EC60: .4byte gCamera
-_0200EC64:
-	adds r0, r3, #0
-	adds r0, #0x5c
-	ldrh r6, [r0]
-	ldr r1, [r3, #0x20]
-	movs r2, #0x80
-	lsls r2, r2, #0xe
-	ands r1, r2
-	adds r5, r0, #0
-	cmp r1, #0
-	bne _0200ECDA
-	ldr r0, _0200ECEC @ =gInput
-	ldrh r4, [r0]
-	strh r4, [r5]
-	ldrb r0, [r7]
-	cmp r0, #2
-	bls _0200ECDA
-	movs r0, #0x37
-	adds r0, r0, r3
-	mov ip, r0
-	ldrb r1, [r0]
-	movs r0, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0200ECDA
-	movs r0, #0xf0
-	ands r0, r4
-	lsrs r2, r0, #4
-	ldr r0, _0200ECF0 @ =gStageTime
-	ldr r1, [r0]
-	ldrh r0, [r3, #0x32]
-	adds r1, r0, r1
-	movs r0, #3
-	ands r1, r0
-	cmp r1, #0
-	bne _0200ECAC
-	movs r1, #1
-_0200ECAC:
-	lsls r2, r1
-	lsls r0, r2, #0x18
-	lsrs r1, r0, #0x1c
-	lsrs r0, r0, #0x18
-	orrs r0, r1
-	lsls r0, r0, #0x1c
-	lsrs r2, r0, #0x18
-	ldr r0, _0200ECF4 @ =0x0000FF0F
-	ands r0, r4
-	orrs r0, r2
-	strh r0, [r5]
-	ldrh r0, [r3, #0x32]
-	subs r0, #1
-	strh r0, [r3, #0x32]
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	bne _0200ECDA
-	mov r0, ip
-	ldrb r1, [r0]
-	movs r0, #0xbf
-	ands r0, r1
-	mov r1, ip
-	strb r0, [r1]
-_0200ECDA:
-	ldrh r0, [r5]
-	eors r6, r0
-	ands r6, r0
-	adds r0, r3, #0
-	adds r0, #0x5e
-	strh r6, [r0]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200ECEC: .4byte gInput
-_0200ECF0: .4byte gStageTime
-_0200ECF4: .4byte 0x0000FF0F
-
-	thumb_func_start sub_0200ECF8
-sub_0200ECF8: @ 0x0200ECF8
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	adds r4, r0, #0
-	adds r0, #0x90
-	ldr r0, [r0]
-	adds r6, r0, #0
-	adds r6, #0xc
-	adds r0, r4, #0
-	adds r0, #0x64
-	ldrh r2, [r0]
-	mov sb, r2
-	movs r0, #0x68
-	adds r0, r0, r4
-	mov sl, r0
-	ldrh r5, [r0]
-	movs r1, #0x6a
-	adds r1, r1, r4
-	mov ip, r1
-	ldrh r1, [r1]
-	mov r8, r1
-	ldr r0, _0200ED7C @ =gUnknown_02015C50
-	ldrh r7, [r0]
-	subs r0, r5, r7
-	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
-	adds r5, r3, #0
-	adds r0, r2, #0
-	subs r0, #0xa
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #1
-	bhi _0200EDDC
-	cmp r1, #0
-	bne _0200ED80
-	ldr r0, [r6, #0x10]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	beq _0200ED80
-	adds r0, r3, #0
-	subs r0, #0xa
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #1
-	bhi _0200ED80
-	movs r0, #1
-	mov r1, ip
-	strh r0, [r1]
-	ldr r0, [r4, #0x20]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r4, #0x20]
-	adds r0, r4, #0
-	movs r1, #9
-	bl Player_HandleSpriteYOffsetChange
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #9
-	strb r0, [r4, #0x17]
-	b _0200EE30
-	.align 2, 0
-_0200ED7C: .4byte gUnknown_02015C50
-_0200ED80:
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	cmp r0, #0
-	ble _0200EE30
-	adds r6, r4, #0
-	adds r6, #0x6a
-	ldrh r0, [r6]
-	cmp r0, #1
-	bne _0200EE30
-	adds r0, r5, #0
-	subs r0, #0xa
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, #1
-	bhi _0200EE30
-	ldr r0, [r4, #0xc]
-	asrs r0, r0, #8
-	movs r1, #0x17
-	ldrsb r1, [r4, r1]
-	adds r0, r0, r1
-	ldr r1, [r4, #8]
-	asrs r1, r1, #8
-	adds r2, r4, #0
-	adds r2, #0x38
-	ldrb r2, [r2]
-	movs r3, #0
-	str r3, [sp]
-	ldr r3, _0200EDD4 @ =sub_801EE64
-	str r3, [sp, #4]
-	movs r3, #8
-	bl sub_801E6D4
-	adds r1, r0, #0
-	ldr r0, _0200EDD8 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _0200EE30
-	cmp r1, #0x20
-	bgt _0200EE30
-	movs r0, #2
-	strh r0, [r6]
-	b _0200EE30
-	.align 2, 0
-_0200EDD4: .4byte sub_801EE64
-_0200EDD8: .4byte gGameMode
-_0200EDDC:
-	cmp r2, #0x26
-	bne _0200EE06
-	cmp r3, #0x34
-	bne _0200EE30
-	cmp r1, #0
-	bne _0200EDF4
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	cmp r0, #0
-	ble _0200EE30
-	movs r0, #1
-	b _0200EE2C
-_0200EDF4:
-	cmp r1, #1
-	bne _0200EE30
-	ldr r0, [r6, #0x10]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	beq _0200EE30
-	b _0200EE2A
-_0200EE06:
-	mov r0, sb
-	cmp r0, #0x27
-	bne _0200EE30
-	cmp r5, #0x35
-	bne _0200EE30
-	mov r1, r8
-	cmp r1, #0
-	bne _0200EE30
-	ldr r0, [r6, #0x10]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	beq _0200EE30
-	adds r0, r7, #0
-	adds r0, #0x34
-	mov r1, sl
-	strh r0, [r1]
-_0200EE2A:
-	movs r0, #2
-_0200EE2C:
-	mov r1, ip
-	strh r0, [r1]
-_0200EE30:
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
 	thumb_func_start sub_802486C
 sub_802486C: @ 0x0200EE40
 	push {r4, r5, r6, r7, lr}
@@ -316,7 +40,7 @@ sub_802486C: @ 0x0200EE40
 	ldrsh r0, [r2, r7]
 	cmp r0, #0x4f
 	bgt _0200EE8C
-	ldr r0, _0200EEEC @ =gUnknown_02015C50
+	ldr r0, _0200EEEC @ =gPlayerCharacterIdleAnims
 	ldrh r0, [r0]
 	adds r0, r1, r0
 	strh r0, [r4]
@@ -346,7 +70,7 @@ _0200EEA6:
 	adds r5, #0x6a
 	cmp r1, #9
 	bne _0200EEF8
-	ldr r0, _0200EEEC @ =gUnknown_02015C50
+	ldr r0, _0200EEEC @ =gPlayerCharacterIdleAnims
 	ldrh r0, [r0]
 	adds r0, #9
 	strh r0, [r4]
@@ -371,7 +95,7 @@ _0200EEDC:
 	b _0200EEF2
 	.align 2, 0
 _0200EEE8: .4byte gUnknown_02015C52
-_0200EEEC: .4byte gUnknown_02015C50
+_0200EEEC: .4byte gPlayerCharacterIdleAnims
 _0200EEF0:
 	movs r0, #8
 _0200EEF2:
@@ -1199,7 +923,7 @@ sub_0200F520: @ 0x0200F520
 	adds r7, #0xc
 	adds r0, r4, #0
 	adds r0, #0x68
-	ldr r1, _0200F580 @ =gUnknown_02015C50
+	ldr r1, _0200F580 @ =gPlayerCharacterIdleAnims
 	ldrh r0, [r0]
 	ldrh r1, [r1]
 	subs r0, r0, r1
@@ -1239,7 +963,7 @@ _0200F556:
 	str r1, [r0, #0x1c]
 	b _0200F592
 	.align 2, 0
-_0200F580: .4byte gUnknown_02015C50
+_0200F580: .4byte gPlayerCharacterIdleAnims
 _0200F584: .4byte 0xFFFFBFFF
 _0200F588:
 	cmp r1, #0x40
@@ -1382,7 +1106,7 @@ sub_0200F684: @ 0x0200F684
 	adds r7, #0xc
 	adds r0, r4, #0
 	adds r0, #0x68
-	ldr r1, _0200F6E8 @ =gUnknown_02015C50
+	ldr r1, _0200F6E8 @ =gPlayerCharacterIdleAnims
 	ldrh r0, [r0]
 	ldrh r1, [r1]
 	subs r0, r0, r1
@@ -1423,7 +1147,7 @@ _0200F6BA:
 	str r0, [r2, #0x1c]
 	b _0200F6FA
 	.align 2, 0
-_0200F6E8: .4byte gUnknown_02015C50
+_0200F6E8: .4byte gPlayerCharacterIdleAnims
 _0200F6EC: .4byte 0xFFFFBFFF
 _0200F6F0:
 	cmp r1, #0x80
@@ -1975,7 +1699,7 @@ sub_0200FADC: @ 0x0200FADC
 	strh r3, [r4, #0x12]
 _0200FB0E:
 	adds r0, r4, #0
-	bl sub_0200ECF8
+	bl sub_80246DC
 	adds r0, r4, #0
 	bl Player_AirInputControls
 	adds r0, r4, #0
@@ -2180,7 +1904,7 @@ _0200FC98: .4byte sub_0200FC9C
 sub_0200FC9C: @ 0x0200FC9C
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
-	bl sub_0200ECF8
+	bl sub_80246DC
 	adds r0, r4, #0
 	bl Player_AirInputControls
 	adds r0, r4, #0
@@ -2316,7 +2040,7 @@ sub_0200FD90: @ 0x0200FD90
 	mov r8, r0
 	adds r0, r6, #0
 	adds r0, #0x68
-	ldr r1, _0200FE00 @ =gUnknown_02015C50
+	ldr r1, _0200FE00 @ =gPlayerCharacterIdleAnims
 	ldrh r0, [r0]
 	ldrh r1, [r1]
 	subs r0, r0, r1
@@ -2363,7 +2087,7 @@ _0200FDEE:
 	bl m4aSongNumStart
 	b _0200FEBA
 	.align 2, 0
-_0200FE00: .4byte gUnknown_02015C50
+_0200FE00: .4byte gPlayerCharacterIdleAnims
 _0200FE04: .4byte 0xFFFFFBFF
 _0200FE08: .4byte gUnknown_02015E3C
 _0200FE0C: .4byte gPlayer
@@ -3289,7 +3013,7 @@ _02010550: .4byte sub_02010554
 sub_02010554: @ 0x02010554
 	push {r4, r5, lr}
 	adds r4, r0, #0
-	bl sub_0200ECF8
+	bl sub_80246DC
 	adds r0, r4, #0
 	bl Player_AirInputControls
 	adds r0, r4, #0
@@ -3836,7 +3560,7 @@ _02010980: .4byte sub_02010984
 sub_02010984: @ 0x02010984
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
-	bl sub_0200ECF8
+	bl sub_80246DC
 	adds r0, r4, #0
 	bl Player_AirInputControls
 	adds r0, r4, #0
