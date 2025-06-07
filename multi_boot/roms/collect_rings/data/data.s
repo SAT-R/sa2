@@ -6,8 +6,8 @@
 gPlayerCharacterIdleAnims:
     .incbin "data/rom_data.bin", 0x00015B90, 0x2
 
-    .global gUnknown_02015C52
-gUnknown_02015C52:
+    .global sCharStateAnimInfo
+sCharStateAnimInfo:
     .incbin "data/rom_data.bin", 0x00015B92, 0x1CC
 
     .global gUnknown_02015E1E

@@ -261,6 +261,7 @@ void CallPlayerTransition(Player *p);
         _s->animSpeed = speed;                                                                                                             \
     }
 
+#ifndef COLLECT_RINGS_ROM
 #define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
     ({                                                                                                                                     \
         s32 x, y;                                                                                                                          \
@@ -291,6 +292,27 @@ void CallPlayerTransition(Player *p);
         psi->transform.qScaleY = y;                                                                                                        \
         UpdateSpriteAnimation(s);                                                                                                          \
     })
+#else
+#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
+    ({                                                                                                                                     \
+        s32 x, y;                                                                                                                          \
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
+            psi->transform.qScaleX = -Q(1.0);                                                                                              \
+        } else {                                                                                                                           \
+            psi->transform.qScaleX = +Q(1.0);                                                                                              \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (psi->transform.qScaleX < 0) {                                                                                                  \
+            psi->transform.x--;                                                                                                            \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        x = I(psi->transform.qScaleX * p->unk80);                                                                                          \
+        y = I(psi->transform.qScaleY * p->unk82);                                                                                          \
+        psi->transform.qScaleX = x;                                                                                                        \
+        psi->transform.qScaleY = y;                                                                                                        \
+        UpdateSpriteAnimation(s);                                                                                                          \
+    })
+#endif
 
 #define TRICK_DIR_UP       0
 #define TRICK_DIR_DOWN     1
@@ -3950,7 +3972,6 @@ void sub_80246DC(Player *p)
     }
 }
 
-#ifndef COLLECT_RINGS_ROM
 void sub_802486C(Player *p, PlayerSpriteInfo *p2)
 {
 #ifndef NON_MATCHING
@@ -3963,24 +3984,38 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         p->anim = sCharStateAnimInfo[p->charState][0];
 
         if (p->charState < CHARSTATE_SHARED_COUNT) {
+#ifndef COLLECT_RINGS_ROM
             p->anim += gPlayerCharacterIdleAnims[p->character];
+#else
+            p->anim += gPlayerCharacterIdleAnims[0];
+#endif
         }
         p->variant = sCharStateAnimInfo[p->charState][1];
         p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
-
+#if !defined(NON_MATCHING) && !defined(COLLECT_RINGS_ROM)
     switch (((u16)(p->charState - 9) << 16) >> 16) {
+#else
+    switch (p->charState - 9) {
+#endif
         case CHARSTATE_WALK_A - 9: {
+#ifndef COLLECT_RINGS_ROM
             p->anim = gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_WALK;
+#else
+            p->anim = gPlayerCharacterIdleAnims[0] + SA2_CHAR_ANIM_WALK;
+#endif
             p->variant = p->walkAnim;
         } // FALLTHROUGH!!!
-
+#ifndef COLLECT_RINGS_ROM
         case CHARSTATE_WALLRUN_INIT - 9:
         case CHARSTATE_WALLRUN_TO_WALL - 9:
-        case CHARSTATE_WALLRUN_ON_WALL - 9: {
+        case CHARSTATE_WALLRUN_ON_WALL
+            - 9:
+#endif
+        {
             PLAYERFN_SET_ANIM_SPEED(p, s);
         } break;
-
+#ifndef COLLECT_RINGS_ROM
         case CHARSTATE_AIR_ATTACK - 9: {
             if (p->character != CHARACTER_CREAM) {
                 break;
@@ -4025,9 +4060,13 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
             s->animSpeed = I(ABS(p->qSpeedGround)) * 3 + 8;
 #endif
         } break;
+#endif
     }
+#ifndef COLLECT_RINGS_ROM
+    if (IS_MULTI_PLAYER)
+#endif
+    {
 
-    if (IS_MULTI_PLAYER) {
         p->unk98 = 0;
     }
 
@@ -4039,7 +4078,10 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         s->hitboxes[0].index = -1;
         s->hitboxes[1].index = -1;
 
-        if (IS_MULTI_PLAYER) {
+#ifndef COLLECT_RINGS_ROM
+        if (IS_MULTI_PLAYER)
+#endif
+        {
             p->unk98 = 1;
         }
     }
@@ -4071,17 +4113,24 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     psi->transform.x = I(p->qWorldX) - camX;
     psi->transform.y = I(p->qWorldY) - camY;
 
-    if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING || p->charState == CHARSTATE_ICE_SLIDE
-        || p->charState == CHARSTATE_WALK_B || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM)) {
+    if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING
+#ifndef COLLECT_RINGS_ROM
+        || p->charState == CHARSTATE_ICE_SLIDE || p->charState == CHARSTATE_WALK_B
+        || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM)
+#endif
+    ) {
+
         psi->transform.rotation = p->rotation << 2;
         s->frameFlags &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
         s->frameFlags |= p->playerID | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
         MACRO_8024B10_PSI_UPDATE(p, psi);
+#ifndef COLLECT_RINGS_ROM
         if (IS_SINGLE_PLAYER) {
             TransformSprite(s, &psi->transform);
         }
+#endif
     } else {
         psi->transform.rotation = 0;
         s->frameFlags &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
@@ -4094,25 +4143,27 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
             s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
             s->x++;
         }
-
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
-        } else {
+        } else
+#endif
+        {
             s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
         UpdateSpriteAnimation(s);
     }
+#ifndef COLLECT_RINGS_ROM
     if (IS_SINGLE_PLAYER) {
         // Draw Player sprite in SP modes
         if (p->moveState & MOVESTATE_DEAD
             || (!(p->moveState & MOVESTATE_100000) && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
             DisplaySprite(s);
         }
-
-#ifndef NON_MATCHING
-        if (IS_SINGLE_PLAYER)
+#else
+    {
 #endif
-        {
+        if (IS_SINGLE_PLAYER) {
             return;
         }
     }
@@ -4125,7 +4176,9 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     send->unk6 = s->graphics.anim;
     send->unkA = p->itemEffect;
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#ifndef COLLECT_RINGS_ROM
         send->unk6 -= gPlayerCharacterIdleAnims[p->character];
+#endif
         send->unk6 |= gRingCount << 8;
     }
     send->unkB = s->variant | (p->spriteOffsetY << 4);
@@ -4144,9 +4197,12 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         send->unk8 &= ~2;
     }
 
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         send->unk8 |= 8;
-    } else {
+    } else
+#endif
+    {
         send->unk8 &= ~8;
     }
 
@@ -4205,6 +4261,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     send->unk8 |= (mpp->unk64 << 9);
 }
 
+#ifndef COLLECT_RINGS_ROM
 #define MACRO_8024F74_ANIM_CHECK(anim, variant)                                                                                            \
     (((anim == SA2_CHAR_ANIM_JUMP_1 || anim == SA2_CHAR_ANIM_JUMP_2) && variant == 1)                                                      \
      || (anim == SA2_CHAR_ANIM_SPIN_ATTACK && variant == 0) || (anim == SA2_CHAR_ANIM_70 && variant == 0))
@@ -4294,7 +4351,9 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
         }
     }
 }
+#endif
 
+#ifndef COLLECT_RINGS_ROM
 void Player_TouchGround(Player *p)
 {
     u32 mask;
