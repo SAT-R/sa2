@@ -26582,7 +26582,7 @@ _0200D5A0:
 	adds r1, r4, #0
 	movs r2, #0
 	bl sub_02000d04
-	ldr r0, _0200D658 @ =sub_0200f684
+	ldr r0, _0200D658 @ =Player_Crouch
 	adds r1, r4, #0
 	movs r2, #0
 	bl sub_02000d04
@@ -26619,7 +26619,7 @@ _0200D648: .4byte sub_0200DC6C
 _0200D64C: .4byte gUnknown_03001ADC
 _0200D650: .4byte sub_0200d664
 _0200D654: .4byte sub_0200F6D0
-_0200D658: .4byte sub_0200f684
+_0200D658: .4byte Player_Crouch
 _0200D65C: .4byte gUnknown_03003330
 _0200D660: .4byte sub_0200f5aC
 
@@ -30771,8 +30771,8 @@ _0200F678: .4byte gUnknown_03001AD4
 _0200F67C: .4byte 0x0001869F
 _0200F680: .4byte sub_02001BF8
 
-	thumb_func_start sub_0200f684
-sub_0200f684: @ 0x0200f684
+	thumb_func_start Player_Crouch
+Player_Crouch: @ 0x0200f684
 	push {r4, lr}
 	adds r4, r0, #0
 	ldrb r1, [r4, #0x1a]

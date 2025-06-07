@@ -100,7 +100,11 @@
 #endif
 
 #define SE_BRAKE 115
-#define SE_JUMP  116
+#ifndef COLLECT_RINGS_ROM
+#define SE_JUMP 116
+#else
+#define SE_JUMP 14
+#endif
 
 #ifndef COLLECT_RINGS_ROM
 #define SE_RING_COPY 117

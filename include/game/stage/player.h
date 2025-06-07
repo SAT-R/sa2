@@ -51,7 +51,11 @@ type8029A28 sub_8029A74(Player *player, u8 *p1, type8029A28 *out);
 bool32 Player_TryJump(Player *);
 bool32 Player_TryAttack(Player *);
 
+#ifndef COLLECT_RINGS_ROM
 #define GET_CHARACTER_ANIM(player) (player->anim - gPlayerCharacterIdleAnims[player->character])
+#else
+#define GET_CHARACTER_ANIM(player) (player->anim - gPlayerCharacterIdleAnims[0])
+#endif
 
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);
