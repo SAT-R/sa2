@@ -80,15 +80,26 @@
 /* 67 - 101: Dummies */
 
 // TODO: Many soundeffect IDs are shared between SA! and SA2!
-#define SE_RING                    102
-#define SE_SHIFT                   103
-#define SE_SUCCESS                 104
-#define SE_ABORT                   105
-#define SE_SELECT                  106
-#define SE_RETURN                  107
-#define SE_MENU_CURSOR_MOVE        108
-#define SE_SPIN_ATTACK             109
-#define SE_SPIN_DASH_RELEASE       110
+#define SE_RING             102
+#define SE_SHIFT            103
+#define SE_SUCCESS          104
+#define SE_ABORT            105
+#define SE_SELECT           106
+#define SE_RETURN           107
+#define SE_MENU_CURSOR_MOVE 108
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_SPIN_ATTACK 109
+#else
+#define SE_SPIN_ATTACK 11
+#endif
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_SPIN_DASH_RELEASE 110
+#else
+#define SE_SPIN_DASH_RELEASE 12
+#endif
+
 #define SE_SONIC_SKID_ATTACK       111
 #define SE_SONIC_MIDAIR_SOMERSAULT 112
 #define SE_SONIC_INSTA_SHIELD      113

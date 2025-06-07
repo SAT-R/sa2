@@ -18,8 +18,8 @@ gUnknown_02015E1E:
 gUnknown_02015E32:
     .incbin "data/rom_data.bin", 0x00015D72, 0xA
 
-    .global gUnknown_02015E3C
-gUnknown_02015E3C:
+    .global sSpinDashSpeeds
+sSpinDashSpeeds:
     .incbin "data/rom_data.bin", 0x00015D7C, 0x1A
 
     .global gUnknown_02015E56
