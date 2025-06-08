@@ -131,6 +131,10 @@ void Player_HandleWalkAnim(Player *p);
 void Player_HandleInputs(Player *p);
 void CallPlayerTransition(Player *p);
 
+#if COLLECT_RINGS_ROM
+void sub_0200DBE0(Player *p);
+#endif
+
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
 #define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
@@ -622,6 +626,7 @@ static inline void Player_InitIceSlide_inline(Player *p)
 
 static inline void sub_802A500_inline(Player *p)
 {
+#ifndef COLLECT_RINGS_ROM
     if (p->qSpeedAirY >= 0) {
         sub_8022218(p);
         sub_8022284(p);
@@ -629,6 +634,9 @@ static inline void sub_802A500_inline(Player *p)
         sub_8022284(p);
         sub_8022218(p);
     }
+#else
+    sub_0200DBE0(p);
+#endif
 }
 
 static inline void Player_CameraShift_inline(Player *p)
@@ -5345,34 +5353,34 @@ void Player_GrindRailEndAir(Player *p)
     m4aSongNumStart(SE_JUMP);
     PLAYERFN_SET_AND_CALL(Player_8029074, p);
 }
-
-#ifndef COLLECT_RINGS_ROM
+void Player_8026D2C(Player *p);
 
 #if COLLECT_RINGS_ROM
-void Player_SpinAttack_CollectRings(Player *p)
+void Player_802A258(Player *p)
 {
-    if (IS_BOSS_STAGE(gCurrentLevel)) {
-        if ((p->moveState & MOVESTATE_IN_AIR)) {
-            Player_8025F84(p);
-            return;
+    if (!(p->moveState & MOVESTATE_IN_AIR)) {
+        if (p->moveState & MOVESTATE_4) {
+            p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+            p->charState = CHARSTATE_SPIN_ATTACK;
+
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+
+            p->moveState |= MOVESTATE_4;
+            p->unk99[0] = 0;
+            PLAYERFN_SET_AND_CALL(Player_Rolling, p);
+        } else {
+            Player_TouchGround(p);
         }
-    }
-
-    if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
-        Player_InitIceSlide(p);
     } else {
-        p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
-        p->charState = CHARSTATE_SPIN_ATTACK;
+        p->moveState |= MOVESTATE_40000;
+        p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-        PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
-
-        p->moveState |= MOVESTATE_4;
-        p->unk99[0] = 0;
-        PLAYERFN_SET_AND_CALL(Player_Rolling, p);
+        PLAYERFN_SET_AND_CALL(Player_8026D2C, p);
     }
 }
 #endif
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8026B64(Player *p)
 {
     s16 groundSpeed = p->qSpeedGround;
@@ -5426,6 +5434,7 @@ void Player_8026BCC(Player *p)
         }
     }
 }
+#endif
 
 void Player_8026D2C(Player *p)
 {
@@ -5443,6 +5452,7 @@ void Player_8026D2C(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p);
 }
 
+#ifndef COLLECT_RINGS_ROM
 void Player_InitPipeEntry(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
@@ -5609,7 +5619,9 @@ void Player_Corkscrew(Player *p)
 
     PLAYERFN_UPDATE_UNK2A(p);
 }
+#endif
 
+#ifndef COLLECT_RINGS_ROM
 void Player_InitHurt(Player *p)
 {
     p->timerInvulnerability = 0x78;
