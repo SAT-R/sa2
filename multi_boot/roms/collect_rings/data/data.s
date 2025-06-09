@@ -10,8 +10,8 @@ gPlayerCharacterIdleAnims:
 sCharStateAnimInfo:
     .incbin "data/rom_data.bin", 0x00015B92, 0x1CC
 
-    .global gUnknown_02015E1E
-gUnknown_02015E1E:
+    .global playerBoostPhysicsTable
+playerBoostPhysicsTable:
     .incbin "data/rom_data.bin", 0x00015D5E, 0x14
 
     .global playerBoostThresholdTable

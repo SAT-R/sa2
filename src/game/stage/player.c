@@ -999,6 +999,19 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
         p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
     }
 }
+#else
+static inline void Player_TransitionCancelBoost(Player *p)
+{
+    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
+                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
+                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
+
+    p->unk61 = 0;
+    p->unk62 = 0;
+    p->unk63 = 0;
+    p->unk71 = 0;
+    p->unk70 = FALSE;
+}
 #endif
 
 // Very similar to sub_8029BB8
@@ -5266,15 +5279,7 @@ void Player_InitGrindRailEndGround(Player *p)
 #ifndef COLLECT_RINGS_ROM
     Player_TransitionCancelFlyingAndBoost(p);
 #else
-    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
-                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
-
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
-    p->unk71 = 0;
-    p->unk70 = FALSE;
+    Player_TransitionCancelBoost(p);
 #endif
 
     p->moveState &= ~MOVESTATE_4;
@@ -5300,15 +5305,7 @@ void Player_GrindRailEndAir(Player *p)
 #ifndef COLLECT_RINGS_ROM
     Player_TransitionCancelFlyingAndBoost(p);
 #else
-    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
-                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
-
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
-    p->unk71 = 0;
-    p->unk70 = FALSE;
+    Player_TransitionCancelBoost(p);
 #endif
 
     p->moveState &= ~MOVESTATE_4;
@@ -5659,15 +5656,7 @@ void Player_InitHurt(Player *p)
     }
     Player_TransitionCancelFlyingAndBoost(p);
 #else
-    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
-                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
-
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
-    p->unk71 = 0;
-    p->unk70 = FALSE;
+    Player_TransitionCancelBoost(p);
 #endif
 
     p->moveState |= MOVESTATE_IN_AIR;
@@ -6358,15 +6347,7 @@ void Player_TouchNormalSpring(Player *p)
 #ifndef COLLECT_RINGS_ROM
     Player_TransitionCancelFlyingAndBoost(p);
 #else
-    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
-                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
-
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
-    p->unk71 = 0;
-    p->unk70 = FALSE;
+    Player_TransitionCancelBoost(p);
 #endif
 
     if (((r5 == 2) || (r5 == 3)) && !(p->moveState & MOVESTATE_IN_AIR)) {
@@ -6493,15 +6474,7 @@ void Player_InitRampOrDashRing(Player *p)
 #ifndef COLLECT_RINGS_ROM
     Player_TransitionCancelFlyingAndBoost(p);
 #else
-    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
-                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
-
-    p->unk61 = 0;
-    p->unk62 = 0;
-    p->unk63 = 0;
-    p->unk71 = 0;
-    p->unk70 = FALSE;
+    Player_TransitionCancelBoost(p);
 #endif
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_STOOD_ON_OBJ);
@@ -6718,17 +6691,14 @@ bool32 Player_TryMidAirAction(Player *p)
 #endif
 
 #if COLLECT_RINGS_ROM
-void sub_020118F8(Player *p);
+void Player_InitSpindash(Player *p);
 
 bool32 Player_TryInitSpindash(Player *p)
 {
     u32 r6 = 0;
     if (p->charState == CHARSTATE_CROUCH) {
         if (p->frameInput & gPlayerControls.jump) {
-#ifndef COLLECT_RINGS_ROM
-            PLAYERFN_SET_AND_CALL(Player_InitSpindash, p);
-#else
-            PLAYERFN_SET(sub_020118F8);
+            PLAYERFN_SET(Player_InitSpindash);
             p->charState = CHARSTATE_SPIN_DASH;
 
             p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
@@ -6744,7 +6714,6 @@ bool32 Player_TryInitSpindash(Player *p)
             m4aSongNumStart(SE_SPIN_ATTACK);
 
             PLAYERFN_SET_AND_CALL(Player_Spindash, p);
-#endif
             return TRUE;
         }
     }
@@ -7003,7 +6972,13 @@ void DestroyPlayerTasks(Player *p)
         DestroyRingsScatterTask();
     }
 }
-#ifndef COLLECT_RINGS_ROM
+
+#if COLLECT_RINGS_ROM
+// Just call some inline function, possibly the inline
+// functions were defined here but agbcc requires it be defined above
+UNUSED void sub_020111F4(Player *p) { Player_TransitionCancelBoost(p); }
+UNUSED void sub_0201121C(Player *p) { sub_8022190(p); }
+#endif
 
 s32 sub_8029A28(Player *p, u8 *rot, s32 *out)
 {
@@ -7135,10 +7110,12 @@ s32 sub_8029B0C(Player *p, u8 *ret_rotation, s32 *out)
 s32 sub_8029B58(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
-
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, rot, out);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029AC0(p, rot, out);
     }
 
@@ -7148,10 +7125,12 @@ s32 sub_8029B58(Player *p, u8 *rot, s32 *out)
 s32 sub_8029B88(Player *p, u8 *rot, s32 *out)
 {
     s32 result;
-
+#ifndef COLLECT_RINGS_ROM
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029AC0(p, rot, out);
-    } else {
+    } else
+#endif
+    {
         result = sub_8029B0C(p, rot, out);
     }
 
@@ -7208,6 +7187,7 @@ s32 sub_8029BB8(Player *p, u8 *rotation, s32 *out)
     return result;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_8029C84(Player *p)
 {
     s32 rot = p->rotation + DEG_TO_TURNS(90);
@@ -7215,6 +7195,7 @@ void sub_8029C84(Player *p)
     if ((rot & (DEG_TO_TURNS(360) - 1)) >= DEG_TO_TURNS(180))
         p->qSpeedGround = 0;
 }
+#endif
 
 void sub_8029CA0(Player *p)
 {
@@ -7271,7 +7252,7 @@ bool32 sub_8029DE8(Player *p)
 {
     struct Camera *cam = &gCamera;
     s32 playerY = p->qWorldY;
-
+#ifndef COLLECT_RINGS_ROM
     if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->minY))
@@ -7281,8 +7262,14 @@ bool32 sub_8029DE8(Player *p)
                 return TRUE;
         }
     }
-
     return FALSE;
+#else
+    if ((p->moveState & MOVESTATE_80000000) || playerY < Q(cam->maxY) - 1) {
+        return FALSE;
+    }
+
+    return TRUE;
+#endif
 }
 
 // Might've been an inline func, but doesn't match with it.
@@ -7290,7 +7277,7 @@ UNUSED bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
 {
     struct Camera *cam = &gCamera;
     s32 playerY = p->qWorldY;
-
+#ifndef COLLECT_RINGS_ROM
     if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->y - 80))
@@ -7302,6 +7289,13 @@ UNUSED bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
     }
 
     return FALSE;
+#else
+    if ((p->moveState & MOVESTATE_80000000) || playerY < Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1) {
+        return FALSE;
+    }
+
+    return TRUE;
+#endif
 }
 
 bool32 Player_TryJump(Player *p)
@@ -7309,11 +7303,13 @@ bool32 Player_TryJump(Player *p)
     u8 rot = p->rotation;
 
     if (p->frameInput & gPlayerControls.jump) {
+#ifndef COLLECT_RINGS_ROM
         if (GRAVITY_IS_INVERTED) {
             rot += Q(0.25);
             rot = -rot;
             rot -= Q(0.25);
         }
+#endif
 
         if (sub_8022F58(rot + Q(0.5), p) > 3) {
             PLAYERFN_SET(Player_InitJump);
@@ -7328,6 +7324,7 @@ void sub_8029ED8(Player *p) { PLAYERFN_UPDATE_UNK2A(p); }
 
 void sub_8029F20(Player *p) { PLAYERFN_UPDATE_ROTATION(p); }
 
+#ifndef COLLECT_RINGS_ROM
 void ContinueLevelSongAfterDrowning(Player *p)
 {
     p->framesUntilDrownCountDecrement = 60;
@@ -7354,11 +7351,13 @@ void sub_8029FA4(Player *p)
         CreateBrakingDustEffect(I(p->qWorldX), I(p->qWorldY) + u17);
     }
 }
+#endif
 
 void Player_SetMovestate_IsInScriptedSequence(void) { gPlayer.moveState |= MOVESTATE_IN_SCRIPTED; }
 
 void Player_ClearMovestate_IsInScriptedSequence(void) { gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED; }
 
+#ifndef COLLECT_RINGS_ROM
 void Player_DisableInputAndBossTimer(void)
 {
     gPlayer.transition = PLTRANS_REACHED_GOAL;
@@ -7377,6 +7376,7 @@ void Player_DisableInputAndBossTimer_FinalBoss(void)
         gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
     }
 }
+#endif
 
 void TaskDestructor_Player(struct Task *t)
 {
@@ -7386,10 +7386,29 @@ void TaskDestructor_Player(struct Task *t)
         VramFree(gPlayer.spriteInfoBody->s.graphics.dest);
     }
 
+#ifndef COLLECT_RINGS_ROM
     if (gPlayer.character == CHARACTER_CREAM || gPlayer.character == CHARACTER_TAILS) {
         VramFree(gPlayer.spriteInfoLimbs->s.graphics.dest);
     }
+#endif
 }
+
+#if COLLECT_RINGS_ROM
+void SetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p)
+{
+    p->playerID = playerID;
+    p->character = character;
+
+    p->checkPointX = 360 - (SIO_MULTI_CNT->id * 20);
+    p->checkPointY = 177;
+    p->qWorldX = -1;
+    p->qWorldY = -1;
+
+    p->unk98 = 0;
+    p->checkpointTime = 0;
+    p->spriteInfoBody = &gPlayerBodyPSI;
+}
+#endif
 
 // NOTE: Official name for the Taunt is "Appeal"
 bool32 Player_TryTaunt(Player *p)
@@ -7420,6 +7439,7 @@ bool32 Player_TryCrouchOrSpinAttack(Player *p)
     return FALSE;
 }
 
+#ifndef COLLECT_RINGS_ROM
 bool32 Player_TryInitSpindash(Player *p)
 {
     u32 r6 = 0;
@@ -7432,6 +7452,7 @@ bool32 Player_TryInitSpindash(Player *p)
 
     return FALSE;
 }
+#endif
 
 void Player_ApplyBoostPhysics(Player *p)
 {
@@ -7451,6 +7472,20 @@ void Player_ApplyBoostPhysics(Player *p)
     p->deceleration = playerBoostPhysicsTable[boostThreshold][1];
 }
 
+#if COLLECT_RINGS_ROM
+void Player_SpinAttack(Player *p)
+{
+    p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->charState = CHARSTATE_SPIN_ATTACK;
+
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+
+    p->moveState |= MOVESTATE_4;
+    p->unk99[0] = 0;
+    PLAYERFN_SET_AND_CALL(Player_Rolling, p);
+}
+#endif
+
 void Player_InitCrouch(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
@@ -7461,6 +7496,43 @@ void Player_InitCrouch(Player *p)
     PLAYERFN_SET_AND_CALL(Player_Crouch, p);
 }
 
+#if COLLECT_RINGS_ROM
+void Player_InitSpindash(Player *p)
+{
+    p->charState = CHARSTATE_SPIN_DASH;
+
+    p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
+    p->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
+
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+
+    p->spindashAccel = 0;
+    p->qSpeedAirX = 0;
+    p->qSpeedAirY = 0;
+    p->qSpeedGround = 0;
+
+    m4aSongNumStart(SE_SPIN_ATTACK);
+
+    PLAYERFN_SET_AND_CALL(Player_Spindash, p);
+}
+
+void sub_02011950(Player *p)
+{
+    u8 rotation;
+    s32 sp04;
+    s32 sp08;
+    s32 res = sub_8029B0C(p, &rotation, &sp04);
+    if (res <= 0) {
+        p->qWorldY += Q(res);
+        p->rotation = rotation;
+        sub_8021BE0(p);
+        p->qSpeedAirY = 0;
+        p->qSpeedGround = p->qSpeedAirX;
+    }
+}
+#endif
+
+#ifndef COLLECT_RINGS_ROM
 void Player_802A258(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
