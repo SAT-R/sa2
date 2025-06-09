@@ -14,18 +14,18 @@ sCharStateAnimInfo:
 gUnknown_02015E1E:
     .incbin "data/rom_data.bin", 0x00015D5E, 0x14
 
-    .global gUnknown_02015E32
-gUnknown_02015E32:
+    .global playerBoostThresholdTable
+playerBoostThresholdTable:
     .incbin "data/rom_data.bin", 0x00015D72, 0xA
 
     .global sSpinDashSpeeds
 sSpinDashSpeeds:
     .incbin "data/rom_data.bin", 0x00015D7C, 0x1A
 
-    .global gUnknown_02015E56
-gUnknown_02015E56:
+    .global sSpringAccelY
+sSpringAccelY:
     .incbin "data/rom_data.bin", 0x00015D96, 0x8
 
-    .global gUnknown_02015E5E
-gUnknown_02015E5E:
+    .global sSpringAccelX
+sSpringAccelX:
     .incbin "data/rom_data.bin", 0x00015D9E, 0xE

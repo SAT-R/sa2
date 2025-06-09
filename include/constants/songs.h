@@ -110,11 +110,12 @@
 #define SE_GRINDING 26
 #endif
 
-#define SE_BRAKE 115
 #ifndef COLLECT_RINGS_ROM
-#define SE_JUMP 116
+#define SE_BRAKE 115
+#define SE_JUMP  116
 #else
-#define SE_JUMP 14
+#define SE_BRAKE 13
+#define SE_JUMP  14
 #endif
 
 #ifndef COLLECT_RINGS_ROM
@@ -256,35 +257,41 @@
 #define SE_245 245
 #define SE_246 246
 // 247
-#define SE_PROJECTILE_DROP    248
-#define SE_PROJECTILE_IMPACT  249
-#define SE_250                250
-#define SE_251                251
-#define SE_252                252
-#define SE_253                253
-#define SE_254                254
-#define SE_255                255
-#define SE_256                256
-#define SE_257                257
-#define SE_258                258
-#define SE_259                259
-#define SE_260                260
-#define SE_261                261
-#define SE_262                262
-#define SE_263                263
-#define SE_264                264
-#define SE_265                265
-#define SE_266                266
-#define SE_267                267
-#define SE_268                268
-#define SE_269                269
-#define SE_SUCTION            270
-#define SE_271                271
-#define SE_272                272
-#define SE_273                273
-#define SE_274                274
-#define SE_275                275
-#define SE_276                276
+#define SE_PROJECTILE_DROP   248
+#define SE_PROJECTILE_IMPACT 249
+#define SE_250               250
+#define SE_251               251
+#define SE_252               252
+#define SE_253               253
+#define SE_254               254
+#define SE_255               255
+#define SE_256               256
+#define SE_257               257
+#define SE_258               258
+#define SE_259               259
+#define SE_260               260
+#define SE_261               261
+#define SE_262               262
+#define SE_263               263
+#define SE_264               264
+#define SE_265               265
+#define SE_266               266
+#define SE_267               267
+#define SE_268               268
+#define SE_269               269
+#define SE_SUCTION           270
+#define SE_271               271
+#define SE_272               272
+#define SE_273               273
+#define SE_274               274
+#define SE_275               275
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_276 276
+#else
+#define SE_276 25
+#endif
+
 #define SE_DASH_RING          277
 #define SE_278                278
 #define SE_279                279

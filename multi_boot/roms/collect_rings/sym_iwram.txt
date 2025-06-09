@@ -76,7 +76,7 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x00005430; gUnknown_030054B8 = .;
 . = 0x00005434; gBossCameraClampYUpper = .;
 . = 0x00005444; gGameMode = .;
-. = 0x00005448; gUnknown_03005448 = .;
+. = 0x00005448; gStageGoalX = .;
 . = 0x0000544C; gMultiplayerMissingHeartbeats = .;
 . = 0x00005454; gEntitiesManagerTask = .;
 . = 0x00005458; gUnknown_030054E0 = .;
