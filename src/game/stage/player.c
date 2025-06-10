@@ -141,6 +141,7 @@ void sub_0200DBE0(Player *p);
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 // TODO: Match this without ASM!
+#ifndef COLLECT_RINGS_ROM
 #ifndef NON_MATCHING
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
     {                                                                                                                                      \
@@ -162,6 +163,18 @@ void sub_0200DBE0(Player *p);
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
     {                                                                                                                                      \
         s16 speed = (player->moveState & MOVESTATE_IN_WATER) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                  \
+                                                                                                                                           \
+        if (player->qSpeedAirY < 0) {                                                                                                      \
+            speed /= 2;                                                                                                                    \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        player->qSpeedAirY += speed;                                                                                                       \
+    }
+#endif
+#else
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
+    {                                                                                                                                      \
+        s16 speed = Q_8_8(PLAYER_GRAVITY);                                                                                                 \
                                                                                                                                            \
         if (player->qSpeedAirY < 0) {                                                                                                      \
             speed /= 2;                                                                                                                    \
@@ -7635,6 +7648,7 @@ void Player_InitReachedGoalMultiplayer(Player *p)
 void Player_Nop(Player *p) { }
 
 void sub_802A500(Player *p) { sub_802A500_inline(p); }
+#endif
 
 void sub_802A52C(Player *p) { PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p); }
 
@@ -7648,11 +7662,13 @@ void sub_802A58C(Player *p)
     }
 }
 
+#ifndef COLLECT_RINGS_ROM
 void sub_802A5AC(Player *p)
 {
     if (p->disableTrickTimer != 0)
         p->disableTrickTimer--;
 }
+#endif
 
 void Player_Skidding(Player *p)
 {
@@ -7724,6 +7740,7 @@ void sub_802A6C0(Player *p)
     m4aSongNumStop(SE_GRINDING);
 }
 
+#ifndef COLLECT_RINGS_ROM
 void Player_InitAttack(Player *p)
 {
     switch (p->character) {
