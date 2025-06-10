@@ -66,7 +66,8 @@ SECTIONS {
         *libc.a:memset.o(.text);
 
         /* Data */
-        build/collect_rings/data/data0.o(.rodata);
+        build/collect_rings/src/sa2/multi_sio.o(.rodata);
+        build/collect_rings/src/sa2/sio32_multi_load.o(.rodata);
         build/collect_rings/src/sa2/core.o(.rodata);
         build/collect_rings/src/sa2/background.o(.rodata);
         build/collect_rings/src/sa2/trig.o(.rodata);
@@ -80,7 +81,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/sa1_sa2_shared/interactables/spring.o(.rodata);
         build/collect_rings/src/sa2/game/interactables_1/spikes.o(.rodata);
         build/collect_rings/src/sa2/game/stage/camera.o(.rodata);
-        build/collect_rings/data/data.o(.rodata);
+        build/collect_rings/src/sa2/game/stage/player.o(.rodata);
         build/collect_rings/src/sa2/lib/m4a/m4a_tables.o(.rodata);
         build/collect_rings/data/sound_data.o(.rodata);
     }

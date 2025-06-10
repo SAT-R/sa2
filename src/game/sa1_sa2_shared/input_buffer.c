@@ -190,7 +190,7 @@ void InputBuffer_NewFrameInput(u16 frameInputs1, u16 frameInputs2)
     }
 }
 
-void InitNewInputCounters()
+void InitNewInputCounters(void)
 {
     gNewInputCountersIndex = 0;
     DmaFill32(3, 0, gNewInputCounters, sizeof(gNewInputCounters) - 4);

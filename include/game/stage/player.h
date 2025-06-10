@@ -79,6 +79,6 @@ bool32 Player_TryAttack(Player *);
 // TODO: This is unaligned in-ROM.
 //       Can we somehow change this to be using a struct instead?
 extern const u16 sCharStateAnimInfo[][2];
-extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
+extern const AnimId gPlayerCharacterIdleAnims[];
 
 #endif // GUARD_STAGE_PLAYER_H

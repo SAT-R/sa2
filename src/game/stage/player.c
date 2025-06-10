@@ -41,100 +41,6 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
-typedef struct {
-    /* 0x00 */ u8 unk0;
-    /* 0x04 */ u32 unk4; // TODO: Check the type!
-} player_0_Task; /* size: 0x8 */
-
-Player ALIGNED(8) gPlayer = {};
-
-// Potentially some extra space on player for this to be aligned 16 (should be 8)
-PlayerSpriteInfo ALIGNED(16) gPlayerLimbsPSI = {};
-PlayerSpriteInfo ALIGNED(16) gPlayerBodyPSI = {};
-
-// sakit
-extern void InitNewInputCounters(void);
-
-void sub_8022218(Player *);
-void sub_8022284(Player *);
-void Task_PlayerMain(void);
-void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
-void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
-void TaskDestructor_Player(struct Task *);
-void sub_802486C(Player *p, PlayerSpriteInfo *p2);
-void sub_8024B10(Player *p, PlayerSpriteInfo *s);
-void sub_8024F74(Player *p, PlayerSpriteInfo *s);
-void Player_8026BCC(Player *);
-
-s32 sub_8029BB8(Player *p, u8 *rot, s32 *out);
-
-void Player_SpinAttack(Player *p);
-
-void Player_Idle(Player *);
-void Player_Rolling(Player *);
-void Player_InitJump(Player *p);
-void Player_Jumping(Player *);
-void Player_8025F84(Player *);
-void Player_Spindash(Player *);
-void Player_DoGrinding(Player *);
-void Player_PropellorSpring(Player *);
-void Player_Corkscrew(Player *);
-void Player_Hurt(Player *);
-void Player_InitReachedGoal(Player *);
-void Player_GoalSlowdown(Player *);
-void Player_GoalBrake(Player *);
-void Player_InitVictoryPoseTransition(Player *);
-void Player_VictoryPose(Player *);
-void Player_8027B98(Player *);
-void Player_WindupDefaultTrick(Player *);
-void Player_DefaultTrick(Player *);
-void Player_8029074(Player *);
-void Player_8029314(Player *);
-void Player_8026060(Player *p);
-void Player_InitUncurl(Player *p);
-void Player_InitGrinding(Player *p);
-void Player_InitGrindRailEndGround(Player *p);
-void Player_GrindRailEndAir(Player *p);
-void Player_InitPipeEntry(Player *p);
-void Player_InitPipeExit(Player *p);
-void Player_InitPropellorSpring(Player *p);
-void Player_InitCorkscrew(Player *p);
-void Player_InitHurt(Player *p);
-void Player_InitReachedGoal(Player *p);
-void Player_8028D74(Player *p);
-void Player_TouchNormalSpring(Player *p);
-void Player_InitRampOrDashRing(Player *p);
-void Player_HandleBoostThreshold(Player *p);
-void Player_802A258(Player *p);
-void Player_InitDashRing(Player *p);
-
-bool32 Player_TryMidAirAction(Player *);
-void Player_HandleGroundMovement(Player *);
-bool32 Player_TryTaunt(Player *);
-bool32 Player_TryCrouchOrSpinAttack(Player *);
-bool32 Player_TryInitSpindash(Player *);
-void Player_InitCrouch(Player *);
-void Player_InitIceSlide(Player *);
-void PlayerFn_Cmd_HandlePhysics(Player *);
-void Player_802A3C4(Player *);
-void Player_CameraShift(Player *);
-void Player_InitSpecialStageTransition(Player *);
-void Player_InitKilledBoss(Player *);
-void Player_InitReachedGoalMultiplayer(Player *);
-void Player_Nop(Player *);
-void Player_Skidding(Player *);
-void Player_InitTaunt(Player *);
-void Player_InitAttack(Player *);
-void Player_HandleBoostState(Player *p);
-void Player_ApplyBoostPhysics(Player *p);
-void Player_HandleWalkAnim(Player *p);
-void Player_HandleInputs(Player *p);
-void CallPlayerTransition(Player *p);
-
-#if COLLECT_RINGS_ROM
-void sub_0200DBE0(Player *p);
-#endif
-
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
 #define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
@@ -343,13 +249,108 @@ void sub_0200DBE0(Player *p);
 #define MASK_80D6992_8  0x8
 #define MASK_80D6992_10 0x10
 
+typedef struct {
+    /* 0x00 */ u8 unk0;
+    /* 0x04 */ u32 unk4; // TODO: Check the type!
+} player_0_Task; /* size: 0x8 */
+
+Player ALIGNED(8) gPlayer = {};
+
+// Potentially some extra space on player for this to be aligned 16 (should be 8)
+PlayerSpriteInfo ALIGNED(16) gPlayerLimbsPSI = {};
+PlayerSpriteInfo ALIGNED(16) gPlayerBodyPSI = {};
+
+void sub_8022218(Player *);
+void sub_8022284(Player *);
+void Task_PlayerMain(void);
+void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
+void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
+void TaskDestructor_Player(struct Task *);
+void sub_802486C(Player *p, PlayerSpriteInfo *p2);
+void sub_8024B10(Player *p, PlayerSpriteInfo *s);
+void sub_8024F74(Player *p, PlayerSpriteInfo *s);
+void Player_8026BCC(Player *);
+
+s32 sub_8029BB8(Player *p, u8 *rot, s32 *out);
+
+void Player_SpinAttack(Player *p);
+
+void Player_Idle(Player *);
+void Player_Rolling(Player *);
+void Player_InitJump(Player *p);
+void Player_Jumping(Player *);
+void Player_8025F84(Player *);
+void Player_Spindash(Player *);
+void Player_DoGrinding(Player *);
+void Player_PropellorSpring(Player *);
+void Player_Corkscrew(Player *);
+void Player_Hurt(Player *);
+void Player_InitReachedGoal(Player *);
+void Player_GoalSlowdown(Player *);
+void Player_GoalBrake(Player *);
+void Player_InitVictoryPoseTransition(Player *);
+void Player_VictoryPose(Player *);
+void Player_8027B98(Player *);
+void Player_WindupDefaultTrick(Player *);
+void Player_DefaultTrick(Player *);
+void Player_8029074(Player *);
+void Player_8029314(Player *);
+void Player_8026060(Player *p);
+void Player_InitUncurl(Player *p);
+void Player_InitGrinding(Player *p);
+void Player_InitGrindRailEndGround(Player *p);
+void Player_GrindRailEndAir(Player *p);
+void Player_InitPipeEntry(Player *p);
+void Player_InitPipeExit(Player *p);
+void Player_InitPropellorSpring(Player *p);
+void Player_InitCorkscrew(Player *p);
+void Player_InitHurt(Player *p);
+void Player_InitReachedGoal(Player *p);
+void Player_8028D74(Player *p);
+void Player_TouchNormalSpring(Player *p);
+void Player_InitRampOrDashRing(Player *p);
+void Player_HandleBoostThreshold(Player *p);
+void Player_802A258(Player *p);
+void Player_InitDashRing(Player *p);
+
+bool32 Player_TryMidAirAction(Player *);
+void Player_HandleGroundMovement(Player *);
+bool32 Player_TryTaunt(Player *);
+bool32 Player_TryCrouchOrSpinAttack(Player *);
+bool32 Player_TryInitSpindash(Player *);
+void Player_InitCrouch(Player *);
+void Player_InitIceSlide(Player *);
+void PlayerFn_Cmd_HandlePhysics(Player *);
+void Player_802A3C4(Player *);
+void Player_CameraShift(Player *);
+void Player_InitSpecialStageTransition(Player *);
+void Player_InitKilledBoss(Player *);
+void Player_InitReachedGoalMultiplayer(Player *);
+void Player_Nop(Player *);
+void Player_Skidding(Player *);
+void Player_InitTaunt(Player *);
+void Player_InitAttack(Player *);
+void Player_HandleBoostState(Player *p);
+void Player_ApplyBoostPhysics(Player *p);
+void Player_HandleWalkAnim(Player *p);
+void Player_HandleInputs(Player *p);
+void CallPlayerTransition(Player *p);
+
+#if COLLECT_RINGS_ROM
+void sub_0200DBE0(Player *p);
+#endif
+
+const AnimId gPlayerCharacterIdleAnims[] = {
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC),
 #ifndef COLLECT_RINGS_ROM
-const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM), // Anti format
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS), //
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES), //
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY), //
+#endif
 };
 
+#ifndef COLLECT_RINGS_ROM
 // TODO: This is unaligned in-ROM.
 //       Can we somehow change this to be using a struct instead?
 //
@@ -474,6 +475,21 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_UNUSED_N] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_AMY_MID_AIR_HAMMER_SWIRL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_2, CHARACTER_AMY), 0 },
 };
+#else
+// TODO: unify with main game table
+const u16 sCharStateAnimInfo[][2] = {
+    { 0, 0 },  { 1, 0 },  { 2, 0 },  { 3, 0 },  { 4, 0 },  { 5, 0 },  { 6, 0 }, { 7, 0 }, { 8, 0 },  { 9, 0 },  { 10, 0 }, { 11, 0 },
+    { 12, 0 }, { 13, 0 }, { 13, 0 }, { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 }, { 0, 0 }, { 28, 0 }, { 28, 1 }, { 29, 0 }, { 1, 0 },
+    { 1, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 }, { 1, 0 }, { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },
+    { 0, 0 },  { 0, 0 },  { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },
+    { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 }, { 0, 0 }, { 0, 0 },  { 0, 0 },  { 0, 0 },  { 0, 0 },
+    { 0, 0 },  { 0, 0 },  { 0, 0 },  { 9, 2 },  { 0, 0 },  { 0, 0 },  { 0, 0 }, { 0, 0 }, { 0, 0 },  { 0, 0 },  { 0, 0 },  { 1, 0 },
+    { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 }, { 1, 0 }, { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },
+    { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 }, { 1, 0 }, { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },
+    { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 }, { 1, 0 }, { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },
+    { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },  { 1, 0 },
+};
+#endif
 
 static const s16 playerBoostPhysicsTable[5][2] = {
     { 8, 64 }, { 12, 64 }, { 14, 64 }, { 16, 64 }, { 18, 64 },
@@ -499,6 +515,7 @@ static const s16 sSpinDashSpeeds[9] = {
 static const u16 sTrickPoints[NUM_TRICK_DIRS]
     = { [TRICK_DIR_UP] = 100, [TRICK_DIR_DOWN] = 100, [TRICK_DIR_FORWARD] = 100, [TRICK_DIR_BACKWARD] = 100 };
 
+#ifndef COLLECT_RINGS_ROM
 static const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2] = {
     [TRICK_DIR_UP] = {
         [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(-6.00)},
@@ -568,6 +585,7 @@ static const u16 gUnknown_080D69A6[2][3] = {
     [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC), SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
     [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES), SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
 };
+#endif
 
 static const s16 sSpringAccelY[4] = {
     Q_8_8(7.5),
@@ -584,41 +602,6 @@ static const s16 sSpringAccelX[4] = {
 };
 
 static const u8 disableTrickTimerTable[4] = { 4, 3, 2, 2 };
-
-#else
-extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
-
-// TODO: This is unaligned in-ROM.
-//       Can we somehow change this to be using a struct instead?
-//
-// TODO: Tidy up the macros, not just here, but everywhere!
-//       This isn't intuitive to read.
-//
-// The index is the same as Player.unk64
-extern const u16 sCharStateAnimInfo[][2];
-extern const s16 playerBoostPhysicsTable[5][2];
-extern const s16 playerBoostThresholdTable[5];
-
-extern const s16 sSpinDashSpeeds[9];
-
-// NOTE(Jace): It appears that they originally planned
-//             to give the player a different amount of score points
-//             depending on the direction of the trick.
-extern const u16 sTrickPoints[NUM_TRICK_DIRS];
-
-extern const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2];
-
-extern const u16 sTrickDirToCharstate[NUM_TRICK_DIRS];
-
-extern const u8 sTrickMasks[NUM_TRICK_DIRS][NUM_CHARACTERS];
-
-static const u16 gUnknown_080D69A6[2][3];
-
-extern const s16 sSpringAccelY[4];
-extern const s16 sSpringAccelX[4];
-
-extern const u8 disableTrickTimerTable[4];
-#endif
 
 // TODO: Find a compiler-flag or another way to inline without defining functions twice.
 

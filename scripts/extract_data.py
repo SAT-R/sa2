@@ -28,7 +28,7 @@ def read_s32(rom: BufferedReader):
 def format_hex(val):
     return f"0x{hex(val)[2:].upper()}"
 
-with open('baserom.gba', 'rb') as rom:
+with open('rom_data.bin', 'rb') as rom:
     rom.seek(address)
     # for i in range(length // 4):
     #     print(f"Q({read_s32(rom) / 256}), ")
@@ -41,10 +41,10 @@ with open('baserom.gba', 'rb') as rom:
     #     for j in range(2):
     #         print(f"{(read_u16(rom))}" + ", ", end="")
     #     print("},")
-    for i in range(length // 8):
+    for i in range(length // 4):
         print("{ ", end="")
-        for j in range(2):
-            print(f"{(read_s32(rom))}" + ", ", end="")
+        # for j in range(2):
+        print(f"{(read_u16(rom))}, {(read_u16(rom))}", end="")
         print("},")
     # for i in range(length // 4):
     #     p = read_u32(rom)
