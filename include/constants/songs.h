@@ -124,12 +124,12 @@
 #define SE_RING_COPY 15
 #endif
 
-#define SE_RINGS_LOST 118
-
 #ifndef COLLECT_RINGS_ROM
-#define SE_LIFE_LOST 119
+#define SE_RINGS_LOST 118
+#define SE_LIFE_LOST  119
 #else
-#define SE_LIFE_LOST 17
+#define SE_RINGS_LOST 16
+#define SE_LIFE_LOST  17
 #endif
 
 #define SE_TAILS_PROPELLER_FLYING 120

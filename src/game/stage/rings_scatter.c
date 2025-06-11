@@ -31,6 +31,16 @@
 #define UNK10_CONDITION !(ring->unk10 & 0x7)
 #endif
 
+#define USE_HITBOX_RECT 1
+
+// TODO: Use improved version of these globaly!
+#define HB_ALT_LEFT(p, hb)   (I((p)->qWorldX) + (hb)->left)
+#define HB_ALT_WIDTH(hb)     ((hb)->right - (hb)->left)
+#define HB_ALT_RIGHT(p, hb)  (I((p)->qWorldX) + HB_ALT_WIDTH(hb))
+#define HB_ALT_TOP(p, hb)    (I((p)->qWorldY) + (hb)->top)
+#define HB_ALT_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
+#define HB_ALT_BOTTOM(p, hb) (I((p)->qWorldY) + HB_ALT_HEIGHT(hb))
+
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -82,6 +92,7 @@ void InitPlayerHitRingsScatter(void)
         taskFn = Task_RingsScatter_Singleplayer;
     }
 #elif (GAME == GAME_SA2)
+#ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         if (IS_SINGLE_PLAYER) {
             tgtTask = &gRingsScatterTask;
@@ -90,7 +101,9 @@ void InitPlayerHitRingsScatter(void)
             tgtTask = &gRingsScatterTask;
             taskFn = Task_RingsScatter_MP_Multipak;
         }
-    } else {
+    } else
+#endif
+    {
         tgtTask = &gRingsScatterTask;
         taskFn = Task_RingsScatter_MP_Singlepak;
     }
@@ -223,20 +236,26 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
                 r3 += 0x10;
                 r3 |= 0x80;
             }
-
+#ifndef COLLECT_RINGS_ROM
             r2 = 0;
+#endif
             ring->velX = velX;
             ring->velY = velY;
-
+#ifndef COLLECT_RINGS_ROM
             if (GRAVITY_IS_INVERTED) {
                 ring->velY = -velY;
             }
+#endif
 
             r3 = -r3;
             velX = -velX;
 
 #if (GAME == GAME_SA2)
+#ifndef COLLECT_RINGS_ROM
             ring->unk10 = r2;
+#else
+            ring->unk10 = 0;
+#endif
 
             if (!(PseudoRandom32() & 0x10000)) {
                 ring->unk10 = 0x4;
@@ -253,6 +272,7 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
         }
     }
 }
+#ifndef COLLECT_RINGS_ROM
 
 #if (GAME == GAME_SA1)
 // TODO: Either not in SA2, or in a different place!
@@ -589,16 +609,6 @@ void RingsScatterSingleplayer_NormalGravity(void)
     }
 }
 
-#define USE_HITBOX_RECT 1
-
-// TODO: Use improved version of these globaly!
-#define HB_ALT_LEFT(p, hb)   (I((p)->qWorldX) + (hb)->left)
-#define HB_ALT_WIDTH(hb)     ((hb)->right - (hb)->left)
-#define HB_ALT_RIGHT(p, hb)  (I((p)->qWorldX) + HB_ALT_WIDTH(hb))
-#define HB_ALT_TOP(p, hb)    (I((p)->qWorldY) + (hb)->top)
-#define HB_ALT_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
-#define HB_ALT_BOTTOM(p, hb) (I((p)->qWorldY) + HB_ALT_HEIGHT(hb))
-
 // NOTE: VERY WRONG!!!
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_FlippedGravity)
@@ -854,12 +864,17 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
 }
 
 END_NONMATCH
+#endif
 
 // NOTE: VERY WRONG!!!
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
 // (54.61%) https://decomp.me/scratch/v9rXO
+#ifndef COLLECT_RINGS_ROM
 NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.inc", void RingsScatterSinglepakMain(void))
+#else
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain_CollectRings.inc", void RingsScatterSinglepakMain(void))
+#endif
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -989,6 +1004,7 @@ void DestroyRingsScatterTask(void)
     gRingsScatterTask = NULL;
 }
 
+#ifndef COLLECT_RINGS_ROM
 void Task_RingsScatter_Singleplayer(void)
 {
     if (GRAVITY_IS_INVERTED) {
@@ -1006,6 +1022,7 @@ void Task_RingsScatter_MP_Multipak(void)
         RingsScatterMultipak_NormalGravity();
     }
 }
+#endif
 
 void Task_RingsScatter_MP_Singlepak(void) { RingsScatterSinglepakMain(); }
 
