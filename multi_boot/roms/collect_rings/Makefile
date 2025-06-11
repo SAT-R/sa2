@@ -125,7 +125,9 @@ SA2_C_FILES := \
 	sa2/game/stage/camera.c \
 	sa2/game/stage/terrain_collision.c \
 	sa2/game/stage/player.c \
-	sa2/game/stage/rings_scatter.c
+	sa2/game/stage/rings_scatter.c \
+	sa2/game/stage/player_controls.c \
+	sa2/game/stage/stage.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

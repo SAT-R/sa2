@@ -49,6 +49,8 @@ SECTIONS {
         build/collect_rings/src/sa2/game/stage/terrain_collision.o(.text);
         build/collect_rings/src/sa2/game/stage/player.o(.text);
         build/collect_rings/src/sa2/game/stage/rings_scatter.o(.text);
+        build/collect_rings/src/sa2/game/stage/player_controls.o(.text);
+        build/collect_rings/src/sa2/game/stage/stage.o(.text);
         build/collect_rings/asm/code.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a0.o(.text);
         build/collect_rings/src/sa2/lib/m4a/m4a.o(.text);

@@ -39,10 +39,11 @@ UNUSED void sub_802B584(u16 jump, u16 attack, u16 trick)
             } break;
         }
     }
-
+#ifndef COLLECT_RINGS_ROM
     gLoadedSaveGame->buttonConfig.jump = controls->jump;
     gLoadedSaveGame->buttonConfig.attack = controls->attack;
     gLoadedSaveGame->buttonConfig.trick = controls->trick;
+#endif
 }
 
 void SetPlayerControls(u16 jump, u16 attack, u16 trick)

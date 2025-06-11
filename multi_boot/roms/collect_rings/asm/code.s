@@ -4,92 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_02012278
-sub_02012278: @ 0x02012278
-	push {r4, r5, r6, lr}
-	sub sp, #8
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	ldr r4, _020122AC @ =gPlayerControls
-	mov r3, sp
-	strh r0, [r3]
-	strh r1, [r3, #2]
-	strh r2, [r3, #4]
-	movs r1, #0
-	movs r5, #0x80
-	lsls r5, r5, #1
-	movs r6, #1
-_02012292:
-	lsls r0, r1, #0x10
-	asrs r2, r0, #0x10
-	lsls r1, r2, #1
-	add r1, sp
-	ldrh r1, [r1]
-	adds r3, r0, #0
-	cmp r1, #1
-	beq _020122C6
-	cmp r1, #1
-	bgt _020122B0
-	cmp r1, #0
-	beq _020122B6
-	b _020122E2
-	.align 2, 0
-_020122AC: .4byte gPlayerControls
-_020122B0:
-	cmp r1, #2
-	beq _020122D4
-	b _020122E2
-_020122B6:
-	cmp r2, #2
-	bne _020122BE
-	strh r5, [r4]
-	b _020122E2
-_020122BE:
-	adds r0, r6, #0
-	lsls r0, r2
-	strh r0, [r4]
-	b _020122E2
-_020122C6:
-	cmp r2, #2
-	bne _020122CE
-	strh r5, [r4, #2]
-	b _020122E2
-_020122CE:
-	lsls r1, r2
-	strh r1, [r4, #2]
-	b _020122E2
-_020122D4:
-	cmp r2, #2
-	bne _020122DC
-	strh r5, [r4, #4]
-	b _020122E2
-_020122DC:
-	adds r0, r6, #0
-	lsls r0, r2
-	strh r0, [r4, #4]
-_020122E2:
-	movs r1, #0x80
-	lsls r1, r1, #9
-	adds r0, r3, r1
-	lsrs r1, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #2
-	ble _02012292
-	add sp, #8
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_020122F8
-sub_020122F8: @ 0x020122F8
-	ldr r3, _02012304 @ =gPlayerControls
-	strh r0, [r3]
-	strh r1, [r3, #2]
-	strh r2, [r3, #4]
-	bx lr
-	.align 2, 0
-_02012304: .4byte gPlayerControls
-
 	thumb_func_start CreateGameStage
 CreateGameStage: @ 0x02012308
 	push {r4, r5, r6, lr}
@@ -516,7 +430,7 @@ _020126A8: .4byte gCourseTime
 	thumb_func_start sub_020126AC
 sub_020126AC: @ 0x020126AC
 	push {lr}
-	ldr r0, _020126DC @ =gUnknown_03005404
+	ldr r0, _020126DC @ =gLevelScore
 	movs r1, #0
 	str r1, [r0]
 	ldr r0, _020126E0 @ =gUnknown_030054B0
@@ -535,11 +449,11 @@ _020126CA:
 	lsls r2, r2, #1
 	movs r0, #1
 	movs r1, #2
-	bl sub_020122F8
+	bl SetPlayerControls
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020126DC: .4byte gUnknown_03005404
+_020126DC: .4byte gLevelScore
 _020126E0: .4byte gUnknown_030054B0
 _020126E4: .4byte gNumLives
 _020126E8: .4byte gGameMode

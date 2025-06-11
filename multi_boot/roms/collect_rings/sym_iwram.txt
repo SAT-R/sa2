@@ -68,7 +68,7 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x000053F8; gUnknown_030053F8 = .;
 . = 0x000053FC; gNumLives = .;
 . = 0x00005400; gUnknown_03005400 = .;
-. = 0x00005404; gUnknown_03005404 = .;
+. = 0x00005404; gLevelScore = .;
 . = 0x00005408; gCourseTime = .;
 . = 0x00005418; gUnknown_03005418 = .;
 . = 0x00005428; gUnknown_030054B0 = .;

@@ -33,6 +33,8 @@
 
 #include "game/multiplayer/multiplayer_event_mgr.h"
 
+#define BOSS_RINGS_DEFAULT_RESPAWN_COUNT 10
+
 struct Task *gGameStageTask = NULL;
 
 void Task_GameStage(void);
@@ -76,7 +78,7 @@ void StageInit_31(void);
 void StageInit_32(void);
 void StageInit_33(void);
 void StageInit_Dummy(void);
-
+#ifndef COLLECT_RINGS_ROM
 // NOTE(Jace): Many of these call copies of the exact same procedure,
 //             so for non-matching builds we could just exclude
 //             codegen for those copies and have pointers to a single one?
@@ -114,13 +116,14 @@ const VoidFn sStageInitProcs[NUM_LEVEL_IDS] = { StageInit_Zone1Act1,
                                                 StageInit_31,
                                                 StageInit_32,
                                                 StageInit_33 };
-
+#else
+extern const VoidFn sStageInitProcs[NUM_LEVEL_IDS];
+#endif
 extern const s8 CollHeightMap_zone_1_act_1_fg[];
 extern const u8 CollTileRot_zone_1_act_1_fg[];
 extern const u8 CollFlags_zone_1_act_1_fg[];
 
-#define BOSS_RINGS_DEFAULT_RESPAWN_COUNT 10
-
+#ifndef COLLECT_RINGS_ROM
 void ApplyGameStageSettings(void)
 {
     gLevelScore = 0;
@@ -823,3 +826,4 @@ void StageInit_Dummy(void) { StageInit_SetMusic_inline(gCurrentLevel); }
 void StageInit_CollectRings(void) { StageInit_SetMusic_inline(gCurrentLevel); }
 
 void StageInit_SetMusic(u16 level) { StageInit_SetMusic_inline(level); }
+#endif
