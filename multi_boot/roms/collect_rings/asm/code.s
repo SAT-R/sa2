@@ -4,213 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateGameStage
-CreateGameStage: @ 0x02012308
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	ldr r0, _02012424 @ =Task_GameStage
-	movs r2, #0xff
-	lsls r2, r2, #8
-	ldr r1, _02012428 @ =TaskDestructor_GameStage
-	str r1, [sp]
-	movs r1, #0
-	movs r3, #0
-	bl TaskCreate
-	ldr r1, _0201242C @ =gUnknown_030057D0
-	str r0, [r1]
-	ldr r0, _02012430 @ =gActiveCollectRingEffectCount
-	movs r4, #0
-	strb r4, [r0]
-	ldr r0, _02012434 @ =gSpecialRingCount
-	strb r4, [r0]
-	ldr r0, _02012438 @ =gUnknown_030054B0
-	strb r4, [r0]
-	ldr r5, _0201243C @ =gStageFlags
-	ldrh r0, [r5]
-	movs r1, #0x21
-	orrs r0, r1
-	ldr r1, _02012440 @ =0x0000FF7F
-	ands r0, r1
-	strh r0, [r5]
-	ldr r0, _02012444 @ =gUnknown_030053E4
-	strb r4, [r0]
-	ldr r1, _02012448 @ =gUnknown_030053E0_old
-	movs r0, #0xa
-	strb r0, [r1]
-	ldr r0, _0201244C @ =gUnknown_03005530
-	strb r4, [r0]
-	bl sub_801F044
-	ldr r0, _02012450 @ =gUnknown_030053E0
-	strb r4, [r0]
-	ldr r1, _02012454 @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r1, r0]
-	cmp r0, #0x1d
-	beq _02012372
-	ldr r0, _02012458 @ =gSelectedCharacter
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	ldrb r1, [r1]
-	lsls r1, r1, #0x18
-	asrs r1, r1, #0x18
-	ldr r2, _0201245C @ =gPlayer
-	bl CreatePlayer
-_02012372:
-	movs r0, #0
-	bl InitCamera
-	bl StageInit_CollectRings
-	bl CreateCollectRingsTimeDisplay
-	ldr r2, _0201245C @ =gPlayer
-	ldr r0, [r2, #0x20]
-	ldr r1, _02012460 @ =0xFF9FFFFF
-	ands r0, r1
-	str r0, [r2, #0x20]
-	ldrh r0, [r5]
-	ldr r2, _02012464 @ =0x0000FFFE
-	ands r2, r0
-	ldr r0, _02012468 @ =0x0000FFFD
-	ands r2, r0
-	subs r0, #2
-	ands r2, r0
-	strh r2, [r5]
-	ldr r6, _0201246C @ =gGameMode
-	ldrb r0, [r6]
-	cmp r0, #5
-	bne _020123AA
-	movs r1, #4
-	adds r0, r2, #0
-	orrs r0, r1
-	strh r0, [r5]
-_020123AA:
-	bl CreateStageRingsManager
-	bl CreateStageEntitiesManager
-	ldr r0, _02012470 @ =gUnknown_03001944
-	movs r4, #0
-	strh r4, [r0]
-	ldr r0, _02012474 @ =gUnknown_030017F0
-	movs r2, #0x80
-	lsls r2, r2, #1
-	adds r1, r2, #0
-	strh r1, [r0]
-	ldr r0, _02012478 @ =gUnknown_03005394
-	strh r1, [r0]
-	ldr r0, _0201247C @ =gUnknown_03002A8C
-	movs r2, #0x78
-	strh r2, [r0]
-	ldr r0, _02012480 @ =gUnknown_03004D58
-	movs r1, #0x50
-	strh r1, [r0]
-	ldr r0, _02012484 @ =gUnknown_0300194C
-	strh r2, [r0]
-	ldr r0, _02012488 @ =gUnknown_03002820
-	strh r1, [r0]
-	ldr r1, _0201248C @ =gUnknown_03005398
-	movs r0, #0x80
-	strh r0, [r1]
-	ldrb r0, [r6]
-	cmp r0, #2
-	bls _020124D6
-	bl CreateMultiplayerReceiveEventMgr
-	bl CreateMultiplayerSendEventMgr
-	ldr r0, _02012490 @ =gRandomItemBox
-	strb r4, [r0]
-	movs r4, #0
-_020123F4:
-	ldr r0, _02012494 @ =gMultiplayerCharRings
-	adds r0, r4, r0
-	movs r1, #0
-	strb r1, [r0]
-	ldr r0, _02012498 @ =gMultiplayerConnections
-	ldrb r0, [r0]
-	asrs r0, r4
-	movs r1, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _020124A4
-	adds r0, r4, #0
-	bl CreateMultiplayerPlayer
-	ldr r0, _0201249C @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	cmp r4, r0
-	beq _020124A0
-	adds r0, r4, #0
-	bl CreateOpponentPositionIndicator
-	b _020124A4
-	.align 2, 0
-_02012424: .4byte Task_GameStage
-_02012428: .4byte TaskDestructor_GameStage
-_0201242C: .4byte gUnknown_030057D0
-_02012430: .4byte gActiveCollectRingEffectCount
-_02012434: .4byte gSpecialRingCount
-_02012438: .4byte gUnknown_030054B0
-_0201243C: .4byte gStageFlags
-_02012440: .4byte 0x0000FF7F
-_02012444: .4byte gUnknown_030053E4
-_02012448: .4byte gUnknown_030053E0_old
-_0201244C: .4byte gUnknown_03005530
-_02012450: .4byte gUnknown_030053E0
-_02012454: .4byte gCurrentLevel
-_02012458: .4byte gSelectedCharacter
-_0201245C: .4byte gPlayer
-_02012460: .4byte 0xFF9FFFFF
-_02012464: .4byte 0x0000FFFE
-_02012468: .4byte 0x0000FFFD
-_0201246C: .4byte gGameMode
-_02012470: .4byte gUnknown_03001944
-_02012474: .4byte gUnknown_030017F0
-_02012478: .4byte gUnknown_03005394
-_0201247C: .4byte gUnknown_03002A8C
-_02012480: .4byte gUnknown_03004D58
-_02012484: .4byte gUnknown_0300194C
-_02012488: .4byte gUnknown_03002820
-_0201248C: .4byte gUnknown_03005398
-_02012490: .4byte gRandomItemBox
-_02012494: .4byte gMultiplayerCharRings
-_02012498: .4byte gMultiplayerConnections
-_0201249C: .4byte 0x04000128
-_020124A0:
-	bl CreateSelfPositionIndicator
-_020124A4:
-	ldr r0, _020124E0 @ =gUnknown_030054B4
-	adds r0, r4, r0
-	movs r1, #0xff
-	strb r1, [r0]
-	ldr r1, _020124E4 @ =gGameMode
-	ldrb r0, [r1]
-	cmp r0, #5
-	bne _020124BA
-	ldr r0, _020124E8 @ =gMultiplayerCharacters
-	adds r0, r4, r0
-	strb r4, [r0]
-_020124BA:
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #3
-	bls _020123F4
-	ldrb r0, [r1]
-	cmp r0, #5
-	beq _020124D6
-	ldr r0, _020124EC @ =gPlayer
-	adds r0, #0x37
-	ldrb r2, [r0]
-	movs r1, #0x80
-	orrs r1, r2
-	strb r1, [r0]
-_020124D6:
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_020124E0: .4byte gUnknown_030054B4
-_020124E4: .4byte gGameMode
-_020124E8: .4byte gMultiplayerCharacters
-_020124EC: .4byte gPlayer
-
 	thumb_func_start Task_GameStage
 Task_GameStage: @ 0x020124F0
 	push {r4, r5, r6, r7, lr}
@@ -528,7 +321,7 @@ _02012788: .4byte 0x00002A30
 	thumb_func_start sub_0201278C
 sub_0201278C: @ 0x0201278C
 	push {r4, lr}
-	ldr r4, _020127AC @ =gUnknown_030057D0
+	ldr r4, _020127AC @ =gGameStageTask
 	ldr r0, [r4]
 	bl TaskDestroy
 	movs r0, #0
@@ -540,17 +333,17 @@ sub_0201278C: @ 0x0201278C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020127AC: .4byte gUnknown_030057D0
+_020127AC: .4byte gGameStageTask
 _020127B0: .4byte gPlayer
 
 	thumb_func_start TaskDestructor_GameStage
 TaskDestructor_GameStage: @ 0x020127B4
-	ldr r1, _020127BC @ =gUnknown_030057D0
+	ldr r1, _020127BC @ =gGameStageTask
 	movs r0, #0
 	str r0, [r1]
 	bx lr
 	.align 2, 0
-_020127BC: .4byte gUnknown_030057D0
+_020127BC: .4byte gGameStageTask
 
 	thumb_func_start StageInit_CollectRings
 StageInit_CollectRings: @ 0x020127C0
@@ -780,7 +573,7 @@ sub_8081200: @ 0x020129A0
 	str r1, [r0]
 	ldr r0, _02012A00 @ =gUnknown_030057D4
 	str r1, [r0]
-	ldr r0, _02012A04 @ =gUnknown_030057D0
+	ldr r0, _02012A04 @ =gGameStageTask
 	str r1, [r0]
 	ldr r0, _02012A08 @ =gPlayer
 	adds r0, #0x8c
@@ -818,7 +611,7 @@ _020129CC:
 _020129F8: .4byte gGameMode
 _020129FC: .4byte gRingsScatterTask
 _02012A00: .4byte gUnknown_030057D4
-_02012A04: .4byte gUnknown_030057D0
+_02012A04: .4byte gGameStageTask
 _02012A08: .4byte gPlayer
 _02012A0C: .4byte gCamera
 _02012A10: .4byte gUnknown_030053F0
