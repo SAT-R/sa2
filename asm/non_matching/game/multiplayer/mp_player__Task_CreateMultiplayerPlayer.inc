@@ -586,7 +586,7 @@ _0801666C:
 	strb r0, [r1]
 	ldr r0, _080166EC @ =gGameMode
 	ldrb r0, [r0]
-	bl MultiPakCommunicationError
+	bl LinkCommunicationError
 	b _08016D08
 	.align 2, 0
 _080166D4: .4byte 0x0000FFFF

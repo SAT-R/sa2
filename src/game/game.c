@@ -21,6 +21,10 @@
 #include "game/stage/dust_effect_braking.h"
 #include "game/stage/rings_scatter.h"
 
+#if COLLECT_RINGS_ROM
+#include "game/multiboot/collect_rings/results.h"
+#endif
+
 #include "game/water_effects.h"
 #include "game/dummy_task.h"
 
@@ -30,6 +34,7 @@
 
 #include "data/sprite_tables.h"
 
+#ifndef COLLECT_RINGS_ROM
 void GameInit(void)
 {
     u32 i;
@@ -126,3 +131,37 @@ void GameInit(void)
     CreateTitleScreen();
 #endif
 }
+#else
+void GameInit(void)
+{
+    u32 i;
+#ifndef NON_MATCHING
+    u8 *multiSioEnabled;
+#endif
+    gGameMode = 5;
+
+    gUnknown_03004D54 = gBgOffsetsBuffer[0];
+    gUnknown_030022C0 = gBgOffsetsBuffer[1];
+
+    i = 0;
+#ifndef NON_MATCHING
+    multiSioEnabled = &gMultiSioEnabled;
+#endif
+
+    for (; i < 4; i++) {
+        gMultiplayerCharacters[i] = 0;
+        gMPRingCollectWins[i] = 0;
+        gUnknown_030054B4[i] = i;
+        gMultiplayerMissingHeartbeats[i] = 0;
+    }
+#ifndef NON_MATCHING
+    *multiSioEnabled = TRUE;
+#else
+    gMultiSioEnabled = TRUE;
+#endif
+    // gMultiSioStatusFlags = 0;
+    MultiSioInit(gMultiSioStatusFlags);
+    MultiSioStart();
+    CreateMultiplayerSinglePakResultsScreen(0);
+}
+#endif

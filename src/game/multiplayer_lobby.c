@@ -423,7 +423,7 @@ static void Task_NotifyExit(void)
     RenderUI(lobbyScreen);
     if (++lobbyScreen->idleFrame > 8) {
         TaskDestroy(gCurTask);
-        MultiPakCommunicationError();
+        LinkCommunicationError();
     }
 }
 
@@ -558,6 +558,6 @@ static bool8 CatchInvalidPacket(union MultiSioData *packet)
     }
 
     TaskDestroy(gCurTask);
-    MultiPakCommunicationError();
+    LinkCommunicationError();
     return TRUE;
 }

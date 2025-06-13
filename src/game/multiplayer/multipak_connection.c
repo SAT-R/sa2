@@ -219,7 +219,7 @@ static void sub_805ADAC(void)
                 PAUSE_BACKGROUNDS_QUEUE();
                 gUnknown_03005390 = 0;
                 PAUSE_GRAPHICS_QUEUE();
-                MultiPakCommunicationError();
+                LinkCommunicationError();
                 return;
             }
         } else {
@@ -238,7 +238,7 @@ static void sub_805ADAC(void)
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
     } else {
@@ -299,7 +299,7 @@ static void sub_805ADAC(void)
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
         connectScreen->unkFA = 1;
@@ -359,7 +359,7 @@ static void sub_805ADAC(void)
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
-        MultiPakCommunicationError();
+        LinkCommunicationError();
         return;
     }
 
@@ -493,7 +493,7 @@ static void sub_805B4C0(void)
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
 
@@ -554,7 +554,7 @@ static void sub_805B4C0(void)
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
-        MultiPakCommunicationError();
+        LinkCommunicationError();
         return;
     } else {
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT && connectScreen->unkFB++ >= 0x3D) {
@@ -562,7 +562,7 @@ static void sub_805B4C0(void)
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
 
@@ -652,8 +652,7 @@ UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
     DisplaySprite(s);
 }
 
-// HandleLinkCommunicationError
-void MultiPakCommunicationError(void)
+void LinkCommunicationError(void)
 {
     m4aMPlayAllStop();
     gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;

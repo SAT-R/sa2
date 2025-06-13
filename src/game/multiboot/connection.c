@@ -30,6 +30,9 @@
 #include "constants/text.h"
 #include "constants/tilemaps.h"
 
+#define SomeSioCheck()         ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
+#define MB_SUBGAME_LOADER_SIZE 0x314C
+
 struct SinglePakConnectScreen {
     ScreenFade fade;
     Sprite unkC;
@@ -49,9 +52,31 @@ struct SinglePakConnectScreen {
     u8 fillerFB;
 };
 
-#define SomeSioCheck()         ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
-#define MB_SUBGAME_LOADER_SIZE 0x314C
+#if COLLECT_RINGS_ROM
+typedef struct {
+    Background backgrounds[2];
+} ConnectionErrorScreen; /* 0x80 */
 
+void sub_0201299C(void);
+#endif
+
+void sub_80818B8(void);
+void sub_8081DB4(struct SinglePakConnectScreen *);
+void sub_8081C8C(void);
+void sub_8081E90(struct SinglePakConnectScreen *);
+void sub_8081D04(void);
+void sub_8081D58(void);
+void sub_8081604(void);
+s8 sub_8081D70(struct SinglePakConnectScreen *);
+void sub_8081DF0(struct SinglePakConnectScreen *, u8);
+
+void sub_8081AD4(struct SinglePakConnectScreen *);
+void sub_8081C50(void);
+
+bool32 sub_8081E38(struct SinglePakConnectScreen *, u16);
+void sub_8081CC4(void);
+
+#ifndef COLLECT_RINGS_ROM
 void *const gCollectRingsSegments[9] = {
     // collect rings rom
     (void *)gCollectRingsRom_Compressed + SIO32ML_BLOCK_SIZE * 0,
@@ -120,12 +145,102 @@ static const u32 gUnknown_080E0218[7] = {
     [LANG_SPANISH] = TM_MP_CHEESE_PLEASE_WAIT_ES,
     [LANG_ITALIAN] = TM_MP_CHEESE_PLEASE_WAIT_IT,
 };
+#endif
+
+#if COLLECT_RINGS_ROM
+void LinkCommunicationError(void)
+{
+    struct Task *t;
+    Background *background;
+    ConnectionErrorScreen *errorScreen;
+
+    gMultiplayerMissingHeartbeats[0] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiSioEnabled = FALSE;
+    MultiSioStop();
+    MultiSioInit(0);
+    t = TaskCreate(sub_0201299C, sizeof(ConnectionErrorScreen), 0x1000, 0, NULL);
+    errorScreen = TASK_DATA(t);
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
+    gDispCnt = 0x2340;
+    gBldRegs.bldCnt = 0;
+    gBldRegs.bldY = 0;
+    DmaFill32(3, 0, VRAM + ((gBgCntRegs[0] & 0xC) * 0x1000), 0x40);
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 32;
+    gBgCntRegs[0] = 0x1E01;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    background = &errorScreen->backgrounds[1];
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->tilemapId = 4;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
+    gBgCntRegs[1] = 0x1F04;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    switch (gMultiplayerLanguage) {
+        case 0:
+            gBgScrollRegs[1][1] = -8;
+            break;
+        case 1:
+            gBgScrollRegs[1][1] = -56;
+            break;
+
+        case 2:
+        default:
+            gBgScrollRegs[1][1] = -8;
+            break;
+    }
+
+    background = &errorScreen->backgrounds[0];
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    background->graphics.anim = 0;
+    background->layoutVram = (void *)BG_SCREEN_ADDR(31);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->tilemapId = 3;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0xC;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
+    gWinRegs[4] = 3;
+    gWinRegs[5] = 1;
+    gWinRegs[0] = 0xF0;
+    gWinRegs[2] = 0x3868;
+}
+
+void sub_0201299C(void) { return; }
+#endif
 
 void sub_8081200(void)
 {
     u8 i;
-    u8 *gameMode = &gGameMode;
-    u8 val = 5;
+
+    gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
 
     gRingsScatterTask = NULL;
     gDummyTask = NULL;
@@ -133,7 +248,9 @@ void sub_8081200(void)
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
     gUnknown_0300543C = 0;
-    *gameMode = val;
+#ifndef COLLECT_RINGS_ROM
+    gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
+#endif
     gEntitiesManagerTask = NULL;
 
     for (i = 0; i < 4; i++) {
@@ -141,12 +258,13 @@ void sub_8081200(void)
     };
 
     ApplyGameStageSettings();
+#ifndef COLLECT_RINGS_ROM
     gStageFlags &= ~STAGE_FLAG__ACT_START;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
+#endif
     gPlayer.heldInput |= gPlayerControls.jump | gPlayerControls.attack;
 }
-
-void sub_8081604(void);
+#ifndef COLLECT_RINGS_ROM
 
 void StartSinglePakConnect(void)
 {
@@ -276,15 +394,9 @@ void StartSinglePakConnect(void)
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
-        MultiPakCommunicationError();
+        LinkCommunicationError();
     }
 }
-
-s8 sub_8081D70(struct SinglePakConnectScreen *);
-void sub_8081DF0(struct SinglePakConnectScreen *, u8);
-
-void sub_8081AD4(struct SinglePakConnectScreen *);
-void sub_8081C50(void);
 
 void sub_8081604(void)
 {
@@ -301,7 +413,7 @@ void sub_8081604(void)
         PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
-        MultiPakCommunicationError();
+        LinkCommunicationError();
     }
 
     if (gMultiBootParam.client_bit & 0xE) {
@@ -346,7 +458,7 @@ void sub_8081604(void)
         gFlags &= ~0x4000;
         gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
-        MultiPakCommunicationError();
+        LinkCommunicationError();
         return;
     }
 
@@ -379,11 +491,6 @@ void sub_8081604(void)
         gCurTask->main = sub_8081C50;
     }
 }
-
-void sub_8081D04(void);
-void sub_8081D58(void);
-
-bool32 sub_8081E38(struct SinglePakConnectScreen *, u16);
 
 void sub_80818B8(void)
 {
@@ -418,7 +525,7 @@ void sub_80818B8(void)
             gFlags &= ~0x4000;
             gFlags &= ~FLAGS_8000;
             m4aSoundVSyncOn();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
 
@@ -442,9 +549,6 @@ void sub_80818B8(void)
         connectScreen->unkF9 = gMultiSioRecv[0].pat0.unk2;
     }
 }
-
-void sub_8081C8C(void);
-void sub_8081E90(struct SinglePakConnectScreen *);
 
 void sub_8081A5C(void)
 {
@@ -528,8 +632,6 @@ void ShowSinglePakResults(void)
     CreateMultiplayerSinglePakResultsScreen(0);
 }
 
-void sub_8081DB4(struct SinglePakConnectScreen *);
-
 void sub_8081C50(void)
 {
     struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
@@ -542,8 +644,6 @@ void sub_8081C50(void)
     MultiSioStart();
 }
 
-void sub_8081CC4(void);
-
 void sub_8081C8C(void)
 {
     struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
@@ -554,8 +654,6 @@ void sub_8081C8C(void)
     sub_8081DB4(connectScreen);
     gCurTask->main = sub_8081CC4;
 }
-
-void sub_80818B8(void);
 
 void sub_8081CC4(void)
 {
@@ -646,3 +744,5 @@ void sub_8081E90(struct SinglePakConnectScreen *connectScreen)
     u8 val = (connectScreen->unkE4 * DISPLAY_HEIGHT) / 0x12000;
     gWinRegs[0] = (val + 40) | 0x2800;
 }
+
+#endif

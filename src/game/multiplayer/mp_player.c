@@ -293,7 +293,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             //     PAUSE_BACKGROUNDS_QUEUE();
             //     gUnknown_03005390 = 0;
             //     PAUSE_GRAPHICS_QUEUE();
-            //     MultiPakCommunicationError();
+            //     LinkCommunicationError();
             //     return;
             // }
         }
@@ -308,7 +308,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
     }

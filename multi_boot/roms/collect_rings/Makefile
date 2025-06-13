@@ -127,7 +127,10 @@ SA2_C_FILES := \
 	sa2/game/stage/player.c \
 	sa2/game/stage/rings_scatter.c \
 	sa2/game/stage/player_controls.c \
-	sa2/game/stage/stage.c
+	sa2/game/stage/stage.c \
+	sa2/game/multiboot/connection.c \
+	sa2/game/game.c \
+	sa2/game/dummy_task.c
 
 SA2_C_ASM_FILES := \
 	sa2/lib/m4a/m4a0.s \

@@ -10,7 +10,7 @@ extern u8 gMultiplayerConnections;
 extern u8 gMultiplayerUnlockedLevels;
 
 void StartMultiPakConnect(void);
-void MultiPakCommunicationError(void);
+void LinkCommunicationError(void);
 
 // TOOD: MultiSioHeartBeat
 #define MultiPakHeartbeat()                                                                                                                \
@@ -24,7 +24,7 @@ void MultiPakCommunicationError(void);
                         PAUSE_BACKGROUNDS_QUEUE();                                                                                         \
                         gUnknown_03005390 = 0;                                                                                             \
                         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;                                                             \
-                        MultiPakCommunicationError();                                                                                      \
+                        LinkCommunicationError();                                                                                          \
                         return;                                                                                                            \
                     }                                                                                                                      \
                 } else {                                                                                                                   \

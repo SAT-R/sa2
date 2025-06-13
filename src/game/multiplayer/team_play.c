@@ -595,7 +595,7 @@ static void sub_805D1F8(void)
                 PAUSE_BACKGROUNDS_QUEUE();
                 gUnknown_03005390 = 0;
                 PAUSE_GRAPHICS_QUEUE();
-                MultiPakCommunicationError();
+                LinkCommunicationError();
                 return;
             }
         }
