@@ -19,7 +19,7 @@
 	adds r0, #0x38
 	adds r0, r6, r0
 	str r0, [sp]
-	ldr r1, _02009214 @ =gUnknown_03000056
+	ldr r1, _02009214 @ =IWRAM_START + 0x56
 	adds r3, r6, r1
 	ldrb r2, [r3]
 	lsls r0, r2, #2
@@ -40,7 +40,7 @@
 	bne _02009154
 	b _02009608
 _02009154:
-	ldr r0, _02009220 @ =gUnknown_03000061
+	ldr r0, _02009220 @ =IWRAM_START + 0x61
 	adds r2, r6, r0
 	movs r1, #0
 	mov ip, r1
@@ -74,7 +74,7 @@ _02009180:
 _0200918E:
 	movs r2, #2
 	ldrsh r1, [r4, r2]
-	ldr r3, _02009228 @ =gUnknown_03000050
+	ldr r3, _02009228 @ =IWRAM_START + 0x50
 	adds r3, r3, r6
 	mov ip, r3
 	movs r4, #0
@@ -85,7 +85,7 @@ _0200918E:
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	mov sb, r0
-	ldr r3, _0200922C @ =gUnknown_03000052
+	ldr r3, _0200922C @ =IWRAM_START + 0x52
 	adds r2, r6, r3
 	movs r1, #0
 	ldrsh r0, [r2, r1]
@@ -107,10 +107,10 @@ _020091BE:
 	bge _020091D0
 	rsbs r0, r1, #0
 _020091D0:
-	ldr r2, _02009228 @ =gUnknown_03000050
+	ldr r2, _02009228 @ =IWRAM_START + 0x50
 	adds r2, r6, r2
 	str r2, [sp, #4]
-	ldr r3, _0200922C @ =gUnknown_03000052
+	ldr r3, _0200922C @ =IWRAM_START + 0x52
 	adds r3, r6, r3
 	str r3, [sp, #8]
 	cmp r0, #0xf
@@ -141,13 +141,13 @@ _020091D0:
 	b _02009276
 	.align 2, 0
 _02009210: .4byte gCurTask
-_02009214: .4byte gUnknown_03000056
+_02009214: .4byte IWRAM_START + 0x56
 _02009218: .4byte gMultiSioRecv
 _0200921C: .4byte gMultiSioStatusFlags
-_02009220: .4byte gUnknown_03000061
+_02009220: .4byte IWRAM_START + 0x61
 _02009224: .4byte gGameMode
-_02009228: .4byte gUnknown_03000050
-_0200922C: .4byte gUnknown_03000052
+_02009228: .4byte IWRAM_START + 0x50
+_0200922C: .4byte IWRAM_START + 0x52
 _02009230: .4byte 0xFFFFFA60
 _02009234: .4byte 0xFFFFFCA0
 _02009238:
@@ -198,7 +198,7 @@ _02009290:
 	mov r4, r8
 	movs r1, #2
 	ldrsh r0, [r4, r1]
-	ldr r2, _020092EC @ =gUnknown_03000050
+	ldr r2, _020092EC @ =IWRAM_START + 0x50
 	adds r3, r6, r2
 	movs r4, #0
 	ldrsh r1, [r3, r4]
@@ -207,7 +207,7 @@ _02009290:
 	mov r1, r8
 	movs r2, #4
 	ldrsh r0, [r1, r2]
-	ldr r4, _020092F0 @ =gUnknown_03000052
+	ldr r4, _020092F0 @ =IWRAM_START + 0x52
 	adds r2, r6, r4
 	movs r6, #0
 	ldrsh r1, [r2, r6]
@@ -245,8 +245,8 @@ _020092DC:
 	strh r1, [r0]
 	b _02009304
 	.align 2, 0
-_020092EC: .4byte gUnknown_03000050
-_020092F0: .4byte gUnknown_03000052
+_020092EC: .4byte IWRAM_START + 0x50
+_020092F0: .4byte IWRAM_START + 0x52
 _020092F4:
 	lsls r0, r0, #8
 	adds r1, r7, #0
@@ -304,7 +304,7 @@ _0200933C:
 	mov sb, r0
 	ldr r0, [r3]
 	lsls r0, r0, #0x1a
-	ldr r2, _02009440 @ =gUnknown_03000064
+	ldr r2, _02009440 @ =IWRAM_START + 0x64
 	adds r1, r1, r2
 	lsrs r0, r0, #0x1e
 	ldrb r1, [r1]
@@ -416,7 +416,7 @@ _0200942E:
 	b _020095E2
 	.align 2, 0
 _0200943C: .4byte gMultiplayerPlayerTasks
-_02009440: .4byte gUnknown_03000064
+_02009440: .4byte IWRAM_START + 0x64
 _02009444: .4byte gPlayer
 _02009448: .4byte 0xFFFFFBFF
 _0200944C: .4byte 0xFFFFFEFF

@@ -79,7 +79,7 @@
 	rsbs r0, r1, #0
 	add r5, sp, #0x10
 	strb r0, [r5]
-	ldr r0, _02006960 @ =gUnknown_03000058
+	ldr r0, _02006960 @ =IWRAM_START + 0x58
 	adds r4, r4, r0
 	ldrb r0, [r4]
 	subs r6, r6, r0
@@ -148,7 +148,7 @@ _02006952:
 	.align 2, 0
 _02006958: .4byte gPlayer
 _0200695C: .4byte gCurTask
-_02006960: .4byte gUnknown_03000058
+_02006960: .4byte IWRAM_START + 0x58
 _02006964:
 	ldr r0, _02006AA8 @ =gPlayer
 	ldr r7, [r0, #8]

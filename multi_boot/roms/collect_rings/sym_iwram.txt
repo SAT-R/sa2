@@ -1,48 +1,5 @@
 . = 0x00000000; SoundMainRAM_Buffer = .;
-. = 0x00000001; gUnknown_03000001 = .;
-. = 0x00000004; gUnknown_03000004 = .;
-. = 0x00000006; gUnknown_03000006 = .;
-. = 0x00000008; gUnknown_03000008 = .;
-. = 0x00000009; gUnknown_03000009 = .;
-. = 0x0000000C; gUnknown_0300000C = .;
-. = 0x00000010; gUnknown_03000010 = .;
-. = 0x00000020; gUnknown_03000020 = .;
-. = 0x00000021; gUnknown_03000021 = .;
-. = 0x00000022; gUnknown_03000022 = .;
-. = 0x00000025; gUnknown_03000025 = .;
-. = 0x0000002C; gUnknown_0300002C = .;
-. = 0x0000002D; gUnknown_0300002D = .;
-. = 0x0000002E; gUnknown_0300002E = .;
-. = 0x0000002F; gUnknown_0300002F = .;
-. = 0x00000030; gUnknown_03000030 = .;
-. = 0x00000031; gUnknown_03000031 = .;
-. = 0x00000032; gUnknown_03000032 = .;
-. = 0x00000034; gUnknown_03000034 = .;
-. = 0x00000035; gUnknown_03000035 = .;
-. = 0x0000003C; gUnknown_0300003C = .;
-. = 0x0000003D; gUnknown_0300003D = .;
-. = 0x00000040; gUnknown_03000040 = .;
-. = 0x00000050; gUnknown_03000050 = .;
-. = 0x00000052; gUnknown_03000052 = .;
-. = 0x00000054; gUnknown_03000054 = .;
-. = 0x00000056; gUnknown_03000056 = .;
-. = 0x00000058; gUnknown_03000058 = .;
-. = 0x0000005C; gUnknown_0300005C = .;
-. = 0x0000005D; gUnknown_0300005D = .;
-. = 0x0000005E; gUnknown_0300005E = .;
-. = 0x00000060; gUnknown_03000060 = .;
-. = 0x00000061; gUnknown_03000061 = .;
-. = 0x00000064; gUnknown_03000064 = .;
-. = 0x00000066; gUnknown_03000066 = .;
-. = 0x00000068; gUnknown_03000068 = .;
-. = 0x0000006A; gUnknown_0300006A = .;
-. = 0x0000006C; gUnknown_0300006C = .;
-. = 0x00000080; gUnknown_03000080 = .;
-. = 0x00000082; gUnknown_03000082 = .;
-. = 0x000002B0; gUnknown_030002B0 = .;
-. = 0x000002B4; gUnknown_030002B4 = .;
-. = 0x000002B6; gUnknown_030002B6 = .;
-. = 0x00000378; gUnknown_03000378 = .;
+/* terrain_collision.c */
 . = 0x00000400; gUnknown_3000410 = .;
 . = 0x00000410; gUnknown_3000420 = .;
 . = 0x00000420; 
@@ -50,6 +7,7 @@ build/collect_rings/src/sa2/multi_sio.o(.data);
 build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);
 build/collect_rings/src/sa2/core.o(.data);
 
+/* globals.c */
 . = 0x000053A0; gUnknown_030053E0 = .;
 . = 0x000053A4; gCheckpointTime = .;
 . = 0x000053A8; gMultiplayerCharRings = .;
@@ -93,22 +51,24 @@ build/collect_rings/src/sa2/core.o(.data);
 . = 0x00005524; gCurrentLevel = .;
 . = 0x00005528; gMultiplayerConnections = .;
 . = 0x00005530; gUnknown_030055BC = .;
+
+/* time_display.c */
 . = 0x0000553C; gUnknown_03005B6C = .;
+/* mp_player.c */
 . = 0x00005544; gShouldSpawnMPAttack2Effect = .;
 . = 0x00005548; gMPAttackEffect2Regs = .;
+/* camera.c */
 . = 0x00005550; gStageBackgroundsRam = .;
-. = 0x00005590; gUnknown_03005590 = .;
 . = 0x00005650; gCamera = .;
 . = 0x000056B8; gRefCollision = .;
+/* player.c */
 . = 0x000056C0; gPlayer = .;
 . = 0x00005780; gPlayerBodyPSI = .;
+/* rings_scatter.c */
 . = 0x000057C4; gRingsScatterTask = .;
 . = 0x000057C8; gPlayerControls = .;
+/* stage.c */
 . = 0x000057D0; gGameStageTask = .;
+/* dummy_task.c */
 . = 0x000057D4; gDummyTask = .;
 . = 0x000057D8; iwram_end = .;
-. = 0x00007F00; gUnknown_03007F00 = .;
-. = 0x00007FA0; gUnknown_03007FA0 = .;
-. = 0x00007FF0; gUnknown_03007FF0 = .;
-. = 0x00007FF8; gUnknown_03007FF8 = .;
-. = 0x00007FFC; gUnknown_03007FFC = .;

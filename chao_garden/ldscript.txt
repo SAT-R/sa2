@@ -14,22 +14,22 @@ SECTIONS {
     ALIGN(4)
     {
         . = 0x00000000; IntrMain_RAM = .;
-        . = 0x00000080; gUnknown_03000080 = .;
-        . = 0x00000084; gUnknown_03000084 = .;
-        . = 0x00000088; gUnknown_03000088 = .;
-        . = 0x000005A8; gUnknown_030005A8 = .;
-        . = 0x000005AC; gUnknown_030005AC = .;
-        . = 0x000005B0; gUnknown_030005B0 = .;
-        . = 0x000005B1; gUnknown_030005B1 = .;
-        . = 0x000005B4; gUnknown_030005B4 = .;
-        . = 0x000005B8; gUnknown_030005B8 = .;
-        . = 0x000005BA; gUnknown_030005BA = .;
-        . = 0x000005BC; gUnknown_030005BC = .;
-        . = 0x000005C0; gUnknown_030005C0 = .;
-        . = 0x00000606; gUnknown_03000606 = .;
-        . = 0x00000607; gUnknown_03000607 = .;
-        . = 0x00000608; gUnknown_03000608 = .;
-        . = 0x00000610; gUnknown_03000610 = .;
+        . = 0x00000080; IWRAM_START + 0x80 = .;
+        . = 0x00000084; IWRAM_START + 0x84 = .;
+        . = 0x00000088; IWRAM_START + 0x88 = .;
+        . = 0x000005A8; IWRAM_START + 0x5A8 = .;
+        . = 0x000005AC; IWRAM_START + 0x5AC = .;
+        . = 0x000005B0; IWRAM_START + 0x5B0 = .;
+        . = 0x000005B1; IWRAM_START + 0x5B1 = .;
+        . = 0x000005B4; IWRAM_START + 0x5B4 = .;
+        . = 0x000005B8; IWRAM_START + 0x5B8 = .;
+        . = 0x000005BA; IWRAM_START + 0x5BA = .;
+        . = 0x000005BC; IWRAM_START + 0x5BC = .;
+        . = 0x000005C0; IWRAM_START + 0x5C0 = .;
+        . = 0x00000606; IWRAM_START + 0x606 = .;
+        . = 0x00000607; IWRAM_START + 0x607 = .;
+        . = 0x00000608; IWRAM_START + 0x608 = .;
+        . = 0x00000610; IWRAM_START + 0x610 = .;
         . = 0x00001030; gUnknown_03001030 = .;
         . = 0x00001076; gUnknown_03001076 = .;
         . = 0x00001077; gUnknown_03001077 = .;

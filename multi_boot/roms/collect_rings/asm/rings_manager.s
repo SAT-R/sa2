@@ -42,7 +42,7 @@ _02007E2A:
 	ldr r0, _02008108 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
-	ldr r2, _0200810C @ =gUnknown_03000030
+	ldr r2, _0200810C @ =IWRAM_START + 0x30
 	adds r0, r1, r2
 	ldr r0, [r0]
 	str r0, [sp, #0x10]
@@ -355,7 +355,7 @@ _02008074:
 	movs r6, #0xc0
 	lsls r6, r6, #0x12
 	adds r4, r2, r6
-	ldr r1, _02008128 @ =gUnknown_03000052
+	ldr r1, _02008128 @ =IWRAM_START + 0x52
 	adds r0, r2, r1
 	movs r3, #0
 	ldrsh r1, [r0, r3]
@@ -368,7 +368,7 @@ _02008074:
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
 	mov sl, r0
-	ldr r3, _0200812C @ =gUnknown_0300002F
+	ldr r3, _0200812C @ =IWRAM_START + 0x2F
 	adds r0, r2, r3
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -385,10 +385,10 @@ _020080AC:
 	blo _020080B4
 	b _02008270
 _020080B4:
-	ldr r0, _02008130 @ =gUnknown_03000050
+	ldr r0, _02008130 @ =IWRAM_START + 0x50
 	adds r0, r2, r0
 	str r0, [sp, #0x28]
-	ldr r1, _02008134 @ =gUnknown_0300002C
+	ldr r1, _02008134 @ =IWRAM_START + 0x2C
 	adds r1, r2, r1
 	str r1, [sp, #0x2c]
 	subs r3, #1
@@ -429,17 +429,17 @@ _020080FE:
 _02008100: .4byte gPlayer
 _02008104: .4byte gStageFlags
 _02008108: .4byte gCurTask
-_0200810C: .4byte gUnknown_03000030
+_0200810C: .4byte IWRAM_START + 0x30
 _02008110: .4byte gCurrentLevel
 _02008114: .4byte gRingCount
 _02008118: .4byte gGameMode
 _0200811C: .4byte gNumLives
 _02008120: .4byte 0x04000128
 _02008124: .4byte gMultiplayerPlayerTasks
-_02008128: .4byte gUnknown_03000052
-_0200812C: .4byte gUnknown_0300002F
-_02008130: .4byte gUnknown_03000050
-_02008134: .4byte gUnknown_0300002C
+_02008128: .4byte IWRAM_START + 0x52
+_0200812C: .4byte IWRAM_START + 0x2F
+_02008130: .4byte IWRAM_START + 0x50
+_02008134: .4byte IWRAM_START + 0x2C
 _02008138:
 	ldr r6, [sp, #8]
 	mov r0, sl

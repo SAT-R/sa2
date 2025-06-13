@@ -16,15 +16,15 @@
 	lsls r0, r0, #0x12
 	adds r0, r1, r0
 	str r0, [sp, #4]
-	ldr r0, _02011D9C @ =gUnknown_03000030
+	ldr r0, _02011D9C @ =IWRAM_START + 0x30
 	adds r5, r1, r0
 	ldr r2, [sp, #4]
 	str r2, [sp, #8]
-	ldr r3, _02011DA0 @ =gUnknown_030002B0
+	ldr r3, _02011DA0 @ =IWRAM_START + 0x2B0
 	adds r0, r1, r3
 	ldr r0, [r0]
 	str r0, [sp, #0xc]
-	ldr r4, _02011DA4 @ =gUnknown_030002B4
+	ldr r4, _02011DA4 @ =IWRAM_START + 0x2B4
 	adds r1, r1, r4
 	ldrh r1, [r1]
 	str r1, [sp, #0x10]
@@ -45,9 +45,9 @@ _02011D88:
 	b _02012216
 	.align 2, 0
 _02011D98: .4byte gCurTask
-_02011D9C: .4byte gUnknown_03000030
-_02011DA0: .4byte gUnknown_030002B0
-_02011DA4: .4byte gUnknown_030002B4
+_02011D9C: .4byte IWRAM_START + 0x30
+_02011DA0: .4byte IWRAM_START + 0x2B0
+_02011DA4: .4byte IWRAM_START + 0x2B4
 _02011DA8:
 	movs r3, #8
 	ldrsh r1, [r5, r3]
@@ -298,7 +298,7 @@ _02011F76:
 	movs r4, #0xc0
 	lsls r4, r4, #0x12
 	adds r6, r2, r4
-	ldr r1, _0201203C @ =gUnknown_0300006A
+	ldr r1, _0201203C @ =IWRAM_START + 0x6A
 	adds r0, r2, r1
 	ldrb r0, [r0]
 	subs r0, #0x1c
@@ -306,7 +306,7 @@ _02011F76:
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bhi _02011FB6
-	ldr r3, _02012040 @ =gUnknown_03000054
+	ldr r3, _02012040 @ =IWRAM_START + 0x54
 	adds r0, r2, r3
 	ldrh r1, [r0]
 	movs r0, #4
@@ -316,11 +316,11 @@ _02011F76:
 _02011FB6:
 	mov r4, sb
 	subs r4, #8
-	ldr r1, _02012044 @ =gUnknown_03000050
+	ldr r1, _02012044 @ =IWRAM_START + 0x50
 	adds r0, r2, r1
 	movs r3, #0
 	ldrsh r1, [r0, r3]
-	ldr r3, _02012048 @ =gUnknown_0300002C
+	ldr r3, _02012048 @ =IWRAM_START + 0x2C
 	adds r0, r2, r3
 	movs r3, #0
 	ldrsb r3, [r0, r3]
@@ -334,7 +334,7 @@ _02011FB6:
 	cmp r4, r1
 	blt _02012050
 _02011FDC:
-	ldr r0, _0201204C @ =gUnknown_0300002E
+	ldr r0, _0201204C @ =IWRAM_START + 0x2E
 	adds r2, r2, r0
 	movs r0, #0
 	ldrsb r0, [r2, r0]
@@ -382,11 +382,11 @@ _02012020:
 	.align 2, 0
 _02012034: .4byte 0x04000128
 _02012038: .4byte gMultiplayerPlayerTasks
-_0201203C: .4byte gUnknown_0300006A
-_02012040: .4byte gUnknown_03000054
-_02012044: .4byte gUnknown_03000050
-_02012048: .4byte gUnknown_0300002C
-_0201204C: .4byte gUnknown_0300002E
+_0201203C: .4byte IWRAM_START + 0x6A
+_02012040: .4byte IWRAM_START + 0x54
+_02012044: .4byte IWRAM_START + 0x50
+_02012048: .4byte IWRAM_START + 0x2C
+_0201204C: .4byte IWRAM_START + 0x2E
 _02012050:
 	mov r0, ip
 	adds r0, #1

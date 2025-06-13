@@ -26,17 +26,17 @@
 	adds r0, r1, r0
 	ldr r0, [r0]
 	mov sb, r0
-	ldr r3, _0200B204 @ =gUnknown_03000008
+	ldr r3, _0200B204 @ =IWRAM_START + 0x08
 	adds r0, r1, r3
 	ldrb r0, [r0]
 	str r0, [sp, #4]
-	ldr r2, _0200B208 @ =gUnknown_03000004
+	ldr r2, _0200B208 @ =IWRAM_START + 0x04
 	adds r0, r1, r2
 	ldrh r2, [r0]
 	subs r3, #2
 	adds r0, r1, r3
 	ldrh r3, [r0]
-	ldr r0, _0200B20C @ =gUnknown_03000009
+	ldr r0, _0200B20C @ =IWRAM_START + 0x09
 	adds r1, r1, r0
 	ldrb r5, [r1]
 	ldr r1, [sp, #4]
@@ -176,9 +176,9 @@ _0200B1EA:
 	.align 2, 0
 _0200B1FC: .4byte gPlayer
 _0200B200: .4byte gCurTask
-_0200B204: .4byte gUnknown_03000008
-_0200B208: .4byte gUnknown_03000004
-_0200B20C: .4byte gUnknown_03000009
+_0200B204: .4byte IWRAM_START + 0x08
+_0200B208: .4byte IWRAM_START + 0x04
+_0200B20C: .4byte IWRAM_START + 0x09
 _0200B210: .4byte gPlayerControls
 _0200B214:
 	mov r1, ip
@@ -189,12 +189,12 @@ _0200B21A:
 	ldr r2, _0200B228 @ =gCurTask
 	ldr r0, [r2]
 	ldrh r1, [r0, #6]
-	ldr r3, _0200B22C @ =gUnknown_03000009
+	ldr r3, _0200B22C @ =IWRAM_START + 0x09
 	adds r1, r1, r3
 	b _0200B29E
 	.align 2, 0
 _0200B228: .4byte gCurTask
-_0200B22C: .4byte gUnknown_03000009
+_0200B22C: .4byte IWRAM_START + 0x09
 _0200B230:
 	movs r0, #1
 	ands r0, r5
@@ -252,7 +252,7 @@ _0200B292:
 	ldr r1, _0200B2A8 @ =gCurTask
 	ldr r0, [r1]
 	ldrh r1, [r0, #6]
-	ldr r2, _0200B2AC @ =gUnknown_03000009
+	ldr r2, _0200B2AC @ =IWRAM_START + 0x09
 	adds r1, r1, r2
 _0200B29E:
 	ldrb r0, [r1]
@@ -262,7 +262,7 @@ _0200B29E:
 	b _0200B2E4
 	.align 2, 0
 _0200B2A8: .4byte gCurTask
-_0200B2AC: .4byte gUnknown_03000009
+_0200B2AC: .4byte IWRAM_START + 0x09
 _0200B2B0:
 	movs r0, #1
 	ands r0, r5
@@ -296,17 +296,17 @@ _0200B2E4:
 	ldr r3, _0200B2F0 @ =gCurTask
 	ldr r0, [r3]
 	ldrh r1, [r0, #6]
-	ldr r0, _0200B2F4 @ =gUnknown_03000009
+	ldr r0, _0200B2F4 @ =IWRAM_START + 0x09
 	adds r1, r1, r0
 	b _0200B302
 	.align 2, 0
 _0200B2F0: .4byte gCurTask
-_0200B2F4: .4byte gUnknown_03000009
+_0200B2F4: .4byte IWRAM_START + 0x09
 _0200B2F8:
 	ldr r1, _0200B36C @ =gCurTask
 	ldr r0, [r1]
 	ldrh r1, [r0, #6]
-	ldr r2, _0200B370 @ =gUnknown_03000009
+	ldr r2, _0200B370 @ =IWRAM_START + 0x09
 	adds r1, r1, r2
 _0200B302:
 	ldrb r2, [r1]
@@ -366,7 +366,7 @@ _0200B35C:
 	bx r0
 	.align 2, 0
 _0200B36C: .4byte gCurTask
-_0200B370: .4byte gUnknown_03000009
+_0200B370: .4byte IWRAM_START + 0x09
 _0200B374: .4byte gCamera
 
 	
