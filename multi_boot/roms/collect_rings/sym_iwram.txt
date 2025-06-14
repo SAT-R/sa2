@@ -6,51 +6,7 @@
 build/collect_rings/src/sa2/multi_sio.o(.data);
 build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);
 build/collect_rings/src/sa2/core.o(.data);
-
-/* globals.c */
-. = 0x000053A0; gUnknown_030053E0 = .;
-. = 0x000053A4; gCheckpointTime = .;
-. = 0x000053A8; gMultiplayerCharRings = .;
-. = 0x000053AC; gMultiplayerLanguage = .;
-. = 0x000053B0; gRingCount = .;
-. = 0x000053CC; gActiveCollectRingEffectCount = .;
-. = 0x000053D0; gRoomEventQueueSendPos = .;
-. = 0x000053D4; gStageFlags = .;
-. = 0x000053D8; gMPRingCollectWins = .;
-. = 0x000053E0; gBossRingsRespawnCount = .;
-. = 0x000053E4; gBossRingsShallRespawn = .;
-. = 0x000053E8; gMultiplayerPseudoRandom = .;
-. = 0x000053EC; gRoomEventQueueWritePos = .;
-. = 0x000053F0; gUnknown_0300543C = .;
-. = 0x000053F4; gBossCameraClampYLower = .;
-. = 0x000053F8; gTrappedAnimalVariant = .;
-. = 0x000053FC; gNumLives = .;
-. = 0x00005400; gUnknown_0300544C = .;
-. = 0x00005404; gLevelScore = .;
-. = 0x00005408; gCourseTime = .;
-. = 0x00005418; gMPStageStartFrameCount = .;
-. = 0x00005428; gUnknown_030054B0 = .;
-. = 0x0000542C; gUnknown_030054B4 = .;
-. = 0x00005430; gUnknown_030054B8 = .;
-. = 0x00005434; gBossCameraClampYUpper = .;
-. = 0x00005444; gGameMode = .;
-. = 0x00005448; gStageGoalX = .;
-. = 0x0000544C; gMultiplayerMissingHeartbeats = .;
-. = 0x00005454; gEntitiesManagerTask = .;
-. = 0x00005458; gUnknown_030054E0 = .;
-. = 0x00005460; gRandomItemBox = .;
-. = 0x00005468; gSelectedCharacter = .;
-. = 0x0000546C; gSpecialRingCount = .;
-. = 0x00005470; gNumSingleplayerCharacters = .;
-. = 0x00005474; gUnknown_030054FC = .;
-. = 0x00005478; gMultiplayerCharacters = .;
-. = 0x00005480; gRoomEventQueue = .;
-. = 0x00005500; gStageTime = .;
-. = 0x00005510; gMultiplayerPlayerTasks = .;
-. = 0x00005520; gBossIndex = .;
-. = 0x00005524; gCurrentLevel = .;
-. = 0x00005528; gMultiplayerConnections = .;
-. = 0x00005530; gUnknown_030055BC = .;
+build/collect_rings/src/sa2/game/sa1_sa2_shared/globals.o(.data);
 
 /* time_display.c */
 . = 0x0000553C; gUnknown_03005B6C = .;

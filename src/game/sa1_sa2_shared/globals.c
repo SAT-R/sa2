@@ -16,10 +16,17 @@ u8 ALIGNED(4) unused53F4[24] = {};
 
 u8 gActiveCollectRingEffectCount = 0;
 
+#ifndef COLLECT_RINGS_ROM
 u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX] = {};
-u8 gRoomEventQueueSendPos = 0;
+#endif
+
+u8 ALIGNED(4) gRoomEventQueueSendPos = 0;
 u16 ALIGNED(4) gStageFlags = 0;
 u8 ALIGNED(4) gMPRingCollectWins[MULTI_SIO_PLAYERS_MAX] = {};
+
+#if COLLECT_RINGS_ROM
+u8 unused0[4] = {};
+#endif
 
 u8 gBossRingsRespawnCount = 0;
 bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;
@@ -34,7 +41,9 @@ u8 ALIGNED(4) gNumLives = 0;
 u16 ALIGNED(4) gUnknown_0300544C = 0;
 s32 gLevelScore = 0;
 
+#ifndef COLLECT_RINGS_ROM
 u16 ALIGNED(16) gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH] = {};
+#endif
 u32 gCourseTime = 0;
 
 CheeseTarget ALIGNED(8) gCheeseTarget = {};
@@ -75,7 +84,7 @@ u8 ALIGNED(4) gMultiplayerUnlockedCharacters = 0;
 #ifndef NON_MATCHING
 struct Task *ALIGNED(16) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
 #else
-struct Task *ALIGNED(4) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
+struct Task *gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
 #endif
 
 u8 gBossIndex = 0;
@@ -83,8 +92,13 @@ u8 gBossIndex = 0;
 s8 ALIGNED(4) gCurrentLevel = 0;
 u8 ALIGNED(4) gMultiplayerConnections = 0;
 
+#if COLLECT_RINGS_ROM
+u8 unused1[4] = {};
+#endif
+
 bool8 ALIGNED(4) gUnknown_030055BC = 0;
 
+#ifndef COLLECT_RINGS_ROM
 #ifndef NON_MATCHING
 u32 unused_030055C0[4] = {};
 #endif
@@ -96,3 +110,4 @@ u8 ALIGNED(4) gFrameInputsBufIndex = 0;
 
 // Fills available space, but size not yet confirmed
 struct InputCounters ALIGNED(8) gNewInputCounters[32] = {};
+#endif
