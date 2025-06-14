@@ -98,6 +98,10 @@ u8 unused1[4] = {};
 
 bool8 ALIGNED(4) gUnknown_030055BC = 0;
 
+#if COLLECT_RINGS_ROM
+u8 unused2[8] = {};
+#endif
+
 #ifndef COLLECT_RINGS_ROM
 #ifndef NON_MATCHING
 u32 unused_030055C0[4] = {};

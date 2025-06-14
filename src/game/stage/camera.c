@@ -58,7 +58,9 @@ struct Backgrounds {
 // Probably a array (as it's aligned 16)
 struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
 
+#ifndef COLLECT_RINGS_ROM
 UNUSED u32 unused_3005950[3] = {};
+#endif
 
 struct Camera ALIGNED(8) gCamera = {};
 const Collision *gRefCollision = NULL;

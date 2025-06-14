@@ -14,11 +14,12 @@
 BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x400] = { 0 };
 #endif
 
+#ifndef COLLECT_RINGS_ROM
 EWRAM_DATA struct MP2KTrack gMPlayTrack_BGM[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE1[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE2[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE3[16] = {};
-
+#endif
 // TODO: convert sound_data to C
 // const struct MusicPlayer gMPlayTable[] = {
 //     { &gMPlayInfo_BGM, gMPlayTrack_BGM, 16 },

@@ -7,8 +7,12 @@
 
 #include "constants/zones.h"
 
-// Not clear why this is 16 aligned
+#ifndef COLLECT_RINGS_ROM
+// Not clear why this is 16 aligned in the main game
 MultiPlayerBgCtrlRegs ALIGNED(16) *gMPAttackEffect2Regs = NULL;
+#else
+MultiPlayerBgCtrlRegs *gMPAttackEffect2Regs = NULL;
+#endif
 
 static void Task_MPAttackEffect2(void);
 static void TaskDestructor_MPAttackEffect2(struct Task *);

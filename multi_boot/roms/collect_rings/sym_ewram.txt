@@ -1,8 +1,0 @@
-. = 0x00000000; gSoundInfo = .;
-. = 0x00000FB0; gMPlayJumpTable = .;
-. = 0x00001040; gCgbChans = .;
-. = 0x00001140; gMPlayInfo_BGM = .;
-. = 0x00001180; gMPlayInfo_SE1 = .;
-. = 0x000011C0; gMPlayInfo_SE2 = .;
-. = 0x00001200; gMPlayMemAccArea = .;
-. = 0x00001210; gMPlayInfo_SE3 = .;

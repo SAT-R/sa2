@@ -6,7 +6,24 @@ SECTIONS {
     IWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_iwram.txt"
+        build/collect_rings/src/sa2/lib/m4a/m4a.o(.bss.code);
+        build/collect_rings/src/sa2/game/stage/terrain_collision.o(.bss);
+        /**** common ****/
+        . = ALIGN(16); 
+        build/collect_rings/src/sa2/multi_sio.o(.data);
+        build/collect_rings/src/sa2/sio32_multi_load.o(COMMON);
+        build/collect_rings/src/sa2/core.o(.data);
+        build/collect_rings/src/sa2/game/sa1_sa2_shared/globals.o(.data);
+        build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.data);
+        build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.data);
+        build/collect_rings/src/sa2/game/multiplayer/mp_attack_2_effect.o(.data);
+        build/collect_rings/src/sa2/game/stage/camera.o(.data);
+        build/collect_rings/src/sa2/game/stage/player.o(.data);
+        build/collect_rings/src/sa2/game/stage/rings_scatter.o(.data);
+        build/collect_rings/src/sa2/game/stage/player_controls.o(.data);
+        build/collect_rings/src/sa2/game/stage/stage.o(.data);
+        build/collect_rings/src/sa2/game/dummy_task.o(.data);
+        iwram_end = .;
     }
 
     . = 0x20000C0;
@@ -95,7 +112,7 @@ SECTIONS {
     EWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_ewram.txt"
+        build/collect_rings/src/sa2/lib/m4a/m4a.o(ewram_data);
     }
 
     /* DWARF debug sections.

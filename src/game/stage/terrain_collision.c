@@ -6,13 +6,8 @@
 
 #include "constants/zones.h"
 
-#ifndef COLLECT_RINGS_ROM
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
-#else
-extern ALIGNED(8) u32 gUnknown_3000410[3];
-extern ALIGNED(8) u32 gUnknown_3000420[3];
-#endif
 
 s32 SA2_LABEL(sub_801EF94)(s32 p0, s32 p1, s32 layer);
 

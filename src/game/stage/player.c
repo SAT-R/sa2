@@ -257,7 +257,9 @@ typedef struct {
 Player ALIGNED(8) gPlayer = {};
 
 // Potentially some extra space on player for this to be aligned 16 (should be 8)
+#ifndef COLLECT_RINGS_ROM
 PlayerSpriteInfo ALIGNED(16) gPlayerLimbsPSI = {};
+#endif
 PlayerSpriteInfo ALIGNED(16) gPlayerBodyPSI = {};
 
 void sub_8022218(Player *);

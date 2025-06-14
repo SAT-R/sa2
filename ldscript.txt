@@ -7,7 +7,6 @@ SECTIONS
     EWRAM (NOLOAD) :
     ALIGN(4)
     {
-        data/sound_data.o(ewram_data); 
         src/lib/m4a/m4a.o(ewram_data);
         src/malloc_ewram.o(ewram_data);
         ewram_end = .;
