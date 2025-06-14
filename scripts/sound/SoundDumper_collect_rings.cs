@@ -17,8 +17,8 @@ namespace dump_sound
         static int SongTableAdr = 0x02016d8c;
         static int NumSongs = 26;
 
-        static int VoiceGroupEndAdr = 0x02016d5c;
-        static int KeySplitEndAdr = 0x02016d5c;
+        static int VoiceGroupEndAdr = 0x02016ccc;
+        static int KeySplitEndAdr = 0x02016d58;
 
         static SortedDictionary<int, string> soundInfo = new SortedDictionary<int, string>();
         static byte[] rom;
@@ -1097,7 +1097,7 @@ namespace dump_sound
 
         static void Main(string[] args)
         {
-            rom = File.ReadAllBytes("rom_data.bin");
+            rom = File.ReadAllBytes("data/rom_data.bin");
 
             soundInfo.Add(MPlayTableAdr, PrintMPlayTable(MPlayTableAdr));
             PrintSongTable(SongTableAdr);
@@ -1122,17 +1122,17 @@ namespace dump_sound
             //Sort all offsets
             keysplits.Sort();
             offsets.Sort();
-            var lastKetSplitAdr = keysplits[keysplits.Count - 1];
-            var keySplitEndAdr = 0;
-            for (int i = 0; i < offsets.Count; i++)
-            {
-                if ((offsets[i] > lastKetSplitAdr))
-                {
-                    keySplitEndAdr = offsets[i];
-                    break;
-                }
+            // var lastKetSplitAdr = keysplits[keysplits.Count - 1];
+            // var keySplitEndAdr = 0;
+            // for (int i = 0; i < offsets.Count; i++)
+            // {
+            //     if ((offsets[i] > lastKetSplitAdr))
+            //     {
+            //         keySplitEndAdr = offsets[i];
+            //         break;
+            //     }
 
-            }
+            // }
 
             // keysplits.Add(keySplitEndAdr);
             keysplits.Add(KeySplitEndAdr);
