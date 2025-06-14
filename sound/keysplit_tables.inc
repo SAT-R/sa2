@@ -12,6 +12,7 @@
 @ any extra offset calculation.
 
 	mAlignWord
+	.global KeySplitTable1
 KeySplitTable1:	@ 0x08AD4E20
 	.byte	1
 	.byte	60
