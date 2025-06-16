@@ -81,10 +81,16 @@ ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_SUBDIR = data
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 
+SONG_SUBDIR = sound/songs
+SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
+
+SOUND_ASM_SUBDIR = sound
+SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
+
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(DATA_ASM_BUILDDIR))
 
 ifneq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 NODEP ?= 1
@@ -158,7 +164,10 @@ ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS)
+SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
+SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
+
+OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 
@@ -301,6 +310,10 @@ ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 -include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
 endif
+
+$(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 libagbsyscall:
 	@$(MAKE) -C ../../../libagbsyscall MODERN=0 PLATFORM=gba CPU_ARCH=arm
