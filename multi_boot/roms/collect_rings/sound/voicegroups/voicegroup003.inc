@@ -1,8 +1,8 @@
 	.align 2
 	@********************** Voicegroup **********************@
 
-	.global voicegroup002
-voicegroup002:	@ 0x02016810
+	.global voicegroup003
+voicegroup003:	@ 0x02016810
 	voice_square_1 0, 2, 0, 0, 15, 0	@02016810
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201681C
 	voice_directsound 60, 0, gUnknown_020186F4, 255, 0, 255, 0	@02016828

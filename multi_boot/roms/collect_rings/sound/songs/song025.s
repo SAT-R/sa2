@@ -144,6 +144,6 @@ song025:	@ 0x0201CBE4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	voicegroup002		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	song025_1		@ track

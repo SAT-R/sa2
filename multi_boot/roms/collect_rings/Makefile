@@ -81,6 +81,9 @@ ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_SUBDIR = data
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 
+MID_SUBDIR = sound/songs/midi
+MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
+
 SONG_SUBDIR = sound/songs
 SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 
@@ -146,6 +149,11 @@ SA2_C_ASM_FILES := \
 	sa2/crt0.s \
 	sa2/multi_sio_asm.s
 
+SA2_MID_FILES := \
+	sa2/midi/se_ring_copy.mid
+
+SA2_SONG_FILES := 
+
 SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
 
@@ -167,7 +175,13 @@ DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DA
 SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
 SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
 
-OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS)
+SA2_SONG_SRCS := $(patsubst sa2/%.s,$(SONG_SUBDIR)/%.s,$(SA2_SONG_FILES))
+SA2_SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SA2_SONG_SRCS))
+
+SA2_MID_SRCS := $(patsubst sa2/%.mid,$(MID_SUBDIR)/%.mid,$(SA2_MID_FILES))
+SA2_MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
+
+OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(SA2_MID_OBJS) $(SA2_SONG_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 
@@ -233,6 +247,8 @@ tidy:
 
 #### Recipes ####
 
+include ../../../songs.mk
+
 %.pal:
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp ../../../$@ $@;
@@ -248,12 +264,16 @@ $(ELF): $(OBJS) $(LDSCRIPT) libagbsyscall
 	$(OBJCOPY) -O binary $< $@
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
-# Copy asm and C files from SA2
+# Copy files from SA2
 $(C_BUILDDIR)/sa2/%.c: ../../../src/%.c
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
 $(C_BUILDDIR)/sa2/%.s: ../../../src/%.s
+	$(shell mkdir -p $(shell dirname '$@'))
+	cp $< $@
+
+$(SONG)/sa2/%.mid: ../../../songs/%.mid
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 

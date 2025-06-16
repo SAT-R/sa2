@@ -146,6 +146,6 @@ song023:	@ 0x0201CA4C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	voicegroup002		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	song023_1		@ track

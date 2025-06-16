@@ -23,6 +23,6 @@ se_ring_copy:	@ 0x0201C7C0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	voicegroup002		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	song015_1		@ track

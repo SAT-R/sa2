@@ -404,13 +404,14 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 sdl: ; @$(MAKE) PLATFORM=sdl
 
+tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
+
 sdl_win32:
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### RECIPES ####
-tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
 
 include songs.mk
 include graphics.mk

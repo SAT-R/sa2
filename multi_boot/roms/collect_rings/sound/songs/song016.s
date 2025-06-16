@@ -25,6 +25,6 @@ song016:	@ 0x0201C7E0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	voicegroup002		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	song016_1		@ track
