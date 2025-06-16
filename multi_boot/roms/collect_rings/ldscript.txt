@@ -108,7 +108,7 @@ SECTIONS {
         build/collect_rings/data/sound_data.o(.rodata);
     }
 
-    . = 0x0201E130;
+    . = 0x0201cd30;
     EWRAM (NOLOAD) :
     ALIGN(4)
     {

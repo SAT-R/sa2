@@ -56,10 +56,10 @@ ProgrammableWaveData_2016D4C:
 	.align 2
 	.global gMPlayTable
 gMPlayTable:	@ 0x02016D5C
-	music_player 0x201F270, 0x201CD30, 16, 0
-	music_player 0x201F2B0, 0x201D230, 16, 0
-	music_player 0x201F2F0, 0x201D730, 16, 0
-	music_player 0x201F340, 0x201DC30, 16, 0
+	music_player gMPlayInfo_BGM, gMPlayTrack_BGM, 16, 0
+	music_player gMPlayInfo_SE1, gMPlayTrack_SE1, 16, 0
+	music_player gMPlayInfo_SE2, gMPlayTrack_SE2, 16, 0
+	music_player gMPlayInfo_SE3, gMPlayTrack_SE3, 16, 0
 
 	.align 2
 	.global gSongTable
