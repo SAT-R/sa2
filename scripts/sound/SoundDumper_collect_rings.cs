@@ -15,7 +15,7 @@ namespace dump_sound
         static int MPlayTableAdr = 0x02016d5c;
         static int NumMPlayers = 4;
         static int SongTableAdr = 0x02016d8c;
-        static int NumSongs = 26;
+        static int NumSongs = 27;
 
         static int VoiceGroupEndAdr = 0x02016ccc;
         static int KeySplitEndAdr = 0x02016d58;

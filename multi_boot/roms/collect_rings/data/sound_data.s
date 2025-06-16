@@ -1,15 +1,13 @@
-.section .rodata
-
 .include "asm/macros/c_decl.inc"
 .include "asm/macros/portable.inc"
 .include "../../../asm/macros/m4a.inc"
 .include "../../../asm/macros/music_voice.inc"
 
+.section .rodata
 
 .include "sound/voicegroups/voicegroup000.inc"
 .include "sound/voicegroups/voicegroup001.inc"
 .include "sound/voicegroups/voicegroup002.inc"
-
 	.align 2
 	.global ProgrammableWaveData_2016CCC
 ProgrammableWaveData_2016CCC:
@@ -55,18 +53,13 @@ ProgrammableWaveData_2016D3C:
 ProgrammableWaveData_2016D4C:
 	.incbin "sound/programmable_wave_samples/02016D4C.pcm"
 
-	.equiv NUM_TRACKS_BGM, 16
-	.equiv NUM_TRACKS_SE1, 16
-	.equiv NUM_TRACKS_SE2, 16
-	.equiv NUM_TRACKS_SE3, 16
-
 	.align 2
 	.global gMPlayTable
 gMPlayTable:	@ 0x02016D5C
-	music_player gMPlayInfo_BGM, gMPlayTrack_BGM, NUM_TRACKS_BGM, 0
-	music_player gMPlayInfo_SE1, gMPlayTrack_SE1, NUM_TRACKS_SE1, 0
-	music_player gMPlayInfo_SE2, gMPlayTrack_SE2, NUM_TRACKS_SE2, 0
-	music_player gMPlayInfo_SE3, gMPlayTrack_SE3, NUM_TRACKS_SE2, 0
+	music_player 0x201F270, 0x201CD30, 16, 0
+	music_player 0x201F2B0, 0x201D230, 16, 0
+	music_player 0x201F2F0, 0x201D730, 16, 0
+	music_player 0x201F340, 0x201DC30, 16, 0
 
 	.align 2
 	.global gSongTable
@@ -97,8 +90,16 @@ gSongTable:	@ 0x02016D8C
 	song song023, 2, 2
 	song song024, 2, 2
 	song song025, 2, 2
+	song song026, 2, 2
 
-.include "sound/songs/song000.s"
+	.align 2
+	.global song000
+song000:	@ 0x02016E64
+	.byte	0		@ trackCount
+	.byte	0		@ blockCount
+	.byte	0		@ priority
+	.byte	0		@ reverb
+
 
 	.align 2
 	.global gUnknown_02016E68
@@ -156,3 +157,4 @@ gUnknown_020197C8:
 .include "sound/songs/song023.s"
 .include "sound/songs/song024.s"
 .include "sound/songs/song025.s"
+.include "sound/songs/song026.s"
