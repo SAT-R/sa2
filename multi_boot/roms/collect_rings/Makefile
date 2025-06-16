@@ -35,12 +35,14 @@ SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 CC1       := ../../../tools/agbcc/bin/agbcc$(EXE)
 CC1_OLD   := ../../../tools/agbcc/bin/old_agbcc$(EXE)
 
+CPP       := $(PREFIX)cpp
 LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
 GFX 	  := ../../../tools/gbagfx/gbagfx$(EXE)
 AIF		  := ../../../tools/aif2pcm/aif2pcm$(EXE)
+MID2AGB   := ../../../tools/mid2agb/mid2agb$(EXE)
 SCANINC   := ../../../tools/scaninc/scaninc$(EXE)
 PREPROC	  := ../../../tools/preproc/preproc$(EXE)
 RAMSCRGEN := ../../../tools/ramscrgen/ramscrgen$(EXE)
