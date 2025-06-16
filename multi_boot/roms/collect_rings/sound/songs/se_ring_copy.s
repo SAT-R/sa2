@@ -16,8 +16,8 @@ song015_1:	@ 0x0201C7B0
 	.byte	FINE
 
 	.align 2
-	.global song015
-song015:	@ 0x0201C7C0
+	.global se_ring_copy
+se_ring_copy:	@ 0x0201C7C0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
