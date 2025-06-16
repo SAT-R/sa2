@@ -1,6 +1,8 @@
 ### Build Configuration ###
 
 # Default variables
+MIDI_COMMENTS := "arm"
+
 GAME_REVISION ?= 0
 GAME_REGION   ?= USA
 DEBUG         ?= 0

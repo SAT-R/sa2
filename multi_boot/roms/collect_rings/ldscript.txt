@@ -118,7 +118,7 @@ SECTIONS {
         build/collect_rings/sound/songs/song012.o(.rodata);
         build/collect_rings/sound/songs/song013.o(.rodata);
         build/collect_rings/sound/songs/song014.o(.rodata);
-        build/collect_rings/sound/songs/se_ring_copy.o(.rodata);
+        build/collect_rings/sound/songs/midi/se_ring_copy.o(.rodata);
         build/collect_rings/sound/songs/song016.o(.rodata);
         build/collect_rings/sound/songs/song017.o(.rodata);
         build/collect_rings/sound/songs/song018.o(.rodata);

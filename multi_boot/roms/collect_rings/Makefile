@@ -93,7 +93,7 @@ SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(DATA_ASM_BUILDDIR))
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR) $(DATA_ASM_BUILDDIR))
 
 ifneq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 NODEP ?= 1
@@ -150,7 +150,7 @@ SA2_C_ASM_FILES := \
 	sa2/multi_sio_asm.s
 
 SA2_MID_FILES := \
-	sa2/midi/se_ring_copy.mid
+	sa2/se_ring_copy.mid
 
 SA2_SONG_FILES := 
 
@@ -179,7 +179,7 @@ SA2_SONG_SRCS := $(patsubst sa2/%.s,$(SONG_SUBDIR)/%.s,$(SA2_SONG_FILES))
 SA2_SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SA2_SONG_SRCS))
 
 SA2_MID_SRCS := $(patsubst sa2/%.mid,$(MID_SUBDIR)/%.mid,$(SA2_MID_FILES))
-SA2_MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
+SA2_MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(SA2_MID_SRCS))
 
 OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(SA2_MID_OBJS) $(SA2_SONG_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
@@ -273,7 +273,7 @@ $(C_BUILDDIR)/sa2/%.s: ../../../src/%.s
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
-$(SONG)/sa2/%.mid: ../../../songs/%.mid
+$(MID_SUBDIR)/%.mid: ../../../sound/songs/midi/%.mid
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
