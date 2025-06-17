@@ -152,19 +152,19 @@ $(MID_SUBDIR)/mus_special_stage_result_lose.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G10  -V92
     
 $(MID_SUBDIR)/mus_vs_2.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G23  -V105
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0  -V105
     
 $(MID_SUBDIR)/mus_vs_3.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G23  -V105
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0  -V105
     
 $(MID_SUBDIR)/mus_connection_pending.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G10  -V110
     
 $(MID_SUBDIR)/mus_vs_lobby.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G23  -V105
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0  -V105
     
 $(MID_SUBDIR)/mus_vs_select_pak_mode.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G23  -V105
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0  -V105
     
 $(MID_SUBDIR)/se_ring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V100
@@ -188,7 +188,7 @@ $(MID_SUBDIR)/se_menu_cursor_move.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V90
     
 $(MID_SUBDIR)/se_spin_attack.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V110
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V110
     
 $(MID_SUBDIR)/se_spin_dash_release.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
@@ -755,7 +755,7 @@ $(MID_SUBDIR)/mus_got_all_chaos_emeralds.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G13  -V90
     
 $(MID_SUBDIR)/mus_fanfare.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G23 -P255 -V105
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P255 -V105
     
 $(MID_SUBDIR)/mus_vs_exit.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G10  -V77

@@ -150,7 +150,21 @@ SA2_C_ASM_FILES := \
 	sa2/multi_sio_asm.s
 
 SA2_MID_FILES := \
-	sa2/se_ring_copy.mid
+	sa2/se_ring_copy.mid \
+	sa2/mus_vs_select_pak_mode.mid \
+	sa2/mus_vs_lobby.mid \
+	sa2/mus_fanfare.mid \
+	sa2/se_spin_dash_release.mid \
+	# sa2/se_brake.mid \
+	# sa2/se_jump.mid \
+	# sa2/se_rings_lost.mid \
+	# sa2/se_life_lost.mid \
+	# sa2/se_item_box_2.mid \
+	# sa2/se_spring.mid \
+	# sa2/se_spikes.mid \
+	# sa2/se_216.mid \
+	# sa2/se_276.mid \
+	# sa2/se_grinding.mid
 
 SA2_SONG_FILES := 
 
@@ -238,6 +252,7 @@ compare: $(ROM)
 	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
+	$(RM) -r $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -iname 'graphics/*.pal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 	@$(MAKE) clean -C ../../../libagbsyscall
 
@@ -247,7 +262,7 @@ tidy:
 
 #### Recipes ####
 
-include ../../../songs.mk
+include songs.mk
 
 %.bin: %.aif ; $(AIF) $< $@
 

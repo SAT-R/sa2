@@ -572,7 +572,7 @@ SECTIONS
         sound/songs/midi/se_sonic_skid_attack.o(.rodata);
         sound/songs/midi/se_sonic_midair_somersault.o(.rodata);
         sound/songs/midi/se_sonic_insta_shield.o(.rodata);
-        sound/songs/midi/se_114.o(.rodata);
+        sound/songs/midi/se_grinding.o(.rodata);
         sound/songs/midi/se_brake.o(.rodata);
         sound/songs/midi/se_jump.o(.rodata);
         sound/songs/midi/se_ring_copy.o(.rodata);
