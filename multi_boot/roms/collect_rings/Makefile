@@ -249,6 +249,8 @@ tidy:
 
 include ../../../songs.mk
 
+%.bin: %.aif ; $(AIF) $< $@
+
 %.pal:
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp ../../../$@ $@;
