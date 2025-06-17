@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song017_1
-song017_1:	@ 0x0201C7EC
+	.global se_life_lost_1
+se_life_lost_1:	@ 0x0201C7EC
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 60
 	.byte	VOICE	, 52
@@ -20,8 +20,8 @@ song017_1:	@ 0x0201C7EC
 	.byte	FINE
 
 	.align 2
-	.global song017
-song017:	@ 0x0201C804
+	.global se_life_lost
+se_life_lost:	@ 0x0201C804
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -29,4 +29,4 @@ song017:	@ 0x0201C804
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song017_1		@ track
+	.word	se_life_lost_1		@ track

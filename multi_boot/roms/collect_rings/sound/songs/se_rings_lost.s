@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song016_1
-song016_1:	@ 0x0201C7CC
+	.global se_rings_lost_1
+se_rings_lost_1:	@ 0x0201C7CC
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 75
 	.byte	VOICE	, 3
@@ -18,8 +18,8 @@ song016_1:	@ 0x0201C7CC
 	.byte	FINE
 
 	.align 2
-	.global song016
-song016:	@ 0x0201C7E0
+	.global se_rings_lost
+se_rings_lost:	@ 0x0201C7E0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -27,4 +27,4 @@ song016:	@ 0x0201C7E0
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	song016_1		@ track
+	.word	se_rings_lost_1		@ track

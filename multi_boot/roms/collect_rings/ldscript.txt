@@ -108,28 +108,28 @@ SECTIONS {
         build/collect_rings/data/sound_data.o(.rodata);
 
         /* Songs */
-        build/collect_rings/sound/songs/song001.o(.rodata);
+        build/collect_rings/sound/songs/mus_vs_select_pak_mode.o(.rodata);
         build/collect_rings/sound/songs/song002.o(.rodata);
-        build/collect_rings/sound/songs/song003.o(.rodata);
-        build/collect_rings/sound/songs/song004.o(.rodata);
+        build/collect_rings/sound/songs/mus_vs_lobby.o(.rodata);
+        build/collect_rings/sound/songs/mus_fanfare.o(.rodata);
         build/collect_rings/sound/songs/song005.o(.rodata);
         build/collect_rings/sound/songs/song010.o(.rodata);
-        build/collect_rings/sound/songs/song011.o(.rodata);
-        build/collect_rings/sound/songs/song012.o(.rodata);
-        build/collect_rings/sound/songs/song013.o(.rodata);
-        build/collect_rings/sound/songs/song014.o(.rodata);
+        build/collect_rings/sound/songs/se_spin_attack.o(.rodata);
+        build/collect_rings/sound/songs/se_spin_dash_release.o(.rodata);
+        build/collect_rings/sound/songs/se_brake.o(.rodata);
+        build/collect_rings/sound/songs/se_jump.o(.rodata);
         build/collect_rings/sound/songs/midi/se_ring_copy.o(.rodata);
-        build/collect_rings/sound/songs/song016.o(.rodata);
-        build/collect_rings/sound/songs/song017.o(.rodata);
+        build/collect_rings/sound/songs/se_rings_lost.o(.rodata);
+        build/collect_rings/sound/songs/se_life_lost.o(.rodata);
         build/collect_rings/sound/songs/song018.o(.rodata);
-        build/collect_rings/sound/songs/song019.o(.rodata);
-        build/collect_rings/sound/songs/song020.o(.rodata);
-        build/collect_rings/sound/songs/song021.o(.rodata);
+        build/collect_rings/sound/songs/se_item_box_2.o(.rodata);
+        build/collect_rings/sound/songs/se_spring.o(.rodata);
+        build/collect_rings/sound/songs/se_spikes.o(.rodata);
         build/collect_rings/sound/songs/song022.o(.rodata);
-        build/collect_rings/sound/songs/song023.o(.rodata);
+        build/collect_rings/sound/songs/se_216.o(.rodata);
         build/collect_rings/sound/songs/song024.o(.rodata);
-        build/collect_rings/sound/songs/song025.o(.rodata);
-        build/collect_rings/sound/songs/song026.o(.rodata);
+        build/collect_rings/sound/songs/se_276.o(.rodata);
+        build/collect_rings/sound/songs/se_grinding.o(.rodata);
     }
 
     . = 0x0201cd30;

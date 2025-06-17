@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song019_1
-song019_1:	@ 0x0201C870
+	.global se_item_box_2_1
+se_item_box_2_1:	@ 0x0201C870
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 75
 	.byte	VOICE	, 52
@@ -63,8 +63,8 @@ song019_1:	@ 0x0201C870
 
 	@********************** Track  2 **********************@
 
-	.global song019_2
-song019_2:	@ 0x0201C8AF
+	.global se_item_box_2_2
+se_item_box_2_2:	@ 0x0201C8AF
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 50
 	.byte	VOL	, v127
@@ -75,8 +75,8 @@ song019_2:	@ 0x0201C8AF
 	.byte	FINE
 
 	.align 2
-	.global song019
-song019:	@ 0x0201C8C0
+	.global se_item_box_2
+se_item_box_2:	@ 0x0201C8C0
 	.byte	2		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -84,5 +84,5 @@ song019:	@ 0x0201C8C0
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song019_1		@ track
-	.word	song019_2		@ track
+	.word	se_item_box_2_1		@ track
+	.word	se_item_box_2_2		@ track

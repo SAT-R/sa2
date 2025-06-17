@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song014_1
-song014_1:	@ 0x0201C764
+	.global se_jump_1
+se_jump_1:	@ 0x0201C764
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 75
 	.byte	VOICE	, 12
@@ -60,8 +60,8 @@ song014_1:	@ 0x0201C764
 	.byte	FINE
 
 	.align 2
-	.global song014
-song014:	@ 0x0201C7A4
+	.global se_jump
+se_jump:	@ 0x0201C7A4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -69,4 +69,4 @@ song014:	@ 0x0201C7A4
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song014_1		@ track
+	.word	se_jump_1		@ track

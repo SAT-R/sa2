@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song026_1
-song026_1:	@ 0x0201CBF0
+	.global se_grinding_1
+se_grinding_1:	@ 0x0201CBF0
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 60
 	.byte	VOICE	, 68
@@ -26,17 +26,17 @@ song026_1:	@ 0x0201CBF0
 	.byte	W10
 	.byte		TIE	, Bn3, v072
 	.byte	W76
-song026_1_1:
+se_grinding_1_1:
 	.byte	W96
 	.byte	GOTO	
-		.word	song026_1_1
+		.word	se_grinding_1_1
 	.byte	W12
 	.byte		EOT	, Bn3
 	.byte	FINE
 
 	.align 2
-	.global song026
-song026:	@ 0x0201CC20
+	.global se_grinding
+se_grinding:	@ 0x0201CC20
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -44,4 +44,4 @@ song026:	@ 0x0201CC20
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	song026_1		@ track
+	.word	se_grinding_1		@ track

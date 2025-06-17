@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song001_1
-song001_1:	@ 0x0201A6D8
+	.global mus_vs_select_pak_mode_1
+mus_vs_select_pak_mode_1:	@ 0x0201A6D8
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 87
 	.byte	VOICE	, 127
@@ -49,7 +49,7 @@ song001_1:	@ 0x0201A6D8
 	.byte		N23	, Ds1, v076
 	.byte		N23	, En2, v124
 	.byte	W24
-song001_1_2:
+mus_vs_select_pak_mode_1_2:
 	.byte		N23	, Ds1, v076
 	.byte	W15
 	.byte		N08	, Ds2, v124
@@ -57,7 +57,7 @@ song001_1_2:
 	.byte		N23	, Ds1, v076
 	.byte		N23	, En2, v124
 	.byte	W24
-song001_1_1:
+mus_vs_select_pak_mode_1_1:
 	.byte		N23	, Ds1, v076
 	.byte		N14	, Ds2, v124
 	.byte	W15
@@ -75,29 +75,29 @@ song001_1_1:
 	.byte	W24
 	.byte	PEND
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte	PATT	
-		.word	song001_1_1
+		.word	mus_vs_select_pak_mode_1_1
 	.byte		N23	, Ds1, v076
 	.byte		N14	, Ds2, v124
 	.byte	W15
@@ -194,7 +194,7 @@ song001_1_1:
 	.byte		N23	, En2, v124
 	.byte	W24
 	.byte	GOTO	
-		.word	song001_1_2
+		.word	mus_vs_select_pak_mode_1_2
 	.byte		N23	, Ds1, v076
 	.byte		N14	, Ds2, v124
 	.byte	W15
@@ -209,8 +209,8 @@ song001_1_1:
 
 	@********************** Track  2 **********************@
 
-	.global song001_2
-song001_2:	@ 0x0201A853
+	.global mus_vs_select_pak_mode_2
+mus_vs_select_pak_mode_2:	@ 0x0201A853
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 44
 	.byte	VOL	, v105
@@ -229,7 +229,7 @@ song001_2:	@ 0x0201A853
 	.byte	W16
 	.byte		N20	, Ds2, v127
 	.byte	W08
-song001_2_1:
+mus_vs_select_pak_mode_2_1:
 	.byte	W16
 	.byte		N08	, Ds2, v127
 	.byte	W08
@@ -246,7 +246,7 @@ song001_2_1:
 	.byte		N07	
 	.byte	W08
 	.byte	PEND
-song001_2_3:
+mus_vs_select_pak_mode_2_3:
 	.byte		N11	, Ds3, v127
 	.byte	W16
 	.byte		N07	, Ds2
@@ -256,7 +256,7 @@ song001_2_3:
 	.byte		N07	, Ds3
 	.byte	W08
 	.byte	PEND
-song001_2_4:
+mus_vs_select_pak_mode_2_4:
 	.byte		N10	, Ds2, v127
 	.byte	W16
 	.byte		N07	, Ds3
@@ -266,8 +266,8 @@ song001_2_4:
 	.byte		N20	
 	.byte	W08
 	.byte	PATT	
-		.word	song001_2_1
-song001_2_2:
+		.word	mus_vs_select_pak_mode_2_1
+mus_vs_select_pak_mode_2_2:
 	.byte		N11	, Ds3, v127
 	.byte	W16
 	.byte		N07	, Ds2
@@ -286,27 +286,27 @@ song001_2_2:
 	.byte	W08
 	.byte	PEND
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte	PATT	
-		.word	song001_2_2
+		.word	mus_vs_select_pak_mode_2_2
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte	PATT	
-		.word	song001_2_2
+		.word	mus_vs_select_pak_mode_2_2
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte	PATT	
-		.word	song001_2_2
+		.word	mus_vs_select_pak_mode_2_2
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte	PATT	
-		.word	song001_2_2
+		.word	mus_vs_select_pak_mode_2_2
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte	PATT	
-		.word	song001_2_2
+		.word	mus_vs_select_pak_mode_2_2
 	.byte	PATT	
-		.word	song001_2_1
+		.word	mus_vs_select_pak_mode_2_1
 	.byte		N11	, Ds3, v127
 	.byte	W16
 	.byte		N07	, Ds2
@@ -376,9 +376,9 @@ song001_2_2:
 	.byte		N07	
 	.byte	W08
 	.byte	PATT	
-		.word	song001_2_3
+		.word	mus_vs_select_pak_mode_2_3
 	.byte	GOTO	
-		.word	song001_2_4
+		.word	mus_vs_select_pak_mode_2_4
 	.byte		N10	, Ds2, v127
 	.byte	W16
 	.byte		N07	, Ds3
@@ -394,8 +394,8 @@ song001_2_2:
 
 	@********************** Track  3 **********************@
 
-	.global song001_3
-song001_3:	@ 0x0201A96D
+	.global mus_vs_select_pak_mode_3
+mus_vs_select_pak_mode_3:	@ 0x0201A96D
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 103
 	.byte	VOL	, v082
@@ -407,7 +407,7 @@ song001_3:	@ 0x0201A96D
 	.byte	W20
 	.byte		EOT	
 	.byte	W28
-song001_3_1:
+mus_vs_select_pak_mode_3_1:
 	.byte		N36	, Ds3, v127
 	.byte	W40
 	.byte		TIE	, Cs3, v116
@@ -505,13 +505,13 @@ song001_3_1:
 	.byte		EOT	
 	.byte	W01
 	.byte	GOTO	
-		.word	song001_3_1
+		.word	mus_vs_select_pak_mode_3_1
 	.byte	FINE
 
 	@********************** Track  4 **********************@
 
-	.global song001_4
-song001_4:	@ 0x0201AA10
+	.global mus_vs_select_pak_mode_4
+mus_vs_select_pak_mode_4:	@ 0x0201AA10
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 104
 	.byte	VOL	, v082
@@ -521,7 +521,7 @@ song001_4:	@ 0x0201AA10
 	.byte	W96
 	.byte	W96
 	.byte	W48
-song001_4_1:
+mus_vs_select_pak_mode_4_1:
 	.byte	W48
 	.byte	W96
 	.byte	W96
@@ -577,13 +577,13 @@ song001_4_1:
 	.byte	W96
 	.byte	W48
 	.byte	GOTO	
-		.word	song001_4_1
+		.word	mus_vs_select_pak_mode_4_1
 	.byte	FINE
 
 	@********************** Track  5 **********************@
 
-	.global song001_5
-song001_5:	@ 0x0201AA6D
+	.global mus_vs_select_pak_mode_5
+mus_vs_select_pak_mode_5:	@ 0x0201AA6D
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 105
 	.byte	VOL	, v082
@@ -594,7 +594,7 @@ song001_5:	@ 0x0201AA6D
 	.byte	W20
 	.byte		EOT	
 	.byte	W28
-song001_5_1:
+mus_vs_select_pak_mode_5_1:
 	.byte		N36	, As2, v127
 	.byte	W40
 	.byte		TIE	, Gs2, v116
@@ -679,13 +679,13 @@ song001_5_1:
 	.byte		EOT	
 	.byte	W01
 	.byte	GOTO	
-		.word	song001_5_1
+		.word	mus_vs_select_pak_mode_5_1
 	.byte	FINE
 
 	@********************** Track  6 **********************@
 
-	.global song001_6
-song001_6:	@ 0x0201AAF8
+	.global mus_vs_select_pak_mode_6
+mus_vs_select_pak_mode_6:	@ 0x0201AAF8
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 97
 	.byte	VOL	, v062
@@ -709,7 +709,7 @@ song001_6:	@ 0x0201AAF8
 	.byte	W20
 	.byte		EOT	
 	.byte	W28
-song001_6_1:
+mus_vs_select_pak_mode_6_1:
 	.byte		N36	, Gn4, v127
 	.byte	W40
 	.byte		TIE	, Fn4, v116
@@ -815,19 +815,19 @@ song001_6_1:
 	.byte	W96
 	.byte	W48
 	.byte	GOTO	
-		.word	song001_6_1
+		.word	mus_vs_select_pak_mode_6_1
 	.byte	FINE
 
 	@********************** Track  7 **********************@
 
-	.global song001_7
-song001_7:	@ 0x0201ABC4
+	.global mus_vs_select_pak_mode_7
+mus_vs_select_pak_mode_7:	@ 0x0201ABC4
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 11
 	.byte	VOL	, v074
 	.byte	BENDR	, 12
 	.byte	W96
-song001_7_1:
+mus_vs_select_pak_mode_7_1:
 	.byte		N08	, Ds2, v028
 	.byte	W08
 	.byte			Gn2, v032
@@ -853,7 +853,7 @@ song001_7_1:
 	.byte			Gn4, v084
 	.byte	W08
 	.byte	PEND
-song001_7_5:
+mus_vs_select_pak_mode_7_5:
 	.byte		N08	, As4, v088
 	.byte	W08
 	.byte			Gn4, v080
@@ -867,7 +867,7 @@ song001_7_5:
 	.byte			As3, v064
 	.byte	W08
 	.byte	PEND
-song001_7_6:
+mus_vs_select_pak_mode_7_6:
 	.byte		N08	, Ds4, v060
 	.byte	W08
 	.byte			As3, v056
@@ -880,7 +880,7 @@ song001_7_6:
 	.byte	W08
 	.byte			Gn2, v036
 	.byte	W08
-song001_7_2:
+mus_vs_select_pak_mode_7_2:
 	.byte		N08	, Cs2, v028
 	.byte	W08
 	.byte			Fn2, v032
@@ -906,7 +906,7 @@ song001_7_2:
 	.byte			Fn4, v084
 	.byte	W08
 	.byte	PEND
-song001_7_3:
+mus_vs_select_pak_mode_7_3:
 	.byte		N08	, Gs4, v088
 	.byte	W08
 	.byte			Fn4, v080
@@ -933,8 +933,8 @@ song001_7_3:
 	.byte	W08
 	.byte	PEND
 	.byte	PATT	
-		.word	song001_7_1
-song001_7_4:
+		.word	mus_vs_select_pak_mode_7_1
+mus_vs_select_pak_mode_7_4:
 	.byte		N08	, As4, v088
 	.byte	W08
 	.byte			Gn4, v080
@@ -961,25 +961,25 @@ song001_7_4:
 	.byte	W08
 	.byte	PEND
 	.byte	PATT	
-		.word	song001_7_2
+		.word	mus_vs_select_pak_mode_7_2
 	.byte	PATT	
-		.word	song001_7_3
+		.word	mus_vs_select_pak_mode_7_3
 	.byte	PATT	
-		.word	song001_7_1
+		.word	mus_vs_select_pak_mode_7_1
 	.byte	PATT	
-		.word	song001_7_4
+		.word	mus_vs_select_pak_mode_7_4
 	.byte	PATT	
-		.word	song001_7_2
+		.word	mus_vs_select_pak_mode_7_2
 	.byte	PATT	
-		.word	song001_7_3
+		.word	mus_vs_select_pak_mode_7_3
 	.byte	PATT	
-		.word	song001_7_1
+		.word	mus_vs_select_pak_mode_7_1
 	.byte	PATT	
-		.word	song001_7_4
+		.word	mus_vs_select_pak_mode_7_4
 	.byte	PATT	
-		.word	song001_7_2
+		.word	mus_vs_select_pak_mode_7_2
 	.byte	PATT	
-		.word	song001_7_3
+		.word	mus_vs_select_pak_mode_7_3
 	.byte		N06	, As2, v092
 	.byte	W06
 	.byte			Cs3, v084
@@ -1109,11 +1109,11 @@ song001_7_4:
 	.byte			Cs3, v096
 	.byte	W06
 	.byte	PATT	
-		.word	song001_7_1
+		.word	mus_vs_select_pak_mode_7_1
 	.byte	PATT	
-		.word	song001_7_5
+		.word	mus_vs_select_pak_mode_7_5
 	.byte	GOTO	
-		.word	song001_7_6
+		.word	mus_vs_select_pak_mode_7_6
 	.byte		N08	, Ds4, v060
 	.byte	W08
 	.byte			As3, v056
@@ -1129,8 +1129,8 @@ song001_7_4:
 	.byte	FINE
 
 	.align 2
-	.global song001
-song001:	@ 0x0201AD9C
+	.global mus_vs_select_pak_mode
+mus_vs_select_pak_mode:	@ 0x0201AD9C
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -1138,10 +1138,10 @@ song001:	@ 0x0201AD9C
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song001_1		@ track
-	.word	song001_2		@ track
-	.word	song001_3		@ track
-	.word	song001_4		@ track
-	.word	song001_5		@ track
-	.word	song001_6		@ track
-	.word	song001_7		@ track
+	.word	mus_vs_select_pak_mode_1		@ track
+	.word	mus_vs_select_pak_mode_2		@ track
+	.word	mus_vs_select_pak_mode_3		@ track
+	.word	mus_vs_select_pak_mode_4		@ track
+	.word	mus_vs_select_pak_mode_5		@ track
+	.word	mus_vs_select_pak_mode_6		@ track
+	.word	mus_vs_select_pak_mode_7		@ track

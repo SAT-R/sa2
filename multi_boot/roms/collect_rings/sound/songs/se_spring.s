@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song020_1
-song020_1:	@ 0x0201C8D0
+	.global se_spring_1
+se_spring_1:	@ 0x0201C8D0
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 150
 	.byte	VOICE	, 12
@@ -49,8 +49,8 @@ song020_1:	@ 0x0201C8D0
 	.byte	FINE
 
 	.align 2
-	.global song020
-song020:	@ 0x0201C910
+	.global se_spring
+se_spring:	@ 0x0201C910
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -58,4 +58,4 @@ song020:	@ 0x0201C910
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song020_1		@ track
+	.word	se_spring_1		@ track

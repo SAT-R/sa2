@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song023_1
-song023_1:	@ 0x0201C9B0
+	.global se_216_1
+se_216_1:	@ 0x0201C9B0
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 37
 	.byte	VOICE	, 16
@@ -139,8 +139,8 @@ song023_1:	@ 0x0201C9B0
 	.byte	FINE
 
 	.align 2
-	.global song023
-song023:	@ 0x0201CA4C
+	.global se_216
+se_216:	@ 0x0201CA4C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -148,4 +148,4 @@ song023:	@ 0x0201CA4C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	song023_1		@ track
+	.word	se_216_1		@ track

@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song012_1
-song012_1:	@ 0x0201C63C
+	.global se_spin_dash_release_1
+se_spin_dash_release_1:	@ 0x0201C63C
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 60
 	.byte	VOICE	, 51
@@ -126,8 +126,8 @@ song012_1:	@ 0x0201C63C
 	.byte	FINE
 
 	.align 2
-	.global song012
-song012:	@ 0x0201C6FC
+	.global se_spin_dash_release
+se_spin_dash_release:	@ 0x0201C6FC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -135,4 +135,4 @@ song012:	@ 0x0201C6FC
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song012_1		@ track
+	.word	se_spin_dash_release_1		@ track

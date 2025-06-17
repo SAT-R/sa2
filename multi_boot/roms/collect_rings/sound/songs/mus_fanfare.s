@@ -5,8 +5,8 @@
 	@********************** Track  1 **********************@
 
 	.align 2
-	.global song004_1
-song004_1:	@ 0x0201C010
+	.global mus_fanfare_1
+mus_fanfare_1:	@ 0x0201C010
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 82
 	.byte	VOICE	, 127
@@ -37,8 +37,8 @@ song004_1:	@ 0x0201C010
 
 	@********************** Track  2 **********************@
 
-	.global song004_2
-song004_2:	@ 0x0201C045
+	.global mus_fanfare_2
+mus_fanfare_2:	@ 0x0201C045
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 44
 	.byte	PRIO	, 127
@@ -75,8 +75,8 @@ song004_2:	@ 0x0201C045
 
 	@********************** Track  3 **********************@
 
-	.global song004_3
-song004_3:	@ 0x0201C079
+	.global mus_fanfare_3
+mus_fanfare_3:	@ 0x0201C079
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 101
 	.byte	PRIO	, 127
@@ -96,8 +96,8 @@ song004_3:	@ 0x0201C079
 
 	@********************** Track  4 **********************@
 
-	.global song004_4
-song004_4:	@ 0x0201C093
+	.global mus_fanfare_4
+mus_fanfare_4:	@ 0x0201C093
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 102
 	.byte	PRIO	, 127
@@ -142,8 +142,8 @@ song004_4:	@ 0x0201C093
 
 	@********************** Track  5 **********************@
 
-	.global song004_5
-song004_5:	@ 0x0201C0D7
+	.global mus_fanfare_5
+mus_fanfare_5:	@ 0x0201C0D7
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 95
 	.byte	PRIO	, 127
@@ -177,8 +177,8 @@ song004_5:	@ 0x0201C0D7
 
 	@********************** Track  6 **********************@
 
-	.global song004_6
-song004_6:	@ 0x0201C108
+	.global mus_fanfare_6
+mus_fanfare_6:	@ 0x0201C108
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 99
 	.byte	PRIO	, 127
@@ -216,8 +216,8 @@ song004_6:	@ 0x0201C108
 
 	@********************** Track  7 **********************@
 
-	.global song004_7
-song004_7:	@ 0x0201C13E
+	.global mus_fanfare_7
+mus_fanfare_7:	@ 0x0201C13E
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 101
 	.byte	PRIO	, 127
@@ -309,8 +309,8 @@ song004_7:	@ 0x0201C13E
 
 	@********************** Track  8 **********************@
 
-	.global song004_8
-song004_8:	@ 0x0201C1CF
+	.global mus_fanfare_8
+mus_fanfare_8:	@ 0x0201C1CF
 	.byte	KEYSH	, 0
 	.byte	VOICE	, 127
 	.byte	PRIO	, 120
@@ -350,8 +350,8 @@ song004_8:	@ 0x0201C1CF
 	.byte	FINE
 
 	.align 2
-	.global song004
-song004:	@ 0x0201C1FC
+	.global mus_fanfare
+mus_fanfare:	@ 0x0201C1FC
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	255		@ priority
@@ -359,11 +359,11 @@ song004:	@ 0x0201C1FC
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	song004_1		@ track
-	.word	song004_2		@ track
-	.word	song004_3		@ track
-	.word	song004_4		@ track
-	.word	song004_5		@ track
-	.word	song004_6		@ track
-	.word	song004_7		@ track
-	.word	song004_8		@ track
+	.word	mus_fanfare_1		@ track
+	.word	mus_fanfare_2		@ track
+	.word	mus_fanfare_3		@ track
+	.word	mus_fanfare_4		@ track
+	.word	mus_fanfare_5		@ track
+	.word	mus_fanfare_6		@ track
+	.word	mus_fanfare_7		@ track
+	.word	mus_fanfare_8		@ track
