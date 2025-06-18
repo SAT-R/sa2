@@ -48,7 +48,6 @@ SECTIONS {
         build/collect_rings/src/sa2/game/sa1_sa2_shared/collision.o(.text);
         build/collect_rings/src/sa2/game/mystery_item_box.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/rings_manager.o(.text);
-        build/collect_rings/asm/rings_manager.o(.text);
         build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/indicators.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.text);

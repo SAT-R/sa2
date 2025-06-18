@@ -255,8 +255,8 @@ compare: $(ROM)
 	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
-	$(RM) -r $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR) $(WAVE_SAMPLES_SUBDIR)
-	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -iname 'graphics/*.pal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+	$(RM) -r $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR) $(WAVE_SAMPLES_SUBDIR) graphics
+	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 	@$(MAKE) clean -C ../../../libagbsyscall
 
 tidy:

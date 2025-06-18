@@ -1,11 +1,8 @@
-.include "../../../asm/macros/function.inc"
-.include "../../../constants/gba_constants.inc"
+.include "asm/macros.inc"
+.include "constants/constants.inc"
 
 .syntax unified
-.arm
-
-	thumb_func_start Task_RingsMgrMain
-Task_RingsMgrMain: @ 0x02007DE8
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -847,3 +844,5 @@ _02008430: .4byte 0x040000D4
 _02008434: .4byte 0x80000003
 _02008438: .4byte gCamera
 _0200843C: .4byte 0x000001FF
+
+.syntax divided
