@@ -29,7 +29,7 @@ SECTIONS {
     . = 0x20000C0;
     ROM :
     ALIGN(4) {
-        build/collect_rings/asm/rom_header.o(.text);
+        build/collect_rings/src/sa2/rom_header.o(.text);
         build/collect_rings/src/sa2/crt0.o(.text);
         build/collect_rings/src/sa2/multi_sio_asm.o(.text);
         build/collect_rings/src/sa2/multi_sio.o(.text);

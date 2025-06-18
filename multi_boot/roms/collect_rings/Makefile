@@ -148,6 +148,7 @@ SA2_C_FILES := \
 	sa2/game/dummy_task.c
 
 SA2_C_ASM_FILES := \
+	sa2/rom_header.s \
 	sa2/lib/m4a/m4a0.s \
 	sa2/crt0.s \
 	sa2/multi_sio_asm.s
