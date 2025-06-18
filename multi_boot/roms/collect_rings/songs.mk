@@ -206,7 +206,7 @@ $(MID_SUBDIR)/se_grinding.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V100
     
 $(MID_SUBDIR)/se_brake.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P15 -V75
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
     
 $(MID_SUBDIR)/se_jump.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
@@ -218,7 +218,7 @@ $(MID_SUBDIR)/se_rings_lost.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V127
     
 $(MID_SUBDIR)/se_life_lost.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P40 -V127
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V127
     
 $(MID_SUBDIR)/se_tails_propeller_flying.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V127
@@ -284,7 +284,7 @@ $(MID_SUBDIR)/se_time_up.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V89
     
 $(MID_SUBDIR)/se_item_box_2.s: %.s: %.mid
-	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P50 -V127
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V127
     
 $(MID_SUBDIR)/se_151.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V100
