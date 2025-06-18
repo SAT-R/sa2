@@ -90,6 +90,9 @@ SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 SOUND_ASM_SUBDIR = sound
 SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
 
+SAMPLE_SUBDIR = sound/direct_sound_samples
+WAVE_SAMPLES_SUBDIR = sound/programmable_wave_samples
+
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
@@ -252,7 +255,7 @@ compare: $(ROM)
 	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
-	$(RM) -r $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)
+	$(RM) -r $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR) $(WAVE_SAMPLES_SUBDIR)
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -iname 'graphics/*.pal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 	@$(MAKE) clean -C ../../../libagbsyscall
 
@@ -291,6 +294,10 @@ $(C_BUILDDIR)/sa2/%.s: ../../../src/%.s
 	cp $< $@
 
 $(MID_SUBDIR)/%.mid: ../../../sound/songs/midi/%.mid
+	$(shell mkdir -p $(shell dirname '$@'))
+	cp $< $@
+
+$(WAVE_SAMPLES_SUBDIR)/%.pcm: ../../../$(WAVE_SAMPLES_SUBDIR)/%.pcm
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
