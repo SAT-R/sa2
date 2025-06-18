@@ -144,8 +144,8 @@ song024_1:	@ 0x0201CA58
 	.byte	FINE
 
 	.align 2
-	.global song024
-song024:	@ 0x0201CB04
+	.global se_springy_spring
+se_springy_spring:	@ 0x0201CB04
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority

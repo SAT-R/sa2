@@ -895,13 +895,13 @@ void StageInit_CollectRings(void)
 #ifndef COLLECT_RINGS_ROM
     StageInit_SetMusic_inline(gCurrentLevel);
 #else
-    m4aSongNumStart(2);
+    m4aSongNumStart(MUS_VS_2);
 #endif
 }
 
 #if COLLECT_RINGS_ROM
 // ??
-void StageInit_CollectRingsRom(void) { m4aSongNumStart(2); }
+void StageInit_CollectRingsRom(void) { m4aSongNumStart(MUS_VS_2); }
 #endif
 
 #ifndef COLLECT_RINGS_ROM

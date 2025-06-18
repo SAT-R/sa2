@@ -157,11 +157,14 @@ SA2_MID_FILES := \
 	sa2/se_spin_dash_release.mid \
 	sa2/se_life_lost.mid \
 	sa2/se_item_box_2.mid \
-	# sa2/se_spring.mid \
-	# sa2/se_spikes.mid \
-	# sa2/se_216.mid \
-	# sa2/se_276.mid \
-	# sa2/se_grinding.mid
+	sa2/se_spikes.mid \
+	sa2/se_276.mid \
+	sa2/se_grinding.mid \
+	sa2/se_time_up.mid \
+	sa2/se_alarm_1.mid \
+	sa2/mus_vs_2.mid \
+	sa2/mus_vs_3.mid \
+	sa2/se_select.mid \
 
 SA2_SONG_FILES := 
 

@@ -59,8 +59,15 @@
 #define MUS_SPECIAL_STAGE_RESULT      55
 #define MUS_CHAOS_EMERALD             56
 #define MUS_SPECIAL_STAGE_RESULT_LOSE 57
-#define MUS_VS_2                      58
-#define MUS_VS_3                      59
+
+#ifndef COLLECT_RINGS_ROM
+#define MUS_VS_2 58
+#define MUS_VS_3 59
+#else
+#define MUS_VS_2 2
+#define MUS_VS_3 5
+#endif
+
 // 60
 #define MUS_CONNECTION_PENDING 61
 // 62
@@ -161,7 +168,12 @@
 #define SE_146                       146
 #define SE_SPIN                      147
 #define SE_148                       148
-#define SE_TIME_UP                   149
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_TIME_UP 149
+#else
+#define SE_TIME_UP 18
+#endif
 
 #ifndef COLLECT_RINGS_ROM
 #define SE_ITEM_BOX_2 150
@@ -188,18 +200,24 @@
 #define SE_WATERFALL_SURFACE_HIT 156
 #define SE_157                   157
 #define SE_AIR_BUBBLE            158
-#define SE_ALARM_1               159
-#define SE_ALARM_2               160
-#define SE_ALARM_3               161
-#define SE_ALARM_4               162
-#define SE_ALARM_5               163
-#define SE_ALARM_6               164
-#define SE_ALARM_7               165
-#define SE_ALARM_8               166
-#define SE_ALARM_9               167
-#define SE_ALARM_10              168
-#define SE_SPRINGY_POLE          169
-#define SE_SPRINGY_SPRING        170
+
+#ifndef COLLECT_RINGS_ROM
+#define SE_ALARM_1 159
+#else
+#define SE_ALARM_1 22
+#endif
+
+#define SE_ALARM_2        160
+#define SE_ALARM_3        161
+#define SE_ALARM_4        162
+#define SE_ALARM_5        163
+#define SE_ALARM_6        164
+#define SE_ALARM_7        165
+#define SE_ALARM_8        166
+#define SE_ALARM_9        167
+#define SE_ALARM_10       168
+#define SE_SPRINGY_POLE   169
+#define SE_SPRINGY_SPRING 170
 
 /* 171 - 200: Dummies */
 
