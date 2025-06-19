@@ -322,7 +322,7 @@ void Task_StageUIMain(void)
 #endif
         {
             oam->all.attr0 = (0x4000 | 0);
-            oam->all.attr1 = (0xC000 | (DISPLAY_WIDTH * 2) + 29);
+            oam->all.attr1 = (0xC000 | ((DISPLAY_WIDTH * 2) + 29));
             oam->all.attr2 = ui->unk2D6;
         }
 
