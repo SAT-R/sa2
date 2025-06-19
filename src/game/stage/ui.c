@@ -272,7 +272,7 @@ void Task_StageUIMain(void)
                 if (oam != (OamData *)iwram_end)
 #endif
                 {
-                    oam->all.attr0 = 0x800E;
+                    oam->all.attr0 = (0x8000 | 14);
                     oam->all.attr1 = i * 8 + 28;
                     oam->all.attr2 = ui->unk2D8[digit];
                 }
