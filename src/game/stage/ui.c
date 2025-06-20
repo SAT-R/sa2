@@ -94,10 +94,10 @@ typedef struct {
     /* 0x2D0 */ u16 ringCurrentFrame;
 
     // Sprite Tile Data (used for OamData.attr2)
-    /* 0x2D2 */ u16 ringData;
-    /* 0x2D4 */ u16 playerIconData;
-    /* 0x2D6 */ u16 ringContainerData;
-    /* 0x2D8 */ u16 digitsData[12];
+    /* 0x2D2 */ u16 ringTileData;
+    /* 0x2D4 */ u16 playerIconTileData;
+    /* 0x2D6 */ u16 ringContainerTileData;
+    /* 0x2D8 */ u16 digitsTileData[12];
 } StageUI; /* size: 0x2F0 */
 
 void Task_StageUIMain(void);
@@ -126,7 +126,7 @@ struct Task *CreateStageUI(void)
             s->graphics.dest = ui->digits[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
         }
 
-        ui->digitsData[i] = (GET_TILE_NUM(s->graphics.dest) & ONE_CYCLE) | 0x6000;
+        ui->digitsTileData[i] = (GET_TILE_NUM(s->graphics.dest) & ONE_CYCLE) | 0x6000;
 
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
@@ -152,7 +152,7 @@ struct Task *CreateStageUI(void)
 
         s->graphics.dest = VramMalloc(sAnims1UpIcons[gSelectedCharacter][0]);
 
-        ui->playerIconData = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+        ui->playerIconTileData = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
         s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
         s->oamFlags = SPRITE_OAM_ORDER(4);
@@ -169,7 +169,7 @@ struct Task *CreateStageUI(void)
         if (IS_MULTI_PLAYER) {
             u16 id = (SIO_MULTI_CNT)->id;
             s->palId = id;
-            ui->playerIconData |= (id << 12);
+            ui->playerIconTileData |= (id << 12);
         }
         UpdateSpriteAnimation(s);
     }
@@ -178,8 +178,8 @@ struct Task *CreateStageUI(void)
     s->x = 0;
     s->y = 1;
     s->graphics.dest = VramMalloc(32);
-    ui->ringContainerData = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
-    ui->ringContainerData |= 0x6000;
+    ui->ringContainerTileData = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+    ui->ringContainerTileData |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
     s->variant = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
@@ -197,8 +197,8 @@ struct Task *CreateStageUI(void)
     ui->ring.x = 7;
     s->y = 9;
     s->graphics.dest = VramMalloc(4);
-    ui->ringData = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
-    ui->ringData |= 0x6000;
+    ui->ringTileData = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
+    ui->ringTileData |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 0;
     s->oamFlags = SPRITE_OAM_ORDER(0);
@@ -249,7 +249,7 @@ void Task_StageUIMain(void)
                     {
                         oam->all.attr0 = 31;
                         oam->all.attr1 = i * 8 + 4;
-                        oam->all.attr2 = ui->digitsData[UI_ASCII_SP_RING];
+                        oam->all.attr2 = ui->digitsTileData[UI_ASCII_SP_RING];
                     }
                 }
             }
@@ -276,7 +276,7 @@ void Task_StageUIMain(void)
                 {
                     oam->all.attr0 = (0x8000 | 14);
                     oam->all.attr1 = i * 8 + 28;
-                    oam->all.attr2 = ui->digitsData[digit];
+                    oam->all.attr2 = ui->digitsTileData[digit];
                 }
 
                 score -= digit * m;
@@ -291,7 +291,7 @@ void Task_StageUIMain(void)
             {
                 oam->all.attr0 = DISPLAY_HEIGHT - 18;
                 oam->all.attr1 = (0x4000 | 6);
-                oam->all.attr2 = ui->playerIconData;
+                oam->all.attr2 = ui->playerIconTileData;
             }
 
             if (gNumLives > 0)
@@ -311,7 +311,7 @@ void Task_StageUIMain(void)
             {
                 oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
                 oam->all.attr1 = 30;
-                oam->all.attr2 = ui->digitsData[i];
+                oam->all.attr2 = ui->digitsTileData[i];
             }
         }
         // _0802CE6A
@@ -325,7 +325,7 @@ void Task_StageUIMain(void)
         {
             oam->all.attr0 = (0x4000 | 0);
             oam->all.attr1 = (0xC000 | -3);
-            oam->all.attr2 = ui->ringContainerData;
+            oam->all.attr2 = ui->ringContainerTileData;
         }
 
         /* Ring */
@@ -343,7 +343,7 @@ void Task_StageUIMain(void)
         {
             oam->all.attr0 = 8;
             oam->all.attr1 = (0x4000 | 7);
-            oam->all.attr2 = ui->ringData;
+            oam->all.attr2 = ui->ringTileData;
         }
 
         if (gRingCount > 999) {
@@ -376,7 +376,7 @@ void Task_StageUIMain(void)
                 {
                     oam->all.attr0 = (0x8000 | 0);
                     oam->all.attr1 = (28 + 0 * 8);
-                    oam->all.attr2 = (ui->digitsData[hundreds] | sl);
+                    oam->all.attr2 = (ui->digitsTileData[hundreds] | sl);
                 }
                 processed = hundreds * 100;
             }
@@ -392,7 +392,7 @@ void Task_StageUIMain(void)
                 {
                     oam->all.attr0 = (0x8000 | 0);
                     oam->all.attr1 = (28 + 1 * 8);
-                    oam->all.attr2 = (ui->digitsData[tens] | sl);
+                    oam->all.attr2 = (ui->digitsTileData[tens] | sl);
                 }
 
                 processed2 = processed + tens * 10;
@@ -409,7 +409,7 @@ void Task_StageUIMain(void)
                 {
                     oam->all.attr0 = (0x8000 | 0);
                     oam->all.attr1 = (28 + 2 * 8);
-                    oam->all.attr2 = (ui->digitsData[ones] | sl);
+                    oam->all.attr2 = (ui->digitsTileData[ones] | sl);
                 }
             }
         }
@@ -434,7 +434,7 @@ void Task_StageUIMain(void)
             {
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
-                oam->all.attr2 = (ui->digitsData[UI_ASCII_COLON] | sl);
+                oam->all.attr2 = (ui->digitsTileData[UI_ASCII_COLON] | sl);
             }
 
             oam = OamMalloc(3);
@@ -445,7 +445,7 @@ void Task_StageUIMain(void)
             {
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
-                oam->all.attr2 = (ui->digitsData[UI_ASCII_COLON] | sl);
+                oam->all.attr2 = (ui->digitsTileData[UI_ASCII_COLON] | sl);
             }
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
