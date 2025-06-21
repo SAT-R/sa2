@@ -36,8 +36,7 @@ const u16 sAnims1UpIcons[][3]
         [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
         [CHARACTER_AMY] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
 
-// Filename is a work in progress but it is getting used as the palette for the 1Up icons in the Stage UI.
-const u16 sPalette1UpIcons[] = INCBIN_U16("graphics/80D6ACE.gbapal");
+const u16 sPalette1UpIcons[] = INCBIN_U16("graphics/pal_1up.gbapal");
 
 const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
@@ -253,7 +252,7 @@ void Task_StageUIMain(void)
                     }
                 }
             }
-            // _0802CD74
+
             if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= ZONE_TIME_TO_INT(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
                 m4aSongNumStart(SE_TIMER);
             }
@@ -314,7 +313,6 @@ void Task_StageUIMain(void)
                 oam->all.attr2 = ui->digitsTileData[i];
             }
         }
-        // _0802CE6A
 
         /* Ring-Container */
         oam = OamMalloc(4);
@@ -360,7 +358,6 @@ void Task_StageUIMain(void)
             sd->x = UI_POS_RING_COUNT_X + 2 * 8;
             DisplaySprite(sd);
         } else {
-            // _0802CF28
             u32 processed2;
             u16 processed;
             sl = (gRingCount == 0) && gStageTime & 0x10 ? 0x7000 : 0;
@@ -413,13 +410,11 @@ void Task_StageUIMain(void)
                 }
             }
         }
-        // _0802CFDC
 
         time = gCourseTime;
         time = (time <= MAX_COURSE_TIME - 1) ? gCourseTime : MAX_COURSE_TIME - 1;
 
         if (!(gStageFlags & STAGE_FLAG__TURN_OFF_TIMER)) {
-            // _0802CFF8
 
             u32 r1, r5;
             u32 tempTime, tempB;
