@@ -324,7 +324,7 @@ void Task_StageUIMain(void)
 #endif
         {
             oam->all.attr0 = (0x4000 | 0);
-            oam->all.attr1 = (0xC000 | ((1 << 9) - 3));
+            oam->all.attr1 = (0xC000 | ((u32)-3 & 0x1FF));
             oam->all.attr2 = ui->ringContainerTileData;
         }
 
