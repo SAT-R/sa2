@@ -36,8 +36,8 @@ const u16 sAnims1UpIcons[][3]
         [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
         [CHARACTER_AMY] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
 
-// This palette might be used for the 1-Up icons
-const u16 sPalette_080D6ACE[] = INCBIN_U16("graphics/80D6ACE.gbapal");
+// Filename is a work in progress but it is getting used as the palette for the 1Up icons in the Stage UI.
+const u16 sPalette1UpIcons[] = INCBIN_U16("graphics/80D6ACE.gbapal");
 
 const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
@@ -194,7 +194,7 @@ struct Task *CreateStageUI(void)
     UpdateSpriteAnimation(s);
 
     s = &ui->ring;
-    ui->ring.x = 7;
+    s->x = 7;
     s->y = 9;
     s->graphics.dest = VramMalloc(4);
     ui->ringTileData = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
@@ -214,7 +214,7 @@ struct Task *CreateStageUI(void)
     ui->ringCurrentFrame = 0;
 
     for (i = 0; i < 16; i++) {
-        gObjPalette[0x70 + i] = sPalette_080D6ACE[i];
+        gObjPalette[0x70 + i] = sPalette1UpIcons[i];
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
