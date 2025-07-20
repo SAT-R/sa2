@@ -190,6 +190,9 @@ $(MID_SUBDIR)/se_menu_cursor_move.s: %.s: %.mid
 $(MID_SUBDIR)/se_spin_attack.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V110
     
+$(MID_SUBDIR)/se_spin_attack__collect_rings.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V110
+    
 $(MID_SUBDIR)/se_spin_dash_release.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
     
@@ -207,14 +210,23 @@ $(MID_SUBDIR)/se_grinding.s: %.s: %.mid
     
 $(MID_SUBDIR)/se_brake.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P15 -V75
-    
+
+$(MID_SUBDIR)/se_brake__collect_rings.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P15 -V75
+
 $(MID_SUBDIR)/se_jump.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
+
+$(MID_SUBDIR)/se_jump__collect_rings.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V75
     
 $(MID_SUBDIR)/se_ring_copy.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V100
     
 $(MID_SUBDIR)/se_rings_lost.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V127
+    
+$(MID_SUBDIR)/se_rings_lost__collect_rings.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V127
     
 $(MID_SUBDIR)/se_life_lost.s: %.s: %.mid
@@ -295,6 +307,9 @@ $(MID_SUBDIR)/se_checkpoint.s: %.s: %.mid
 $(MID_SUBDIR)/se_spring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V120
     
+$(MID_SUBDIR)/se_spring__collect_rings.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V120
+    
 $(MID_SUBDIR)/se_spikes.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P20 -V90
     
@@ -346,6 +361,9 @@ $(MID_SUBDIR)/se_springy_pole.s: %.s: %.mid
 $(MID_SUBDIR)/se_springy_spring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V88
     
+$(MID_SUBDIR)/se_springy_spring__collect_rings.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V88
+    
 $(MID_SUBDIR)/voice__announcer__sonic_advance_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V127
     
@@ -390,7 +408,10 @@ $(MID_SUBDIR)/se_map_move_end.s: %.s: %.mid
     
 $(MID_SUBDIR)/se_216.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V98
-    
+
+$(MID_SUBDIR)/se_216__collect_rings.s: %.s: %.mid
+	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V98
+
 $(MID_SUBDIR)/se_217.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G5 -P20 -V98
     

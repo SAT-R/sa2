@@ -169,6 +169,13 @@ SA2_MID_FILES := \
 	sa2/mus_vs_2.mid \
 	sa2/mus_vs_3.mid \
 	sa2/se_select.mid \
+	sa2/se_216__collect_rings.mid \
+	sa2/se_brake__collect_rings.mid \
+	sa2/se_jump__collect_rings.mid \
+	sa2/se_rings_lost__collect_rings.mid \
+	sa2/se_spin_attack__collect_rings.mid \
+	sa2/se_spring__collect_rings.mid \
+	sa2/se_springy_spring__collect_rings.mid \
 
 SA2_SONG_FILES := 
 

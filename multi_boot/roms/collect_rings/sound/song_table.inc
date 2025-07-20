@@ -13,20 +13,20 @@ gSongTable:	@ 0x02016D8C
 	song mus_dummy, 0, 0
 	song mus_dummy, 0, 0
 	song se_select, 2, 2
-	song se_spin_attack, 2, 2
+	song se_spin_attack__collect_rings, 2, 2
 	song se_spin_dash_release, 2, 2
-	song se_brake, 2, 2
-	song se_jump, 2, 2
+	song se_brake__collect_rings, 2, 2
+	song se_jump__collect_rings, 2, 2
 	song se_ring_copy, 3, 3
-	song se_rings_lost, 3, 3
+	song se_rings_lost__collect_rings, 3, 3
 	song se_life_lost, 2, 2
 	song se_time_up, 2, 2
 	song se_item_box_2, 2, 2
-	song se_spring, 2, 2
+	song se_spring__collect_rings, 2, 2
 	song se_spikes, 2, 2
 	song se_alarm_1, 2, 2
-	song se_216, 2, 2
-	song se_springy_spring, 2, 2
+	song se_216__collect_rings, 2, 2
+	song se_springy_spring__collect_rings, 2, 2
 	song se_276, 2, 2
 	song se_grinding, 2, 2
 
