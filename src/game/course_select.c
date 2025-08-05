@@ -372,7 +372,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->targetTilesX = 0x3C;
+    background->targetTilesX = 0x40;
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
