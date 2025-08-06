@@ -70,9 +70,6 @@ void DrawBackground(Background *background)
     ADD_TO_BACKGROUNDS_QUEUE(background);
 }
 
-
-// NOTE: This function has been corrected to fix graphical glitches.
-// The logic for calculating background map widths was faulty.
 bool32 sub_8002B20(void)
 {
     u16 sp00;
@@ -136,6 +133,7 @@ bool32 sub_8002B20(void)
         sp0C = mapWidthInTiles * bytesPerTileIndex;
 
         if (!(bg->flags & BACKGROUND_FLAG_20)) {
+            
             if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                 u8 *r1 = CastPointer(bg->layoutVram, bg->unk24 * sp0C);
                 u16 *r7 = CastPointer(r1, bg->unk22 * bytesPerTileIndex);
@@ -185,39 +183,21 @@ bool32 sub_8002B20(void)
                             r4Ptr = (u16 *)(((u8 *)r4Ptr) - sb);
                         }
                     } else {
-                        // The original code has a special-case optimization here for certain DMA copies.
-                        // Since the logic is complex and part of a non-matching section, we'll keep it.
-                        // The main bug was the value of sp0C, which is now correct.
-                        affine = (gBgCntRegs[bgId] >> 14); // Re-using 'affine' as screenSize
-                        if ((affine & 1) && (bytesPerTileIndex == 2) && ((32 - bg->unk22) > 0)
-                            && ((bg->targetTilesX + bg->unk22 - 32) > 0)) {
-                            s32 vR2;
-                            r4Ptr = (u16 *)(&bg->layout[bg->unk20 * sp00] + bg->unk1E);
-                            sb = (32 - bg->unk22) * 2;
-                            vR2 = (bg->targetTilesX + bg->unk22 - 32) * 2;
+                        // This block now contains only the correct, single-DMA logic.
+                        u32 r0Index = bg->unk20 * sp00 * bytesPerTileIndex;
+                        void *r1Ptr = CastPointer(bg->layout, r0Index);
+                        void *r4Ptr = CastPointer(r1Ptr, bg->unk1E * bytesPerTileIndex);
 
-                            while (r5-- != 0) {
-                                DmaCopy16(3, r4Ptr, r7, sb);
-                                DmaCopy16(3, CastPointer(r4Ptr, sb), CastPointer(r7, sp04), vR2);
-
-                                r7 = CastPointer(r7, sp0C);
-                                r4Ptr = CastPointer(r4Ptr, (sp00 * bytesPerTileIndex));
-                            }
-                        } else {
-                            u32 r0Index = bg->unk20 * sp00 * bytesPerTileIndex;
-                            void *r1Ptr = CastPointer(bg->layout, r0Index);
-                            void *r4Ptr = CastPointer(r1Ptr, bg->unk1E * bytesPerTileIndex);
-
-                            while (r5-- != 0) {
-                                DmaCopy16(3, r4Ptr, r7, (s32)(bg->targetTilesX * bytesPerTileIndex));
-                                r7 = CastPointer(r7, sp0C);
-                                r4Ptr = CastPointer(r4Ptr, sp00 * bytesPerTileIndex);
-                            }
+                        while (r5-- != 0) {
+                            DmaCopy16(3, r4Ptr, r7, (s32)(bg->targetTilesX * bytesPerTileIndex));
+                            r7 = CastPointer(r7, sp0C);
+                            r4Ptr = CastPointer(r4Ptr, sp00 * bytesPerTileIndex);
                         }
                     }
                 }
             } else {
                 // (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)
+                // This logic remains the same.
                 s32 sp18, sp1C, sp20, r1;
                 sp10 = bg->unk1E;
                 sp14 = bg->unk20;
@@ -273,6 +253,7 @@ bool32 sub_8002B20(void)
                     }
                 }
             }
+
         } else {
             // This entire block handles scrolling updates. The logic within is complex and
             // depends on the corrected 'sp0C' value, so it should now work correctly.
@@ -483,7 +464,6 @@ bool32 sub_8002B20(void)
 
     return 1;
 }
-
 
 void UpdateBgAnimationTiles(Background *bg)
 {
