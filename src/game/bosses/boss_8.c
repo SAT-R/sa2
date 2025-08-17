@@ -1548,27 +1548,18 @@ static void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-// (81.31%) https://decomp.me/scratch/432q4
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
+void sub_804BC44(SuperEggRoboZ *boss, u8 arm)
 {
     ExplosionPartsInfo info;
-    s32 speed0;
     s32 x, y;
     u8 i, j;
-#ifndef NON_MATCHING
-    register u16 *r3 asm("r3");
-#else
-    u16 *r3;
-#endif
 
     boss->qUnk18[arm].x -= ((COS(boss->rotation2[arm]) * 31) >> 10);
     boss->qUnk18[arm].y -= ((SIN(boss->rotation2[arm]) * 31) >> 10);
 
-    r3 = &boss->unk30[arm];
-    boss->rotation[arm] = ((*r3 * 4 + boss->rotation[arm]) & ONE_CYCLE);
+    boss->rotation[arm] = (boss->rotation[arm] + boss->unk30[arm] * 4) & ONE_CYCLE;
 
-    if (--boss->rotation2[arm] == 0) {
-        // _0804BCD6
+    if (--boss->unk30[arm] == 0) {
         x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
         y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
@@ -1577,25 +1568,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", void sub_804BC4
 
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                s32 index;
-
-                index = (boss->rotation[arm] - (SIN_PERIOD / 4));
-                info.spawnX = I(x) - ((COS(index & ONE_CYCLE) * (i - 1)) >> 11);
-                index = (boss->rotation[arm] - (SIN_PERIOD / 4));
-                info.spawnY = I(y) - ((SIN(index & ONE_CYCLE) * (i - 1)) >> 11);
-
+                info.spawnX = I(x) - ((COS((boss->rotation2[arm] - (SIN_PERIOD / 4)) & ONE_CYCLE) * (i - 1)) >> 11);
+                info.spawnY = I(y) - ((SIN((boss->rotation2[arm] - (SIN_PERIOD / 4)) & ONE_CYCLE) * (i - 1)) >> 11);
                 info.velocity = 0;
-                info.rotation = (boss->rotation[arm] + 576 - boss->rotation2[arm]) & ONE_CYCLE;
-                speed0 = (Q(2) + (j * Q(0.5)));
-
-                if ((1 - i) >= 0) {
-                    s32 speedI = ((1 - i) * 3);
-                    info.speed = speed0 - (speedI * Q(0.125));
-                } else {
-                    s32 speedI = ((i - 1) * 3);
-                    info.speed = speed0 - (speedI * Q(0.125));
-                }
-
+                info.rotation = (boss->rotation2[arm] + 576 - ((i * 2) + i + j) * (32)) & ONE_CYCLE;
+                info.speed = (Q(2) + (j * Q(0.5))) - ((ABS(1 - i) * 3) * Q(0.125));
                 info.vram = boss->tilesCloud;
                 info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
                 info.variant = 0;
@@ -1605,12 +1582,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", void sub_804BC4
             }
         }
 
-        boss->rotation2[arm] = boss->rotation[arm];
+        boss->rotation[arm] = boss->rotation2[arm];
         boss->unk3C[arm] = 0;
         boss->unk30[arm] = 300;
     }
 }
-END_NONMATCH
 
 static void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
 {
