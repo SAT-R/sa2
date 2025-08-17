@@ -1689,55 +1689,53 @@ static void sub_804C080(SuperEggRoboZ *boss)
     }
 }
 
-// (87.37%) https://decomp.me/scratch/98Mjg
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc", void sub_804C240(SuperEggRoboZ *boss, u8 arm))
+void sub_804C240(SuperEggRoboZ *boss, u8 arm)
 {
     ExplosionPartsInfo info;
-    s32 x, y;
-    s32 index;
+    s32 chance;
 
     if (boss->unk42[arm] != 0) {
         return;
     }
 
-    y = I(boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1]);
-
-    if (y > 300) {
+    if (I(boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1]) > 300) {
         boss->unk42[arm] = 1;
         return;
     }
 
-    boss->rotation[arm] = (boss->rotation[arm] + 800);
-    boss->rotation[arm] &= ONE_CYCLE;
+    chance = 0x1F;
+    boss->rotation[arm] = (boss->rotation[arm] + 800) & ONE_CYCLE;
     boss->qUnk34[arm][1] += Q(0.125);
     boss->qUnk18[arm].x += boss->qUnk34[arm][0];
     boss->qUnk18[arm].y += boss->qUnk34[arm][1];
 
     if ((gStageTime & 0x3) == 0) {
-        s32 rand;
-        x = boss->qPos.x;
-        x += gUnknown_080D8888[arm][0];
-        x += boss->qUnk18[arm].x;
-        y = boss->qPos.y;
-        y += boss->qUnk18[arm].y;
-        y += gUnknown_080D8888[arm][1];
+        s32 x, y;
+#ifndef NON_MATCHING
+        s32 one = 1;
+#endif
+
+        x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+        y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
         info.spawnX = I(x);
         info.spawnY = I(y);
         info.velocity = 0;
         info.rotation = sub_8004418(-(boss->qUnk34[arm][1] >> 3), -(boss->qUnk34[arm][0] >> 3));
 
-        rand = PseudoRandom32();
-        index = (info.rotation + (rand & 0x1F));
-        info.rotation = (index - 0x10) & ONE_CYCLE;
+        info.rotation = ({ ((PseudoRandom32() & chance) + info.rotation) - 0x10; })
+#ifndef NON_MATCHING
+            & (SIN_PERIOD - one);
+#else
+            & ONE_CYCLE;
+#endif
         info.speed = SIN_24_8((gStageTime * 16) & ONE_CYCLE) + Q(3);
-        info.vram = (OBJ_VRAM0 + 0x12980);
+        info.vram = (OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
         info.unk4 = 0;
         CreateBossParticleStatic(&info, &boss->unkC);
     }
 }
-END_NONMATCH
 
 static void sub_804C3AC(SuperEggRoboZ *boss)
 {
