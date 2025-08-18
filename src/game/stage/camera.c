@@ -2038,7 +2038,7 @@ END_NONMATCH
 
 void Zone7BgUpdate_Outside(s32 x, s32 y)
 {
-    u16 *lineShiftX;
+    u16 *cursor;
     u8 frameCount;
     int_vcount i;
     u16 sp[32];
@@ -2051,7 +2051,7 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
     gHBlankCopyTarget = (void *)&REG_BG0HOFS;
     gHBlankCopySize = 2;
-    lineShiftX = (u16 *)gBgOffsetsHBlank;
+    cursor = (u16 *)gBgOffsetsHBlank;
 
     stageTime = gStageTime;
     frameCount = ((stageTime >> 3) & 0x1F);
@@ -2076,11 +2076,12 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
         u32 cosVal;
         u32 scrollSpeed = (Q(80.5) - 1);
 
+#if !WIDESCREEN_HACK
         for (i = 0; i < DISPLAY_HEIGHT / 2; i++) {
             sinVal = SIN_24_8(((gStageTime * 4) + i * 2) & ONE_CYCLE) >> 3;
             value = (COS_24_8(((i * scrollSpeed) >> 5) & ONE_CYCLE) >> 4) + sinVal;
             value = (value + sp[(i & 0x1F)]) & 0xFF;
-            *lineShiftX++ = value;
+            *cursor++ = value;
         }
 
         for (; i < DISPLAY_HEIGHT - 1; i++) {
@@ -2088,8 +2089,30 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
             cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
             value = cosVal + sinVal;
             value = (value + sp[(i & 0x1F)]) & 0xFF;
-            *lineShiftX++ = value;
+            *cursor++ = value;
         }
+#else
+        gHBlankCopySize = 2 * sizeof(u16);
+
+        for (i = 0; i < DISPLAY_HEIGHT; i++) {
+            s32 originalLine = (s32)(((float)i / (float)DISPLAY_HEIGHT) * 160.0f);
+
+            if (originalLine < 80) {
+                sinVal = SIN_24_8(((gStageTime * 4) + originalLine * 2) & ONE_CYCLE) >> 3;
+                value = (COS_24_8(((originalLine * scrollSpeed) >> 5) & ONE_CYCLE) >> 4) + sinVal;
+                value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
+                *cursor++ = value;
+                *cursor++ = originalLine - i;
+            } else if (originalLine < 160) {
+                sinVal = SIN_24_8(((gStageTime << 2) + originalLine * 2) & ONE_CYCLE) >> 3;
+                cosVal = (COS_24_8((((160 - originalLine) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
+                value = cosVal + sinVal;
+                value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
+                *cursor++ = value;
+                *cursor++ = originalLine - i;
+            }
+        }
+#endif
     }
 }
 
