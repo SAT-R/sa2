@@ -119,7 +119,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         bgId = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID);
         if (bgId >= 2 && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2)) > DISPCNT_MODE_0) {
             affine = (gBgCntRegs[bgId] >> 14);
-            sp0C = (16 << affine);
+            sp0C = (0x10 << affine);
             bytesPerTileIndex = 1;
         } else {
             // _08002BD8
@@ -138,7 +138,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 #endif
             affine = (gBgCntRegs[bgId] >> 14);
             if ((affine == 1) || (affine == 3)) {
-                // HACK: fixes the map
+                // HACK: fixes the course select map
 #if NON_MATCHING
                 sp0C = 64;
 #endif
