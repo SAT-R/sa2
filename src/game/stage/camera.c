@@ -1308,7 +1308,7 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
         }
 
         // Move the parallax clouds
-
+#if !WIDESCREEN_HACK
         for (i = 0; i < BG_CLOUD_START_Y; i++) {
             *cursor++ = 0;
         }
@@ -1347,6 +1347,46 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
         for (; i < BG_CLOUD_START_Y + 63; i++) {
             *cursor++ = val;
         }
+#else
+        // NOTE: Temporary solution to render the bottom of the background in a decent looking way
+        gHBlankCopySize = 4;
+
+        for (; i < DISPLAY_HEIGHT - 1; i++) {
+            if (i < BG_CLOUD_START_Y) {
+                *cursor++ = 0;
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 4) {
+                *cursor++ = Div(num, 8);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 8) {
+                *cursor++ = Div(num, 7);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 16) {
+                *cursor++ = Div(num, 6);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 24) {
+                *cursor++ = Div(num, 5);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 32) {
+                *cursor++ = Div(num, 4);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 48) {
+                *cursor++ = Div(num, 3);
+                *cursor++ = 0;
+            } else if (i < BG_CLOUD_START_Y + 63) {
+                *cursor++ = Div(num, 2);
+                *cursor++ = 0;
+            } else {
+                for (; i < DISPLAY_HEIGHT - 1; i++) {
+                    *cursor++ = 0;
+                    *cursor++ = (BG_CLOUD_START_Y + 65) - i;
+                }
+
+                break;
+            }
+        }
+
+#endif
     }
 }
 
