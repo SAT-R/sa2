@@ -92,12 +92,6 @@ endif
 endif
 endif
 
-ifeq ($(CREATE_PDB),1)
-    # If the user wants a PDB, the output needs to include debug info
-    # TODO: Is there a way to ECHO here?
-    DEBUG := 1
-endif
-
 # Debug
 ifeq ($(DEBUG), 1)
   BUILD_NAME := $(BUILD_NAME)_debug

@@ -334,9 +334,14 @@ static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = StageBgUpdate_Zone5ActBoss,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
-    // Zone 6
+// Zone 6
+#if PLATFORM_GBA
     [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdate_Zone6Acts12,
     [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdate_Zone6Acts12,
+#else
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdate_Zone6ActBoss,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdate_Zone6ActBoss,
+#endif
     [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageBgUpdate_Zone6ActBoss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
@@ -881,7 +886,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 
 // (88.05%) https://decomp.me/scratch/ekyaq
 // (91.40%) https://decomp.me/scratch/vapLV
-// (94.83%) https://decomp.me/scratch/Naixp (more accurate)
+// (95.71%) https://decomp.me/scratch/Naixp (more accurate)
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc", void StageBgUpdate_Zone2Acts12(s32 cameraX, s32 cameraY))
 {
     s16 something;
@@ -906,12 +911,25 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         }
         gBgScrollRegs[3][1] = camFracY;
     } else {
-        s32 unk5590_1;
+        s32 dt;
 
         camFracY = Div(cameraY, 0x10);
+
+        // Prevent wrapping of the background map at the bottom of the screen on high cameraY's
+#if !WIDESCREEN_HACK
         if (camFracY > 0x100) {
             camFracY = 0x100;
         }
+#else
+        {
+            // TODO: Use proper maths for max, depending on DISPLAY_HEIGHT instead of a hardcoded value
+            const u32 max = 153;
+
+            if (camFracY > max) {
+                camFracY = max;
+            }
+        }
+#endif
 
         camFracX = Div(cameraX, 0x69);
         if (camFracX > 0x100) {
@@ -923,7 +941,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         gHBlankCopySize = 4;
 
         cursor = gBgOffsetsHBlank;
-        unk5590_1 = gStageTime * 0x18;
+        dt = gStageTime * 0x18;
 
         // Sky and Clouds
         for (i = 0; i < DISPLAY_HEIGHT - 1; i++) {
@@ -942,10 +960,15 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         // Red Bottom
         something = (cameraX >> 3);
         for (j = 0; i < DISPLAY_HEIGHT - 1; i++, j++) {
-            x0 = CLAMP_SIN_PERIOD(x0 + 8);
-            *cursor++ = something + (SIN(x0) >> 13) + (COS(CLAMP_SIN_PERIOD((gStageTime * 2) + x0)) >> 11)
-                + (SIN(CLAMP_SIN_PERIOD(unk5590_1 + (i * 0x40))) >> 13);
-            *cursor++ = (j / 2) + camFracY + (SIN(x0) >> 12) + (COS((gStageTime + (i * 8)) & ONE_CYCLE) >> 10);
+            u16 cursorX, cursorY;
+
+            x0 += 8;
+            x0 = CLAMP_SIN_PERIOD(x0);
+            cursorX = camFracX + (SIN(x0) >> 13) + (COS(((gStageTime * 2) + x0) & 0x3FF) >> 11)
+                + (SIN(CLAMP_SIN_PERIOD(dt + (i * 0x40))) >> 13);
+            *cursor++ = cursorX;
+            cursorY = (j / 2) + camFracY + (SIN(x0) >> 12) + (COS(CLAMP_SIN_PERIOD(gStageTime + (i * 8))) >> 10);
+            *cursor++ = cursorY;
         };
     }
 }
@@ -1064,9 +1087,9 @@ void CreateStageBg_Zone3(void)
 
 // (85.02%) https://decomp.me/scratch/Esyzr
 #if 01
-NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc", void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc", void StageBgUpdate_Zone3Acts12(s32 cameraX, s32 cameraY))
 #else
-void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
+void StageBgUpdate_Zone3Acts12(s32 cameraX, s32 cameraY)
 #endif
 {
     s16 r6;
@@ -1079,23 +1102,30 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 #ifndef NON_MATCHING
     register s16 sl asm("sl") = 0;
     register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
-    register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
+    register s16 camFracY asm("r3") = (Div(cameraY, 60) << 16) >> 16;
 #else
     s16 sl = 0;
     u16 *bgBuffer = gBgOffsetsHBlank;
-    s16 r3 = (Div(b, 60) << 16) >> 16;
+    s16 camFracY = Div(cameraY, 60);
 #endif
 
-    gBgScrollRegs[0][1] = r3;
-    gBgScrollRegs[3][1] = r3;
+    // Prevent wrapping of the background map at the bottom of the screen on high cameraY's
+#if WIDESCREEN_HACK
+    if (camFracY > 256 - DISPLAY_HEIGHT) {
+        camFracY = 256 - DISPLAY_HEIGHT;
+    }
+#endif
+
+    gBgScrollRegs[0][1] = camFracY;
+    gBgScrollRegs[3][1] = camFracY;
 
     if (IS_SINGLE_PLAYER) {
         if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             if (sUnknown_03000408 == 0) {
-                sUnknown_03000408 = a;
+                sUnknown_03000408 = cameraX;
             }
             sUnknown_03000408 += I(gPlayer.qSpeedGround);
-            a = sUnknown_03000408;
+            cameraX = sUnknown_03000408;
         } else {
             sUnknown_03000408 = 0;
         }
@@ -1103,9 +1133,9 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
         i = 0;
 
         {
-            s32 r6 = r3;
+            s32 r6 = camFracY;
             cursor = (u8 *)gUnknown_080D5B20;
-            sp40 = r3;
+            sp40 = camFracY;
 
             while (r6 >= cursor[i * 3]) {
                 if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
@@ -1119,8 +1149,8 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
         //_0801CCA8:
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
-            sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);
-            sp[i].y = (((gUnknown_080D5B20[i][2] * a) >> 5) & 0xFF);
+            sp[i].x = (((gUnknown_080D5B20[i][1] * cameraX) >> 5) & 0xFF);
+            sp[i].y = (((gUnknown_080D5B20[i][2] * cameraX) >> 5) & 0xFF);
         }
         // __0801CCF0
 
@@ -1181,16 +1211,17 @@ void CreateStageBg_Zone4(void)
     }
 }
 
-void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
+void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
 {
     Player *player = &gPlayer;
+    s32 camFracY;
 
     if ((player->moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         if (sCameraShiftX == 0) {
-            sCameraShiftX = camX;
+            sCameraShiftX = cameraX;
         }
         sCameraShiftX += I(player->qSpeedGround);
-        camX = sCameraShiftX;
+        cameraX = sCameraShiftX;
     } else {
         sCameraShiftX = 0;
     }
@@ -1214,8 +1245,15 @@ void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
     }
-    gBgScrollRegs[3][0] = camX >> 4;
-    gBgScrollRegs[3][1] = camY >> 6;
+    gBgScrollRegs[3][0] = cameraX >> 4;
+
+    camFracY = cameraY >> 6;
+#if WIDESCREEN_HACK
+    if (camFracY > 256 - DISPLAY_HEIGHT) {
+        camFracY = 256 - DISPLAY_HEIGHT;
+    }
+#endif
+    gBgScrollRegs[3][1] = camFracY;
 }
 
 /************************************ ZONE 5 ************************************/
@@ -1244,9 +1282,26 @@ void CreateStageBg_Zone5(void)
     gBgScrollRegs[3][1] = 0;
 }
 
+#if WIDESCREEN_HACK
+// NOTE: This is very much temporary.
+void HBlankCB_FixCloudRendering(int_vcount vcount)
+{
+    // NOTE: If gBgScrollRegs[0][1] doesn't also get set here, a transparent line will appear at the very top.
+    //       Only setting REG_BG0VOFS leads to its value getting overwritten at the end of the frame,
+    //       with gBgScrollRegs[0][1], so we have to set it accordingly.
+    if (vcount < 80 || vcount == 239) {
+        REG_BG0VOFS = 0;
+        gBgScrollRegs[0][1] = 0;
+    } else {
+        REG_BG0VOFS = 160 - DISPLAY_HEIGHT;
+        gBgScrollRegs[0][1] = 160 - DISPLAY_HEIGHT;
+    }
+}
+#endif
+
 #define BG_CLOUD_START_Y 96
 
-void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
+void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
 {
     s32 num;
     u16 *cursor, i, val;
@@ -1275,7 +1330,7 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
         }
 
         // Move the parallax clouds
-
+#if !WIDESCREEN_HACK
         for (i = 0; i < BG_CLOUD_START_Y; i++) {
             *cursor++ = 0;
         }
@@ -1314,6 +1369,50 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
         for (; i < BG_CLOUD_START_Y + 63; i++) {
             *cursor++ = val;
         }
+#else
+        // NOTE: Temporary solution to render the bottom of the background in a decent looking way
+        gHBlankCopySize = 2 * sizeof(u16);
+
+        for (i = 0; i < DISPLAY_HEIGHT - 1; i++) {
+            s32 originalLine = (s32)(((float)i / (float)DISPLAY_HEIGHT) * 160.0f);
+
+            if (originalLine > 159) {
+                originalLine = 159;
+            }
+
+            if (originalLine < BG_CLOUD_START_Y) {
+                *cursor++ = 0;
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 4) {
+                *cursor++ = num >> 3;
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 8) {
+                *cursor++ = Div(num, 7);
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 16) {
+                *cursor++ = Div(num, 6);
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 24) {
+                *cursor++ = Div(num, 5);
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 32) {
+                *cursor++ = num >> 2;
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 48) {
+                *cursor++ = Div(num, 3);
+                *cursor++ = originalLine - i;
+            } else if (originalLine < BG_CLOUD_START_Y + 63) {
+                *cursor++ = num >> 1;
+                *cursor++ = originalLine - i;
+            } else {
+                *cursor++ = 0;
+                *cursor++ = originalLine - i;
+            }
+        }
+
+        gHBlankCallbacks[gNumHBlankCallbacks++] = HBlankCB_FixCloudRendering;
+        gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
+#endif
     }
 }
 
@@ -1958,7 +2057,7 @@ END_NONMATCH
 
 void Zone7BgUpdate_Outside(s32 x, s32 y)
 {
-    u16 *lineShiftX;
+    u16 *cursor;
     u8 frameCount;
     int_vcount i;
     u16 sp[32];
@@ -1971,7 +2070,7 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
     gHBlankCopyTarget = (void *)&REG_BG0HOFS;
     gHBlankCopySize = 2;
-    lineShiftX = (u16 *)gBgOffsetsHBlank;
+    cursor = (u16 *)gBgOffsetsHBlank;
 
     stageTime = gStageTime;
     frameCount = ((stageTime >> 3) & 0x1F);
@@ -1996,11 +2095,12 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
         u32 cosVal;
         u32 scrollSpeed = (Q(80.5) - 1);
 
+#if !WIDESCREEN_HACK
         for (i = 0; i < DISPLAY_HEIGHT / 2; i++) {
             sinVal = SIN_24_8(((gStageTime * 4) + i * 2) & ONE_CYCLE) >> 3;
             value = (COS_24_8(((i * scrollSpeed) >> 5) & ONE_CYCLE) >> 4) + sinVal;
             value = (value + sp[(i & 0x1F)]) & 0xFF;
-            *lineShiftX++ = value;
+            *cursor++ = value;
         }
 
         for (; i < DISPLAY_HEIGHT - 1; i++) {
@@ -2008,8 +2108,31 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
             cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
             value = cosVal + sinVal;
             value = (value + sp[(i & 0x1F)]) & 0xFF;
-            *lineShiftX++ = value;
+            *cursor++ = value;
         }
+#else
+        gHBlankCopySize = 2 * sizeof(u16);
+
+        for (i = 0; i < DISPLAY_HEIGHT; i++) {
+            const s32 gbaHLines = 160;
+            s32 originalLine = (s32)(((float)i / (float)DISPLAY_HEIGHT) * (float)gbaHLines);
+
+            if (originalLine < 80) {
+                sinVal = SIN_24_8(((gStageTime * 4) + originalLine * 2) & ONE_CYCLE) >> 3;
+                value = (COS_24_8(((originalLine * scrollSpeed) >> 5) & ONE_CYCLE) >> 4) + sinVal;
+                value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
+                *cursor++ = value;
+                *cursor++ = originalLine - i;
+            } else if (originalLine < gbaHLines) {
+                sinVal = SIN_24_8(((gStageTime << 2) + originalLine * 2) & ONE_CYCLE) >> 3;
+                cosVal = (COS_24_8((((gbaHLines - originalLine) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
+                value = cosVal + sinVal;
+                value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
+                *cursor++ = value;
+                *cursor++ = originalLine - i;
+            }
+        }
+#endif
     }
 }
 

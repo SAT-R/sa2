@@ -93,9 +93,6 @@ SCANINC   := tools/scaninc/scaninc$(EXE)
 PREPROC	  := tools/preproc/preproc$(EXE)
 RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := tools/gbafix/gbafix$(EXE)
-ifeq ($(CREATE_PDB),1)
-CV2PDB    := ./cv2pdb.exe
-endif
 
 TOOLDIRS := $(filter-out tools/agbcc/ tools/BriBaSA_ex/, $(dir $(wildcard tools/*/Makefile)))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
@@ -473,9 +470,6 @@ else ifeq ($(PLATFORM),sdl)
 	cp $< $@
 else
 	$(OBJCOPY) -O pei-x86-64 $< $@
-ifeq ($(CREATE_PDB),1)
-	$(CV2PDB) $@
-endif
 endif
 
 # Build c sources, and ensure alignment
