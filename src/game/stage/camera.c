@@ -334,9 +334,14 @@ static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = StageBgUpdate_Zone5ActBoss,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
-    // Zone 6
+// Zone 6
+#if PLATFORM_GBA
     [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdate_Zone6Acts12,
     [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdate_Zone6Acts12,
+#else
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdate_Zone6ActBoss,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdate_Zone6ActBoss,
+#endif
     [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageBgUpdate_Zone6ActBoss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
