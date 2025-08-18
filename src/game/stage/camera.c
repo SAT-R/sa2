@@ -1282,6 +1282,23 @@ void CreateStageBg_Zone5(void)
     gBgScrollRegs[3][1] = 0;
 }
 
+#if WIDESCREEN_HACK
+// NOTE: This is very much temporary.
+void HBlankCB_FixCloudRendering(int_vcount vcount)
+{
+    // NOTE: If gBgScrollRegs[0][1] doesn't also get set here, a transparent line will appear at the very top.
+    //       Only setting REG_BG0VOFS leads to its value getting overwritten at the end of the frame,
+    //       with gBgScrollRegs[0][1], so we have to set it accordingly.
+    if (vcount < 80 || vcount == 239) {
+        REG_BG0VOFS = 0;
+        gBgScrollRegs[0][1] = 0;
+    } else {
+        REG_BG0VOFS = 160 - DISPLAY_HEIGHT;
+        gBgScrollRegs[0][1] = 160 - DISPLAY_HEIGHT;
+    }
+}
+#endif
+
 #define BG_CLOUD_START_Y 96
 
 void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
@@ -1393,6 +1410,8 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
             }
         }
 
+        gHBlankCallbacks[gNumHBlankCallbacks++] = HBlankCB_FixCloudRendering;
+        gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 #endif
     }
 }
