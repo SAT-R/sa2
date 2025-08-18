@@ -35,12 +35,16 @@
 #define CAMBG_BACK_B_LAYER    3
 
 #if !WIDESCREEN_HACK
-#define CAM_SCREENBASE_BACK_A    28
-#define CAM_SCREENBASE_BACK_B    29
-#define CAM_SCREENBASE_BACK_C    26
-#define CAM_SCREENBASE_MAP_FRONT 30
-#define CAM_SCREENBASE_MAP_BACK  31
+#define SCREENBASE_SKY_CANYON_CLOUDS 27
+#define CAM_SCREENBASE_BACK_A        28
+#define CAM_SCREENBASE_BACK_B        29
+#define CAM_SCREENBASE_BACK_C        26
+#define CAM_SCREENBASE_MAP_FRONT     30
+#define CAM_SCREENBASE_MAP_BACK      31
+
 #else
+#define SCREENBASE_SKY_CANYON_CLOUDS 27
+
 #define CAM_SCREENBASE_BACK_A    48
 #define CAM_SCREENBASE_BACK_B    50
 #define CAM_SCREENBASE_BACK_C    58
@@ -1204,10 +1208,7 @@ void CreateStageBg_Zone4(void)
     gBgScrollRegs[3][1] = 0;
 
     if (IS_SINGLE_PLAYER) {
-#if !TEMP_FIX
-        // Calling this will lead to crashes
         CreateSpotLightBeams();
-#endif
     }
 }
 
@@ -1257,8 +1258,6 @@ void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
 }
 
 /************************************ ZONE 5 ************************************/
-
-#define SCREENBASE_SKY_CANYON_CLOUDS 27
 
 void CreateStageBg_Zone5(void)
 {
