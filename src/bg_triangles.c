@@ -373,7 +373,7 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
     u8 var_r4;
     void *var_r0;
     void *cursor;
-    
+
     memcpy(&sp00[1], &gUnknown_080984F4, sizeof(sp00[1]));
     memset(&spC, 0, 4);
     memset(&sp10, 0, 4);
