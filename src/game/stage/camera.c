@@ -2114,7 +2114,8 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
         gHBlankCopySize = 2 * sizeof(u16);
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
-            s32 originalLine = (s32)(((float)i / (float)DISPLAY_HEIGHT) * 160.0f);
+            const s32 gbaHLines = 160;
+            s32 originalLine = (s32)(((float)i / (float)DISPLAY_HEIGHT) * (float)gbaHLines);
 
             if (originalLine < 80) {
                 sinVal = SIN_24_8(((gStageTime * 4) + originalLine * 2) & ONE_CYCLE) >> 3;
@@ -2122,9 +2123,9 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
                 value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
                 *cursor++ = value;
                 *cursor++ = originalLine - i;
-            } else if (originalLine < 160) {
+            } else if (originalLine < gbaHLines) {
                 sinVal = SIN_24_8(((gStageTime << 2) + originalLine * 2) & ONE_CYCLE) >> 3;
-                cosVal = (COS_24_8((((160 - originalLine) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
+                cosVal = (COS_24_8((((gbaHLines - originalLine) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
                 value = cosVal + sinVal;
                 value = (value + sp[(originalLine & 0x1F)]) & 0xFF;
                 *cursor++ = value;
