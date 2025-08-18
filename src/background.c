@@ -389,7 +389,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     r7Ptr = CastPointer(r7Ptr, bg->unk22 * bytesPerTileIndex);
 
                     if (((bg->targetTilesX + sp10) + 1) > bg->xTiles) {
-                        r2 = (bg->xTiles - 1);
+                        r2 = (bg->targetTilesX + sp10) - (bg->xTiles - 1);
                     } else {
                         r2 = 0;
                     }
@@ -438,7 +438,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         // _080031D0
                         if (bg->flags & BACKGROUND_FLAG_80) {
                             // _080031D8
-                            u32 index = ((sp14 + r5) - 1);
+                            u32 index = ((sp14 + r5) - 1) * bg->xTiles;
                             u16 *r0Ptr = (u16 *)&((u8 *)bg->layout)[index * bytesPerTileIndex];
                             u32 index2 = sp10;
                             u16 *r4Ptr = &r0Ptr[index2 * bytesPerTileIndex];
@@ -461,9 +461,10 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u16 *r4Ptr = CastPointer(r0Ptr, index2 * bg->xTiles);
 
                             // _08003298
-                            while (--r5 != 0) {
+                            while (r5-- != 0) {
+                                s32 var = r2 - 1;
                                 DmaCopy16(3, r4Ptr, r7Ptr, (s32)({
-                                              dmaSize = bg->targetTilesX - (r2 - 1);
+                                              dmaSize = bg->targetTilesX - var;
                                               dmaSize *= bytesPerTileIndex;
                                               dmaSize;
                                           }));

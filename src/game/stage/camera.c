@@ -878,10 +878,10 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 }
 
 /************************************ ZONE 2 ************************************/
-
+#include <stdio.h>
 // (88.05%) https://decomp.me/scratch/ekyaq
 // (91.40%) https://decomp.me/scratch/vapLV
-// (94.83%) https://decomp.me/scratch/Naixp (more accurate)
+// (95.71%) https://decomp.me/scratch/Naixp (more accurate)
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc", void StageBgUpdate_Zone2Acts12(s32 cameraX, s32 cameraY))
 {
     s16 something;
@@ -906,11 +906,22 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         }
         gBgScrollRegs[3][1] = camFracY;
     } else {
-        s32 unk5590_1;
+        s32 dt;
 
         camFracY = Div(cameraY, 0x10);
-        if (camFracY > 0x100) {
-            camFracY = 0x100;
+
+        // Prevent wrapping of the background map at the bottom of the screen on high cameraY's
+        if (!WIDESCREEN_HACK) {
+            if (camFracY > 0x100) {
+                camFracY = 0x100;
+            }
+        } else {
+            // TODO: Use proper maths, depending on DISPLAY_HEIGHT instead of a hardcoded value
+            const u32 max = 153;
+
+            if (camFracY > max) {
+                camFracY = max;
+            }
         }
 
         camFracX = Div(cameraX, 0x69);
@@ -923,7 +934,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         gHBlankCopySize = 4;
 
         cursor = gBgOffsetsHBlank;
-        unk5590_1 = gStageTime * 0x18;
+        dt = gStageTime * 0x18;
 
         // Sky and Clouds
         for (i = 0; i < DISPLAY_HEIGHT - 1; i++) {
@@ -942,10 +953,15 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         // Red Bottom
         something = (cameraX >> 3);
         for (j = 0; i < DISPLAY_HEIGHT - 1; i++, j++) {
-            x0 = CLAMP_SIN_PERIOD(x0 + 8);
-            *cursor++ = something + (SIN(x0) >> 13) + (COS(CLAMP_SIN_PERIOD((gStageTime * 2) + x0)) >> 11)
-                + (SIN(CLAMP_SIN_PERIOD(unk5590_1 + (i * 0x40))) >> 13);
-            *cursor++ = (j / 2) + camFracY + (SIN(x0) >> 12) + (COS((gStageTime + (i * 8)) & ONE_CYCLE) >> 10);
+            u16 cursorX, cursorY;
+
+            x0 += 8;
+            x0 = CLAMP_SIN_PERIOD(x0);
+            cursorX = camFracX + (SIN(x0) >> 13) + (COS(((gStageTime * 2) + x0) & 0x3FF) >> 11)
+                + (SIN(CLAMP_SIN_PERIOD(dt + (i * 0x40))) >> 13);
+            *cursor++ = cursorX;
+            cursorY = (j / 2) + camFracY + (SIN(x0) >> 12) + (COS(CLAMP_SIN_PERIOD(gStageTime + (i * 8))) >> 10);
+            *cursor++ = cursorY;
         };
     }
 }
