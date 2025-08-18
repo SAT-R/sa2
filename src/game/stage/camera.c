@@ -287,8 +287,13 @@ static const VoidFn sStageBgInitProcedures[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_5, ACT_2)] = CreateStageBg_Zone5,
     [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = NULL,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = NULL, //
+#if PLATFORM_GBA
     [LEVEL_INDEX(ZONE_6, ACT_1)] = CreateStageBg_Zone6_Acts,
     [LEVEL_INDEX(ZONE_6, ACT_2)] = CreateStageBg_Zone6_Acts,
+#else
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = CreateStageBg_Zone6_Boss,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = CreateStageBg_Zone6_Boss,
+#endif
     [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = CreateStageBg_Zone6_Boss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_7, ACT_1)] = CreateStageBg_Zone7,
