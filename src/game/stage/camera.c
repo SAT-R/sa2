@@ -878,7 +878,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 }
 
 /************************************ ZONE 2 ************************************/
-#include <stdio.h>
+
 // (88.05%) https://decomp.me/scratch/ekyaq
 // (91.40%) https://decomp.me/scratch/vapLV
 // (95.71%) https://decomp.me/scratch/Naixp (more accurate)
@@ -911,18 +911,20 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         camFracY = Div(cameraY, 0x10);
 
         // Prevent wrapping of the background map at the bottom of the screen on high cameraY's
-        if (!WIDESCREEN_HACK) {
-            if (camFracY > 0x100) {
-                camFracY = 0x100;
-            }
-        } else {
-            // TODO: Use proper maths, depending on DISPLAY_HEIGHT instead of a hardcoded value
+#if !WIDESCREEN_HACK
+        if (camFracY > 0x100) {
+            camFracY = 0x100;
+        }
+#else
+        {
+            // TODO: Use proper maths for max, depending on DISPLAY_HEIGHT instead of a hardcoded value
             const u32 max = 153;
 
             if (camFracY > max) {
                 camFracY = max;
             }
         }
+#endif
 
         camFracX = Div(cameraX, 0x69);
         if (camFracX > 0x100) {
@@ -1080,9 +1082,9 @@ void CreateStageBg_Zone3(void)
 
 // (85.02%) https://decomp.me/scratch/Esyzr
 #if 01
-NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc", void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc", void StageBgUpdate_Zone3Acts12(s32 cameraX, s32 cameraY))
 #else
-void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
+void StageBgUpdate_Zone3Acts12(s32 cameraX, s32 cameraY)
 #endif
 {
     s16 r6;
@@ -1095,23 +1097,30 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 #ifndef NON_MATCHING
     register s16 sl asm("sl") = 0;
     register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
-    register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
+    register s16 camFracY asm("r3") = (Div(cameraY, 60) << 16) >> 16;
 #else
     s16 sl = 0;
     u16 *bgBuffer = gBgOffsetsHBlank;
-    s16 r3 = (Div(b, 60) << 16) >> 16;
+    s16 camFracY = Div(cameraY, 60);
 #endif
 
-    gBgScrollRegs[0][1] = r3;
-    gBgScrollRegs[3][1] = r3;
+    // Prevent wrapping of the background map at the bottom of the screen on high cameraY's
+#if WIDESCREEN_HACK
+    if (camFracY > 256 - DISPLAY_HEIGHT) {
+        camFracY = 256 - DISPLAY_HEIGHT;
+    }
+#endif
+
+    gBgScrollRegs[0][1] = camFracY;
+    gBgScrollRegs[3][1] = camFracY;
 
     if (IS_SINGLE_PLAYER) {
         if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             if (sUnknown_03000408 == 0) {
-                sUnknown_03000408 = a;
+                sUnknown_03000408 = cameraX;
             }
             sUnknown_03000408 += I(gPlayer.qSpeedGround);
-            a = sUnknown_03000408;
+            cameraX = sUnknown_03000408;
         } else {
             sUnknown_03000408 = 0;
         }
@@ -1119,9 +1128,9 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
         i = 0;
 
         {
-            s32 r6 = r3;
+            s32 r6 = camFracY;
             cursor = (u8 *)gUnknown_080D5B20;
-            sp40 = r3;
+            sp40 = camFracY;
 
             while (r6 >= cursor[i * 3]) {
                 if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
@@ -1135,8 +1144,8 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
         //_0801CCA8:
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
-            sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);
-            sp[i].y = (((gUnknown_080D5B20[i][2] * a) >> 5) & 0xFF);
+            sp[i].x = (((gUnknown_080D5B20[i][1] * cameraX) >> 5) & 0xFF);
+            sp[i].y = (((gUnknown_080D5B20[i][2] * cameraX) >> 5) & 0xFF);
         }
         // __0801CCF0
 
@@ -1262,7 +1271,7 @@ void CreateStageBg_Zone5(void)
 
 #define BG_CLOUD_START_Y 96
 
-void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
+void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
 {
     s32 num;
     u16 *cursor, i, val;
