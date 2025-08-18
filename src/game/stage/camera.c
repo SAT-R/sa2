@@ -1206,16 +1206,17 @@ void CreateStageBg_Zone4(void)
     }
 }
 
-void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
+void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
 {
     Player *player = &gPlayer;
+    s32 camFracY;
 
     if ((player->moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         if (sCameraShiftX == 0) {
-            sCameraShiftX = camX;
+            sCameraShiftX = cameraX;
         }
         sCameraShiftX += I(player->qSpeedGround);
-        camX = sCameraShiftX;
+        cameraX = sCameraShiftX;
     } else {
         sCameraShiftX = 0;
     }
@@ -1239,8 +1240,15 @@ void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
     }
-    gBgScrollRegs[3][0] = camX >> 4;
-    gBgScrollRegs[3][1] = camY >> 6;
+    gBgScrollRegs[3][0] = cameraX >> 4;
+
+    camFracY = cameraY >> 6;
+#if WIDESCREEN_HACK
+    if (camFracY > 256 - DISPLAY_HEIGHT) {
+        camFracY = 256 - DISPLAY_HEIGHT;
+    }
+#endif
+    gBgScrollRegs[3][1] = camFracY;
 }
 
 /************************************ ZONE 5 ************************************/
