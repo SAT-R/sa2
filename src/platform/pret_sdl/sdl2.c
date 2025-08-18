@@ -957,92 +957,100 @@ static const uint16_t bgMapSizes[][2] = {
 #define applySpriteHorizontalMosaicEffect(x) (x - (x % (mosaicSpriteEffectX + 1)))
 #define applySpriteVerticalMosaicEffect(y)   (y - (y % (mosaicSpriteEffectY + 1)))
 
+// NOTE: This is the corrected function.
 static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs, int lineNum, uint16_t *line)
 {
     unsigned int charBaseBlock = (control >> 2) & 3;
     unsigned int screenBaseBlock = (control & BGCNT_SCREENBASE_MASK) >> 8;
-
     unsigned int bitsPerPixel = ((control >> 7) & 1) ? 8 : 4;
-    unsigned int mapWidth = bgMapSizes[control >> 14][0];
-    unsigned int mapHeight = bgMapSizes[control >> 14][1];
-    unsigned int mapWidthInPixels = mapWidth * 8;
-    unsigned int mapHeightInPixels = mapHeight * 8;
+
+    // Determine background dimensions from the control register
+    unsigned int mapWidth = bgMapSizes[control >> 14][0]; // in tiles
+    unsigned int mapHeight = bgMapSizes[control >> 14][1]; // in tiles
+    unsigned int mapPixelWidth = mapWidth * TILE_WIDTH;
+    unsigned int mapPixelHeight = mapHeight * TILE_WIDTH;
 
     uint8_t *bgtiles = (uint8_t *)BG_CHAR_ADDR(charBaseBlock);
+    uint16_t *bgmap = (uint16_t *)BG_SCREEN_ADDR(screenBaseBlock);
     uint16_t *pal = (uint16_t *)PLTT;
 
-    if (control & BGCNT_MOSAIC)
+    // Apply vertical mosaic effect to the entire scanline if enabled
+    if (control & BGCNT_MOSAIC) {
         lineNum = applyBGVerticalMosaicEffect(lineNum);
+    }
 
+    // GBA hardware masks scroll registers to 9 bits (0-511)
     hoffs &= 0x1FF;
     voffs &= 0x1FF;
 
     for (unsigned int x = 0; x < DISPLAY_WIDTH; x++) {
-        uint16_t *bgmap = (uint16_t *)BG_SCREEN_ADDR(screenBaseBlock);
-        // adjust for scroll
-        unsigned int xx;
-        if (control & BGCNT_MOSAIC)
-            xx = (applyBGHorizontalMosaicEffect(x) + hoffs) & 0x1FF;
-        else {
-            if (!(control & BGCNT_TXT512x256)) {
-                xx = (x + hoffs) & 0xFF;
-            } else {
-                xx = (x + hoffs) & 0x1FF;
-            }
-        }
+        unsigned int xx, yy;
 
-        unsigned int yy = (lineNum + voffs);
-
-        if (!(control & BGCNT_TXT256x512)) {
-            yy &= 0xFF;
+        // Calculate the source coordinate in the background map, applying scroll and mosaic
+        if (control & BGCNT_MOSAIC) {
+            xx = applyBGHorizontalMosaicEffect(x) + hoffs;
         } else {
-            yy &= 0x1FF;
+            xx = x + hoffs;
         }
+        yy = lineNum + voffs;
 
-        unsigned int mapX = xx / 8;
-        unsigned int mapY = yy / 8;
+        // Wrap the coordinates based on the background's actual pixel dimensions.
+        // This fixes issues with backgrounds that are not 256x256.
+        xx &= (mapPixelWidth - 1);
+        yy &= (mapPixelHeight - 1);
 
-        // TODO: The mult. with 64 doesn't break stage maps, but most regular tilemaps are broken.
-#if !WIDESCREEN_HACK
-        unsigned int mapIndex = mapY * 32 + mapX;
-#else
-        unsigned int mapIndex = mapY * ((control & BGCNT_TXT512x256) ? 64 : 32) + mapX;
-#endif
+        // Convert pixel coordinates to tile coordinates
+        unsigned int mapX = xx / TILE_WIDTH;
+        unsigned int mapY = yy / TILE_WIDTH;
+
+        // Calculate the 1D index into the tilemap. This was the primary source of bugs,
+        // as the original code used a hardcoded map width of 32 tiles.
+        unsigned int mapIndex = mapY * mapWidth + mapX;
+
         uint16_t entry = bgmap[mapIndex];
-
         unsigned int tileNum = entry & 0x3FF;
         unsigned int paletteNum = (entry >> 12) & 0xF;
+
 #if ENABLE_VRAM_VIEW
         vramPalIdBuffer[tileNum] = paletteNum;
 #endif
 
-        unsigned int tileX = xx % 8;
-        unsigned int tileY = yy % 8;
+        // Get the coordinate within the specific tile
+        unsigned int tileX = xx % TILE_WIDTH;
+        unsigned int tileY = yy % TILE_WIDTH;
 
-        // Flip if necessary
+        // Handle horizontal and vertical tile flipping
         if (entry & (1 << 10))
-            tileX = 7 - tileX;
+            tileX = (TILE_WIDTH - 1) - tileX; // H-flip
         if (entry & (1 << 11))
-            tileY = 7 - tileY;
+            tileY = (TILE_WIDTH - 1) - tileY; // V-flip
 
-        uint16_t tileLoc = tileNum * (bitsPerPixel * 8);
-        uint16_t tileLocY = tileY * bitsPerPixel;
-        uint16_t tileLocX = tileX;
-        if (bitsPerPixel == 4)
-            tileLocX /= 2;
-
-        uint8_t pixel = bgtiles[tileLoc + tileLocY + tileLocX];
-
+        // Calculate address of the pixel data and extract the color
         if (bitsPerPixel == 4) {
-            if (tileX & 1)
-                pixel >>= 4;
-            else
-                pixel &= 0xF;
+            uint32_t tileDataOffset = tileNum * TILE_SIZE_4BPP;
+            uint32_t pixelByteOffset = (tileY * TILE_WIDTH + tileX) / 2;
+            uint8_t pixelPair = bgtiles[tileDataOffset + pixelByteOffset];
 
-            if (pixel != 0)
+            uint8_t pixel;
+            if (tileX & 1) {
+                pixel = pixelPair >> 4;
+            } else {
+                pixel = pixelPair & 0xF;
+            }
+
+            if (pixel != 0) {
                 line[x] = pal[16 * paletteNum + pixel] | 0x8000;
-        } else {
-            line[x] = pal[pixel] | 0x8000;
+            }
+        } else { // 8 bits per pixel
+            uint32_t tileDataOffset = tileNum * TILE_SIZE_8BPP;
+            uint32_t pixelByteOffset = tileY * TILE_WIDTH + tileX;
+            uint8_t pixel = bgtiles[tileDataOffset + pixelByteOffset];
+
+            if (pixel != 0) {
+                // For 8bpp tiles, the palette number in the tile entry is ignored.
+                // The pixel value is a direct index into the 256-color palette.
+                line[x] = pal[pixel] | 0x8000;
+            }
         }
     }
 }
