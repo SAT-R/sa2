@@ -37,8 +37,10 @@ typedef struct {
 
 // (68.53%) https://decomp.me/scratch/NchTb
 // (66.79%) https://decomp.me/scratch/PmbTP
-// (51.58%) https://decomp.me/scratch/I1Kkn (M2C generated)
+// (52.07%) https://decomp.me/scratch/I1Kkn (M2C generated)
 NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_SpotlightBeamTask(void))
+
+void Task_SpotlightBeamTask(void)
 {
     TriParam1 sp8;
     Struct_SP10 sp10;
@@ -70,42 +72,36 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
     if (beam->unkB == 0) {
         return;
     }
-    temp_r0 = (u16)beam->unk0;
-    if ((u32)temp_r0 <= 0x1FFU) {
-        var_r0 = (u16)beam->unk4 - beam->unk2;
+
+    if (beam->unk0 <= 0x1FFU) {
+        beam->unk4 = beam->unk4 - beam->unk2;
     } else {
-        var_r0 = beam->unk2 + (u16)beam->unk4;
+        beam->unk4 = beam->unk2 + beam->unk4;
     }
-    beam->unk4 = var_r0;
-    temp_r0_2 = (temp_r0 + ((s32)((u16)beam->unk4 << 0x10) >> 0x18)) & 0x3FF;
+
+    temp_r0_2 = (beam->unk0 + ((s32)((u16)beam->unk4 << 0x10) >> 0x18)) & 0x3FF;
     beam->unk0 = temp_r0_2;
     temp_r5 = (temp_r0_2 + beam->unkB) & 0x3FF;
-    temp_r1 = (u16)gSineTable[temp_r5 + 0x100] << 0x10;
-    if (temp_r1 == 0) {
+
+    if (COS(temp_r5) == 0) {
         return;
     }
     sp18 = 0x3FF;
-    temp_r0_3
-        = (u16)beam->unk6 - ((s32)((s16)Div(((s32)((u16)gSineTable[temp_r5] << 0x10) >> 0x16) << 8, temp_r1 >> 0x16) * beam->unk8) >> 8);
+    temp_r0_3 = beam->unk6 - I(Q_DIV(SIN_24_8(temp_r5), COS_24_8(temp_r5)) * beam->unk8);
     sp10.unk0 = temp_r0_3;
     temp_r0_4 = temp_r0_3;
     if ((s32)temp_r0_4 <= 0) {
         sp10.unk0 = 0;
         if (temp_r5 > 0xFFU) {
             temp_r1_2 = (temp_r5 + 0xFFFFFD00) & 0x3FF;
-            var_r0_2
-                = Div(((s32)((u16)gSineTable[temp_r1_2] << 0x10) >> 0x16) << 8, (s32)((u16)gSineTable[temp_r1_2 + 0x100] << 0x10) >> 0x16);
+            var_r0_2 = Q_DIV(SIN_24_8(temp_r1_2), COS_24_8(temp_r1_2));
             var_r1 = beam->unk6;
             goto block_16;
         }
         temp_r1_3 = (0x100 - temp_r5) & 0x3FF;
-        sp10.unk2 = (s16)((u16)beam->unk8
-                          - ((s32)((s16)Div(((s32)((u16)gSineTable[temp_r1_3] << 0x10) >> 0x16) << 8,
-                                            (s32)((u16)gSineTable[temp_r1_3 + 0x100] << 0x10) >> 0x16)
-                                   * beam->unk6)
-                             >> 8));
-    } else if ((s32)temp_r0_4 > 0xEF) {
-        sp10.unk0 = 0xF0;
+        sp10.unk2 = (s16)(beam->unk8 - I(Q_DIV(SIN_24_8(temp_r1_3), COS_24_8(temp_r1_3)) * beam->unk6));
+    } else if ((s32)temp_r0_4 > (DISPLAY_WIDTH - 1)) {
+        sp10.unk0 = DISPLAY_WIDTH;
         if (temp_r5 > 0xFFU) {
             var_r1_2 = temp_r5 + 0xFFFFFD00;
         } else {
@@ -113,14 +109,14 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
         }
         temp_r1_4 = var_r1_2 & 0x3FF;
         var_r0_2 = Div(((s32)((u16)gSineTable[temp_r1_4] << 0x10) >> 0x16) << 8, (s32)((u16)gSineTable[temp_r1_4 + 0x100] << 0x10) >> 0x16);
-        var_r1 = 0xF0 - beam->unk6;
+        var_r1 = DISPLAY_WIDTH - beam->unk6;
     block_16:
         sp10.unk2 = (s16)((u16)beam->unk8 - ((s32)((s16)var_r0_2 * var_r1) >> 8));
     } else {
         sp10.unk2 = 0;
     }
-    sp8.unk0 = (u8)(u16)sp10.unk0;
-    sp8.unk1 = (u8)(u16)sp10.unk2;
+    sp8.unk0 = sp10.unk0;
+    sp8.unk1 = sp10.unk2;
     sp8.unk2 = (u8)((u8)beam->unk6
                     - ((s32)((beam->unk8 - DISPLAY_HEIGHT)
                              * (s16)Div(((s32)((u16)gSineTable[temp_r5] << 0x10) >> 0x16) << 8,
@@ -148,8 +144,8 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
                                             (s32)((u16)gSineTable[temp_r1_5 + 0x100] << 0x10) >> 0x16)
                                    * beam->unk6)
                              >> 8));
-    } else if ((s32)temp_r0_6 > 0xEF) {
-        sp14.unk0 = 0xF0;
+    } else if ((s32)temp_r0_6 > (DISPLAY_WIDTH - 1)) {
+        sp14.unk0 = DISPLAY_WIDTH;
         if (temp_r5_2 > 0xFFU) {
             var_r1_4 = temp_r5_2 + 0xFFFFFD00;
         } else {
@@ -159,56 +155,59 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
         sp14.unk2 = (s16)((u16)beam->unk8
                           - ((s32)((s16)Div(((s32)((u16)gSineTable[temp_r1_6] << 0x10) >> 0x16) << 8,
                                             (s32)((u16)gSineTable[temp_r1_6 + 0x100] << 0x10) >> 0x16)
-                                   * (0xF0 - beam->unk6))
+                                   * (DISPLAY_WIDTH - beam->unk6))
                              >> 8));
     } else {
         sp14.unk2 = 0;
     }
-    sp8.unk4 = (u8)(u16)sp14.unk0;
-    sp8.unk5 = (u8)(u16)sp14.unk2;
+    sp8.unk4 = sp14.unk0;
+    sp8.unk5 = sp14.unk2;
     sp8.unk6 = (u8)(((s32)((beam->unk8 - DISPLAY_HEIGHT)
                            * (s16)Div(((s32)((u16)gSineTable[temp_r5_2] << 0x10) >> 0x16) << 8,
                                       (s32)((u16)gSineTable[temp_r5_2 + 0x100] << 0x10) >> 0x16))
                      >> 8)
                     + (u8)beam->unk6);
     sp8.unk7 = DISPLAY_HEIGHT;
-    if ((u32)(u16)beam->unk0 <= 0x1FFU) {
-        if ((s32)(s16)(u16)sp14.unk2 > (DISPLAY_HEIGHT - 1)) {
+    if (beam->unk0 <= 0x1FFU) {
+        if (sp14.unk2 > (DISPLAY_HEIGHT - 1)) {
             return;
         }
-        if ((s32)(s16)(u16)sp10.unk2 > (DISPLAY_HEIGHT - 1)) {
+        if (sp10.unk2 > (DISPLAY_HEIGHT - 1)) {
             if (1 & beam->unkA) {
-                gWinRegs[3] = (sp8.unk5 << 8) | DISPLAY_HEIGHT;
+                gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
             } else {
-                gWinRegs[2] = (sp8.unk5 << 8) | DISPLAY_HEIGHT;
+                gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
             }
             sub_8006228(beam->unkA, sp8.unk4, sp8.unk5, sp8.unk6, sp8.unk7, 0);
             return;
         }
         if (1 & beam->unkA) {
-            gWinRegs[3] = (sp8.unk5 << 8) | DISPLAY_HEIGHT;
+            gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
         } else {
-            gWinRegs[2] = (sp8.unk5 << 8) | DISPLAY_HEIGHT;
+            gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
         }
         sub_800724C(beam->unkA, &sp8);
         return;
     }
-    if ((s32)(s16)(u16)sp10.unk2 <= (DISPLAY_HEIGHT - 1)) {
-        if ((s32)(s16)(u16)sp14.unk2 > (DISPLAY_HEIGHT - 1)) {
-            if (1 & beam->unkA) {
-                gWinRegs[3] = (sp8.unk1 << 8) | DISPLAY_HEIGHT;
+
+    if (sp10.unk2 <= (DISPLAY_HEIGHT - 1)) {
+        if (sp14.unk2 > (DISPLAY_HEIGHT - 1)) {
+            if (beam->unkA & 0x1) {
+                gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             } else {
-                gWinRegs[2] = (sp8.unk1 << 8) | DISPLAY_HEIGHT;
+                gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             }
+
             sub_80064A8(beam->unkA, sp8.unk0, sp8.unk1, sp8.unk2, (s32)sp8.unk3, 0);
-            return;
-        }
-        if (1 & beam->unkA) {
-            gWinRegs[3] = (sp8.unk1 << 8) | DISPLAY_HEIGHT;
         } else {
-            gWinRegs[2] = (sp8.unk1 << 8) | DISPLAY_HEIGHT;
+            if (beam->unkA & 0x1) {
+                gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
+            } else {
+                gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
+            }
+
+            sub_800724C(beam->unkA, &sp8);
         }
-        sub_800724C(beam->unkA, &sp8);
     }
 }
 END_NONMATCH
