@@ -345,38 +345,25 @@ END_NONMATCH
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// (88.58%) https://decomp.me/scratch/00RIv
+// (84.94%) https://decomp.me/scratch/00RIv
 NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriParam1 *param1))
 {
-    s16 sp00[6][2];
+    s16 sp00[2];
+    s16 sp04[2];
     s16 sp8[2];
     s16 spC[2];
     Unknown sp10;
     s8 sp14[2];
     u8 sp18;
     s16 *sp1C;
-    s16 temp_r0_4;
-    s16 temp_r0_6;
-    s16 temp_r1;
-    s16 var_r0_4;
-    s16 var_r0_5;
-    s16 var_r0_6;
-    s32 temp_r0_2;
-    s32 temp_r0_3;
-    u16 temp_r0_5;
-    s32 temp_r2_2;
-    u8 temp_r0;
-    u8 temp_r2;
-    u8 var_r0_2;
-    u8 var_r0_7;
-    u8 var_r1;
     u8 var_r4;
     void *var_r0;
     void *cursor;
 
-    memcpy(&sp00[1], &gUnknown_080984F4, sizeof(sp00[1]));
+    memcpy(&sp04, &gUnknown_080984F4, sizeof(sp04));
     memset(&spC, 0, 4);
     memset(&sp10, 0, 4);
+
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg > 1U) {
@@ -401,18 +388,18 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
     var_r4 = (param1->unk5 > param1->unk1) ? param1->unk1 : param1->unk5;
     sp18 = (param1->unk5 < param1->unk1) ? param1->unk1 : param1->unk5;
     cursor += (var_r4 * gHBlankCopySize);
-    sp00[0][0] = param1->unk2 - param1->unk0;
-    sp00[1][0] = param1->unk3 - param1->unk1;
-    sp00[3][0] = ABS(sp00[0][0]) * 2;
-    sp10.x = ABS(sp00[1][0]) * 2;
-    sp00[0][1] = param1->unk6 - param1->unk4;
-    sp00[1][1] = param1->unk7 - param1->unk5;
-    sp00[3][1] = ABS(sp00[0][1]) * 2;
-    sp10.y = ABS(sp00[1][1]) * 2;
+    sp00[0] = param1->unk2 - param1->unk0;
+    sp04[0] = param1->unk3 - param1->unk1;
+    spC[0] = ABS(sp00[0]) * 2;
+    sp10.x = ABS(sp04[0]) * 2;
+    sp00[1] = param1->unk6 - param1->unk4;
+    sp04[1] = param1->unk7 - param1->unk5;
+    spC[1] = ABS(sp00[1]) * 2;
+    sp10.y = ABS(sp04[1]) * 2;
     sp14[0] = param1->unk0;
     sp14[1] = param1->unk4;
-    sp8[0] = -sp00[1][0];
-    sp8[1] = -sp00[1][1];
+    sp8[0] = -sp04[0];
+    sp8[1] = -sp04[1];
 
     if (var_r4 == sp18) {
 
@@ -420,9 +407,9 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
         for (; var_r4 < sp18; var_r4++) {
             ((u8 *)cursor)[0] = 240;
             ((u8 *)cursor)[1] = sp14[0];
-            sp8[0] += sp00[3][0];
+            sp8[0] += spC[0];
             while (sp8[0] >= 0) {
-                if (sp00[0][0] > 0) {
+                if (sp00[0] > 0) {
                     sp14[0]++;
                     sp8[0] -= sp10.x;
                 } else {
@@ -439,10 +426,10 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
         for (; var_r4 < sp18; var_r4++) {
             ((u8 *)cursor)[0] = sp14[1];
             ((u8 *)cursor)[1] = 0;
-            sp8[1] += sp00[3][1];
+            sp8[1] += spC[1];
 
             while (sp8[1] >= 0) {
-                if (sp00[0][1] > 0) {
+                if (sp00[1] > 0) {
                     sp14[1]++;
                     sp8[1] -= sp10.y;
                     if (sp8[1] >= 0) {
@@ -468,7 +455,7 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
         if (sp8[0] >= 0) {
             while (sp8[0] >= 0) {
                 sp1C = &sp8[0];
-                if (sp00[0][0] > 0) {
+                if (sp00[0] > 0) {
                     sp14[0]++;
                     sp8[0] -= sp10.x;
                 } else {
@@ -482,7 +469,7 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
         }
 
         while (sp8[1] >= 0) {
-            if (sp00[0][1] > 0) {
+            if (sp00[1] > 0) {
                 sp14[1]++;
                 sp8[1] -= sp10.y;
                 if (sp8[1] >= 0) {
