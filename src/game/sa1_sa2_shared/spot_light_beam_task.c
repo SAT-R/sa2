@@ -39,8 +39,6 @@ typedef struct {
 // (66.79%) https://decomp.me/scratch/PmbTP
 // (52.07%) https://decomp.me/scratch/I1Kkn (M2C generated)
 NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_SpotlightBeamTask(void))
-
-void Task_SpotlightBeamTask(void)
 {
     TriParam1 sp8;
     Struct_SP10 sp10;
