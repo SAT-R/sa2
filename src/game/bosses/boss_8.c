@@ -1,5 +1,9 @@
+#if TAS_TESTING
+#include <stdlib.h>
+#include <stdio.h>
+#endif
+
 #include "global.h"
-#include "core.h"
 #include "flags.h"
 #include "task.h"
 #include "trig.h"
@@ -20,11 +24,6 @@
 #include "game/stage/game_7.h"
 #include "game/stage/screen_fade.h"
 #include "game/stage/screen_shake.h"
-
-#if TAS_TESTING
-#include <stdio.h>
-#include <stdlib.h>
-#endif
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

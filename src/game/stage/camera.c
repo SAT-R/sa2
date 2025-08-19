@@ -1506,6 +1506,11 @@ void CreateStageBg_Zone6_Boss(void)
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
+#if TAS_TESTING
+    // This has an effect on the RNG.
+    // So as long as we use the Boss's background in Action Stages, we need to set it like 'CreateStageBg_Zone6_Acts' does.
+    gStageTime = 0x380;
+#endif
 
     *background = gStageCameraBgTemplates[3];
     background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;

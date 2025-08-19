@@ -445,7 +445,7 @@ void VBlankIntrWait()
     }
 }
 
-void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
+void *Platform_malloc(size_t numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
 
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
