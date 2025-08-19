@@ -117,7 +117,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         sp00 = bg->xTiles;
 
         bgId = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID);
-        if (bgId > 1 && ((gDispCnt & 0x3) > DISPCNT_MODE_0)) {
+        if (bgId >= 2 && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2)) > DISPCNT_MODE_0) {
             affine = (gBgCntRegs[bgId] >> 14);
             sp0C = (0x10 << affine);
             bytesPerTileIndex = 1;
@@ -138,6 +138,10 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 #endif
             affine = (gBgCntRegs[bgId] >> 14);
             if ((affine == 1) || (affine == 3)) {
+                // HACK: fixes the course select map
+#if NON_MATCHING
+                sp0C = 64;
+#endif
                 sp04 = 0x800;
             }
             bytesPerTileIndex = 2;
@@ -220,7 +224,9 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             r4Ptr = (u16 *)(((u8 *)r4Ptr) - sb);
                         }
                     } else {
-                        // _08002DD4
+// _08002DD4
+// HACK: with this block enabled, the map is unreadable off the screen
+#ifndef NON_MATCHING
                         if ((affine & 1) && (bytesPerTileIndex == 2) && ((32 - bg->unk22) > 0)
                             && ((bg->targetTilesX + bg->unk22 - 32) > 0)) {
                             s32 vR2;
@@ -239,7 +245,9 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 r4Ptr = CastPointer(r4Ptr, (sp00 * bytesPerTileIndex));
                             }
 
-                        } else {
+                        } else
+#endif
+                        {
                             // __08002E74
                             u32 r0Index = bg->unk20 * sp00 * bytesPerTileIndex;
                             void *r1Ptr = CastPointer(bg->layout, r0Index);
