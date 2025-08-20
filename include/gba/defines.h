@@ -42,9 +42,13 @@
 #define DISPLAY_WIDTH  426
 #define DISPLAY_HEIGHT 240
 
+#if !EXTENDED_OAM
 //#include "gba/types.h"
 // TODO: Fix #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 #define OAM_SIZE (OAM_ENTRY_COUNT*8)
+#else // EXTENDED_OAM
+#define OAM_SIZE (OAM_ENTRY_COUNT*0xC)
+#endif
 extern struct SoundMixerState *SOUND_INFO_PTR;
 extern uint16_t INTR_CHECK;
 extern void (*INTR_VECTOR)(void);

@@ -95,18 +95,18 @@ struct PlttData
 //       as well using this to determine the size for some DMAs to gOamBuffer.
 // TODO: Somehow this does not work by #include-ing main.h and using PACKED();
 // TODO: EXTENDED_OAM is not yet functional
-#define EXTENDED_OAM FALSE
+#define EXTENDED_OAM TRUE
 #if !EXTENDED_OAM
 PACKED(OamDataShort, {
     /*0x00*/
     u32 y : 8;
 
     /*0x01*/
-    u32 affineMode : 2; // 0x1, 0x2 -> 0x4
-    u32 objMode : 2; // 0x4, 0x8 -> 0xC
-    u32 mosaic : 1; // 0x10
-    u32 bpp : 1; // 0x20
-    u32 shape : 2; // 0x40, 0x80 -> 0xC0
+    u32 affineMode : 2; // 0x100, 0x200 -> 0x300
+    u32 objMode : 2; // 0x400, 0x800 -> 0xC00
+    u32 mosaic : 1; // 0x1000
+    u32 bpp : 1; // 0x2000
+    u32 shape : 2; // 0x4000, 0x8000 -> 0xC000
 
     /*0x02*/
     u32 x : 9;
@@ -118,36 +118,15 @@ PACKED(OamDataShort, {
     u16 priority : 2; // 0x400, 0x800 -> 0xC00
     u16 paletteNum : 4;
 }); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
-#else
-PACKED(OamDataShort, {
-    /* 0x00 */ s16 x;
-    /* 0x02 */ s16 y;
 
-    /* 0x04 */ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
-             u32 objMode:2;     // 0x4, 0x8 -> 0xC
-             u32 mosaic:1;      // 0x10
-             u32 bpp:1;         // 0x20
-             u32 shape:2;       // 0x40, 0x80 -> 0xC0
-
-    /* 0x06 */ u32 padding:9;
-             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
-             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
-
-    /* 0x08 */ u16 tileNum:10;    // 0x3FF
-             u16 priority:2;    // 0x400, 0x800 -> 0xC00
-             u16 paletteNum:4;
-}); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
-#endif
-
-#if !EXTENDED_OAM
 typedef union {
     struct {
     /*0x00*/ u32 y:8;
-    /*0x01*/ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
-             u32 objMode:2;     // 0x4, 0x8 -> 0xC
-             u32 mosaic:1;      // 0x10
-             u32 bpp:1;         // 0x20
-             u32 shape:2;       // 0x40, 0x80 -> 0xC0
+    /*0x01*/ u32 affineMode:2;  // 0x100, 0x200 -> 0x400
+             u32 objMode:2;     // 0x400, 0x800 -> 0xC00
+             u32 mosaic:1;      // 0x1000
+             u32 bpp:1;         // 0x2000
+             u32 shape:2;       // 0x4000, 0x8000 -> 0xC000
 
     /*0x02*/ u32 x:9;
              u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
@@ -171,7 +150,55 @@ typedef union {
 
     u16 raw[4];
 } OamData;
+
+#define OAM_GET_X(oamEntry)         ((oamEntry)->all.attr1 & 0x1FF)
+#define OAM_INIT_X(oamEntry, value, flip) (oamEntry)->all.attr1 = (((value) & 0x1FF) | ((flip) ? 0x1000 : 0));
+#define OAM_SET_X(oamEntry, value) {        \
+    u32 v;                                  \
+    (oamEntry)->all.attr1 &= ~0x1FF;        \
+    v = (value);                            \
+    (oamEntry)->all.attr1 += v & 0x1FF;     \
+}
+
+#define OAM_GET_Y(oamEntry)         (oamEntry)->all.attr0 & 0xFF
+#define OAM_INIT_Y(oamEntry, value) (oamEntry)->all.attr0 = (value) & 0xFF
+#define OAM_SET_Y(oamEntry, value) {        \
+    u32 v;                                  \
+    (oamEntry)->all.attr0 &= ~0xFF;         \
+    v = (value);                            \
+    (oamEntry)->all.attr0 += v & 0xFF;      \
+}
+#define OAM_SET_AFFINE_MODE(oamEntry, value) {  \
+    u32 v;                                      \
+    (oamEntry)->all.attr0 &= ~0x3;              \
+    v = (value);                                \
+    (oamEntry)->all.attr0 |= v;                 \
+}
+
+#define OAM_DATA_SIZE_AFFINE    ARRAY_COUNT(((OamData *)0)->raw)
+#define OAM_DATA_SIZE_NO_AFFINE (OAM_DATA_SIZE_AFFINE-1)
+
 #else
+PACKED(OamDataShort, {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+
+    /* 0x04 */ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
+             u32 objMode:2;     // 0x4, 0x8 -> 0xC
+             u32 mosaic:1;      // 0x10
+             u32 bpp:1;         // 0x20
+             u32 shape:2;       // 0x40, 0x80 -> 0xC0
+
+    /* 0x05 */ u32 padding:9;
+             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+
+    /* 0x07 */ u16 tileNum:10;    // 0x3FF
+             u16 priority:2;    // 0x400, 0x800 -> 0xC00
+             u16 paletteNum:4;
+
+}); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
+
 typedef union {
     struct {
     /* 0x00 */ s16 x;
@@ -183,15 +210,15 @@ typedef union {
              u32 bpp:1;         // 0x20
              u32 shape:2;       // 0x40, 0x80 -> 0xC0
 
-    /* 0x06 */ u32 padding:9;
+    /* 0x05 */ u32 padding:9;
              u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
              u32 size:2;        // 0x4000, 0x8000 -> 0xC000
 
-    /* 0x08 */ u16 tileNum:10;    // 0x3FF
+    /* 0x07 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
              u16 paletteNum:4;
 
-    /* 0x0A */ u16 fractional:8;
+    /* 0x09 */ u16 fractional:8;
              u16 integer:7;
              u16 sign:1;
     } split;
@@ -205,8 +232,27 @@ typedef union {
         u16 affineParam;
     } all;
 
-    u16 raw[4];
+    u16 raw[6];
 } OamData;
+
+#define OAM_GET_X(oamEntry)         (oamEntry)->x
+#define OAM_INIT_X(oamEntry, value, flip)   \
+    (oamEntry)->split.x = (value);            \
+    (oamEntry)->split.matrixNum = ((flip) ? 0x08 : 0);
+#define OAM_SET_X(oamEntry, value) {        \
+    (oamEntry)->split.x = (value);          \
+}
+
+#define OAM_GET_Y(oamEntry)         (oamEntry)->split.y
+#define OAM_INIT_Y(oamEntry, value) (oamEntry)->split.y = (value);
+#define OAM_SET_Y(oamEntry, value)  (oamEntry)->split.y = (value);
+#define OAM_SET_AFFINE_MODE(oamEntry, value) {  \
+    (oamEntry)->split.affineMode = (value);     \
+}
+
+#define OAM_DATA_SIZE_AFFINE    ARRAY_COUNT(((OamData *)0)->raw)
+#define OAM_DATA_SIZE_NO_AFFINE (OAM_DATA_SIZE_AFFINE-1)
+
 #endif
 
 #define ST_OAM_HFLIP     0x08

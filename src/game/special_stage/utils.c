@@ -173,7 +173,7 @@ void sub_806CD68(Sprite *s)
             s->oamBaseIndex = gOamFreeIndex - 1;
         }
 
-        DmaCopy16(3, &reference[(sprDims->oamIndex + i) * 3], oam, sizeof(u16) * 3);
+        DmaCopy16(3, &reference[(sprDims->oamIndex + i) * OAM_DATA_SIZE_NO_AFFINE], oam, sizeof(u16) * 3);
         attr1_2 = oam->all.attr1 & 0x1FF;
         oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
         oam->all.attr0 |= 0x300;
