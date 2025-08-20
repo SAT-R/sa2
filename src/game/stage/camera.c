@@ -20,6 +20,14 @@
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
+#if !PORTABLE
+#define USE_BOSS_BG_IN_ZONE_6_ACTS FALSE
+#else
+// The default flickering is very strong, so we disable it.
+// TODO: Add a global option, so players can decide to use the original effect if they want to.
+#define USE_BOSS_BG_IN_ZONE_6_ACTS TRUE
+#endif
+
 #define STGBG_SCRN_DIM(w, h, charBase, screenBase)                                                                                         \
     {                                                                                                                                      \
         ((w) / TILE_WIDTH), ((h) / TILE_WIDTH), charBase, screenBase                                                                       \
@@ -287,13 +295,8 @@ static const VoidFn sStageBgInitProcedures[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_5, ACT_2)] = CreateStageBg_Zone5,
     [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = NULL,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = NULL, //
-#if PLATFORM_GBA
     [LEVEL_INDEX(ZONE_6, ACT_1)] = CreateStageBg_Zone6_Acts,
     [LEVEL_INDEX(ZONE_6, ACT_2)] = CreateStageBg_Zone6_Acts,
-#else
-    [LEVEL_INDEX(ZONE_6, ACT_1)] = CreateStageBg_Zone6_Boss,
-    [LEVEL_INDEX(ZONE_6, ACT_2)] = CreateStageBg_Zone6_Boss,
-#endif
     [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = CreateStageBg_Zone6_Boss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_7, ACT_1)] = CreateStageBg_Zone7,
@@ -1484,11 +1487,12 @@ void CreateStageBg_Zone6_Acts(void)
     gBgScrollRegs[3][1] = 0;
     gStageTime = 0x380;
 
-    if (IS_MULTI_PLAYER) {
+    if (USE_BOSS_BG_IN_ZONE_6_ACTS || IS_MULTI_PLAYER) {
         CreateStageBg_Zone6_Boss();
     }
-    gBgCntRegs[3] &= ~(1 | 2);
-    gBgCntRegs[3] |= 2;
+
+    gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
+    gBgCntRegs[3] |= BGCNT_PRIORITY(2);
 }
 
 void CreateStageBg_Zone6_Boss(void)
@@ -1506,11 +1510,6 @@ void CreateStageBg_Zone6_Boss(void)
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
-#if TAS_TESTING
-    // This has an effect on the RNG.
-    // So as long as we use the Boss's background in Action Stages, we need to set it like 'CreateStageBg_Zone6_Acts' does.
-    gStageTime = 0x380;
-#endif
 
     *background = gStageCameraBgTemplates[3];
     background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
