@@ -345,249 +345,143 @@ END_NONMATCH
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// (80.10%) https://decomp.me/scratch/8wQzE
+// (84.94%) https://decomp.me/scratch/00RIv
 NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriParam1 *param1))
 {
-    Unknown *u;
-    Unknown sp00[5];
-    Unknown *pSp0;
-    int_vcount *cursor, *cursor2;
-#ifndef NON_MATCHING
-    register u32 r0 asm("r0");
-    register u32 r1 asm("r1");
-    register u32 r2 asm("r2");
-    register u16 sb asm("sb");
-    register u16 r4 asm("r4");
-    register u32 r7 asm("r7");
-#else
-    u32 r0;
-    u32 r1;
-    u32 r2;
-    u16 sb;
-    u16 r4;
-    u32 r7;
-#endif
-    int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
-                        // display resolutions
-    u32 sp18;
-    u8 a, b;
-    s32 temp;
-    s16 *sp;
+    s16 sp00[2];
+    s16 sp04[2];
+    s16 sp8[2];
+    s16 spC[2];
+    Unknown sp10;
+    s8 sp14[2];
+    u8 sp18;
+    s16 *sp1C;
+    u8 var_r4;
+    void *var_r0;
+    void *cursor;
 
-#ifndef NON_MATCHING
-    register Unknown *ip asm("ip");
-#else
-    Unknown *ip;
-#endif
-
-    pSp0 = &sp00[1];
-    memcpy(pSp0, &gUnknown_080984F4, sizeof(sp00[1]));
-    cursor = (int_vcount *)&sp00[3];
-    memset(cursor, 0, sizeof(sp00[3]));
-    cursor2 = (int_vcount *)&sp00[4];
-    memset(cursor2, 0, sizeof(sp00[4]));
+    memcpy(&sp04, &gUnknown_080984F4, sizeof(sp04));
+    memset(&spC, 0, 4);
+    memset(&sp10, 0, 4);
 
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
-    if (bg >= 2) {
-        gHBlankCopySize = 4;
-
-        if (bg & 1) {
-            cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
-            gHBlankCopyTarget = (void *)&REG_WIN0H;
+    if (bg > 1U) {
+        gHBlankCopySize = 2 * sizeof(u16);
+        if (bg & 0x1) {
+            cursor = gBgOffsetsHBlank + 2;
         } else {
-            cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
-            gHBlankCopyTarget = (void *)&REG_WIN0H;
+            cursor = gBgOffsetsHBlank;
         }
-    } else {
-        gHBlankCopySize = 2;
-        cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
-        if (bg & 1) {
+        gHBlankCopyTarget = (void *)&REG_WIN0H;
+    } else {
+        gHBlankCopySize = 1 * sizeof(u16);
+        cursor = gBgOffsetsHBlank;
+        if (bg & 0x1) {
             gHBlankCopyTarget = (void *)&REG_WIN1H;
         } else {
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         }
     }
 
-    r0 = param1->unk5;
-    r7 = r2 = param1->unk1;
-    r1 = r0;
-    if (r0 > r7) {
-        r0 = param1->unk1;
-    }
-    r4 = r0;
-
-    sb = (u8)r1;
-    if (sb < r7) {
-        r1 = param1->unk1;
-    }
-    sp18 = r1;
-
-    cursor += (r4 * gHBlankCopySize);
-
-    sp00[0].x = param1->unk2 - param1->unk0;
-    pSp0->x = param1->unk3 - param1->unk1;
-
-    u = &sp00[3];
-    u->x = abs(sp00[0].x) * 2;
-    sp00[4].x = abs(pSp0->x) * 2;
-
-    // _08007352 + 6
-    sp00[0].y = param1->unk6 - param1->unk4;
-    sp00[1].y = param1->unk7 - param1->unk5;
-
-    sp00[3].y = abs(sp00[0].y) * 2;
-    sp00[4].y = abs(sp00[1].y) * 2;
-
-    // _08007388+6
+    var_r4 = (param1->unk5 > param1->unk1) ? param1->unk1 : param1->unk5;
+    sp18 = (param1->unk5 < param1->unk1) ? param1->unk1 : param1->unk5;
+    cursor += (var_r4 * gHBlankCopySize);
+    sp00[0] = param1->unk2 - param1->unk0;
+    sp04[0] = param1->unk3 - param1->unk1;
+    spC[0] = ABS(sp00[0]) * 2;
+    sp10.x = ABS(sp04[0]) * 2;
+    sp00[1] = param1->unk6 - param1->unk4;
+    sp04[1] = param1->unk7 - param1->unk5;
+    spC[1] = ABS(sp00[1]) * 2;
+    sp10.y = ABS(sp04[1]) * 2;
     sp14[0] = param1->unk0;
     sp14[1] = param1->unk4;
+    sp8[0] = -sp04[0];
+    sp8[1] = -sp04[1];
 
-    sp00[2].x = -sp00[1].x;
-    sp00[2].y = -sp00[1].y;
+    if (var_r4 == sp18) {
 
-    ip = &sp00[2];
-    if (r4 != sp18) {
-        // _080073B6
-        if (bg < sb) {
-            while (r4 < sp18) {
-                // _080073C0
-                cursor[0] = DISPLAY_WIDTH;
-                cursor[1] = sp14[0];
-
-                sp00[2].x += sp00[3].x;
-
-                r4++;
-
-                while (sp00[2].x >= 0) {
-                    if (sp00[0].x > 0) {
-                        sp14[0]++;
-                        sp00[2].x -= sp00[4].x;
-                        asm("");
-                    } else {
-                        // _0800740C
-                        sp14[0]--;
-                        sp00[2].x -= sp00[4].x;
-                    }
-
-                    if (sp00[2].x >= 0) {
-                        cursor[1] = sp14[0];
+    } else if (param1->unk1 < param1->unk5) {
+        for (; var_r4 < sp18; var_r4++) {
+            ((u8 *)cursor)[0] = 240;
+            ((u8 *)cursor)[1] = sp14[0];
+            sp8[0] += spC[0];
+            while (sp8[0] >= 0) {
+                if (sp00[0] > 0) {
+                    sp14[0]++;
+                    sp8[0] -= sp10.x;
+                } else {
+                    sp14[0]--;
+                    sp8[0] -= sp10.x;
+                    if (sp8[0] >= 0) {
+                        ((u8 *)cursor)[1] = sp14[0];
                     }
                 }
-                // _08007430
-
-                cursor += gHBlankCopySize;
             }
-        } else {
-            Unknown *sp2, *sp4;
-            // _08007448
+            cursor += gHBlankCopySize;
+        }
+    } else {
+        for (; var_r4 < sp18; var_r4++) {
+            ((u8 *)cursor)[0] = sp14[1];
+            ((u8 *)cursor)[1] = 0;
+            sp8[1] += spC[1];
 
-            while (r4 < sp18) {
-                // _08007450
-                cursor[0] = sp14[1];
-                cursor[1] = 0;
-
-                sp2 = &sp00[2];
-                sp2->y += sp00[3].y;
-
-                sb = ++r4;
-
-                for (sp4 = &sp00[4]; sp2->y >= 0;) {
-                    if (sp00[0].y > 0) {
-                        sp14[1]++;
-                        sp2->y -= sp4->y;
-
-                        if (sp2->y >= 0) {
-                            *cursor = sp14[1] + 1;
-                        }
-                        asm("");
-                    } else {
-                        // _0800749E
-                        sp14[1]--;
-                        sp2->y -= sp4->y;
+            while (sp8[1] >= 0) {
+                if (sp00[1] > 0) {
+                    sp14[1]++;
+                    sp8[1] -= sp10.y;
+                    if (sp8[1] >= 0) {
+                        ((u8 *)cursor)[0] = (sp14[1] + 1);
                     }
-                    // _080074AC
+                } else {
+                    sp14[1]--;
+                    sp8[1] -= sp10.y;
                 }
-                // _080074B6
-                cursor += gHBlankCopySize;
             }
+            cursor += gHBlankCopySize;
         }
     }
-    // _080074C8
 
-    r0 = param1->unk7;
-    r1 = param1->unk3;
+    sp18 = (param1->unk7 > param1->unk3) ? param1->unk3 : param1->unk7;
+    for (; var_r4 < sp18; var_r4++) {
+        ((u8 *)cursor)[0] = sp14[1];
+        ((u8 *)cursor)[1] = sp14[0];
 
-    if (r0 > r1) {
-        r0 = r1;
-    }
+        sp8[0] += spC[0];
+        sp8[1] += spC[1];
 
-    sp18 = r0;
-
-    for (; sb < sp18; sb++) {
-        Unknown *sp0;
-        Unknown *sp2;
-        Unknown *sp3;
-        Unknown *sp4;
-#ifndef NON_MATCHING
-        register Unknown *r6 asm("r6");
-#else
-        Unknown *r6;
-#endif
-        // _080074E0
-        cursor[0] = sp14[1];
-        cursor[1] = sp14[0];
-
-        sp3 = &sp00[3];
-        sp2 = &sp00[2];
-        sp2->x += sp3->x;
-        sp2->y += sp3->y;
-        sp4 = &sp00[4];
-
-        ++r4;
-        sb = r4;
-
-        while (sp2->x >= 0) {
-            if (sp00[0].x > 0) {
-                sp14[0]++;
-                sp2->x -= sp4->x;
-            } else {
-                // _08007530
-                sp14[0]--;
-                sp2->x -= sp4->x;
-
-                if (sp2->x >= 0) {
-                    cursor[1] = sp14[0];
+        if (sp8[0] >= 0) {
+            while (sp8[0] >= 0) {
+                sp1C = &sp8[0];
+                if (sp00[0] > 0) {
+                    sp14[0]++;
+                    sp8[0] -= sp10.x;
+                } else {
+                    sp14[0]--;
+                    *sp1C -= sp10.x;
+                    if (*sp1C >= 0) {
+                        ((u8 *)cursor)[1] = sp14[0];
+                    }
                 }
-                asm("");
             }
         }
-        // _08007558
 
-        sp4 = &sp00[4];
-        sp2 = &sp00[2];
-        while (sp2->y >= 0) {
-            r6 = &sp00[2];
-            sp0 = &sp00[0];
-            if (sp0->y > 0) {
+        while (sp8[1] >= 0) {
+            if (sp00[1] > 0) {
                 sp14[1]++;
-                sp2->y -= sp4->y;
-
-                if (sp2->y >= 0) {
-                    cursor[0] = sp14[1] + 1;
+                sp8[1] -= sp10.y;
+                if (sp8[1] >= 0) {
+                    ((u8 *)cursor)[0] = (sp14[1] + 1);
                 }
-                asm("");
             } else {
-                // _08007590
                 sp14[1]--;
-                sp2->y -= sp4->y;
+                sp8[1] = ((u16)sp8[1] - sp10.y);
             }
         }
-        // _080075A8
         cursor += gHBlankCopySize;
     }
-    // _080075BA
 }
 END_NONMATCH
 

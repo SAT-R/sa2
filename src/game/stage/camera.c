@@ -20,6 +20,14 @@
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
+#if !PORTABLE
+#define USE_BOSS_BG_IN_ZONE_6_ACTS FALSE
+#else
+// The default flickering is very strong, so we disable it.
+// TODO: Add a global option, so players can decide to use the original effect if they want to.
+#define USE_BOSS_BG_IN_ZONE_6_ACTS TRUE
+#endif
+
 #define STGBG_SCRN_DIM(w, h, charBase, screenBase)                                                                                         \
     {                                                                                                                                      \
         ((w) / TILE_WIDTH), ((h) / TILE_WIDTH), charBase, screenBase                                                                       \
@@ -35,12 +43,16 @@
 #define CAMBG_BACK_B_LAYER    3
 
 #if !WIDESCREEN_HACK
-#define CAM_SCREENBASE_BACK_A    28
-#define CAM_SCREENBASE_BACK_B    29
-#define CAM_SCREENBASE_BACK_C    26
-#define CAM_SCREENBASE_MAP_FRONT 30
-#define CAM_SCREENBASE_MAP_BACK  31
+#define SCREENBASE_SKY_CANYON_CLOUDS 27
+#define CAM_SCREENBASE_BACK_A        28
+#define CAM_SCREENBASE_BACK_B        29
+#define CAM_SCREENBASE_BACK_C        26
+#define CAM_SCREENBASE_MAP_FRONT     30
+#define CAM_SCREENBASE_MAP_BACK      31
+
 #else
+#define SCREENBASE_SKY_CANYON_CLOUDS 27
+
 #define CAM_SCREENBASE_BACK_A    48
 #define CAM_SCREENBASE_BACK_B    50
 #define CAM_SCREENBASE_BACK_C    58
@@ -1204,10 +1216,7 @@ void CreateStageBg_Zone4(void)
     gBgScrollRegs[3][1] = 0;
 
     if (IS_SINGLE_PLAYER) {
-#if !TEMP_FIX
-        // Calling this will lead to crashes
         CreateSpotLightBeams();
-#endif
     }
 }
 
@@ -1257,8 +1266,6 @@ void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
 }
 
 /************************************ ZONE 5 ************************************/
-
-#define SCREENBASE_SKY_CANYON_CLOUDS 27
 
 void CreateStageBg_Zone5(void)
 {
@@ -1480,11 +1487,12 @@ void CreateStageBg_Zone6_Acts(void)
     gBgScrollRegs[3][1] = 0;
     gStageTime = 0x380;
 
-    if (IS_MULTI_PLAYER) {
+    if (USE_BOSS_BG_IN_ZONE_6_ACTS || IS_MULTI_PLAYER) {
         CreateStageBg_Zone6_Boss();
     }
-    gBgCntRegs[3] &= ~(1 | 2);
-    gBgCntRegs[3] |= 2;
+
+    gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
+    gBgCntRegs[3] |= BGCNT_PRIORITY(2);
 }
 
 void CreateStageBg_Zone6_Boss(void)
