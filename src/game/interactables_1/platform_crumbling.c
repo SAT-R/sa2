@@ -186,7 +186,7 @@ void Task_805E480(void)
     }
 
     oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
-    oam = &oam_ptr[s->dimensions->oamIndex * OAM_DATA_SIZE_NO_AFFINE];
+    oam = &oam_ptr[s->dimensions->oamIndex * OAM_DATA_COUNT_NO_AFFINE];
 
     r6 = 0;
     for (y = 0; y < 4; y++) {
@@ -284,7 +284,7 @@ void Task_805E6A4(void)
     }
 
     oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
-    oam = &oam_ptr[s->dimensions->oamIndex * 3];
+    oam = &oam_ptr[s->dimensions->oamIndex * OAM_DATA_COUNT_NO_AFFINE];
 
     r6 = 0;
     for (y = 0; y < 4; y++) {

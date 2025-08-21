@@ -175,8 +175,11 @@ typedef union {
     (oamEntry)->all.attr0 |= v;                 \
 }
 
-#define OAM_DATA_SIZE_AFFINE    ARRAY_COUNT(((OamData *)0)->raw)
-#define OAM_DATA_SIZE_NO_AFFINE (OAM_DATA_SIZE_AFFINE-1)
+#define OAM_DATA_SIZE_AFFINE    8
+#define OAM_DATA_SIZE_NO_AFFINE 6
+
+#define OAM_DATA_COUNT_AFFINE    (OAM_DATA_SIZE_AFFINE / sizeof(short))
+#define OAM_DATA_COUNT_NO_AFFINE (OAM_DATA_SIZE_NO_AFFINE / sizeof(short))
 
 #else
 PACKED(OamDataShort, {
@@ -250,8 +253,11 @@ typedef union {
     (oamEntry)->split.affineMode = (value);     \
 }
 
-#define OAM_DATA_SIZE_AFFINE    ARRAY_COUNT(((OamData *)0)->raw)
-#define OAM_DATA_SIZE_NO_AFFINE (OAM_DATA_SIZE_AFFINE-1)
+#define OAM_DATA_SIZE_AFFINE    12
+#define OAM_DATA_SIZE_NO_AFFINE 10
+
+#define OAM_DATA_COUNT_AFFINE    (OAM_DATA_SIZE_AFFINE / sizeof(short))
+#define OAM_DATA_COUNT_NO_AFFINE (OAM_DATA_SIZE_NO_AFFINE / sizeof(short))
 
 #endif
 

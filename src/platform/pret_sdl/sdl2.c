@@ -1359,6 +1359,8 @@ static bool winCheckHorizontalBounds(u16 left, u16 right, u16 xpos)
         return (xpos >= left && xpos < right);
 }
 
+extern const u8 gOamShapesSizes[12][2];
+
 // Parts of this code heavily borrowed from NanoboyAdvance.
 static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool windowsEnabled)
 {
@@ -1391,20 +1393,9 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
             continue;
         }
 
-        if (oam->split.shape == 0) {
-            width = (1 << oam->split.size) * 8;
-            height = (1 << oam->split.size) * 8;
-        } else if (oam->split.shape == 1) // wide
-        {
-            width = spriteSizes[oam->split.size][1];
-            height = spriteSizes[oam->split.size][0];
-        } else if (oam->split.shape == 2) // tall
-        {
-            width = spriteSizes[oam->split.size][0];
-            height = spriteSizes[oam->split.size][1];
-        } else {
-            continue; // prohibited, do not draw
-        }
+        s32 index = (oam->split.shape << 2) | oam->split.size;
+        width = gOamShapesSizes[index][0];
+        height = gOamShapesSizes[index][1];
 
         int rect_width = width;
         int rect_height = height;

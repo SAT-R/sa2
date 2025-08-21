@@ -143,9 +143,9 @@ bool16 SpecialStageCalcEntityScreenPosition(struct UNK_806CB84 *a, struct Specia
 
 void sub_806CD68(Sprite *s)
 {
-    const u16 *reference;
+    const u16 *oamTemplate;
     OamData *oam;
-    u32 unk16, unk18;
+    u32 sx, sy;
     u16 sprHeight;
     u16 sprWidth;
     s16 numSubframes;
@@ -156,13 +156,13 @@ void sub_806CD68(Sprite *s)
     s->numSubFrames = sprDims->numSubframes;
     sprWidth = sprDims->width;
     sprHeight = sprDims->height;
-    unk16 = (s16)s->x - (sprWidth / 2);
-    unk18 = (s16)s->y - (sprHeight / 2);
+    sx = (s16)s->x - (sprWidth / 2);
+    sy = (s16)s->y - (sprHeight / 2);
 
     numSubframes = sprDims->numSubframes;
     for (i = 0; i < numSubframes; i++) {
-        u32 attr1_2;
-        reference = gRefSpriteTables->oamData[s->graphics.anim];
+        u32 x;
+        oamTemplate = gRefSpriteTables->oamData[s->graphics.anim];
 
         oam = OamMalloc(GET_SPRITE_OAM_ORDER(s));
         if (oam == iwram_end) {
@@ -173,16 +173,28 @@ void sub_806CD68(Sprite *s)
             s->oamBaseIndex = gOamFreeIndex - 1;
         }
 
-        DmaCopy16(3, &reference[(sprDims->oamIndex + i) * OAM_DATA_SIZE_NO_AFFINE], oam, sizeof(u16) * 3);
-        attr1_2 = oam->all.attr1 & 0x1FF;
-        oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
+        DmaCopy16(3, &oamTemplate[(sprDims->oamIndex + i) * OAM_DATA_COUNT_NO_AFFINE], oam, OAM_DATA_SIZE_NO_AFFINE);
+#if !EXTENDED_OAM
+        x = oam->all.attr1 & 0x1FF;
+        oam->all.attr0 = (sy + (oam->all.attr0 & 0xff)) & 0xff;
         oam->all.attr0 |= 0x300;
         oam->all.attr1 &= 0xfe00;
-        oam->all.attr1 |= ((s->frameFlags & 0x1f) << 9);
-        oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
+        oam->all.attr1 |= (SPRITE_FLAG_GET(s, ROT_SCALE) << 9);
+        oam->all.attr1 |= ((sx + x) & 0x1ff);
         oam->all.attr2 += s->palId << 12;
-        oam->all.attr2 |= ((s->frameFlags & 0x3000) >> 2);
+        oam->all.attr2 |= (SPRITE_FLAG_GET(s, PRIORITY) << 10);
         oam->all.attr2 += GET_TILE_NUM(s->graphics.dest);
+#else
+        x = oam->split.x;
+        oam->split.y += sy;
+        oam->split.mosaic = 1;
+        oam->split.bpp = 1;
+        oam->split.matrixNum = SPRITE_FLAG_GET(s, ROT_SCALE);
+        oam->split.x = sx + x;
+        oam->split.paletteNum += s->palId;
+        oam->split.priority = SPRITE_FLAG_GET(s, PRIORITY);
+        oam->split.tileNum += GET_TILE_NUM(s->graphics.dest);
+#endif
     }
 }
 

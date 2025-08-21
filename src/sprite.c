@@ -665,8 +665,7 @@ void DisplaySprite(Sprite *sprite)
 
 #if !EXTENDED_OAM
                 // oamIndex is a byte, why are they ANDing with 0x3FFF?
-                DmaCopy16(3, &oamData[(sizeof(OamDataShort) / sizeof(u16)) * ((sprDims->oamIndex & 0x3FFF) + i)], oam,
-                          sizeof(OamDataShort));
+                DmaCopy16(3, &oamData[((sprDims->oamIndex & 0x3FFF) + i) * OAM_DATA_COUNT_NO_AFFINE], oam, sizeof(OamDataShort));
 
                 sprX = oam->all.attr1 & 0x1FF;
                 sprY = oam->all.attr0 & 0xFF;
@@ -728,7 +727,7 @@ void DisplaySprite(Sprite *sprite)
 #else /* EXTENDED_OAM */
                 // oamIndex is a byte, why are they ANDing with 0x3FFF?
                 s32 sub_index = ((sprDims->oamIndex & 0x3FFF) + i);
-                s32 full_index = sub_index * (sizeof(OamDataShort) / sizeof(u16));
+                s32 full_index = sub_index * OAM_DATA_COUNT_NO_AFFINE;
                 DmaCopy16(3, &oamData[full_index], oam, sizeof(OamDataShort));
 
                 sprX = oam->split.x;
@@ -784,7 +783,7 @@ void DisplaySprite(Sprite *sprite)
                 oam->split.y = y + sprY;
 
                 if (oam->split.bpp) {
-                    oam->split.tileNum += oam->split.tileNum & 0x3FF;
+                    oam->split.tileNum += oam->split.tileNum;
                 }
                 oam->split.tileNum += GET_TILE_NUM(sprite->graphics.dest);
 #endif
