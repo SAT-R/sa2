@@ -792,6 +792,10 @@ void DisplaySprite(Sprite *sprite)
     }
 }
 
+#ifndef NON_MATCHING
+// TODO: Make this compatible with EXTENDED_OAM, maybe?
+//       It's unused though, anyway.
+//       Technically this could just be a loop that calls DisplaySprite()...
 void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
 {
     vs32 x, y;
@@ -908,6 +912,7 @@ void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
         }
     }
 }
+#endif
 
 // The parameter to this determines the order this sprite is expected to be drawn at.
 //

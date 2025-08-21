@@ -130,7 +130,6 @@ typedef union {
     /*0x02*/ u32 x:9;
              u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
              u32 size:2;        // 0x4000, 0x8000 -> 0xC000
-             u32 padding : 8;
 
     /*0x04*/ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
@@ -192,9 +191,9 @@ PACKED(OamDataShort, {
              u32 bpp:1;         // 0x20
              u32 shape:2;       // 0x40, 0x80 -> 0xC0
 
-    /* 0x05 */ u32 padding:9;
-             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
-             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+    /* 0x05 */ u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000u32 
+             u32 padding:17; // NOTE: Padding MUST be here for some platforms not to break
 
     /* 0x07 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
@@ -213,9 +212,9 @@ typedef union {
              u32 bpp:1;         // 0x20
              u32 shape:2;       // 0x40, 0x80 -> 0xC0
 
-    /* 0x05 */ u32 padding:9;
              u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
              u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+    /* 0x05 */ u32 padding:17; // NOTE: Padding MUST be here for some platforms not to break
 
     /* 0x07 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
