@@ -195,7 +195,7 @@ PACKED(OamDataShort, {
              u32 size:2;        // 0x4000, 0x8000 -> 0xC000u32 
              u32 padding:17; // NOTE: Padding MUST be here for some platforms not to break
 
-    /* 0x07 */ u16 tileNum:10;    // 0x3FF
+    /* 0x08 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
              u16 paletteNum:4;
 
@@ -216,11 +216,11 @@ typedef union {
                u32 size:2;        // 0x4000, 0x8000 -> 0xC000
                u32 padding:17; // NOTE: Padding MUST be here for some platforms not to break
 
-    /* 0x07 */ u16 tileNum:10;    // 0x3FF
+    /* 0x08 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
              u16 paletteNum:4;
 
-    /* 0x09 */ u16 fractional:8;
+    /* 0x0A */ u16 fractional:8;
              u16 integer:7;
              u16 sign:1;
     } split;
