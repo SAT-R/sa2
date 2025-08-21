@@ -95,7 +95,6 @@ struct PlttData
 //       as well using this to determine the size for some DMAs to gOamBuffer.
 // TODO: Somehow this does not work by #include-ing main.h and using PACKED();
 // TODO: EXTENDED_OAM is not yet functional
-#define EXTENDED_OAM TRUE
 #if !EXTENDED_OAM
 PACKED(OamDataShort, {
     /*0x00*/
