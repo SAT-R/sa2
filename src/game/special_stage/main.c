@@ -227,10 +227,9 @@ void Task_SpecialStageStartDelay(void)
 #ifndef BUG_FIX
     SpecialStagePauseMenuMain();
 #else
-    bool32 closed = SpecialStagePauseMenuMain();
-
-    // Without this, we would access free'd task memory.
-    if (closed)
+    // BUG: Without this, we would access free'd task memory.
+    bool32 taskDestroyed = SpecialStagePauseMenuMain();
+    if (taskDestroyed)
         return;
 #endif
 
@@ -290,8 +289,8 @@ void Task_SpecialStageMain(void)
 #ifndef BUG_FIX
             SpecialStagePauseMenuMain();
 #else
-            bool32 closed = SpecialStagePauseMenuMain();
-            if (closed)
+            bool32 taskDestroyed = SpecialStagePauseMenuMain();
+            if (taskDestroyed)
                 return;
 #endif
         } break;
