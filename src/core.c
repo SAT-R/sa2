@@ -490,10 +490,14 @@ static void UpdateScreenDma(void)
 
     if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
         CopyOamBufferToOam();
+#if !EXTENDED_OAM
         DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
         DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
         DmaCopy16(3, gOamBuffer + 0x60, (void *)OAM + 0x300, 0x100);
+#else
+        DmaCopy16(3, gOamBuffer, (void *)OAM, OAM_SIZE);
+#endif
     }
 
     for (i = 0; i < gNumVBlankIntrs; i++) {
@@ -569,10 +573,14 @@ static void ClearOamBufferDma(void)
 #endif
     }
     gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
+#if !EXTENDED_OAM
     DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
+#else
+    DmaFill16(3, 0x200, gOamBuffer, OAM_SIZE);
+#endif
 
     gNumVBlankCallbacks = 0;
     gFlags &= ~FLAGS_10;

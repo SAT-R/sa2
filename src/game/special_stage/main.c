@@ -22,10 +22,22 @@
 
 #define MAX_POINTS 99900
 
+// TODO(Jace): Should this be in global.h?
+//             To me it seems like a very localized case, but maybe we could use it in other places?
+#ifndef BUG_FIX
+#define BUG_FIX_RETURN(_value) return;
+#else
+#define BUG_FIX_RETURN(_value) return (_value);
+#endif
+
 static void Task_ShowIntroScreen(void);
 static void SpecialStageOnDestroy(struct Task *);
 static void Task_InitComponents(void);
+#ifndef BUG_FIX
 static void SpecialStagePauseMenuMain(void);
+#else
+static bool32 SpecialStagePauseMenuMain(void);
+#endif
 static void TickStageTimer(void);
 void Task_SpecialStageMain(void);
 void sub_806BFD0(void);
@@ -212,7 +224,14 @@ void Task_InitComponents(void)
 void Task_SpecialStageStartDelay(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
+#ifndef BUG_FIX
     SpecialStagePauseMenuMain();
+#else
+    // BUG: Without this, we would access free'd task memory.
+    bool32 taskDestroyed = SpecialStagePauseMenuMain();
+    if (taskDestroyed)
+        return;
+#endif
 
     if (!stage->paused) {
         TickStageTimer();
@@ -233,13 +252,13 @@ void Task_SpecialStageMain(void)
 
     if (stage->state == 6) {
 #ifndef NON_MATCHING
-        do
+        do {
 #endif
             if (player->state != 14 && player->state != 15) {
                 player->state = 11;
             }
 #ifndef NON_MATCHING
-        while (0);
+        } while (0);
 #endif
         stage->state = 7;
     }
@@ -251,19 +270,30 @@ void Task_SpecialStageMain(void)
     }
 
     switch (player->state) {
-        case 13:
+        case 13: {
             stage->state = 8;
             gCurTask->main = sub_806BFD0;
+        }
             return;
-        case 15:
+
+        case 15: {
             stage->state = 8;
             gCurTask->main = sub_806BFD0;
+        }
             return;
-        case 14:
-            break;
-        default:
+
+        case 14: {
+        } break;
+
+        default: {
+#ifndef BUG_FIX
             SpecialStagePauseMenuMain();
-            break;
+#else
+            bool32 taskDestroyed = SpecialStagePauseMenuMain();
+            if (taskDestroyed)
+                return;
+#endif
+        } break;
     }
 
     if (stage->paused == FALSE) {
@@ -649,7 +679,11 @@ static void TickStageTimer(void)
     stage->timeTicks = GBA_FRAMES_PER_SECOND - 1;
 }
 
+#ifndef BUG_FIX
 void SpecialStagePauseMenuMain(void)
+#else
+bool32 SpecialStagePauseMenuMain(void)
+#endif
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
 
@@ -668,22 +702,24 @@ void SpecialStagePauseMenuMain(void)
             if (prevCursorPosition != stage->pauseMenuCursor) {
                 m4aSongNumStart(SE_MENU_CURSOR_MOVE);
             }
-            return;
-        }
 
-        if (gPressedKeys & A_BUTTON) {
+            BUG_FIX_RETURN(FALSE);
+        } else if (gPressedKeys & A_BUTTON) {
             if (stage->pauseMenuCursor == 0) {
                 stage->paused = FALSE;
                 // Don't jump when exiting menu
                 gPressedKeys &= ~A_BUTTON;
-                return;
+
+                BUG_FIX_RETURN(FALSE);
             }
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             CreateTitleScreenAndSkipIntro();
-            return;
+
+            // Signal to calling functions that the task was destroyed.
+            BUG_FIX_RETURN(TRUE);
         }
     }
 
@@ -691,6 +727,8 @@ void SpecialStagePauseMenuMain(void)
         stage->paused = !stage->paused ? TRUE : FALSE;
         stage->pauseMenuCursor = 0;
     }
+
+    BUG_FIX_RETURN(FALSE);
 }
 
 static void SpecialStageOnDestroy(UNUSED struct Task *t)

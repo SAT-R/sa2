@@ -2,6 +2,7 @@
 #define GUARD_SPRITE_4_H
 
 typedef struct {
+#if !WIDESCREEN_HACK
     u8 unk0;
     u8 unk1;
     u8 unk2;
@@ -10,6 +11,16 @@ typedef struct {
     u8 unk5;
     u8 unk6;
     u8 unk7;
+#else
+    u16 unk0;
+    u16 unk1;
+    u16 unk2;
+    u16 unk3;
+    u16 unk4;
+    u16 unk5;
+    u16 unk6;
+    u16 unk7;
+#endif
 } TriParam1;
 
 extern void sub_800724C(u8 bg, TriParam1 *param1);

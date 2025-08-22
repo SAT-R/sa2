@@ -125,11 +125,11 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         }
 
         *affine = 0x100;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = 0;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = 0;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = 0x100;
     }
 
@@ -392,39 +392,39 @@ void sub_806D788(void)
 
 void sub_806D7D0(Sprite *s, s16 animSpeed, s16 spriteY, const struct UNK_80DF670 *anim)
 {
-    u32 unk10 = 0x1000;
+    u32 frameFlags = SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_NORMAL);
     if (anim->unk7 & 1) {
-        unk10 |= 0x400;
+        frameFlags |= SPRITE_FLAG(X_FLIP, 1);
     }
 
     if (anim->unk7 & 2) {
-        unk10 |= 0x800;
+        frameFlags |= SPRITE_FLAG(Y_FLIP, 1);
     }
     s->graphics.anim = anim->anim;
-    s->frameFlags = unk10;
+    s->frameFlags = frameFlags;
     s->y = spriteY;
     s->variant = anim->variant;
 
-    s->animSpeed = animSpeed != -1 ? animSpeed : 0x10;
+    s->animSpeed = animSpeed != -1 ? animSpeed : SPRITE_ANIM_SPEED(1.0);
     UpdateSpriteAnimation(s);
 }
 
-void sub_806D830(Sprite *s, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
+void sub_806D830(Sprite *s, s16 animSpeed, s16 spriteY, const struct UNK_80DF670 *anim)
 {
     u8 unk22;
-    u32 unk10 = 0x1100;
+    u32 frameFlags = SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_WINDOW);
     if (anim->unk7 & 1) {
-        unk10 |= 0x400;
+        frameFlags |= SPRITE_FLAG(X_FLIP, 1);
     }
 
     if (anim->unk7 & 2) {
-        unk10 |= 0x800;
+        frameFlags |= SPRITE_FLAG(Y_FLIP, 1);
     }
     s->graphics.anim = anim->anim;
-    s->frameFlags = unk10;
+    s->frameFlags = frameFlags;
     s->y = spriteY;
     s->variant = anim->variant;
 
-    s->animSpeed = a != -1 ? a : 0x10;
+    s->animSpeed = animSpeed != -1 ? animSpeed : SPRITE_ANIM_SPEED(1.0);
     UpdateSpriteAnimation(s);
 }
