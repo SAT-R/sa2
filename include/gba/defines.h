@@ -48,7 +48,7 @@
 #undef VRAM_SIZE
 #define VRAM_SIZE (0x18000 + (0x800 * (12)))
 #define WIDESCREEN_HACK TRUE
-#define EXTENDED_OAM !TRUE
+#define EXTENDED_OAM TRUE
 #else
 #define WIDESCREEN_HACK FALSE
 #define EXTENDED_OAM !TRUE
