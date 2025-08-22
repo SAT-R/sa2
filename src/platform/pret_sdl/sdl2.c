@@ -1421,8 +1421,8 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
 
 #if !EXTENDED_OAM
         // The regular, unextended values are 9 and 8 unsigned bits for x and y respectively.
-        // Once they have exceeded the screen's right or bottom, they get treated as signed values on origina hardware.
-        // This is done so that, for example, a sprite at 0 on either axis that moves left or up will no suddenly disappear.
+        // Once they have exceeded the screen's right or bottom, they get treated as signed values on original hardware.
+        // This is done so that, for example, a sprite at 0 on either axis that moves left or up will not suddenly disappear.
         //
         // With EXTENDED_OAM we are using signed 16 bit values, so we don't want to change the raw value.
         if (x >= DISPLAY_WIDTH)
