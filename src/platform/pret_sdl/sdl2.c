@@ -513,7 +513,7 @@ void ProcessSDLEvents(void)
                         case SDLK_SPACE:
                             if (!speedUp) {
                                 speedUp = true;
-                                timeScale = 5.0;
+                                timeScale = SPEEDUP_SCALE;
                                 SDL_PauseAudio(1);
                             }
                             break;
@@ -546,7 +546,18 @@ void ProcessSDLEvents(void)
 u16 Platform_GetKeyInput(void)
 {
 #ifdef _WIN32
-    u16 gamepadKeys = GetXInputKeys();
+    SharedKeys gamepadKeys = GetXInputKeys();
+
+    speedUp = (gamepadKeys & KEY_SPEEDUP) ? true : false;
+
+    if (speedUp) {
+        timeScale = SPEEDUP_SCALE;
+        SDL_PauseAudio(1);
+    } else {
+        timeScale = 1.0f;
+        SDL_PauseAudio(0);
+    }
+
     return (gamepadKeys != 0) ? gamepadKeys : keys;
 #endif
 
