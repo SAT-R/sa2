@@ -422,13 +422,13 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
     }
 
     sub_806CD68(element1);
-    affine = &gOamBuffer[index * 4].all.affineParam;
+    affine = &gOamBuffer[index * OAM_DATA_COUNT_AFFINE].all.affineParam;
     *affine = unkDEA4->unkC;
-    affine += 4;
+    affine += OAM_DATA_COUNT_AFFINE;
     *affine = unkDEA4->unkE;
-    affine += 4;
+    affine += OAM_DATA_COUNT_AFFINE;
     *affine = unkDEA4->unk10;
-    affine += 4;
+    affine += OAM_DATA_COUNT_AFFINE;
     *affine = unkDEA4->unk12;
 }
 
@@ -544,13 +544,13 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
         unk7B4->oamFlags = (new_unkCB84.screenY < (stage->cameraHeight - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
         sub_806CD68(unk7B4);
 
-        affine = &gOamBuffer[(index + 16) * 4].all.affineParam;
+        affine = &gOamBuffer[(index + 16) * OAM_DATA_COUNT_AFFINE].all.affineParam;
         *affine = new_unkCB84.unkC;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = new_unkCB84.unkE;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = new_unkCB84.unk10;
-        affine += 4;
+        affine += OAM_DATA_COUNT_AFFINE;
         *affine = new_unkCB84.unk12;
     }
 }

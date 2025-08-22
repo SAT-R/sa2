@@ -177,7 +177,7 @@ void sub_806CD68(Sprite *s)
 #if !EXTENDED_OAM
         x = oam->all.attr1 & 0x1FF;
         oam->all.attr0 = (sy + (oam->all.attr0 & 0xff)) & 0xff;
-        oam->all.attr0 |= 0x300;
+        oam->all.attr0 |= (ST_OAM_AFFINE_DOUBLE << 8);
         oam->all.attr1 &= 0xfe00;
         oam->all.attr1 |= (SPRITE_FLAG_GET(s, ROT_SCALE) << 9);
         oam->all.attr1 |= ((sx + x) & 0x1ff);
@@ -187,8 +187,7 @@ void sub_806CD68(Sprite *s)
 #else
         x = oam->split.x;
         oam->split.y += sy;
-        oam->split.mosaic = 1;
-        oam->split.bpp = 1;
+        oam->split.affineMode = ST_OAM_AFFINE_DOUBLE;
         oam->split.matrixNum = SPRITE_FLAG_GET(s, ROT_SCALE);
         oam->split.x = sx + x;
         oam->split.paletteNum += s->palId;

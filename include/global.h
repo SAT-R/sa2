@@ -8,7 +8,7 @@
 #define ENABLE_AUDIO TRUE
 #else
 #define ENABLE_AUDIO     TRUE
-#define ENABLE_VRAM_VIEW TRUE
+#define ENABLE_VRAM_VIEW !TRUE
 #endif
 
 #define CONST_DATA __attribute__((section(".data")))
