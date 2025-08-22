@@ -48,10 +48,10 @@
 #undef VRAM_SIZE
 #define VRAM_SIZE (0x18000 + (0x800 * (12)))
 #define WIDESCREEN_HACK TRUE
-#define EXTENDED_OAM 1
+#define EXTENDED_OAM !TRUE
 #else
 #define WIDESCREEN_HACK FALSE
-#define EXTENDED_OAM 0
+#define EXTENDED_OAM !TRUE
 #endif
 extern uint8_t VRAM[VRAM_SIZE];
 
