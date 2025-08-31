@@ -513,7 +513,7 @@ void ProcessSDLEvents(void)
                         case SDLK_SPACE:
                             if (!speedUp) {
                                 speedUp = true;
-                                timeScale = 5.0;
+                                timeScale = SPEEDUP_SCALE;
                                 SDL_PauseAudio(1);
                             }
                             break;
@@ -546,7 +546,18 @@ void ProcessSDLEvents(void)
 u16 Platform_GetKeyInput(void)
 {
 #ifdef _WIN32
-    u16 gamepadKeys = GetXInputKeys();
+    SharedKeys gamepadKeys = GetXInputKeys();
+
+    speedUp = (gamepadKeys & KEY_SPEEDUP) ? true : false;
+
+    if (speedUp) {
+        timeScale = SPEEDUP_SCALE;
+        SDL_PauseAudio(1);
+    } else {
+        timeScale = 1.0f;
+        SDL_PauseAudio(0);
+    }
+
     return (gamepadKeys != 0) ? gamepadKeys : keys;
 #endif
 
@@ -1359,6 +1370,8 @@ static bool winCheckHorizontalBounds(u16 left, u16 right, u16 xpos)
         return (xpos >= left && xpos < right);
 }
 
+extern const u8 gOamShapesSizes[12][2];
+
 // Parts of this code heavily borrowed from NanoboyAdvance.
 static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool windowsEnabled)
 {
@@ -1391,20 +1404,9 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
             continue;
         }
 
-        if (oam->split.shape == 0) {
-            width = (1 << oam->split.size) * 8;
-            height = (1 << oam->split.size) * 8;
-        } else if (oam->split.shape == 1) // wide
-        {
-            width = spriteSizes[oam->split.size][1];
-            height = spriteSizes[oam->split.size][0];
-        } else if (oam->split.shape == 2) // tall
-        {
-            width = spriteSizes[oam->split.size][0];
-            height = spriteSizes[oam->split.size][1];
-        } else {
-            continue; // prohibited, do not draw
-        }
+        s32 index = (oam->split.shape << 2) | oam->split.size;
+        width = gOamShapesSizes[index][0];
+        height = gOamShapesSizes[index][1];
 
         int rect_width = width;
         int rect_height = height;
@@ -1417,10 +1419,17 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
         int32_t x = oam->split.x;
         int32_t y = oam->split.y;
 
+#if !EXTENDED_OAM
+        // The regular, unextended values are 9 and 8 unsigned bits for x and y respectively.
+        // Once they have exceeded the screen's right or bottom, they get treated as signed values on original hardware.
+        // This is done so that, for example, a sprite at 0 on either axis that moves left or up will not suddenly disappear.
+        //
+        // With EXTENDED_OAM we are using signed 16 bit values, so we don't want to change the raw value.
         if (x >= DISPLAY_WIDTH)
             x -= 512;
         if (y >= DISPLAY_HEIGHT)
             y -= 256;
+#endif
 
         if (isAffine) {
             // TODO: there is probably a better way to do this

@@ -42,9 +42,26 @@
 #define DISPLAY_WIDTH  426
 #define DISPLAY_HEIGHT 240
 
+// NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
+//       This hack should best be removed once there's a "native" platform layer.
+#if ((DISPLAY_WIDTH >= 256) || (DISPLAY_HEIGHT >= 256))
+#undef VRAM_SIZE
+#define VRAM_SIZE (0x18000 + (0x800 * (12)))
+#define WIDESCREEN_HACK TRUE
+#define EXTENDED_OAM TRUE
+#else
+#define WIDESCREEN_HACK FALSE
+#define EXTENDED_OAM !TRUE
+#endif
+extern uint8_t VRAM[VRAM_SIZE];
+
+#if !EXTENDED_OAM
 //#include "gba/types.h"
 // TODO: Fix #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 #define OAM_SIZE (OAM_ENTRY_COUNT*8)
+#else // EXTENDED_OAM
+#define OAM_SIZE (OAM_ENTRY_COUNT*0xC)
+#endif
 extern struct SoundMixerState *SOUND_INFO_PTR;
 extern uint16_t INTR_CHECK;
 extern void (*INTR_VECTOR)(void);
@@ -55,17 +72,6 @@ extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
 #define BG_PLTT (u8*)&PLTT[0]
 #define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
 extern uint8_t OAM[OAM_SIZE];
-
-// NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
-//       This hack should best be removed once there's a "native" platform layer.
-#if ((DISPLAY_WIDTH >= 256) || (DISPLAY_HEIGHT >= 256))
-#undef VRAM_SIZE
-#define VRAM_SIZE (0x18000 + (0x800 * (12)))
-#define WIDESCREEN_HACK TRUE
-#else
-#define WIDESCREEN_HACK FALSE
-#endif
-extern uint8_t VRAM[VRAM_SIZE];
 
 #define BG_VRAM           &VRAM[0]
 #define BG_CHAR_ADDR(n)   (((u8*)BG_VRAM) + (0x4000 * (n)))

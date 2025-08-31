@@ -20,6 +20,13 @@
 #define UI_POS_RING_COUNT_X 32
 #define UI_POS_RING_COUNT_Y 16
 
+#if !EXTENDED_OAM
+#define RINGS_CONTAINER_X ((u32)-3) & 0x1FF
+#else
+#define RINGS_CONTAINER_X -3
+#endif
+#define RINGS_CONTAINER_Y 0
+
 struct Task *gStageUITask = NULL;
 
 const u16 sAnimsAsciiDigits[12][2] = {
@@ -125,7 +132,7 @@ struct Task *CreateStageUI(void)
             s->graphics.dest = ui->digits[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
         }
 
-        ui->digitsTileData[i] = (GET_TILE_NUM(s->graphics.dest) & ONE_CYCLE) | 0x6000;
+        ui->digitsTileData[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
 
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
@@ -220,12 +227,37 @@ struct Task *CreateStageUI(void)
     return gStageUITask;
 }
 
+#if !EXTENDED_OAM
+#define UI_OAM_SET(_oam, _x, _y, _shape, _size, _tileNumPlus)                                                                              \
+    {                                                                                                                                      \
+        (_oam)->all.attr0 = ((_shape) << 14) | ((_y));                                                                                     \
+        (_oam)->all.attr1 = ((_size) << 14) | ((_x));                                                                                      \
+        (_oam)->all.attr2 = (_tileNumPlus);                                                                                                \
+    }
+#else
+#define UI_OAM_SET(_oam, _x, _y, _shape, _size, _tileNumPlus)                                                                              \
+    {                                                                                                                                      \
+        (_oam)->split.x = (_x);                                                                                                            \
+        (_oam)->split.y = (_y);                                                                                                            \
+        (_oam)->split.shape = (_shape);                                                                                                    \
+        (_oam)->split.size = (_size);                                                                                                      \
+        (_oam)->split.tileNum = ((_tileNumPlus)&0x3FF);                                                                                    \
+        (_oam)->split.paletteNum = (((_tileNumPlus)&0xF000) >> 12);                                                                        \
+        (_oam)->split.affineMode = 0;                                                                                                      \
+        (_oam)->split.objMode = 0;                                                                                                         \
+        (_oam)->split.mosaic = 0;                                                                                                          \
+        (_oam)->split.bpp = 0;                                                                                                             \
+        (_oam)->split.priority = 0;                                                                                                        \
+        (_oam)->split.matrixNum = 0;                                                                                                       \
+    }
+#endif
+
 void Task_StageUIMain(void)
 {
     if (!(gStageFlags & STAGE_FLAG__TURN_OFF_HUD)) {
         u32 time;
         s32 score;
-        u32 sl;
+        u32 palId;
         u16 i;
         OamData *oam;
         u32 courseTime;
@@ -246,9 +278,7 @@ void Task_StageUIMain(void)
                     if (oam != (OamData *)iwram_end)
 #endif
                     {
-                        oam->all.attr0 = 31;
-                        oam->all.attr1 = i * 8 + 4;
-                        oam->all.attr2 = ui->digitsTileData[UI_ASCII_SP_RING];
+                        UI_OAM_SET(oam, i * 8 + 4, 31, SPRITE_SHAPE(8x8), SPRITE_SIZE(8x8), ui->digitsTileData[UI_ASCII_SP_RING]);
                     }
                 }
             }
@@ -273,9 +303,7 @@ void Task_StageUIMain(void)
                 if (oam != (OamData *)iwram_end)
 #endif
                 {
-                    oam->all.attr0 = (0x8000 | 14);
-                    oam->all.attr1 = i * 8 + 28;
-                    oam->all.attr2 = ui->digitsTileData[digit];
+                    UI_OAM_SET(oam, i * 8 + 28, 14, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16), ui->digitsTileData[digit]);
                 }
 
                 score -= digit * m;
@@ -288,9 +316,7 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                oam->all.attr0 = DISPLAY_HEIGHT - 18;
-                oam->all.attr1 = (0x4000 | 6);
-                oam->all.attr2 = ui->playerIconTileData;
+                UI_OAM_SET(oam, 6, DISPLAY_HEIGHT - 18, SPRITE_SHAPE(16x16), SPRITE_SIZE(16x16), ui->playerIconTileData);
             }
 
             if (gNumLives > 0)
@@ -308,9 +334,7 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
-                oam->all.attr1 = 30;
-                oam->all.attr2 = ui->digitsTileData[i];
+                UI_OAM_SET(oam, 30, (DISPLAY_HEIGHT - 20), SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16), ui->digitsTileData[i]);
             }
         }
 
@@ -321,9 +345,7 @@ void Task_StageUIMain(void)
         if (oam != (OamData *)iwram_end)
 #endif
         {
-            oam->all.attr0 = (0x4000 | 0);
-            oam->all.attr1 = (0xC000 | ((u32)-3 & 0x1FF));
-            oam->all.attr2 = ui->ringContainerTileData;
+            UI_OAM_SET(oam, RINGS_CONTAINER_X, RINGS_CONTAINER_Y, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ui->ringContainerTileData);
         }
 
         /* Ring */
@@ -339,9 +361,7 @@ void Task_StageUIMain(void)
         if (oam != (OamData *)iwram_end)
 #endif
         {
-            oam->all.attr0 = 8;
-            oam->all.attr1 = (0x4000 | 7);
-            oam->all.attr2 = ui->ringTileData;
+            UI_OAM_SET(oam, 7, 8, SPRITE_SHAPE(16x16), SPRITE_SIZE(16x16), ui->ringTileData);
         }
 
         if (gRingCount > 999) {
@@ -360,7 +380,7 @@ void Task_StageUIMain(void)
         } else {
             u32 processed2;
             u16 processed;
-            sl = (gRingCount == 0) && gStageTime & 0x10 ? 0x7000 : 0;
+            palId = (gRingCount == 0) && gStageTime & 0x10 ? 0x7000 : 0;
 
             { /* 100s */
                 u16 hundreds;
@@ -371,9 +391,7 @@ void Task_StageUIMain(void)
                 if (oam != (OamData *)iwram_end)
 #endif
                 {
-                    oam->all.attr0 = (0x8000 | 0);
-                    oam->all.attr1 = (28 + 0 * 8);
-                    oam->all.attr2 = (ui->digitsTileData[hundreds] | sl);
+                    UI_OAM_SET(oam, 28 + 0 * 8, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16), (ui->digitsTileData[hundreds] | palId));
                 }
                 processed = hundreds * 100;
             }
@@ -387,9 +405,7 @@ void Task_StageUIMain(void)
                 if (oam != (OamData *)iwram_end)
 #endif
                 {
-                    oam->all.attr0 = (0x8000 | 0);
-                    oam->all.attr1 = (28 + 1 * 8);
-                    oam->all.attr2 = (ui->digitsTileData[tens] | sl);
+                    UI_OAM_SET(oam, (28 + 1 * 8), 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16), (ui->digitsTileData[tens] | palId));
                 }
 
                 processed2 = processed + tens * 10;
@@ -404,9 +420,7 @@ void Task_StageUIMain(void)
                 if (oam != (OamData *)iwram_end)
 #endif
                 {
-                    oam->all.attr0 = (0x8000 | 0);
-                    oam->all.attr1 = (28 + 2 * 8);
-                    oam->all.attr2 = (ui->digitsTileData[ones] | sl);
+                    UI_OAM_SET(oam, (28 + 2 * 8), 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16), (ui->digitsTileData[ones] | palId));
                 }
             }
         }
@@ -419,7 +433,7 @@ void Task_StageUIMain(void)
             u32 r1, r5;
             u32 tempTime, tempB;
 
-            sl = 0x6000;
+            palId = 0x6000;
 
             oam = OamMalloc(3);
 
@@ -427,9 +441,8 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                oam->all.attr0 = (0x8000 | 0);
-                oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
-                oam->all.attr2 = (ui->digitsTileData[UI_ASCII_COLON] | sl);
+                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) - 21, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                           (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
             oam = OamMalloc(3);
@@ -438,9 +451,8 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                oam->all.attr0 = (0x8000 | 0);
-                oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
-                oam->all.attr2 = (ui->digitsTileData[UI_ASCII_COLON] | sl);
+                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) + 3, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                           (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
@@ -452,44 +464,44 @@ void Task_StageUIMain(void)
 
             tempTime = gCourseTime;
             tempB = ZONE_TIME_TO_INT(9, 0);
-            sl = 0;
+            palId = 0;
             if (tempTime > tempB) {
-                sl = (-(gStageTime & 0x10)) >> 31;
+                palId = (-(gStageTime & 0x10)) >> 31;
             }
 
             // Milliseconds-L
             sd = &digits[gMillisUnpackTable[r5][0]];
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
             sd->y = 16;
-            sd->palId = sl;
+            sd->palId = palId;
             DisplaySprite(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
             sd->y = 16;
-            sd->palId = sl;
+            sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
             sd->y = 16;
-            sd->palId = sl;
+            sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
             sd->y = 16;
-            sd->palId = sl;
+            sd->palId = palId;
             DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
             sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
-            sd->palId = sl;
+            sd->palId = palId;
             DisplaySprite(sd);
         }
     }

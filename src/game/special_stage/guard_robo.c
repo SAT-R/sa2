@@ -90,11 +90,11 @@ void Task_GuardRoboMain(void)
         u16 angle;
 
         *oam = unkCBB4.unkC;
-        oam += 4;
+        oam += OAM_DATA_COUNT_AFFINE;
         *oam = unkCBB4.unkE;
-        oam += 4;
+        oam += OAM_DATA_COUNT_AFFINE;
         *oam = unkCBB4.unk10;
-        oam += 4;
+        oam += OAM_DATA_COUNT_AFFINE;
         *oam = unkCBB4.unk12;
 
         angle = ((guardRobo->bearing - stage->cameraRotX) + 64) & ONE_CYCLE;
@@ -252,11 +252,11 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     UpdateSpriteAnimation(s);
 
     *oam = 0x100;
-    oam += 4;
+    oam += OAM_DATA_COUNT_AFFINE;
     *oam = 0;
-    oam += 4;
+    oam += OAM_DATA_COUNT_AFFINE;
     *oam = 0;
-    oam += 4;
+    oam += OAM_DATA_COUNT_AFFINE;
     *oam = 0x100;
 }
 
