@@ -269,40 +269,20 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
 
 void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 {
-#if !EXTENDED_OAM
     u16 *affine = &gOamBuffer[affineIndex * 4].all.affineParam;
     s16 res;
 
     res = Div(0x10000, p1);
-    affine[0] = I(COS_24_8(angle) * res);
+    affine[0 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
 
     res = Div(0x10000, p1);
-    affine[4] = I(SIN_24_8(angle) * res);
+    affine[1 * OAM_DATA_COUNT_AFFINE] = I(SIN_24_8(angle) * res);
 
     res = Div(0x10000, p2);
-    affine[8] = I((-(SIN(angle)) >> 6) * res);
+    affine[2 * OAM_DATA_COUNT_AFFINE] = I((-(SIN(angle)) >> 6) * res);
 
     res = Div(0x10000, p2);
-    affine[12] = I(COS_24_8(angle) * res);
-#else
-    OamData *oam = &gOamBuffer[affineIndex * 4];
-    s16 res;
-
-    res = Div(0x10000, p1);
-    oam->all.affineParam = I(COS_24_8(angle) * res);
-    oam++;
-
-    res = Div(0x10000, p1);
-    oam->all.affineParam = I(SIN_24_8(angle) * res);
-    oam++;
-
-    res = Div(0x10000, p2);
-    oam->all.affineParam = I((-(SIN(angle)) >> 6) * res);
-    oam++;
-
-    res = Div(0x10000, p2);
-    oam->all.affineParam = I(COS_24_8(angle) * res);
-#endif
+    affine[3 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
 }
 
 // Similar to sub_8004ABC and sub_8004E14
@@ -317,70 +297,37 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
         s16 x16, y16;
+        s16 *affine;
         big.affineIndex = s->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
 
-        {
-#if !EXTENDED_OAM
-            s16 *affine = (void *)&gOamBuffer[big.affineIndex * 4].all.affineParam;
-
+        affine = (void *)&gOamBuffer[big.affineIndex * 4].all.affineParam;
 #if 0
             sub_80047A0(transform->rotation & ONE_CYCLE, transform->qScaleX, transform->qScaleY,
                     big.affineIndex);
 #else
-            big.qDirX = COS_24_8(transform->rotation & ONE_CYCLE);
-            big.qDirY = SIN_24_8(transform->rotation & ONE_CYCLE);
+        big.qDirX = COS_24_8(transform->rotation & ONE_CYCLE);
+        big.qDirY = SIN_24_8(transform->rotation & ONE_CYCLE);
 
-            big.unkC[0] = transform->qScaleX;
-            big.unkC[1] = transform->qScaleY;
-            // __set_UnkC
+        big.unkC[0] = transform->qScaleX;
+        big.unkC[1] = transform->qScaleY;
+        // __set_UnkC
 
-            res = Div(0x10000, big.unkC[0]);
-            x16 = big.qDirX;
-            affine[0] = (x16 * res) >> 8;
+        res = Div(0x10000, big.unkC[0]);
+        x16 = big.qDirX;
+        affine[0 * OAM_DATA_COUNT_AFFINE] = (x16 * res) >> 8;
 
-            res = Div(0x10000, big.unkC[0]);
-            y16 = big.qDirY;
-            affine[4] = (y16 * res) >> 8;
+        res = Div(0x10000, big.unkC[0]);
+        y16 = big.qDirY;
+        affine[1 * OAM_DATA_COUNT_AFFINE] = (y16 * res) >> 8;
 
-            res = Div(0x10000, big.unkC[1]);
-            y16 = big.qDirY;
-            affine[8] = (-y16 * res) >> 8;
+        res = Div(0x10000, big.unkC[1]);
+        y16 = big.qDirY;
+        affine[2 * OAM_DATA_COUNT_AFFINE] = (-y16 * res) >> 8;
 
-            res = Div(0x10000, big.unkC[1]);
-            x16 = big.qDirX;
-            affine[12] = (x16 * res) >> 8;
+        res = Div(0x10000, big.unkC[1]);
+        x16 = big.qDirX;
+        affine[3 * OAM_DATA_COUNT_AFFINE] = (x16 * res) >> 8;
 #endif
-#else // EXTENDED_OAM
-            OamData *oam = &gOamBuffer[big.affineIndex * 4];
-
-            big.qDirX = COS_24_8(transform->rotation & ONE_CYCLE);
-            big.qDirY = SIN_24_8(transform->rotation & ONE_CYCLE);
-
-            big.unkC[0] = transform->qScaleX;
-            big.unkC[1] = transform->qScaleY;
-            // __set_UnkC
-
-            res = Div(0x10000, big.unkC[0]);
-            x16 = big.qDirX;
-            oam->all.affineParam = (x16 * res) >> 8;
-            oam++;
-
-            res = Div(0x10000, big.unkC[0]);
-            y16 = big.qDirY;
-            oam->all.affineParam = (y16 * res) >> 8;
-            oam++;
-
-            res = Div(0x10000, big.unkC[1]);
-            y16 = big.qDirY;
-            oam->all.affineParam = (-y16 * res) >> 8;
-            oam++;
-
-            res = Div(0x10000, big.unkC[1]);
-            x16 = big.qDirX;
-            oam->all.affineParam = (x16 * res) >> 8;
-            oam++;
-#endif
-        }
 
         // __post_Divs
 
@@ -471,7 +418,6 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
     UnkSpriteStruct us;
     if (sprite->dimensions != (void *)-1) {
         const SpriteOffset *sprDims = sprite->dimensions;
-#if !EXTENDED_OAM
         u16 *affine;
 
         us.affineIndex = sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
@@ -482,32 +428,10 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
         us.unkC[0] = I(transform->qScaleX * gUnknown_030017F0);
         us.unkC[1] = I(transform->qScaleY * gUnknown_03005394);
 
-        affine[0] = I(Div(Q(256), us.unkC[0]) * us.qDirX);
-        affine[4] = I(Div(Q(256), us.unkC[0]) * us.qDirY);
-        affine[8] = I(Div(Q(256), us.unkC[1]) * -us.qDirY);
-        affine[12] = I(Div(Q(256), us.unkC[1]) * us.qDirX);
-#else
-        {
-            OamData *oam;
-
-            us.affineIndex = sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
-            oam = &gOamBuffer[us.affineIndex * 4];
-
-            us.qDirX = COS_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
-            us.qDirY = SIN_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
-            us.unkC[0] = I(transform->qScaleX * gUnknown_030017F0);
-            us.unkC[1] = I(transform->qScaleY * gUnknown_03005394);
-
-            oam->all.affineParam = I(Div(Q(256), us.unkC[0]) * us.qDirX);
-            oam++;
-            oam->all.affineParam = I(Div(Q(256), us.unkC[0]) * us.qDirY);
-            oam++;
-            oam->all.affineParam = I(Div(Q(256), us.unkC[1]) * -us.qDirY);
-            oam++;
-            oam->all.affineParam = I(Div(Q(256), us.unkC[1]) * us.qDirX);
-            oam++;
-        }
-#endif
+        affine[0 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[0]) * us.qDirX);
+        affine[1 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[0]) * us.qDirY);
+        affine[2 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[1]) * -us.qDirY);
+        affine[3 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[1]) * us.qDirX);
 
         if (transform->qScaleX < 0) {
             us.unkC[0] = I(-transform->qScaleX * gUnknown_030017F0);
