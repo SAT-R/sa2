@@ -733,7 +733,7 @@ void DisplaySprite(Sprite *sprite)
                 sprX = oam->split.x;
                 sprY = oam->split.y;
 
-                oam->split.affineMode &= ~0x1;
+                oam->split.affineMode &= ~ST_OAM_AFFINE_ON_MASK;
                 oam->split.paletteNum += sprite->palId;
 
 #if !PLATFORM_GBA && !PLATFORM_SDL
@@ -745,9 +745,9 @@ void DisplaySprite(Sprite *sprite)
 #endif
 
                 if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
-                    oam->split.affineMode |= 1;
+                    oam->split.affineMode |= ST_OAM_AFFINE_ON_MASK;
                     if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
-                        oam->split.affineMode |= 2;
+                        oam->split.affineMode |= ST_OAM_AFFINE_DOUBLE_MASK;
                     }
                     oam->split.matrixNum = (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE);
                 } else {
@@ -792,7 +792,6 @@ void DisplaySprite(Sprite *sprite)
     }
 }
 
-#ifndef NON_MATCHING
 // TODO: Make this compatible with EXTENDED_OAM, maybe?
 //       It's unused though, anyway.
 //       Technically this could just be a loop that calls DisplaySprite()...
@@ -912,7 +911,6 @@ void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
         }
     }
 }
-#endif
 
 // The parameter to this determines the order this sprite is expected to be drawn at.
 //
