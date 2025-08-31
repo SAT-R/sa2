@@ -587,16 +587,20 @@ void DisplaySprite(Sprite *sprite)
                     sprite->oamBaseIndex = gOamFreeIndex - 1;
                 }
 
-#if !EXTENDED_OAM
                 // oamIndex is a byte, why are they ANDing with 0x3FFF?
                 DmaCopy16(3, &oamData[((sprDims->oamIndex & 0x3FFF) + i) * OAM_DATA_COUNT_NO_AFFINE], oam, sizeof(OamDataShort));
-
+#if !EXTENDED_OAM
                 sprX = oam->all.attr1 & 0x1FF;
                 sprY = oam->all.attr0 & 0xFF;
                 oam->all.attr1 &= 0xFE00;
                 oam->all.attr0 &= 0xFE00;
-
                 oam->all.attr2 += sprite->palId << 12;
+#else
+                sprX = oam->split.x;
+                sprY = oam->split.y;
+                oam->split.affineMode &= ~ST_OAM_AFFINE_ON_MASK;
+                oam->split.paletteNum += sprite->palId;
+#endif
 
 #if !PLATFORM_GBA && !PLATFORM_SDL
                 // TEMP
@@ -605,40 +609,68 @@ void DisplaySprite(Sprite *sprite)
                 Platform_DisplaySprite(sprite, oam->split.paletteNum);
                 return;
 #endif
-
                 if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+#if !EXTENDED_OAM
                     oam->all.attr0 |= 0x100;
+#else
+                    oam->split.affineMode |= ST_OAM_AFFINE_NORMAL;
+#endif
                     if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+#if !EXTENDED_OAM
                         oam->all.attr0 |= 0x200;
+#else
+                        oam->split.affineMode |= ST_OAM_AFFINE_DOUBLE;
+#endif
                     }
+#if !EXTENDED_OAM
                     oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
+#else
+                    oam->split.matrixNum = (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE);
+#endif
                 } else {
-                    u32 shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
-                    u32 flipY;
-                    u32 r6;
-
+                    u32 flipY, r6, shapeAndSize;
+#if !EXTENDED_OAM
+                    shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
                     shapeAndSize |= ((oam->all.attr1 & 0xC000) >> 14);
                     flipY = sprite->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
+#else
+                    shapeAndSize = oam->split.shape << 2;
+                    shapeAndSize |= oam->split.size;
+                    flipY = sprite->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
+#endif
                     r6 = 1;
 
                     // y-flip
                     if ((((sprDims->flip >> 1) ^ flipY) & r6) != 0) {
+#if !EXTENDED_OAM
                         oam->all.attr1 ^= 0x2000;
+#else
+                        oam->split.matrixNum ^= (1 << 4);
+#endif
                         sprY = sprHeight - gOamShapesSizes[shapeAndSize][1] - sprY;
                     }
 
                     // x-flip
                     if (((sprite->frameFlags >> SPRITE_FLAG_SHIFT_X_FLIP) & r6) != (sprDims->flip & 1)) {
+#if !EXTENDED_OAM
                         oam->all.attr1 ^= 0x1000;
+#else
+                        oam->split.matrixNum ^= (1 << 3);
+#endif
                         sprX = sprWidth - gOamShapesSizes[shapeAndSize][0] - sprX;
                     }
                 }
 
                 if (mosaicHVSizes != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
+#if !EXTENDED_OAM
                     // Enable mosaic bit
                     oam->all.attr0 |= 0x1000;
+#else
+                    oam->split.mosaic = 1;
+#endif
                 }
 
+#if !EXTENDED_OAM
                 oam->all.attr0 |= (sprite->frameFlags & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
                 oam->all.attr2 |= (sprite->frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 2;
                 oam->all.attr0 += ((y + sprY) & 0xFF);
@@ -648,59 +680,7 @@ void DisplaySprite(Sprite *sprite)
                     oam->all.attr2 += oam->all.attr2 & 0x3FF;
                 }
                 oam->all.attr2 += GET_TILE_NUM(sprite->graphics.dest);
-#else /* EXTENDED_OAM */
-                // oamIndex is a byte, why are they ANDing with 0x3FFF?
-                s32 sub_index = ((sprDims->oamIndex & 0x3FFF) + i);
-                s32 full_index = sub_index * OAM_DATA_COUNT_NO_AFFINE;
-                DmaCopy16(3, &oamData[full_index], oam, sizeof(OamDataShort));
-
-                sprX = oam->split.x;
-                sprY = oam->split.y;
-
-                oam->split.affineMode &= ~ST_OAM_AFFINE_ON_MASK;
-                oam->split.paletteNum += sprite->palId;
-
-#if !PLATFORM_GBA && !PLATFORM_SDL
-                // TEMP
-                // Quick hack for getting output in OpenGL test
-                // The whole function call should be replaced by this!
-                Platform_DisplaySprite(sprite, oam->split.paletteNum);
-                return;
-#endif
-
-                if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
-                    oam->split.affineMode |= ST_OAM_AFFINE_ON_MASK;
-                    if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
-                        oam->split.affineMode |= ST_OAM_AFFINE_DOUBLE_MASK;
-                    }
-                    oam->split.matrixNum = (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE);
-                } else {
-                    u32 shapeAndSize = oam->split.shape << 2;
-                    u32 flipY;
-                    u32 r6;
-
-                    shapeAndSize |= oam->split.size;
-                    flipY = sprite->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
-                    r6 = 1;
-
-                    // y-flip
-                    if ((((sprDims->flip >> 1) ^ flipY) & r6) != 0) {
-                        oam->split.matrixNum ^= (1 << 4);
-                        sprY = sprHeight - gOamShapesSizes[shapeAndSize][1] - sprY;
-                    }
-
-                    // x-flip
-                    if (((sprite->frameFlags >> SPRITE_FLAG_SHIFT_X_FLIP) & r6) != (sprDims->flip & 1)) {
-                        oam->split.matrixNum ^= (1 << 3);
-                        sprX = sprWidth - gOamShapesSizes[shapeAndSize][0] - sprX;
-                    }
-                }
-
-                if (mosaicHVSizes != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
-                    // Enable mosaic bit
-                    oam->split.mosaic = 1;
-                }
-
+#else
                 oam->split.objMode = (sprite->frameFlags & SPRITE_FLAG_MASK_OBJ_MODE) >> SPRITE_FLAG_SHIFT_OBJ_MODE;
                 oam->split.priority = (sprite->frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;
                 oam->split.x = x + sprX;
@@ -719,7 +699,7 @@ void DisplaySprite(Sprite *sprite)
 // TODO: Make this compatible with EXTENDED_OAM, maybe?
 //       It's unused though, anyway.
 //       Technically this could just be a loop that calls DisplaySprite()...
-void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
+UNUSED void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
 {
     vs32 x, y;
     s32 sprWidth, sprHeight;

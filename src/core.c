@@ -573,15 +573,10 @@ static void ClearOamBufferDma(void)
 #endif
     }
     gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
-#if !EXTENDED_OAM
-    DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
-    DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
-    DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
-    DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
-#else
-    DmaFill16(3, 0x200, gOamBuffer, OAM_SIZE);
-#endif
-
+    DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 0, OAM_SIZE / 4);
+    DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 1, OAM_SIZE / 4);
+    DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 2, OAM_SIZE / 4);
+    DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 3, OAM_SIZE / 4);
     gNumVBlankCallbacks = 0;
     gFlags &= ~FLAGS_10;
 }
