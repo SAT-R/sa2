@@ -60366,7 +60366,11 @@ static const SpriteOffset spriteDim_8149ABC[14] = {
         .flip = 0x00,
         .oamIndex = 52,
         .numSubframes = 4,
+#ifdef JAPAN
+        .width = 112,
+#else
         .width = 104,
+#endif
         .height = 16,
         .offsetX = 52,
         .offsetY = 12,
@@ -64068,10 +64072,17 @@ static const SpriteOffset spriteDim_814ADDC[5] = {
     {
         .flip = 0x00,
         .oamIndex = 15,
+#ifdef JAPAN
+        .numSubframes = 7,
+        .width = 184,
+        .height = 8,
+        .offsetX = 92,
+#else
         .numSubframes = 5,
         .width = 136,
         .height = 8,
         .offsetX = 68,
+#endif
         .offsetY = 4,
     },
 };
@@ -64967,9 +64978,17 @@ static const SpriteOffset spriteDim_814B220[1] = {
     {
         .flip = 0x00,
         .oamIndex = 0,
+#ifdef JAPAN
+        .numSubframes = 8,
+#else
         .numSubframes = 4,
+#endif
         .width = 104,
+#ifdef JAPAN
+        .height = 24,
+#else
         .height = 16,
+#endif
         .offsetX = 52,
         .offsetY = 12,
     },

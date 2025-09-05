@@ -16575,6 +16575,9 @@ const s32 anim_0362__v0_l0[] = { // 0x0810C324
     PALETTE(22, 16, 0x0)
     TILES(0x13059, 16)
     HITBOX(0, -8, -8, 8, 8)
+#ifdef JAPAN
+    HITBOX(1, -8, -8, 8, 8)
+#endif
     SHOW_FRAME(2, 0)
 
     TILES(0x13069, 16)
@@ -16591,8 +16594,11 @@ const s32 anim_0362__v0_l0[] = { // 0x0810C324
 
     TILES(0x130A9, 16)
     SHOW_FRAME(2, 5)
-
+#ifdef JAPAN
+    JUMP_BACK(39)
+#else
     JUMP_BACK(36)
+#endif
 };
 
 const s32 * const anim_0362[1] = {
@@ -39819,6 +39825,10642 @@ const s32 anim_0953__v12_l0[] = { // 0x0812A794
     END()
 };
 
+// TODO: these animations are not super different
+// they just reference different tiles probably
+// because an animation has slightly more/less tiles
+// above this. If we could compile these without tile
+// numbers hard coded then this wouldn't be needed
+#ifdef JAPAN
+const s32 anim_0953__v13_l0[] = { // 0x0812A0BC
+    PALETTE(690, 16, 0x50)
+    TILES(0x24796, 28)
+    SHOW_FRAME(1, 13)
+
+    END()
+};
+
+const s32 * const anim_0953[14] = {
+    anim_0953__v0_l0,
+    anim_0953__v1_l0,
+    anim_0953__v2_l0,
+    anim_0953__v3_l0,
+    anim_0953__v4_l0,
+    anim_0953__v5_l0,
+    anim_0953__v6_l0,
+    anim_0953__v7_l0,
+    anim_0953__v8_l0,
+    anim_0953__v9_l0,
+    anim_0953__v10_l0,
+    anim_0953__v11_l0,
+    anim_0953__v12_l0,
+    anim_0953__v13_l0,
+};
+
+const s32 anim_0954__v0_l0[] = { // 0x0812A118
+    PALETTE(688, 16, 0x10)
+    TILES(0x247B2, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0954__v1_l0[] = { // 0x0812A13C
+    PALETTE(690, 16, 0x50)
+    TILES(0x247C4, 48)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0954__v2_l0[] = { // 0x0812A160
+    PALETTE(690, 16, 0x50)
+    TILES(0x247F4, 48)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0954__v3_l0[] = { // 0x0812A184
+    PALETTE(691, 16, 0x0)
+    TILES(0x24824, 3)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0954__v4_l0[] = { // 0x0812A1A8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24827, 3)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0954__v5_l0[] = { // 0x0812A1CC
+    PALETTE(691, 16, 0x0)
+    TILES(0x2482A, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0954__v6_l0[] = { // 0x0812A1F0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24832, 2)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0954__v7_l0[] = { // 0x0812A214
+    PALETTE(691, 16, 0x0)
+    TILES(0x24834, 4)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0954__v8_l0[] = { // 0x0812A238
+    PALETTE(691, 16, 0x0)
+    TILES(0x24838, 10)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0954[9] = {
+    anim_0954__v0_l0,
+    anim_0954__v1_l0,
+    anim_0954__v2_l0,
+    anim_0954__v3_l0,
+    anim_0954__v4_l0,
+    anim_0954__v5_l0,
+    anim_0954__v6_l0,
+    anim_0954__v7_l0,
+    anim_0954__v8_l0,
+};
+
+const s32 anim_0955__v0_l0[] = { // 0x0812A280
+    PALETTE(691, 16, 0x0)
+    TILES(0x24842, 4)
+    SHOW_FRAME(1, 0)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v1_l0[] = { // 0x0812A2A8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24846, 4)
+    SHOW_FRAME(1, 1)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v2_l0[] = { // 0x0812A2D0
+    PALETTE(691, 16, 0x0)
+    TILES(0x2484A, 4)
+    SHOW_FRAME(1, 2)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v3_l0[] = { // 0x0812A2F8
+    PALETTE(691, 16, 0x0)
+    TILES(0x2484E, 4)
+    SHOW_FRAME(1, 3)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v4_l0[] = { // 0x0812A320
+    PALETTE(691, 16, 0x0)
+    TILES(0x24852, 4)
+    SHOW_FRAME(1, 4)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v5_l0[] = { // 0x0812A348
+    PALETTE(691, 16, 0x0)
+    TILES(0x24856, 4)
+    SHOW_FRAME(1, 5)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v6_l0[] = { // 0x0812A370
+    PALETTE(691, 16, 0x0)
+    TILES(0x2485A, 4)
+    SHOW_FRAME(1, 6)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v7_l0[] = { // 0x0812A398
+    PALETTE(691, 16, 0x0)
+    TILES(0x2485E, 4)
+    SHOW_FRAME(1, 7)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v8_l0[] = { // 0x0812A3C0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24862, 4)
+    SHOW_FRAME(1, 8)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v9_l0[] = { // 0x0812A3E8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24866, 4)
+    SHOW_FRAME(1, 9)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v10_l0[] = { // 0x0812A410
+    PALETTE(691, 16, 0x0)
+    TILES(0x2486A, 1)
+    SHOW_FRAME(1, 10)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v11_l0[] = { // 0x0812A438
+    PALETTE(691, 16, 0x0)
+    TILES(0x2486B, 4)
+    SHOW_FRAME(1, 11)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v12_l0[] = { // 0x0812A460
+    PALETTE(691, 16, 0x0)
+    TILES(0x2486F, 4)
+    SHOW_FRAME(1, 12)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v13_l0[] = { // 0x0812A488
+    PALETTE(691, 16, 0x0)
+    TILES(0x24873, 4)
+    SHOW_FRAME(1, 13)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v14_l0[] = { // 0x0812A4B0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24877, 4)
+    SHOW_FRAME(1, 14)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v15_l0[] = { // 0x0812A4D8
+    PALETTE(691, 16, 0x0)
+    TILES(0x2487B, 4)
+    SHOW_FRAME(1, 15)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v16_l0[] = { // 0x0812A500
+    PALETTE(691, 16, 0x0)
+    TILES(0x2487F, 4)
+    SHOW_FRAME(1, 16)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v17_l0[] = { // 0x0812A528
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v18_l0[] = { // 0x0812A544
+    PALETTE(691, 16, 0x0)
+    TILES(0x24883, 4)
+    SHOW_FRAME(1, 17)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v19_l0[] = { // 0x0812A56C
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v20_l0[] = { // 0x0812A588
+    PALETTE(691, 16, 0x0)
+    TILES(0x24887, 4)
+    SHOW_FRAME(1, 18)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v21_l0[] = { // 0x0812A5B0
+    PALETTE(691, 16, 0x0)
+    TILES(0x2488B, 4)
+    SHOW_FRAME(1, 19)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v22_l0[] = { // 0x0812A5D8
+    PALETTE(691, 16, 0x0)
+    TILES(0x2488F, 4)
+    SHOW_FRAME(1, 20)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v23_l0[] = { // 0x0812A600
+    PALETTE(691, 16, 0x0)
+    TILES(0x24893, 4)
+    SHOW_FRAME(1, 21)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v24_l0[] = { // 0x0812A628
+    PALETTE(691, 16, 0x0)
+    TILES(0x24897, 4)
+    SHOW_FRAME(1, 22)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v25_l0[] = { // 0x0812A650
+    PALETTE(691, 16, 0x0)
+    TILES(0x2489B, 4)
+    SHOW_FRAME(1, 23)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v26_l0[] = { // 0x0812A678
+    PALETTE(691, 16, 0x0)
+    TILES(0x2489F, 4)
+    SHOW_FRAME(1, 24)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v27_l0[] = { // 0x0812A6A0
+    PALETTE(691, 16, 0x0)
+    TILES(0x248A3, 4)
+    SHOW_FRAME(1, 25)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v28_l0[] = { // 0x0812A6C8
+    PALETTE(691, 16, 0x0)
+    TILES(0x248A7, 4)
+    SHOW_FRAME(1, 26)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v29_l0[] = { // 0x0812A6F0
+    PALETTE(691, 16, 0x0)
+    TILES(0x248AB, 4)
+    SHOW_FRAME(1, 27)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v30_l0[] = { // 0x0812A718
+    PALETTE(691, 16, 0x0)
+    TILES(0x248AF, 4)
+    SHOW_FRAME(1, 28)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v31_l0[] = { // 0x0812A740
+    PALETTE(691, 16, 0x0)
+    TILES(0x248B3, 4)
+    SHOW_FRAME(1, 29)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v32_l0[] = { // 0x0812A768
+    PALETTE(691, 16, 0x0)
+    TILES(0x248B7, 4)
+    SHOW_FRAME(1, 30)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v33_l0[] = { // 0x0812A790
+    PALETTE(691, 16, 0x0)
+    TILES(0x248BB, 4)
+    SHOW_FRAME(1, 31)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v34_l0[] = { // 0x0812A7B8
+    PALETTE(691, 16, 0x0)
+    TILES(0x248BF, 4)
+    SHOW_FRAME(1, 32)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v35_l0[] = { // 0x0812A7E0
+    PALETTE(691, 16, 0x0)
+    TILES(0x248C3, 4)
+    SHOW_FRAME(1, 33)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v36_l0[] = { // 0x0812A808
+    PALETTE(691, 16, 0x0)
+    TILES(0x248C7, 4)
+    SHOW_FRAME(1, 34)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v37_l0[] = { // 0x0812A830
+    PALETTE(691, 16, 0x0)
+    TILES(0x248CB, 4)
+    SHOW_FRAME(1, 35)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v38_l0[] = { // 0x0812A858
+    PALETTE(691, 16, 0x0)
+    TILES(0x248CF, 4)
+    SHOW_FRAME(1, 36)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v39_l0[] = { // 0x0812A880
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v40_l0[] = { // 0x0812A89C
+    PALETTE(691, 16, 0x0)
+    TILES(0x248D3, 4)
+    SHOW_FRAME(1, 37)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v41_l0[] = { // 0x0812A8C4
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v42_l0[] = { // 0x0812A8E0
+    PALETTE(691, 16, 0x0)
+    TILES(0x248D7, 4)
+    SHOW_FRAME(1, 38)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v43_l0[] = { // 0x0812A908
+    PALETTE(691, 16, 0x0)
+    TILES(0x248DB, 2)
+    SHOW_FRAME(1, 39)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v44_l0[] = { // 0x0812A930
+    PALETTE(691, 16, 0x0)
+    TILES(0x248DD, 4)
+    SHOW_FRAME(1, 40)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v45_l0[] = { // 0x0812A958
+    PALETTE(691, 16, 0x0)
+    TILES(0x248E1, 4)
+    SHOW_FRAME(1, 41)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v46_l0[] = { // 0x0812A980
+    PALETTE(691, 16, 0x0)
+    TILES(0x248E5, 4)
+    SHOW_FRAME(1, 42)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v47_l0[] = { // 0x0812A9A8
+    PALETTE(691, 16, 0x0)
+    TILES(0x248E9, 4)
+    SHOW_FRAME(1, 43)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v48_l0[] = { // 0x0812A9D0
+    PALETTE(691, 16, 0x0)
+    TILES(0x248ED, 4)
+    SHOW_FRAME(1, 44)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v49_l0[] = { // 0x0812A9F8
+    PALETTE(691, 16, 0x0)
+    TILES(0x248F1, 4)
+    SHOW_FRAME(1, 45)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v50_l0[] = { // 0x0812AA20
+    PALETTE(691, 16, 0x0)
+    TILES(0x248F5, 4)
+    SHOW_FRAME(1, 46)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v51_l0[] = { // 0x0812AA48
+    PALETTE(691, 16, 0x0)
+    TILES(0x248F9, 4)
+    SHOW_FRAME(1, 47)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v52_l0[] = { // 0x0812AA70
+    PALETTE(691, 16, 0x0)
+    TILES(0x248FD, 4)
+    SHOW_FRAME(1, 48)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v53_l0[] = { // 0x0812AA98
+    PALETTE(691, 16, 0x0)
+    TILES(0x24901, 4)
+    SHOW_FRAME(1, 49)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v54_l0[] = { // 0x0812AAC0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24905, 4)
+    SHOW_FRAME(1, 50)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v55_l0[] = { // 0x0812AAE8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24909, 4)
+    SHOW_FRAME(1, 51)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v56_l0[] = { // 0x0812AB10
+    PALETTE(691, 16, 0x0)
+    TILES(0x2490D, 4)
+    SHOW_FRAME(1, 52)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v57_l0[] = { // 0x0812AB38
+    PALETTE(691, 16, 0x0)
+    TILES(0x24911, 4)
+    SHOW_FRAME(1, 53)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v58_l0[] = { // 0x0812AB60
+    PALETTE(691, 16, 0x0)
+    TILES(0x24915, 4)
+    SHOW_FRAME(1, 54)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v59_l0[] = { // 0x0812AB88
+    PALETTE(691, 16, 0x0)
+    TILES(0x24919, 4)
+    SHOW_FRAME(1, 55)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v60_l0[] = { // 0x0812ABB0
+    PALETTE(691, 16, 0x0)
+    TILES(0x2491D, 4)
+    SHOW_FRAME(1, 56)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v61_l0[] = { // 0x0812ABD8
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v62_l0[] = { // 0x0812ABF4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24921, 4)
+    SHOW_FRAME(1, 57)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v63_l0[] = { // 0x0812AC1C
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v64_l0[] = { // 0x0812AC38
+    PALETTE(691, 16, 0x0)
+    TILES(0x24925, 4)
+    SHOW_FRAME(1, 58)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v65_l0[] = { // 0x0812AC60
+    PALETTE(691, 16, 0x0)
+    TILES(0x24929, 4)
+    SHOW_FRAME(1, 59)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v66_l0[] = { // 0x0812AC88
+    PALETTE(691, 16, 0x0)
+    TILES(0x2492D, 4)
+    SHOW_FRAME(1, 60)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v67_l0[] = { // 0x0812ACB0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24931, 4)
+    SHOW_FRAME(1, 61)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v68_l0[] = { // 0x0812ACD8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24935, 4)
+    SHOW_FRAME(1, 62)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v69_l0[] = { // 0x0812AD00
+    PALETTE(691, 16, 0x0)
+    TILES(0x24939, 4)
+    SHOW_FRAME(1, 63)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v70_l0[] = { // 0x0812AD28
+    PALETTE(691, 16, 0x0)
+    TILES(0x2493D, 4)
+    SHOW_FRAME(1, 64)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v71_l0[] = { // 0x0812AD50
+    PALETTE(691, 16, 0x0)
+    TILES(0x24941, 4)
+    SHOW_FRAME(1, 65)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v72_l0[] = { // 0x0812AD78
+    PALETTE(691, 16, 0x0)
+    TILES(0x24945, 4)
+    SHOW_FRAME(1, 66)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v73_l0[] = { // 0x0812ADA0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24949, 4)
+    SHOW_FRAME(1, 67)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v74_l0[] = { // 0x0812ADC8
+    PALETTE(691, 16, 0x0)
+    TILES(0x2494D, 4)
+    SHOW_FRAME(1, 68)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v75_l0[] = { // 0x0812ADF0
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v76_l0[] = { // 0x0812AE0C
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v77_l0[] = { // 0x0812AE28
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v78_l0[] = { // 0x0812AE44
+    PALETTE(691, 16, 0x0)
+    TILES(0x24951, 4)
+    SHOW_FRAME(1, 69)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v79_l0[] = { // 0x0812AE6C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24955, 2)
+    SHOW_FRAME(1, 70)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v80_l0[] = { // 0x0812AE94
+    PALETTE(691, 16, 0x0)
+    TILES(0x24957, 4)
+    SHOW_FRAME(1, 71)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v81_l0[] = { // 0x0812AEBC
+    PALETTE(691, 16, 0x0)
+    TILES(0x2495B, 4)
+    SHOW_FRAME(1, 72)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v82_l0[] = { // 0x0812AEE4
+    PALETTE(691, 16, 0x0)
+    TILES(0x2495F, 4)
+    SHOW_FRAME(1, 73)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v83_l0[] = { // 0x0812AF0C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24963, 4)
+    SHOW_FRAME(1, 74)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v84_l0[] = { // 0x0812AF34
+    PALETTE(691, 16, 0x0)
+    TILES(0x24967, 2)
+    SHOW_FRAME(1, 75)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v85_l0[] = { // 0x0812AF5C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24969, 4)
+    SHOW_FRAME(1, 76)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v86_l0[] = { // 0x0812AF84
+    PALETTE(691, 16, 0x0)
+    TILES(0x2496D, 4)
+    SHOW_FRAME(1, 77)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v87_l0[] = { // 0x0812AFAC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24971, 4)
+    SHOW_FRAME(1, 78)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v88_l0[] = { // 0x0812AFD4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24975, 4)
+    SHOW_FRAME(1, 79)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v89_l0[] = { // 0x0812AFFC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24979, 2)
+    SHOW_FRAME(1, 80)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v90_l0[] = { // 0x0812B024
+    PALETTE(691, 16, 0x0)
+    TILES(0x2497B, 4)
+    SHOW_FRAME(1, 81)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v91_l0[] = { // 0x0812B04C
+    PALETTE(691, 16, 0x0)
+    TILES(0x2497F, 2)
+    SHOW_FRAME(1, 82)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v92_l0[] = { // 0x0812B074
+    PALETTE(691, 16, 0x0)
+    TILES(0x24981, 4)
+    SHOW_FRAME(1, 83)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v93_l0[] = { // 0x0812B09C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24985, 4)
+    SHOW_FRAME(1, 84)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v94_l0[] = { // 0x0812B0C4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24989, 4)
+    SHOW_FRAME(1, 85)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v95_l0[] = { // 0x0812B0EC
+    PALETTE(691, 16, 0x0)
+    TILES(0x2498D, 4)
+    SHOW_FRAME(1, 86)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v96_l0[] = { // 0x0812B114
+    PALETTE(691, 16, 0x0)
+    TILES(0x24991, 4)
+    SHOW_FRAME(1, 87)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v97_l0[] = { // 0x0812B13C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24995, 4)
+    SHOW_FRAME(1, 88)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v98_l0[] = { // 0x0812B164
+    PALETTE(691, 16, 0x0)
+    TILES(0x24999, 4)
+    SHOW_FRAME(1, 89)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v99_l0[] = { // 0x0812B18C
+    PALETTE(691, 16, 0x0)
+    TILES(0x2499D, 4)
+    SHOW_FRAME(1, 90)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v100_l0[] = { // 0x0812B1B4
+    PALETTE(691, 16, 0x0)
+    TILES(0x249A1, 4)
+    SHOW_FRAME(1, 91)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v101_l0[] = { // 0x0812B1DC
+    PALETTE(691, 16, 0x0)
+    TILES(0x249A5, 4)
+    SHOW_FRAME(1, 92)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v102_l0[] = { // 0x0812B204
+    PALETTE(691, 16, 0x0)
+    TILES(0x249A9, 4)
+    SHOW_FRAME(1, 93)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v103_l0[] = { // 0x0812B22C
+    PALETTE(691, 16, 0x0)
+    TILES(0x249AD, 4)
+    SHOW_FRAME(1, 94)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v104_l0[] = { // 0x0812B254
+    PALETTE(691, 16, 0x0)
+    TILES(0x249B1, 4)
+    SHOW_FRAME(1, 95)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v105_l0[] = { // 0x0812B27C
+    PALETTE(691, 16, 0x0)
+    TILES(0x249B5, 4)
+    SHOW_FRAME(1, 96)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v106_l0[] = { // 0x0812B2A4
+    PALETTE(691, 16, 0x0)
+    TILES(0x249B9, 4)
+    SHOW_FRAME(1, 97)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v107_l0[] = { // 0x0812B2CC
+    PALETTE(691, 16, 0x0)
+    TILES(0x249BD, 4)
+    SHOW_FRAME(1, 98)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v108_l0[] = { // 0x0812B2F4
+    PALETTE(691, 16, 0x0)
+    TILES(0x249C1, 4)
+    SHOW_FRAME(1, 99)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v109_l0[] = { // 0x0812B31C
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v110_l0[] = { // 0x0812B338
+    PALETTE(691, 16, 0x0)
+    TILES(0x249C5, 4)
+    SHOW_FRAME(1, 100)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v111_l0[] = { // 0x0812B360
+    PALETTE(691, 16, 0x0)
+    TILES(0x249C9, 4)
+    SHOW_FRAME(1, 101)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v112_l0[] = { // 0x0812B388
+    PALETTE(691, 16, 0x0)
+    TILES(0x249CD, 4)
+    SHOW_FRAME(1, 102)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v113_l0[] = { // 0x0812B3B0
+    PALETTE(691, 16, 0x0)
+    TILES(0x249D1, 4)
+    SHOW_FRAME(1, 103)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v114_l0[] = { // 0x0812B3D8
+    PALETTE(691, 16, 0x0)
+    TILES(0x249D5, 4)
+    SHOW_FRAME(1, 104)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v115_l0[] = { // 0x0812B400
+    PALETTE(691, 16, 0x0)
+    TILES(0x249D9, 4)
+    SHOW_FRAME(1, 105)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v116_l0[] = { // 0x0812B428
+    PALETTE(691, 16, 0x0)
+    TILES(0x249DD, 4)
+    SHOW_FRAME(1, 106)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v117_l0[] = { // 0x0812B450
+    PALETTE(691, 16, 0x0)
+    TILES(0x249E1, 4)
+    SHOW_FRAME(1, 107)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v118_l0[] = { // 0x0812B478
+    PALETTE(691, 16, 0x0)
+    TILES(0x249E5, 4)
+    SHOW_FRAME(1, 108)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v119_l0[] = { // 0x0812B4A0
+    PALETTE(691, 16, 0x0)
+    TILES(0x249E9, 4)
+    SHOW_FRAME(1, 109)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v120_l0[] = { // 0x0812B4C8
+    PALETTE(691, 16, 0x0)
+    TILES(0x249ED, 4)
+    SHOW_FRAME(1, 110)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v121_l0[] = { // 0x0812B4F0
+    PALETTE(691, 16, 0x0)
+    TILES(0x249F1, 4)
+    SHOW_FRAME(1, 111)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v122_l0[] = { // 0x0812B518
+    PALETTE(691, 16, 0x0)
+    TILES(0x249F5, 4)
+    SHOW_FRAME(1, 112)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v123_l0[] = { // 0x0812B540
+    PALETTE(691, 16, 0x0)
+    TILES(0x249F9, 4)
+    SHOW_FRAME(1, 113)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v124_l0[] = { // 0x0812B568
+    PALETTE(691, 16, 0x0)
+    TILES(0x249FD, 4)
+    SHOW_FRAME(1, 114)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v125_l0[] = { // 0x0812B590
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A01, 4)
+    SHOW_FRAME(1, 115)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v126_l0[] = { // 0x0812B5B8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A05, 4)
+    SHOW_FRAME(1, 116)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v127_l0[] = { // 0x0812B5E0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A09, 4)
+    SHOW_FRAME(1, 117)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v128_l0[] = { // 0x0812B608
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A0D, 4)
+    SHOW_FRAME(1, 118)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v129_l0[] = { // 0x0812B630
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A11, 4)
+    SHOW_FRAME(1, 119)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v130_l0[] = { // 0x0812B658
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A15, 4)
+    SHOW_FRAME(1, 120)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v131_l0[] = { // 0x0812B680
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A19, 4)
+    SHOW_FRAME(1, 121)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v132_l0[] = { // 0x0812B6A8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A1D, 4)
+    SHOW_FRAME(1, 122)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v133_l0[] = { // 0x0812B6D0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A21, 4)
+    SHOW_FRAME(1, 123)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v134_l0[] = { // 0x0812B6F8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A25, 4)
+    SHOW_FRAME(1, 124)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v135_l0[] = { // 0x0812B720
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A29, 4)
+    SHOW_FRAME(1, 125)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v136_l0[] = { // 0x0812B748
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A2D, 4)
+    SHOW_FRAME(1, 126)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v137_l0[] = { // 0x0812B770
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A31, 4)
+    SHOW_FRAME(1, 127)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v138_l0[] = { // 0x0812B798
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A35, 4)
+    SHOW_FRAME(1, 128)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v139_l0[] = { // 0x0812B7C0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A39, 4)
+    SHOW_FRAME(1, 129)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v140_l0[] = { // 0x0812B7E8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A3D, 2)
+    SHOW_FRAME(1, 130)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v141_l0[] = { // 0x0812B810
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A3F, 2)
+    SHOW_FRAME(1, 131)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v142_l0[] = { // 0x0812B838
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v143_l0[] = { // 0x0812B854
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A41, 2)
+    SHOW_FRAME(1, 132)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v144_l0[] = { // 0x0812B87C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A43, 4)
+    SHOW_FRAME(1, 133)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v145_l0[] = { // 0x0812B8A4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A47, 4)
+    SHOW_FRAME(1, 134)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v146_l0[] = { // 0x0812B8CC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A4B, 4)
+    SHOW_FRAME(1, 135)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v147_l0[] = { // 0x0812B8F4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A4F, 4)
+    SHOW_FRAME(1, 136)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v148_l0[] = { // 0x0812B91C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A53, 4)
+    SHOW_FRAME(1, 137)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v149_l0[] = { // 0x0812B944
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A57, 4)
+    SHOW_FRAME(1, 138)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v150_l0[] = { // 0x0812B96C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A5B, 4)
+    SHOW_FRAME(1, 139)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v151_l0[] = { // 0x0812B994
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A5F, 4)
+    SHOW_FRAME(1, 140)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v152_l0[] = { // 0x0812B9BC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A63, 4)
+    SHOW_FRAME(1, 141)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v153_l0[] = { // 0x0812B9E4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A67, 4)
+    SHOW_FRAME(1, 142)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v154_l0[] = { // 0x0812BA0C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A6B, 4)
+    SHOW_FRAME(1, 143)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v155_l0[] = { // 0x0812BA34
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A6F, 4)
+    SHOW_FRAME(1, 144)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v156_l0[] = { // 0x0812BA5C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A73, 4)
+    SHOW_FRAME(1, 145)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v157_l0[] = { // 0x0812BA84
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A77, 4)
+    SHOW_FRAME(1, 146)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v158_l0[] = { // 0x0812BAAC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A7B, 4)
+    SHOW_FRAME(1, 147)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v159_l0[] = { // 0x0812BAD4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A7F, 4)
+    SHOW_FRAME(1, 148)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v160_l0[] = { // 0x0812BAFC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A83, 4)
+    SHOW_FRAME(1, 149)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v161_l0[] = { // 0x0812BB24
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A87, 4)
+    SHOW_FRAME(1, 150)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v162_l0[] = { // 0x0812BB4C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A8B, 4)
+    SHOW_FRAME(1, 151)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v163_l0[] = { // 0x0812BB74
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A8F, 4)
+    SHOW_FRAME(1, 152)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v164_l0[] = { // 0x0812BB9C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A93, 4)
+    SHOW_FRAME(1, 153)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v165_l0[] = { // 0x0812BBC4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A97, 4)
+    SHOW_FRAME(1, 154)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v166_l0[] = { // 0x0812BBEC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A9B, 4)
+    SHOW_FRAME(1, 155)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v167_l0[] = { // 0x0812BC14
+    PALETTE(691, 16, 0x0)
+    TILES(0x24A9F, 4)
+    SHOW_FRAME(1, 156)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v168_l0[] = { // 0x0812BC3C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AA3, 4)
+    SHOW_FRAME(1, 157)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v169_l0[] = { // 0x0812BC64
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AA7, 4)
+    SHOW_FRAME(1, 158)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v170_l0[] = { // 0x0812BC8C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AAB, 4)
+    SHOW_FRAME(1, 159)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v171_l0[] = { // 0x0812BCB4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AAF, 4)
+    SHOW_FRAME(1, 160)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v172_l0[] = { // 0x0812BCDC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AB3, 4)
+    SHOW_FRAME(1, 161)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v173_l0[] = { // 0x0812BD04
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AB7, 4)
+    SHOW_FRAME(1, 162)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v174_l0[] = { // 0x0812BD2C
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v175_l0[] = { // 0x0812BD48
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v176_l0[] = { // 0x0812BD64
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ABB, 4)
+    SHOW_FRAME(1, 163)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v177_l0[] = { // 0x0812BD8C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ABF, 4)
+    SHOW_FRAME(1, 164)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v178_l0[] = { // 0x0812BDB4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AC3, 4)
+    SHOW_FRAME(1, 165)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v179_l0[] = { // 0x0812BDDC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AC7, 4)
+    SHOW_FRAME(1, 166)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v180_l0[] = { // 0x0812BE04
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ACB, 4)
+    SHOW_FRAME(1, 167)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v181_l0[] = { // 0x0812BE2C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ACF, 4)
+    SHOW_FRAME(1, 168)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v182_l0[] = { // 0x0812BE54
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AD3, 4)
+    SHOW_FRAME(1, 169)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v183_l0[] = { // 0x0812BE7C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AD7, 4)
+    SHOW_FRAME(1, 170)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v184_l0[] = { // 0x0812BEA4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ADB, 4)
+    SHOW_FRAME(1, 171)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v185_l0[] = { // 0x0812BECC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24ADF, 4)
+    SHOW_FRAME(1, 172)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v186_l0[] = { // 0x0812BEF4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AE3, 4)
+    SHOW_FRAME(1, 173)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v187_l0[] = { // 0x0812BF1C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AE7, 4)
+    SHOW_FRAME(1, 174)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v188_l0[] = { // 0x0812BF44
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AEB, 4)
+    SHOW_FRAME(1, 175)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v189_l0[] = { // 0x0812BF6C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AEF, 4)
+    SHOW_FRAME(1, 176)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v190_l0[] = { // 0x0812BF94
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AF3, 4)
+    SHOW_FRAME(1, 177)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v191_l0[] = { // 0x0812BFBC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AF7, 4)
+    SHOW_FRAME(1, 178)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v192_l0[] = { // 0x0812BFE4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AFB, 4)
+    SHOW_FRAME(1, 179)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v193_l0[] = { // 0x0812C00C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24AFF, 4)
+    SHOW_FRAME(1, 180)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v194_l0[] = { // 0x0812C034
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B03, 4)
+    SHOW_FRAME(1, 181)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v195_l0[] = { // 0x0812C05C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B07, 4)
+    SHOW_FRAME(1, 182)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v196_l0[] = { // 0x0812C084
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B0B, 4)
+    SHOW_FRAME(1, 183)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v197_l0[] = { // 0x0812C0AC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B0F, 4)
+    SHOW_FRAME(1, 184)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v198_l0[] = { // 0x0812C0D4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B13, 4)
+    SHOW_FRAME(1, 185)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v199_l0[] = { // 0x0812C0FC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B17, 4)
+    SHOW_FRAME(1, 186)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v200_l0[] = { // 0x0812C124
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B1B, 4)
+    SHOW_FRAME(1, 187)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v201_l0[] = { // 0x0812C14C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B1F, 4)
+    SHOW_FRAME(1, 188)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v202_l0[] = { // 0x0812C174
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B23, 4)
+    SHOW_FRAME(1, 189)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v203_l0[] = { // 0x0812C19C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B27, 4)
+    SHOW_FRAME(1, 190)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v204_l0[] = { // 0x0812C1C4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B2B, 4)
+    SHOW_FRAME(1, 191)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v205_l0[] = { // 0x0812C1EC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B2F, 4)
+    SHOW_FRAME(1, 192)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v206_l0[] = { // 0x0812C214
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B33, 4)
+    SHOW_FRAME(1, 193)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v207_l0[] = { // 0x0812C23C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B37, 4)
+    SHOW_FRAME(1, 194)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v208_l0[] = { // 0x0812C264
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v209_l0[] = { // 0x0812C280
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B3B, 4)
+    SHOW_FRAME(1, 195)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v210_l0[] = { // 0x0812C2A8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B3F, 4)
+    SHOW_FRAME(1, 196)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v211_l0[] = { // 0x0812C2D0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B43, 4)
+    SHOW_FRAME(1, 197)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v212_l0[] = { // 0x0812C2F8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B47, 4)
+    SHOW_FRAME(1, 198)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v213_l0[] = { // 0x0812C320
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B4B, 4)
+    SHOW_FRAME(1, 199)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v214_l0[] = { // 0x0812C348
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B4F, 4)
+    SHOW_FRAME(1, 200)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v215_l0[] = { // 0x0812C370
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B53, 4)
+    SHOW_FRAME(1, 201)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v216_l0[] = { // 0x0812C398
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B57, 4)
+    SHOW_FRAME(1, 202)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v217_l0[] = { // 0x0812C3C0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B5B, 4)
+    SHOW_FRAME(1, 203)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v218_l0[] = { // 0x0812C3E8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B5F, 4)
+    SHOW_FRAME(1, 204)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v219_l0[] = { // 0x0812C410
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B63, 4)
+    SHOW_FRAME(1, 205)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v220_l0[] = { // 0x0812C438
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B67, 4)
+    SHOW_FRAME(1, 206)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v221_l0[] = { // 0x0812C460
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B6B, 4)
+    SHOW_FRAME(1, 207)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v222_l0[] = { // 0x0812C488
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B6F, 4)
+    SHOW_FRAME(1, 208)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v223_l0[] = { // 0x0812C4B0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B73, 4)
+    SHOW_FRAME(1, 209)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v224_l0[] = { // 0x0812C4D8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B77, 4)
+    SHOW_FRAME(1, 210)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v225_l0[] = { // 0x0812C500
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B7B, 4)
+    SHOW_FRAME(1, 211)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v226_l0[] = { // 0x0812C528
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B7F, 4)
+    SHOW_FRAME(1, 212)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v227_l0[] = { // 0x0812C550
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B83, 4)
+    SHOW_FRAME(1, 213)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v228_l0[] = { // 0x0812C578
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B87, 4)
+    SHOW_FRAME(1, 214)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v229_l0[] = { // 0x0812C5A0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B8B, 4)
+    SHOW_FRAME(1, 215)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v230_l0[] = { // 0x0812C5C8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B8F, 4)
+    SHOW_FRAME(1, 216)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v231_l0[] = { // 0x0812C5F0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B13, 4)
+    SHOW_FRAME(1, 185)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v232_l0[] = { // 0x0812C618
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B93, 4)
+    SHOW_FRAME(1, 217)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v233_l0[] = { // 0x0812C640
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B97, 4)
+    SHOW_FRAME(1, 218)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v234_l0[] = { // 0x0812C668
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B9B, 4)
+    SHOW_FRAME(1, 219)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v235_l0[] = { // 0x0812C690
+    PALETTE(691, 16, 0x0)
+    TILES(0x24B9F, 4)
+    SHOW_FRAME(1, 220)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v236_l0[] = { // 0x0812C6B8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BA3, 4)
+    SHOW_FRAME(1, 221)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v237_l0[] = { // 0x0812C6E0
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BA7, 4)
+    SHOW_FRAME(1, 222)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v238_l0[] = { // 0x0812C708
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BAB, 4)
+    SHOW_FRAME(1, 223)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v239_l0[] = { // 0x0812C730
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BAF, 4)
+    SHOW_FRAME(1, 224)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v240_l0[] = { // 0x0812C758
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BB3, 4)
+    SHOW_FRAME(1, 225)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v241_l0[] = { // 0x0812C780
+    PALETTE(691, 16, 0x0)
+    SHOW_FRAME(1, -1)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_0955__v242_l0[] = { // 0x0812C79C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BB7, 4)
+    SHOW_FRAME(1, 226)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v243_l0[] = { // 0x0812C7C4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BBB, 4)
+    SHOW_FRAME(1, 227)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v244_l0[] = { // 0x0812C7EC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BBF, 4)
+    SHOW_FRAME(1, 228)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v245_l0[] = { // 0x0812C814
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BC3, 4)
+    SHOW_FRAME(1, 229)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v246_l0[] = { // 0x0812C83C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BC7, 4)
+    SHOW_FRAME(1, 230)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v247_l0[] = { // 0x0812C864
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BCB, 4)
+    SHOW_FRAME(1, 231)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v248_l0[] = { // 0x0812C88C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BCF, 4)
+    SHOW_FRAME(1, 232)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v249_l0[] = { // 0x0812C8B4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BD3, 4)
+    SHOW_FRAME(1, 233)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v250_l0[] = { // 0x0812C8DC
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BD7, 4)
+    SHOW_FRAME(1, 234)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v251_l0[] = { // 0x0812C904
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BDB, 4)
+    SHOW_FRAME(1, 235)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v252_l0[] = { // 0x0812C92C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BDF, 4)
+    SHOW_FRAME(1, 236)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v253_l0[] = { // 0x0812C954
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BE3, 4)
+    SHOW_FRAME(1, 237)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v254_l0[] = { // 0x0812C97C
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BE7, 4)
+    SHOW_FRAME(1, 238)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0955__v255_l0[] = { // 0x0812C9A4
+    PALETTE(691, 16, 0x0)
+    TILES(0x24BEB, 4)
+    SHOW_FRAME(1, 239)
+
+    JUMP_BACK(8)
+};
+
+const s32 * const anim_0955[256] = {
+    anim_0955__v0_l0,
+    anim_0955__v1_l0,
+    anim_0955__v2_l0,
+    anim_0955__v3_l0,
+    anim_0955__v4_l0,
+    anim_0955__v5_l0,
+    anim_0955__v6_l0,
+    anim_0955__v7_l0,
+    anim_0955__v8_l0,
+    anim_0955__v9_l0,
+    anim_0955__v10_l0,
+    anim_0955__v11_l0,
+    anim_0955__v12_l0,
+    anim_0955__v13_l0,
+    anim_0955__v14_l0,
+    anim_0955__v15_l0,
+    anim_0955__v16_l0,
+    anim_0955__v17_l0,
+    anim_0955__v18_l0,
+    anim_0955__v19_l0,
+    anim_0955__v20_l0,
+    anim_0955__v21_l0,
+    anim_0955__v22_l0,
+    anim_0955__v23_l0,
+    anim_0955__v24_l0,
+    anim_0955__v25_l0,
+    anim_0955__v26_l0,
+    anim_0955__v27_l0,
+    anim_0955__v28_l0,
+    anim_0955__v29_l0,
+    anim_0955__v30_l0,
+    anim_0955__v31_l0,
+    anim_0955__v32_l0,
+    anim_0955__v33_l0,
+    anim_0955__v34_l0,
+    anim_0955__v35_l0,
+    anim_0955__v36_l0,
+    anim_0955__v37_l0,
+    anim_0955__v38_l0,
+    anim_0955__v39_l0,
+    anim_0955__v40_l0,
+    anim_0955__v41_l0,
+    anim_0955__v42_l0,
+    anim_0955__v43_l0,
+    anim_0955__v44_l0,
+    anim_0955__v45_l0,
+    anim_0955__v46_l0,
+    anim_0955__v47_l0,
+    anim_0955__v48_l0,
+    anim_0955__v49_l0,
+    anim_0955__v50_l0,
+    anim_0955__v51_l0,
+    anim_0955__v52_l0,
+    anim_0955__v53_l0,
+    anim_0955__v54_l0,
+    anim_0955__v55_l0,
+    anim_0955__v56_l0,
+    anim_0955__v57_l0,
+    anim_0955__v58_l0,
+    anim_0955__v59_l0,
+    anim_0955__v60_l0,
+    anim_0955__v61_l0,
+    anim_0955__v62_l0,
+    anim_0955__v63_l0,
+    anim_0955__v64_l0,
+    anim_0955__v65_l0,
+    anim_0955__v66_l0,
+    anim_0955__v67_l0,
+    anim_0955__v68_l0,
+    anim_0955__v69_l0,
+    anim_0955__v70_l0,
+    anim_0955__v71_l0,
+    anim_0955__v72_l0,
+    anim_0955__v73_l0,
+    anim_0955__v74_l0,
+    anim_0955__v75_l0,
+    anim_0955__v76_l0,
+    anim_0955__v77_l0,
+    anim_0955__v78_l0,
+    anim_0955__v79_l0,
+    anim_0955__v80_l0,
+    anim_0955__v81_l0,
+    anim_0955__v82_l0,
+    anim_0955__v83_l0,
+    anim_0955__v84_l0,
+    anim_0955__v85_l0,
+    anim_0955__v86_l0,
+    anim_0955__v87_l0,
+    anim_0955__v88_l0,
+    anim_0955__v89_l0,
+    anim_0955__v90_l0,
+    anim_0955__v91_l0,
+    anim_0955__v92_l0,
+    anim_0955__v93_l0,
+    anim_0955__v94_l0,
+    anim_0955__v95_l0,
+    anim_0955__v96_l0,
+    anim_0955__v97_l0,
+    anim_0955__v98_l0,
+    anim_0955__v99_l0,
+    anim_0955__v100_l0,
+    anim_0955__v101_l0,
+    anim_0955__v102_l0,
+    anim_0955__v103_l0,
+    anim_0955__v104_l0,
+    anim_0955__v105_l0,
+    anim_0955__v106_l0,
+    anim_0955__v107_l0,
+    anim_0955__v108_l0,
+    anim_0955__v109_l0,
+    anim_0955__v110_l0,
+    anim_0955__v111_l0,
+    anim_0955__v112_l0,
+    anim_0955__v113_l0,
+    anim_0955__v114_l0,
+    anim_0955__v115_l0,
+    anim_0955__v116_l0,
+    anim_0955__v117_l0,
+    anim_0955__v118_l0,
+    anim_0955__v119_l0,
+    anim_0955__v120_l0,
+    anim_0955__v121_l0,
+    anim_0955__v122_l0,
+    anim_0955__v123_l0,
+    anim_0955__v124_l0,
+    anim_0955__v125_l0,
+    anim_0955__v126_l0,
+    anim_0955__v127_l0,
+    anim_0955__v128_l0,
+    anim_0955__v129_l0,
+    anim_0955__v130_l0,
+    anim_0955__v131_l0,
+    anim_0955__v132_l0,
+    anim_0955__v133_l0,
+    anim_0955__v134_l0,
+    anim_0955__v135_l0,
+    anim_0955__v136_l0,
+    anim_0955__v137_l0,
+    anim_0955__v138_l0,
+    anim_0955__v139_l0,
+    anim_0955__v140_l0,
+    anim_0955__v141_l0,
+    anim_0955__v142_l0,
+    anim_0955__v143_l0,
+    anim_0955__v144_l0,
+    anim_0955__v145_l0,
+    anim_0955__v146_l0,
+    anim_0955__v147_l0,
+    anim_0955__v148_l0,
+    anim_0955__v149_l0,
+    anim_0955__v150_l0,
+    anim_0955__v151_l0,
+    anim_0955__v152_l0,
+    anim_0955__v153_l0,
+    anim_0955__v154_l0,
+    anim_0955__v155_l0,
+    anim_0955__v156_l0,
+    anim_0955__v157_l0,
+    anim_0955__v158_l0,
+    anim_0955__v159_l0,
+    anim_0955__v160_l0,
+    anim_0955__v161_l0,
+    anim_0955__v162_l0,
+    anim_0955__v163_l0,
+    anim_0955__v164_l0,
+    anim_0955__v165_l0,
+    anim_0955__v166_l0,
+    anim_0955__v167_l0,
+    anim_0955__v168_l0,
+    anim_0955__v169_l0,
+    anim_0955__v170_l0,
+    anim_0955__v171_l0,
+    anim_0955__v172_l0,
+    anim_0955__v173_l0,
+    anim_0955__v174_l0,
+    anim_0955__v175_l0,
+    anim_0955__v176_l0,
+    anim_0955__v177_l0,
+    anim_0955__v178_l0,
+    anim_0955__v179_l0,
+    anim_0955__v180_l0,
+    anim_0955__v181_l0,
+    anim_0955__v182_l0,
+    anim_0955__v183_l0,
+    anim_0955__v184_l0,
+    anim_0955__v185_l0,
+    anim_0955__v186_l0,
+    anim_0955__v187_l0,
+    anim_0955__v188_l0,
+    anim_0955__v189_l0,
+    anim_0955__v190_l0,
+    anim_0955__v191_l0,
+    anim_0955__v192_l0,
+    anim_0955__v193_l0,
+    anim_0955__v194_l0,
+    anim_0955__v195_l0,
+    anim_0955__v196_l0,
+    anim_0955__v197_l0,
+    anim_0955__v198_l0,
+    anim_0955__v199_l0,
+    anim_0955__v200_l0,
+    anim_0955__v201_l0,
+    anim_0955__v202_l0,
+    anim_0955__v203_l0,
+    anim_0955__v204_l0,
+    anim_0955__v205_l0,
+    anim_0955__v206_l0,
+    anim_0955__v207_l0,
+    anim_0955__v208_l0,
+    anim_0955__v209_l0,
+    anim_0955__v210_l0,
+    anim_0955__v211_l0,
+    anim_0955__v212_l0,
+    anim_0955__v213_l0,
+    anim_0955__v214_l0,
+    anim_0955__v215_l0,
+    anim_0955__v216_l0,
+    anim_0955__v217_l0,
+    anim_0955__v218_l0,
+    anim_0955__v219_l0,
+    anim_0955__v220_l0,
+    anim_0955__v221_l0,
+    anim_0955__v222_l0,
+    anim_0955__v223_l0,
+    anim_0955__v224_l0,
+    anim_0955__v225_l0,
+    anim_0955__v226_l0,
+    anim_0955__v227_l0,
+    anim_0955__v228_l0,
+    anim_0955__v229_l0,
+    anim_0955__v230_l0,
+    anim_0955__v231_l0,
+    anim_0955__v232_l0,
+    anim_0955__v233_l0,
+    anim_0955__v234_l0,
+    anim_0955__v235_l0,
+    anim_0955__v236_l0,
+    anim_0955__v237_l0,
+    anim_0955__v238_l0,
+    anim_0955__v239_l0,
+    anim_0955__v240_l0,
+    anim_0955__v241_l0,
+    anim_0955__v242_l0,
+    anim_0955__v243_l0,
+    anim_0955__v244_l0,
+    anim_0955__v245_l0,
+    anim_0955__v246_l0,
+    anim_0955__v247_l0,
+    anim_0955__v248_l0,
+    anim_0955__v249_l0,
+    anim_0955__v250_l0,
+    anim_0955__v251_l0,
+    anim_0955__v252_l0,
+    anim_0955__v253_l0,
+    anim_0955__v254_l0,
+    anim_0955__v255_l0,
+};
+
+const s32 anim_0956__v0_l0[] = { // 0x0812CDCC
+    PALETTE(693, 16, 0x30)
+    TILES(0x24BEF, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0956__v1_l0[] = { // 0x0812CDF0
+    PALETTE(693, 16, 0x30)
+    TILES(0x24C21, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0956__v2_l0[] = { // 0x0812CE14
+    PALETTE(693, 16, 0x30)
+    TILES(0x24C53, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0956__v3_l0[] = { // 0x0812CE38
+    PALETTE(693, 16, 0x30)
+    TILES(0x24C85, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0956__v4_l0[] = { // 0x0812CE5C
+    PALETTE(693, 16, 0x30)
+    TILES(0x24CB7, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0956__v5_l0[] = { // 0x0812CE80
+    PALETTE(693, 16, 0x30)
+    TILES(0x24CE9, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0956__v6_l0[] = { // 0x0812CEA4
+    PALETTE(693, 16, 0x30)
+    TILES(0x24D1B, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0956__v7_l0[] = { // 0x0812CEC8
+    PALETTE(693, 16, 0x30)
+    TILES(0x24D4D, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0956__v8_l0[] = { // 0x0812CEEC
+    PALETTE(689, 16, 0x60)
+    TILES(0x24D7F, 39)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0956[9] = {
+    anim_0956__v0_l0,
+    anim_0956__v1_l0,
+    anim_0956__v2_l0,
+    anim_0956__v3_l0,
+    anim_0956__v4_l0,
+    anim_0956__v5_l0,
+    anim_0956__v6_l0,
+    anim_0956__v7_l0,
+    anim_0956__v8_l0,
+};
+
+const s32 anim_0957__v0_l0[] = { // 0x0812CF34
+    PALETTE(688, 16, 0x10)
+    TILES(0x24DA6, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0957__v1_l0[] = { // 0x0812CF58
+    PALETTE(688, 16, 0x10)
+    TILES(0x24DCE, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0957__v2_l0[] = { // 0x0812CF7C
+    PALETTE(688, 16, 0x10)
+    TILES(0x24DF6, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0957__v3_l0[] = { // 0x0812CFA0
+    PALETTE(688, 16, 0x10)
+    TILES(0x24E1E, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0957__v4_l0[] = { // 0x0812CFC4
+    PALETTE(689, 16, 0x60)
+    TILES(0x24E46, 51)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0957__v5_l0[] = { // 0x0812CFE8
+    PALETTE(691, 16, 0x0)
+    TILES(0x24E79, 63)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 * const anim_0957[6] = {
+    anim_0957__v0_l0,
+    anim_0957__v1_l0,
+    anim_0957__v2_l0,
+    anim_0957__v3_l0,
+    anim_0957__v4_l0,
+    anim_0957__v5_l0,
+};
+
+const s32 anim_0958__v0_l0[] = { // 0x0812D024
+    PALETTE(690, 16, 0x50)
+    TILES(0x24EB8, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0958[1] = {
+    anim_0958__v0_l0,
+};
+
+const s32 anim_0959__v0_l0[] = { // 0x0812D04C
+    PALETTE(690, 16, 0x50)
+    TILES(0x24ED4, 66)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0959__v1_l0[] = { // 0x0812D070
+    PALETTE(691, 16, 0x0)
+    TILES(0x24F16, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0959__v2_l0[] = { // 0x0812D094
+    PALETTE(694, 16, 0x10)
+    TILES(0x24F3A, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0959[3] = {
+    anim_0959__v0_l0,
+    anim_0959__v1_l0,
+    anim_0959__v2_l0,
+};
+
+const s32 anim_0960__v0_l0[] = { // 0x0812D0C4
+    PALETTE(688, 16, 0x10)
+    TILES(0x24F5E, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0960__v1_l0[] = { // 0x0812D0E8
+    PALETTE(688, 16, 0x10)
+    TILES(0x24F6E, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0960__v2_l0[] = { // 0x0812D10C
+    PALETTE(689, 16, 0x60)
+    TILES(0x24F7E, 42)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0960[3] = {
+    anim_0960__v0_l0,
+    anim_0960__v1_l0,
+    anim_0960__v2_l0,
+};
+
+const s32 anim_0961__v0_l0[] = { // 0x0812D13C
+    PALETTE(690, 16, 0x50)
+    TILES(0x24FA8, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0961__v1_l0[] = { // 0x0812D160
+    PALETTE(691, 16, 0x0)
+    TILES(0x24FD8, 28)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_0961[2] = {
+    anim_0961__v0_l0,
+    anim_0961__v1_l0,
+};
+
+const s32 anim_0962__v0_l0[] = { // 0x0812D18C
+    PALETTE(695, 16, 0x0)
+    TILES(0x24FF4, 1)
+    SHOW_FRAME(6, 0)
+
+    TILES(0x24FF5, 2)
+    SHOW_FRAME(6, 1)
+
+    TILES(0x24FF7, 2)
+    SHOW_FRAME(6, 2)
+
+    TILES(0x24FF9, 1)
+    SHOW_FRAME(6, 3)
+
+    JUMP_BACK(23)
+};
+
+const s32 anim_0962__v1_l0[] = { // 0x0812D1F0
+    PALETTE(695, 16, 0x0)
+    TILES(0x24FFA, 1)
+    SHOW_FRAME(6, 4)
+
+    TILES(0x24FFB, 2)
+    SHOW_FRAME(6, 5)
+
+    TILES(0x24FFD, 2)
+    SHOW_FRAME(6, 6)
+
+    TILES(0x24FFF, 1)
+    SHOW_FRAME(6, 7)
+
+    JUMP_BACK(23)
+};
+
+const s32 * const anim_0962[2] = {
+    anim_0962__v0_l0,
+    anim_0962__v1_l0,
+};
+
+const s32 anim_0963__v0_l0[] = { // 0x0812D25C
+    PALETTE(691, 16, 0x0)
+    TILES(0x25000, 4)
+    SHOW_FRAME(1, 0)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v1_l0[] = { // 0x0812D284
+    PALETTE(691, 16, 0x0)
+    TILES(0x25004, 4)
+    SHOW_FRAME(1, 1)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v2_l0[] = { // 0x0812D2AC
+    PALETTE(691, 16, 0x0)
+    TILES(0x25008, 4)
+    SHOW_FRAME(1, 2)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v3_l0[] = { // 0x0812D2D4
+    PALETTE(691, 16, 0x0)
+    TILES(0x2500C, 4)
+    SHOW_FRAME(1, 3)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v4_l0[] = { // 0x0812D2FC
+    PALETTE(691, 16, 0x0)
+    TILES(0x25010, 4)
+    SHOW_FRAME(1, 4)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v5_l0[] = { // 0x0812D324
+    PALETTE(691, 16, 0x0)
+    TILES(0x25014, 4)
+    SHOW_FRAME(1, 5)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v6_l0[] = { // 0x0812D34C
+    PALETTE(691, 16, 0x0)
+    TILES(0x25018, 4)
+    SHOW_FRAME(1, 6)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v7_l0[] = { // 0x0812D374
+    PALETTE(691, 16, 0x0)
+    TILES(0x2501C, 4)
+    SHOW_FRAME(1, 7)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v8_l0[] = { // 0x0812D39C
+    PALETTE(691, 16, 0x0)
+    TILES(0x25020, 4)
+    SHOW_FRAME(1, 8)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v9_l0[] = { // 0x0812D3C4
+    PALETTE(691, 16, 0x0)
+    TILES(0x25024, 4)
+    SHOW_FRAME(1, 9)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v10_l0[] = { // 0x0812D3EC
+    PALETTE(691, 16, 0x0)
+    TILES(0x25028, 4)
+    SHOW_FRAME(1, 10)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v11_l0[] = { // 0x0812D414
+    PALETTE(691, 16, 0x0)
+    TILES(0x2502C, 4)
+    SHOW_FRAME(1, 11)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_0963__v12_l0[] = { // 0x0812D43C
+    PALETTE(696, 16, 0x70)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_0963__v13_l0[] = { // 0x0812D454
+    PALETTE(697, 16, 0x80)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 * const anim_0963[14] = {
+    anim_0963__v0_l0,
+    anim_0963__v1_l0,
+    anim_0963__v2_l0,
+    anim_0963__v3_l0,
+    anim_0963__v4_l0,
+    anim_0963__v5_l0,
+    anim_0963__v6_l0,
+    anim_0963__v7_l0,
+    anim_0963__v8_l0,
+    anim_0963__v9_l0,
+    anim_0963__v10_l0,
+    anim_0963__v11_l0,
+    anim_0963__v12_l0,
+    anim_0963__v13_l0,
+};
+
+const s32 anim_0964__v0_l0[] = { // 0x0812D4A4
+    PALETTE(698, 16, 0x20)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_0964__v1_l0[] = { // 0x0812D4BC
+    PALETTE(699, 16, 0x40)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 * const anim_0964[2] = {
+    anim_0964__v0_l0,
+    anim_0964__v1_l0,
+};
+
+const s32 anim_0965__v0_l0[] = { // 0x0812D4DC
+    PALETTE(700, 16, 0x20)
+    TILES(0x25030, 10)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0965__v1_l0[] = { // 0x0812D500
+    PALETTE(700, 16, 0x20)
+    TILES(0x2503A, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0965__v2_l0[] = { // 0x0812D524
+    PALETTE(700, 16, 0x80)
+    TILES(0x25044, 1)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0965[3] = {
+    anim_0965__v0_l0,
+    anim_0965__v1_l0,
+    anim_0965__v2_l0,
+};
+
+const s32 anim_0966__v0_l0[] = { // 0x0812D554
+    PALETTE(164, 16, 0x20)
+    TILES(0x25045, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0966[1] = {
+    anim_0966__v0_l0,
+};
+
+const s32 anim_0967__v0_l0[] = { // 0x0812D57C
+    PALETTE(701, 16, 0x10)
+    TILES(0x25059, 42)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0967[1] = {
+    anim_0967__v0_l0,
+};
+
+const s32 anim_0968__v0_l0[] = { // 0x0812D5A4
+    PALETTE(702, 16, 0x50)
+    TILES(0x25083, 64)
+    SHOW_FRAME(5, 0)
+
+    TILES(0x250C3, 64)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x25103, 64)
+    SHOW_FRAME(5, 2)
+
+    TILES(0x25143, 72)
+    SHOW_FRAME(5, 3)
+
+    TILES(0x2518B, 72)
+    SHOW_FRAME(5, 4)
+
+    TILES(0x251D3, 72)
+    SHOW_FRAME(5, 5)
+
+    TILES(0x2521B, 64)
+    SHOW_FRAME(5, 6)
+
+    TILES(0x2525B, 64)
+    SHOW_FRAME(5, 7)
+
+    TILES(0x2529B, 72)
+    SHOW_FRAME(5, 8)
+
+    TILES(0x2518B, 72)
+    SHOW_FRAME(5, 4)
+
+    TILES(0x251D3, 72)
+    SHOW_FRAME(5, 5)
+
+    JUMP_BACK(58)
+};
+
+const s32 anim_0968__v1_l0[] = { // 0x0812D694
+    PALETTE(702, 16, 0x50)
+    TILES(0x252E3, 40)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_0968[2] = {
+    anim_0968__v0_l0,
+    anim_0968__v1_l0,
+};
+
+const s32 anim_0969__v0_l0[] = { // 0x0812D6C0
+    PALETTE(703, 16, 0x70)
+    TILES(0x2530B, 96)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0969[1] = {
+    anim_0969__v0_l0,
+};
+
+const s32 anim_0970__v0_l0[] = { // 0x0812D6E8
+    PALETTE(702, 16, 0x50)
+    TILES(0x2536B, 48)
+    SHOW_FRAME(6, 0)
+
+    TILES(0x2539B, 48)
+    SHOW_FRAME(4, 1)
+
+    TILES(0x253CB, 42)
+    SHOW_FRAME(3, 2)
+
+    TILES(0x253F5, 42)
+    SHOW_FRAME(10, 3)
+
+    TILES(0x253CB, 42)
+    SHOW_FRAME(5, 2)
+
+    TILES(0x2539B, 48)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x2536B, 48)
+    SHOW_FRAME(10, 0)
+
+    TILES(0x2541F, 48)
+    SHOW_FRAME(5, 4)
+
+    TILES(0x2544F, 48)
+    SHOW_FRAME(5, 5)
+
+    TILES(0x2541F, 48)
+    SHOW_FRAME(5, 4)
+
+    TILES(0x2536B, 48)
+    SHOW_FRAME(5, 0)
+
+    END()
+};
+
+const s32 * const anim_0970[1] = {
+    anim_0970__v0_l0,
+};
+
+const s32 anim_0971__v0_l0[] = { // 0x0812D7D8
+    PALETTE(702, 16, 0x50)
+    TILES(0x2547F, 64)
+    SHOW_FRAME(5, 0)
+
+    TILES(0x254BF, 64)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x254FF, 63)
+    SHOW_FRAME(5, 2)
+
+    TILES(0x2553E, 54)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x25574, 54)
+    SHOW_FRAME(3, 4)
+
+    TILES(0x2553E, 54)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x254FF, 63)
+    SHOW_FRAME(3, 2)
+
+    TILES(0x2553E, 54)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x25574, 54)
+    SHOW_FRAME(3, 4)
+
+    TILES(0x2553E, 54)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x254FF, 63)
+    SHOW_FRAME(5, 2)
+
+    TILES(0x254BF, 64)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x2547F, 64)
+    SHOW_FRAME(5, 0)
+
+    END()
+};
+
+const s32 * const anim_0971[1] = {
+    anim_0971__v0_l0,
+};
+
+const s32 anim_0972__v0_l0[] = { // 0x0812D8F0
+    PALETTE(704, 16, 0x60)
+    TILES(0x255AA, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0972[1] = {
+    anim_0972__v0_l0,
+};
+
+const s32 anim_0973__v0_l0[] = { // 0x0812D918
+    PALETTE(702, 16, 0x50)
+    TILES(0x255BE, 48)
+    SHOW_FRAME(5, 0)
+
+    TILES(0x255EE, 56)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x25626, 48)
+    SHOW_FRAME(10, 2)
+
+    TILES(0x25656, 48)
+    SHOW_FRAME(5, 3)
+
+    TILES(0x25686, 56)
+    SHOW_FRAME(10, 4)
+
+    TILES(0x256BE, 48)
+    SHOW_FRAME(5, 5)
+
+    TILES(0x256EE, 56)
+    SHOW_FRAME(5, 6)
+
+    TILES(0x25726, 48)
+    SHOW_FRAME(10, 7)
+
+    TILES(0x25756, 48)
+    SHOW_FRAME(5, 8)
+
+    TILES(0x25786, 56)
+    SHOW_FRAME(10, 9)
+
+    TILES(0x25786, 56)
+    SHOW_FRAME(5, 9)
+
+    TILES(0x257BE, 56)
+    SHOW_FRAME(5, 10)
+
+    TILES(0x257F6, 56)
+    SHOW_FRAME(10, 11)
+
+    TILES(0x2582E, 56)
+    SHOW_FRAME(5, 12)
+
+    TILES(0x25866, 56)
+    SHOW_FRAME(10, 13)
+
+    TILES(0x25866, 56)
+    SHOW_FRAME(5, 13)
+
+    TILES(0x255EE, 56)
+    SHOW_FRAME(5, 1)
+
+    TILES(0x2589E, 56)
+    SHOW_FRAME(10, 14)
+
+    TILES(0x258D6, 56)
+    SHOW_FRAME(5, 15)
+
+    TILES(0x2590E, 56)
+    SHOW_FRAME(10, 16)
+
+    TILES(0x25866, 56)
+    SHOW_FRAME(5, 13)
+
+    JUMP_BACK(108)
+};
+
+const s32 * const anim_0973[1] = {
+    anim_0973__v0_l0,
+};
+
+const s32 anim_0974__v0_l0[] = { // 0x0812DAD4
+    PALETTE(705, 16, 0x70)
+    TILES(0x25946, 64)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0974[1] = {
+    anim_0974__v0_l0,
+};
+
+const s32 anim_0975__v0_l0[] = { // 0x0812DAFC
+    PALETTE(706, 16, 0x30)
+    TILES(0x25986, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0975__v1_l0[] = { // 0x0812DB20
+    PALETTE(706, 16, 0x30)
+    TILES(0x259B8, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0975__v2_l0[] = { // 0x0812DB44
+    PALETTE(706, 16, 0x30)
+    TILES(0x259EA, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0975__v3_l0[] = { // 0x0812DB68
+    PALETTE(706, 16, 0x30)
+    TILES(0x25A1C, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0975__v4_l0[] = { // 0x0812DB8C
+    PALETTE(706, 16, 0x30)
+    TILES(0x25A4E, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0975__v5_l0[] = { // 0x0812DBB0
+    PALETTE(706, 16, 0x30)
+    TILES(0x25A80, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0975__v6_l0[] = { // 0x0812DBD4
+    PALETTE(706, 16, 0x30)
+    TILES(0x25AB2, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0975__v7_l0[] = { // 0x0812DBF8
+    PALETTE(706, 16, 0x30)
+    TILES(0x25AE4, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0975__v8_l0[] = { // 0x0812DC1C
+    PALETTE(689, 16, 0x60)
+    TILES(0x25B16, 26)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0975[9] = {
+    anim_0975__v0_l0,
+    anim_0975__v1_l0,
+    anim_0975__v2_l0,
+    anim_0975__v3_l0,
+    anim_0975__v4_l0,
+    anim_0975__v5_l0,
+    anim_0975__v6_l0,
+    anim_0975__v7_l0,
+    anim_0975__v8_l0,
+};
+
+const s32 anim_0976__v0_l0[] = { // 0x0812DC64
+    PALETTE(706, 16, 0x30)
+    TILES(0x25B30, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0976__v1_l0[] = { // 0x0812DC88
+    PALETTE(706, 16, 0x30)
+    TILES(0x25B62, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0976__v2_l0[] = { // 0x0812DCAC
+    PALETTE(706, 16, 0x30)
+    TILES(0x25B94, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0976__v3_l0[] = { // 0x0812DCD0
+    PALETTE(706, 16, 0x30)
+    TILES(0x25BC6, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0976__v4_l0[] = { // 0x0812DCF4
+    PALETTE(706, 16, 0x30)
+    TILES(0x25BF8, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0976__v5_l0[] = { // 0x0812DD18
+    PALETTE(706, 16, 0x30)
+    TILES(0x25C2A, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0976__v6_l0[] = { // 0x0812DD3C
+    PALETTE(706, 16, 0x30)
+    TILES(0x25C5C, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0976__v7_l0[] = { // 0x0812DD60
+    PALETTE(706, 16, 0x30)
+    TILES(0x25C8E, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0976__v8_l0[] = { // 0x0812DD84
+    PALETTE(689, 16, 0x60)
+    TILES(0x25CC0, 30)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0976[9] = {
+    anim_0976__v0_l0,
+    anim_0976__v1_l0,
+    anim_0976__v2_l0,
+    anim_0976__v3_l0,
+    anim_0976__v4_l0,
+    anim_0976__v5_l0,
+    anim_0976__v6_l0,
+    anim_0976__v7_l0,
+    anim_0976__v8_l0,
+};
+
+const s32 anim_0977__v0_l0[] = { // 0x0812DDCC
+    PALETTE(693, 16, 0x30)
+    TILES(0x25CDE, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0977__v1_l0[] = { // 0x0812DDF0
+    PALETTE(693, 16, 0x30)
+    TILES(0x25D10, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0977__v2_l0[] = { // 0x0812DE14
+    PALETTE(693, 16, 0x30)
+    TILES(0x25D42, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0977__v3_l0[] = { // 0x0812DE38
+    PALETTE(693, 16, 0x30)
+    TILES(0x25D74, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0977__v4_l0[] = { // 0x0812DE5C
+    PALETTE(693, 16, 0x30)
+    TILES(0x25DA6, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0977__v5_l0[] = { // 0x0812DE80
+    PALETTE(693, 16, 0x30)
+    TILES(0x25DD8, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0977__v6_l0[] = { // 0x0812DEA4
+    PALETTE(693, 16, 0x30)
+    TILES(0x25E0A, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0977__v7_l0[] = { // 0x0812DEC8
+    PALETTE(693, 16, 0x30)
+    TILES(0x25E3C, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0977__v8_l0[] = { // 0x0812DEEC
+    PALETTE(689, 16, 0x60)
+    TILES(0x25E6E, 24)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0977[9] = {
+    anim_0977__v0_l0,
+    anim_0977__v1_l0,
+    anim_0977__v2_l0,
+    anim_0977__v3_l0,
+    anim_0977__v4_l0,
+    anim_0977__v5_l0,
+    anim_0977__v6_l0,
+    anim_0977__v7_l0,
+    anim_0977__v8_l0,
+};
+
+const s32 anim_0978__v0_l0[] = { // 0x0812DF34
+    PALETTE(693, 16, 0x30)
+    TILES(0x25E86, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0978__v1_l0[] = { // 0x0812DF58
+    PALETTE(693, 16, 0x30)
+    TILES(0x25EB8, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0978__v2_l0[] = { // 0x0812DF7C
+    PALETTE(693, 16, 0x30)
+    TILES(0x25EEA, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0978__v3_l0[] = { // 0x0812DFA0
+    PALETTE(693, 16, 0x30)
+    TILES(0x25F1C, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0978__v4_l0[] = { // 0x0812DFC4
+    PALETTE(693, 16, 0x30)
+    TILES(0x25F4E, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0978__v5_l0[] = { // 0x0812DFE8
+    PALETTE(693, 16, 0x30)
+    TILES(0x25F80, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0978__v6_l0[] = { // 0x0812E00C
+    PALETTE(693, 16, 0x30)
+    TILES(0x25FB2, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0978__v7_l0[] = { // 0x0812E030
+    PALETTE(693, 16, 0x30)
+    TILES(0x25FE4, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0978__v8_l0[] = { // 0x0812E054
+    PALETTE(689, 16, 0x60)
+    TILES(0x26016, 30)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0978[9] = {
+    anim_0978__v0_l0,
+    anim_0978__v1_l0,
+    anim_0978__v2_l0,
+    anim_0978__v3_l0,
+    anim_0978__v4_l0,
+    anim_0978__v5_l0,
+    anim_0978__v6_l0,
+    anim_0978__v7_l0,
+    anim_0978__v8_l0,
+};
+
+const s32 anim_0979__v0_l0[] = { // 0x0812E09C
+    PALETTE(693, 16, 0x30)
+    TILES(0x26034, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0979__v1_l0[] = { // 0x0812E0C0
+    PALETTE(693, 16, 0x30)
+    TILES(0x26066, 50)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0979__v2_l0[] = { // 0x0812E0E4
+    PALETTE(693, 16, 0x30)
+    TILES(0x26098, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0979__v3_l0[] = { // 0x0812E108
+    PALETTE(693, 16, 0x30)
+    TILES(0x260CA, 50)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0979__v4_l0[] = { // 0x0812E12C
+    PALETTE(693, 16, 0x30)
+    TILES(0x260FC, 50)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_0979__v5_l0[] = { // 0x0812E150
+    PALETTE(693, 16, 0x30)
+    TILES(0x2612E, 50)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_0979__v6_l0[] = { // 0x0812E174
+    PALETTE(693, 16, 0x30)
+    TILES(0x26160, 50)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_0979__v7_l0[] = { // 0x0812E198
+    PALETTE(693, 16, 0x30)
+    TILES(0x26192, 50)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_0979__v8_l0[] = { // 0x0812E1BC
+    PALETTE(689, 16, 0x60)
+    TILES(0x261C4, 24)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_0979[9] = {
+    anim_0979__v0_l0,
+    anim_0979__v1_l0,
+    anim_0979__v2_l0,
+    anim_0979__v3_l0,
+    anim_0979__v4_l0,
+    anim_0979__v5_l0,
+    anim_0979__v6_l0,
+    anim_0979__v7_l0,
+    anim_0979__v8_l0,
+};
+
+const s32 anim_0980__v0_l0[] = { // 0x0812E204
+    PALETTE(707, 16, 0x10)
+    TILES(0x261DC, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0980__v1_l0[] = { // 0x0812E228
+    PALETTE(707, 16, 0x10)
+    TILES(0x261EE, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0980__v2_l0[] = { // 0x0812E24C
+    PALETTE(707, 16, 0x10)
+    TILES(0x26200, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0980__v3_l0[] = { // 0x0812E270
+    PALETTE(689, 16, 0x60)
+    TILES(0x26212, 38)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0980__v4_l0[] = { // 0x0812E294
+    PALETTE(690, 16, 0x50)
+    TILES(0x26238, 17)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_0980[5] = {
+    anim_0980__v0_l0,
+    anim_0980__v1_l0,
+    anim_0980__v2_l0,
+    anim_0980__v3_l0,
+    anim_0980__v4_l0,
+};
+
+const s32 anim_0981__v0_l0[] = { // 0x0812E2CC
+    PALETTE(707, 16, 0x10)
+    TILES(0x26249, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0981__v1_l0[] = { // 0x0812E2F0
+    PALETTE(707, 16, 0x10)
+    TILES(0x2625B, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0981__v2_l0[] = { // 0x0812E314
+    PALETTE(707, 16, 0x10)
+    TILES(0x2626D, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0981__v3_l0[] = { // 0x0812E338
+    PALETTE(689, 16, 0x60)
+    TILES(0x2627F, 38)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0981__v4_l0[] = { // 0x0812E35C
+    PALETTE(690, 16, 0x50)
+    TILES(0x262A5, 17)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_0981[5] = {
+    anim_0981__v0_l0,
+    anim_0981__v1_l0,
+    anim_0981__v2_l0,
+    anim_0981__v3_l0,
+    anim_0981__v4_l0,
+};
+
+const s32 anim_0982__v0_l0[] = { // 0x0812E394
+    PALETTE(688, 16, 0x10)
+    TILES(0x262B6, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0982__v1_l0[] = { // 0x0812E3B8
+    PALETTE(688, 16, 0x10)
+    TILES(0x262C8, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0982__v2_l0[] = { // 0x0812E3DC
+    PALETTE(688, 16, 0x10)
+    TILES(0x262DA, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0982__v3_l0[] = { // 0x0812E400
+    PALETTE(689, 16, 0x60)
+    TILES(0x262EC, 44)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0982__v4_l0[] = { // 0x0812E424
+    PALETTE(690, 16, 0x50)
+    TILES(0x26318, 23)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_0982[5] = {
+    anim_0982__v0_l0,
+    anim_0982__v1_l0,
+    anim_0982__v2_l0,
+    anim_0982__v3_l0,
+    anim_0982__v4_l0,
+};
+
+const s32 anim_0983__v0_l0[] = { // 0x0812E45C
+    PALETTE(688, 16, 0x10)
+    TILES(0x2632F, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0983__v1_l0[] = { // 0x0812E480
+    PALETTE(688, 16, 0x10)
+    TILES(0x26341, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0983__v2_l0[] = { // 0x0812E4A4
+    PALETTE(688, 16, 0x10)
+    TILES(0x26353, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0983__v3_l0[] = { // 0x0812E4C8
+    PALETTE(689, 16, 0x60)
+    TILES(0x26365, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0983__v4_l0[] = { // 0x0812E4EC
+    PALETTE(690, 16, 0x50)
+    TILES(0x2638D, 21)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_0983[5] = {
+    anim_0983__v0_l0,
+    anim_0983__v1_l0,
+    anim_0983__v2_l0,
+    anim_0983__v3_l0,
+    anim_0983__v4_l0,
+};
+
+const s32 anim_0984__v0_l0[] = { // 0x0812E524
+    PALETTE(688, 16, 0x10)
+    TILES(0x263A2, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0984__v1_l0[] = { // 0x0812E548
+    PALETTE(688, 16, 0x10)
+    TILES(0x263B4, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0984__v2_l0[] = { // 0x0812E56C
+    PALETTE(688, 16, 0x10)
+    TILES(0x263C6, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0984__v3_l0[] = { // 0x0812E590
+    PALETTE(689, 16, 0x60)
+    TILES(0x263D8, 46)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_0984__v4_l0[] = { // 0x0812E5B4
+    PALETTE(690, 16, 0x50)
+    TILES(0x26406, 15)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_0984[5] = {
+    anim_0984__v0_l0,
+    anim_0984__v1_l0,
+    anim_0984__v2_l0,
+    anim_0984__v3_l0,
+    anim_0984__v4_l0,
+};
+
+const s32 anim_0985__v0_l0[] = { // 0x0812E5EC
+    PALETTE(707, 16, 0x10)
+    TILES(0x26415, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0985__v1_l0[] = { // 0x0812E610
+    PALETTE(707, 16, 0x10)
+    TILES(0x26425, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0985__v2_l0[] = { // 0x0812E634
+    PALETTE(689, 16, 0x60)
+    TILES(0x26435, 46)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0985__v3_l0[] = { // 0x0812E658
+    PALETTE(689, 16, 0x60)
+    TILES(0x26463, 38)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_0985[4] = {
+    anim_0985__v0_l0,
+    anim_0985__v1_l0,
+    anim_0985__v2_l0,
+    anim_0985__v3_l0,
+};
+
+const s32 anim_0986__v0_l0[] = { // 0x0812E68C
+    PALETTE(707, 16, 0x10)
+    TILES(0x26489, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0986__v1_l0[] = { // 0x0812E6B0
+    PALETTE(707, 16, 0x10)
+    TILES(0x26499, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0986__v2_l0[] = { // 0x0812E6D4
+    PALETTE(689, 16, 0x60)
+    TILES(0x264A9, 48)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0986__v3_l0[] = { // 0x0812E6F8
+    PALETTE(689, 16, 0x60)
+    TILES(0x264D9, 44)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_0986[4] = {
+    anim_0986__v0_l0,
+    anim_0986__v1_l0,
+    anim_0986__v2_l0,
+    anim_0986__v3_l0,
+};
+
+const s32 anim_0987__v0_l0[] = { // 0x0812E72C
+    PALETTE(688, 16, 0x10)
+    TILES(0x26505, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0987__v1_l0[] = { // 0x0812E750
+    PALETTE(688, 16, 0x10)
+    TILES(0x26515, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0987__v2_l0[] = { // 0x0812E774
+    PALETTE(689, 16, 0x60)
+    TILES(0x26525, 80)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0987__v3_l0[] = { // 0x0812E798
+    PALETTE(689, 16, 0x60)
+    TILES(0x26575, 42)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_0987[4] = {
+    anim_0987__v0_l0,
+    anim_0987__v1_l0,
+    anim_0987__v2_l0,
+    anim_0987__v3_l0,
+};
+
+const s32 anim_0988__v0_l0[] = { // 0x0812E7CC
+    PALETTE(688, 16, 0x10)
+    TILES(0x2659F, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0988__v1_l0[] = { // 0x0812E7F0
+    PALETTE(688, 16, 0x10)
+    TILES(0x265AF, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0988__v2_l0[] = { // 0x0812E814
+    PALETTE(689, 16, 0x60)
+    TILES(0x265BF, 68)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0988__v3_l0[] = { // 0x0812E838
+    PALETTE(689, 16, 0x60)
+    TILES(0x26603, 63)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_0988[4] = {
+    anim_0988__v0_l0,
+    anim_0988__v1_l0,
+    anim_0988__v2_l0,
+    anim_0988__v3_l0,
+};
+
+const s32 anim_0989__v0_l0[] = { // 0x0812E86C
+    PALETTE(688, 16, 0x10)
+    TILES(0x26642, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0989__v1_l0[] = { // 0x0812E890
+    PALETTE(688, 16, 0x10)
+    TILES(0x26652, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0989__v2_l0[] = { // 0x0812E8B4
+    PALETTE(689, 16, 0x60)
+    TILES(0x26662, 60)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_0989__v3_l0[] = { // 0x0812E8D8
+    PALETTE(689, 16, 0x60)
+    TILES(0x2669E, 22)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_0989[4] = {
+    anim_0989__v0_l0,
+    anim_0989__v1_l0,
+    anim_0989__v2_l0,
+    anim_0989__v3_l0,
+};
+
+const s32 anim_0990__v0_l0[] = { // 0x0812E90C
+    PALETTE(707, 16, 0x10)
+    TILES(0x266B4, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0990__v1_l0[] = { // 0x0812E930
+    PALETTE(707, 16, 0x10)
+    TILES(0x266C4, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0990__v2_l0[] = { // 0x0812E954
+    PALETTE(689, 16, 0x60)
+    TILES(0x266D4, 28)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0990[3] = {
+    anim_0990__v0_l0,
+    anim_0990__v1_l0,
+    anim_0990__v2_l0,
+};
+
+const s32 anim_0991__v0_l0[] = { // 0x0812E984
+    PALETTE(707, 16, 0x10)
+    TILES(0x266F0, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0991__v1_l0[] = { // 0x0812E9A8
+    PALETTE(707, 16, 0x10)
+    TILES(0x26700, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0991__v2_l0[] = { // 0x0812E9CC
+    PALETTE(689, 16, 0x60)
+    TILES(0x26710, 50)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0991[3] = {
+    anim_0991__v0_l0,
+    anim_0991__v1_l0,
+    anim_0991__v2_l0,
+};
+
+const s32 anim_0992__v0_l0[] = { // 0x0812E9FC
+    PALETTE(688, 16, 0x10)
+    TILES(0x26742, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0992__v1_l0[] = { // 0x0812EA20
+    PALETTE(688, 16, 0x10)
+    TILES(0x26752, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0992__v2_l0[] = { // 0x0812EA44
+    PALETTE(689, 16, 0x60)
+    TILES(0x26762, 28)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0992[3] = {
+    anim_0992__v0_l0,
+    anim_0992__v1_l0,
+    anim_0992__v2_l0,
+};
+
+const s32 anim_0993__v0_l0[] = { // 0x0812EA74
+    PALETTE(688, 16, 0x10)
+    TILES(0x2677E, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0993__v1_l0[] = { // 0x0812EA98
+    PALETTE(688, 16, 0x10)
+    TILES(0x2678E, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0993__v2_l0[] = { // 0x0812EABC
+    PALETTE(689, 16, 0x60)
+    TILES(0x2679E, 28)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0993[3] = {
+    anim_0993__v0_l0,
+    anim_0993__v1_l0,
+    anim_0993__v2_l0,
+};
+
+const s32 anim_0994__v0_l0[] = { // 0x0812EAEC
+    PALETTE(688, 16, 0x10)
+    TILES(0x267BA, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0994__v1_l0[] = { // 0x0812EB10
+    PALETTE(688, 16, 0x10)
+    TILES(0x267CA, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_0994__v2_l0[] = { // 0x0812EB34
+    PALETTE(689, 16, 0x60)
+    TILES(0x267DA, 45)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_0994[3] = {
+    anim_0994__v0_l0,
+    anim_0994__v1_l0,
+    anim_0994__v2_l0,
+};
+
+const s32 anim_0995__v0_l0[] = { // 0x0812EB64
+    PALETTE(689, 16, 0x60)
+    TILES(0x26807, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_0995__v1_l0[] = { // 0x0812EB88
+    PALETTE(690, 16, 0x50)
+    TILES(0x26839, 20)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_0995[2] = {
+    anim_0995__v0_l0,
+    anim_0995__v1_l0,
+};
+
+const s32 anim_0996__v0_l0[] = { // 0x0812EBB4
+    PALETTE(689, 16, 0x60)
+    TILES(0x2684D, 46)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0996[1] = {
+    anim_0996__v0_l0,
+};
+
+const s32 anim_0997__v0_l0[] = { // 0x0812EBDC
+    PALETTE(689, 16, 0x60)
+    TILES(0x2687B, 60)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0997[1] = {
+    anim_0997__v0_l0,
+};
+
+const s32 anim_0998__v0_l0[] = { // 0x0812EC04
+    PALETTE(689, 16, 0x60)
+    TILES(0x268B7, 38)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0998[1] = {
+    anim_0998__v0_l0,
+};
+
+const s32 anim_0999__v0_l0[] = { // 0x0812EC2C
+    PALETTE(689, 16, 0x60)
+    TILES(0x268DD, 46)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_0999[1] = {
+    anim_0999__v0_l0,
+};
+
+const s32 anim_1000__v0_l0[] = { // 0x0812EC54
+    PALETTE(690, 16, 0x50)
+    TILES(0x2690B, 32)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1000__v1_l0[] = { // 0x0812EC78
+    PALETTE(690, 16, 0x50)
+    TILES(0x2692B, 24)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1000[2] = {
+    anim_1000__v0_l0,
+    anim_1000__v1_l0,
+};
+
+const s32 anim_1001__v0_l0[] = { // 0x0812ECA4
+    PALETTE(690, 16, 0x50)
+    TILES(0x26943, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1001__v1_l0[] = { // 0x0812ECC8
+    PALETTE(690, 16, 0x50)
+    TILES(0x2695F, 28)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1001[2] = {
+    anim_1001__v0_l0,
+    anim_1001__v1_l0,
+};
+
+const s32 anim_1002__v0_l0[] = { // 0x0812ECF4
+    PALETTE(690, 16, 0x50)
+    TILES(0x2697B, 34)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1002__v1_l0[] = { // 0x0812ED18
+    PALETTE(690, 16, 0x50)
+    TILES(0x2699D, 30)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1002[2] = {
+    anim_1002__v0_l0,
+    anim_1002__v1_l0,
+};
+
+const s32 anim_1003__v0_l0[] = { // 0x0812ED44
+    PALETTE(690, 16, 0x50)
+    TILES(0x269BB, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1003__v1_l0[] = { // 0x0812ED68
+    PALETTE(690, 16, 0x50)
+    TILES(0x269BB, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1003[2] = {
+    anim_1003__v0_l0,
+    anim_1003__v1_l0,
+};
+
+const s32 anim_1004__v0_l0[] = { // 0x0812ED94
+    PALETTE(690, 16, 0x50)
+    TILES(0x269CF, 32)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1004__v1_l0[] = { // 0x0812EDB8
+    PALETTE(690, 16, 0x50)
+    TILES(0x269EF, 26)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1004[2] = {
+    anim_1004__v0_l0,
+    anim_1004__v1_l0,
+};
+
+const s32 anim_1005__v0_l0[] = { // 0x0812EDE4
+    PALETTE(707, 16, 0x10)
+    TILES(0x26A09, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1005__v1_l0[] = { // 0x0812EE08
+    PALETTE(707, 16, 0x10)
+    TILES(0x26A31, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1005__v2_l0[] = { // 0x0812EE2C
+    PALETTE(707, 16, 0x10)
+    TILES(0x26A59, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1005__v3_l0[] = { // 0x0812EE50
+    PALETTE(707, 16, 0x10)
+    TILES(0x26A81, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1005__v4_l0[] = { // 0x0812EE74
+    PALETTE(689, 16, 0x60)
+    TILES(0x26AA9, 34)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1005[5] = {
+    anim_1005__v0_l0,
+    anim_1005__v1_l0,
+    anim_1005__v2_l0,
+    anim_1005__v3_l0,
+    anim_1005__v4_l0,
+};
+
+const s32 anim_1006__v0_l0[] = { // 0x0812EEAC
+    PALETTE(707, 16, 0x10)
+    TILES(0x26ACB, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1006__v1_l0[] = { // 0x0812EED0
+    PALETTE(707, 16, 0x10)
+    TILES(0x26AF3, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1006__v2_l0[] = { // 0x0812EEF4
+    PALETTE(707, 16, 0x10)
+    TILES(0x26B1B, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1006__v3_l0[] = { // 0x0812EF18
+    PALETTE(707, 16, 0x10)
+    TILES(0x26B43, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1006__v4_l0[] = { // 0x0812EF3C
+    PALETTE(689, 16, 0x60)
+    TILES(0x26B6B, 38)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1006[5] = {
+    anim_1006__v0_l0,
+    anim_1006__v1_l0,
+    anim_1006__v2_l0,
+    anim_1006__v3_l0,
+    anim_1006__v4_l0,
+};
+
+const s32 anim_1007__v0_l0[] = { // 0x0812EF74
+    PALETTE(688, 16, 0x10)
+    TILES(0x26B91, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1007__v1_l0[] = { // 0x0812EF98
+    PALETTE(688, 16, 0x10)
+    TILES(0x26BB9, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1007__v2_l0[] = { // 0x0812EFBC
+    PALETTE(688, 16, 0x10)
+    TILES(0x26BE1, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1007__v3_l0[] = { // 0x0812EFE0
+    PALETTE(688, 16, 0x10)
+    TILES(0x26C09, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1007__v4_l0[] = { // 0x0812F004
+    PALETTE(689, 16, 0x60)
+    TILES(0x26C31, 28)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1007[5] = {
+    anim_1007__v0_l0,
+    anim_1007__v1_l0,
+    anim_1007__v2_l0,
+    anim_1007__v3_l0,
+    anim_1007__v4_l0,
+};
+
+const s32 anim_1008__v0_l0[] = { // 0x0812F03C
+    PALETTE(688, 16, 0x10)
+    TILES(0x26C4D, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1008__v1_l0[] = { // 0x0812F060
+    PALETTE(688, 16, 0x10)
+    TILES(0x26C75, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1008__v2_l0[] = { // 0x0812F084
+    PALETTE(688, 16, 0x10)
+    TILES(0x26C9D, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1008__v3_l0[] = { // 0x0812F0A8
+    PALETTE(688, 16, 0x10)
+    TILES(0x26CC5, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1008__v4_l0[] = { // 0x0812F0CC
+    PALETTE(689, 16, 0x60)
+    TILES(0x26CED, 30)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1008[5] = {
+    anim_1008__v0_l0,
+    anim_1008__v1_l0,
+    anim_1008__v2_l0,
+    anim_1008__v3_l0,
+    anim_1008__v4_l0,
+};
+
+const s32 anim_1009__v0_l0[] = { // 0x0812F104
+    PALETTE(688, 16, 0x10)
+    TILES(0x26D0B, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1009__v1_l0[] = { // 0x0812F128
+    PALETTE(688, 16, 0x10)
+    TILES(0x26D33, 40)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1009__v2_l0[] = { // 0x0812F14C
+    PALETTE(688, 16, 0x10)
+    TILES(0x26D5B, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1009__v3_l0[] = { // 0x0812F170
+    PALETTE(688, 16, 0x10)
+    TILES(0x26D83, 40)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1009__v4_l0[] = { // 0x0812F194
+    PALETTE(689, 16, 0x60)
+    TILES(0x26DAB, 28)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1009[5] = {
+    anim_1009__v0_l0,
+    anim_1009__v1_l0,
+    anim_1009__v2_l0,
+    anim_1009__v3_l0,
+    anim_1009__v4_l0,
+};
+
+const s32 anim_1010__v0_l0[] = { // 0x0812F1CC
+    PALETTE(690, 16, 0x50)
+    TILES(0x26DC7, 22)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1010[1] = {
+    anim_1010__v0_l0,
+};
+
+const s32 anim_1011__v0_l0[] = { // 0x0812F1F4
+    PALETTE(690, 16, 0x50)
+    TILES(0x26DDD, 39)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1011[1] = {
+    anim_1011__v0_l0,
+};
+
+const s32 anim_1012__v0_l0[] = { // 0x0812F21C
+    PALETTE(690, 16, 0x50)
+    TILES(0x26E04, 26)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1012[1] = {
+    anim_1012__v0_l0,
+};
+
+const s32 anim_1013__v0_l0[] = { // 0x0812F244
+    PALETTE(690, 16, 0x50)
+    TILES(0x26E1E, 26)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1013[1] = {
+    anim_1013__v0_l0,
+};
+
+const s32 anim_1014__v0_l0[] = { // 0x0812F26C
+    PALETTE(690, 16, 0x50)
+    TILES(0x26E38, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1014[1] = {
+    anim_1014__v0_l0,
+};
+
+const s32 anim_1015__v0_l0[] = { // 0x0812F294
+    PALETTE(690, 16, 0x50)
+    TILES(0x26E54, 32)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1015__v1_l0[] = { // 0x0812F2B8
+    PALETTE(691, 16, 0x0)
+    TILES(0x26E74, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1015__v2_l0[] = { // 0x0812F2DC
+    PALETTE(694, 16, 0x10)
+    TILES(0x26E98, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1015[3] = {
+    anim_1015__v0_l0,
+    anim_1015__v1_l0,
+    anim_1015__v2_l0,
+};
+
+const s32 anim_1016__v0_l0[] = { // 0x0812F30C
+    PALETTE(690, 16, 0x50)
+    TILES(0x26EBC, 30)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1016[1] = {
+    anim_1016__v0_l0,
+};
+
+const s32 anim_1017__v0_l0[] = { // 0x0812F334
+    PALETTE(690, 16, 0x50)
+    TILES(0x26EDA, 44)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1017[1] = {
+    anim_1017__v0_l0,
+};
+
+const s32 anim_1018__v0_l0[] = { // 0x0812F35C
+    PALETTE(690, 16, 0x50)
+    TILES(0x26F06, 44)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1018[1] = {
+    anim_1018__v0_l0,
+};
+
+const s32 anim_1019__v0_l0[] = { // 0x0812F384
+    PALETTE(690, 16, 0x50)
+    TILES(0x26F32, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1019[1] = {
+    anim_1019__v0_l0,
+};
+
+const s32 anim_1020__v0_l0[] = { // 0x0812F3AC
+    PALETTE(707, 16, 0x10)
+    TILES(0x26F56, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1020__v1_l0[] = { // 0x0812F3D0
+    PALETTE(707, 16, 0x10)
+    TILES(0x26F66, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1020__v2_l0[] = { // 0x0812F3F4
+    PALETTE(689, 16, 0x60)
+    TILES(0x26F76, 26)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1020[3] = {
+    anim_1020__v0_l0,
+    anim_1020__v1_l0,
+    anim_1020__v2_l0,
+};
+
+const s32 anim_1021__v0_l0[] = { // 0x0812F424
+    PALETTE(707, 16, 0x10)
+    TILES(0x26F90, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1021__v1_l0[] = { // 0x0812F448
+    PALETTE(707, 16, 0x10)
+    TILES(0x26FA0, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1021__v2_l0[] = { // 0x0812F46C
+    PALETTE(689, 16, 0x60)
+    TILES(0x26FB0, 24)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1021[3] = {
+    anim_1021__v0_l0,
+    anim_1021__v1_l0,
+    anim_1021__v2_l0,
+};
+
+const s32 anim_1022__v0_l0[] = { // 0x0812F49C
+    PALETTE(688, 16, 0x10)
+    TILES(0x26FC8, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1022__v1_l0[] = { // 0x0812F4C0
+    PALETTE(688, 16, 0x10)
+    TILES(0x26FD8, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1022__v2_l0[] = { // 0x0812F4E4
+    PALETTE(689, 16, 0x60)
+    TILES(0x26FE8, 38)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1022[3] = {
+    anim_1022__v0_l0,
+    anim_1022__v1_l0,
+    anim_1022__v2_l0,
+};
+
+const s32 anim_1023__v0_l0[] = { // 0x0812F514
+    PALETTE(688, 16, 0x10)
+    TILES(0x2700E, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1023__v1_l0[] = { // 0x0812F538
+    PALETTE(688, 16, 0x10)
+    TILES(0x2701E, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1023__v2_l0[] = { // 0x0812F55C
+    PALETTE(689, 16, 0x60)
+    TILES(0x2702E, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1023[3] = {
+    anim_1023__v0_l0,
+    anim_1023__v1_l0,
+    anim_1023__v2_l0,
+};
+
+const s32 anim_1024__v0_l0[] = { // 0x0812F58C
+    PALETTE(688, 16, 0x10)
+    TILES(0x27056, 16)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1024__v1_l0[] = { // 0x0812F5B0
+    PALETTE(688, 16, 0x10)
+    TILES(0x27066, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1024__v2_l0[] = { // 0x0812F5D4
+    PALETTE(689, 16, 0x60)
+    TILES(0x27076, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1024[3] = {
+    anim_1024__v0_l0,
+    anim_1024__v1_l0,
+    anim_1024__v2_l0,
+};
+
+const s32 anim_1025__v0_l0[] = { // 0x0812F604
+    PALETTE(690, 16, 0x50)
+    TILES(0x2709A, 42)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1025__v1_l0[] = { // 0x0812F628
+    PALETTE(691, 16, 0x0)
+    TILES(0x270C4, 26)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1025[2] = {
+    anim_1025__v0_l0,
+    anim_1025__v1_l0,
+};
+
+const s32 anim_1026__v0_l0[] = { // 0x0812F654
+    PALETTE(690, 16, 0x50)
+    TILES(0x270DE, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1026__v1_l0[] = { // 0x0812F678
+    PALETTE(691, 16, 0x0)
+    TILES(0x270FA, 26)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1026[2] = {
+    anim_1026__v0_l0,
+    anim_1026__v1_l0,
+};
+
+const s32 anim_1027__v0_l0[] = { // 0x0812F6A4
+    PALETTE(690, 16, 0x50)
+    TILES(0x27114, 42)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1027__v1_l0[] = { // 0x0812F6C8
+    PALETTE(691, 16, 0x0)
+    TILES(0x2713E, 24)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1027[2] = {
+    anim_1027__v0_l0,
+    anim_1027__v1_l0,
+};
+
+const s32 anim_1028__v0_l0[] = { // 0x0812F6F4
+    PALETTE(690, 16, 0x50)
+    TILES(0x27156, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1028__v1_l0[] = { // 0x0812F718
+    PALETTE(691, 16, 0x0)
+    TILES(0x2717E, 24)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1028[2] = {
+    anim_1028__v0_l0,
+    anim_1028__v1_l0,
+};
+
+const s32 anim_1029__v0_l0[] = { // 0x0812F744
+    PALETTE(690, 16, 0x50)
+    TILES(0x27196, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1029__v1_l0[] = { // 0x0812F768
+    PALETTE(691, 16, 0x0)
+    TILES(0x271BE, 26)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1029[2] = {
+    anim_1029__v0_l0,
+    anim_1029__v1_l0,
+};
+
+const s32 anim_1030__v0_l0[] = { // 0x0812F794
+    PALETTE(701, 16, 0x10)
+    TILES(0x271D8, 32)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1030[1] = {
+    anim_1030__v0_l0,
+};
+
+const s32 anim_1031__v0_l0[] = { // 0x0812F7BC
+    PALETTE(701, 16, 0x10)
+    TILES(0x271F8, 26)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1031[1] = {
+    anim_1031__v0_l0,
+};
+
+const s32 anim_1032__v0_l0[] = { // 0x0812F7E4
+    PALETTE(701, 16, 0x10)
+    TILES(0x27212, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1032[1] = {
+    anim_1032__v0_l0,
+};
+
+const s32 anim_1033__v0_l0[] = { // 0x0812F80C
+    PALETTE(701, 16, 0x10)
+    TILES(0x27242, 34)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1033[1] = {
+    anim_1033__v0_l0,
+};
+
+const s32 anim_1034__v0_l0[] = { // 0x0812F834
+    PALETTE(708, 16, 0x20)
+    TILES(0x27264, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1034__v1_l0[] = { // 0x0812F858
+    PALETTE(708, 16, 0x20)
+    TILES(0x2726C, 8)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1034[2] = {
+    anim_1034__v0_l0,
+    anim_1034__v1_l0,
+};
+
+const s32 anim_1035__v0_l0[] = { // 0x0812F884
+    PALETTE(708, 16, 0x20)
+    TILES(0x27274, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1035__v1_l0[] = { // 0x0812F8A8
+    PALETTE(708, 16, 0x20)
+    TILES(0x2727C, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1035[2] = {
+    anim_1035__v0_l0,
+    anim_1035__v1_l0,
+};
+
+const s32 anim_1036__v0_l0[] = { // 0x0812F8D4
+    PALETTE(708, 16, 0x20)
+    TILES(0x27288, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1036__v1_l0[] = { // 0x0812F8F8
+    PALETTE(708, 16, 0x20)
+    TILES(0x27290, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1036[2] = {
+    anim_1036__v0_l0,
+    anim_1036__v1_l0,
+};
+
+const s32 anim_1037__v0_l0[] = { // 0x0812F924
+    PALETTE(708, 16, 0x20)
+    TILES(0x2729C, 10)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1037__v1_l0[] = { // 0x0812F948
+    PALETTE(708, 16, 0x20)
+    TILES(0x272A6, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1037[2] = {
+    anim_1037__v0_l0,
+    anim_1037__v1_l0,
+};
+
+const s32 anim_1038__v0_l0[] = { // 0x0812F974
+    PALETTE(708, 16, 0x20)
+    TILES(0x272B0, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1038__v1_l0[] = { // 0x0812F998
+    PALETTE(708, 16, 0x20)
+    TILES(0x272B8, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1038[2] = {
+    anim_1038__v0_l0,
+    anim_1038__v1_l0,
+};
+
+const s32 anim_1039__v0_l0[] = { // 0x0812F9C4
+    PALETTE(164, 16, 0x20)
+    TILES(0x272C4, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1039[1] = {
+    anim_1039__v0_l0,
+};
+
+const s32 anim_1040__v0_l0[] = { // 0x0812F9EC
+    PALETTE(164, 16, 0x20)
+    TILES(0x272D8, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1040[1] = {
+    anim_1040__v0_l0,
+};
+
+const s32 anim_1041__v0_l0[] = { // 0x0812FA14
+    PALETTE(164, 16, 0x20)
+    TILES(0x272EC, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1041[1] = {
+    anim_1041__v0_l0,
+};
+
+const s32 anim_1042__v0_l0[] = { // 0x0812FA3C
+    PALETTE(164, 16, 0x20)
+    TILES(0x27300, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1042[1] = {
+    anim_1042__v0_l0,
+};
+
+const s32 anim_1043__v0_l0[] = { // 0x0812FA64
+    PALETTE(164, 16, 0x20)
+    TILES(0x27314, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1043[1] = {
+    anim_1043__v0_l0,
+};
+
+const s32 anim_1044__v0_l0[] = { // 0x0812FA8C
+    PALETTE(163, 16, 0x60)
+    TILES(0x27328, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1044[1] = {
+    anim_1044__v0_l0,
+};
+
+const s32 anim_1045__v0_l0[] = { // 0x0812FAB4
+    PALETTE(74, 16, 0x90)
+    TILES(0x27344, 46)
+    HITBOX(0, 0, 2, 0, 2)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1045[1] = {
+    anim_1045__v0_l0,
+};
+
+const s32 anim_1046__v0_l0[] = { // 0x0812FAE8
+    PALETTE(216, 16, 0xF0)
+    TILES(0x27372, 90)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1046[1] = {
+    anim_1046__v0_l0,
+};
+
+const s32 anim_1047__v0_l0[] = { // 0x0812FB10
+    PALETTE(163, 16, 0x60)
+    TILES(0x273CC, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1047__v1_l0[] = { // 0x0812FB34
+    PALETTE(163, 16, 0x60)
+    TILES(0x273D0, 4)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1047__v2_l0[] = { // 0x0812FB58
+    PALETTE(163, 16, 0x60)
+    TILES(0x273D4, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1047__v3_l0[] = { // 0x0812FB7C
+    PALETTE(163, 16, 0x60)
+    TILES(0x273D8, 4)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1047__v4_l0[] = { // 0x0812FBA0
+    PALETTE(163, 16, 0x60)
+    TILES(0x273DC, 4)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1047__v5_l0[] = { // 0x0812FBC4
+    PALETTE(163, 16, 0x60)
+    TILES(0x273E0, 4)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1047__v6_l0[] = { // 0x0812FBE8
+    PALETTE(163, 16, 0x60)
+    TILES(0x273E4, 4)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1047__v7_l0[] = { // 0x0812FC0C
+    PALETTE(163, 16, 0x60)
+    TILES(0x273E8, 4)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1047__v8_l0[] = { // 0x0812FC30
+    PALETTE(163, 16, 0x60)
+    TILES(0x273EC, 4)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1047__v9_l0[] = { // 0x0812FC54
+    PALETTE(163, 16, 0x60)
+    TILES(0x273F0, 4)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 anim_1047__v10_l0[] = { // 0x0812FC78
+    PALETTE(163, 16, 0x60)
+    TILES(0x273F4, 4)
+    SHOW_FRAME(1, 10)
+
+    END()
+};
+
+const s32 anim_1047__v11_l0[] = { // 0x0812FC9C
+    PALETTE(163, 16, 0x60)
+    TILES(0x273F8, 16)
+    SHOW_FRAME(1, 11)
+
+    END()
+};
+
+const s32 anim_1047__v12_l0[] = { // 0x0812FCC0
+    PALETTE(163, 16, 0x60)
+    TILES(0x27408, 16)
+    SHOW_FRAME(1, 12)
+
+    END()
+};
+
+const s32 anim_1047__v13_l0[] = { // 0x0812FCE4
+    PALETTE(163, 16, 0x60)
+    TILES(0x27418, 16)
+    SHOW_FRAME(1, 13)
+
+    END()
+};
+
+const s32 anim_1047__v14_l0[] = { // 0x0812FD08
+    PALETTE(163, 16, 0x60)
+    TILES(0x27428, 16)
+    SHOW_FRAME(1, 14)
+
+    END()
+};
+
+const s32 anim_1047__v15_l0[] = { // 0x0812FD2C
+    PALETTE(163, 16, 0x60)
+    TILES(0x27438, 16)
+    SHOW_FRAME(1, 15)
+
+    END()
+};
+
+const s32 anim_1047__v16_l0[] = { // 0x0812FD50
+    PALETTE(163, 16, 0x60)
+    TILES(0x27448, 16)
+    SHOW_FRAME(1, 16)
+
+    END()
+};
+
+const s32 * const anim_1047[17] = {
+    anim_1047__v0_l0,
+    anim_1047__v1_l0,
+    anim_1047__v2_l0,
+    anim_1047__v3_l0,
+    anim_1047__v4_l0,
+    anim_1047__v5_l0,
+    anim_1047__v6_l0,
+    anim_1047__v7_l0,
+    anim_1047__v8_l0,
+    anim_1047__v9_l0,
+    anim_1047__v10_l0,
+    anim_1047__v11_l0,
+    anim_1047__v12_l0,
+    anim_1047__v13_l0,
+    anim_1047__v14_l0,
+    anim_1047__v15_l0,
+    anim_1047__v16_l0,
+};
+
+const s32 anim_1048__v0_l0[] = { // 0x0812FDB8
+    PALETTE(709, 16, 0x0)
+    TILES(0x27458, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1048__v1_l0[] = { // 0x0812FDDC
+    PALETTE(709, 16, 0x0)
+    TILES(0x2746C, 16)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1048__v2_l0[] = { // 0x0812FE00
+    PALETTE(709, 16, 0x0)
+    TILES(0x2747C, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1048__v3_l0[] = { // 0x0812FE24
+    PALETTE(709, 16, 0x0)
+    TILES(0x27480, 6)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1048__v4_l0[] = { // 0x0812FE48
+    PALETTE(709, 16, 0x0)
+    TILES(0x27486, 6)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1048__v5_l0[] = { // 0x0812FE6C
+    PALETTE(709, 16, 0x0)
+    TILES(0x2748C, 6)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1048__v6_l0[] = { // 0x0812FE90
+    PALETTE(709, 16, 0x0)
+    TILES(0x27492, 6)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1048__v7_l0[] = { // 0x0812FEB4
+    PALETTE(709, 16, 0x0)
+    TILES(0x27498, 6)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1048__v8_l0[] = { // 0x0812FED8
+    PALETTE(709, 16, 0x0)
+    TILES(0x2749E, 6)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1048__v9_l0[] = { // 0x0812FEFC
+    PALETTE(709, 16, 0x0)
+    TILES(0x274A4, 20)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1048[10] = {
+    anim_1048__v0_l0,
+    anim_1048__v1_l0,
+    anim_1048__v2_l0,
+    anim_1048__v3_l0,
+    anim_1048__v4_l0,
+    anim_1048__v5_l0,
+    anim_1048__v6_l0,
+    anim_1048__v7_l0,
+    anim_1048__v8_l0,
+    anim_1048__v9_l0,
+};
+
+const s32 anim_1049__v0_l0[] = { // 0x0812FF48
+    PALETTE(709, 16, 0x0)
+    TILES(0x274B8, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1049__v1_l0[] = { // 0x0812FF6C
+    PALETTE(709, 16, 0x0)
+    TILES(0x274D4, 28)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1049__v2_l0[] = { // 0x0812FF90
+    PALETTE(709, 16, 0x0)
+    TILES(0x274F0, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1049__v3_l0[] = { // 0x0812FFB4
+    PALETTE(709, 16, 0x0)
+    TILES(0x27514, 30)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1049__v4_l0[] = { // 0x0812FFD8
+    PALETTE(709, 16, 0x0)
+    TILES(0x27532, 28)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1049__v5_l0[] = { // 0x0812FFFC
+    PALETTE(709, 16, 0x0)
+    TILES(0x2754E, 22)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1049__v6_l0[] = { // 0x08130020
+    PALETTE(709, 16, 0x0)
+    TILES(0x27564, 30)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1049__v7_l0[] = { // 0x08130044
+    PALETTE(709, 16, 0x0)
+    TILES(0x27582, 26)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1049__v8_l0[] = { // 0x08130068
+    PALETTE(709, 16, 0x0)
+    TILES(0x2759C, 30)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_1049[9] = {
+    anim_1049__v0_l0,
+    anim_1049__v1_l0,
+    anim_1049__v2_l0,
+    anim_1049__v3_l0,
+    anim_1049__v4_l0,
+    anim_1049__v5_l0,
+    anim_1049__v6_l0,
+    anim_1049__v7_l0,
+    anim_1049__v8_l0,
+};
+
+const s32 anim_1050__v0_l0[] = { // 0x081300B0
+    PALETTE(163, 16, 0x60)
+    TILES(0x275BA, 1)
+    SHOW_FRAME(7, 0)
+
+    TILES(0x275BB, 2)
+    SHOW_FRAME(7, 1)
+
+    TILES(0x275BD, 2)
+    SHOW_FRAME(7, 2)
+
+    TILES(0x275BF, 2)
+    SHOW_FRAME(7, 3)
+
+    JUMP_BACK(23)
+};
+
+const s32 anim_1050__v1_l0[] = { // 0x08130114
+    PALETTE(163, 16, 0x60)
+    TILES(0x275C1, 1)
+    SHOW_FRAME(7, 4)
+
+    TILES(0x275C2, 2)
+    SHOW_FRAME(7, 5)
+
+    TILES(0x275C4, 2)
+    SHOW_FRAME(7, 6)
+
+    TILES(0x275C6, 2)
+    SHOW_FRAME(7, 7)
+
+    JUMP_BACK(23)
+};
+
+const s32 * const anim_1050[2] = {
+    anim_1050__v0_l0,
+    anim_1050__v1_l0,
+};
+
+const s32 anim_1051__v0_l0[] = { // 0x08130180
+    PALETTE(710, 16, 0x60)
+    TILES(0x275C8, 22)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1051__v1_l0[] = { // 0x081301A4
+    PALETTE(710, 16, 0x60)
+    TILES(0x275DE, 32)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1051__v2_l0[] = { // 0x081301C8
+    PALETTE(710, 16, 0x60)
+    TILES(0x275FE, 22)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1051__v3_l0[] = { // 0x081301EC
+    PALETTE(710, 16, 0x60)
+    TILES(0x27614, 22)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1051__v4_l0[] = { // 0x08130210
+    PALETTE(710, 16, 0x60)
+    TILES(0x2762A, 10)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1051__v5_l0[] = { // 0x08130234
+    PALETTE(711, 16, 0x70)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 * const anim_1051[6] = {
+    anim_1051__v0_l0,
+    anim_1051__v1_l0,
+    anim_1051__v2_l0,
+    anim_1051__v3_l0,
+    anim_1051__v4_l0,
+    anim_1051__v5_l0,
+};
+
+const s32 anim_1052__v0_l0[] = { // 0x08130264
+    PALETTE(712, 16, 0x60)
+    TILES(0x27634, 24)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1052__v1_l0[] = { // 0x08130288
+    PALETTE(712, 16, 0x60)
+    TILES(0x2764C, 42)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1052__v2_l0[] = { // 0x081302AC
+    PALETTE(712, 16, 0x60)
+    TILES(0x27676, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1052__v3_l0[] = { // 0x081302D0
+    PALETTE(712, 16, 0x60)
+    TILES(0x2769A, 30)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1052__v4_l0[] = { // 0x081302F4
+    PALETTE(712, 16, 0x60)
+    TILES(0x276B8, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1052[5] = {
+    anim_1052__v0_l0,
+    anim_1052__v1_l0,
+    anim_1052__v2_l0,
+    anim_1052__v3_l0,
+    anim_1052__v4_l0,
+};
+
+const s32 anim_1053__v0_l0[] = { // 0x0813032C
+    PALETTE(712, 16, 0x60)
+    TILES(0x276C0, 24)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1053__v1_l0[] = { // 0x08130350
+    PALETTE(712, 16, 0x60)
+    TILES(0x276D8, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1053__v2_l0[] = { // 0x08130374
+    PALETTE(712, 16, 0x60)
+    TILES(0x276FC, 42)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1053__v3_l0[] = { // 0x08130398
+    PALETTE(712, 16, 0x60)
+    TILES(0x27726, 36)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1053__v4_l0[] = { // 0x081303BC
+    PALETTE(712, 16, 0x60)
+    TILES(0x2774A, 20)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1053[5] = {
+    anim_1053__v0_l0,
+    anim_1053__v1_l0,
+    anim_1053__v2_l0,
+    anim_1053__v3_l0,
+    anim_1053__v4_l0,
+};
+
+const s32 anim_1054__v0_l0[] = { // 0x081303F4
+    PALETTE(712, 16, 0x60)
+    TILES(0x2775E, 24)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1054__v1_l0[] = { // 0x08130418
+    PALETTE(712, 16, 0x60)
+    TILES(0x27776, 48)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1054__v2_l0[] = { // 0x0813043C
+    PALETTE(712, 16, 0x60)
+    TILES(0x277A6, 36)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1054__v3_l0[] = { // 0x08130460
+    PALETTE(712, 16, 0x60)
+    TILES(0x277CA, 32)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1054__v4_l0[] = { // 0x08130484
+    PALETTE(712, 16, 0x60)
+    TILES(0x277EA, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1054[5] = {
+    anim_1054__v0_l0,
+    anim_1054__v1_l0,
+    anim_1054__v2_l0,
+    anim_1054__v3_l0,
+    anim_1054__v4_l0,
+};
+
+const s32 anim_1055__v0_l0[] = { // 0x081304BC
+    PALETTE(712, 16, 0x60)
+    TILES(0x277F2, 44)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1055__v1_l0[] = { // 0x081304E0
+    PALETTE(712, 16, 0x60)
+    TILES(0x2781E, 44)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1055__v2_l0[] = { // 0x08130504
+    PALETTE(712, 16, 0x60)
+    TILES(0x2784A, 38)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1055__v3_l0[] = { // 0x08130528
+    PALETTE(712, 16, 0x60)
+    TILES(0x27870, 32)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1055__v4_l0[] = { // 0x0813054C
+    PALETTE(712, 16, 0x60)
+    TILES(0x27890, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1055[5] = {
+    anim_1055__v0_l0,
+    anim_1055__v1_l0,
+    anim_1055__v2_l0,
+    anim_1055__v3_l0,
+    anim_1055__v4_l0,
+};
+
+const s32 anim_1056__v0_l0[] = { // 0x08130584
+    PALETTE(712, 16, 0x60)
+    TILES(0x27898, 20)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1056__v1_l0[] = { // 0x081305A8
+    PALETTE(712, 16, 0x60)
+    TILES(0x278AC, 44)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1056__v2_l0[] = { // 0x081305CC
+    PALETTE(712, 16, 0x60)
+    TILES(0x278D8, 40)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1056__v3_l0[] = { // 0x081305F0
+    PALETTE(712, 16, 0x60)
+    TILES(0x27900, 28)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1056__v4_l0[] = { // 0x08130614
+    PALETTE(712, 16, 0x60)
+    TILES(0x2791C, 12)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1056[5] = {
+    anim_1056__v0_l0,
+    anim_1056__v1_l0,
+    anim_1056__v2_l0,
+    anim_1056__v3_l0,
+    anim_1056__v4_l0,
+};
+
+const s32 anim_1057__v0_l0[] = { // 0x0813064C
+    PALETTE(713, 16, 0x0)
+    TILES(0x27928, 108)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1057__v1_l0[] = { // 0x08130670
+    PALETTE(713, 16, 0x0)
+    TILES(0x27994, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1057__v2_l0[] = { // 0x08130694
+    PALETTE(714, 16, 0x10)
+    TILES(0x279A0, 8)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1057__v3_l0[] = { // 0x081306B8
+    PALETTE(713, 16, 0x0)
+    TILES(0x279A8, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1057__v4_l0[] = { // 0x081306DC
+    PALETTE(713, 16, 0x0)
+    TILES(0x27A50, 168)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1057__v5_l0[] = { // 0x08130700
+    PALETTE(713, 16, 0x0)
+    TILES(0x27AF8, 168)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 * const anim_1057[6] = {
+    anim_1057__v0_l0,
+    anim_1057__v1_l0,
+    anim_1057__v2_l0,
+    anim_1057__v3_l0,
+    anim_1057__v4_l0,
+    anim_1057__v5_l0,
+};
+
+const s32 anim_1058__v0_l0[] = { // 0x0813073C
+    PALETTE(715, 16, 0x0)
+    TILES(0x27BA0, 168)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1058__v1_l0[] = { // 0x08130760
+    PALETTE(715, 16, 0x0)
+    TILES(0x27C48, 168)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1058__v2_l0[] = { // 0x08130784
+    PALETTE(715, 16, 0x0)
+    TILES(0x27CF0, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1058__v3_l0[] = { // 0x081307A8
+    PALETTE(715, 16, 0x0)
+    TILES(0x27D98, 12)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1058__v4_l0[] = { // 0x081307CC
+    PALETTE(716, 16, 0x10)
+    TILES(0x27DA4, 12)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1058[5] = {
+    anim_1058__v0_l0,
+    anim_1058__v1_l0,
+    anim_1058__v2_l0,
+    anim_1058__v3_l0,
+    anim_1058__v4_l0,
+};
+
+const s32 anim_1059__v0_l0[] = { // 0x08130804
+    PALETTE(715, 16, 0x0)
+    TILES(0x27DB0, 168)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1059__v1_l0[] = { // 0x08130828
+    PALETTE(715, 16, 0x0)
+    TILES(0x27E58, 168)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1059__v2_l0[] = { // 0x0813084C
+    PALETTE(715, 16, 0x0)
+    TILES(0x27F00, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1059[3] = {
+    anim_1059__v0_l0,
+    anim_1059__v1_l0,
+    anim_1059__v2_l0,
+};
+
+const s32 anim_1060__v0_l0[] = { // 0x0813087C
+    PALETTE(715, 16, 0x0)
+    TILES(0x27FA8, 168)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1060__v1_l0[] = { // 0x081308A0
+    PALETTE(715, 16, 0x0)
+    TILES(0x28050, 168)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1060__v2_l0[] = { // 0x081308C4
+    PALETTE(715, 16, 0x0)
+    TILES(0x280F8, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1060[3] = {
+    anim_1060__v0_l0,
+    anim_1060__v1_l0,
+    anim_1060__v2_l0,
+};
+
+const s32 anim_1061__v0_l0[] = { // 0x081308F4
+    PALETTE(715, 16, 0x0)
+    TILES(0x281A0, 168)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1061__v1_l0[] = { // 0x08130918
+    PALETTE(715, 16, 0x0)
+    TILES(0x28248, 168)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1061__v2_l0[] = { // 0x0813093C
+    PALETTE(715, 16, 0x0)
+    TILES(0x282F0, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1061[3] = {
+    anim_1061__v0_l0,
+    anim_1061__v1_l0,
+    anim_1061__v2_l0,
+};
+
+const s32 anim_1062__v0_l0[] = { // 0x0813096C
+    PALETTE(715, 16, 0x0)
+    TILES(0x28398, 168)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1062__v1_l0[] = { // 0x08130990
+    PALETTE(715, 16, 0x0)
+    TILES(0x28440, 168)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1062__v2_l0[] = { // 0x081309B4
+    PALETTE(715, 16, 0x0)
+    TILES(0x284E8, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1062[3] = {
+    anim_1062__v0_l0,
+    anim_1062__v1_l0,
+    anim_1062__v2_l0,
+};
+
+const s32 anim_1063__v0_l0[] = { // 0x081309E4
+    PALETTE(709, 16, 0x0)
+    TILES(0x28590, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1063__v1_l0[] = { // 0x08130A08
+    PALETTE(709, 16, 0x0)
+    TILES(0x285B4, 34)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1063__v2_l0[] = { // 0x08130A2C
+    PALETTE(709, 16, 0x0)
+    TILES(0x285D6, 34)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1063__v3_l0[] = { // 0x08130A50
+    PALETTE(709, 16, 0x0)
+    TILES(0x285F8, 36)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1063__v4_l0[] = { // 0x08130A74
+    PALETTE(709, 16, 0x0)
+    TILES(0x2861C, 34)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1063__v5_l0[] = { // 0x08130A98
+    PALETTE(709, 16, 0x0)
+    TILES(0x2863E, 36)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1063__v6_l0[] = { // 0x08130ABC
+    PALETTE(709, 16, 0x0)
+    TILES(0x28662, 32)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1063__v7_l0[] = { // 0x08130AE0
+    PALETTE(709, 16, 0x0)
+    TILES(0x28682, 10)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1063__v8_l0[] = { // 0x08130B04
+    PALETTE(709, 16, 0x0)
+    TILES(0x2868C, 38)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_1063[9] = {
+    anim_1063__v0_l0,
+    anim_1063__v1_l0,
+    anim_1063__v2_l0,
+    anim_1063__v3_l0,
+    anim_1063__v4_l0,
+    anim_1063__v5_l0,
+    anim_1063__v6_l0,
+    anim_1063__v7_l0,
+    anim_1063__v8_l0,
+};
+
+const s32 anim_1064__v0_l0[] = { // 0x08130B4C
+    PALETTE(709, 16, 0x0)
+    TILES(0x286B2, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1064__v1_l0[] = { // 0x08130B70
+    PALETTE(709, 16, 0x0)
+    TILES(0x286D6, 34)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1064__v2_l0[] = { // 0x08130B94
+    PALETTE(709, 16, 0x0)
+    TILES(0x286F8, 24)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1064__v3_l0[] = { // 0x08130BB8
+    PALETTE(709, 16, 0x0)
+    TILES(0x28710, 22)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1064__v4_l0[] = { // 0x08130BDC
+    PALETTE(709, 16, 0x0)
+    TILES(0x28726, 24)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1064__v5_l0[] = { // 0x08130C00
+    PALETTE(709, 16, 0x0)
+    TILES(0x2873E, 28)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1064__v6_l0[] = { // 0x08130C24
+    PALETTE(709, 16, 0x0)
+    TILES(0x2875A, 24)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 * const anim_1064[7] = {
+    anim_1064__v0_l0,
+    anim_1064__v1_l0,
+    anim_1064__v2_l0,
+    anim_1064__v3_l0,
+    anim_1064__v4_l0,
+    anim_1064__v5_l0,
+    anim_1064__v6_l0,
+};
+
+const s32 anim_1065__v0_l0[] = { // 0x08130C64
+    PALETTE(709, 16, 0x0)
+    TILES(0x28772, 38)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1065__v1_l0[] = { // 0x08130C88
+    PALETTE(709, 16, 0x0)
+    TILES(0x28798, 38)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1065__v2_l0[] = { // 0x08130CAC
+    PALETTE(709, 16, 0x0)
+    TILES(0x287BE, 26)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1065__v3_l0[] = { // 0x08130CD0
+    PALETTE(709, 16, 0x0)
+    TILES(0x287D8, 22)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1065__v4_l0[] = { // 0x08130CF4
+    PALETTE(709, 16, 0x0)
+    TILES(0x287EE, 28)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1065__v5_l0[] = { // 0x08130D18
+    PALETTE(709, 16, 0x0)
+    TILES(0x2880A, 34)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1065__v6_l0[] = { // 0x08130D3C
+    PALETTE(709, 16, 0x0)
+    TILES(0x2882C, 22)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 * const anim_1065[7] = {
+    anim_1065__v0_l0,
+    anim_1065__v1_l0,
+    anim_1065__v2_l0,
+    anim_1065__v3_l0,
+    anim_1065__v4_l0,
+    anim_1065__v5_l0,
+    anim_1065__v6_l0,
+};
+
+const s32 anim_1066__v0_l0[] = { // 0x08130D7C
+    PALETTE(93, 16, 0xF0)
+    TILES(0x28842, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1066[1] = {
+    anim_1066__v0_l0,
+};
+
+const s32 anim_1067__v0_l0[] = { // 0x08130DA4
+    PALETTE(93, 16, 0xF0)
+    TILES(0x2886A, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1067[1] = {
+    anim_1067__v0_l0,
+};
+
+const s32 anim_1068__v0_l0[] = { // 0x08130DCC
+    PALETTE(93, 16, 0xF0)
+    TILES(0x28892, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1068[1] = {
+    anim_1068__v0_l0,
+};
+
+const s32 anim_1069__v0_l0[] = { // 0x08130DF4
+    PALETTE(93, 16, 0xF0)
+    TILES(0x288BA, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1069[1] = {
+    anim_1069__v0_l0,
+};
+
+const s32 anim_1070__v0_l0[] = { // 0x08130E1C
+    PALETTE(93, 16, 0xF0)
+    TILES(0x288E2, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1070[1] = {
+    anim_1070__v0_l0,
+};
+
+const s32 anim_1071__v0_l0[] = { // 0x08130E44
+    PALETTE(93, 16, 0xF0)
+    TILES(0x2890A, 40)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1071[1] = {
+    anim_1071__v0_l0,
+};
+
+const s32 anim_1072__v0_l0[] = { // 0x08130E6C
+    PALETTE(163, 16, 0x60)
+    TILES(0x28932, 22)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1072__v1_l0[] = { // 0x08130E90
+    PALETTE(163, 16, 0x60)
+    TILES(0x28948, 8)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1072[2] = {
+    anim_1072__v0_l0,
+    anim_1072__v1_l0,
+};
+
+const s32 anim_1073__v0_l0[] = { // 0x08130EBC
+    PALETTE(713, 16, 0x0)
+    TILES(0x28950, 50)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1073__v1_l0[] = { // 0x08130EE0
+    PALETTE(713, 16, 0x0)
+    TILES(0x28982, 38)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1073__v2_l0[] = { // 0x08130F04
+    PALETTE(714, 16, 0x10)
+    TILES(0x289A8, 32)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1073__v3_l0[] = { // 0x08130F28
+    PALETTE(713, 16, 0x0)
+    TILES(0x289C8, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1073__v4_l0[] = { // 0x08130F4C
+    PALETTE(713, 16, 0x0)
+    TILES(0x28A70, 168)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1073[5] = {
+    anim_1073__v0_l0,
+    anim_1073__v1_l0,
+    anim_1073__v2_l0,
+    anim_1073__v3_l0,
+    anim_1073__v4_l0,
+};
+
+const s32 anim_1074__v0_l0[] = { // 0x08130F84
+    PALETTE(717, 16, 0x70)
+    TILES(0x28B18, 90)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1074__v1_l0[] = { // 0x08130FA8
+    PALETTE(717, 16, 0x70)
+    TILES(0x28B72, 51)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1074__v2_l0[] = { // 0x08130FCC
+    PALETTE(717, 16, 0x70)
+    TILES(0x28BA5, 57)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1074__v3_l0[] = { // 0x08130FF0
+    PALETTE(717, 16, 0x70)
+    TILES(0x28BDE, 66)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1074__v4_l0[] = { // 0x08131014
+    PALETTE(717, 16, 0x70)
+    TILES(0x28C20, 66)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1074__v5_l0[] = { // 0x08131038
+    PALETTE(717, 16, 0x70)
+    TILES(0x28C62, 66)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1074__v6_l0[] = { // 0x0813105C
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CA4, 15)
+    SHOW_FRAME(1, 6)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v7_l0[] = { // 0x08131084
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CB3, 30)
+    SHOW_FRAME(1, 7)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v8_l0[] = { // 0x081310AC
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CD1, 4)
+    SHOW_FRAME(1, 8)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v9_l0[] = { // 0x081310D4
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CD5, 4)
+    SHOW_FRAME(1, 9)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v10_l0[] = { // 0x081310FC
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CD9, 4)
+    SHOW_FRAME(1, 10)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v11_l0[] = { // 0x08131124
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CDD, 30)
+    SHOW_FRAME(1, 11)
+
+    END()
+};
+
+const s32 anim_1074__v12_l0[] = { // 0x08131148
+    PALETTE(717, 16, 0x70)
+    TILES(0x28CFB, 66)
+    SHOW_FRAME(1, 12)
+
+    END()
+};
+
+const s32 anim_1074__v13_l0[] = { // 0x0813116C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28D3D, 6)
+    SHOW_FRAME(1, 13)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v14_l0[] = { // 0x08131194
+    PALETTE(718, 16, 0x0)
+    TILES(0x28D43, 8)
+    SHOW_FRAME(1, 14)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v15_l0[] = { // 0x081311BC
+    PALETTE(718, 16, 0x0)
+    TILES(0x28D4B, 8)
+    SHOW_FRAME(1, 15)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v16_l0[] = { // 0x081311E4
+    PALETTE(718, 16, 0x0)
+    TILES(0x28D53, 8)
+    SHOW_FRAME(1, 16)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1074__v17_l0[] = { // 0x0813120C
+    PALETTE(719, 16, 0x60)
+    TILES(0x28D5B, 12)
+    SHOW_FRAME(1, 17)
+
+    END()
+};
+
+const s32 anim_1074__v18_l0[] = { // 0x08131230
+    PALETTE(717, 16, 0x70)
+    TILES(0x28D67, 18)
+    SHOW_FRAME(1, 18)
+
+    END()
+};
+
+const s32 * const anim_1074[19] = {
+    anim_1074__v0_l0,
+    anim_1074__v1_l0,
+    anim_1074__v2_l0,
+    anim_1074__v3_l0,
+    anim_1074__v4_l0,
+    anim_1074__v5_l0,
+    anim_1074__v6_l0,
+    anim_1074__v7_l0,
+    anim_1074__v8_l0,
+    anim_1074__v9_l0,
+    anim_1074__v10_l0,
+    anim_1074__v11_l0,
+    anim_1074__v12_l0,
+    anim_1074__v13_l0,
+    anim_1074__v14_l0,
+    anim_1074__v15_l0,
+    anim_1074__v16_l0,
+    anim_1074__v17_l0,
+    anim_1074__v18_l0,
+};
+
+const s32 anim_1075__v0_l0[] = { // 0x081312A0
+    PALETTE(720, 16, 0x80)
+    TILES(0x28D79, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1075__v1_l0[] = { // 0x081312C4
+    PALETTE(720, 16, 0x80)
+    TILES(0x28DA9, 48)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1075[2] = {
+    anim_1075__v0_l0,
+    anim_1075__v1_l0,
+};
+
+const s32 anim_1076__v0_l0[] = { // 0x081312F0
+    PALETTE(718, 16, 0x0)
+    TILES(0x28DD9, 46)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1076__v1_l0[] = { // 0x08131314
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E07, 42)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1076__v2_l0[] = { // 0x08131338
+    PALETTE(721, 16, 0x10)
+    TILES(0x28E31, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1076__v3_l0[] = { // 0x0813135C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E3D, 18)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1076__v4_l0[] = { // 0x08131380
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E4F, 6)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1076__v5_l0[] = { // 0x081313A4
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E55, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1076__v6_l0[] = { // 0x081313C8
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E5D, 8)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1076__v7_l0[] = { // 0x081313EC
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E65, 8)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1076__v8_l0[] = { // 0x08131410
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E6D, 8)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1076__v9_l0[] = { // 0x08131434
+    PALETTE(161, 16, 0x60)
+    TILES(0x28E75, 1)
+    SHOW_FRAME(4, 9)
+
+    TILES(0x28E76, 1)
+    SHOW_FRAME(4, 10)
+
+    TILES(0x28E77, 1)
+    SHOW_FRAME(4, 11)
+
+    TILES(0x28E78, 1)
+    SHOW_FRAME(4, 12)
+
+    JUMP_BACK(23)
+};
+
+const s32 anim_1076__v10_l0[] = { // 0x08131498
+    PALETTE(721, 16, 0x10)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 * const anim_1076[11] = {
+    anim_1076__v0_l0,
+    anim_1076__v1_l0,
+    anim_1076__v2_l0,
+    anim_1076__v3_l0,
+    anim_1076__v4_l0,
+    anim_1076__v5_l0,
+    anim_1076__v6_l0,
+    anim_1076__v7_l0,
+    anim_1076__v8_l0,
+    anim_1076__v9_l0,
+    anim_1076__v10_l0,
+};
+
+const s32 anim_1077__v0_l0[] = { // 0x081314DC
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E79, 6)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1077__v1_l0[] = { // 0x08131500
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E7F, 6)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1077__v2_l0[] = { // 0x08131524
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E85, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1077__v3_l0[] = { // 0x08131548
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E91, 8)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1077__v4_l0[] = { // 0x0813156C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28E99, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1077__v5_l0[] = { // 0x08131590
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EA1, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1077__v6_l0[] = { // 0x081315B4
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EA9, 8)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1077__v7_l0[] = { // 0x081315D8
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EB1, 12)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 * const anim_1077[8] = {
+    anim_1077__v0_l0,
+    anim_1077__v1_l0,
+    anim_1077__v2_l0,
+    anim_1077__v3_l0,
+    anim_1077__v4_l0,
+    anim_1077__v5_l0,
+    anim_1077__v6_l0,
+    anim_1077__v7_l0,
+};
+
+const s32 anim_1078__v0_l0[] = { // 0x0813161C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EBD, 4)
+    SHOW_FRAME(1, 0)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v1_l0[] = { // 0x08131644
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EC1, 2)
+    SHOW_FRAME(1, 1)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v2_l0[] = { // 0x0813166C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EC3, 4)
+    SHOW_FRAME(1, 2)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v3_l0[] = { // 0x08131694
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EC7, 4)
+    SHOW_FRAME(1, 3)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v4_l0[] = { // 0x081316BC
+    PALETTE(718, 16, 0x0)
+    TILES(0x28ECB, 4)
+    SHOW_FRAME(1, 4)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v5_l0[] = { // 0x081316E4
+    PALETTE(718, 16, 0x0)
+    TILES(0x28ECF, 4)
+    SHOW_FRAME(1, 5)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v6_l0[] = { // 0x0813170C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28ED3, 4)
+    SHOW_FRAME(1, 6)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v7_l0[] = { // 0x08131734
+    PALETTE(718, 16, 0x0)
+    TILES(0x28ED7, 4)
+    SHOW_FRAME(1, 7)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v8_l0[] = { // 0x0813175C
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EDB, 4)
+    SHOW_FRAME(1, 8)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1078__v9_l0[] = { // 0x08131784
+    PALETTE(718, 16, 0x0)
+    TILES(0x28EDF, 4)
+    SHOW_FRAME(1, 9)
+
+    JUMP_BACK(8)
+};
+
+const s32 * const anim_1078[10] = {
+    anim_1078__v0_l0,
+    anim_1078__v1_l0,
+    anim_1078__v2_l0,
+    anim_1078__v3_l0,
+    anim_1078__v4_l0,
+    anim_1078__v5_l0,
+    anim_1078__v6_l0,
+    anim_1078__v7_l0,
+    anim_1078__v8_l0,
+    anim_1078__v9_l0,
+};
+
+const s32 anim_1079__v0_l0[] = { // 0x081317D4
+    PALETTE(722, 16, 0x70)
+    TILES(0x28EE3, 84)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1079__v1_l0[] = { // 0x081317F8
+    PALETTE(722, 16, 0x70)
+    TILES(0x28F37, 75)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1079__v2_l0[] = { // 0x0813181C
+    PALETTE(722, 16, 0x70)
+    TILES(0x28F82, 48)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1079__v3_l0[] = { // 0x08131840
+    PALETTE(717, 16, 0x70)
+    TILES(0x28FB2, 68)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1079__v4_l0[] = { // 0x08131864
+    PALETTE(717, 16, 0x70)
+    TILES(0x28FF6, 68)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1079__v5_l0[] = { // 0x08131888
+    PALETTE(717, 16, 0x70)
+    TILES(0x2903A, 68)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1079__v6_l0[] = { // 0x081318AC
+    PALETTE(723, 16, 0x60)
+    TILES(0x2907E, 10)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1079__v7_l0[] = { // 0x081318D0
+    PALETTE(722, 16, 0x70)
+    TILES(0x29088, 10)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1079__v8_l0[] = { // 0x081318F4
+    PALETTE(722, 16, 0x70)
+    TILES(0x29092, 36)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1079__v9_l0[] = { // 0x08131918
+    PALETTE(722, 16, 0x70)
+    TILES(0x290B6, 50)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1079[10] = {
+    anim_1079__v0_l0,
+    anim_1079__v1_l0,
+    anim_1079__v2_l0,
+    anim_1079__v3_l0,
+    anim_1079__v4_l0,
+    anim_1079__v5_l0,
+    anim_1079__v6_l0,
+    anim_1079__v7_l0,
+    anim_1079__v8_l0,
+    anim_1079__v9_l0,
+};
+
+const s32 anim_1080__v0_l0[] = { // 0x08131964
+    PALETTE(722, 16, 0x70)
+    TILES(0x290E8, 90)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1080__v1_l0[] = { // 0x08131988
+    PALETTE(722, 16, 0x70)
+    TILES(0x29142, 75)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1080__v2_l0[] = { // 0x081319AC
+    PALETTE(722, 16, 0x70)
+    TILES(0x2918D, 69)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1080__v3_l0[] = { // 0x081319D0
+    PALETTE(717, 16, 0x70)
+    TILES(0x291D2, 88)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1080__v4_l0[] = { // 0x081319F4
+    PALETTE(717, 16, 0x70)
+    TILES(0x2922A, 88)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1080__v5_l0[] = { // 0x08131A18
+    PALETTE(717, 16, 0x70)
+    TILES(0x29282, 88)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1080__v6_l0[] = { // 0x08131A3C
+    PALETTE(723, 16, 0x60)
+    TILES(0x292DA, 15)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1080__v7_l0[] = { // 0x08131A60
+    PALETTE(722, 16, 0x70)
+    TILES(0x292E9, 21)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1080__v8_l0[] = { // 0x08131A84
+    PALETTE(722, 16, 0x70)
+    TILES(0x292FE, 42)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1080__v9_l0[] = { // 0x08131AA8
+    PALETTE(722, 16, 0x70)
+    TILES(0x29328, 51)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1080[10] = {
+    anim_1080__v0_l0,
+    anim_1080__v1_l0,
+    anim_1080__v2_l0,
+    anim_1080__v3_l0,
+    anim_1080__v4_l0,
+    anim_1080__v5_l0,
+    anim_1080__v6_l0,
+    anim_1080__v7_l0,
+    anim_1080__v8_l0,
+    anim_1080__v9_l0,
+};
+
+const s32 anim_1081__v0_l0[] = { // 0x08131AF4
+    PALETTE(717, 16, 0x70)
+    TILES(0x2935B, 90)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1081__v1_l0[] = { // 0x08131B18
+    PALETTE(717, 16, 0x70)
+    TILES(0x293B5, 57)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1081__v2_l0[] = { // 0x08131B3C
+    PALETTE(717, 16, 0x70)
+    TILES(0x293EE, 39)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1081__v3_l0[] = { // 0x08131B60
+    PALETTE(717, 16, 0x70)
+    TILES(0x29415, 60)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1081__v4_l0[] = { // 0x08131B84
+    PALETTE(717, 16, 0x70)
+    TILES(0x29451, 60)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1081__v5_l0[] = { // 0x08131BA8
+    PALETTE(717, 16, 0x70)
+    TILES(0x2948D, 60)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1081__v6_l0[] = { // 0x08131BCC
+    PALETTE(723, 16, 0x60)
+    TILES(0x294C9, 18)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1081__v7_l0[] = { // 0x08131BF0
+    PALETTE(717, 16, 0x70)
+    TILES(0x294DB, 18)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1081__v8_l0[] = { // 0x08131C14
+    PALETTE(717, 16, 0x70)
+    TILES(0x294ED, 69)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1081__v9_l0[] = { // 0x08131C38
+    PALETTE(717, 16, 0x70)
+    TILES(0x29532, 69)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1081[10] = {
+    anim_1081__v0_l0,
+    anim_1081__v1_l0,
+    anim_1081__v2_l0,
+    anim_1081__v3_l0,
+    anim_1081__v4_l0,
+    anim_1081__v5_l0,
+    anim_1081__v6_l0,
+    anim_1081__v7_l0,
+    anim_1081__v8_l0,
+    anim_1081__v9_l0,
+};
+
+const s32 anim_1082__v0_l0[] = { // 0x08131C84
+    PALETTE(722, 16, 0x70)
+    TILES(0x29577, 90)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1082__v1_l0[] = { // 0x08131CA8
+    PALETTE(722, 16, 0x70)
+    TILES(0x295D1, 45)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1082__v2_l0[] = { // 0x08131CCC
+    PALETTE(722, 16, 0x70)
+    TILES(0x295FE, 69)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1082__v3_l0[] = { // 0x08131CF0
+    PALETTE(717, 16, 0x70)
+    TILES(0x29643, 68)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1082__v4_l0[] = { // 0x08131D14
+    PALETTE(717, 16, 0x70)
+    TILES(0x29687, 68)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1082__v5_l0[] = { // 0x08131D38
+    PALETTE(717, 16, 0x70)
+    TILES(0x296CB, 68)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1082__v6_l0[] = { // 0x08131D5C
+    PALETTE(723, 16, 0x60)
+    TILES(0x2970F, 9)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1082__v7_l0[] = { // 0x08131D80
+    PALETTE(722, 16, 0x70)
+    TILES(0x29718, 15)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1082__v8_l0[] = { // 0x08131DA4
+    PALETTE(722, 16, 0x70)
+    TILES(0x29727, 46)
+    SHOW_FRAME(1, 8)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1082__v9_l0[] = { // 0x08131DCC
+    PALETTE(722, 16, 0x70)
+    TILES(0x29755, 51)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1082[10] = {
+    anim_1082__v0_l0,
+    anim_1082__v1_l0,
+    anim_1082__v2_l0,
+    anim_1082__v3_l0,
+    anim_1082__v4_l0,
+    anim_1082__v5_l0,
+    anim_1082__v6_l0,
+    anim_1082__v7_l0,
+    anim_1082__v8_l0,
+    anim_1082__v9_l0,
+};
+
+const s32 anim_1083__v0_l0[] = { // 0x08131E18
+    PALETTE(722, 16, 0x70)
+    TILES(0x29788, 45)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1083__v1_l0[] = { // 0x08131E3C
+    PALETTE(722, 16, 0x70)
+    TILES(0x297B5, 51)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1083__v2_l0[] = { // 0x08131E60
+    PALETTE(722, 16, 0x70)
+    TILES(0x297E8, 69)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1083__v3_l0[] = { // 0x08131E84
+    PALETTE(717, 16, 0x70)
+    TILES(0x2982D, 60)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1083__v4_l0[] = { // 0x08131EA8
+    PALETTE(717, 16, 0x70)
+    TILES(0x29869, 64)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1083__v5_l0[] = { // 0x08131ECC
+    PALETTE(717, 16, 0x70)
+    TILES(0x298A9, 64)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1083__v6_l0[] = { // 0x08131EF0
+    PALETTE(723, 16, 0x60)
+    TILES(0x298E9, 9)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1083__v7_l0[] = { // 0x08131F14
+    PALETTE(722, 16, 0x70)
+    TILES(0x298F2, 15)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1083__v8_l0[] = { // 0x08131F38
+    PALETTE(722, 16, 0x70)
+    TILES(0x29901, 63)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1083__v9_l0[] = { // 0x08131F5C
+    PALETTE(722, 16, 0x70)
+    TILES(0x29940, 51)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1083[10] = {
+    anim_1083__v0_l0,
+    anim_1083__v1_l0,
+    anim_1083__v2_l0,
+    anim_1083__v3_l0,
+    anim_1083__v4_l0,
+    anim_1083__v5_l0,
+    anim_1083__v6_l0,
+    anim_1083__v7_l0,
+    anim_1083__v8_l0,
+    anim_1083__v9_l0,
+};
+
+const s32 anim_1084__v0_l0[] = { // 0x08131FA8
+    PALETTE(724, 16, 0x0)
+    TILES(0x29973, 38)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1084__v1_l0[] = { // 0x08131FCC
+    PALETTE(724, 16, 0x0)
+    TILES(0x29999, 46)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1084__v2_l0[] = { // 0x08131FF0
+    PALETTE(725, 16, 0x10)
+    TILES(0x299C7, 14)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1084__v3_l0[] = { // 0x08132014
+    PALETTE(724, 16, 0x0)
+    TILES(0x299D5, 10)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1084[4] = {
+    anim_1084__v0_l0,
+    anim_1084__v1_l0,
+    anim_1084__v2_l0,
+    anim_1084__v3_l0,
+};
+
+const s32 anim_1085__v0_l0[] = { // 0x08132048
+    PALETTE(724, 16, 0x0)
+    TILES(0x299DF, 57)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1085__v1_l0[] = { // 0x0813206C
+    PALETTE(724, 16, 0x0)
+    TILES(0x29A18, 46)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1085__v2_l0[] = { // 0x08132090
+    PALETTE(725, 16, 0x10)
+    TILES(0x29A46, 10)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1085__v3_l0[] = { // 0x081320B4
+    PALETTE(724, 16, 0x0)
+    TILES(0x29A50, 14)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1085[4] = {
+    anim_1085__v0_l0,
+    anim_1085__v1_l0,
+    anim_1085__v2_l0,
+    anim_1085__v3_l0,
+};
+
+const s32 anim_1086__v0_l0[] = { // 0x081320E8
+    PALETTE(724, 16, 0x0)
+    TILES(0x29A5E, 51)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1086__v1_l0[] = { // 0x0813210C
+    PALETTE(724, 16, 0x0)
+    TILES(0x29A91, 72)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1086__v2_l0[] = { // 0x08132130
+    PALETTE(725, 16, 0x10)
+    TILES(0x29AD9, 10)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1086__v3_l0[] = { // 0x08132154
+    PALETTE(724, 16, 0x0)
+    TILES(0x29AE3, 14)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1086[4] = {
+    anim_1086__v0_l0,
+    anim_1086__v1_l0,
+    anim_1086__v2_l0,
+    anim_1086__v3_l0,
+};
+
+const s32 anim_1087__v0_l0[] = { // 0x08132188
+    PALETTE(724, 16, 0x0)
+    TILES(0x29AF1, 75)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1087__v1_l0[] = { // 0x081321AC
+    PALETTE(724, 16, 0x0)
+    TILES(0x29B3C, 69)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1087__v2_l0[] = { // 0x081321D0
+    PALETTE(725, 16, 0x10)
+    TILES(0x29B81, 9)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1087__v3_l0[] = { // 0x081321F4
+    PALETTE(724, 16, 0x0)
+    TILES(0x29B8A, 15)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1087[4] = {
+    anim_1087__v0_l0,
+    anim_1087__v1_l0,
+    anim_1087__v2_l0,
+    anim_1087__v3_l0,
+};
+
+const s32 anim_1088__v0_l0[] = { // 0x08132228
+    PALETTE(724, 16, 0x0)
+    TILES(0x29B99, 72)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1088__v1_l0[] = { // 0x0813224C
+    PALETTE(724, 16, 0x0)
+    TILES(0x29BE1, 75)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1088__v2_l0[] = { // 0x08132270
+    PALETTE(725, 16, 0x10)
+    TILES(0x29C2C, 6)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1088__v3_l0[] = { // 0x08132294
+    PALETTE(724, 16, 0x0)
+    TILES(0x29C32, 10)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1088[4] = {
+    anim_1088__v0_l0,
+    anim_1088__v1_l0,
+    anim_1088__v2_l0,
+    anim_1088__v3_l0,
+};
+
+const s32 anim_1089__v0_l0[] = { // 0x081322C8
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C3C, 6)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1089__v1_l0[] = { // 0x081322EC
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C42, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1089__v2_l0[] = { // 0x08132310
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C4C, 10)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1089__v3_l0[] = { // 0x08132334
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C56, 6)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1089__v4_l0[] = { // 0x08132358
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C5C, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1089__v5_l0[] = { // 0x0813237C
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C64, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1089__v6_l0[] = { // 0x081323A0
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C6C, 8)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 * const anim_1089[7] = {
+    anim_1089__v0_l0,
+    anim_1089__v1_l0,
+    anim_1089__v2_l0,
+    anim_1089__v3_l0,
+    anim_1089__v4_l0,
+    anim_1089__v5_l0,
+    anim_1089__v6_l0,
+};
+
+const s32 anim_1090__v0_l0[] = { // 0x081323E0
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C74, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1090__v1_l0[] = { // 0x08132404
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C7C, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1090__v2_l0[] = { // 0x08132428
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C86, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1090[3] = {
+    anim_1090__v0_l0,
+    anim_1090__v1_l0,
+    anim_1090__v2_l0,
+};
+
+const s32 anim_1091__v0_l0[] = { // 0x08132458
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C92, 12)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1091__v1_l0[] = { // 0x0813247C
+    PALETTE(718, 16, 0x0)
+    TILES(0x29C9E, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1091__v2_l0[] = { // 0x081324A0
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CAA, 8)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1091[3] = {
+    anim_1091__v0_l0,
+    anim_1091__v1_l0,
+    anim_1091__v2_l0,
+};
+
+const s32 anim_1092__v0_l0[] = { // 0x081324D0
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CB2, 12)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1092__v1_l0[] = { // 0x081324F4
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CBE, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1092__v2_l0[] = { // 0x08132518
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CCA, 10)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1092[3] = {
+    anim_1092__v0_l0,
+    anim_1092__v1_l0,
+    anim_1092__v2_l0,
+};
+
+const s32 anim_1093__v0_l0[] = { // 0x08132548
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CD4, 10)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1093__v1_l0[] = { // 0x0813256C
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CDE, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1093__v2_l0[] = { // 0x08132590
+    PALETTE(718, 16, 0x0)
+    TILES(0x29CE8, 8)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1093[3] = {
+    anim_1093__v0_l0,
+    anim_1093__v1_l0,
+    anim_1093__v2_l0,
+};
+
+const s32 anim_1094__v0_l0[] = { // 0x081325C0
+    PALETTE(726, 16, 0x0)
+    TILES(0x29CF0, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1094__v1_l0[] = { // 0x081325E4
+    PALETTE(727, 16, 0x10)
+    TILES(0x29D14, 38)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1094__v2_l0[] = { // 0x08132608
+    PALETTE(726, 16, 0x0)
+    TILES(0x29D3A, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1094__v3_l0[] = { // 0x0813262C
+    PALETTE(726, 16, 0x0)
+    TILES(0x29DE2, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1094[4] = {
+    anim_1094__v0_l0,
+    anim_1094__v1_l0,
+    anim_1094__v2_l0,
+    anim_1094__v3_l0,
+};
+
+const s32 anim_1095__v0_l0[] = { // 0x08132660
+    PALETTE(726, 16, 0x0)
+    TILES(0x29E8A, 34)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1095__v1_l0[] = { // 0x08132684
+    PALETTE(728, 16, 0x10)
+    TILES(0x29EAC, 28)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1095__v2_l0[] = { // 0x081326A8
+    PALETTE(726, 16, 0x0)
+    TILES(0x29EC8, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1095__v3_l0[] = { // 0x081326CC
+    PALETTE(726, 16, 0x0)
+    TILES(0x29F70, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1095[4] = {
+    anim_1095__v0_l0,
+    anim_1095__v1_l0,
+    anim_1095__v2_l0,
+    anim_1095__v3_l0,
+};
+
+const s32 anim_1096__v0_l0[] = { // 0x08132700
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A018, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1096__v1_l0[] = { // 0x08132724
+    PALETTE(727, 16, 0x10)
+    TILES(0x2A03C, 32)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1096__v2_l0[] = { // 0x08132748
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A05C, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1096__v3_l0[] = { // 0x0813276C
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A104, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1096[4] = {
+    anim_1096__v0_l0,
+    anim_1096__v1_l0,
+    anim_1096__v2_l0,
+    anim_1096__v3_l0,
+};
+
+const s32 anim_1097__v0_l0[] = { // 0x081327A0
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A1AC, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1097__v1_l0[] = { // 0x081327C4
+    PALETTE(727, 16, 0x10)
+    TILES(0x2A1D0, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1097__v2_l0[] = { // 0x081327E8
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A1F4, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1097__v3_l0[] = { // 0x0813280C
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A29C, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1097[4] = {
+    anim_1097__v0_l0,
+    anim_1097__v1_l0,
+    anim_1097__v2_l0,
+    anim_1097__v3_l0,
+};
+
+const s32 anim_1098__v0_l0[] = { // 0x08132840
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A344, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1098__v1_l0[] = { // 0x08132864
+    PALETTE(727, 16, 0x10)
+    TILES(0x2A368, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1098__v2_l0[] = { // 0x08132888
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A38C, 168)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1098__v3_l0[] = { // 0x081328AC
+    PALETTE(729, 16, 0x0)
+    TILES(0x2A434, 168)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1098[4] = {
+    anim_1098__v0_l0,
+    anim_1098__v1_l0,
+    anim_1098__v2_l0,
+    anim_1098__v3_l0,
+};
+
+const s32 anim_1099__v0_l0[] = { // 0x081328E0
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A4DC, 6)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1099__v1_l0[] = { // 0x08132904
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A4E2, 6)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1099__v2_l0[] = { // 0x08132928
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A4E8, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1099__v3_l0[] = { // 0x0813294C
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A4F4, 12)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 * const anim_1099[4] = {
+    anim_1099__v0_l0,
+    anim_1099__v1_l0,
+    anim_1099__v2_l0,
+    anim_1099__v3_l0,
+};
+
+const s32 anim_1100__v0_l0[] = { // 0x08132980
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A500, 6)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1100__v1_l0[] = { // 0x081329A4
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A506, 10)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1100__v2_l0[] = { // 0x081329C8
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2A510, 10)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1100[3] = {
+    anim_1100__v0_l0,
+    anim_1100__v1_l0,
+    anim_1100__v2_l0,
+};
+
+const s32 anim_1101__v0_l0[] = { // 0x081329F8
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A51A, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1101__v1_l0[] = { // 0x08132A1C
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A522, 8)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1101__v2_l0[] = { // 0x08132A40
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A52A, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1101__v3_l0[] = { // 0x08132A64
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A536, 8)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1101__v4_l0[] = { // 0x08132A88
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A53E, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1101__v5_l0[] = { // 0x08132AAC
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A546, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1101__v6_l0[] = { // 0x08132AD0
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A54E, 8)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 * const anim_1101[7] = {
+    anim_1101__v0_l0,
+    anim_1101__v1_l0,
+    anim_1101__v2_l0,
+    anim_1101__v3_l0,
+    anim_1101__v4_l0,
+    anim_1101__v5_l0,
+    anim_1101__v6_l0,
+};
+
+const s32 anim_1102__v0_l0[] = { // 0x08132B10
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A556, 8)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1102__v1_l0[] = { // 0x08132B34
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A55E, 12)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1102__v2_l0[] = { // 0x08132B58
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A56A, 12)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1102__v3_l0[] = { // 0x08132B7C
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A576, 8)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1102__v4_l0[] = { // 0x08132BA0
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A57E, 8)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1102__v5_l0[] = { // 0x08132BC4
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A586, 8)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1102__v6_l0[] = { // 0x08132BE8
+    PALETTE(730, 16, 0x90)
+    TILES(0x2A58E, 8)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 * const anim_1102[7] = {
+    anim_1102__v0_l0,
+    anim_1102__v1_l0,
+    anim_1102__v2_l0,
+    anim_1102__v3_l0,
+    anim_1102__v4_l0,
+    anim_1102__v5_l0,
+    anim_1102__v6_l0,
+};
+
+const s32 anim_1103__v0_l0[] = { // 0x08132C28
+    PALETTE(731, 16, 0x80)
+    TILES(0x2A596, 48)
+    SHOW_FRAME(3, 0)
+
+    TILES(0x2A5C6, 48)
+    SHOW_FRAME(3, 1)
+
+    TILES(0x2A5F6, 48)
+    SHOW_FRAME(3, 2)
+
+    TILES(0x2A626, 48)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x2A656, 48)
+    SHOW_FRAME(3, 4)
+
+    TILES(0x2A686, 48)
+    SHOW_FRAME(3, 5)
+
+    TILES(0x2A6B6, 42)
+    SHOW_FRAME(3, 6)
+
+    TILES(0x2A6E0, 49)
+    SHOW_FRAME(3, 7)
+
+    TILES(0x2A711, 56)
+    SHOW_FRAME(3, 8)
+
+    TILES(0x2A749, 56)
+    SHOW_FRAME(3, 9)
+
+    TILES(0x2A781, 56)
+    SHOW_FRAME(3, 10)
+
+    TILES(0x2A7B9, 56)
+    SHOW_FRAME(3, 11)
+
+    TILES(0x2A7F1, 56)
+    SHOW_FRAME(3, 12)
+
+    END()
+};
+
+const s32 anim_1103__v1_l0[] = { // 0x08132D3C
+    PALETTE(731, 16, 0x80)
+    TILES(0x2A7B9, 56)
+    SHOW_FRAME(3, 11)
+
+    TILES(0x2A781, 56)
+    SHOW_FRAME(3, 10)
+
+    TILES(0x2A829, 56)
+    SHOW_FRAME(3, 13)
+
+    TILES(0x2A781, 56)
+    SHOW_FRAME(3, 10)
+
+    TILES(0x2A7B9, 56)
+    SHOW_FRAME(3, 11)
+
+    TILES(0x2A7F1, 56)
+    SHOW_FRAME(3, 12)
+
+    JUMP_BACK(33)
+};
+
+const s32 * const anim_1103[2] = {
+    anim_1103__v0_l0,
+    anim_1103__v1_l0,
+};
+
+const s32 anim_1104__v0_l0[] = { // 0x08132DD0
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A861, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1104__v1_l0[] = { // 0x08132DF4
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A891, 48)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1104__v2_l0[] = { // 0x08132E18
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A8C1, 48)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1104__v3_l0[] = { // 0x08132E3C
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A8F1, 48)
+    SHOW_FRAME(3, 3)
+
+    TILES(0x2A921, 48)
+    SHOW_FRAME(3, 4)
+
+    TILES(0x2A951, 48)
+    SHOW_FRAME(3, 5)
+
+    TILES(0x2A981, 48)
+    SHOW_FRAME(3, 6)
+
+    END()
+};
+
+const s32 anim_1104__v4_l0[] = { // 0x08132E9C
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A9B1, 48)
+    SHOW_FRAME(3, 7)
+
+    END()
+};
+
+const s32 anim_1104__v5_l0[] = { // 0x08132EC0
+    PALETTE(720, 16, 0x80)
+    TILES(0x2A9E1, 48)
+    SHOW_FRAME(3, 8)
+
+    TILES(0x2AA11, 48)
+    SHOW_FRAME(3, 9)
+
+    TILES(0x2AA41, 48)
+    SHOW_FRAME(3, 10)
+
+    TILES(0x2AA71, 48)
+    SHOW_FRAME(3, 11)
+
+    END()
+};
+
+const s32 anim_1104__v6_l0[] = { // 0x08132F20
+    PALETTE(720, 16, 0x80)
+    TILES(0x2AAA1, 48)
+    SHOW_FRAME(3, 12)
+
+    END()
+};
+
+const s32 * const anim_1104[7] = {
+    anim_1104__v0_l0,
+    anim_1104__v1_l0,
+    anim_1104__v2_l0,
+    anim_1104__v3_l0,
+    anim_1104__v4_l0,
+    anim_1104__v5_l0,
+    anim_1104__v6_l0,
+};
+
+const s32 anim_1105__v0_l0[] = { // 0x08132F60
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAD1, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1105__v1_l0[] = { // 0x08132F84
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAD5, 2)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1105__v2_l0[] = { // 0x08132FA8
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAD7, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1105__v3_l0[] = { // 0x08132FCC
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AADB, 4)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1105__v4_l0[] = { // 0x08132FF0
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AADF, 4)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1105__v5_l0[] = { // 0x08133014
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAE3, 4)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1105__v6_l0[] = { // 0x08133038
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAE7, 4)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1105__v7_l0[] = { // 0x0813305C
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAEB, 4)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1105__v8_l0[] = { // 0x08133080
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAEF, 4)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1105__v9_l0[] = { // 0x081330A4
+    PALETTE(718, 16, 0xA0)
+    TILES(0x2AAF3, 4)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1105[10] = {
+    anim_1105__v0_l0,
+    anim_1105__v1_l0,
+    anim_1105__v2_l0,
+    anim_1105__v3_l0,
+    anim_1105__v4_l0,
+    anim_1105__v5_l0,
+    anim_1105__v6_l0,
+    anim_1105__v7_l0,
+    anim_1105__v8_l0,
+    anim_1105__v9_l0,
+};
+
+const s32 anim_1106__v0_l0[] = { // 0x081330F0
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2AAF7, 46)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1106[1] = {
+    anim_1106__v0_l0,
+};
+
+const s32 anim_1107__v0_l0[] = { // 0x08133118
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2AB25, 34)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1107[1] = {
+    anim_1107__v0_l0,
+};
+
+const s32 anim_1108__v0_l0[] = { // 0x08133140
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2AB47, 46)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1108[1] = {
+    anim_1108__v0_l0,
+};
+
+const s32 anim_1109__v0_l0[] = { // 0x08133168
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2AB75, 38)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1109[1] = {
+    anim_1109__v0_l0,
+};
+
+const s32 anim_1110__v0_l0[] = { // 0x08133190
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2AB9B, 30)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1110[1] = {
+    anim_1110__v0_l0,
+};
+
+const s32 anim_1111__v0_l0[] = { // 0x081331B8
+    PALETTE(229, 16, 0xB0)
+    TILES(0x2ABB9, 30)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1111[1] = {
+    anim_1111__v0_l0,
+};
+
+const s32 anim_1112__v0_l0[] = { // 0x081331E0
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2ABD7, 18)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1112__v1_l0[] = { // 0x08133204
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2ABE9, 18)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1112__v2_l0[] = { // 0x08133228
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2ABFB, 18)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1112__v3_l0[] = { // 0x0813324C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2AC0D, 18)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1112__v4_l0[] = { // 0x08133270
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2AC1F, 18)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1112[5] = {
+    anim_1112__v0_l0,
+    anim_1112__v1_l0,
+    anim_1112__v2_l0,
+    anim_1112__v3_l0,
+    anim_1112__v4_l0,
+};
+
+const s32 anim_1113__v0_l0[] = { // 0x081332A8
+    PALETTE(733, 16, 0xC0)
+    TILES(0x2AC31, 84)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1113__v1_l0[] = { // 0x081332CC
+    PALETTE(733, 16, 0xC0)
+    TILES(0x2AC85, 84)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1113__v2_l0[] = { // 0x081332F0
+    PALETTE(733, 16, 0xC0)
+    TILES(0x2ACD9, 84)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1113__v3_l0[] = { // 0x08133314
+    PALETTE(733, 16, 0xC0)
+    TILES(0x2AD2D, 84)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1113__v4_l0[] = { // 0x08133338
+    PALETTE(733, 16, 0xC0)
+    TILES(0x2AD81, 84)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1113[5] = {
+    anim_1113__v0_l0,
+    anim_1113__v1_l0,
+    anim_1113__v2_l0,
+    anim_1113__v3_l0,
+    anim_1113__v4_l0,
+};
+
+const s32 anim_1114__v0_l0[] = { // 0x08133370
+    PALETTE(172, 16, 0x80)
+    TILES(0x2ADD5, 9)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1114__v1_l0[] = { // 0x08133394
+    PALETTE(172, 16, 0x80)
+    TILES(0x2ADDE, 9)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1114__v2_l0[] = { // 0x081333B8
+    PALETTE(172, 16, 0x80)
+    TILES(0x2ADE7, 9)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1114__v3_l0[] = { // 0x081333DC
+    PALETTE(172, 16, 0x80)
+    TILES(0x2ADF0, 9)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1114__v4_l0[] = { // 0x08133400
+    PALETTE(172, 16, 0x80)
+    TILES(0x2ADF9, 9)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1114[5] = {
+    anim_1114__v0_l0,
+    anim_1114__v1_l0,
+    anim_1114__v2_l0,
+    anim_1114__v3_l0,
+    anim_1114__v4_l0,
+};
+
+const s32 anim_1115__v0_l0[] = { // 0x08133438
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2AE02, 36)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1115__v1_l0[] = { // 0x0813345C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2AE02, 36)
+    SHOW_FRAME(1, 0)
+
+    TILES(0x2AE26, 36)
+    SHOW_FRAME(1, 1)
+
+    TILES(0x2AE4A, 36)
+    SHOW_FRAME(1, 2)
+
+    TILES(0x2AE6E, 36)
+    SHOW_FRAME(1, 3)
+
+    TILES(0x2AE92, 36)
+    SHOW_FRAME(1, 4)
+
+    TILES(0x2AEB6, 36)
+    SHOW_FRAME(1, 5)
+
+    TILES(0x2AEDA, 36)
+    SHOW_FRAME(1, 6)
+
+    TILES(0x2AEFE, 30)
+    SHOW_FRAME(1, 7)
+
+    TILES(0x2AF1C, 30)
+    SHOW_FRAME(1, 8)
+
+    TILES(0x2AF3A, 30)
+    SHOW_FRAME(1, 9)
+
+    TILES(0x2AF58, 30)
+    SHOW_FRAME(1, 10)
+
+    TILES(0x2AF76, 30)
+    SHOW_FRAME(1, 11)
+
+    TILES(0x2AF94, 25)
+    SHOW_FRAME(1, 12)
+
+    TILES(0x2AFAD, 25)
+    SHOW_FRAME(1, 13)
+
+    TILES(0x2AFC6, 25)
+    SHOW_FRAME(1, 14)
+
+    TILES(0x2AFDF, 25)
+    SHOW_FRAME(1, 15)
+
+    TILES(0x2AFF8, 25)
+    SHOW_FRAME(1, 16)
+
+    TILES(0x2B011, 20)
+    SHOW_FRAME(1, 17)
+
+    TILES(0x2B025, 20)
+    SHOW_FRAME(1, 18)
+
+    TILES(0x2B039, 20)
+    SHOW_FRAME(1, 19)
+
+    TILES(0x2B04D, 20)
+    SHOW_FRAME(1, 20)
+
+    TILES(0x2B061, 20)
+    SHOW_FRAME(1, 21)
+
+    TILES(0x2B075, 25)
+    SHOW_FRAME(1, 22)
+
+    TILES(0x2B08E, 25)
+    SHOW_FRAME(1, 23)
+
+    TILES(0x2B0A7, 25)
+    SHOW_FRAME(1, 24)
+
+    TILES(0x2B0C0, 25)
+    SHOW_FRAME(1, 25)
+
+    TILES(0x2B0D9, 25)
+    SHOW_FRAME(1, 26)
+
+    TILES(0x2B0F2, 30)
+    SHOW_FRAME(1, 27)
+
+    TILES(0x2B110, 30)
+    SHOW_FRAME(1, 28)
+
+    TILES(0x2B12E, 30)
+    SHOW_FRAME(1, 29)
+
+    TILES(0x2B14C, 30)
+    SHOW_FRAME(1, 30)
+
+    TILES(0x2B16A, 30)
+    SHOW_FRAME(1, 31)
+
+    TILES(0x2B188, 36)
+    SHOW_FRAME(1, 32)
+
+    TILES(0x2B1AC, 36)
+    SHOW_FRAME(1, 33)
+
+    TILES(0x2B1D0, 36)
+    SHOW_FRAME(1, 34)
+
+    TILES(0x2B1F4, 36)
+    SHOW_FRAME(1, 35)
+
+    TILES(0x2B218, 36)
+    SHOW_FRAME(1, 36)
+
+    TILES(0x2B23C, 36)
+    SHOW_FRAME(1, 37)
+
+    JUMP_BACK(193)
+};
+
+const s32 * const anim_1115[2] = {
+    anim_1115__v0_l0,
+    anim_1115__v1_l0,
+};
+
+const s32 anim_1116__v0_l0[] = { // 0x08133770
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B260, 64)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1116__v1_l0[] = { // 0x08133794
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B2A0, 64)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1116__v2_l0[] = { // 0x081337B8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B2E0, 64)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1116__v3_l0[] = { // 0x081337DC
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B320, 64)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1116__v4_l0[] = { // 0x08133800
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B360, 64)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1116__v5_l0[] = { // 0x08133824
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B3A0, 64)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1116__v6_l0[] = { // 0x08133848
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B3E0, 64)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1116__v7_l0[] = { // 0x0813386C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B420, 64)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1116__v8_l0[] = { // 0x08133890
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B460, 64)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 * const anim_1116[9] = {
+    anim_1116__v0_l0,
+    anim_1116__v1_l0,
+    anim_1116__v2_l0,
+    anim_1116__v3_l0,
+    anim_1116__v4_l0,
+    anim_1116__v5_l0,
+    anim_1116__v6_l0,
+    anim_1116__v7_l0,
+    anim_1116__v8_l0,
+};
+
+const s32 anim_1117__v0_l0[] = { // 0x081338D8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B4A0, 35)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1117__v1_l0[] = { // 0x081338FC
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B4C3, 20)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1117__v2_l0[] = { // 0x08133920
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B4D7, 20)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1117__v3_l0[] = { // 0x08133944
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B4EB, 35)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1117__v4_l0[] = { // 0x08133968
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B50E, 35)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1117__v5_l0[] = { // 0x0813398C
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B531, 20)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1117__v6_l0[] = { // 0x081339B0
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B545, 20)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1117__v7_l0[] = { // 0x081339D4
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B559, 35)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1117__v8_l0[] = { // 0x081339F8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B57C, 35)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1117__v9_l0[] = { // 0x08133A1C
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B59F, 20)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 anim_1117__v10_l0[] = { // 0x08133A40
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B5B3, 20)
+    SHOW_FRAME(1, 10)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1117__v11_l0[] = { // 0x08133A68
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B5C7, 35)
+    SHOW_FRAME(1, 11)
+
+    END()
+};
+
+const s32 anim_1117__v12_l0[] = { // 0x08133A8C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B5EA, 35)
+    SHOW_FRAME(1, 12)
+
+    END()
+};
+
+const s32 anim_1117__v13_l0[] = { // 0x08133AB0
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B60D, 20)
+    SHOW_FRAME(1, 13)
+
+    END()
+};
+
+const s32 anim_1117__v14_l0[] = { // 0x08133AD4
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B621, 20)
+    SHOW_FRAME(1, 14)
+
+    END()
+};
+
+const s32 anim_1117__v15_l0[] = { // 0x08133AF8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B635, 35)
+    SHOW_FRAME(1, 15)
+
+    END()
+};
+
+const s32 anim_1117__v16_l0[] = { // 0x08133B1C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B658, 35)
+    SHOW_FRAME(1, 16)
+
+    END()
+};
+
+const s32 anim_1117__v17_l0[] = { // 0x08133B40
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B67B, 20)
+    SHOW_FRAME(1, 17)
+
+    END()
+};
+
+const s32 anim_1117__v18_l0[] = { // 0x08133B64
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B68F, 20)
+    SHOW_FRAME(1, 18)
+
+    END()
+};
+
+const s32 anim_1117__v19_l0[] = { // 0x08133B88
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B6A3, 35)
+    SHOW_FRAME(1, 19)
+
+    JUMP_BACK(8)
+};
+
+const s32 anim_1117__v20_l0[] = { // 0x08133BB0
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B6C6, 35)
+    SHOW_FRAME(1, 20)
+
+    END()
+};
+
+const s32 anim_1117__v21_l0[] = { // 0x08133BD4
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B6E9, 20)
+    SHOW_FRAME(1, 21)
+
+    END()
+};
+
+const s32 anim_1117__v22_l0[] = { // 0x08133BF8
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B6FD, 20)
+    SHOW_FRAME(1, 22)
+
+    END()
+};
+
+const s32 anim_1117__v23_l0[] = { // 0x08133C1C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B711, 35)
+    SHOW_FRAME(1, 23)
+
+    END()
+};
+
+const s32 anim_1117__v24_l0[] = { // 0x08133C40
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B734, 35)
+    SHOW_FRAME(1, 24)
+
+    END()
+};
+
+const s32 anim_1117__v25_l0[] = { // 0x08133C64
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B757, 20)
+    SHOW_FRAME(1, 25)
+
+    END()
+};
+
+const s32 anim_1117__v26_l0[] = { // 0x08133C88
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B76B, 20)
+    SHOW_FRAME(1, 26)
+
+    END()
+};
+
+const s32 anim_1117__v27_l0[] = { // 0x08133CAC
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B77F, 35)
+    SHOW_FRAME(1, 27)
+
+    END()
+};
+
+const s32 anim_1117__v28_l0[] = { // 0x08133CD0
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B7A2, 25)
+    SHOW_FRAME(1, 28)
+
+    END()
+};
+
+const s32 anim_1117__v29_l0[] = { // 0x08133CF4
+    PALETTE(732, 16, 0xF0)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_1117__v30_l0[] = { // 0x08133D0C
+    PALETTE(732, 16, 0xF0)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_1117__v31_l0[] = { // 0x08133D24
+    PALETTE(732, 16, 0xF0)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_1117__v32_l0[] = { // 0x08133D3C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B7BB, 35)
+    SHOW_FRAME(1, 29)
+
+    END()
+};
+
+const s32 anim_1117__v33_l0[] = { // 0x08133D60
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B7DE, 20)
+    SHOW_FRAME(1, 30)
+
+    END()
+};
+
+const s32 anim_1117__v34_l0[] = { // 0x08133D84
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B7F2, 20)
+    SHOW_FRAME(1, 31)
+
+    END()
+};
+
+const s32 anim_1117__v35_l0[] = { // 0x08133DA8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B806, 35)
+    SHOW_FRAME(1, 32)
+
+    END()
+};
+
+const s32 anim_1117__v36_l0[] = { // 0x08133DCC
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B829, 35)
+    SHOW_FRAME(1, 33)
+
+    END()
+};
+
+const s32 anim_1117__v37_l0[] = { // 0x08133DF0
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B84C, 20)
+    SHOW_FRAME(1, 34)
+
+    END()
+};
+
+const s32 anim_1117__v38_l0[] = { // 0x08133E14
+    PALETTE(734, 16, 0xF0)
+    TILES(0x2B860, 20)
+    SHOW_FRAME(1, 35)
+
+    END()
+};
+
+const s32 anim_1117__v39_l0[] = { // 0x08133E38
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B874, 35)
+    SHOW_FRAME(1, 36)
+
+    END()
+};
+
+const s32 * const anim_1117[40] = {
+    anim_1117__v0_l0,
+    anim_1117__v1_l0,
+    anim_1117__v2_l0,
+    anim_1117__v3_l0,
+    anim_1117__v4_l0,
+    anim_1117__v5_l0,
+    anim_1117__v6_l0,
+    anim_1117__v7_l0,
+    anim_1117__v8_l0,
+    anim_1117__v9_l0,
+    anim_1117__v10_l0,
+    anim_1117__v11_l0,
+    anim_1117__v12_l0,
+    anim_1117__v13_l0,
+    anim_1117__v14_l0,
+    anim_1117__v15_l0,
+    anim_1117__v16_l0,
+    anim_1117__v17_l0,
+    anim_1117__v18_l0,
+    anim_1117__v19_l0,
+    anim_1117__v20_l0,
+    anim_1117__v21_l0,
+    anim_1117__v22_l0,
+    anim_1117__v23_l0,
+    anim_1117__v24_l0,
+    anim_1117__v25_l0,
+    anim_1117__v26_l0,
+    anim_1117__v27_l0,
+    anim_1117__v28_l0,
+    anim_1117__v29_l0,
+    anim_1117__v30_l0,
+    anim_1117__v31_l0,
+    anim_1117__v32_l0,
+    anim_1117__v33_l0,
+    anim_1117__v34_l0,
+    anim_1117__v35_l0,
+    anim_1117__v36_l0,
+    anim_1117__v37_l0,
+    anim_1117__v38_l0,
+    anim_1117__v39_l0,
+};
+
+const s32 anim_1118__v0_l0[] = { // 0x08133EFC
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B897, 9)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1118__v1_l0[] = { // 0x08133F20
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8A0, 9)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1118__v2_l0[] = { // 0x08133F44
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8A9, 9)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1118__v3_l0[] = { // 0x08133F68
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8B2, 9)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1118__v4_l0[] = { // 0x08133F8C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8BB, 9)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1118__v5_l0[] = { // 0x08133FB0
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8C4, 9)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1118__v6_l0[] = { // 0x08133FD4
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8CD, 9)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1118__v7_l0[] = { // 0x08133FF8
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8D6, 9)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1118__v8_l0[] = { // 0x0813401C
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8DF, 9)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1118__v9_l0[] = { // 0x08134040
+    PALETTE(732, 16, 0xF0)
+    TILES(0x2B8E8, 9)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 * const anim_1118[10] = {
+    anim_1118__v0_l0,
+    anim_1118__v1_l0,
+    anim_1118__v2_l0,
+    anim_1118__v3_l0,
+    anim_1118__v4_l0,
+    anim_1118__v5_l0,
+    anim_1118__v6_l0,
+    anim_1118__v7_l0,
+    anim_1118__v8_l0,
+    anim_1118__v9_l0,
+};
+
+const s32 anim_1119__v0_l0[] = { // 0x0813408C
+    PALETTE(163, 16, 0x60)
+    SHOW_FRAME(1, -1)
+
+    END()
+};
+
+const s32 anim_1119__v1_l0[] = { // 0x081340A4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8F1, 2)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1119__v2_l0[] = { // 0x081340C8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8F3, 1)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1119__v3_l0[] = { // 0x081340EC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8F4, 2)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1119__v4_l0[] = { // 0x08134110
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8F6, 2)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1119__v5_l0[] = { // 0x08134134
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8F8, 2)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1119__v6_l0[] = { // 0x08134158
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8FA, 2)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1119__v7_l0[] = { // 0x0813417C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8FC, 1)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1119__v8_l0[] = { // 0x081341A0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8FD, 2)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1119__v9_l0[] = { // 0x081341C4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B8FF, 2)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1119__v10_l0[] = { // 0x081341E8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B901, 2)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 anim_1119__v11_l0[] = { // 0x0813420C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B903, 2)
+    SHOW_FRAME(1, 10)
+
+    END()
+};
+
+const s32 anim_1119__v12_l0[] = { // 0x08134230
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B905, 1)
+    SHOW_FRAME(1, 11)
+
+    END()
+};
+
+const s32 anim_1119__v13_l0[] = { // 0x08134254
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B906, 1)
+    SHOW_FRAME(1, 12)
+
+    END()
+};
+
+const s32 anim_1119__v14_l0[] = { // 0x08134278
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B907, 1)
+    SHOW_FRAME(1, 13)
+
+    END()
+};
+
+const s32 anim_1119__v15_l0[] = { // 0x0813429C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B908, 2)
+    SHOW_FRAME(1, 14)
+
+    END()
+};
+
+const s32 anim_1119__v16_l0[] = { // 0x081342C0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B90A, 2)
+    SHOW_FRAME(1, 15)
+
+    END()
+};
+
+const s32 anim_1119__v17_l0[] = { // 0x081342E4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B90C, 2)
+    SHOW_FRAME(1, 16)
+
+    END()
+};
+
+const s32 anim_1119__v18_l0[] = { // 0x08134308
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B90E, 2)
+    SHOW_FRAME(1, 17)
+
+    END()
+};
+
+const s32 anim_1119__v19_l0[] = { // 0x0813432C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B910, 2)
+    SHOW_FRAME(1, 18)
+
+    END()
+};
+
+const s32 anim_1119__v20_l0[] = { // 0x08134350
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B912, 2)
+    SHOW_FRAME(1, 19)
+
+    END()
+};
+
+const s32 anim_1119__v21_l0[] = { // 0x08134374
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B914, 2)
+    SHOW_FRAME(1, 20)
+
+    END()
+};
+
+const s32 anim_1119__v22_l0[] = { // 0x08134398
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B916, 2)
+    SHOW_FRAME(1, 21)
+
+    END()
+};
+
+const s32 anim_1119__v23_l0[] = { // 0x081343BC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B918, 2)
+    SHOW_FRAME(1, 22)
+
+    END()
+};
+
+const s32 anim_1119__v24_l0[] = { // 0x081343E0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B91A, 2)
+    SHOW_FRAME(1, 23)
+
+    END()
+};
+
+const s32 anim_1119__v25_l0[] = { // 0x08134404
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B91C, 2)
+    SHOW_FRAME(1, 24)
+
+    END()
+};
+
+const s32 anim_1119__v26_l0[] = { // 0x08134428
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B91E, 2)
+    SHOW_FRAME(1, 25)
+
+    END()
+};
+
+const s32 anim_1119__v27_l0[] = { // 0x0813444C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B920, 2)
+    SHOW_FRAME(1, 26)
+
+    END()
+};
+
+const s32 anim_1119__v28_l0[] = { // 0x08134470
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B922, 2)
+    SHOW_FRAME(1, 27)
+
+    END()
+};
+
+const s32 anim_1119__v29_l0[] = { // 0x08134494
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B924, 2)
+    SHOW_FRAME(1, 28)
+
+    END()
+};
+
+const s32 anim_1119__v30_l0[] = { // 0x081344B8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B926, 2)
+    SHOW_FRAME(1, 29)
+
+    END()
+};
+
+const s32 anim_1119__v31_l0[] = { // 0x081344DC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B928, 2)
+    SHOW_FRAME(1, 30)
+
+    END()
+};
+
+const s32 anim_1119__v32_l0[] = { // 0x08134500
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B92A, 2)
+    SHOW_FRAME(1, 31)
+
+    END()
+};
+
+const s32 anim_1119__v33_l0[] = { // 0x08134524
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B92C, 2)
+    SHOW_FRAME(1, 32)
+
+    END()
+};
+
+const s32 anim_1119__v34_l0[] = { // 0x08134548
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B92E, 2)
+    SHOW_FRAME(1, 33)
+
+    END()
+};
+
+const s32 anim_1119__v35_l0[] = { // 0x0813456C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B930, 2)
+    SHOW_FRAME(1, 34)
+
+    END()
+};
+
+const s32 anim_1119__v36_l0[] = { // 0x08134590
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B932, 2)
+    HITBOX(0, 0, -1, 0, -1)
+    SHOW_FRAME(1, 35)
+
+    END()
+};
+
+const s32 anim_1119__v37_l0[] = { // 0x081345C0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B934, 2)
+    SHOW_FRAME(1, 36)
+
+    END()
+};
+
+const s32 anim_1119__v38_l0[] = { // 0x081345E4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B936, 2)
+    SHOW_FRAME(1, 37)
+
+    END()
+};
+
+const s32 anim_1119__v39_l0[] = { // 0x08134608
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B938, 2)
+    SHOW_FRAME(1, 38)
+
+    END()
+};
+
+const s32 anim_1119__v40_l0[] = { // 0x0813462C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B93A, 2)
+    SHOW_FRAME(1, 39)
+
+    END()
+};
+
+const s32 anim_1119__v41_l0[] = { // 0x08134650
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B93C, 2)
+    SHOW_FRAME(1, 40)
+
+    END()
+};
+
+const s32 anim_1119__v42_l0[] = { // 0x08134674
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B93E, 2)
+    SHOW_FRAME(1, 41)
+
+    END()
+};
+
+const s32 anim_1119__v43_l0[] = { // 0x08134698
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B940, 2)
+    SHOW_FRAME(1, 42)
+
+    END()
+};
+
+const s32 anim_1119__v44_l0[] = { // 0x081346BC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B942, 2)
+    SHOW_FRAME(1, 43)
+
+    END()
+};
+
+const s32 anim_1119__v45_l0[] = { // 0x081346E0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B944, 2)
+    SHOW_FRAME(1, 44)
+
+    END()
+};
+
+const s32 anim_1119__v46_l0[] = { // 0x08134704
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B946, 2)
+    SHOW_FRAME(1, 45)
+
+    END()
+};
+
+const s32 anim_1119__v47_l0[] = { // 0x08134728
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B948, 2)
+    SHOW_FRAME(1, 46)
+
+    END()
+};
+
+const s32 anim_1119__v48_l0[] = { // 0x0813474C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B94A, 2)
+    SHOW_FRAME(1, 47)
+
+    END()
+};
+
+const s32 anim_1119__v49_l0[] = { // 0x08134770
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B94C, 2)
+    SHOW_FRAME(1, 48)
+
+    END()
+};
+
+const s32 anim_1119__v50_l0[] = { // 0x08134794
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B94E, 2)
+    SHOW_FRAME(1, 49)
+
+    END()
+};
+
+const s32 anim_1119__v51_l0[] = { // 0x081347B8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B950, 2)
+    SHOW_FRAME(1, 50)
+
+    END()
+};
+
+const s32 anim_1119__v52_l0[] = { // 0x081347DC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B952, 2)
+    SHOW_FRAME(1, 51)
+
+    END()
+};
+
+const s32 anim_1119__v53_l0[] = { // 0x08134800
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B954, 2)
+    SHOW_FRAME(1, 52)
+
+    END()
+};
+
+const s32 anim_1119__v54_l0[] = { // 0x08134824
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B956, 2)
+    SHOW_FRAME(1, 53)
+
+    END()
+};
+
+const s32 anim_1119__v55_l0[] = { // 0x08134848
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B958, 2)
+    SHOW_FRAME(1, 54)
+
+    END()
+};
+
+const s32 anim_1119__v56_l0[] = { // 0x0813486C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B95A, 2)
+    SHOW_FRAME(1, 55)
+
+    END()
+};
+
+const s32 anim_1119__v57_l0[] = { // 0x08134890
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B95C, 2)
+    SHOW_FRAME(1, 56)
+
+    END()
+};
+
+const s32 anim_1119__v58_l0[] = { // 0x081348B4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B95E, 2)
+    SHOW_FRAME(1, 57)
+
+    END()
+};
+
+const s32 anim_1119__v59_l0[] = { // 0x081348D8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B960, 2)
+    SHOW_FRAME(1, 58)
+
+    END()
+};
+
+const s32 anim_1119__v60_l0[] = { // 0x081348FC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B962, 2)
+    SHOW_FRAME(1, 59)
+
+    END()
+};
+
+const s32 anim_1119__v61_l0[] = { // 0x08134920
+    TILES(0x2B964, 2)
+    SHOW_FRAME(1, 60)
+
+    JUMP_BACK(5)
+};
+
+const s32 anim_1119__v62_l0[] = { // 0x0813493C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B966, 1)
+    SHOW_FRAME(1, 61)
+
+    END()
+};
+
+const s32 anim_1119__v63_l0[] = { // 0x08134960
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B967, 1)
+    SHOW_FRAME(1, 62)
+
+    END()
+};
+
+const s32 anim_1119__v64_l0[] = { // 0x08134984
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B968, 1)
+    SHOW_FRAME(1, 63)
+
+    END()
+};
+
+const s32 anim_1119__v65_l0[] = { // 0x081349A8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B969, 1)
+    SHOW_FRAME(1, 64)
+
+    END()
+};
+
+const s32 anim_1119__v66_l0[] = { // 0x081349CC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96A, 1)
+    SHOW_FRAME(1, 65)
+
+    END()
+};
+
+const s32 anim_1119__v67_l0[] = { // 0x081349F0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96B, 1)
+    SHOW_FRAME(1, 66)
+
+    END()
+};
+
+const s32 anim_1119__v68_l0[] = { // 0x08134A14
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96C, 1)
+    SHOW_FRAME(1, 67)
+
+    END()
+};
+
+const s32 anim_1119__v69_l0[] = { // 0x08134A38
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96D, 1)
+    SHOW_FRAME(1, 68)
+
+    END()
+};
+
+const s32 anim_1119__v70_l0[] = { // 0x08134A5C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96E, 1)
+    SHOW_FRAME(1, 69)
+
+    END()
+};
+
+const s32 anim_1119__v71_l0[] = { // 0x08134A80
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B96F, 2)
+    SHOW_FRAME(1, 70)
+
+    END()
+};
+
+const s32 anim_1119__v72_l0[] = { // 0x08134AA4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B971, 1)
+    SHOW_FRAME(1, 71)
+
+    END()
+};
+
+const s32 anim_1119__v73_l0[] = { // 0x08134AC8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B972, 1)
+    SHOW_FRAME(1, 72)
+
+    END()
+};
+
+const s32 anim_1119__v74_l0[] = { // 0x08134AEC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B973, 2)
+    SHOW_FRAME(1, 73)
+
+    END()
+};
+
+const s32 anim_1119__v75_l0[] = { // 0x08134B10
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B975, 1)
+    HITBOX(0, 21, 13, 21, 13)
+    SHOW_FRAME(1, 74)
+
+    END()
+};
+
+const s32 anim_1119__v76_l0[] = { // 0x08134B40
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B976, 1)
+    SHOW_FRAME(1, 75)
+
+    END()
+};
+
+const s32 anim_1119__v77_l0[] = { // 0x08134B64
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B977, 1)
+    SHOW_FRAME(1, 76)
+
+    END()
+};
+
+const s32 anim_1119__v78_l0[] = { // 0x08134B88
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B978, 1)
+    SHOW_FRAME(1, 77)
+
+    END()
+};
+
+const s32 anim_1119__v79_l0[] = { // 0x08134BAC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B979, 1)
+    SHOW_FRAME(1, 78)
+
+    END()
+};
+
+const s32 anim_1119__v80_l0[] = { // 0x08134BD0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B97A, 2)
+    SHOW_FRAME(1, 79)
+
+    END()
+};
+
+const s32 anim_1119__v81_l0[] = { // 0x08134BF4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B97C, 2)
+    SHOW_FRAME(1, 80)
+
+    END()
+};
+
+const s32 anim_1119__v82_l0[] = { // 0x08134C18
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B97E, 1)
+    SHOW_FRAME(1, 81)
+
+    END()
+};
+
+const s32 anim_1119__v83_l0[] = { // 0x08134C3C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B97F, 1)
+    SHOW_FRAME(1, 82)
+
+    END()
+};
+
+const s32 anim_1119__v84_l0[] = { // 0x08134C60
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B980, 1)
+    SHOW_FRAME(1, 83)
+
+    END()
+};
+
+const s32 anim_1119__v85_l0[] = { // 0x08134C84
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B981, 1)
+    SHOW_FRAME(1, 84)
+
+    END()
+};
+
+const s32 anim_1119__v86_l0[] = { // 0x08134CA8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B982, 1)
+    SHOW_FRAME(1, 85)
+
+    END()
+};
+
+const s32 anim_1119__v87_l0[] = { // 0x08134CCC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B983, 1)
+    SHOW_FRAME(1, 86)
+
+    END()
+};
+
+const s32 anim_1119__v88_l0[] = { // 0x08134CF0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B984, 1)
+    SHOW_FRAME(1, 87)
+
+    END()
+};
+
+const s32 anim_1119__v89_l0[] = { // 0x08134D14
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B985, 2)
+    SHOW_FRAME(1, 88)
+
+    END()
+};
+
+const s32 anim_1119__v90_l0[] = { // 0x08134D38
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B987, 1)
+    SHOW_FRAME(1, 89)
+
+    END()
+};
+
+const s32 anim_1119__v91_l0[] = { // 0x08134D5C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B988, 2)
+    SHOW_FRAME(1, 90)
+
+    END()
+};
+
+const s32 anim_1119__v92_l0[] = { // 0x08134D80
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B98A, 2)
+    SHOW_FRAME(1, 91)
+
+    END()
+};
+
+const s32 anim_1119__v93_l0[] = { // 0x08134DA4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B98C, 2)
+    SHOW_FRAME(1, 92)
+
+    END()
+};
+
+const s32 anim_1119__v94_l0[] = { // 0x08134DC8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2B98E, 1)
+    SHOW_FRAME(1, 93)
+
+    END()
+};
+
+const s32 * const anim_1119[95] = {
+    anim_1119__v0_l0,
+    anim_1119__v1_l0,
+    anim_1119__v2_l0,
+    anim_1119__v3_l0,
+    anim_1119__v4_l0,
+    anim_1119__v5_l0,
+    anim_1119__v6_l0,
+    anim_1119__v7_l0,
+    anim_1119__v8_l0,
+    anim_1119__v9_l0,
+    anim_1119__v10_l0,
+    anim_1119__v11_l0,
+    anim_1119__v12_l0,
+    anim_1119__v13_l0,
+    anim_1119__v14_l0,
+    anim_1119__v15_l0,
+    anim_1119__v16_l0,
+    anim_1119__v17_l0,
+    anim_1119__v18_l0,
+    anim_1119__v19_l0,
+    anim_1119__v20_l0,
+    anim_1119__v21_l0,
+    anim_1119__v22_l0,
+    anim_1119__v23_l0,
+    anim_1119__v24_l0,
+    anim_1119__v25_l0,
+    anim_1119__v26_l0,
+    anim_1119__v27_l0,
+    anim_1119__v28_l0,
+    anim_1119__v29_l0,
+    anim_1119__v30_l0,
+    anim_1119__v31_l0,
+    anim_1119__v32_l0,
+    anim_1119__v33_l0,
+    anim_1119__v34_l0,
+    anim_1119__v35_l0,
+    anim_1119__v36_l0,
+    anim_1119__v37_l0,
+    anim_1119__v38_l0,
+    anim_1119__v39_l0,
+    anim_1119__v40_l0,
+    anim_1119__v41_l0,
+    anim_1119__v42_l0,
+    anim_1119__v43_l0,
+    anim_1119__v44_l0,
+    anim_1119__v45_l0,
+    anim_1119__v46_l0,
+    anim_1119__v47_l0,
+    anim_1119__v48_l0,
+    anim_1119__v49_l0,
+    anim_1119__v50_l0,
+    anim_1119__v51_l0,
+    anim_1119__v52_l0,
+    anim_1119__v53_l0,
+    anim_1119__v54_l0,
+    anim_1119__v55_l0,
+    anim_1119__v56_l0,
+    anim_1119__v57_l0,
+    anim_1119__v58_l0,
+    anim_1119__v59_l0,
+    anim_1119__v60_l0,
+    anim_1119__v61_l0,
+    anim_1119__v62_l0,
+    anim_1119__v63_l0,
+    anim_1119__v64_l0,
+    anim_1119__v65_l0,
+    anim_1119__v66_l0,
+    anim_1119__v67_l0,
+    anim_1119__v68_l0,
+    anim_1119__v69_l0,
+    anim_1119__v70_l0,
+    anim_1119__v71_l0,
+    anim_1119__v72_l0,
+    anim_1119__v73_l0,
+    anim_1119__v74_l0,
+    anim_1119__v75_l0,
+    anim_1119__v76_l0,
+    anim_1119__v77_l0,
+    anim_1119__v78_l0,
+    anim_1119__v79_l0,
+    anim_1119__v80_l0,
+    anim_1119__v81_l0,
+    anim_1119__v82_l0,
+    anim_1119__v83_l0,
+    anim_1119__v84_l0,
+    anim_1119__v85_l0,
+    anim_1119__v86_l0,
+    anim_1119__v87_l0,
+    anim_1119__v88_l0,
+    anim_1119__v89_l0,
+    anim_1119__v90_l0,
+    anim_1119__v91_l0,
+    anim_1119__v92_l0,
+    anim_1119__v93_l0,
+    anim_1119__v94_l0,
+};
+
+const s32 anim_1120__v0_l0[] = { // 0x08134F68
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B98F, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1120[1] = {
+    anim_1120__v0_l0,
+};
+
+const s32 anim_1121__v0_l0[] = { // 0x08134F90
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B993, 24)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1121__v1_l0[] = { // 0x08134FB4
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B9AB, 24)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1121__v2_l0[] = { // 0x08134FD8
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B9C3, 27)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1121__v3_l0[] = { // 0x08134FFC
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B9DE, 18)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1121__v4_l0[] = { // 0x08135020
+    PALETTE(172, 16, 0x30)
+    TILES(0x2B9F0, 27)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1121[5] = {
+    anim_1121__v0_l0,
+    anim_1121__v1_l0,
+    anim_1121__v2_l0,
+    anim_1121__v3_l0,
+    anim_1121__v4_l0,
+};
+
+const s32 anim_1122__v0_l0[] = { // 0x08135058
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA0B, 28)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1122__v1_l0[] = { // 0x0813507C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA27, 36)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1122[2] = {
+    anim_1122__v0_l0,
+    anim_1122__v1_l0,
+};
+
+const s32 anim_1123__v0_l0[] = { // 0x081350A8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA4B, 14)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1123__v1_l0[] = { // 0x081350CC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA59, 14)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1123__v2_l0[] = { // 0x081350F0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA67, 16)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1123__v3_l0[] = { // 0x08135114
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA77, 16)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1123__v4_l0[] = { // 0x08135138
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA87, 18)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1123__v5_l0[] = { // 0x0813515C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BA99, 18)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1123__v6_l0[] = { // 0x08135180
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BAAB, 18)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1123__v7_l0[] = { // 0x081351A4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BABD, 18)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1123__v8_l0[] = { // 0x081351C8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BACF, 18)
+    SHOW_FRAME(1, 8)
+
+    END()
+};
+
+const s32 anim_1123__v9_l0[] = { // 0x081351EC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BAE1, 18)
+    SHOW_FRAME(1, 9)
+
+    END()
+};
+
+const s32 anim_1123__v10_l0[] = { // 0x08135210
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BAF3, 18)
+    SHOW_FRAME(1, 10)
+
+    END()
+};
+
+const s32 * const anim_1123[11] = {
+    anim_1123__v0_l0,
+    anim_1123__v1_l0,
+    anim_1123__v2_l0,
+    anim_1123__v3_l0,
+    anim_1123__v4_l0,
+    anim_1123__v5_l0,
+    anim_1123__v6_l0,
+    anim_1123__v7_l0,
+    anim_1123__v8_l0,
+    anim_1123__v9_l0,
+    anim_1123__v10_l0,
+};
+
+const s32 anim_1124__v0_l0[] = { // 0x08135260
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB05, 26)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1124__v1_l0[] = { // 0x08135284
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB1F, 26)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1124__v2_l0[] = { // 0x081352A8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB39, 26)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1124[3] = {
+    anim_1124__v0_l0,
+    anim_1124__v1_l0,
+    anim_1124__v2_l0,
+};
+
+const s32 anim_1125__v0_l0[] = { // 0x081352D8
+    PALETTE(0, 16, 0x0)
+    TILES(0x2BB53, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1125__v1_l0[] = { // 0x081352FC
+    PALETTE(9, 16, 0x0)
+    TILES(0x2BB57, 4)
+    HITBOX(0, 2, 0, 2, 0)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1125__v2_l0[] = { // 0x0813532C
+    PALETTE(22, 16, 0x0)
+    TILES(0x2BB5B, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1125__v3_l0[] = { // 0x08135350
+    PALETTE(7, 16, 0x0)
+    TILES(0x2BB5F, 4)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1125__v4_l0[] = { // 0x08135374
+    PALETTE(159, 16, 0x0)
+    TILES(0x2BB63, 4)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 * const anim_1125[5] = {
+    anim_1125__v0_l0,
+    anim_1125__v1_l0,
+    anim_1125__v2_l0,
+    anim_1125__v3_l0,
+    anim_1125__v4_l0,
+};
+
+const s32 anim_1126__v0_l0[] = { // 0x081353AC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB67, 32)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1126[1] = {
+    anim_1126__v0_l0,
+};
+
+const s32 anim_1127__v0_l0[] = { // 0x081353D4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB87, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1127__v1_l0[] = { // 0x081353F8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB8B, 4)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1127__v2_l0[] = { // 0x0813541C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB8F, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 anim_1127__v3_l0[] = { // 0x08135440
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB93, 4)
+    SHOW_FRAME(1, 3)
+
+    END()
+};
+
+const s32 anim_1127__v4_l0[] = { // 0x08135464
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB97, 4)
+    SHOW_FRAME(1, 4)
+
+    END()
+};
+
+const s32 anim_1127__v5_l0[] = { // 0x08135488
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB9B, 4)
+    SHOW_FRAME(1, 5)
+
+    END()
+};
+
+const s32 anim_1127__v6_l0[] = { // 0x081354AC
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BB9F, 4)
+    SHOW_FRAME(1, 6)
+
+    END()
+};
+
+const s32 anim_1127__v7_l0[] = { // 0x081354D0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBA3, 4)
+    SHOW_FRAME(1, 7)
+
+    END()
+};
+
+const s32 anim_1127__v8_l0[] = { // 0x081354F4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBA7, 4)
+    SHOW_FRAME(1, 8)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBAB, 4)
+    SHOW_FRAME(1, 9)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBAF, 4)
+    SHOW_FRAME(1, 10)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBB3, 4)
+    SHOW_FRAME(1, 11)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBB7, 4)
+    SHOW_FRAME(1, 12)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBBB, 4)
+    SHOW_FRAME(1, 13)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBBF, 4)
+    SHOW_FRAME(1, 14)
+
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBC3, 4)
+    SHOW_FRAME(1, 15)
+
+    JUMP_BACK(64)
+};
+
+const s32 * const anim_1127[9] = {
+    anim_1127__v0_l0,
+    anim_1127__v1_l0,
+    anim_1127__v2_l0,
+    anim_1127__v3_l0,
+    anim_1127__v4_l0,
+    anim_1127__v5_l0,
+    anim_1127__v6_l0,
+    anim_1127__v7_l0,
+    anim_1127__v8_l0,
+};
+
+const s32 anim_1128__v0_l0[] = { // 0x08135620
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBC7, 1)
+    SHOW_FRAME(119, 0)
+
+    TILES(0x2BBC8, 1)
+    SHOW_FRAME(4, 1)
+
+    TILES(0x2BBC9, 1)
+    SHOW_FRAME(4, 2)
+
+    TILES(0x2BBCA, 1)
+    SHOW_FRAME(4, 3)
+
+    TILES(0x2BBCB, 1)
+    SHOW_FRAME(4, 4)
+
+    TILES(0x2BBC7, 1)
+    SHOW_FRAME(119, 0)
+
+    JUMP_BACK(33)
+};
+
+const s32 * const anim_1128[1] = {
+    anim_1128__v0_l0,
+};
+
+const s32 anim_1129__v0_l0[] = { // 0x081356B0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBCC, 4)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1129__v1_l0[] = { // 0x081356D4
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBD0, 4)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 anim_1129__v2_l0[] = { // 0x081356F8
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBD4, 4)
+    SHOW_FRAME(1, 2)
+
+    END()
+};
+
+const s32 * const anim_1129[3] = {
+    anim_1129__v0_l0,
+    anim_1129__v1_l0,
+    anim_1129__v2_l0,
+};
+
+const s32 anim_1130__v0_l0[] = { // 0x08135728
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BBD8, 64)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 anim_1130__v1_l0[] = { // 0x0813574C
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BC18, 64)
+    SHOW_FRAME(1, 1)
+
+    END()
+};
+
+const s32 * const anim_1130[2] = {
+    anim_1130__v0_l0,
+    anim_1130__v1_l0,
+};
+
+const s32 anim_1131__v0_l0[] = { // 0x08135778
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BC58, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1131[1] = {
+    anim_1131__v0_l0,
+};
+
+const s32 anim_1132__v0_l0[] = { // 0x081357A0
+    PALETTE(163, 16, 0x60)
+    TILES(0x2BC88, 48)
+    SHOW_FRAME(1, 0)
+
+    END()
+};
+
+const s32 * const anim_1132[1] = {
+    anim_1132__v0_l0,
+};
+#else // JAPAN
 const s32 anim_0953__v13_l0[] = { // 0x0812A7B8
     PALETTE(690, 16, 0x50)
     TILES(0x24796, 26)
@@ -50448,6 +61090,7 @@ const s32 anim_1132__v0_l0[] = { // 0x08135E9C
 const s32 * const anim_1132[1] = {
     anim_1132__v0_l0,
 };
+#endif 
 
 #if ENABLE_DECOMP_CREDITS
 const s32 anim_logos_variant_0[] = {
