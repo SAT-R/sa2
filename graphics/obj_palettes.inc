@@ -690,7 +690,11 @@
 .incbin "graphics/obj_palettes/pal_687.gbapal"
 .incbin "graphics/obj_palettes/pal_688.gbapal"
 .incbin "graphics/obj_palettes/pal_689.gbapal"
+#ifdef JAPAN
+.incbin "graphics/obj_palettes/pal_690_japan.gbapal"
+#else
 .incbin "graphics/obj_palettes/pal_690.gbapal"
+#endif
 .incbin "graphics/obj_palettes/pal_691.gbapal"
 .incbin "graphics/obj_palettes/pal_692.gbapal"
 .incbin "graphics/obj_palettes/pal_693.gbapal"
