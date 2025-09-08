@@ -182,14 +182,8 @@ SA2_SONG_FILES :=
 SA2_C_SRCS = $(patsubst sa2/%.c,$(C_BUILDDIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
 
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
-C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
-
 SA2_C_ASM_SRCS = $(patsubst sa2/%.s,$(C_BUILDDIR)/sa2/%.s,$(SA2_C_ASM_FILES))
 SA2_C_ASM_OBJS = $(patsubst %.s,%.o,$(SA2_C_ASM_SRCS))
-
-C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
-C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
@@ -206,7 +200,7 @@ SA2_SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SA2_SONG_S
 SA2_MID_SRCS := $(patsubst sa2/%.mid,$(MID_SUBDIR)/%.mid,$(SA2_MID_FILES))
 SA2_MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(SA2_MID_SRCS))
 
-OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(C_ASM_OBJS) $(C_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(SA2_MID_OBJS) $(SA2_SONG_OBJS)
+OBJS := $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(SA2_MID_OBJS) $(SA2_SONG_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 
@@ -325,25 +319,6 @@ $(C_BUILDDIR)/sa2/%.d: $(C_BUILDDIR)/sa2/%.c
 $(C_BUILDDIR)/sa2/%.o: $(C_BUILDDIR)/sa2/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -I ../../../ -o $@ $<
-
-# Build c sources, and ensure alignment
-$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
-	@echo "$(CC1) <flags> -o $@ $<"
-	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.i'))
-	@$(CPP) $(CPPFLAGS) $(INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s -
-	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
-	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
-
-# Scan the src dependencies to determine if any dependent files have changed
-$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
-	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.d'))
-	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
-
-# rule for sources from the src dir (parts of libraries)
-$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
-	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
