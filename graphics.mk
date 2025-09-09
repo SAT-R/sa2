@@ -30,7 +30,12 @@ ifeq ($(PLATFORM),win32)
     # For experimental OpenGL renderer
     GFX_CVT_FLAGS :=
 else
+# Japan rom compiled without split into oam shapes
+ifeq ($(GAME_REGION),JAPAN)
     GFX_CVT_FLAGS := -split_into_oam_shapes
+else
+    GFX_CVT_FLAGS := -split_into_oam_shapes
+endif
 endif
 
 graphics/obj_tiles/4bpp/%.4bpp: graphics/obj_tiles/4bpp/%.png

@@ -5157,11 +5157,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0705/f004.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0705/f005.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0706/f000.4bpp"
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0707_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0707/f000.4bpp"
-#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0708/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0709/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0710/f000.4bpp"
@@ -5171,11 +5167,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f003.4bpp"
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0714_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0714/f000.4bpp"
-#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f002.4bpp"
@@ -5248,11 +5240,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f003.4bpp"
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0727_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0727/f000.4bpp"
-#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f002.4bpp"
@@ -5935,11 +5923,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f003.4bpp"
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0848_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0848/f000.4bpp"
-#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f002.4bpp"
@@ -5980,16 +5964,8 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f015.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f016.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f017.4bpp"
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0853_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0853/f000.4bpp"
-#endif
-#ifdef JAPAN
-.incbin "graphics/obj_tiles/4bpp/anim_0854_japan/f000.4bpp"
-#else
 .incbin "graphics/obj_tiles/4bpp/anim_0854/f000.4bpp"
-#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f002.4bpp"
