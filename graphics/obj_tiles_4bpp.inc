@@ -5157,7 +5157,11 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0705/f004.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0705/f005.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0706/f000.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0707_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0707/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0708/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0709/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0710/f000.4bpp"
@@ -5167,7 +5171,11 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0713/f003.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0714_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0714/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0715/f002.4bpp"
@@ -5240,7 +5248,11 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0726/f003.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0727_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0727/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0728/f002.4bpp"
@@ -5923,7 +5935,11 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0847/f003.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0848_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0848/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0849/f002.4bpp"
@@ -5964,8 +5980,16 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f015.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f016.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0852/f017.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0853_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0853/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0854_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0854/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0855/f002.4bpp"
@@ -6230,6 +6254,25 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0895/f009.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0895/f010.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0895/f011.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f004.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f005.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f006.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f007.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f008.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f009.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f010.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f011.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f012.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f013.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f014.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f015.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0950_japan/f016.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f002.4bpp"
@@ -6247,6 +6290,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f014.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f015.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0950/f016.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0951/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0951/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0951/f002.4bpp"
@@ -6255,6 +6299,22 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0952/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0952/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0952/f003.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f004.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f005.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f006.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f007.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f008.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f009.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f010.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f011.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f012.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0953_japan/f013.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f002.4bpp"
@@ -6269,6 +6329,18 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f011.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f012.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0953/f013.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f004.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f005.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f006.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f007.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0954_japan/f008.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f002.4bpp"
@@ -6278,6 +6350,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f006.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f007.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0954/f008.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0955/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0955/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0955/f002.4bpp"
@@ -6533,15 +6606,30 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0957/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0957/f004.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0957/f005.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0958_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0958/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0959_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0959_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0959_japan/f002.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0959/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0959/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0959/f002.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0960/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0960/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0960/f002.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0961_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0961_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0961/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0961/f001.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0962/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0962/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0962/f002.4bpp"
@@ -6653,31 +6741,71 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0979/f006.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0979/f007.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0979/f008.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0980_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0980_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0980_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0980_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0980_japan/f004.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0980/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0980/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0980/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0980/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0980/f004.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0981_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0981_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0981_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0981_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0981_japan/f004.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0981/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0981/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0981/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0981/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0981/f004.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0982_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0982_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0982_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0982_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0982_japan/f004.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0982/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0982/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0982/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0982/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0982/f004.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0983_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0983_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0983_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0983_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0983_japan/f004.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0983/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0983/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0983/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0983/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0983/f004.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0984_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0984_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0984_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0984_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0984_japan/f004.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0984/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0984/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0984/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0984/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0984/f004.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0985/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0985/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0985/f002.4bpp"
@@ -6713,21 +6841,50 @@
 .incbin "graphics/obj_tiles/4bpp/anim_0994/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0994/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0994/f002.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_0995_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_0995_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_0995/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0995/f001.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_0996/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0997/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0998/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_0999/f000.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1000_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1000_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1000/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1000/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1001_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1001_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1001/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1001/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1002_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1002_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1002/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1002/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1003_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1003/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1004_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1004_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1004/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1004/f001.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_1005/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1005/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1005/f002.4bpp"
@@ -6753,18 +6910,60 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1009/f002.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1009/f003.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1009/f004.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1010_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1010/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1011_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1011/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1012_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1012/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1013_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1013/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1014_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1014/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1015_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1015_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1015_japan/f002.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1015/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1015/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1015/f002.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1016_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1016/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1017_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1017/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1018_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1018/f000.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1019_japan/f000.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1019/f000.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_1020/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1020/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1020/f002.4bpp"
@@ -6780,24 +6979,54 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1024/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1024/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1024/f002.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1025_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1025_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1025/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1025/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1026_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1026_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1026/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1026/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1027_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1027_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1027/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1027/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1028_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1028_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1028/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1028/f001.4bpp"
+#endif
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1029_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1029_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1029/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1029/f001.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_1030/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1031/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1032/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1033/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1034/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1034/f001.4bpp"
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1035_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1035_japan/f001.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1035/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1035/f001.4bpp"
+#endif
 .incbin "graphics/obj_tiles/4bpp/anim_1036/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1036/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1037/f000.4bpp"
@@ -7233,7 +7462,45 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f007.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f008.4bpp"
 
-
+#ifdef JAPAN
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f001.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f002.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f003.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f004.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f005.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f006.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f007.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f008.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f009.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f010.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f011.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f012.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f013.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f014.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f015.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f016.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f017.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f018.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f019.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f020.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f021.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f022.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f023.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f024.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f025.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f026.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f027.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f028.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f029.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f030.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f031.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f032.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f033.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f034.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f035.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_japan/f036.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f002.4bpp"
@@ -7264,12 +7531,12 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f027.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f028.4bpp"
 
-#ifndef USA
+#ifdef EUROPE
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f029.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f030.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f031.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f032.4bpp"
-#else
+#else // USA
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f029.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f030.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f031.4bpp"
@@ -7280,6 +7547,8 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f034.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f035.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f036.4bpp"
+#endif
+
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f002.4bpp"
