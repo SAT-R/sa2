@@ -215,6 +215,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
 
         if (resultsScreen->unk434) {
             for (i = 0; i < 3; i++) {
+                s32 temp;
                 s = &resultsScreen->unk370[i];
                 s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
 
@@ -223,7 +224,9 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
                 s->oamFlags = SPRITE_OAM_ORDER(4);
                 s->graphics.size = 0;
 
-#ifndef NON_MATCHING
+// Non match required for main rom, and collect rings roms
+// but not required for the japanese collect rings rom
+#if !defined(NON_MATCHING) && (!defined(JAPAN) || !COLLECT_RINGS_ROM)
 #if COLLECT_RINGS_ROM
                 do
 #endif
@@ -237,15 +240,23 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
                 while (0);
 #endif
 #endif
+
                 switch (gMultiplayerLanguage) {
 #ifdef JAPAN
                     case LANG_DEFAULT:
                         s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
                         break;
 #endif
-                    case LANG_JAPANESE:
+                    case LANG_JAPANESE: {
+#if !defined(NON_MATCHING) && COLLECT_RINGS_ROM && defined(JAPAN)
+                        // Hack only required for the japanese collect rings rom build
+                        s32 temp;
+                        s->graphics.anim = temp = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
+                        s->graphics.anim = temp;
+#else
                         s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
-                        break;
+#endif
+                    } break;
 #ifdef JAPAN
                     case LANG_ENGLISH:
                         s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
@@ -370,7 +381,11 @@ void sub_80823FC(void)
             switch (gMultiplayerLanguage) {
                 case 0:
                     background->unk1E = 0;
+#if COLLECT_RINGS_ROM && defined(JAPAN)
+                    background->unk20 = 0;
+#else
                     background->unk20 = 4;
+#endif
                     break;
                 case 1:
                     background->unk1E = 0;

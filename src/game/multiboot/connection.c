@@ -126,7 +126,7 @@ static const u16 gUnknown_080E01B6[7][3] = {
     [LANG_ITALIAN] = { SA2_ANIM_PRESS_START_MSG_ES, 0, 30 },
 };
 
-static void *const gUnknown_080E01E0[7][2] = {
+void *const gUnknown_080E01E0[7][2] = {
     { NULL, NULL },
     { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
     { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
@@ -199,7 +199,11 @@ void LinkCommunicationError(void)
     gBgScrollRegs[1][1] = 0;
     switch (gMultiplayerLanguage) {
         case 0:
+#if JAPAN
+            gBgScrollRegs[1][1] = -56;
+#else
             gBgScrollRegs[1][1] = -8;
+#endif
             break;
         case 1:
             gBgScrollRegs[1][1] = -56;
