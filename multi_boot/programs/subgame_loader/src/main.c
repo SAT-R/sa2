@@ -272,7 +272,11 @@ static void sub_0203b610(Loader *loader)
             REG_BG1VOFS = ((loader->unk13 - 1) * 0x18) - 0x30;
         } else {
             REG_BG1HOFS = 0xFFE8;
+#ifdef JAPAN
+            REG_BG1VOFS = 0xFFD0;
+#else
             REG_BG1VOFS = 0xFFE8;
+#endif
         }
 
         CpuCopy16(gUnknown_0203C4A4, (void *)VRAM + 0xC000, 0x23A0);

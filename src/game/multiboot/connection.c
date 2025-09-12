@@ -199,7 +199,7 @@ void LinkCommunicationError(void)
     gBgScrollRegs[1][1] = 0;
     switch (gMultiplayerLanguage) {
         case 0:
-#if JAPAN
+#ifdef JAPAN
             gBgScrollRegs[1][1] = -56;
 #else
             gBgScrollRegs[1][1] = -8;
