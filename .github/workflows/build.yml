@@ -31,7 +31,7 @@ jobs:
   build-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-22.04
-    name: Build GBA
+    name: Build GBA (USA)
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
@@ -132,6 +132,53 @@ jobs:
           cwd: "./gh-pages"
           add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
+  
+  build-gba-variants:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    runs-on: ubuntu-22.04
+    name: Build GBA (${{ matrix.variant }})
+    strategy:
+      matrix: 
+        variant: ["europe", "japan"]
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+       
+      - name: Checkout gh-pages
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+        with:
+          path: gh-pages
+          ref: gh-pages
+
+      - name: Checkout agbcc
+        uses: actions/checkout@master
+        with:
+          path: agbcc
+          repository: SAT-R/agbcc
+
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install binutils-arm-none-eabi
+        # build-essential, git, and libpng-dev are already installed
+        # gcc-arm-none-eabi is only needed for the modern build
+        # as an alternative to dkP
+
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: agbcc
+
+      - name: Compare
+        run: make ${{ matrix.variant }} -j${nproc}
 
   ports:
     strategy:
