@@ -560,7 +560,11 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
 
     // Copyright screen
     s->graphics.anim = SA2_ANIM_TITLE_COPYRIGHT;
+#ifdef JAPAN
+    s->variant = SA2_ANIM_VARIANT_COPYRIGHT_2002;
+#else
     s->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
+#endif
     s->prevVariant = -1;
 #if PLATFORM_GBA
     s->x = 0;

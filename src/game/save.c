@@ -195,7 +195,11 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
     gameState->unlockedCharacters = CHARACTER_BIT(CHARACTER_SONIC);
     gameState->difficultyLevel = 0;
     gameState->timeLimitDisabled = 0;
+#ifdef JAPAN
+    gameState->language = LANG_JAPANESE;
+#else
     gameState->language = LANG_ENGLISH;
+#endif
     gameState->playerName[0] = PLAYER_NAME_END_CHAR;
 
     buttonConfig = &gameState->buttonConfig;
@@ -244,7 +248,11 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
     save->header.version = 0;
     save->unk8 = 0;
     save->playerName[0] = PLAYER_NAME_END_CHAR;
+#ifdef JAPAN
+    save->language = LANG_JAPANESE;
+#else
     save->language = LANG_ENGLISH;
+#endif
     save->unlocks = 0;
     save->completions = 0;
     save->gamePlayOptions = 0;
