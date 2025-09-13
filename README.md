@@ -1,20 +1,14 @@
-# Sonic Advance 2
-[![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Decompilation Matching Progress][matching-progress-badge]][matching-progress-link] [![Contributors][contributors-badge]][contributors-link] [![Discord][discord-badge]][discord-link]
-
-[ci-status-link]: https://github.com/SAT-R/sa2/actions/workflows/build.yml
-[ci-badge]: https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg
-
-[progress-link]: https://github.com/SAT-R/sa2
-[progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json
-
-[matching-progress-link]: https://github.com/SAT-R/sa2
-[matching-progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json
-
-[contributors-link]: https://github.com/SAT-R/sa2/graphs/contributors
-[contributors-badge]: https://img.shields.io/github/contributors/SAT-R/sa2
-
-[discord-badge]: https://img.shields.io/discord/1052347299457671200
-[discord-link]: https://discord.gg/vZTvVH3gA9
+<h1 align="center">Sonic Advance 2</h1>
+<p align="center">
+  <img height="240" src=".github/media/titlescreen.png" alt="Sonic Advance 2 title screen">
+</p>
+<p align="center">
+  <a href="https://github.com/SAT-R/sa2/actions/workflows/build.yml"><img src="https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg" alt="CI status"></a>
+  <a href="https://github.com/SAT-R/sa2"><img src="https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json" alt="Decompilation Progress"></a>
+  <a href="https://github.com/SAT-R/sa2"><img src="https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json" alt="Decompilation Matching Progress"></a>
+  <a href="https://github.com/SAT-R/sa2/graphs/contributors"><img src="https://img.shields.io/github/contributors/SAT-R/sa2" alt="Contributors"></a>
+  <a href="https://discord.gg/vZTvVH3gA9"><img src="https://img.shields.io/discord/1052347299457671200" alt="Discord"></a>
+</p>
 
 > :warning: **This project is not completed and still under active development**
 
@@ -57,6 +51,9 @@ Please see follow [these instructions](./INSTALL.md)
 ## Community
 
 Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping out
+
+## Screenshots
+
 
 ## Notes
 
