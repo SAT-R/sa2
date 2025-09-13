@@ -1,69 +1,37 @@
 # Building/Installing SA2
 This doc assumes you are somewhat familiar with using a terminal/command line. If not, you may find these instructions confusing and this project might not be for you at this stage. If you still want to continue, googling anything which you don't understand might be a first step and then asking in the discord would be a fallback option.
 
-## Setup environment
+## Before building
 
-This project is designed to be built on MacOS or Linux. If you are using Windows then you will need to build the project in a Linux environemnt. There are a few options for that:
+This project is designed to be built on MacOS or Linux. 
 
-### Easiest option: Dev container
+### If you only have a windows computer
 
-This step assumes you have vscode and you can run [Dev Containers](https://code.visualstudio.com/docs/remote/containers) already. If you wanna figure that out, look up a tutorial or something.
+Install WSL (Ubuntu). Once installed, open this project in the WSL terminal and follow the linux instructions. There are tutorials online for setting up WSL. You may need to mount this project in your WSL environment.
 
-1. Open this project in VSCode and then select "open dev container" when prompted
-2. Wait for it to build.
-3. Once running, skip to *Build the GBA rom* (no further install requirements)
-
-If using the Dev container you will be able to build for the GBA and PC. However, if you build the "Linux/MacOS" target you will not be able to execute that on MacOS when built from the dev container.
-
-### WSL
-
-Install and use WSL (Ubuntu). Once using WSL, open this project in the WSL terminal and follow the linux instructions. There are tutorials online for setting up WSL. You may need to mount this project in your WSL environment.
-
-### MSYS
-
-Another option is to install 
-[**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM) and build the project in MSYS but this is not recomended unless you know what you are doing. It doesn't really function properly.
-
-## Install system requirements
-
-**NOTE**: You can skip these steps if you are using the devcontainer.
+### Install system requirements
  
-### On Linux systems (including WSL)
+#### On Linux (including WSL)
 ```
 sudo apt update
 sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
 ```
 
-### On MacOS
+#### On MacOS
 
 ```
 brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc
 ```
 
-## Install `agbcc` into the repo (skip if not compiling for the GBA)
-
-Clone the [agbcc](https://github.com/SAT-R/agbcc) repo into another folder
-
-Inside the `agbcc` folder, run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
-
-
 ## Building
 
 Clone/Download the repo
 
-The repo targets multiple platforms. You don't need to build the rom to build the port, so skip that step if you just want to run it on the PC.
+The repo targets multiple platforms. You don't need to build the GBA rom to build the port, so skip that step if you only want to run it on PC.
 
 Run all commands in the same folder as this project. All outputs go into the same folder.
 
-**NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build `make ... -j<insert number of CPU cores>`
-
-### GBA rom
-
-1. Run `make`
-1. If the rom built successfully you will see this output: `sa2.gba: OK` (if you modify the source code this will no longer output `OK`)
-1. `sa2.gba` will be output. 
-
-You can execute the rom in an emulator
+**NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build. For example `make -j4` with 4 being the number of cores
 
 ### PC port
 
@@ -85,6 +53,17 @@ Tip: On Linux and MacOS this can be opened with `wine sa2.sdl_win32.exe`
 1. Run `make sdl`
 1. `sa2.sdl` will be created
 1. Launch the game from the terminal with `./sa2.sdl`
+
+### GBA rom
+
+1. Clone [agbcc](https://github.com/SAT-R/agbcc) repo into another folder
+
+1. Inside the `agbcc` folder, run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
+1. Run `make`
+1. If the rom built successfully you will see this output: `sa2.gba: OK` (if you modify the source code this will no longer output `OK`)
+1. `sa2.gba` will be output. 
+
+You can execute the rom in an emulator
 
 ## Code formatting
 

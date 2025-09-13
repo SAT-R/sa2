@@ -1,29 +1,23 @@
-# Sonic Advance 2
-[![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Decompilation Matching Progress][matching-progress-badge]][matching-progress-link] [![Contributors][contributors-badge]][contributors-link] [![Discord][discord-badge]][discord-link]
-
-[ci-status-link]: https://github.com/SAT-R/sa2/actions/workflows/build.yml
-[ci-badge]: https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg
-
-[progress-link]: https://github.com/SAT-R/sa2
-[progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json
-
-[matching-progress-link]: https://github.com/SAT-R/sa2
-[matching-progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json
-
-[contributors-link]: https://github.com/SAT-R/sa2/graphs/contributors
-[contributors-badge]: https://img.shields.io/github/contributors/SAT-R/sa2
-
-[discord-badge]: https://img.shields.io/discord/1052347299457671200
-[discord-link]: https://discord.gg/vZTvVH3gA9
+<h1 align="center">Sonic Advance 2</h1>
+<p align="center">
+  <img height="240" src=".github/media/titlescreen.png" alt="Sonic Advance 2 title screen">
+</p>
+<p align="center">
+  <a href="https://github.com/SAT-R/sa2/actions/workflows/build.yml"><img src="https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg" alt="CI status"></a>
+  <a href="https://github.com/SAT-R/sa2"><img src="https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json" alt="Decompilation Progress"></a>
+  <a href="https://github.com/SAT-R/sa2"><img src="https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json" alt="Decompilation Matching Progress"></a>
+  <a href="https://github.com/SAT-R/sa2/graphs/contributors"><img src="https://img.shields.io/github/contributors/SAT-R/sa2" alt="Contributors"></a>
+  <a href="https://discord.gg/vZTvVH3gA9"><img src="https://img.shields.io/discord/1052347299457671200" alt="Discord"></a>
+</p>
 
 > :warning: **This project is not completed and still under active development**
 
 This is a work in progress matching decompilation of Sonic Advance 2
 
-It so far builds the following ROMs:
+It builds the following ROMs:
 * [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d` (USA) (En,Ja,Fr,De,Es,It)
 * [**sa2_europe.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0900) `sha1: b0f64bdca097f2de8f05ac4c8caea2b80c5faeb1` (Europe) (En,Ja,Fr,De,Es,It)
-* :construction: [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It) (WIP)
+* [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It)
 
 It can also build:
 * **sa2.sdl** `make sdl` (Linux/MacOS SDL 64bit port)
@@ -57,6 +51,9 @@ Please see follow [these instructions](./INSTALL.md)
 ## Community
 
 Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping out
+
+## Screenshots
+
 
 ## Notes
 

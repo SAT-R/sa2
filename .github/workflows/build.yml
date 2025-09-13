@@ -31,7 +31,7 @@ jobs:
   build-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-22.04
-    name: Build GBA
+    name: Build GBA (USA)
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
@@ -58,11 +58,8 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi xorg-dev
+          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
           python3 -m pip install gitpython
-        # build-essential, git, and libpng-dev are already installed
-        # gcc-arm-none-eabi is only needed for the modern build
-        # as an alternative to dkP
 
       - name: Install agbcc
         run: |
@@ -114,16 +111,6 @@ jobs:
           python3 ../scripts/progress.py shield-json -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield.json
           python3 ../scripts/progress.py shield-json -m -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield-matching.json
 
-      #- name: Japan
-        #run: |
-          #make clean
-          #make japan -j${nproc}
-          
-      - name: Europe
-        run: |
-          make clean
-          make europe -j${nproc}
-
       - name: Update reports
         if: ${{ github.event_name == 'push' }}
         uses: EndBug/add-and-commit@v7
@@ -132,6 +119,50 @@ jobs:
           cwd: "./gh-pages"
           add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
+  
+  build-gba-variants:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    runs-on: ubuntu-22.04
+    name: Build GBA (${{ matrix.variant }})
+    strategy:
+      matrix: 
+        variant: ["europe", "japan"]
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+       
+      - name: Checkout gh-pages
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+        with:
+          path: gh-pages
+          ref: gh-pages
+
+      - name: Checkout agbcc
+        uses: actions/checkout@master
+        with:
+          path: agbcc
+          repository: SAT-R/agbcc
+
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi
+
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: agbcc
+
+      - name: Compare
+        run: make ${{ matrix.variant }} -j${nproc}
 
   ports:
     strategy:
