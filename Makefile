@@ -203,6 +203,10 @@ FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ex
 CPPFLAGS ?= $(INCLUDE_CPP_ARGS) -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
+ifneq ($(GAME_VARIANT), 0)
+	CPPFLAGS += -D $(GAME_VARIANT)
+endif
+
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
@@ -396,6 +400,8 @@ tidy:
 	$(RM) $(BUILD_NAME)*.exe $(BUILD_NAME)*.elf $(BUILD_NAME)*.map $(BUILD_NAME)*.sdl $(BUILD_NAME)*.gba
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN
+
+japan_vc: ; @$(MAKE) GAME_REGION=JAPAN GAME_VARIANT=VIRTUAL_CONSOLE
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 

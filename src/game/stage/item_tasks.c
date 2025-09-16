@@ -149,6 +149,9 @@ void Task_Item_Shield_Normal(void)
     if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
         bool32 b;
         s32 screenX, screenY;
+#ifdef VIRTUAL_CONSOLE
+        u32 r0;
+#endif
 
         screenX = I(gPlayer.qWorldX) - cam->x;
         item->s.x = screenX + gPlayer.unk7C;
@@ -161,6 +164,10 @@ void Task_Item_Shield_Normal(void)
 
         UpdateSpriteAnimation(&item->s);
 
+#ifdef VIRTUAL_CONSOLE
+        r0 = Mod(gStageTime, 6);
+#endif
+
 #ifndef NON_MATCHING
         asm("mov %0, %2\n"
             "and %0, %1\n"
@@ -169,14 +176,37 @@ void Task_Item_Shield_Normal(void)
 
         // Make the compiler "forget" that itemEffect is 0x1
         asm("" : "=r"(itemEffect));
+#ifdef VIRTUAL_CONSOLE
+        {
+            register u32 r2 asm("r2") = 6;
+            r0 &= r2;
+        }
+#endif
 #else
         b = (param & 0x1);
+#ifdef VIRTUAL_CONSOLE
+        r0 &= 6;
 #endif
+#endif
+
+#ifdef VIRTUAL_CONSOLE
+        if ((!r0 && (b != itemEffect)) || (r0 && (b != 0))) {
+#else
         if (((gStageTime & 0x2) && (b != itemEffect)) || (!(gStageTime & 0x2) && (b != 0))) {
+#endif
             DisplaySprite(&item->s);
         }
     }
 }
+
+#ifndef NON_MATCHING
+// Looks like they may have manually edited the rom for the virtual console
+// to keep all the functions in the same alignment as the original rom.
+// Maybe they couldn't reexport the anims?
+#ifdef VIRTUAL_CONSOLE
+asm(".byte 0x00, 0x00, 0x00, 0x00");
+#endif
+#endif
 
 void Task_Item_Shield_Magnetic(void)
 {

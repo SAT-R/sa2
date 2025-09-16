@@ -53,6 +53,7 @@ endif
 # Default game variables
 GAME_REVISION ?= 0
 GAME_REGION   ?= USA
+GAME_VARIANT  ?= 0
 DEBUG         ?= 0
 
 # For gbafix
@@ -90,6 +91,10 @@ else
   $(error unknown region $(GAME_REGION))
 endif
 endif
+endif
+
+ifeq ($(GAME_VARIANT), VIRTUAL_CONSOLE)
+  BUILD_NAME := $(BUILD_NAME)_vc
 endif
 
 # Debug
