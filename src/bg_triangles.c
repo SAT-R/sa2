@@ -69,7 +69,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     r8 = ABS(r2) * 2;
     r7 = ABS(r4) * 2;
 
-    cursor = IncCursor(cursor , param2 * gHBlankCopySize);
+    cursor = IncCursor(cursor, param2 * gHBlankCopySize);
 
     if (ABS(r2) > ABS(r4)) {
         r4 = -r2;
@@ -664,7 +664,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     }
 }
 
-void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5)
+void SA2_LABEL(sub_80075D0)(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5)
 {
     int_vcount *cursor;
     s16 r1;
@@ -735,13 +735,13 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5
             *cursor = r1;
             cursor++;
         }
-        
+
         cursor = IncCursor(cursor, gHBlankCopySize - sizeof(REG_WIN0H));
     }
 }
 
-void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4, u8 param5, u16 param6, u8 param7, u8 param8, s16 param9,
-                 s16 param10)
+void SA2_LABEL(sub_8007738)(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4, u8 param5, u16 param6, u8 param7, u8 param8,
+                            s16 param9, s16 param10)
 {
     u16 *cursor;
 
@@ -765,7 +765,7 @@ void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4,
     }
 }
 
-void sub_8007858(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 param4)
+void SA2_LABEL(sub_8007858)(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 param4)
 {
     u16 *cursor;
 
@@ -818,7 +818,7 @@ const u16 gUnknown_080984F8[] = {
 };
 #endif
 
-void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 offsetOdd)
+void SA2_LABEL(sub_80078D4)(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 offsetOdd)
 {
     s32 fillVal;
 
@@ -835,7 +835,7 @@ void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 of
 }
 
 #ifndef COLLECT_RINGS_ROM
-void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4, u16 param5, u16 param6)
+void SA2_LABEL(sub_8007958)(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4, u16 param5, u16 param6)
 {
     u16 *cursor;
 
@@ -859,7 +859,7 @@ void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
     }
 }
 
-void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
+void SA2_LABEL(sub_8007A08)(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
 {
     u8 *cursor;
 
@@ -949,4 +949,4 @@ void SA2_LABEL(sub_8007AC0)(u8 affineBg, int_vcount minY, int_vcount maxY)
     }
 }
 #endif
-#endif
+#endif // COLLECT_RINGS_ROM

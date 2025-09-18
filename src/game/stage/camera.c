@@ -2235,9 +2235,9 @@ void TaskDestructor_Camera(struct Task *unused)
     }
 
 #ifndef COLLECT_RINGS_ROM
-    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_EXECUTE_HBLANK_COPY0)) {
+    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_40)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
-        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY0;
+        gFlags &= ~FLAGS_40;
     }
 #endif
 
