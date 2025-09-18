@@ -291,6 +291,8 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 NONMATCH("asm/non_matching/engine/unused_sub_800672C.inc", void sub_800672C()) { }
 END_NONMATCH
 
+#define IncCursor(cur, offset) (int_vcount *)(((u8 *)(cur)) + (offset))
+
 void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
 {
     s16 sp0[2];
@@ -307,7 +309,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
     int_vcount *cursor;
 
     gFlags |= 4;
-    
+
     if (bg >= 2) {
         gHBlankCopySize = sizeof(winreg_t) * 2;
 
@@ -332,7 +334,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
     minVal = MIN(arg1[1], arg1[5]);
     maxVal = MAX(arg1[1], arg1[5]);
 
-    cursor += (minVal * gHBlankCopySize);
+    cursor = IncCursor(cursor, minVal * gHBlankCopySize);
     sp0[0] = (arg1[2] - arg1[0]);
     sp4[0] = (arg1[3] - arg1[1]);
     spC[0] = (ABS(sp0[0]) * 2);
@@ -373,7 +375,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
                 MATCH_BREAK;
             }
 
-            cursor += gHBlankCopySize;
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     } else {
@@ -402,7 +404,8 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
                     MATCH_BREAK;
                 }
             }
-            cursor += gHBlankCopySize;
+
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     }
@@ -452,7 +455,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
             MATCH_BREAK;
         }
 
-        cursor += gHBlankCopySize;
+        cursor = IncCursor(cursor, gHBlankCopySize);
         minVal++;
     }
 
@@ -482,7 +485,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
                 MATCH_BREAK;
             }
 
-            cursor += gHBlankCopySize;
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     } else {
@@ -509,7 +512,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
                 MATCH_BREAK;
             }
 
-            cursor += gHBlankCopySize;
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     }
@@ -524,13 +527,13 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     s16 sp8[2];
     s16 spC[2] = { 0 };
     s16 sp10[2] = { 0 };
-    u8 sp14[2];
+    int_vcount sp14[2];
     int_vcount *cursor;
-    u8 minVal;
-    u8 maxVal;
+    int_vcount minVal;
+    int_vcount maxVal;
 
     gFlags |= 4;
-    
+
     if (bg >= 2) {
         gHBlankCopySize = sizeof(winreg_t) * 2;
 
@@ -555,7 +558,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     minVal = MIN(arg1->unk1, arg1->unk5);
     maxVal = MAX(arg1->unk1, arg1->unk5);
 
-    cursor += (minVal * gHBlankCopySize);
+    cursor = IncCursor(cursor, minVal * gHBlankCopySize);
     sp0[0] = (arg1->unk2 - arg1->unk0);
     sp4[0] = (arg1->unk3 - arg1->unk1);
     spC[0] = (ABS(sp0[0]) * 2);
@@ -591,7 +594,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
                 MATCH_BREAK;
             }
 
-            cursor += gHBlankCopySize;
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     } else {
@@ -616,7 +619,8 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
                     MATCH_BREAK;
                 }
             }
-            cursor += gHBlankCopySize;
+
+            cursor = IncCursor(cursor, gHBlankCopySize);
             minVal++;
         }
     }
@@ -659,7 +663,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
             MATCH_BREAK;
         }
 
-        cursor += gHBlankCopySize;
+        cursor = IncCursor(cursor, gHBlankCopySize);
         minVal++;
     }
 }
@@ -912,7 +916,7 @@ void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
 }
 
 #if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
-void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
+void SA2_LABEL(sub_8007AC0)(u8 affineBg, int_vcount minY, int_vcount maxY)
 {
     u16 *cursor;
     u16 affine;

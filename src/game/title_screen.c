@@ -1472,7 +1472,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
-    gHBlankCopySize = 16;
+    gHBlankCopySize = sizeof(BgAffineReg);
     gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type

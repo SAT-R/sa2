@@ -26,32 +26,32 @@ bool32 CreateSpotLightBeams(void)
 {
     struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(StageSpotLight), 0x2000, 0, TaskDestructor_SpotLightMain);
     StageSpotLight *spotLight = TASK_DATA(t);
-    StageUnkTask *ut;
+    SpotlightBeamTask *beam;
 
     spotLight->unk8 = 0x600;
     spotLight->unkC = 0;
 
     spotLight->t0 = CreateSpotlightBeamTask();
 
-    ut = TASK_DATA(spotLight->t0);
-    ut->unk6 = 60;
-    ut->unk8 = 200;
-    ut->unk0 = 0;
-    ut->unk2 = 32;
-    ut->unk4 = 0x400;
-    ut->unkA = 2;
-    ut->unkB = 0;
+    beam = TASK_DATA(spotLight->t0);
+    beam->unk6 = 60;
+    beam->unk8 = 200;
+    beam->unk0 = 0;
+    beam->unk2 = 32;
+    beam->unk4 = 0x400;
+    beam->bg = 2;
+    beam->unkB = 0;
 
     spotLight->t1 = CreateSpotlightBeamTask();
 
-    ut = TASK_DATA(spotLight->t1);
-    ut->unk6 = 200;
-    ut->unk8 = 240;
-    ut->unk0 = 0;
-    ut->unk2 = 16;
-    ut->unk4 = 0x300;
-    ut->unkA = 3;
-    ut->unkB = 0;
+    beam = TASK_DATA(spotLight->t1);
+    beam->unk6 = 200;
+    beam->unk8 = 240;
+    beam->unk0 = 0;
+    beam->unk2 = 16;
+    beam->unk4 = 0x300;
+    beam->bg = 3;
+    beam->unkB = 0;
 
     return TRUE;
 }
@@ -59,27 +59,27 @@ bool32 CreateSpotLightBeams(void)
 void Task_SpotLightMain(void)
 {
     StageSpotLight *spotLight = TASK_DATA(gCurTask);
-    StageUnkTask *ut;
+    SpotlightBeamTask *beam;
     s32 unkC;
 
     if (!(gStageFlags & STAGE_FLAG__100)) {
-        ut = TASK_DATA(spotLight->t0);
+        beam = TASK_DATA(spotLight->t0);
 
-        if (((gStageTime & 0x7) == 0) && (ut->unkB != 0) && (gDispCnt & DISPCNT_BG0_ON)) {
+        if (((gStageTime & 0x7) == 0) && (beam->unkB != 0) && (gDispCnt & DISPCNT_BG0_ON)) {
 
-            if (ut->unkB < 32)
-                ut->unkB++;
+            if (beam->unkB < 32)
+                beam->unkB++;
 
-            ut = TASK_DATA(spotLight->t1);
+            beam = TASK_DATA(spotLight->t1);
 
-            if (ut->unkB < 16)
-                ut->unkB++;
+            if (beam->unkB < 16)
+                beam->unkB++;
         } else if (!(gDispCnt & DISPCNT_BG0_ON)) {
-            if (ut->unkB == 0) {
-                ut->unkB = 4;
+            if (beam->unkB == 0) {
+                beam->unkB = 4;
 
-                ut = TASK_DATA(spotLight->t1);
-                ut->unkB = 4;
+                beam = TASK_DATA(spotLight->t1);
+                beam->unkB = 4;
             } else {
                 // _0800A7F4
                 gDispCnt |= DISPCNT_BG0_ON;
@@ -120,20 +120,20 @@ void Task_800A8E0(void)
 {
     bool32 boolR5 = FALSE;
     StageSpotLight *spotLight = TASK_DATA(gCurTask);
-    StageUnkTask *ut;
+    SpotlightBeamTask *beam;
     s32 unkC;
 
-    ut = TASK_DATA(spotLight->t0);
-    if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
-        ut->unkB -= 2;
-        if (ut->unkB < 5)
+    beam = TASK_DATA(spotLight->t0);
+    if (!(gStageTime & 0x1) && (beam->unkB != 0)) {
+        beam->unkB -= 2;
+        if (beam->unkB < 5)
             boolR5 = TRUE;
     }
 
-    ut = TASK_DATA(spotLight->t1);
-    if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
-        ut->unkB -= 1;
-        if (ut->unkB < 3)
+    beam = TASK_DATA(spotLight->t1);
+    if (!(gStageTime & 0x1) && (beam->unkB != 0)) {
+        beam->unkB -= 1;
+        if (beam->unkB < 3)
             boolR5 = TRUE;
     }
 
