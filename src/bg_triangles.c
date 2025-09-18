@@ -16,6 +16,8 @@
 #define MATCH_BREAK
 #endif
 
+#define IncCursor(cur, offset) (int_vcount *)(((u8 *)(cur)) + (offset))
+
 #ifndef COLLECT_RINGS_ROM
 typedef struct {
     s16 x;
@@ -36,10 +38,10 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
-            cursor = (int_vcount *)gBgOffsetsHBlank + sizeof(winreg_t);
+            cursor = (int_vcount *)gBgOffsetsHBlank + sizeof(REG_WIN0H);
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         } else {
             cursor = (int_vcount *)gBgOffsetsHBlank;
@@ -47,7 +49,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
         }
     } else {
         volatile winreg_t *reg;
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = (int_vcount *)gBgOffsetsHBlank;
 
         // Required for match
@@ -67,10 +69,9 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     r8 = ABS(r2) * 2;
     r7 = ABS(r4) * 2;
 
-    cursor += (gHBlankCopySize * param2);
+    cursor = IncCursor(cursor , param2 * gHBlankCopySize);
 
     if (ABS(r2) > ABS(r4)) {
-        // _0800630A+8
         r4 = -r2;
 
         if (r2 > 0) {
@@ -83,7 +84,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                 if (r4 >= 0) {
                     r4 = ((r4 << 16) >> 16) - r8;
                     cursor[0] = param1;
-                    cursor += gHBlankCopySize;
+                    cursor = IncCursor(cursor, gHBlankCopySize);
                     cursor[1] = param5;
                 }
             }
@@ -116,10 +117,8 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 
     } else {
         r4 = -r4;
-        // _080063DC
         if (r2 > 0) {
             for (r2 = 0; r2 < ABS(r5); r2++) {
-                // _080063F6
                 *cursor = param1 + 1;
                 cursor++;
                 *cursor = param5;
@@ -137,7 +136,6 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                 }
             }
         } else {
-            // _08006450
             for (r2 = 0; r2 < ABS(r5); r2++) {
                 *cursor = param1 + 1;
                 cursor++;
@@ -168,7 +166,7 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
             cursor = (int_vcount *)gBgOffsetsHBlank + sizeof(winreg_t);
@@ -179,7 +177,7 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
         }
     } else {
         volatile winreg_t *reg;
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = (int_vcount *)gBgOffsetsHBlank;
 
         // Required for match
@@ -199,7 +197,7 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     r8 = ABS(r2) * 2;
     r7 = ABS(r4) * 2;
 
-    cursor += (gHBlankCopySize * param2);
+    cursor = IncCursor(cursor, param2 * gHBlankCopySize);
 
     if (ABS(r2) > ABS(r4)) {
         r4 = -r2;
@@ -214,7 +212,7 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                 if (r4 >= 0) {
                     r4 -= r8;
                     cursor[0] = param5;
-                    cursor += gHBlankCopySize;
+                    cursor = IncCursor(cursor, gHBlankCopySize);
                     cursor[1] = param1;
                 }
             }
@@ -291,8 +289,6 @@ void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 NONMATCH("asm/non_matching/engine/unused_sub_800672C.inc", void sub_800672C()) { }
 END_NONMATCH
 
-#define IncCursor(cur, offset) (int_vcount *)(((u8 *)(cur)) + (offset))
-
 void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
 {
     s16 sp0[2];
@@ -311,7 +307,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
     gFlags |= 4;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
             cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
@@ -321,7 +317,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         }
     } else {
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
@@ -535,7 +531,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     gFlags |= 4;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
             cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
@@ -545,7 +541,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         }
     } else {
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
@@ -677,7 +673,7 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
             cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
@@ -687,7 +683,7 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         }
     } else {
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
@@ -707,7 +703,7 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5
         param2 = (param4 + param5);
     }
 
-    cursor += (gHBlankCopySize * param1);
+    cursor = IncCursor(cursor, param1 * gHBlankCopySize);
 
     for (; param1 < param2; param1++) {
         s16 num = param1 - param4;
@@ -739,8 +735,8 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5
             *cursor = r1;
             cursor++;
         }
-
-        cursor += (gHBlankCopySize - 2);
+        
+        cursor = IncCursor(cursor, gHBlankCopySize - sizeof(REG_WIN0H));
     }
 }
 
@@ -752,7 +748,7 @@ void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4,
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     gHBlankCopyTarget = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
-    gHBlankCopySize = sizeof(winreg_t) * 2;
+    gHBlankCopySize = 2 * sizeof(REG_BG0HOFS);
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
 
@@ -776,7 +772,7 @@ void sub_8007858(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 pa
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     gHBlankCopyTarget = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 4];
-    gHBlankCopySize = sizeof(winreg_t) * 2;
+    gHBlankCopySize = 2 * sizeof(REG_BG0HOFS);
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
 
@@ -829,7 +825,7 @@ void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 of
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     gHBlankCopyTarget = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
-    gHBlankCopySize = sizeof(winreg_t) * 2;
+    gHBlankCopySize = 2 * sizeof(REG_BG0HOFS);
 
     if (minY < maxY) {
         fillVal = (offsetEven %= 512u) | ((offsetOdd % 512u) << 16);
@@ -846,7 +842,7 @@ void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     gHBlankCopyTarget = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
-    gHBlankCopySize = sizeof(winreg_t) * 2;
+    gHBlankCopySize = 2 * sizeof(REG_BG0HOFS);
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
 
@@ -870,7 +866,7 @@ void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
-        gHBlankCopySize = sizeof(winreg_t) * 2;
+        gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
         if (bg & 1) {
             cursor = &((u8 *)gBgOffsetsHBlank)[2];
@@ -880,7 +876,7 @@ void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         }
     } else {
-        gHBlankCopySize = sizeof(winreg_t);
+        gHBlankCopySize = sizeof(REG_WIN0H);
         cursor = &((u8 *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
@@ -935,7 +931,7 @@ void SA2_LABEL(sub_8007AC0)(u8 affineBg, int_vcount minY, int_vcount maxY)
 #endif
     *ptr = (void *)(REG_ADDR_BG2PA + bg);
 
-    gHBlankCopySize = sizeof(winreg_t);
+    gHBlankCopySize = sizeof(REG_BG2PA);
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY];
 
