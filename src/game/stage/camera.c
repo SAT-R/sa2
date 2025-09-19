@@ -852,7 +852,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
         }
 
         gBgScrollRegs[0][1] = gCamera.y >> 9;
-        gFlags |= 4;
+        gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
         gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
         gHBlankCopySize = 4;
         cursor = gBgOffsetsHBlank;
@@ -2235,9 +2235,9 @@ void TaskDestructor_Camera(struct Task *unused)
     }
 
 #ifndef COLLECT_RINGS_ROM
-    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_EXECUTE_HBLANK_COPY0)) {
+    if (IS_EXTRA_STAGE(gCurrentLevel) && (gFlags & FLAGS_40)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
-        gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY0;
+        gFlags &= ~FLAGS_40;
     }
 #endif
 

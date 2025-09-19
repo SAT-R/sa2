@@ -15,16 +15,16 @@ void TaskDestructor_SpotlightBeamTask(struct Task *);
 
 struct Task *CreateSpotlightBeamTask(void)
 {
-    struct Task *t = TaskCreate(Task_SpotlightBeamTask, sizeof(StageUnkTask), 0x2000, 0, TaskDestructor_SpotlightBeamTask);
-    StageUnkTask *ut = TASK_DATA(t);
+    struct Task *t = TaskCreate(Task_SpotlightBeamTask, sizeof(SpotlightBeamTask), 0x2000, 0, TaskDestructor_SpotlightBeamTask);
+    SpotlightBeamTask *beam = TASK_DATA(t);
 
-    ut->unk6 = 120;
-    ut->unk8 = 200;
-    ut->unk0 = 0;
-    ut->unk2 = 64;
-    ut->unk4 = 0x800;
-    ut->unkA = 0;
-    ut->unkB = 32;
+    beam->unk6 = 120;
+    beam->unk8 = 200;
+    beam->unk0 = 0;
+    beam->unk2 = 64;
+    beam->unk4 = 0x800;
+    beam->bg = 0;
+    beam->unkB = 32;
 
     return t;
 }
@@ -65,7 +65,7 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
     u32 temp_r5;
     u32 temp_r5_2;
 
-    StageUnkTask *beam = TASK_DATA(gCurTask);
+    SpotlightBeamTask *beam = TASK_DATA(gCurTask);
 
     if (beam->unkB == 0) {
         return;
@@ -171,40 +171,40 @@ NONMATCH("asm/non_matching/game/stage/Task_SpotlightBeamTask.inc", void Task_Spo
             return;
         }
         if (sp10.unk2 > (DISPLAY_HEIGHT - 1)) {
-            if (1 & beam->unkA) {
+            if (1 & beam->bg) {
                 gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
             } else {
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
             }
-            sub_8006228(beam->unkA, sp8.unk4, sp8.unk5, sp8.unk6, sp8.unk7, 0);
+            sub_8006228(beam->bg, sp8.unk4, sp8.unk5, sp8.unk6, sp8.unk7, 0);
             return;
         }
-        if (1 & beam->unkA) {
+        if (1 & beam->bg) {
             gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
         } else {
             gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
         }
-        sub_800724C(beam->unkA, &sp8);
+        sub_800724C(beam->bg, &sp8);
         return;
     }
 
     if (sp10.unk2 <= (DISPLAY_HEIGHT - 1)) {
         if (sp14.unk2 > (DISPLAY_HEIGHT - 1)) {
-            if (beam->unkA & 0x1) {
+            if (beam->bg & 0x1) {
                 gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             } else {
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             }
 
-            sub_80064A8(beam->unkA, sp8.unk0, sp8.unk1, sp8.unk2, (s32)sp8.unk3, 0);
+            sub_80064A8(beam->bg, sp8.unk0, sp8.unk1, sp8.unk2, (s32)sp8.unk3, 0);
         } else {
-            if (beam->unkA & 0x1) {
+            if (beam->bg & 0x1) {
                 gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             } else {
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             }
 
-            sub_800724C(beam->unkA, &sp8);
+            sub_800724C(beam->bg, &sp8);
         }
     }
 }

@@ -679,7 +679,7 @@ static void VBlankIntr(void)
         gHBlankCopyTarget = NULL;
     }
 
-    if (gFlagsPreVBlank & FLAGS_EXECUTE_HBLANK_COPY0) {
+    if (gFlagsPreVBlank & FLAGS_40) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
         REG_DISPSTAT |= gUnknown_03002874 << 8;
