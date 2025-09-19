@@ -30,7 +30,7 @@ END_NONMATCH
 NONMATCH("asm/non_matching/engine/unused_sub_8005FB4.inc", void sub_8005FB4()) { }
 END_NONMATCH
 
-void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
+void SA2_LABEL(sub_8006228)(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 {
     int_vcount *cursor;
     s16 r1, r2, r4, r5, r7, r8;
@@ -158,7 +158,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     }
 }
 
-void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
+void SA2_LABEL(sub_80064A8)(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 {
     int_vcount *cursor;
     s16 r1, r2, r4, r5, r7, r8;
