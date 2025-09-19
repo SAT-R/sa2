@@ -2,6 +2,7 @@ STD_REVERB = 0
 
 $(MID_BUILDDIR)/%.o: $(MID_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
+	dos2unix $<
 	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(MID_SUBDIR)/mus_intro.s: %.s: %.mid
