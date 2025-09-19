@@ -304,7 +304,7 @@ void SA2_LABEL(sub_8006DB4)(u8 bg, u8 *arg1, s32 unused, s32 arg3)
     u8 minVal;
     int_vcount *cursor;
 
-    gFlags |= 4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
         gHBlankCopySize = sizeof(REG_WIN0H) * 2;
@@ -528,7 +528,7 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     int_vcount minVal;
     int_vcount maxVal;
 
-    gFlags |= 4;
+    gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
         gHBlankCopySize = sizeof(REG_WIN0H) * 2;
