@@ -399,6 +399,8 @@ tidy:
 	$(RM) SDL2.dll
 	$(RM) $(BUILD_NAME)*.exe $(BUILD_NAME)*.elf $(BUILD_NAME)*.map $(BUILD_NAME)*.sdl $(BUILD_NAME)*.gba
 
+usa_beta: ; @$(MAKE) GAME_REGION=USA GAME_VARIANT=BETA
+
 japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 japan_vc: ; @$(MAKE) GAME_REGION=JAPAN GAME_VARIANT=VIRTUAL_CONSOLE

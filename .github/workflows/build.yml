@@ -126,7 +126,7 @@ jobs:
     name: Build GBA (${{ matrix.variant }})
     strategy:
       matrix: 
-        variant: ["europe", "japan", "japan_vc"]
+        variant: ["europe", "japan", "japan_vc", "usa_beta"]
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
