@@ -1,6 +1,7 @@
 #include "global.h"
 #include "game/cutscenes/endings.h"
 #include "game/cutscenes/extra_ending_slides.h"
+#include "game/cutscenes/final_ending_land.h"
 #include "core.h"
 #include "sprite.h"
 #include "game/stage/screen_fade.h"
@@ -72,6 +73,18 @@ struct FinalEndingFallCutScene {
 
 void sub_8092690(void);
 void sub_8092800(struct Task *);
+void sub_8091F68(struct FinalEndingFallCutScene *);
+void sub_809205C(struct FinalEndingFallCutScene *);
+void sub_80920E4(struct FinalEndingFallCutScene *);
+void sub_8092804(struct FinalEndingFallCutScene *);
+void sub_80921E8(struct FinalEndingFallCutScene *);
+void sub_8092850(struct FinalEndingFallCutScene *);
+void sub_80923AC(struct FinalEndingFallCutScene *);
+u32 sub_80928C8(struct FinalEndingFallCutScene *);
+void sub_80927E8(void);
+void sub_809289C(struct FinalEndingFallCutScene *);
+void sub_8091E60(void);
+void sub_8092780(void);
 
 static const u16 gUnknown_080E1648[4] = {
     TM_CUTSCENE_FINAL_ENDING_FALL_BG,
@@ -391,18 +404,11 @@ void CreateFinalEndingFallCutScene(void)
     DrawBackground(background);
 }
 
-void sub_8091F68(struct FinalEndingFallCutScene *);
-void sub_809205C(struct FinalEndingFallCutScene *);
-void sub_80920E4(struct FinalEndingFallCutScene *);
-void sub_8092804(struct FinalEndingFallCutScene *);
-void sub_80921E8(struct FinalEndingFallCutScene *);
-void sub_8092850(struct FinalEndingFallCutScene *);
-void sub_80923AC(struct FinalEndingFallCutScene *);
-
-u32 sub_80928C8(struct FinalEndingFallCutScene *);
-
-void sub_8091E60(void);
-
+// Very likely this function was hand patched for the virtual console
+// release. The source is not matchable in C: https://decomp.me/scratch/yWtRm
+#if !defined(NON_MATCHING) && defined(VIRTUAL_CONSOLE) && defined(JAPAN)
+ASM_FUNC("asm/sub_8091CB0__virtual_console.s", void sub_8091CB0(void))
+#else
 void sub_8091CB0(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
@@ -419,6 +425,7 @@ void sub_8091CB0(void)
         return;
     }
 
+#ifndef VITUAL_CONSOLE
     if ((scene->unk35C & 1) == 0 && scene->unk35C < 10) {
         gDispCnt |= 0x2000;
         gWinRegs[0] = DISPLAY_HEIGHT;
@@ -432,18 +439,32 @@ void sub_8091CB0(void)
         if (gBldRegs.bldY >= 0x10) {
             scene->unk35C++;
         }
-    } else if (scene->unk35C < 10) {
+    } else
+#endif
+        if (scene->unk35C < 10) {
         gDispCnt |= 0x2000;
         gWinRegs[0] = DISPLAY_HEIGHT;
         gWinRegs[2] = DISPLAY_WIDTH;
         gWinRegs[4] |= 0x3F;
         gWinRegs[5] |= 0x1F;
         gBldRegs.bldCnt = 0x3FBF;
+#ifdef VIRTUAL_CONSOLE
+        if ((!(scene->unk35C & 1) && // format
+             (gBldRegs.bldY = gUnknown_080E1738[scene->unk35C] + gBldRegs.bldY) > 0xF)
+            || ((scene->unk35C & 1)
+                && (gBldRegs.bldY = -gUnknown_080E1738[scene->unk35C] + gBldRegs.bldY) <= gUnknown_080E1738[scene->unk35C])) {
+            if ((scene->unk35C + 1) == 2) {
+                scene->unk35C += 4;
+            } else {
+                scene->unk35C++;
+            }
+        }
+#else
         gBldRegs.bldY -= gUnknown_080E1738[scene->unk35C];
-
         if (gBldRegs.bldY <= gUnknown_080E1738[scene->unk35C]) {
             scene->unk35C++;
         }
+#endif
     } else if (scene->unk35C == 10) {
         sub_80928C8(scene);
         gDispCnt |= 0x2000;
@@ -455,16 +476,21 @@ void sub_8091CB0(void)
         gBldRegs.bldY--;
 
         if (gBldRegs.bldY <= 1) {
+#ifdef VIRTUAL_CONSOLE
+            if ((scene->unk35C + 1) == 2) {
+                scene->unk35C += 4;
+            } else {
+                scene->unk35C++;
+            }
+#else
             scene->unk35C++;
+#endif
         }
     } else {
         gCurTask->main = sub_8091E60;
     }
 }
-
-void sub_80927E8(void);
-
-void sub_809289C(struct FinalEndingFallCutScene *);
+#endif
 
 void sub_8091E60(void)
 {
@@ -752,8 +778,6 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     }
 }
 
-void sub_8092780(void);
-
 void sub_8092690(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
@@ -813,10 +837,6 @@ void sub_8092780(void)
         gCurTask->main = sub_8091CB0;
     }
 }
-
-// Non matching onwards
-
-void CreateFinalEndingLandingCutScene(void);
 
 void sub_80927E8(void)
 {

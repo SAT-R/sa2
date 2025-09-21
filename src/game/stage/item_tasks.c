@@ -201,13 +201,19 @@ void Task_Item_Shield_Normal(void)
 
 #ifndef NON_MATCHING
 // Looks like they may have manually edited the rom for the virtual console
-// to keep all the functions in the same alignment as the original rom.
-// Maybe they couldn't reexport the anims?
+// so they needed to keep all functions aligned
 #ifdef VIRTUAL_CONSOLE
 asm(".byte 0x00, 0x00, 0x00, 0x00");
 #endif
 #endif
 
+// The virtual console version of this is probably manually edited
+// so much that it is not matchable with C, however the logic was
+// easy to replicate in C so it's documented below
+// https://decomp.me/scratch/LzKYd
+#if !defined(NON_MATCHING) && defined(VIRTUAL_CONSOLE) && defined(JAPAN)
+ASM_FUNC("asm/Task_Item_Shield_Magnetic__virtual_console.s", void Task_Item_Shield_Magnetic(void))
+#else
 void Task_Item_Shield_Magnetic(void)
 {
     s8 param = ITEMTASK_GET_PLAYER_NUM();
@@ -216,6 +222,9 @@ void Task_Item_Shield_Magnetic(void)
     struct Camera *cam = &gCamera;
 
     bool32 b;
+#ifdef VIRTUAL_CONSOLE
+    u32 m;
+#endif
 
     if (IS_SINGLE_PLAYER) {
         u32 itemEffect = (gPlayer.itemEffect & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__INVINCIBILITY));
@@ -241,6 +250,10 @@ void Task_Item_Shield_Magnetic(void)
         }
     }
 
+#ifdef VIRTUAL_CONSOLE
+    m = Mod(gStageTime, 6);
+#endif
+
     UpdateSpriteAnimation(&item->s);
 
     b = (param);
@@ -251,14 +264,18 @@ void Task_Item_Shield_Magnetic(void)
         u32 one = 1;
 #endif
         b &= one;
+#ifdef VIRTUAL_CONSOLE
+        if ((!(m & 6) && (b != one)) || ((m & 6) && (b != 0))) {
+#else
         if (((gStageTime & 0x2) && (b != one)) || (!(gStageTime & 0x2) && (b != 0))) {
+#endif
             DisplaySprite(&item->s);
         }
     }
 }
+#endif
 
-// Unused?
-void Task_802ABC8(void)
+UNUSED void Task_802ABC8(void)
 {
     ItemTask *item = TASK_DATA(gCurTask);
     struct Camera *cam = &gCamera;

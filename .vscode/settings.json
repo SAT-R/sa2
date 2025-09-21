@@ -373,7 +373,9 @@
     "indicators.h": "c",
     "multiplayer_teleport.h": "c",
     "input_buffer.h": "c",
-    "*.inc": "c"
+    "*.inc": "arm",
+    "extra_ending_slides.h": "c",
+    "final_ending_land.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

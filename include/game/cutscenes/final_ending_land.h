@@ -1,0 +1,6 @@
+#ifndef GUARD_COURSE_CUT_SCENES_FINAL_ENDING_LAND_H
+#define GUARD_COURSE_CUT_SCENES_FINAL_ENDING_LAND_H
+
+void CreateFinalEndingLandingCutScene(void);
+
+#endif
