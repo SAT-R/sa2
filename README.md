@@ -18,6 +18,7 @@ It builds the following ROMs:
 * [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d` (USA) (En,Ja,Fr,De,Es,It)
 * [**sa2_europe.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0900) `sha1: b0f64bdca097f2de8f05ac4c8caea2b80c5faeb1` (Europe) (En,Ja,Fr,De,Es,It)
 * [**sa2_japan.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: dffd0188fc78154b42b401398a224ae0713edf23` (Japan) (En,Ja,Fr,De,Es,It)
+* [**sa2_japan_vc.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0799) `sha1: 	2aa6ee2cf2b0ebfafbea6d6d24165b252a7e329e` (Japan) (En,Ja,Fr,De,Es,It) (Virtual Console)
 
 It can also build:
 * **sa2.sdl** `make sdl` (Linux/MacOS SDL 64bit port)
