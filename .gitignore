@@ -68,7 +68,8 @@ Temporary Items
 build
 tools/agbcc
 **/sound/songs/midi/*.s
-/ctx.c
+**/ctx.c
+**/ctx.h
 reports
 .vscode/*.log
 *.gbapal
