@@ -286,6 +286,17 @@
 .incbin "graphics/obj_palettes/pal_283.gbapal"
 .incbin "graphics/obj_palettes/pal_284.gbapal"
 .incbin "graphics/obj_palettes/pal_285.gbapal"
+#ifdef VIRTUAL_CONSOLE
+.incbin "graphics/obj_palettes/pal_286_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_287_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_288_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_289_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_290_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_291_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_292_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_293_vc.gbapal"
+.incbin "graphics/obj_palettes/pal_294_vc.gbapal"
+#else
 .incbin "graphics/obj_palettes/pal_286.gbapal"
 .incbin "graphics/obj_palettes/pal_287.gbapal"
 .incbin "graphics/obj_palettes/pal_288.gbapal"
@@ -295,6 +306,7 @@
 .incbin "graphics/obj_palettes/pal_292.gbapal"
 .incbin "graphics/obj_palettes/pal_293.gbapal"
 .incbin "graphics/obj_palettes/pal_294.gbapal"
+#endif
 .incbin "graphics/obj_palettes/pal_295.gbapal"
 .incbin "graphics/obj_palettes/pal_296.gbapal"
 .incbin "graphics/obj_palettes/pal_297.gbapal"
