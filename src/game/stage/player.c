@@ -6498,7 +6498,7 @@ void Player_InitRampOrDashRing(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            qSpeedX = ((u32)speed / 8);
+            qSpeedX = speed / 8u;
             qSpeedY = -ABS(qGroundSpeed) / 6;
 
             p->qSpeedAirX = qSpeedX + +Q(3.75);
@@ -6514,7 +6514,7 @@ void Player_InitRampOrDashRing(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            qSpeedX = ((u32)speed / 8);
+            qSpeedX = speed / 8u;
             qSpeedY = -ABS(groundSpeed) / 6;
 
             p->qSpeedAirX = qSpeedX + +Q(3.75);
@@ -6529,7 +6529,7 @@ void Player_InitRampOrDashRing(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            qSpeedX = (speed / 8u);
+            qSpeedX = speed / 8u;
             qSpeedY = -ABS(groundSpeed) / 6;
 
             p->qSpeedAirX = qSpeedX + +Q(5.625);
@@ -6545,7 +6545,7 @@ void Player_InitRampOrDashRing(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            qSpeedX = (((u32)speed << 13) >> 16);
+            qSpeedX = speed / 8u;
             qSpeedY = -ABS(groundSpeed) / 6;
 
             p->qSpeedAirX = qSpeedX + +Q(11.25);
