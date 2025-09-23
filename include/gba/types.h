@@ -1,9 +1,9 @@
 #ifndef GUARD_GBA_TYPES_H
 #define GUARD_GBA_TYPES_H
 
-#include "gba/defines.h"
+#include "gba/defines.h" // for int_vcount (TODO)
 
-#ifndef GEN_CTX
+#if !GEN_CTX
 #include <stdint.h>
 #endif
 
@@ -19,7 +19,6 @@
 #define PACKED(name, struct_body)                                                       \
     typedef struct __attribute__((packed)) name struct_body name;
 #endif
-
 
 typedef uint8_t   u8;
 typedef uint16_t u16;
