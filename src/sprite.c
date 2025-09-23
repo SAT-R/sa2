@@ -32,7 +32,7 @@ static AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s);
 // Potentially something to do with collision/distance?
 //
 // Vector-to-rotation(0-1023) ?
-s16 sub_8004418(s16 x, s16 y)
+s16 SA2_LABEL(sub_8004418)(s16 x, s16 y)
 {
     s16 fraction;
     s32 result;
@@ -211,6 +211,80 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
     return 1;
 }
 
+#if (ENGINE >= ENGINE_3)
+AnimCmdResult sub_80BF540(Sprite *s, u16 param1)
+{
+    s32 r6 = param1;
+    s32 delay = 0;
+    s32 r9 = 0;
+
+    s->prevVariant = s->variant;
+    s->prevAnim = s->graphics.anim;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->frameFlags &= ~MOVESTATE_4000;
+
+    {
+        const ACmd **variants = gRefSpriteTables->animations[s->graphics.anim];
+        const ACmd *script;
+        const ACmd *cursor;
+        script = variants[s->variant];
+
+        {
+            s32 ret;
+
+            while (r6 >= 0) {
+                const ACmd *cmd = ReadInstruction(script, s->animCursor);
+
+                while (cmd->id < 0) {
+                    const AnimationCommandFunc *animCmds = &animCmdTable[0];
+
+                    if (cmd->id == ANIM_CMD__JUMP_BACK) {
+                        r9 = delay;
+                    }
+
+                    ret = animCmds[~cmd->id]((void *)cmd, s);
+                    if (ret != ACMD_RESULT__RUNNING) {
+                        const ACmd *newScript;
+
+                        if (ret != ACMD_RESULT__ANIM_CHANGED) {
+                            return ret;
+                        }
+
+                        // animation has changed
+                        variants = gRefSpriteTables->animations[s->graphics.anim];
+                        newScript = variants[s->variant];
+
+                        // reset cursor
+                        s->animCursor = 0;
+
+                        // load the new script
+                        script = newScript;
+                    }
+                    cmd = ReadInstruction(script, s->animCursor);
+                }
+
+                s->qAnimDelay = Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
+                r6 -= (((ACmd_ShowFrame *)cmd)->delay);
+                s->qAnimDelay = -Q(r6);
+
+                if ((r9 != 0) && (r6 > 0)) {
+                    r6 = Mod(r6, r9);
+                } else {
+                    delay += cmd->show.delay;
+                }
+
+                s->frameNum = cmd->show.index;
+                s->frameFlags |= SPRITE_FLAG_MASK_26;
+                s->animCursor += 2;
+            }
+        }
+    }
+
+    return ACMD_RESULT__RUNNING;
+}
+#endif // (GAME == GAME_SA3)
+
 // (-1)
 static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
 {
@@ -239,7 +313,33 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
     return 1;
 }
 
+// Reordered in SA3
+#if (ENGINE >= ENGINE_3)
+// (-2)
+static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
+{
+    ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
+
+    if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
+        s32 paletteIndex = cmd->palId;
+
+        if (gFlags & FLAGS_20000) {
+            CopyPalette(&gRefSpriteTables->palettes[paletteIndex * 16], s->palId * 16 + cmd->insertOffset, cmd->numColors);
+        } else {
+            DmaCopy16(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gObjPalette[s->palId * 16 + cmd->insertOffset],
+                      cmd->numColors * 2);
+
+            gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+        }
+    }
+
+    return ACMD_RESULT__RUNNING;
+}
+#endif
+
 // (-6)
+// TODO: Remove volatile pointer
 static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
@@ -267,25 +367,25 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
     return 1;
 }
 
-void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
+void SA2_LABEL(sub_80047A0)(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 {
     u16 *affine = &gOamBuffer[affineIndex * 4].all.affineParam;
     s16 res;
 
     res = Div(0x10000, p1);
-    affine[0 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
+    affine[0] = I(COS_24_8(angle) * res);
 
     res = Div(0x10000, p1);
-    affine[1 * OAM_DATA_COUNT_AFFINE] = I(SIN_24_8(angle) * res);
+    affine[4] = I(SIN_24_8(angle) * res);
 
     res = Div(0x10000, p2);
-    affine[2 * OAM_DATA_COUNT_AFFINE] = I((-(SIN(angle)) >> 6) * res);
+    affine[8] = I((-(SIN(angle)) >> 6) * res);
 
     res = Div(0x10000, p2);
-    affine[3 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
+    affine[12] = I(COS_24_8(angle) * res);
 }
 
-// Similar to sub_8004ABC and sub_8004E14
+// Similar to sa2__sub_8004ABC and sa2__sub_8004E14
 // (53.42%) https://decomp.me/scratch/llwGy
 // (56.74%) https://decomp.me/scratch/rXgtp
 NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Sprite *s, SpriteTransform *transform))
@@ -302,8 +402,7 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
 
         affine = (void *)&gOamBuffer[big.affineIndex * 4].all.affineParam;
 #if 0
-            sub_80047A0(transform->rotation & ONE_CYCLE, transform->qScaleX, transform->qScaleY,
-                    big.affineIndex);
+        sub_80047A0(transform->rotation & ONE_CYCLE, transform->qScaleX, transform->qScaleY, big.affineIndex);
 #else
         big.qDirX = COS_24_8(transform->rotation & ONE_CYCLE);
         big.qDirY = SIN_24_8(transform->rotation & ONE_CYCLE);
@@ -328,7 +427,6 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
         x16 = big.qDirX;
         affine[3 * OAM_DATA_COUNT_AFFINE] = (x16 * res) >> 8;
 #endif
-
         // __post_Divs
 
         if (transform->qScaleX < 0)
@@ -405,15 +503,17 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
 END_NONMATCH
 
 // (0.00%)
-NONMATCH("asm/non_matching/engine/unused_transform.inc", void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
+// Not actually unused (SA1 Boss 1 calls it)
+NONMATCH("asm/non_matching/engine/UnusedTransform.inc", void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
 {
-    // TODO
+    // TEMP
+    TransformSprite(sprite, transform);
 }
 END_NONMATCH
 
-// VERY similar to TransformSprite and sub_8004ABC
+// VERY similar to TransformSprite and UnusedTransform
 // (41.14%) https://decomp.me/scratch/n3NXz
-NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *sprite, SpriteTransform *transform))
+NONMATCH("asm/non_matching/engine/sa2__sub_8004E14.inc", void SA2_LABEL(sub_8004E14)(Sprite *sprite, SpriteTransform *transform))
 {
     UnkSpriteStruct us;
     if (sprite->dimensions != (void *)-1) {
@@ -423,10 +523,10 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
         us.affineIndex = sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
         affine = (u16 *)&gOamBuffer[us.affineIndex * 4].all.affineParam;
 
-        us.qDirX = COS_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
-        us.qDirY = SIN_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
-        us.unkC[0] = I(transform->qScaleX * gUnknown_030017F0);
-        us.unkC[1] = I(transform->qScaleY * gUnknown_03005394);
+        us.qDirX = COS_24_8((transform->rotation + SA2_LABEL(gUnknown_03001944)) & ONE_CYCLE);
+        us.qDirY = SIN_24_8((transform->rotation + SA2_LABEL(gUnknown_03001944)) & ONE_CYCLE);
+        us.unkC[0] = I(transform->qScaleX * SA2_LABEL(gUnknown_030017F0));
+        us.unkC[1] = I(transform->qScaleY * SA2_LABEL(gUnknown_03005394));
 
         affine[0 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[0]) * us.qDirX);
         affine[1 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[0]) * us.qDirY);
@@ -434,12 +534,12 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
         affine[3 * OAM_DATA_COUNT_AFFINE] = I(Div(Q(256), us.unkC[1]) * us.qDirX);
 
         if (transform->qScaleX < 0) {
-            us.unkC[0] = I(-transform->qScaleX * gUnknown_030017F0);
+            us.unkC[0] = I(-transform->qScaleX * SA2_LABEL(gUnknown_030017F0));
         }
         // _08004F48
 
         if (transform->qScaleY < 0) {
-            us.unkC[1] = I(-transform->qScaleY * gUnknown_03005394);
+            us.unkC[1] = I(-transform->qScaleY * SA2_LABEL(gUnknown_03005394));
         }
         // _08004F6A
 
@@ -451,13 +551,17 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
         // 2D Rotation matrix:
         // { +cos(a), -sin(a) }
         // { +sin(a), +cos(a) }
-        us.unk18[0][0] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16) * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
-        us.unk18[0][1] = I((Q(-SIN_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16) * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
-        us.unk18[1][0] = I((Q(+SIN_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16) * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
-        us.unk18[1][1] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16) * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
+        us.unk18[0][0] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_030017F0)) >> 16)
+                           * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398)) >> 16));
+        us.unk18[0][1] = I((Q(-SIN_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_030017F0)) >> 16)
+                           * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398)) >> 16));
+        us.unk18[1][0] = I((Q(+SIN_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_03005394)) >> 16)
+                           * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398)) >> 16));
+        us.unk18[1][1] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_03005394)) >> 16)
+                           * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398)) >> 16));
 
-        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(gUnknown_0300194C));
-        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(gUnknown_03002820));
+        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(SA2_LABEL(gUnknown_0300194C)));
+        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(SA2_LABEL(gUnknown_03002820)));
 
         {
             u16 width, height;
@@ -465,21 +569,30 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
             s16 offsetX, offsetY;
             s32 x, y;
 
-            if (transform->qScaleX > 0) {
-                offsetX = sprDims->offsetX;
-                width = sprDims->width;
-            } else {
-                offsetX = sprDims->width - sprDims->offsetX;
-                width = sprDims->width;
-            }
-            // _0800515A
+#ifdef BUG_FIX
+            // TODO: TEMP..?
+            //       Better way might be to have an assert(sprDims != NULL) at the top.
+            //       sprite->dimensions gets set by UpdateSpriteAnimation().
+            //       And if it wasn't set, that's a bug.
+            if (sprDims)
+#endif
+            {
+                if (transform->qScaleX > 0) {
+                    offsetX = sprDims->offsetX;
+                    width = sprDims->width;
+                } else {
+                    offsetX = sprDims->width - sprDims->offsetX;
+                    width = sprDims->width;
+                }
+                // _0800515A
 
-            if (transform->qScaleY > 0) {
-                offsetY = sprDims->offsetY;
-                height = sprDims->height;
-            } else {
-                offsetY = sprDims->height - sprDims->offsetY;
-                height = sprDims->height;
+                if (transform->qScaleY > 0) {
+                    offsetY = sprDims->offsetY;
+                    height = sprDims->height;
+                } else {
+                    offsetY = sprDims->height - sprDims->offsetY;
+                    height = sprDims->height;
+                }
             }
             // _0800517A
 
@@ -504,6 +617,11 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *spr
     }
 }
 END_NONMATCH
+
+#if (GAME == GAME_SA3)
+NONMATCH("asm/non_matching/engine/sub_80C07E0.inc", void sub_80C07E0(Sprite *sprite)) { }
+END_NONMATCH
+#endif // (GAME == GAME_SA3)
 
 // used in background.c
 const u8 gOamShapesSizes[12][2] = {
@@ -543,8 +661,8 @@ void DisplaySprite(Sprite *sprite)
         y = sprite->y;
 
         if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
-            x -= gUnknown_030017F4[0];
-            y -= gUnknown_030017F4[1];
+            x -= SA2_LABEL(gUnknown_030017F4)[0];
+            y -= SA2_LABEL(gUnknown_030017F4)[1];
         }
 
         sprWidth = sprDims->width;
@@ -572,7 +690,9 @@ void DisplaySprite(Sprite *sprite)
 
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && // fmt
             y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
+#if (GAME == GAME_SA2)
             u8 mosaicHVSizes = gMosaicReg >> 8;
+#endif
 
             for (i = 0; i < sprDims->numSubframes; i++) {
                 oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
@@ -661,6 +781,7 @@ void DisplaySprite(Sprite *sprite)
                     }
                 }
 
+#if (GAME == GAME_SA2)
                 if (mosaicHVSizes != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
 #if !EXTENDED_OAM
                     // Enable mosaic bit
@@ -669,6 +790,7 @@ void DisplaySprite(Sprite *sprite)
                     oam->split.mosaic = 1;
 #endif
                 }
+#endif
 
 #if !EXTENDED_OAM
                 oam->all.attr0 |= (sprite->frameFlags & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
@@ -714,8 +836,8 @@ UNUSED void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
         y = sprite->y;
 
         if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
-            x -= gUnknown_030017F4[0];
-            y -= gUnknown_030017F4[1];
+            x -= SA2_LABEL(gUnknown_030017F4)[0];
+            y -= SA2_LABEL(gUnknown_030017F4)[1];
         }
 
         sprWidth = sprDims->width;
@@ -838,14 +960,14 @@ OamData *OamMalloc(u8 order)
     if (gOamFreeIndex > OAM_ENTRY_COUNT - 1) {
         result = (OamData *)iwram_end;
     } else {
-        if (gUnknown_03001850[order] == 0xFF) {
+        if (SA2_LABEL(gUnknown_03001850)[order] == 0xFF) {
             gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
-            gUnknown_03001850[order] = gOamFreeIndex;
-            gUnknown_03004D60[order] = gOamFreeIndex;
+            SA2_LABEL(gUnknown_03001850)[order] = gOamFreeIndex;
+            SA2_LABEL(gUnknown_03004D60)[order] = gOamFreeIndex;
         } else {
             gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
-            gOamBuffer2[gUnknown_03004D60[order]].split.fractional = gOamFreeIndex;
-            gUnknown_03004D60[order] = gOamFreeIndex;
+            gOamBuffer2[SA2_LABEL(gUnknown_03004D60)[order]].split.fractional = gOamFreeIndex;
+            SA2_LABEL(gUnknown_03004D60)[order] = gOamFreeIndex;
         }
 
         gOamFreeIndex++;
@@ -861,12 +983,12 @@ void CopyOamBufferToOam(void)
     u8 i = 0;
     s32 r3;
 
-    for (r3 = 0; r3 < (s32)ARRAY_COUNT(gUnknown_03001850); r3++) {
-        s8 index = gUnknown_03001850[r3];
+    for (r3 = 0; r3 < (s32)ARRAY_COUNT(SA2_LABEL(gUnknown_03001850)); r3++) {
+        s8 index = SA2_LABEL(gUnknown_03001850)[r3];
 
         while (index != -1) {
             u8 newI;
-            u8 *byteArray = gUnknown_03002710;
+            u8 *byteArray = SA2_LABEL(gUnknown_03002710);
             DmaCopy16(3, &gOamBuffer2[index], dstOam, sizeof(OamDataShort));
             dstOam++;
 
@@ -919,14 +1041,16 @@ void CopyOamBufferToOam(void)
 
     gOamFreeIndex = 0;
     if (gFlags & FLAGS_4000) {
-        CpuFill32(-1, gUnknown_03001850, sizeof(gUnknown_03001850));
-        CpuFill32(-1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
+        CpuFill32(-1, SA2_LABEL(gUnknown_03001850), sizeof(SA2_LABEL(gUnknown_03001850)));
+        CpuFill32(-1, SA2_LABEL(gUnknown_03004D60), sizeof(SA2_LABEL(gUnknown_03004D60)));
     } else {
-        DmaFill32(3, -1, gUnknown_03001850, sizeof(gUnknown_03001850));
-        DmaFill32(3, -1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
+        DmaFill32(3, -1, SA2_LABEL(gUnknown_03001850), sizeof(SA2_LABEL(gUnknown_03001850)));
+        DmaFill32(3, -1, SA2_LABEL(gUnknown_03004D60), sizeof(SA2_LABEL(gUnknown_03004D60)));
     }
 }
 
+// Reordered in SA3
+#if (ENGINE <= ENGINE_2)
 // (-2)
 static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
 {
@@ -943,6 +1067,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
 
     return ACMD_RESULT__RUNNING;
 }
+#endif
 
 // (-3)
 static AnimCmdResult animCmd_JumpBack(void *cursor, Sprite *s)
