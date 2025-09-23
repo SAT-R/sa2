@@ -146,10 +146,6 @@ int main(int argc, char **argv)
 
     ReadSaveFile("sa2.sav");
 
-    // Prevent the multiplayer screen from being drawn ( see core.c:EngineInit() )
-    REG_RCNT = 0x8000;
-    REG_KEYINPUT = 0x3FF;
-
     if (headless) {
         // Required or it makes an infinite loop
         cgb_audio_init(48000);
@@ -252,6 +248,10 @@ int main(int argc, char **argv)
 #if ENABLE_VRAM_VIEW
     VramDraw(vramTexture);
 #endif
+    // Prevent the multiplayer screen from being drawn ( see core.c:EngineInit() )
+    REG_RCNT = 0x8000;
+    REG_KEYINPUT = 0x3FF;
+
     AgbMain();
 
     return 0;

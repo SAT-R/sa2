@@ -104,7 +104,7 @@ extern uint8_t OAM[OAM_SIZE];
 
 #define BG_VRAM           VRAM
 #define BG_CHAR_ADDR(n)   (BG_VRAM + ((n) << 14))
-#define BG_CHAR_ADDR_FROM_BGCNT(bg)   (BG_VRAM + ((gBgCntRegs[bg] & BGCNT_CHARBASE(0x3)) << 12))
+#define BG_CHAR_ADDR_FROM_BGCNT(bg)   ((u8*)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_CHARBASE(0x3)) << 12))
 // TODO: Maybe rename BG_SCREEN_ADDR
 #define BG_SCREEN_ADDR(n) (BG_VRAM + (0x800 * (n)))
 #define BG_TILE_ADDR(n)   (BG_VRAM + (0x80 * (n)))

@@ -376,8 +376,8 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/Task_RingsMgrMain_collect_rings.i
 
                                     DmaCopy16(3, oamDat, oamAllocated, sizeof(OamDataShort));
 
-                                    // TODO: Can these be done more explicitly?
 #if !EXTENDED_OAM
+                                    // TODO: Can these be done more explicitly?
                                     oamAllocated->all.attr1 &= 0xFE00;
                                     oamAllocated->all.attr0 &= 0xFF00;
                                     oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
@@ -437,8 +437,8 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/Task_RingsMgrMain_collect_rings.i
 
                                     DmaCopy16(3, oamDat, oamAllocated, sizeof(OamDataShort));
 
-                                    // TODO: Can these be done more explicitly?
 #if !EXTENDED_OAM
+                                    // TODO: Can these be done more explicitly?
                                     oamAllocated->all.attr1 &= 0xFE00;
                                     oamAllocated->all.attr0 &= 0xFF00;
                                     oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
