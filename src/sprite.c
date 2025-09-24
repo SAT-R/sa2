@@ -373,16 +373,16 @@ void SA2_LABEL(sub_80047A0)(u16 angle, s16 p1, s16 p2, u16 affineIndex)
     s16 res;
 
     res = Div(0x10000, p1);
-    affine[0] = I(COS_24_8(angle) * res);
+    affine[0 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
 
     res = Div(0x10000, p1);
-    affine[4] = I(SIN_24_8(angle) * res);
+    affine[1 * OAM_DATA_COUNT_AFFINE] = I(SIN_24_8(angle) * res);
 
     res = Div(0x10000, p2);
-    affine[8] = I((-(SIN(angle)) >> 6) * res);
+    affine[2 * OAM_DATA_COUNT_AFFINE] = I((-(SIN(angle)) >> 6) * res);
 
     res = Div(0x10000, p2);
-    affine[12] = I(COS_24_8(angle) * res);
+    affine[3 * OAM_DATA_COUNT_AFFINE] = I(COS_24_8(angle) * res);
 }
 
 // Similar to sa2__sub_8004ABC and sa2__sub_8004E14
