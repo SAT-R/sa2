@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200043c
-sub_0200043c: @ 0x0200043c
+	thumb_func_start InitGameState
+InitGameState: @ 0x0200043c
 	push {lr}
 	ldr r2, _02000474 @ =gUnknown_03003B88
 	movs r0, #0
@@ -5675,7 +5675,7 @@ _020030A8:
 	ldr r0, _020031BC @ =0x00034BC0
 	str r0, [r1]
 _02003122:
-	bl sub_020003ac
+	bl SaveGameState
 _02003126:
 	ldr r1, _0200319C @ =0x04000208
 	movs r0, #1
@@ -17049,7 +17049,7 @@ _02008984: .4byte gUnknown_03003330
 _02008988: .4byte 0x0600E010
 _0200898C: .4byte 0x000031E5
 _02008990:
-	bl sub_020003ac
+	bl SaveGameState
 	str r4, [r6, #4]
 	ldr r0, _020089AC @ =sub_0200882C
 	str r0, [r6]
@@ -25968,8 +25968,8 @@ _0200D274:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_801F100
-sub_801F100: @ 0x0200d27c
+	thumb_func_start sub_0200d27c
+sub_0200d27c: @ 0x0200d27c
 	ldr r1, _0200D28C @ =gUnknown_03001AB2
 	movs r0, #0
 	strb r0, [r1]

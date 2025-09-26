@@ -14,8 +14,8 @@ SECTIONS {
     ALIGN(4)
     {
         . = 0x00000000; IntrMain_RAM = .;
-        . = 0x00000080; gUnknown_03000080 = .;
-        . = 0x00000084; gUnknown_03000084 = .;
+        . = 0x00000080; gSaveSectorNum = .;
+        . = 0x00000084; gSaveVersion = .;
         . = 0x00000088; gUnknown_03000088 = .;
         . = 0x000005A8; gUnknown_030005A8 = .;
         . = 0x000005AC; gUnknown_030005AC = .;
@@ -237,7 +237,7 @@ SECTIONS {
 		build/mb_chao_garden/asm/rom_header.o(.text);
 		build/mb_chao_garden/asm/crt0.o(.text);
 		build/mb_chao_garden/src/main.o(.text);
-		build/mb_chao_garden/src/init.o(.text);
+		build/mb_chao_garden/src/save.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);

@@ -92,4 +92,46 @@ typedef void (*HBlankFunc)(u8 vcount);
 typedef void (*IntrFunc)(void);
 typedef u32 (*SpriteUpdateFunc)(void);
 
+extern u8 IntrMain_RAM[0x80];
+extern IntrFunc gIntrTable[4];
+
+extern u16 gUnknown_03003B70;
+
+struct GameConfig {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+};
+
+extern struct GameConfig gUnknown_02000008;
+
+struct UNK_03003330 {
+    void (*unk0)(void);
+    u32 filler4;
+    u32 unk8;
+    u16 unkC;
+    u8 unkE;
+    u8 unkF;
+    u8 unk10;
+};
+
+extern struct UNK_03003330 gUnknown_03003330;
+
+extern u8 gSaveSectorNum;
+extern u32 gSaveVersion;
+
+extern u8 gUnknown_03003BD8[2];
+extern u32 gUnknown_03005274;
+
+// These should be moved once we know
+// which files they belong to
+extern void sub_02001528(u32);
+extern void sub_020018c8(void);
+extern void sub_02000480(void);
+extern void sub_02000c6c(void);
+extern void sub_0200be24(void);
+extern void sub_0200d27c(void);
+extern void sub_020018a0(void);
+extern void sub_02000bd0(void);
+
 #endif // GUARD_GLOBAL_H
