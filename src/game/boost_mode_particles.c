@@ -11,18 +11,21 @@
 
 #include "constants/animations.h"
 
+#define NUM_PARTICLES 16
+
 struct BoostModeParticles {
     Sprite unk0;
     Sprite unk30;
     u16 unk60;
-    s16 unk62[16][2];
-    s16 unkA2[16][2];
+    s16 unk62[NUM_PARTICLES][2];
+    s16 unkA2[NUM_PARTICLES][2];
     s16 unkE2;
     s16 unkE4;
     u16 fillerE6;
 };
 
 void sub_8089E54(void);
+void sub_808A0A4(void);
 void sub_808A234(struct Task *);
 
 void CreateBoostModeParticles(void)
@@ -59,10 +62,10 @@ void CreateBoostModeParticles(void)
 
     SeedRng(gPlayer.qWorldX, gCamera.x);
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < NUM_PARTICLES; i++) {
         u8 temp1;
         s32 rand, var;
-        particles->unk62[i][1] = (Random() & 0x7FF) + 0x1000;
+        particles->unk62[i][1] = (Random() & 0x7FF) + Q(16);
         if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
 #ifndef NON_MATCHING
             u32 z = (u32)gPlayer.rotation << 0x18;
@@ -71,31 +74,29 @@ void CreateBoostModeParticles(void)
 #else
             temp1 = gPlayer.rotation + 0xC0;
 #endif
-            particles->unk62[i][0] = ((gSineTable[((gPlayer.rotation + 0x80) & 0xff) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
-            particles->unk62[i][1] = ((gSineTable[((gPlayer.rotation + 0x80) & 0xff) * 4] >> 6) * particles->unk62[i][1]) >> 8;
+            particles->unk62[i][0] = Q_MUL((COS_24_8(((gPlayer.rotation + 128) & 0xFF) * 4)), particles->unk62[i][1]);
+            particles->unk62[i][1] = Q_MUL((SIN_24_8(((gPlayer.rotation + 128) & 0xFF) * 4)), particles->unk62[i][1]);
 
         } else {
-            temp1 = gPlayer.rotation + 0x40;
-            particles->unk62[i][0] = ((gSineTable[(gPlayer.rotation) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
-            particles->unk62[i][1] = ((gSineTable[(gPlayer.rotation) * 4] >> 6) * particles->unk62[i][1]) >> 8;
+            temp1 = gPlayer.rotation + 64;
+            particles->unk62[i][0] = Q_MUL(COS_24_8(gPlayer.rotation * 4), particles->unk62[i][1]);
+            particles->unk62[i][1] = Q_MUL(SIN_24_8(gPlayer.rotation * 4), particles->unk62[i][1]);
         }
 #ifndef NON_MATCHING
         {
             register s32 ip asm("ip");
             rand = ((s32(*)(void))Random)();
             ip = 0x3ff;
-            particles->unkA2[i][0] = ((gSineTable[temp1 * 4 + 0x100] >> 6) * (var = (rand & ip) + 0x200)) >> 8;
-            particles->unkA2[i][1] = ((gSineTable[temp1 * 4] >> 6) * var) >> 8;
+            particles->unkA2[i][0] = Q_MUL(COS_24_8(temp1 * 4), (var = (rand & ip) + 512));
+            particles->unkA2[i][1] = Q_MUL(SIN_24_8(temp1 * 4), var);
         }
 #else
         rand = Random();
-        particles->unkA2[i][0] = ((gSineTable[temp1 * 4 + 0x100] >> 6) * (var = (rand & 0x3ff) + 0x200)) >> 8;
-        particles->unkA2[i][1] = ((gSineTable[temp1 * 4] >> 6) * var) >> 8;
+        particles->unkA2[i][0] = Q_MUL(COS_24_8(temp1 * 4), ((rand & 0x3FF) + 512));
+        particles->unkA2[i][1] = Q_MUL(SIN_24_8(temp1 * 4), var);
 #endif
     }
 }
-
-void sub_808A0A4(void);
 
 void sub_8089E54(void)
 {
@@ -113,11 +114,11 @@ void sub_8089E54(void)
             particles->unk62[i][1] -= particles->unkA2[i][1];
         }
 
-        particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
-        particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
+        particles->unkA2[i][0] = I(particles->unkA2[i][0] * 200);
+        particles->unkA2[i][1] = I(particles->unkA2[i][1] * 200);
         s = &particles->unk0;
-        s->x = I(gPlayer.qWorldX) - gCamera.x + (particles->unk62[i][0] >> 8);
-        s->y = I(gPlayer.qWorldY) - gCamera.y + (particles->unk62[i][1] >> 8);
+        s->x = I(gPlayer.qWorldX) - gCamera.x + I(particles->unk62[i][0]);
+        s->y = I(gPlayer.qWorldY) - gCamera.y + I(particles->unk62[i][1]);
         DisplaySprite(s);
     }
 
@@ -125,7 +126,7 @@ void sub_8089E54(void)
         s->variant = 1;
         SeedRng(gPlayer.qWorldX, gCamera.x);
 
-        for (i = 0; i < 16; i++) {
+        for (i = 0; i < NUM_PARTICLES; i++) {
             u8 temp;
             s16 rand;
             particles->unkE2 = 0x80;
@@ -161,7 +162,7 @@ void sub_808A0A4(void)
         return;
     }
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < NUM_PARTICLES; i++) {
         particles->unk62[i][0] += particles->unkA2[i][0];
         particles->unk62[i][1] += particles->unkA2[i][1];
 

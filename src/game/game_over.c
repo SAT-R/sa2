@@ -40,6 +40,7 @@ void TaskDestructor_GameOverTimeOverScreen(struct Task *);
 void Task_TimeOverScreenMain(void);
 void sub_8036B70(void);
 void UpdateTimeOverScreenSprites(GameOverScreen *screen);
+void sub_8036B30(void);
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
@@ -220,8 +221,6 @@ void Task_GameOverScreenMain(void)
 
     DisplayOverScreenTextSprites(screen);
 }
-
-void sub_8036B30(void);
 
 void sub_80369D8(void)
 {
