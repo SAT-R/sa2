@@ -577,6 +577,7 @@ static void ClearOamBufferDma(void)
     DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 1, OAM_SIZE / 4);
     DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 2, OAM_SIZE / 4);
     DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 3, OAM_SIZE / 4);
+
     gNumVBlankCallbacks = 0;
     gFlags &= ~FLAGS_10;
 }
