@@ -21,7 +21,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 timer;
+    /* 0x3C */ s32 qSpeedX;
     /* 0x40 */ s32 offsetX;
     /* 0x44 */ s32 offsetY;
 
@@ -39,8 +39,8 @@ typedef struct {
     SpriteTransform unkCC;
     SpriteTransform unkD8;
     SpriteTransform unkE4;
-    u16 timer;
-    s16 qAccelerationY;
+    u16 qSpeedX;
+    s16 qSpeedY;
 } PlatformBreakParticles /* size 0xF4*/;
 
 static void Task_PlatformThinMain(void);
@@ -49,7 +49,7 @@ static void TaskDestructor_PlatformThin(struct Task *);
 static void Task_PlatformBreakParticlesMain(void);
 static void TaskDestructor_PlatformBreakParticles(struct Task *);
 
-void CreatePlatformBreakParticles(s16, s16);
+static void CreatePlatformBreakParticles(s16, s16);
 static u32 HandleThinPlatformCollision(Sprite *, s32, s32, Player *);
 
 static const ALIGNED(4) u16 sPlatformThinAnimations[][3] = {
@@ -210,7 +210,21 @@ static void Task_PlatformThinMain(void)
     return;
 }
 
-void CreatePlatformBreakParticles(s16 x, s16 y)
+#if !defined(NON_MATCHING)
+#define COPY_AND_INCREMENT(var) DmaCopy16(3, var, ++var, sizeof(*var));
+#else
+// has to be done this way for non GBA platforms as the code relies on the behaviour of the
+// original GBA compiler to match. However this is undefined behaviour in C, so for modern
+// compilers syntax like this is not allowed
+#define COPY_AND_INCREMENT(var)                                                                                                            \
+    {                                                                                                                                      \
+        void *p1 = var;                                                                                                                    \
+        void *p2 = ++var;                                                                                                                  \
+        DmaCopy16(3, p1, p2, sizeof(*var));                                                                                                \
+    }
+#endif
+
+static void CreatePlatformBreakParticles(s16 x, s16 y)
 {
     struct Task *t
         = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
@@ -221,8 +235,8 @@ void CreatePlatformBreakParticles(s16 x, s16 y)
 
     s = &particles->unk0;
     transform = &particles->unkC0;
-    particles->timer = 0;
-    particles->qAccelerationY = -Q(2);
+    particles->qSpeedX = 0;
+    particles->qSpeedY = -Q(2);
     x -= 128;
     y -= 50;
 
@@ -250,16 +264,16 @@ void CreatePlatformBreakParticles(s16 x, s16 y)
     UpdateSpriteAnimation(s);
 
     // copy base 1
-    DmaCopy16(3, s, ++s, sizeof(Sprite));
+    COPY_AND_INCREMENT(s);
     // copy transform
-    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
+    COPY_AND_INCREMENT(transform);
     // Set the new params
     s->frameFlags = 0x71;
     transform->y = y - 16;
 
     s = &particles->unk60;
     // Copy the transform
-    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
+    COPY_AND_INCREMENT(transform);
 
     s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
     s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
@@ -279,9 +293,9 @@ void CreatePlatformBreakParticles(s16 x, s16 y)
     UpdateSpriteAnimation(s);
 
     // Copy base 2
-    DmaCopy16(3, s, ++s, sizeof(Sprite));
+    COPY_AND_INCREMENT(s);
     // Copy the transform
-    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
+    COPY_AND_INCREMENT(transform);
     // Update props
     s->frameFlags = 0x73;
     transform->y = y - 16;
@@ -292,22 +306,23 @@ void CreatePlatformBreakParticles(s16 x, s16 y)
 static void Task_PlatformBreakParticlesMain(void)
 {
     s16 x, y;
-    PlatformBreakParticles *platform = TASK_DATA(gCurTask);
+    PlatformBreakParticles *particles = TASK_DATA(gCurTask);
     Sprite *s;
     s16 width;
     SpriteTransform *transform;
-    if (platform->timer++ >= 0x3D) {
+    // Speed is also used as a timer
+    if (particles->qSpeedX++ > 60) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    platform->qAccelerationY += 0x28;
+    particles->qSpeedY += Q(0.15625);
 
     //
-    s = &platform->unk0;
-    transform = &platform->unkC0;
+    s = &particles->unk0;
+    transform = &particles->unkC0;
 
-    transform->y += I(platform->qAccelerationY);
+    transform->y += I(particles->qSpeedY);
 
     x = transform->x;
     y = transform->y;
@@ -315,7 +330,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
 
-    transform->x -= platform->timer * 2;
+    transform->x -= particles->qSpeedX * 2;
 
     width = transform->qScaleX + 8;
     if (width > 0x200) {
@@ -334,10 +349,10 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y = y;
 
     //
-    s = &platform->unk30;
-    transform = &platform->unkCC;
+    s = &particles->unk30;
+    transform = &particles->unkCC;
 
-    transform->y += I(platform->qAccelerationY);
+    transform->y += I(particles->qSpeedY);
 
     x = transform->x;
     y = transform->y;
@@ -345,7 +360,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
 
-    transform->x += platform->timer;
+    transform->x += particles->qSpeedX;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
@@ -360,17 +375,17 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y = y;
 
     //
-    s = &platform->unk60;
-    transform = &platform->unkD8;
+    s = &particles->unk60;
+    transform = &particles->unkD8;
 
-    transform->y += I(platform->qAccelerationY);
+    transform->y += I(particles->qSpeedY);
 
     x = transform->x;
     y = transform->y;
 
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
-    transform->x += platform->timer * 2;
+    transform->x += particles->qSpeedX * 2;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
@@ -385,17 +400,17 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y = y;
 
     //
-    s = &platform->unk90;
-    transform = &platform->unkE4;
+    s = &particles->unk90;
+    transform = &particles->unkE4;
 
-    transform->y += I(platform->qAccelerationY);
+    transform->y += I(particles->qSpeedY);
 
     x = transform->x;
     y = transform->y;
 
     transform->x -= gCamera.x;
     transform->y -= gCamera.y;
-    transform->x -= platform->timer;
+    transform->x -= particles->qSpeedX;
 
     transform->qScaleX = width;
     transform->qScaleY = width;
