@@ -40,7 +40,7 @@ typedef struct {
     SpriteTransform unkD8;
     SpriteTransform unkE4;
     u16 timer;
-    s16 gravityStrength;
+    s16 qAccelerationY;
 } PlatformBreakParticles /* size 0xF4*/;
 
 static void Task_PlatformThinMain(void);
@@ -209,112 +209,85 @@ static void Task_PlatformThinMain(void)
     DisplaySprite(s);
     return;
 }
-// (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/game/sa1_sa2_shared/interactables/CreatePlatformBreakParticles.inc",
-         void CreatePlatformBreakParticles(s16 x, s16 y))
+
+void CreatePlatformBreakParticles(s16 x, s16 y)
 {
     struct Task *t
         = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
-    PlatformBreakParticles *platform = TASK_DATA(t);
+    PlatformBreakParticles *particles = TASK_DATA(t);
 
-    // Hack for better match
-#ifndef NON_MATCHING
-    register s32 r6 asm("r6");
-#else
-    s32 r6;
-#endif
+    SpriteTransform *transform;
+    Sprite *s;
 
-    {
-        Sprite *s = &platform->unk0;
-        SpriteTransform *transform = &platform->unkC0;
-        platform->timer = 0;
-        platform->gravityStrength = -0x200;
-        x -= 128;
-        y -= 50;
+    s = &particles->unk0;
+    transform = &particles->unkC0;
+    particles->timer = 0;
+    particles->qAccelerationY = -Q(2);
+    x -= 128;
+    y -= 50;
 
-        // Init base 1
-        s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
-        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
-        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
+    // Init base 1
+    s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
+    s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
+    s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-        s->oamFlags = SPRITE_OAM_ORDER(8);
-        s->graphics.size = 0;
-        s->animCursor = 0;
-        s->qAnimDelay = 0;
-        s->prevVariant = -1;
-        s->animSpeed = 0x10;
-        s->palId = 0;
-        s->frameFlags = 0x70;
+    s->oamFlags = SPRITE_OAM_ORDER(8);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->frameFlags = 0x70;
 
-        // Init transform
-        transform->rotation = 0;
-        transform->qScaleX = Q(1);
-        transform->qScaleY = Q(1);
-        transform->x = x;
-        transform->y = y;
+    // Init transform
+    transform->rotation = 0;
+    transform->qScaleX = Q(1);
+    transform->qScaleY = Q(1);
+    transform->x = x;
+    transform->y = y;
 
-        UpdateSpriteAnimation(s);
+    UpdateSpriteAnimation(s);
 
-        // copy base 1
-        DmaCopy16(3, &platform->unk0, &platform->unk30, sizeof(Sprite));
-        s = &platform->unk30;
+    // copy base 1
+    DmaCopy16(3, s, ++s, sizeof(Sprite));
+    // copy transform
+    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
+    // Set the new params
+    s->frameFlags = 0x71;
+    transform->y = y - 16;
 
-        // copy transform
-        DmaCopy16(3, &platform->unkC0, &platform->unkCC, sizeof(SpriteTransform));
+    s = &particles->unk60;
+    // Copy the transform
+    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
 
-        // Set the new params
-        s->frameFlags = 0x71;
+    s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
+    s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
+    s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
+    s->oamFlags = SPRITE_OAM_ORDER(8);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->frameFlags = 0x72;
 
-        transform = &platform->unkCC;
-        transform->y = y - 0x10;
-    }
+    // Set the transform props
+    transform->y = y;
 
-    {
-        Sprite *s;
-        SpriteTransform *transform;
-        // init base 2
-        s = &platform->unk60;
+    UpdateSpriteAnimation(s);
 
-        // Copy the transform
-        DmaCopy16(3, &platform->unkC0, &platform->unkD8, sizeof(SpriteTransform));
-
-        s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
-        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
-        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
-        s->oamFlags = SPRITE_OAM_ORDER(8);
-        s->graphics.size = 0;
-        s->animCursor = 0;
-        s->qAnimDelay = 0;
-        s->prevVariant = -1;
-        s->animSpeed = 0x10;
-        s->palId = 0;
-        s->frameFlags = 0x72;
-
-        transform = &platform->unkD8;
-        // Set the transform props
-        transform->y = y;
-
-        UpdateSpriteAnimation(s);
-
-        // Copy base 2
-        DmaCopy16(3, &platform->unk60, &platform->unk90, sizeof(Sprite));
-        s = &platform->unk90;
-
-        // Copy the transform
-        DmaCopy16(3, &platform->unkD8, &platform->unkE4, sizeof(SpriteTransform));
-        transform = &platform->unkE4;
-
-        // Update props
-        s->frameFlags = 0x73;
-
-        // used to help match atm
-        r6 = y - 0x10;
-        transform->y = r6;
-    }
+    // Copy base 2
+    DmaCopy16(3, s, ++s, sizeof(Sprite));
+    // Copy the transform
+    DmaCopy16(3, transform, ++transform, sizeof(SpriteTransform));
+    // Update props
+    s->frameFlags = 0x73;
+    transform->y = y - 16;
 
     m4aSongNumStart(SE_278);
 }
-END_NONMATCH
 
 static void Task_PlatformBreakParticlesMain(void)
 {
@@ -328,13 +301,13 @@ static void Task_PlatformBreakParticlesMain(void)
         return;
     }
 
-    platform->gravityStrength += 0x28;
+    platform->qAccelerationY += 0x28;
 
     //
     s = &platform->unk0;
     transform = &platform->unkC0;
 
-    transform->y += I(platform->gravityStrength);
+    transform->y += I(platform->qAccelerationY);
 
     x = transform->x;
     y = transform->y;
@@ -364,7 +337,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk30;
     transform = &platform->unkCC;
 
-    transform->y += I(platform->gravityStrength);
+    transform->y += I(platform->qAccelerationY);
 
     x = transform->x;
     y = transform->y;
@@ -390,7 +363,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk60;
     transform = &platform->unkD8;
 
-    transform->y += I(platform->gravityStrength);
+    transform->y += I(platform->qAccelerationY);
 
     x = transform->x;
     y = transform->y;
@@ -415,7 +388,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk90;
     transform = &platform->unkE4;
 
-    transform->y += I(platform->gravityStrength);
+    transform->y += I(platform->qAccelerationY);
 
     x = transform->x;
     y = transform->y;
