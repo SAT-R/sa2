@@ -177,8 +177,8 @@ void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-// (97.32%) https://decomp.me/scratch/nE6RC
 #if (GAME == GAME_SA1)
+// (97.32%) https://decomp.me/scratch/nE6RC
 NONMATCH("asm/non_matching/game/multiplayer/finish__CreateMultiplayerFinishHandler.inc", void CreateMultiplayerFinishHandler(void))
 #elif (GAME == GAME_SA2)
 void CreateMultiplayerFinishHandler(void)
