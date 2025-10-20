@@ -414,15 +414,9 @@ void Task_GameStage(void)
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
 
-#if (GAME == GAME_SA1)
-            if (gLoadedSaveGame.timeLimitDisabled) {
+            if (LOADED_SAVE->timeLimitDisabled) {
                 return;
             }
-#elif (GAME == GAME_SA2)
-            if (gLoadedSaveGame->timeLimitDisabled) {
-                return;
-            }
-#endif
 
             gPlayer.itemEffect = 0;
 
@@ -463,15 +457,9 @@ void Task_GameStage(void)
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
 
-#if (GAME == GAME_SA1)
-            if (gLoadedSaveGame.timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
+            if (LOADED_SAVE->timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
                 return;
             }
-#elif (GAME == GAME_SA2)
-            if (gLoadedSaveGame->timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
-                return;
-            }
-#endif
 
             gPlayer.itemEffect = 0;
 

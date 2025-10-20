@@ -292,7 +292,7 @@ void StartSinglePakConnect(void)
 
     t = TaskCreate(sub_8081604, sizeof(struct SinglePakConnectScreen), 0x2000, 0, NULL);
     connectScreen = TASK_DATA(t);
-    connectScreen->unkFA = gLoadedSaveGame->language;
+    connectScreen->unkFA = LOADED_SAVE->language;
 
     if ((u8)LanguageIndex(connectScreen->unkFA) > LanguageIndex(LANG_ITALIAN)) {
         connectScreen->unkFA = 1;
