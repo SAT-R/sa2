@@ -645,7 +645,114 @@ void sub_802E384(s16 *p0, u16 pairCount)
     }
 }
 
-NONMATCH("asm/non_matching/game/stage/sub_802E49C.inc", void sub_802E49C(s16 *tmp8, s32 length)) { }
+// (74.98%) https://decomp.me/scratch/Ox5q8
+// For sure has some logic bugs, but this is roughly the layout
+NONMATCH("asm/non_matching/game/stage/sub_802E49C.inc", void sub_802E49C(s16 *input, s32 length))
+{
+    s16 pairs[8][2];
+    s16 another_pair_1[2];
+    s16 another_pair_2[2];
+    s16 last_pairs_1[8][2];
+    s16 last_pairs_2[8][2];
+    u8 array[DISPLAY_HEIGHT];
+    s32 temp3;
+    u8 i, j;
+    s32 temp5;
+    s32 temp;
+
+    if (length > 8) {
+        return;
+    }
+
+    if (length <= 2) {
+        return;
+    }
+
+    for (i = 0; i < length; i++) {
+        pairs[i][0] = input[i * 2 + 0];
+        pairs[i][1] = input[i * 2 + 1];
+    }
+
+    for (i = 0; i < length - 1; i++) {
+        for (j = i + 1; j < length; j++) {
+            if ((pairs[i][1] >= pairs[j][1] && pairs[i][1] != pairs[j][1]) || pairs[i][0] >= pairs[j][0]) {
+                s16 temp;
+                temp = pairs[i][0];
+                pairs[i][0] = pairs[j][0];
+                pairs[j][0] = temp;
+
+                temp = pairs[i][1];
+                pairs[i][1] = pairs[j][1];
+                pairs[j][1] = temp;
+            }
+        }
+    }
+
+    another_pair_1[0] = pairs[0][0];
+    another_pair_1[1] = pairs[0][1];
+
+    for (i = 1; i < length && pairs[i][1] == pairs[i + 1][1]; i++) {
+        if (another_pair_1[0] > pairs[i][0]) {
+            another_pair_1[0] = pairs[i][0];
+            another_pair_1[1] = pairs[i][1];
+        }
+    }
+
+    another_pair_2[0] = pairs[length - 1][0];
+    another_pair_2[1] = pairs[length - 1][1];
+
+    for (j = length - 2; j > 0; j--) {
+        if (pairs[j + 1][1] > pairs[j][1]) {
+            break;
+        }
+
+        if (pairs[j][0] < another_pair_2[0]) {
+            another_pair_2[0] = pairs[j][0];
+            another_pair_2[1] = pairs[j][1];
+        }
+    }
+
+    temp5 = Q(another_pair_1[0]);
+    temp = (another_pair_2[1] - another_pair_1[1]);
+    if (temp != 0) {
+        temp3 = Div(Q(another_pair_2[0] - another_pair_1[0]) + Q(0.5), another_pair_2[1] - another_pair_1[1]);
+    } else {
+        temp3 = Q(another_pair_2[0] - another_pair_1[0]);
+    }
+
+    for (i = another_pair_1[1]; i <= another_pair_2[1]; i++) {
+        s16 temp4 = I(temp5);
+        if (temp4 > DISPLAY_WIDTH) {
+            temp4 = DISPLAY_WIDTH;
+        }
+
+        if (temp4 < 0) {
+            temp4 = 0;
+        }
+        array[i] = temp4;
+        temp5 += temp3;
+    }
+
+    for (i = 0, j = 0; i < length; i++) {
+        if (array[pairs[i][1]] <= pairs[i][0]) {
+            last_pairs_1[j][0] = pairs[i][0];
+            last_pairs_1[j][1] = pairs[i][1];
+            j++;
+        }
+    }
+
+    sub_802E278(last_pairs_1[0], j);
+
+    for (i = 0, j = 0; i < length; i++) {
+        if (array[pairs[i][1]] >= pairs[i][0]) {
+            last_pairs_2[j][0] = pairs[i][0];
+            last_pairs_2[j][1] = pairs[i][1];
+            j++;
+        }
+    }
+
+    sub_802E278(last_pairs_2[0], j);
+}
 END_NONMATCH
 
 void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
