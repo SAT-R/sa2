@@ -19,6 +19,15 @@
 #include "constants/animations.h"
 #include "constants/text.h"
 
+#if (GAME == GAME_SA1) && !(defined NON_MATCHING)
+// Once CreateMultiplayerFinishHandler matches in SA1,
+// this can go away.
+asm(".section .rodata");
+asm(".align 2, 0");
+asm(".global gUnknown_080BB490");
+asm("gUnknown_080BB490:");
+#endif
+
 typedef struct {
     Sprite s;
     u8 unk30;
@@ -178,6 +187,7 @@ void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *t)
 }
 
 #if (GAME == GAME_SA1)
+extern const u8 gUnknown_080BB490[4];
 // (97.32%) https://decomp.me/scratch/nE6RC
 NONMATCH("asm/non_matching/game/multiplayer/finish__CreateMultiplayerFinishHandler.inc", void CreateMultiplayerFinishHandler(void))
 #elif (GAME == GAME_SA2)
@@ -188,185 +198,196 @@ void CreateMultiplayerFinishHandler(void)
     u32 r2;
     u8 r6;
 #if (GAME == GAME_SA1)
+#ifndef NON_MATCHING
+    u8 arr[4];
+    u8 arr2[4];
+    // Once CreateMultiplayerFinishHandler matches in SA1,
+    // this can go away.
+    memcpy(arr, &gUnknown_080BB490, 4);
+    memset(arr2, 0, 4);
+#else
     u8 arr[4] = { 0, 1, 2, 3 };
     u8 arr2[4] = { 0 };
 #endif
-    struct Task *mpt;
-    struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
-    Finish2 *f2 = TASK_DATA(t);
-
-    // from M2C
-    u32 var_r6;
-    u32 var_r4;
-    u32 var_ip;
-    u8 *temp_r1_4;
-    u8 var_r5;
-    // end of m2c vars
-
-    f2->unk0 = 0;
-
-    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-#if (GAME == GAME_SA1)
-        gMusicManagerState.unk0 = 0xFF;
-        m4aSongNumStart(304);
 #endif
-    } else {
+    {
+        struct Task *mpt;
+        struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
+        Finish2 *f2 = TASK_DATA(t);
+
+        // from M2C
+        u32 var_r6;
+        u32 var_r4;
+        u32 var_ip;
+        u8 *temp_r1_4;
+        u8 var_r5;
+        // end of m2c vars
+
+        f2->unk0 = 0;
+
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#if (GAME == GAME_SA1)
+            gMusicManagerState.unk0 = 0xFF;
+            m4aSongNumStart(304);
+#endif
+        } else {
 #if (GAME == GAME_SA2)
-        return;
+            return;
 #endif
-    }
+        }
 
 #if (GAME == GAME_SA1)
-    if (gGameMode == 4) {
-        *((u32 *)arr2) = *((u32 *)gMultiplayerCharRings);
+        if (gGameMode == 4) {
+            *((u32 *)arr2) = *((u32 *)gMultiplayerCharRings);
 
-        for (var_r6 = 0, var_ip = 3; var_r6 < 4; var_r6++) {
-            u32 var_r8 = var_ip;
-            for (var_r4 = 0; var_r4 < var_r8; var_r4++) {
-                if (arr2[var_r4 + 0] < arr2[var_r4 + 1]) {
-                    XOR_SWAP(arr2[var_r4 + 0], arr2[var_r4 + 1]);
-                    XOR_SWAP(arr[var_r4 + 0], arr[var_r4 + 1]);
+            for (var_r6 = 0, var_ip = 3; var_r6 < 4; var_r6++) {
+                u32 var_r8 = var_ip;
+                for (var_r4 = 0; var_r4 < var_r8; var_r4++) {
+                    if (arr2[var_r4 + 0] < arr2[var_r4 + 1]) {
+                        XOR_SWAP(arr2[var_r4 + 0], arr2[var_r4 + 1]);
+                        XOR_SWAP(arr[var_r4 + 0], arr[var_r4 + 1]);
+                    }
                 }
-            }
 #ifndef NON_MATCHING
-            asm("mov r1, #1\n"
-                "neg r1, r1\n"
-                "add %0, r1"
-                : "=r"(var_ip));
+                asm("mov r1, #1\n"
+                    "neg r1, r1\n"
+                    "add %0, r1"
+                    : "=r"(var_ip));
 #else
-            var_ip--;
+                var_ip--;
 #endif
-        }
-        for (var_r6 = 0; var_r6 < 4; var_r6++) {
-            u8 *ptr = &arr[var_r6];
+            }
+            for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                u8 *ptr = &arr[var_r6];
 
-            if (var_r6 != 0) {
-                if (arr2[var_r6] != arr2[0]) {
-                    SA2_LABEL(gUnknown_030054B4)[*ptr] = 1;
-                } else {
+                if (var_r6 != 0) {
+                    if (arr2[var_r6] != arr2[0]) {
+                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 1;
+                    } else {
+                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                    }
+                } else if (arr2[0] == arr2[1]) {
                     SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                } else {
+                    SA2_LABEL(gUnknown_030054B4)[arr[0]] = var_r6;
                 }
-            } else if (arr2[0] == arr2[1]) {
-                SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
-            } else {
-                SA2_LABEL(gUnknown_030054B4)[arr[0]] = var_r6;
             }
-        }
 
-        for (var_r6 = 0; var_r6 < 4; var_r6++) {
-            if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                CreateMultiplayerFinishResult(var_r6, (u8)SA2_LABEL(gUnknown_030054B4)[var_r6]);
-            }
-        }
-    } else if (gGameMode == 5) {
-        for (var_r6 = 0; var_r6 < 4 && (gMultiplayerPlayerTasks[var_r6] != NULL); var_r6++) {
-            temp_r1_4 = &arr2[(gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)];
-            *temp_r1_4 += gMultiplayerCharRings[var_r6];
-        }
-
-        if ((u32)arr2[0] < (u32)arr2[1]) {
-            XOR_SWAP(arr2[0], arr2[1])
-            XOR_SWAP(arr[0], arr[1])
-        }
-        if (arr2[0] == arr2[1]) {
             for (var_r6 = 0; var_r6 < 4; var_r6++) {
                 if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                    SA2_LABEL(gUnknown_030054B4)[var_r6] = 4;
+                    CreateMultiplayerFinishResult(var_r6, (u8)SA2_LABEL(gUnknown_030054B4)[var_r6]);
                 }
+            }
+        } else if (gGameMode == 5) {
+            for (var_r6 = 0; var_r6 < 4 && (gMultiplayerPlayerTasks[var_r6] != NULL); var_r6++) {
+                temp_r1_4 = &arr2[(gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)];
+                *temp_r1_4 += gMultiplayerCharRings[var_r6];
+            }
+
+            if ((u32)arr2[0] < (u32)arr2[1]) {
+                XOR_SWAP(arr2[0], arr2[1])
+                XOR_SWAP(arr[0], arr[1])
+            }
+            if (arr2[0] == arr2[1]) {
+                for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                    if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                        SA2_LABEL(gUnknown_030054B4)[var_r6] = 4;
+                    }
+                }
+            } else {
+                for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                    if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                        if (((gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)) == arr[0]) {
+                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 0;
+                        } else {
+                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 1;
+                        }
+                    }
+                }
+            }
+            for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                    CreateMultiplayerFinishResult(var_r6, SA2_LABEL(gUnknown_030054B4)[var_r6]);
+                }
+            }
+        } else if (gGameMode != 6) {
+            LOADED_SAVE->score += (s16)gRingCount;
+            if (((u32)gCourseTime > MAX_COURSE_TIME) || ((STAGE_FLAG__TIMER_REVERSED & gStageFlags) && (gCourseTime == 0))) {
+                u32 var_r2 = 0;
+                if ((gGameMode != 3) && (gGameMode != 5)) {
+                    for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
+                        if (SA2_LABEL(gUnknown_030054B4)[var_r4] != -1) {
+                            var_r2 += 1;
+                        }
+                    }
+
+                    if (var_r2 == 0) {
+                        var_r5 = 4;
+                    } else if (var_r2 == (var_r4 - 1)) {
+                        var_r5 = (u8)var_r2;
+                    } else {
+                        var_r5 = 5;
+                    }
+                } else {
+                    var_r5 = 4;
+                }
+
+                for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
+                    if ((SA2_LABEL(gUnknown_030054B4)[var_r4] == -1) || (gGameMode == 3) || (gGameMode == 5)) {
+                        CreateMultiplayerFinishResult(var_r4, var_r5);
+                    }
+                }
+            }
+        }
+#elif (GAME == GAME_SA2)
+        gMusicManagerState.unk0 = 0xFF;
+        LOADED_SAVE->score += (s16)gRingCount;
+
+        if (gCourseTime <= MAX_COURSE_TIME) {
+            if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
+                return;
+            }
+        }
+
+        r2 = 0;
+
+        if (gGameMode != GAME_MODE_TEAM_PLAY) {
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                if (gMultiplayerPlayerTasks[i] == NULL) {
+                    break;
+                }
+
+                if (SA2_LABEL(gUnknown_030054B4)[i] != -1) {
+                    r2++;
+                }
+            }
+
+            if (r2 == 0) {
+                r6 = 4;
+            } else if (r2 == (i - 1)) {
+                r6 = r2;
+            } else {
+                r6 = 5;
             }
         } else {
-            for (var_r6 = 0; var_r6 < 4; var_r6++) {
-                if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                    if (((gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)) == arr[0]) {
-                        SA2_LABEL(gUnknown_030054B4)[var_r6] = 0;
-                    } else {
-                        SA2_LABEL(gUnknown_030054B4)[var_r6] = 1;
-                    }
-                }
-            }
+            r6 = 4;
         }
-        for (var_r6 = 0; var_r6 < 4; var_r6++) {
-            if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                CreateMultiplayerFinishResult(var_r6, SA2_LABEL(gUnknown_030054B4)[var_r6]);
-            }
-        }
-    } else if (gGameMode != 6) {
-        LOADED_SAVE->score += (s16)gRingCount;
-        if (((u32)gCourseTime > MAX_COURSE_TIME) || ((STAGE_FLAG__TIMER_REVERSED & gStageFlags) && (gCourseTime == 0))) {
-            u32 var_r2 = 0;
-            if ((gGameMode != 3) && (gGameMode != 5)) {
-                for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
-                    if (SA2_LABEL(gUnknown_030054B4)[var_r4] != -1) {
-                        var_r2 += 1;
-                    }
-                }
 
-                if (var_r2 == 0) {
-                    var_r5 = 4;
-                } else if (var_r2 == (var_r4 - 1)) {
-                    var_r5 = (u8)var_r2;
-                } else {
-                    var_r5 = 5;
-                }
-            } else {
-                var_r5 = 4;
-            }
-
-            for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
-                if ((SA2_LABEL(gUnknown_030054B4)[var_r4] == -1) || (gGameMode == 3) || (gGameMode == 5)) {
-                    CreateMultiplayerFinishResult(var_r4, var_r5);
-                }
-            }
-        }
-    }
-#elif (GAME == GAME_SA2)
-    gMusicManagerState.unk0 = 0xFF;
-    LOADED_SAVE->score += (s16)gRingCount;
-
-    if (gCourseTime <= MAX_COURSE_TIME) {
-        if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
-            return;
-        }
-    }
-
-    r2 = 0;
-
-    if (gGameMode != GAME_MODE_TEAM_PLAY) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (gMultiplayerPlayerTasks[i] == NULL) {
                 break;
             }
 
-            if (SA2_LABEL(gUnknown_030054B4)[i] != -1) {
-                r2++;
+            if (SA2_LABEL(gUnknown_030054B4)[i] == -1) {
+                MultiplayerPlayer *mpp;
+                mpt = gMultiplayerPlayerTasks[i];
+                mpp = TASK_DATA(mpt);
+                mpp->unk5C |= 1;
+                CreateMultiplayerFinishResult(i, r6);
             }
         }
-
-        if (r2 == 0) {
-            r6 = 4;
-        } else if (r2 == (i - 1)) {
-            r6 = r2;
-        } else {
-            r6 = 5;
-        }
-    } else {
-        r6 = 4;
-    }
-
-    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (gMultiplayerPlayerTasks[i] == NULL) {
-            break;
-        }
-
-        if (SA2_LABEL(gUnknown_030054B4)[i] == -1) {
-            MultiplayerPlayer *mpp;
-            mpt = gMultiplayerPlayerTasks[i];
-            mpp = TASK_DATA(mpt);
-            mpp->unk5C |= 1;
-            CreateMultiplayerFinishResult(i, r6);
-        }
-    }
 #endif
+    }
 }
 #if (GAME == GAME_SA1)
 END_NONMATCH
@@ -399,6 +420,7 @@ void SA2_LABEL(Task_801A04C)(void)
     }
 }
 
+#if 01
 void Task_TransitionToResultsScreen(void)
 {
     u32 i; // r7
@@ -417,7 +439,9 @@ void Task_TransitionToResultsScreen(void)
             u8 sp00[4] = { 0, 1, 2, 3 };
             u8 sp04[4] = { 0 };
 
+#if (GAME == GAME_SA2)
             m4aMPlayAllStop();
+#endif
             *((u32 *)sp04) = *((u32 *)gMultiplayerCharRings);
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -462,6 +486,7 @@ void Task_TransitionToResultsScreen(void)
                 }
             }
 
+#if (GAME == GAME_SA2)
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
 #ifndef NON_MATCHING
                 // TODO: Match without goto
@@ -486,10 +511,11 @@ void Task_TransitionToResultsScreen(void)
                 return;
 #endif
             }
+#endif
         }
         // _0801A232
 
-#ifndef COLLECT_RINGS_ROM
+#if (GAME == GAME_SA2) && !(defined COLLECT_RINGS_ROM)
         {
             s16 pid;
             s32 foeResult;
@@ -529,7 +555,7 @@ void Task_TransitionToResultsScreen(void)
 
         { // TODO: This is a macro!
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            SA2_LABEL(gUnknown_03005390) = 0;
             PAUSE_GRAPHICS_QUEUE();
         }
 
@@ -549,6 +575,7 @@ void Task_TransitionToResultsScreen(void)
         return;
     }
 }
+#endif
 
 #if COLLECT_RINGS_ROM
 void CreateMultiplayerFinishHandler(void)
