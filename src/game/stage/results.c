@@ -80,7 +80,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     u32 zero = 0;
 #endif
 
-    gLoadedSaveGame->score += (s16)gRingCount;
+    LOADED_SAVE->score += (s16)gRingCount;
 
     t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0, TaskDestructor_StageResults);
     outro = TASK_DATA(t);
@@ -345,7 +345,7 @@ static void Task_UpdateStageResults(void)
     if (counter > outro->base.unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
-                gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
+                LOADED_SAVE->unlockedLevels[gSelectedCharacter] = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 WriteSaveGame();
 
                 TasksDestroyAll();
@@ -362,7 +362,7 @@ static void Task_UpdateStageResults(void)
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gCurrentLevel++;
-                gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
+                LOADED_SAVE->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
 
                 TasksDestroyAll();
 
@@ -393,42 +393,42 @@ static void Task_UpdateStageResults(void)
 
                     gCurrentLevel++;
 
-                    if (gCurrentLevel > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
-                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
+                    if (gCurrentLevel > LOADED_SAVE->unlockedLevels[gSelectedCharacter]) {
+                        LOADED_SAVE->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
 
                         if (gSelectedCharacter == CHARACTER_SONIC) {
                             switch (LEVEL_TO_ZONE(gCurrentLevel - 1)) {
                                 case ZONE_1: {
-                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_CREAM);
+                                    LOADED_SAVE->unlockedCharacters |= CHARACTER_BIT(CHARACTER_CREAM);
                                     CreateCharacterUnlockCutScene(0);
                                 } break;
 
                                 case ZONE_3: {
-                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_TAILS);
+                                    LOADED_SAVE->unlockedCharacters |= CHARACTER_BIT(CHARACTER_TAILS);
                                     CreateCharacterUnlockCutScene(2);
                                 } break;
 
                                 case ZONE_5: {
-                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_KNUCKLES);
+                                    LOADED_SAVE->unlockedCharacters |= CHARACTER_BIT(CHARACTER_KNUCKLES);
                                     CreateCharacterUnlockCutScene(1);
                                 } break;
 
                                 default: {
-                                    CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
+                                    CreateCourseSelectionScreen(gCurrentLevel, LOADED_SAVE->unlockedLevels[gSelectedCharacter], 1);
                                 }
                             }
                         } else {
-                            CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
+                            CreateCourseSelectionScreen(gCurrentLevel, LOADED_SAVE->unlockedLevels[gSelectedCharacter], 1);
                         }
                     } else {
-                        CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
+                        CreateCourseSelectionScreen(gCurrentLevel, LOADED_SAVE->unlockedLevels[gSelectedCharacter], 4);
                     }
                     WriteSaveGame();
                     return;
                 } else {
                     gCurrentLevel++;
-                    if (gCurrentLevel > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
-                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
+                    if (gCurrentLevel > LOADED_SAVE->unlockedLevels[gSelectedCharacter]) {
+                        LOADED_SAVE->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
                     }
 
                     if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
