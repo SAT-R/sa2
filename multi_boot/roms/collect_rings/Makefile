@@ -122,7 +122,7 @@ SA2_C_FILES := \
 	sa2/game/multiboot/collect_rings/results.c \
 	sa2/game/sa1_sa2_shared/entities_manager.c \
 	sa2/game/sa1_sa2_shared/collision.c \
-	sa2/game/mystery_item_box.c \
+	sa2/game/mystery_itembox.c \
 	sa2/game/sa1_sa2_shared/rings_manager.c \
 	sa2/game/multiboot/collect_rings/time_display.c \
 	sa2/game/multiplayer/indicators.c \
@@ -160,7 +160,7 @@ SA2_MID_FILES := \
 	sa2/mus_fanfare.mid \
 	sa2/se_spin_dash_release.mid \
 	sa2/se_life_lost.mid \
-	sa2/se_item_box_2.mid \
+	sa2/se_itembox_2.mid \
 	sa2/se_spikes.mid \
 	sa2/se_276.mid \
 	sa2/se_grinding.mid \

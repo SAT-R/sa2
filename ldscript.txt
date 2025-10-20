@@ -110,7 +110,7 @@ SECTIONS
         src/game/sa1_sa2_shared/spot_light.o(.text);
         src/game/sa1_sa2_shared/pause_menu.o(.text);
         src/game/sa1_sa2_shared/collect_ring_effect.o(.text);
-        src/game/sa1_sa2_shared/item_box.o(.text);
+        src/game/sa1_sa2_shared/itembox.o(.text);
         src/game/sa1_sa2_shared/dust_cloud.o(.text);
         src/game/sa1_sa2_shared/magnetic_ring.o(.text);
         src/game/sa1_sa2_shared/music_manager.o(.text);
@@ -293,7 +293,7 @@ SECTIONS
 
         src/game/math.o(.text);
 
-        src/game/mystery_item_box.o(.text);
+        src/game/mystery_itembox.o(.text);
         src/game/heart_particles_effect.o(.text);
         src/game/race_progress.o(.text);
         src/game/multiplayer/mp_attack_1_effect.o(.text);
@@ -375,13 +375,13 @@ SECTIONS
         src/game/assets/compressed/entities.o(.rodata);
         src/game/assets/compressed/roms.o(.rodata);
 
-        /* "SA1 Leftovers" data */
+        /* "sa1_sa2_shared" data */
         src/game/sa1_sa2_shared/rings_manager.o(.rodata);
         src/game/sa1_sa2_shared/entities_manager.o(.rodata);
         src/game/sa1_sa2_shared/unused_level_select.o(.rodata);
         src/game/sa1_sa2_shared/unused_flash_task.o(.rodata);
         src/game/sa1_sa2_shared/pause_menu.o(.rodata);
-        src/game/sa1_sa2_shared/item_box.o(.rodata);
+        src/game/sa1_sa2_shared/itembox.o(.rodata);
         src/game/sa1_sa2_shared/music_manager.o(.rodata);
         src/game/sa1_sa2_shared/input_buffer.o(.rodata);
         src/game/sa1_sa2_shared/interactables/spring.o(.rodata);
@@ -472,7 +472,7 @@ SECTIONS
         src/game/multiboot/connection.o(.rodata);
         src/game/multiboot/collect_rings/time_display.o(.rodata);
         src/game/math.o(.rodata);
-        src/game/mystery_item_box.o(.rodata);
+        src/game/mystery_itembox.o(.rodata);
         src/game/race_progress.o(.rodata);
         src/game/multiplayer/mp_attack_1_effect.o(.rodata);
         src/game/multiplayer_lobby.o(.rodata);
@@ -587,7 +587,7 @@ SECTIONS
         sound/songs/midi/se_amy_super_hammer_attack.o(.rodata);
         sound/songs/midi/se_amy_hammer_swirl.o(.rodata);
         sound/songs/midi/se_sa1_goal_post.o(.rodata);
-        sound/songs/midi/se_item_box.o(.rodata);
+        sound/songs/midi/se_itembox.o(.rodata);
         sound/songs/midi/se_timer.o(.rodata);
         sound/songs/midi/se_stage_result_counter.o(.rodata);
         sound/songs/midi/se_stage_result_counter_done.o(.rodata);
@@ -599,7 +599,7 @@ SECTIONS
         sound/songs/midi/se_spin.o(.rodata);
         sound/songs/midi/se_148.o(.rodata);
         sound/songs/midi/se_time_up.o(.rodata);
-        sound/songs/midi/se_item_box_2.o(.rodata);
+        sound/songs/midi/se_itembox_2.o(.rodata);
         sound/songs/midi/se_151.o(.rodata);
         sound/songs/midi/se_checkpoint.o(.rodata);
         sound/songs/midi/se_spring.o(.rodata);

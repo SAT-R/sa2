@@ -21,7 +21,7 @@ gSongTable:	@ 0x02016D8C
 	song se_rings_lost__collect_rings, 3, 3
 	song se_life_lost, 2, 2
 	song se_time_up, 2, 2
-	song se_item_box_2, 2, 2
+	song se_itembox_2, 2, 2
 	song se_spring__collect_rings, 2, 2
 	song se_spikes, 2, 2
 	song se_alarm_1, 2, 2

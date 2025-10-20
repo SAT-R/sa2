@@ -1596,7 +1596,7 @@ static void Task_MultiplayerWaitForSelections(void)
     union MultiSioData *send, *recv;
     u32 i, j;
     Sprite *s;
-    u8 charactersSelected[NUM_CHARACTERS] = { 0, 0, 0, 0, 0 };
+    u8 charactersSelected[NUM_CHARACTERS] = { 0 };
 
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     BackgroundAnim();

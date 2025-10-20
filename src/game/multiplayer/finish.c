@@ -19,6 +19,21 @@
 #include "constants/animations.h"
 #include "constants/text.h"
 
+#if (GAME == GAME_SA1) && !(defined NON_MATCHING)
+// Once CreateMultiplayerFinishHandler matches in SA1,
+// this can go away.
+asm(".section .rodata");
+asm(".align 2, 0");
+asm(".global gUnknown_080BB490");
+asm("gUnknown_080BB490:");
+// NOTE:
+// As long as gUnknown_080BB490 is above data with this layout, this works out:
+// asm(".byte 0, 1, 2, 3:");
+// But once CreateMultiplayerFinishHandler matches,
+// the label won't be necessary. It's only here because
+// the asm file out of asm/non_matching/ references it.
+#endif
+
 typedef struct {
     Sprite s;
     u8 unk30;
@@ -29,16 +44,19 @@ typedef struct {
     u16 unk0;
 } Finish2; /* size: 4 */
 
-void Task_801A04C(void);
+void SA2_LABEL(Task_801A04C)(void);
 void Task_TransitionToResultsScreen(void);
 
-void Task_8019E70(void);
-void TaskDestructor_8019EF4(struct Task *);
+void SA2_LABEL(Task_8019E70)(void);
+void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *);
 
 #ifndef COLLECT_RINGS_ROM
 
 // TODO: split finish result
-const TileInfo gUnknown_080D5768[2][7] = { {
+#if (GAME == GAME_SA1)
+extern const TileInfo sMPFinishTileInfo[2][7];
+#elif (GAME == GAME_SA2)
+const TileInfo sMPFinishTileInfo[2][7] = { {
                                                // Japanese
                                                { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
                                                { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_LOSE },
@@ -62,23 +80,26 @@ const TileInfo gUnknown_080D5768[2][7] = { {
 #define GET_MP_FINISH_RESULT_TILE_INFO(_id)                                                                                                \
     ({                                                                                                                                     \
         const TileInfo *source;                                                                                                            \
-        u8 *info = (u8 *)gUnknown_080D5768;                                                                                                \
+        u8 *info = (u8 *)sMPFinishTileInfo;                                                                                                \
                                                                                                                                            \
         s32 index;                                                                                                                         \
                                                                                                                                            \
-        index                                                                                                                              \
-            = ((gLoadedSaveGame->language == LANG_DEFAULT) || (gLoadedSaveGame->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));  \
+        index = ((LOADED_SAVE->language == LANG_DEFAULT) || (LOADED_SAVE->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));        \
         source = (TileInfo *)(info + index);                                                                                               \
                                                                                                                                            \
         (source + (_id));                                                                                                                  \
     })
+#endif
 
 void CreateMultiplayerFinishResult(u8 sioId, u8 count)
 {
     u32 i = 0;
 
-    if (gUnknown_030054B4[sioId] == -1) {
-        struct Task *t = TaskCreate(Task_8019E70, sizeof(MpFinish1), 0x2010, 0, TaskDestructor_8019EF4);
+#if (GAME == GAME_SA2)
+    if (SA2_LABEL(gUnknown_030054B4)[sioId] == -1)
+#endif
+    {
+        struct Task *t = TaskCreate(SA2_LABEL(Task_8019E70), sizeof(MpFinish1), 0x2010, 0, SA2_LABEL(TaskDestructor_8019EF4));
         MpFinish1 *finish = TASK_DATA(t);
         struct Task **mpt = &gMultiplayerPlayerTasks[0];
         Sprite *s;
@@ -91,10 +112,10 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
         }
 
         if (count < 6) {
-            gUnknown_030054B4[sioId] = count;
+            SA2_LABEL(gUnknown_030054B4)[sioId] = count;
         } else {
             // BUG(?): Value underflows if i is 0
-            gUnknown_030054B4[sioId] = i - 1;
+            SA2_LABEL(gUnknown_030054B4)[sioId] = i - 1;
         }
 
         finish->unk30 = sioId;
@@ -102,8 +123,26 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
 
         s = &finish->s;
         s->graphics.size = 0;
-        s->graphics.dest = VramMalloc(12);
 
+#if (GAME == GAME_SA1)
+        s->graphics.anim = 904;
+
+        if (count == 5) {
+            s->variant = 1;
+            s->graphics.dest = VramMalloc(12);
+        } else if (count == 4) {
+            s->variant = 2;
+            s->graphics.dest = VramMalloc(12);
+        } else if ((i == 2) || (gGameMode == GAME_MODE_CHAO_HUNT) || (gGameMode == GAME_MODE_MULTI_PLAYER)
+                   || (gGameMode == GAME_MODE_TEAM_PLAY)) {
+            s->variant = count;
+            s->graphics.dest = VramMalloc(12);
+        } else {
+            s->variant = count + 3;
+            s->graphics.dest = VramMalloc(8);
+        }
+#elif (GAME == GAME_SA2)
+        s->graphics.dest = VramMalloc(12);
         if (count == 5) {
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(1)->anim;
             s->variant = GET_MP_FINISH_RESULT_TILE_INFO(1)->variant;
@@ -117,6 +156,7 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(3)->anim;
             s->variant = count + GET_MP_FINISH_RESULT_TILE_INFO(3)->variant;
         }
+#endif
 
         s->prevVariant = -1;
         s->oamFlags = SPRITE_OAM_ORDER(0);
@@ -128,7 +168,7 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
     }
 }
 
-void Task_8019E70(void)
+void SA2_LABEL(Task_8019E70)(void)
 {
     MpFinish1 *finish = TASK_DATA(gCurTask);
     Sprite *s = &finish->s;
@@ -145,77 +185,223 @@ void Task_8019E70(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_8019EF4(struct Task *t)
+void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *t)
 {
     MpFinish1 *finish = TASK_DATA(t);
     Sprite *s = &finish->s;
     VramFree(s->graphics.dest);
 }
 
+#if (GAME == GAME_SA1)
+extern const u8 gUnknown_080BB490[4];
+// (97.32%) https://decomp.me/scratch/nE6RC
+NONMATCH("asm/non_matching/game/multiplayer/finish__CreateMultiplayerFinishHandler.inc", void CreateMultiplayerFinishHandler(void))
+#elif (GAME == GAME_SA2)
 void CreateMultiplayerFinishHandler(void)
+#endif
 {
     u32 i;
     u32 r2;
     u8 r6;
-    struct Task *mpt;
-    struct Task *t = TaskCreate(Task_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
-    Finish2 *f2 = TASK_DATA(t);
-    f2->unk0 = 0;
+#if (GAME == GAME_SA1)
+#ifndef NON_MATCHING
+    u8 arr[4];
+    u8 arr2[4];
+    // Once CreateMultiplayerFinishHandler matches in SA1,
+    // this can go away.
+    memcpy(arr, &gUnknown_080BB490, 4);
+    memset(arr2, 0, 4);
+#else
+    u8 arr[4] = { 0, 1, 2, 3 };
+    u8 arr2[4] = { 0 };
+#endif
+#endif
+    {
+        struct Task *mpt;
+        struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
+        Finish2 *f2 = TASK_DATA(t);
 
-    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        return;
-    }
+        // from M2C
+        u32 var_r6;
+        u32 var_r4;
+        u32 var_ip;
+        u8 *temp_r1_4;
+        u8 var_r5;
+        // end of m2c vars
 
-    gMusicManagerState.unk0 = 0xFF;
-    gLoadedSaveGame->score += (s16)gRingCount;
+        f2->unk0 = 0;
 
-    if (gCourseTime <= MAX_COURSE_TIME) {
-        if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#if (GAME == GAME_SA1)
+            gMusicManagerState.unk0 = 0xFF;
+            m4aSongNumStart(304);
+#endif
+        } else {
+#if (GAME == GAME_SA2)
             return;
+#endif
         }
-    }
 
-    r2 = 0;
+#if (GAME == GAME_SA1)
+        if (gGameMode == 4) {
+            *((u32 *)arr2) = *((u32 *)gMultiplayerCharRings);
 
-    if (gGameMode != GAME_MODE_TEAM_PLAY) {
+            for (var_r6 = 0, var_ip = 3; var_r6 < 4; var_r6++) {
+                u32 var_r8 = var_ip;
+                for (var_r4 = 0; var_r4 < var_r8; var_r4++) {
+                    if (arr2[var_r4 + 0] < arr2[var_r4 + 1]) {
+                        XOR_SWAP(arr2[var_r4 + 0], arr2[var_r4 + 1]);
+                        XOR_SWAP(arr[var_r4 + 0], arr[var_r4 + 1]);
+                    }
+                }
+#ifndef NON_MATCHING
+                asm("mov r1, #1\n"
+                    "neg r1, r1\n"
+                    "add %0, r1"
+                    : "=r"(var_ip));
+#else
+                var_ip--;
+#endif
+            }
+            for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                u8 *ptr = &arr[var_r6];
+
+                if (var_r6 != 0) {
+                    if (arr2[var_r6] != arr2[0]) {
+                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 1;
+                    } else {
+                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                    }
+                } else if (arr2[0] == arr2[1]) {
+                    SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                } else {
+                    SA2_LABEL(gUnknown_030054B4)[arr[0]] = var_r6;
+                }
+            }
+
+            for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                    CreateMultiplayerFinishResult(var_r6, (u8)SA2_LABEL(gUnknown_030054B4)[var_r6]);
+                }
+            }
+        } else if (gGameMode == 5) {
+            for (var_r6 = 0; var_r6 < 4 && (gMultiplayerPlayerTasks[var_r6] != NULL); var_r6++) {
+                temp_r1_4 = &arr2[(gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)];
+                *temp_r1_4 += gMultiplayerCharRings[var_r6];
+            }
+
+            if ((u32)arr2[0] < (u32)arr2[1]) {
+                XOR_SWAP(arr2[0], arr2[1])
+                XOR_SWAP(arr[0], arr[1])
+            }
+            if (arr2[0] == arr2[1]) {
+                for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                    if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                        SA2_LABEL(gUnknown_030054B4)[var_r6] = 4;
+                    }
+                }
+            } else {
+                for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                    if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                        if (((gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)) == arr[0]) {
+                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 0;
+                        } else {
+                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 1;
+                        }
+                    }
+                }
+            }
+            for (var_r6 = 0; var_r6 < 4; var_r6++) {
+                if (gMultiplayerPlayerTasks[var_r6] != NULL) {
+                    CreateMultiplayerFinishResult(var_r6, SA2_LABEL(gUnknown_030054B4)[var_r6]);
+                }
+            }
+        } else if (gGameMode != 6) {
+            LOADED_SAVE->score += (s16)gRingCount;
+            if (((u32)gCourseTime > MAX_COURSE_TIME) || ((STAGE_FLAG__TIMER_REVERSED & gStageFlags) && (gCourseTime == 0))) {
+                u32 var_r2 = 0;
+                if ((gGameMode != 3) && (gGameMode != 5)) {
+                    for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
+                        if (SA2_LABEL(gUnknown_030054B4)[var_r4] != -1) {
+                            var_r2 += 1;
+                        }
+                    }
+
+                    if (var_r2 == 0) {
+                        var_r5 = 4;
+                    } else if (var_r2 == (var_r4 - 1)) {
+                        var_r5 = (u8)var_r2;
+                    } else {
+                        var_r5 = 5;
+                    }
+                } else {
+                    var_r5 = 4;
+                }
+
+                for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
+                    if ((SA2_LABEL(gUnknown_030054B4)[var_r4] == -1) || (gGameMode == 3) || (gGameMode == 5)) {
+                        CreateMultiplayerFinishResult(var_r4, var_r5);
+                    }
+                }
+            }
+        }
+#elif (GAME == GAME_SA2)
+        gMusicManagerState.unk0 = 0xFF;
+        LOADED_SAVE->score += (s16)gRingCount;
+
+        if (gCourseTime <= MAX_COURSE_TIME) {
+            if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
+                return;
+            }
+        }
+
+        r2 = 0;
+
+        if (gGameMode != GAME_MODE_TEAM_PLAY) {
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                if (gMultiplayerPlayerTasks[i] == NULL) {
+                    break;
+                }
+
+                if (SA2_LABEL(gUnknown_030054B4)[i] != -1) {
+                    r2++;
+                }
+            }
+
+            if (r2 == 0) {
+                r6 = 4;
+            } else if (r2 == (i - 1)) {
+                r6 = r2;
+            } else {
+                r6 = 5;
+            }
+        } else {
+            r6 = 4;
+        }
+
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (gMultiplayerPlayerTasks[i] == NULL) {
                 break;
             }
 
-            if (gUnknown_030054B4[i] != -1) {
-                r2++;
+            if (SA2_LABEL(gUnknown_030054B4)[i] == -1) {
+                MultiplayerPlayer *mpp;
+                mpt = gMultiplayerPlayerTasks[i];
+                mpp = TASK_DATA(mpt);
+                mpp->unk5C |= 1;
+                CreateMultiplayerFinishResult(i, r6);
             }
         }
-
-        if (r2 == 0) {
-            r6 = 4;
-        } else if (r2 == (i - 1)) {
-            r6 = r2;
-        } else {
-            r6 = 5;
-        }
-    } else {
-        r6 = 4;
-    }
-
-    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (gMultiplayerPlayerTasks[i] == NULL) {
-            break;
-        }
-
-        if (gUnknown_030054B4[i] == -1) {
-            MultiplayerPlayer *mpp;
-            mpt = gMultiplayerPlayerTasks[i];
-            mpp = TASK_DATA(mpt);
-            mpp->unk5C |= 1;
-            CreateMultiplayerFinishResult(i, r6);
-        }
+#endif
     }
 }
+#if (GAME == GAME_SA1)
+END_NONMATCH
 #endif
 
-void Task_801A04C(void)
+#endif // COLLECT_RINGS_ROM
+
+void SA2_LABEL(Task_801A04C)(void)
 {
     u32 x = 0;
     Finish2 *f2 = TASK_DATA(gCurTask);
@@ -240,6 +426,7 @@ void Task_801A04C(void)
     }
 }
 
+#if 01
 void Task_TransitionToResultsScreen(void)
 {
     u32 i; // r7
@@ -258,7 +445,9 @@ void Task_TransitionToResultsScreen(void)
             u8 sp00[4] = { 0, 1, 2, 3 };
             u8 sp04[4] = { 0 };
 
+#if (GAME == GAME_SA2)
             m4aMPlayAllStop();
+#endif
             *((u32 *)sp04) = *((u32 *)gMultiplayerCharRings);
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -276,14 +465,14 @@ void Task_TransitionToResultsScreen(void)
 
                 if (i != 0) {
                     if (sp04[i] != sp04[0]) {
-                        gUnknown_030054B4[sp00[i]] = i;
+                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 1;
                     } else {
 #ifndef NON_MATCHING
                         // TODO: Match without goto
                         goto else_block;
 #else
-                        gUnknown_030054B4[sp00[i]] = i;
+                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
 #endif
                     }
@@ -293,16 +482,17 @@ void Task_TransitionToResultsScreen(void)
 #ifndef NON_MATCHING
                     else_block:
 #endif
-                        gUnknown_030054B4[sp00[i]] = i;
+                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
                     } else {
-                        gUnknown_030054B4[sp00[0]] = i;
+                        SA2_LABEL(gUnknown_030054B4)[sp00[0]] = i;
                         gMPRingCollectWins[sp00[0]]++;
                         gMultiplayerCharacters[sp00[0]] = i;
                     }
                 }
             }
 
+#if (GAME == GAME_SA2)
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
 #ifndef NON_MATCHING
                 // TODO: Match without goto
@@ -327,10 +517,11 @@ void Task_TransitionToResultsScreen(void)
                 return;
 #endif
             }
+#endif
         }
         // _0801A232
 
-#ifndef COLLECT_RINGS_ROM
+#if (GAME == GAME_SA2) && !(defined COLLECT_RINGS_ROM)
         {
             s16 pid;
             s32 foeResult;
@@ -343,9 +534,9 @@ void Task_TransitionToResultsScreen(void)
                 if (pid == SIO_MULTI_CNT->id)
                     continue;
 
-                if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[pid]) {
+                if (SA2_LABEL(gUnknown_030054B4)[SIO_MULTI_CNT->id] < SA2_LABEL(gUnknown_030054B4)[pid]) {
                     foeResult = 0;
-                } else if (gUnknown_030054B4[SIO_MULTI_CNT->id] > gUnknown_030054B4[pid]) {
+                } else if (SA2_LABEL(gUnknown_030054B4)[SIO_MULTI_CNT->id] > SA2_LABEL(gUnknown_030054B4)[pid]) {
                     foeResult = 1;
                     ownResult = 1;
                 } else {
@@ -370,7 +561,7 @@ void Task_TransitionToResultsScreen(void)
 
         { // TODO: This is a macro!
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            SA2_LABEL(gUnknown_03005390) = 0;
             PAUSE_GRAPHICS_QUEUE();
         }
 
@@ -390,6 +581,7 @@ void Task_TransitionToResultsScreen(void)
         return;
     }
 }
+#endif
 
 #if COLLECT_RINGS_ROM
 void CreateMultiplayerFinishHandler(void)
@@ -398,7 +590,7 @@ void CreateMultiplayerFinishHandler(void)
     u32 r2;
     u8 r6;
     struct Task *mpt;
-    struct Task *t = TaskCreate(Task_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
     Finish2 *f2 = TASK_DATA(t);
     f2->unk0 = 0;
 }

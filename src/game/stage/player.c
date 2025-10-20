@@ -3475,7 +3475,7 @@ void Task_PlayerHandleDeath(void)
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
 
-            if ((!gLoadedSaveGame->timeLimitDisabled
+            if ((!LOADED_SAVE->timeLimitDisabled
                  && (gCourseTime > MAX_COURSE_TIME || (gStageFlags & STAGE_FLAG__TIMER_REVERSED && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) && gCourseTime > MAX_COURSE_TIME)) {
                 HandleDeath();
