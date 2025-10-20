@@ -38,7 +38,7 @@ void TaskDestructor_8019EF4(struct Task *);
 #ifndef COLLECT_RINGS_ROM
 
 // TODO: split finish result
-const TileInfo gUnknown_080D5768[2][7] = { {
+const TileInfo sMPFinishTileInfo[2][7] = { {
                                                // Japanese
                                                { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
                                                { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_LOSE },
@@ -62,7 +62,7 @@ const TileInfo gUnknown_080D5768[2][7] = { {
 #define GET_MP_FINISH_RESULT_TILE_INFO(_id)                                                                                                \
     ({                                                                                                                                     \
         const TileInfo *source;                                                                                                            \
-        u8 *info = (u8 *)gUnknown_080D5768;                                                                                                \
+        u8 *info = (u8 *)sMPFinishTileInfo;                                                                                                \
                                                                                                                                            \
         s32 index;                                                                                                                         \
                                                                                                                                            \
