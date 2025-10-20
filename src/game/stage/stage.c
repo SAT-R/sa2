@@ -18,9 +18,11 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/time_attack/lobby.h"
+#if (GAME == GAME_SA1)
+#include "game/time_over.h"
+#endif
 #include "game/multiplayer/finish.h"
 #include "game/multiplayer/indicators.h"
-
 #include "game/multiboot/collect_rings/time_display.h"
 #include "game/multiplayer/mp_player.h"
 
@@ -314,6 +316,14 @@ void Task_GameStage(void)
     u32 timeStep;
 #ifndef COLLECT_RINGS_ROM
     if (IS_SINGLE_PLAYER) {
+#if DEBUG
+#include "game/character_select.h"
+        if (gInput & SELECT_BUTTON) {
+            TasksDestroyAll();
+            CreateCharacterSelectionScreen(CHARACTER_TAILS);
+            return;
+        }
+#endif
         if (!(gStageFlags & STAGE_FLAG__DISABLE_PAUSE_MENU) && (gPressedKeys & START_BUTTON) && !(gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
             CreatePauseMenu();
         }
@@ -344,12 +354,7 @@ void Task_GameStage(void)
             u32 temp = MultiplayerPseudoRandom32();
         }
 
-#if (GAME == GAME_SA1)
-        if (gCamera.sa2__unk50 & CAM_MODE_SPECTATOR)
-#elif (GAME == GAME_SA2)
-        if (gCamera.unk50 & CAM_MODE_SPECTATOR)
-#endif
-        {
+        if (gCamera.SA2_LABEL(unk50) & CAM_MODE_SPECTATOR) {
 
             if ((gInput & (L_BUTTON | R_BUTTON)) == (L_BUTTON | R_BUTTON)) {
                 if (sioId != 3) {
@@ -381,22 +386,12 @@ void Task_GameStage(void)
             gCamera.spectatorTarget = sioId;
         }
 
-#if (GAME == GAME_SA1)
-        if (sa2__gUnknown_030053E0 > 0) {
-            sa2__gUnknown_030053E0--;
+        if (SA2_LABEL(gUnknown_030053E0) > 0) {
+            SA2_LABEL(gUnknown_030053E0)--;
         }
-#elif (GAME == GAME_SA2)
-        if (gUnknown_030053E0 > 0) {
-            gUnknown_030053E0--;
-        }
-#endif
     }
 
-#if (GAME == GAME_SA1)
-    sa2__gUnknown_0300544C = gStageFlags;
-#elif (GAME == GAME_SA2)
-    gUnknown_0300544C = gStageFlags;
-#endif
+    SA2_LABEL(gUnknown_0300544C) = gStageFlags;
 
     if (gStageFlags & STAGE_FLAG__ACT_START) {
         return;
@@ -429,6 +424,8 @@ void Task_GameStage(void)
 #if (GAME == GAME_SA1)
             if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1))
 #elif (GAME == GAME_SA2)
+            // NOTE(Jace):
+            // I wonder if the level index was hardcoded in the original source?
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS))
 #endif
             {
@@ -440,11 +437,7 @@ void Task_GameStage(void)
 #endif
         else {
             gStageFlags |= STAGE_FLAG__ACT_START;
-#if (GAME == GAME_SA1)
-            sa2__CreateMultiplayerFinishHandler();
-#elif (GAME == GAME_SA2)
             CreateMultiplayerFinishHandler();
-#endif
         }
     }
 #ifndef COLLECT_RINGS_ROM
@@ -472,11 +465,7 @@ void Task_GameStage(void)
             m4aSongNumStart(SE_TIME_UP);
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
-#if (GAME == GAME_SA1)
-            sa2__CreateMultiplayerFinishHandler();
-#elif (GAME == GAME_SA2)
             CreateMultiplayerFinishHandler();
-#endif
         }
     }
 #endif
