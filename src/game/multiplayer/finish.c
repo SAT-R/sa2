@@ -67,7 +67,7 @@ const TileInfo sMPFinishTileInfo[2][7] = { {
         s32 index;                                                                                                                         \
                                                                                                                                            \
         index                                                                                                                              \
-            = ((gLoadedSaveGame->language == LANG_DEFAULT) || (gLoadedSaveGame->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));  \
+            = ((LOADED_SAVE->language == LANG_DEFAULT) || (LOADED_SAVE->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));  \
         source = (TileInfo *)(info + index);                                                                                               \
                                                                                                                                            \
         (source + (_id));                                                                                                                  \
@@ -167,7 +167,7 @@ void CreateMultiplayerFinishHandler(void)
     }
 
     gMusicManagerState.unk0 = 0xFF;
-    gLoadedSaveGame->score += (s16)gRingCount;
+    LOADED_SAVE->score += (s16)gRingCount;
 
     if (gCourseTime <= MAX_COURSE_TIME) {
         if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
