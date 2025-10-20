@@ -46,7 +46,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/multiboot/collect_rings/results.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/entities_manager.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/collision.o(.text);
-        build/collect_rings/src/sa2/game/mystery_item_box.o(.text);
+        build/collect_rings/src/sa2/game/mystery_itembox.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/rings_manager.o(.text);
         build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/indicators.o(.text);
@@ -95,7 +95,7 @@ SECTIONS {
         build/collect_rings/src/sa2/sprite.o(.rodata);
         build/collect_rings/src/sa2/game/multiplayer/multiplayer_event_mgr.o(.rodata);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/entities_manager.o(.rodata);
-        build/collect_rings/src/sa2/game/mystery_item_box.o(.rodata);
+        build/collect_rings/src/sa2/game/mystery_itembox.o(.rodata);
         build/collect_rings/src/sa2/game/multiboot/collect_rings/time_display.o(.rodata);
         build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.rodata);
         build/collect_rings/src/sa2/game/multiplayer/finish.o(.rodata);
@@ -121,7 +121,7 @@ SECTIONS {
         build/collect_rings/sound/songs/midi/se_rings_lost__collect_rings.o(.rodata);
         build/collect_rings/sound/songs/midi/se_life_lost.o(.rodata);
         build/collect_rings/sound/songs/midi/se_time_up.o(.rodata);
-        build/collect_rings/sound/songs/midi/se_item_box_2.o(.rodata);
+        build/collect_rings/sound/songs/midi/se_itembox_2.o(.rodata);
         build/collect_rings/sound/songs/midi/se_spring__collect_rings.o(.rodata);
         build/collect_rings/sound/songs/midi/se_spikes.o(.rodata);
         build/collect_rings/sound/songs/midi/se_alarm_1.o(.rodata);
