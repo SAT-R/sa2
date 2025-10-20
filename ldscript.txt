@@ -375,7 +375,7 @@ SECTIONS
         src/game/assets/compressed/entities.o(.rodata);
         src/game/assets/compressed/roms.o(.rodata);
 
-        /* "SA1 Leftovers" data */
+        /* "sa1_sa2_shared" data */
         src/game/sa1_sa2_shared/rings_manager.o(.rodata);
         src/game/sa1_sa2_shared/entities_manager.o(.rodata);
         src/game/sa1_sa2_shared/unused_level_select.o(.rodata);
