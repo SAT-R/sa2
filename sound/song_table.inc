@@ -277,7 +277,7 @@ mAlignWord
 mAlignWord
 	song C_DECL(dummy_song_header), 0, 0
 mAlignWord
-	song C_DECL(se_item_box), 2, 2
+	song C_DECL(se_itembox), 2, 2
 mAlignWord
 	song C_DECL(se_timer), 2, 2
 mAlignWord
@@ -301,7 +301,7 @@ mAlignWord
 mAlignWord
 	song C_DECL(se_time_up), 3, 3
 mAlignWord
-	song C_DECL(se_item_box_2), 2, 2
+	song C_DECL(se_itembox_2), 2, 2
 mAlignWord
 	song C_DECL(se_151), 2, 2
 mAlignWord

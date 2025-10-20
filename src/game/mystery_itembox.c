@@ -3,7 +3,7 @@
 #include "game/sa1_sa2_shared/collision.h"
 
 #include "game/entity.h"
-#include "game/mystery_item_box.h"
+#include "game/mystery_itembox.h"
 #include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/sa1_sa2_shared/dust_cloud.h"
 #include "game/stage/player.h"

@@ -259,7 +259,7 @@ $(MID_SUBDIR)/se_amy_hammer_swirl.s: %.s: %.mid
 $(MID_SUBDIR)/se_sa1_goal_post.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/se_item_box.s: %.s: %.mid
+$(MID_SUBDIR)/se_itembox.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P50 -V127
     
 $(MID_SUBDIR)/se_timer.s: %.s: %.mid
@@ -295,7 +295,7 @@ $(MID_SUBDIR)/se_148.s: %.s: %.mid
 $(MID_SUBDIR)/se_time_up.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G3 -P20 -V89
     
-$(MID_SUBDIR)/se_item_box_2.s: %.s: %.mid
+$(MID_SUBDIR)/se_itembox_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -C $(MIDI_COMMENTS) -E -R$(STD_REVERB) -G0 -P50 -V127
     
 $(MID_SUBDIR)/se_151.s: %.s: %.mid
