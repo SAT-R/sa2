@@ -805,7 +805,7 @@ void TaskDestructor_GameStage(struct Task *t)
 #if (GAME == GAME_SA1)
     if ((gGameMode == GAME_MODE_TIME_ATTACK || (gGameMode == GAME_MODE_RACE) || (gGameMode == GAME_MODE_MULTI_PLAYER))
         || (gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
-        gLoadedSaveGame.difficultyLevel = gDifficultyLevel;
+        LOADED_SAVE->difficultyLevel = gDifficultyLevel;
     }
 #endif
     gGameStageTask = NULL;
