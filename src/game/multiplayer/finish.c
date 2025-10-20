@@ -26,6 +26,12 @@ asm(".section .rodata");
 asm(".align 2, 0");
 asm(".global gUnknown_080BB490");
 asm("gUnknown_080BB490:");
+// NOTE:
+// As long as gUnknown_080BB490 is above data with this layout, this works out:
+// asm(".byte 0, 1, 2, 3:");
+// But once CreateMultiplayerFinishHandler matches,
+// the label won't be necessary. It's only here because
+// the asm file out of asm/non_matching/ references it.
 #endif
 
 typedef struct {
