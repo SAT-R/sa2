@@ -66,8 +66,7 @@ const TileInfo sMPFinishTileInfo[2][7] = { {
                                                                                                                                            \
         s32 index;                                                                                                                         \
                                                                                                                                            \
-        index                                                                                                                              \
-            = ((LOADED_SAVE->language == LANG_DEFAULT) || (LOADED_SAVE->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));  \
+        index = ((LOADED_SAVE->language == LANG_DEFAULT) || (LOADED_SAVE->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));        \
         source = (TileInfo *)(info + index);                                                                                               \
                                                                                                                                            \
         (source + (_id));                                                                                                                  \
