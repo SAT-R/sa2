@@ -2,7 +2,7 @@
 #include "core.h"
 #include "trig.h"
 #include "flags.h"
-#include "game/stage/game_7.h"
+#include "game/stage/screen_mask.h"
 
 void sub_802DBC0(u8 p0, u16 p1)
 {
@@ -87,7 +87,7 @@ void sub_802DBC0(u8 p0, u16 p1)
     }
 }
 
-void sub_802DCC8(u8 p0, u16 p1)
+UNUSED void sub_802DCC8(u8 p0, u16 p1)
 {
     u32 r7 = p0;
     s16 i;

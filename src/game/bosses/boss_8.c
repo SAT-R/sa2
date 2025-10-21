@@ -21,7 +21,7 @@
 #include "game/stage/player.h"
 #include "game/stage/results.h"
 #include "game/stage/boss_results_transition.h"
-#include "game/stage/game_7.h"
+#include "game/stage/screen_mask.h"
 #include "game/stage/screen_fade.h"
 #include "game/stage/screen_shake.h"
 

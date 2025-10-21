@@ -161,7 +161,7 @@ SECTIONS
         src/game/stage/debug_text_printer.o(.text);
         src/game/stage/screen_fade.o(.text);
         src/game/stage/trapped_animals.o(.text);
-        src/game/stage/game_7.o(.text);
+        src/game/stage/screen_mask.o(.text);
         src/game/stage/boss_results_transition.o(.text);
         src/game/stage/intro.o(.text);
         src/game/stage/results.o(.text);

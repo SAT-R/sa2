@@ -13,7 +13,7 @@
 #include "game/stage/screen_fade.h"
 #include "game/stage/boss_results_transition.h"
 #include "game/title_screen.h"
-#include "game/stage/game_7.h"
+#include "game/stage/screen_mask.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

@@ -5,7 +5,7 @@
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/stage/player.h"
 #include "game/cheese.h"
-#include "game/stage/game_7.h"
+#include "game/stage/screen_mask.h"
 #include "game/bosses/common.h"
 #include "game/countdown.h"
 #include "game/boost_effect.h"

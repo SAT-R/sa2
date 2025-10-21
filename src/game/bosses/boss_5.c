@@ -16,7 +16,7 @@
 #include "game/stage/terrain_collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/stage/game_7.h"
+#include "game/stage/screen_mask.h"
 
 #include "game/stage/screen_fade.h"
 

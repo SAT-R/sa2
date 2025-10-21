@@ -1,5 +1,5 @@
-#ifndef GUARD_GAME_7_H
-#define GUARD_GAME_7_H
+#ifndef GUARD_SCREEN_MASK_H
+#define GUARD_SCREEN_MASK_H
 
 #include "global.h"
 
@@ -14,4 +14,4 @@ void sub_802E384(s16 *p0, u16 pairCount);
 
 void sub_802E784(u16, u16, u16, s16 x, s16 y, u8);
 
-#endif // GUARD_GAME_7_H
+#endif // GUARD_SCREEN_MASK_H
