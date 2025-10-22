@@ -4,7 +4,9 @@
 #include "flags.h"
 #include "game/stage/screen_mask.h"
 
-void sub_802DBC0(u8 p0, u16 p1)
+#define MAX_PAIRS 8
+
+void sub_802DBC0(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
 #ifdef BUG_FIX
@@ -13,20 +15,19 @@ void sub_802DBC0(u8 p0, u16 p1)
     }
 #endif
     s32 r5 = 0;
-    u16 r6 = ((unsigned)p1 << 22) >> 22;
-
-    if ((unsigned)(r6 - Q(1.0)) << 16 <= 512 << 16)
+    angle = angle % SIN_PERIOD;
+    if (angle >= DEG_TO_SIN(90) && angle <= DEG_TO_SIN(270))
         return;
 
-    if (r6 == 0 || r6 == 1) {
+    if (angle == 0 || angle == 1) {
         s16 i;
 
-        bgOffsets = &bgOffsets[p0 * 2];
+        bgOffsets = &bgOffsets[y * 2];
 
 #ifndef NON_MATCHING
         asm("" : "=r"(r5));
 #endif
-        for (i = 0; i < (DISPLAY_HEIGHT - p0); i++) {
+        for (i = 0; i < (DISPLAY_HEIGHT - y); i++) {
             // TODO: Is this a macro?
             bgOffsets++;
             *bgOffsets = DISPLAY_WIDTH;
@@ -34,12 +35,12 @@ void sub_802DBC0(u8 p0, u16 p1)
         }
     } else {
         // _0802DC14
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 sin = SIN_24_8(angle);
         s16 i; // r7
 
         if (r3 != 0) {
-            r3 = Div(r3, r1);
+            r3 = Div(r3, sin);
         } else {
             r3 = Q(1.0);
         }
@@ -47,14 +48,14 @@ void sub_802DBC0(u8 p0, u16 p1)
 
         r3 = ABS(r3);
 
-        if (r6 < Q(2.0)) {
-            bgOffsets = &bgOffsets[p0 * 2];
+        if (angle < DEG_TO_SIN(180)) {
+            bgOffsets = &bgOffsets[y * 2];
 
             // __0802DC56
-            for (i = p0; i < DISPLAY_HEIGHT; i++) {
-                u32 xVal;
+            for (i = y; i < DISPLAY_HEIGHT; i++) {
+                u16 xVal;
                 r5 = r5 + r3;
-                xVal = (u32)Q(r5) >> 16;
+                xVal = I(r5);
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
                     r5 = Q(DISPLAY_WIDTH);
@@ -68,13 +69,13 @@ void sub_802DBC0(u8 p0, u16 p1)
             }
         } else {
             // _0802DC90
-            bgOffsets = &bgOffsets[p0 * 2];
+            bgOffsets = &bgOffsets[y * 2];
 
-            for (i = p0; i >= 0; i--) {
+            for (i = y; i >= 0; i--) {
                 // _0802DC9C
-                u32 xVal;
+                u16 xVal;
                 r5 = r5 + r3;
-                xVal = (u32)Q(r5) >> 16;
+                xVal = I(r5);
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
                     r5 = Q(DISPLAY_WIDTH);
@@ -87,20 +88,21 @@ void sub_802DBC0(u8 p0, u16 p1)
     }
 }
 
-UNUSED void sub_802DCC8(u8 p0, u16 p1)
+UNUSED void sub_802DCC8(int_vcount inY, u16 inAngle)
 {
-    u32 r7 = p0;
+    u32 y = inY;
     s16 i;
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r5 = 0;
 
-    if ((unsigned)((((unsigned)p1 << 22) >> 22) - Q(1.0)) << 16 <= 512 << 16)
+    u16 angle = inAngle = inAngle % SIN_PERIOD;
+    if (angle >= DEG_TO_SIN(90) && angle <= DEG_TO_SIN(270))
         return;
 
-    if ((((unsigned)p1 << 22) >> 22) == 0 || (((unsigned)p1 << 22) >> 22) == 1) {
-        bgOffsets = &bgOffsets[r7 * 2];
+    if (angle == 0 || angle == 1) {
+        bgOffsets = &bgOffsets[y * 2];
 
-        for (i = r7; i > 0; i--) {
+        for (i = y; i > 0; i--) {
             // TODO: Is this a macro?
             bgOffsets--;
             *bgOffsets = DISPLAY_WIDTH;
@@ -108,8 +110,8 @@ UNUSED void sub_802DCC8(u8 p0, u16 p1)
         }
     } else {
         // _0802DC14
-        s32 r3 = (COS((((unsigned)p1 << 22) >> 22)) * 15) >> 2;
-        s32 r1 = SIN_24_8((((unsigned)p1 << 22) >> 22));
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
 
         if (r3 != 0) {
             r3 = Div(r3, r1);
@@ -118,11 +120,11 @@ UNUSED void sub_802DCC8(u8 p0, u16 p1)
 
         r3 = ABS(r3);
 
-        if ((((unsigned)p1 << 22) >> 22) < Q(2.0)) {
-            bgOffsets = &bgOffsets[r7 * 2];
+        if (angle < DEG_TO_SIN(180)) {
+            bgOffsets = &bgOffsets[y * 2];
 
             // __0802DC56
-            for (i = r7; i >= 0; i--) {
+            for (i = y; i >= 0; i--) {
                 u16 xVal;
                 r5 = r5 + r3;
                 xVal = I(r5);
@@ -139,9 +141,9 @@ UNUSED void sub_802DCC8(u8 p0, u16 p1)
             }
         } else {
             // _0802DC90
-            bgOffsets = &bgOffsets[r7 * 2];
+            bgOffsets = &bgOffsets[y * 2];
 
-            for (i = r7; i < DISPLAY_HEIGHT; i++) {
+            for (i = y; i < DISPLAY_HEIGHT; i++) {
                 // _0802DC9C
                 u16 xVal;
                 r5 = r5 + r3;
@@ -158,24 +160,25 @@ UNUSED void sub_802DCC8(u8 p0, u16 p1)
     }
 }
 
-void sub_802DDC4(u8 p0, u16 p1)
+void sub_802DDC4(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r5 = 0;
-    u16 r6 = ((unsigned)p1 << 22) >> 22;
+    angle = angle % SIN_PERIOD;
 
-    if ((unsigned)(r6 - (Q(1.0) + 1)) << 16 > 510 << 16)
+    // TODO: fix range check
+    if ((unsigned)(angle - (DEG_TO_SIN(90) + 1)) << 16 > 510 << 16)
         return;
 
-    if ((r6 - Q(2.0)) == 0 || (r6 - Q(2.0)) == 1) {
+    if (angle == DEG_TO_SIN(180) || angle == 513) {
         s16 i;
 
-        bgOffsets = &bgOffsets[p0 * 2];
+        bgOffsets = &bgOffsets[y * 2];
 
 #ifndef NON_MATCHING
         asm("" : "=r"(r5));
 #endif
-        for (i = 0; i < (DISPLAY_HEIGHT - p0); i++) {
+        for (i = 0; i < (DISPLAY_HEIGHT - y); i++) {
             // TODO: Is this a macro?
             bgOffsets++;
             *bgOffsets = DISPLAY_WIDTH;
@@ -183,8 +186,8 @@ void sub_802DDC4(u8 p0, u16 p1)
         }
     } else {
         // _0802DC14
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
         s16 i; // r7
 
         r3 = ABS(r3);
@@ -196,14 +199,14 @@ void sub_802DDC4(u8 p0, u16 p1)
             r3 = Q(1.0);
         }
 
-        if (r6 < Q(2.0)) {
-            bgOffsets = &bgOffsets[p0 * 2];
+        if (angle < DEG_TO_SIN(180)) {
+            bgOffsets = &bgOffsets[y * 2];
 
             // __0802DC56
-            for (i = p0; i < DISPLAY_HEIGHT; i++) {
-                u32 xVal;
+            for (i = y; i < DISPLAY_HEIGHT; i++) {
+                u16 xVal;
                 r5 = r5 + r3;
-                xVal = (u32)Q(r5) >> 16;
+                xVal = I(r5);
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
                     r5 = Q(DISPLAY_WIDTH);
@@ -218,55 +221,55 @@ void sub_802DDC4(u8 p0, u16 p1)
             // _0802DC90
             bgOffsets = &bgOffsets[DISPLAY_HEIGHT * 2];
 
-            for (i = DISPLAY_HEIGHT; i > p0; i--) {
+            for (i = DISPLAY_HEIGHT; i > y; i--) {
                 bgOffsets--;
                 *bgOffsets = DISPLAY_WIDTH;
                 bgOffsets--;
             }
 
             bgOffsets = gBgOffsetsHBlank;
-            bgOffsets += p0 * 2;
+            bgOffsets = &bgOffsets[y * 2];
 
-            for (i = p0; i >= 0; i--) {
+            for (i = y; i >= 0; i--) {
                 // _0802DC9C
-                u32 xVal;
+                u16 xVal;
                 r5 = r5 + r3;
-                xVal = (u32)Q(r5) >> 16;
+                xVal = I(r5);
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
                     r5 = Q(DISPLAY_WIDTH);
                     xVal = DISPLAY_WIDTH;
                 }
-                bgOffsets -= 1;
+                bgOffsets--;
                 *bgOffsets = DISPLAY_WIDTH - xVal;
-                bgOffsets -= 1;
+                bgOffsets--;
             }
         }
     }
 }
 
-void sub_802DF18(u8 p0, u16 p1)
+void sub_802DF18(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r2;
     s32 r7 = 0;
-    u16 r6 = ((unsigned)p1 << 22) >> 22;
     s16 i, j;
     s32 r3;
     s32 r1;
 
-    if ((unsigned)(r6 - (Q(1.0) + 1)) << 16 > 510 << 16)
+    angle = angle % SIN_PERIOD;
+    if ((unsigned)(angle - (DEG_TO_SIN(90) + 1)) << 16 > 510 << 16)
         return;
 
-    if ((r6 - Q(2.0)) == 0 || (r6 - Q(2.0)) == 1) {
-        for (i = 0; i < p0; i++) {
+    if (angle == DEG_TO_SIN(180) || angle == 513) {
+        for (i = 0; i < y; i++) {
             bgOffsets++;
             *bgOffsets = DISPLAY_WIDTH;
             bgOffsets++;
         }
     } else {
-        r3 = (COS(r6) * 15) >> 2;
-        r1 = SIN_24_8(r6);
+        r3 = (COS(angle) * 15) >> 2;
+        r1 = SIN_24_8(angle);
 
         r3 = ABS(r3);
         r1 = ABS(r1);
@@ -277,8 +280,8 @@ void sub_802DF18(u8 p0, u16 p1)
             r3 = Q(1.0);
         }
 
-        if (r6 < Q(2.0)) {
-            for (i = 0; i < p0; i++) {
+        if (angle < DEG_TO_SIN(180)) {
+            for (i = 0; i < y; i++) {
 
                 // TODO: Macro?
                 *bgOffsets++;
@@ -287,19 +290,15 @@ void sub_802DF18(u8 p0, u16 p1)
             }
 
 #ifndef NON_MATCHING
-            i = p0;
+            i = y;
             if (i < DISPLAY_HEIGHT) {
                 do {
 #else
-            for (i = p0; i < DISPLAY_HEIGHT; i++) {
+            for (i = y; i < DISPLAY_HEIGHT; i++) {
 #endif
-                    u32 val;
-
-                    r7 += r3;
-                    val = r7;
-
-                    val = (val << 8) >> 16;
-
+                    u16 val;
+                    r7 = r7 + r3;
+                    val = I(r7);
                     if (val > DISPLAY_WIDTH)
                         return;
 
@@ -312,12 +311,12 @@ void sub_802DF18(u8 p0, u16 p1)
 #endif
             }
         } else {
-            bgOffsets += p0 * sizeof(u16);
+            bgOffsets = &bgOffsets[y * 2];
 
-            for (i = p0; i >= 0; i--) {
-                u32 xVal;
+            for (i = y; i >= 0; i--) {
+                u16 xVal;
                 r7 = r7 + r3;
-                xVal = (u32)Q(r7) >> 16;
+                xVal = I(r7);
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
                     r7 = Q(DISPLAY_WIDTH);
@@ -330,14 +329,14 @@ void sub_802DF18(u8 p0, u16 p1)
     }
 }
 
-void sub_802E044(s32 p0, u16 p1)
+void sub_802E044(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
-    u16 r5 = ((unsigned)p1 << 22) >> 22;
+    angle = angle % SIN_PERIOD;
 
-    if (r5 > 512) {
-        s32 r3 = (COS(r5) * 15) >> 2;
-        s32 r1 = SIN_24_8(r5);
+    if (angle > DEG_TO_SIN(180)) {
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
         s16 i;
 
         if (r3 != 0) {
@@ -352,18 +351,18 @@ void sub_802E044(s32 p0, u16 p1)
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
             s32 val;
-            p0 -= r3;
-            val = I(p0);
+            qX -= r3;
+            val = I(qX);
 
             if (val > DISPLAY_WIDTH) {
                 r3 = 0;
-                p0 = Q(DISPLAY_WIDTH);
+                qX = Q(DISPLAY_WIDTH);
                 val = DISPLAY_WIDTH;
             }
 
             if (val < 0) {
                 r3 = 0;
-                p0 = 0;
+                qX = 0;
                 val = 0;
             }
 
@@ -373,15 +372,15 @@ void sub_802E044(s32 p0, u16 p1)
     }
 }
 
-void sub_802E0D4(s32 inP0, u16 p1)
+void sub_802E0D4(s32 inQX, u16 angle)
 {
-    s32 p0 = inP0;
+    s32 qX = inQX;
     int_vcount *bgOffsets = gBgOffsetsHBlank;
-    u16 r6 = ((unsigned)p1 << 22) >> 22;
+    angle = angle % SIN_PERIOD;
 
-    if (r6 > Q(2.0)) {
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
+    if (angle > DEG_TO_SIN(180)) {
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
         s16 i;
 
         if (r3 != 0) {
@@ -396,18 +395,18 @@ void sub_802E0D4(s32 inP0, u16 p1)
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
             s32 val;
-            p0 -= r3;
-            val = I(p0);
+            qX -= r3;
+            val = I(qX);
 
             if (val > DISPLAY_WIDTH) {
                 r3 = 0;
-                p0 = Q(DISPLAY_WIDTH);
+                qX = Q(DISPLAY_WIDTH);
                 val = DISPLAY_WIDTH;
             }
 
             if (val < 0) {
                 r3 = 0;
-                p0 = 0;
+                qX = 0;
                 val = 0;
             }
 
@@ -418,14 +417,14 @@ void sub_802E0D4(s32 inP0, u16 p1)
     }
 }
 
-void sub_802E164(s32 p0, u16 p1)
+void sub_802E164(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
-    u16 r5 = ((unsigned)p1 << 22) >> 22;
+    angle = angle % SIN_PERIOD;
 
-    if (r5 <= Q(2.0)) {
-        s32 r3 = (COS(r5) * 15) >> 2;
-        s32 r1 = SIN_24_8(r5);
+    if (angle <= DEG_TO_SIN(180)) {
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
         s16 i;
 
         if (r3 != 0) {
@@ -440,18 +439,18 @@ void sub_802E164(s32 p0, u16 p1)
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
             s32 val;
-            p0 += r3;
-            val = I(p0);
+            qX += r3;
+            val = I(qX);
 
             if (val > DISPLAY_WIDTH) {
                 r3 = 0;
-                p0 = Q(DISPLAY_WIDTH);
+                qX = Q(DISPLAY_WIDTH);
                 val = DISPLAY_WIDTH;
             }
 
             if (val < 0) {
                 r3 = 0;
-                p0 = 0;
+                qX = 0;
                 val = 0;
             }
 
@@ -461,14 +460,14 @@ void sub_802E164(s32 p0, u16 p1)
     }
 }
 
-void sub_802E1EC(s32 p0, u16 p1)
+void sub_802E1EC(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
-    u16 r6 = ((unsigned)p1 << 22) >> 22;
+    angle = angle % SIN_PERIOD;
 
-    if (r6 <= Q(2.0)) {
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
+    if (angle <= DEG_TO_SIN(180)) {
+        s32 r3 = (COS(angle) * 15) >> 2;
+        s32 r1 = SIN_24_8(angle);
         s16 i;
 
         if (r3 != 0) {
@@ -483,18 +482,18 @@ void sub_802E1EC(s32 p0, u16 p1)
 
         for (i = 0; i < DISPLAY_HEIGHT; i++) {
             s32 val;
-            p0 += r3;
-            val = I(p0);
+            qX += r3;
+            val = I(qX);
 
             if (val > DISPLAY_WIDTH) {
                 r3 = 0;
-                p0 = Q(DISPLAY_WIDTH);
+                qX = Q(DISPLAY_WIDTH);
                 val = DISPLAY_WIDTH;
             }
 
             if (val < 0) {
                 r3 = 0;
-                p0 = 0;
+                qX = 0;
                 val = 0;
             }
 
@@ -505,54 +504,50 @@ void sub_802E1EC(s32 p0, u16 p1)
     }
 }
 
-#define STGINTRO_SP_SIZE 8
 void sub_802E278(s16 *p0, u8 pairCount)
 {
-    s16 i;
-    s16 j;
+    s16 i, j;
 
-    s16 sp[STGINTRO_SP_SIZE][2];
+    s16 pairs[MAX_PAIRS][2];
 
 #ifdef BUG_FIX
-    // Make sure pairCount isn't bigger than the # of elements in sp
-    if (pairCount > STGINTRO_SP_SIZE)
-        pairCount = STGINTRO_SP_SIZE;
+    // Make sure pairCount isn't bigger than the # of elements in pairs
+    if (pairCount > MAX_PAIRS)
+        pairCount = MAX_PAIRS;
 #endif
 
     for (j = 0; j < pairCount; j++) {
 #ifndef NON_MATCHING
         s16 *r3;
         asm("" ::: "r0", "r2");
-        sp[j][0] = *(r3 = &p0[j * 2 + 0]);
+        pairs[j][0] = *(r3 = &p0[j * 2 + 0]);
 #else
-        sp[j][0] = p0[j * 2 + 0];
+        pairs[j][0] = p0[j * 2 + 0];
 #endif
-        sp[j][1] = p0[j * 2 + 1];
+        pairs[j][1] = p0[j * 2 + 1];
     }
 
     for (i = 0; i < pairCount - 1; i++) {
         int_vcount *bgOffsets = gBgOffsetsHBlank;
-        // s16 yVal = sp[i][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;
         s16 l, r;
         s32 v;
 
-        bgOffsets = &bgOffsets[sp[i][1] * 2];
-        xVal = sp[i][0];
+        bgOffsets = &bgOffsets[pairs[i][1] * 2];
+        xVal = pairs[i][0];
         xVal2 = Q(xVal);
 
-        v = sp[i][1] - sp[i + 1][1];
+        v = pairs[i][1] - pairs[i + 1][1];
         if (v != 0) {
-            r4 = Div(Q(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
+            r4 = Div(Q(xVal - pairs[i + 1][0]), pairs[i][1] - pairs[i + 1][1]);
         } else {
-            r4 = Q(xVal - sp[i + 1][0]);
+            r4 = Q(xVal - pairs[i + 1][0]);
         }
 
-        l = sp[i][1];
-        while (l <= sp[i + 1][1]) {
-            s32 r0 = (int_vcount)(xVal2 >> 8);
+        for (l = pairs[i][1]; l <= pairs[i + 1][1]; l++) {
+            s32 r0 = (int_vcount)I(xVal2);
 
             if (r0 > DISPLAY_WIDTH)
                 r0 = DISPLAY_WIDTH;
@@ -561,7 +556,6 @@ void sub_802E278(s16 *p0, u8 pairCount)
             *bgOffsets++;
 
             xVal2 += r4;
-            l++;
         }
     }
 }
@@ -569,12 +563,12 @@ void sub_802E278(s16 *p0, u8 pairCount)
 void sub_802E384(s16 *p0, u16 pairCount)
 {
     s16 i, j;
-    s16 sp[STGINTRO_SP_SIZE][2];
+    s16 sp[MAX_PAIRS][2];
 
 #ifdef NON_MATCHING
     // Make sure pairCount isn't bigger than the # of elements in sp
-    if (pairCount > STGINTRO_SP_SIZE)
-        pairCount = STGINTRO_SP_SIZE;
+    if (pairCount > MAX_PAIRS)
+        pairCount = MAX_PAIRS;
 #endif
 
     for (i = 0; i < pairCount; i++) {
@@ -599,7 +593,7 @@ void sub_802E384(s16 *p0, u16 pairCount)
         s16 xVal;
         s32 xVal2;
         s32 r4;
-        s16 l, r;
+        s16 i;
 
         bgOffsets = &bgOffsets[yVal * 2];
         xVal = sp[j][0];
@@ -613,9 +607,8 @@ void sub_802E384(s16 *p0, u16 pairCount)
             r4 = Q(xVal - sp[j + 1][0]);
         }
 
-        l = sp[j][1];
-        while (l <= sp[j + 1][1]) {
-            s16 r1 = (xVal2 >> 8);
+        for (i = sp[j][1]; i <= sp[j + 1][1]; i++) {
+            s16 r1 = I(xVal2);
 
             if (r1 > DISPLAY_WIDTH)
                 r1 = DISPLAY_WIDTH;
@@ -628,31 +621,30 @@ void sub_802E384(s16 *p0, u16 pairCount)
             *bgOffsets++;
 
             xVal2 += r4;
-            l++;
         }
     }
 }
 
-void sub_802E49C(s16 *input, u8 length)
+void sub_802E49C(s16 *input, u8 pairCount)
 {
     u8 i, j;
     s32 temp3, temp5, temp;
-    s16 pairs[8][2];
-    s16 last_pairs_1[8][2];
-    s16 last_pairs_2[8][2];
+    s16 pairs[MAX_PAIRS][2];
+    s16 last_pairs_1[MAX_PAIRS][2];
+    s16 last_pairs_2[MAX_PAIRS][2];
     s16 another_pair_1[2];
     s16 another_pair_2[2];
     u8 array[DISPLAY_HEIGHT];
 
-    if (length > 8) {
+    if (pairCount > MAX_PAIRS) {
         return;
     }
 
-    if (length <= 2) {
+    if (pairCount <= 2) {
         return;
     }
 
-    for (i = 0; i < length; i++) {
+    for (i = 0; i < pairCount; i++) {
 #ifndef NON_MATCHING
         pairs[i][0] = *({
             s16 *a = input;
@@ -665,8 +657,8 @@ void sub_802E49C(s16 *input, u8 length)
         pairs[i][1] = input[i * 2 + 1];
     }
 
-    for (i = 0; i < length - 1; i++) {
-        for (j = i + 1; j < length; j++) {
+    for (i = 0; i < pairCount - 1; i++) {
+        for (j = i + 1; j < pairCount; j++) {
             if (pairs[i][1] >= pairs[j][1] && (pairs[i][1] != pairs[j][1] || pairs[i][0] >= pairs[j][0])) {
                 s16 temp;
                 temp = pairs[i][0];
@@ -683,17 +675,17 @@ void sub_802E49C(s16 *input, u8 length)
     another_pair_1[0] = pairs[0][0];
     another_pair_1[1] = pairs[0][1];
 
-    for (i = 1; i < length && another_pair_1[1] == pairs[i][1]; i++) {
+    for (i = 1; i < pairCount && another_pair_1[1] == pairs[i][1]; i++) {
         if (another_pair_1[0] > pairs[i][0]) {
             another_pair_1[0] = pairs[i][0];
             another_pair_1[1] = pairs[i][1];
         }
     }
 
-    another_pair_2[0] = pairs[length - 1][0];
-    another_pair_2[1] = pairs[length - 1][1];
+    another_pair_2[0] = pairs[pairCount - 1][0];
+    another_pair_2[1] = pairs[pairCount - 1][1];
 
-    for (i = length - 2; i > 0 && another_pair_2[1] <= pairs[i][1]; i--) {
+    for (i = pairCount - 2; i > 0 && another_pair_2[1] <= pairs[i][1]; i--) {
         if (another_pair_2[0] < pairs[i][0]) {
             another_pair_2[0] = pairs[i][0];
             another_pair_2[1] = pairs[i][1];
@@ -721,7 +713,7 @@ void sub_802E49C(s16 *input, u8 length)
         temp5 += temp3;
     }
 
-    for (i = 0, j = 0; i < length; i++) {
+    for (i = 0, j = 0; i < pairCount; i++) {
         if (array[pairs[i][1]] <= pairs[i][0]) {
             last_pairs_1[j][0] = pairs[i][0];
             last_pairs_1[j][1] = pairs[i][1];
@@ -731,7 +723,7 @@ void sub_802E49C(s16 *input, u8 length)
 
     sub_802E278(last_pairs_1[0], j);
 
-    for (i = 0, j = 0; i < length; i++) {
+    for (i = 0, j = 0; i < pairCount; i++) {
         if (array[pairs[i][1]] >= pairs[i][0]) {
             last_pairs_2[j][0] = pairs[i][0];
             last_pairs_2[j][1] = pairs[i][1];
@@ -747,12 +739,12 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
     s32 r6, r7, r1;
 
     s16 temp, r3, sl = 0;
-    s16 tmp8[7][2];
+    s16 pairs[7][2];
 
     s16 limitY2, limitX2;
     s16 limitX1, limitY1;
 
-    gHBlankCopySize = 2;
+    gHBlankCopySize = sizeof(winreg_t);
     gHBlankCopyTarget = (void *)REG_ADDR_WIN0H;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
@@ -767,7 +759,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
         }
 
-        r1 = CLAMP_SIN_PERIOD(a - Q(1));
+        r1 = CLAMP_SIN_PERIOD(a - DEG_TO_SIN(90));
         r6 = (COS(r1) * b) >> 15;
 #ifndef NON_MATCHING
         {
@@ -779,24 +771,24 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
         r7 = (COS(r1) * b) >> 15;
 #endif
 
-        tmp8[1][0] = x + r6;
-        tmp8[1][1] = y + r7;
-        tmp8[0][0] = (x - r6);
-        tmp8[0][1] = (y - r7);
+        pairs[1][0] = x + r6;
+        pairs[1][1] = y + r7;
+        pairs[0][0] = (x - r6);
+        pairs[0][1] = (y - r7);
 
-        r6 = (COS(a) * d) >> 14;
-        r7 = (SIN(a) * d) >> 14;
+        r6 = Q_2_14_TO_INT(COS(a) * d);
+        r7 = Q_2_14_TO_INT(SIN(a) * d);
 
-        tmp8[1][0] += r6;
-        tmp8[1][1] += r7;
+        pairs[1][0] += r6;
+        pairs[1][1] += r7;
 
-        tmp8[0][0] += r6;
-        tmp8[0][1] += r7;
+        pairs[0][0] += r6;
+        pairs[0][1] += r7;
 
-        limitX1 = tmp8[1][0];
-        limitY1 = tmp8[1][1];
-        limitX2 = tmp8[0][0];
-        limitY2 = tmp8[0][1];
+        limitX1 = pairs[1][0];
+        limitY1 = pairs[1][1];
+        limitX2 = pairs[0][0];
+        limitY2 = pairs[0][1];
 
         r6 = (COS(r1) * c) >> 15;
 #ifndef NON_MATCHING
@@ -805,13 +797,13 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
         r7 = (SIN(r1) * c) >> 15;
 #endif
 
-        tmp8[2][0] = x + r6;
-        tmp8[2][1] = y + r7;
-        tmp8[3][0] = x - r6;
-        tmp8[3][1] = y - r7;
+        pairs[2][0] = x + r6;
+        pairs[2][1] = y + r7;
+        pairs[3][0] = x - r6;
+        pairs[3][1] = y - r7;
 
         r6 = (COS(a) * 15) >> 2;
-        r7 = SIN(a) >> 6;
+        r7 = SIN_24_8(a);
 
         if (r6 != 0) {
             if (r7 != 0) {
@@ -823,7 +815,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
 
         r1 = Q(limitX1);
 
-        if (a < Q(2)) {
+        if (a < DEG_TO_SIN(180)) {
             for (i = limitY1; i < (DISPLAY_HEIGHT - 1); i++) {
                 r1 += r6;
                 sl = I(r1);
@@ -840,7 +832,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
         } else {
             for (i = limitY1; i != 0; i--) {
                 r1 -= r6;
-                sl = r1 >> 8;
+                sl = I(r1);
                 if (sl >= DISPLAY_WIDTH) {
                     sl = DISPLAY_WIDTH;
                     break;
@@ -853,12 +845,12 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             }
         }
 
-        tmp8[4][0] = sl;
-        tmp8[4][1] = i;
+        pairs[4][0] = sl;
+        pairs[4][1] = i;
 
         r1 = Q(limitX2);
 
-        if (a < Q(2)) {
+        if (a < DEG_TO_SIN(180)) {
             for (i = limitY2; i < (DISPLAY_HEIGHT - 1); i++) {
                 r1 += r6;
                 sl = I(r1);
@@ -887,29 +879,28 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
                 }
             }
         }
-        tmp8[5][0] = sl;
-        tmp8[5][1] = i;
+        pairs[5][0] = sl;
+        pairs[5][1] = i;
 
-        temp = tmp8[5][0];
-        if (tmp8[5][0] != tmp8[4][0] && tmp8[5][1] != tmp8[4][1]) {
-            if (tmp8[4][0] == 0) {
-                tmp8[6][0] = tmp8[4][0];
-                tmp8[6][1] = tmp8[5][1];
+        temp = pairs[5][0];
+        if (pairs[5][0] != pairs[4][0] && pairs[5][1] != pairs[4][1]) {
+            if (pairs[4][0] == 0) {
+                pairs[6][0] = pairs[4][0];
+                pairs[6][1] = pairs[5][1];
             } else {
-                if (tmp8[5][0] != 0 && tmp8[4][0] == DISPLAY_WIDTH) {
-                    tmp8[6][0] = tmp8[4][0];
-                    tmp8[6][1] = tmp8[5][1];
+                if (pairs[5][0] != 0 && pairs[4][0] == DISPLAY_WIDTH) {
+                    pairs[6][0] = pairs[4][0];
+                    pairs[6][1] = pairs[5][1];
                 } else {
-                    tmp8[6][0] = temp;
-                    tmp8[6][1] = tmp8[4][1];
+                    pairs[6][0] = temp;
+                    pairs[6][1] = pairs[4][1];
                 }
             }
-            sub_802E49C(tmp8[0], 7);
+            sub_802E49C(pairs[0], 7);
         } else {
-            sub_802E49C(tmp8[0], 6);
+            sub_802E49C(pairs[0], 6);
         }
     } else {
-
         if ((b / 2) == 0) {
             if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
                 DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
@@ -919,8 +910,8 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             return;
         }
 
-        if (a > Q(1) && a < Q(3) && x >= DISPLAY_WIDTH) {
-            r7 = (SIN(a) * (x - DISPLAY_WIDTH)) >> 14;
+        if (a > DEG_TO_SIN(90) && a < DEG_TO_SIN(270) && x >= DISPLAY_WIDTH) {
+            r7 = Q_2_14_TO_INT(SIN(a) * (x - DISPLAY_WIDTH));
             r7 += y;
 
             if (r7 > 0 && r7 < DISPLAY_HEIGHT) {
@@ -951,10 +942,10 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             }
         }
 
-        if (a > Q(2)) {
+        if (a > DEG_TO_SIN(180)) {
             if (y >= DISPLAY_HEIGHT) {
                 s16 r3, r4;
-                r6 = (COS(a) * (y - DISPLAY_HEIGHT)) >> 14;
+                r6 = Q_2_14_TO_INT(COS(a) * (y - DISPLAY_HEIGHT));
                 r6 += x;
 
                 if (r6 > 0 && r6 < DISPLAY_WIDTH) {
@@ -971,7 +962,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
                     } else if (r4 > DISPLAY_WIDTH) {
                         r4 = DISPLAY_WIDTH;
                     }
-                    sub_802E0D4(r4 << 8, a);
+                    sub_802E0D4(Q(r4), a);
 
                     r4 = r6 + (b / 2);
                     if (r4 < 0) {
@@ -985,7 +976,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             }
         }
 
-        if (a <= Q(2)) {
+        if (a <= DEG_TO_SIN(180)) {
             if (y < 0) {
                 s16 r3, r4;
                 r6 = Q_2_14_TO_INT(COS(a) * (y - DISPLAY_HEIGHT));

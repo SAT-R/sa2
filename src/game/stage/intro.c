@@ -841,37 +841,37 @@ static void Task_IntroColorAnimation(void)
     if (counter > INTROFRAME_VISIBLE) {
         u32 innerCount = counter - INTROFRAME_VISIBLE;
 
-        p0->y = 0;
-        p0->x = 160;
-        p1->y = 512;
+        p0->y = DEG_TO_SIN(0);
+        p0->x = DISPLAY_HEIGHT;
+        p1->y = DEG_TO_SIN(180);
         p1->x = 0;
 
         if (innerCount < INTROFRAME_NAME_AND_BANNER) {
             /* Bottom left */
-            p0->y = -(innerCount * (DISPLAY_WIDTH / INTROFRAME_NAME_AND_BANNER)) + (DISPLAY_WIDTH + 16);
+            p0->y = -(innerCount * (DISPLAY_WIDTH / INTROFRAME_NAME_AND_BANNER)) + (DISPLAY_WIDTH + DEG_TO_SIN(5.625));
             p0->x = (DISPLAY_HEIGHT / 2) + 8;
 
             if (innerCount >= INTROFRAME_BANNER_APPEARS) {
                 /* Top Banner */
                 innerCount = counter - INTROFRAME_BANNER_APPEARS;
 
-                p1->y = 512;
+                p1->y = DEG_TO_SIN(180);
                 p1->x = innerCount * 5;
             }
         } else if (counter < INTROFRAME_PAUSE_ON_BANNER) {
             /* Keep the Bottom-Left Triangle and Banner on-screen until 2 seconds have
              * passed (and stage name + all icons left the screen) */
-            p0->y = 542;
+            p0->y = DEG_TO_SIN(190.546875);
             p0->x = DISPLAY_HEIGHT - 23;
-            p1->y = 512;
+            p1->y = DEG_TO_SIN(180);
             p1->x = 16;
         } else if (counter < INTROFRAME_CLEAR_BANNER) {
             /* Clear the BL-Triangle and Banner */
             innerCount = counter - INTROFRAME_PAUSE_ON_BANNER;
 
-            p0->y = 542 - (innerCount * 18);
+            p0->y = DEG_TO_SIN(190.546875) - (innerCount * DEG_TO_SIN(6.328125));
             p0->x = -(innerCount * 2) + (DISPLAY_HEIGHT - 23);
-            p1->y = 512 - (innerCount * 16);
+            p1->y = DEG_TO_SIN(180) - (innerCount * DEG_TO_SIN(5.625));
             p1->x = counter - 104;
         } else if (counter >= INTROFRAME_FADE_GAMEPLAY) {
             /* Clean up after the animation finished */
@@ -884,14 +884,14 @@ static void Task_IntroColorAnimation(void)
             /* Transition to single Bottom-Right triangle (which is a sprite!) that
              * highlights the Act's name */
             innerCount = counter - INTROFRAME_CLEAR_BANNER;
-            p0->y = 544 - (innerCount * 6);
+            p0->y = DEG_TO_SIN(191.25) - (innerCount * DEG_TO_SIN(2.109375));
             p0->x = innerCount * ((DISPLAY_HEIGHT - 62) / 14);
             p1->y = 0;
             // p1->x = 0;
         }
     }
 
-    gHBlankCopySize = 2 * sizeof(int_vcount);
+    gHBlankCopySize = sizeof(winreg_t);
     gHBlankCopyTarget = (void *)&REG_WIN0H;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
