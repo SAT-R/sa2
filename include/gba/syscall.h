@@ -60,10 +60,13 @@ s32 Mod(s32 num, s32 denom);
 s32 ModArm(s32 denom, s32 num);
 #else
 // New GCC doesn't like us calling a function 'Mod', so we'll just inline them all.
-#define Div(num, denom)    ({((denom) != 0) ? ((s32)(num) / (denom)) : 0;})
-#define Mod(num, denom)    ({((denom) != 0) ? ((s32)(num) % (denom)) : 0;})
-#define DivArm(denom, num) ({((denom) != 0) ? ((s32)(num) / (denom)) : 0;})
-#define ModArm(denom, num) ({((denom) != 0) ? ((s32)(num) % (denom)) : 0;})
+// Also it is VERY important to also cast 'denom' to s32 on 64bit architectures,
+// otherwise 'num' might be interpreted as a s64, without being properly cast as one,
+// leading to a signed s32 value getting divided like an unsigned one.
+#define Div(num, denom)    ({((denom) != 0) ? ((s32)(num) / (s32)(denom)) : 0;})
+#define Mod(num, denom)    ({((denom) != 0) ? ((s32)(num) % (s32)(denom)) : 0;})
+#define DivArm(denom, num) ({((denom) != 0) ? ((s32)(num) / (s32)(denom)) : 0;})
+#define ModArm(denom, num) ({((denom) != 0) ? ((s32)(num) % (s32)(denom)) : 0;})
 #endif
 
 void SoundBiasReset(void);
