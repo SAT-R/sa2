@@ -248,7 +248,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void Task_MultipackOutcomeScreen(void)
 {
-    Sprite *s, *spr40, *spr70;
+    Sprite *s;
     struct CommunicationOutcomeScreen *outcomeScreen = TASK_DATA(gCurTask);
     u32 i;
 
@@ -263,8 +263,6 @@ static void Task_MultipackOutcomeScreen(void)
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
         s->x = gUnknown_084ADA10[outcomeScreen->unk206];
-        spr40 = &outcomeScreen->spr40;
-        spr70 = &outcomeScreen->spr70;
 
         while (unk206 != 0) {
             DisplaySprite(s);
@@ -289,8 +287,6 @@ static void Task_MultipackOutcomeScreen(void)
     } else {
 #if (GAME == GAME_SA1)
         DisplaySprite(s);
-        spr40 = &outcomeScreen->spr40;
-        spr70 = &outcomeScreen->spr70;
 #elif (GAME == GAME_SA2)
         const TileInfo *unk9090;
         s = &outcomeScreen->sprD0;
@@ -313,7 +309,7 @@ static void Task_MultipackOutcomeScreen(void)
         if (outcomeScreen->unk1FC > Q(unk203)) {
             outcomeScreen->unk1FC -= Q(unk203);
         }
-        s = spr40;
+        s = &outcomeScreen->spr40;
         UpdateSpriteAnimation(s);
 
         v0 = I(outcomeScreen->unk1FC) - unk203;
@@ -322,8 +318,7 @@ static void Task_MultipackOutcomeScreen(void)
             DisplaySprite(s);
             v0 += unk203;
         }
-        // 0xE4
-        s = spr70;
+        s = &outcomeScreen->spr70;
         s->y = 21;
         for (i = 0; i < 8; i++) {
             s->x = i << 5;
