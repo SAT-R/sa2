@@ -12,6 +12,9 @@
 #include "game/title_screen.h"
 #include "game/multiplayer/communication_outcome.h"
 #include "game/multiplayer/multipak_connection.h"
+#if (GAME == GAME_SA1)
+#include "game/multiplayer/results.h"
+#endif
 
 #include "game/stage/tilemap_table.h"
 
@@ -28,7 +31,7 @@ struct CommunicationOutcomeScreen {
     Sprite sprD0;
     Sprite spr100;
     u8 filler130[204];
-    u32 unk1FC;
+    s32 unk1FC;
     u16 unk200;
     u8 filler202;
     u8 unk203;
@@ -40,6 +43,8 @@ struct CommunicationOutcomeScreen {
 static void Task_MultipackOutcomeScreen(void);
 
 #if (GAME == GAME_SA1)
+extern const u8 gUnknown_084ADA08[2];
+extern const u16 gUnknown_084ADA10[5];
 extern const u16 sBackgroundAnims[2];
 extern const u8 sBackgroundVariants[2];
 extern const TileInfo sCommMessages[][7];
@@ -243,41 +248,93 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void Task_MultipackOutcomeScreen(void)
 {
-    Sprite *s;
+    Sprite *s, *spr40, *spr70;
     struct CommunicationOutcomeScreen *outcomeScreen = TASK_DATA(gCurTask);
+    u32 i;
+
     s = &outcomeScreen->sprA0;
     UpdateSpriteAnimation(s);
+#if (GAME == GAME_SA2)
     DisplaySprite(s);
+#endif
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
+#if (GAME == GAME_SA1)
+        u32 unk206 = outcomeScreen->unk206;
+        u32 offset;
+        s->x = gUnknown_084ADA10[outcomeScreen->unk206];
+        spr40 = &outcomeScreen->spr40;
+        spr70 = &outcomeScreen->spr70;
+
+        while (unk206 != 0) {
+            DisplaySprite(s);
+            s->x += 0x2A;
+            unk206--;
+        }
+#elif (GAME == GAME_SA2)
         const TileInfo *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
         s = &outcomeScreen->sprD0;
         unk9090 = sCommMessages[0];
-        offset = gLoadedSaveGame->language + 7;
+        offset = LOADED_SAVE->language + 7;
 
         s->graphics.anim = unk9090[offset].anim;
-        offset = gLoadedSaveGame->language + 7;
+        offset = LOADED_SAVE->language + 7;
         s->variant = unk9090[offset].variant + unk206 - 2;
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
+#endif
     } else {
+#if (GAME == GAME_SA1)
+        DisplaySprite(s);
+        spr40 = &outcomeScreen->spr40;
+        spr70 = &outcomeScreen->spr70;
+#elif (GAME == GAME_SA2)
         const TileInfo *unk9090;
         s = &outcomeScreen->sprD0;
         unk9090 = sCommMessages[0];
 
-        s->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
-        s->variant = unk9090[gLoadedSaveGame->language].variant;
+        s->graphics.anim = unk9090[LOADED_SAVE->language].anim;
+        s->variant = unk9090[LOADED_SAVE->language].variant;
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
+#endif
     }
 
+#if (GAME == GAME_SA1)
+    {
+        s32 unk203 = gUnknown_084ADA08[outcomeScreen->unk203];
+        s32 v, v0;
+
+        outcomeScreen->unk1FC += 0x80;
+        if (outcomeScreen->unk1FC > Q(unk203)) {
+            outcomeScreen->unk1FC -= Q(unk203);
+        }
+        s = spr40;
+        UpdateSpriteAnimation(s);
+
+        v0 = I(outcomeScreen->unk1FC) - unk203;
+        while (251 - v0 > -11) {
+            s->x = 251 - v0;
+            DisplaySprite(s);
+            v0 += unk203;
+        }
+        // 0xE4
+        s = spr70;
+        s->y = 21;
+        for (i = 0; i < 8; i++) {
+            s->x = i << 5;
+            DisplaySprite(s);
+        }
+    }
+#elif (GAME == GAME_SA2)
     s = &outcomeScreen->spr100;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
+#endif
 
     if (outcomeScreen->unk200 != 0) {
         outcomeScreen->unk200--;
@@ -293,17 +350,27 @@ static void Task_MultipackOutcomeScreen(void)
         u8 outcome = outcomeScreen->unk203;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        SA2_LABEL(gUnknown_03005390) = 0;
         PAUSE_GRAPHICS_QUEUE();
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
+
+#if (GAME == GAME_SA1)
+            // TODO(Jace): This hints at this file being a different module than SA2, but I don't think so?
+            CreateMultiplayerResultsScreen(0);
+#elif (GAME == GAME_SA2)
             CreateCharacterSelectionScreen(gSelectedCharacter, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
+#endif
         } else {
             gMultiSioEnabled = FALSE;
             MultiSioStop();
             MultiSioInit(0);
 
             gTilemapsRef = (Tilemap **)gTilemaps;
+#if (GAME == GAME_SA1)
+            CreateMainMenu(1);
+#elif (GAME == GAME_SA2)
             CreateTitleScreenAndSkipIntro();
+#endif
         }
     }
 }
