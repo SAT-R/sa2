@@ -350,7 +350,6 @@ static void Task_MultipackOutcomeScreen(void)
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
 
 #if (GAME == GAME_SA1)
-            // TODO(Jace): This hints at this file being a different module than SA2, but I don't think so?
             CreateMultiplayerResultsScreen(0);
 #elif (GAME == GAME_SA2)
             CreateCharacterSelectionScreen(gSelectedCharacter, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
