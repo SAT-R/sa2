@@ -22,10 +22,11 @@
 
 struct CommunicationOutcomeScreen {
     Background unk0;
-    u8 filler40[96];
-    Sprite unkA0;
-    Sprite unkD0;
-    Sprite s3;
+    Sprite spr40;
+    Sprite spr70;
+    Sprite sprA0;
+    Sprite sprD0;
+    Sprite spr100;
     u8 filler130[204];
     u32 unk1FC;
     u16 unk200;
@@ -36,10 +37,19 @@ struct CommunicationOutcomeScreen {
     u8 unk207[21];
 }; /* size 0x21C */
 
-static void sub_805BC40(void);
+static void Task_MultipackOutcomeScreen(void);
 
-static const u16 sCheeseSittingAnims[2] = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
-static const u8 sCheeseSittingVariants[2]
+#if (GAME == GAME_SA1)
+extern const u16 sBackgroundAnims[2];
+extern const u8 sBackgroundVariants[2];
+extern const TileInfo sCommMessages[][7];
+extern u16 gUnknown_084ADA0A[2];
+extern u8 gUnknown_084ADA0E[2];
+static const u16 sTilemapIds[2] = { TM_MP_CONNECTION_SUCCESS, TM_MP_CONNECTION_ERROR };
+static const u16 sResultSongs[2] = { SE_301, SE_302 };
+#elif (GAME == GAME_SA2)
+static const u16 sBackgroundAnims[2] = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
+static const u8 sBackgroundVariants[2]
     = { SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_HAPPY, SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_SAD };
 static const TileInfo sCommMessages[][7] = {
     {
@@ -61,6 +71,7 @@ static const TileInfo sCommMessages[][7] = {
         TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60, SA2_ANIM_MP_COMM_MSG_IT),
     },
 };
+#endif
 
 void CreateMultipackOutcomeScreen(u8 outcome)
 {
@@ -68,7 +79,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     u8 count;
     struct Task *t;
     struct CommunicationOutcomeScreen *outcomeScreen;
-    Sprite *s3;
+    Sprite *s;
     Background *background;
     gDispCnt = 0x3140;
     gBgCntRegs[0] = 0x803;
@@ -82,7 +93,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     gBldRegs.bldCnt = 0xBF;
     gBldRegs.bldY = 0x10;
 
-    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
+    t = TaskCreate(Task_MultipackOutcomeScreen, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
     outcomeScreen = TASK_DATA(t);
 
     outcomeScreen->unk203 = outcome;
@@ -97,50 +108,104 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
     outcomeScreen->unk206 = count;
 
-    s3 = &outcomeScreen->s3;
-    s3->x = (DISPLAY_WIDTH / 2);
-    s3->y = DISPLAY_HEIGHT - 20;
-    s3->graphics.dest = (void *)OBJ_VRAM0;
-    s3->oamFlags = SPRITE_OAM_ORDER(15);
-    s3->graphics.size = 0;
-    s3->graphics.anim = SA2_ANIM_MP_MSG;
-    s3->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
-    s3->animCursor = 0;
-    s3->qAnimDelay = 0;
-    s3->prevVariant = -1;
-    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s3->palId = 0;
-    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#if (GAME == GAME_SA1)
+    s = &outcomeScreen->sprA0;
+    s->x = 93;
+    s->y = 85;
+    s->graphics.dest = (void *)OBJ_VRAM0 + 0x300;
+    s->oamFlags = SPRITE_OAM_ORDER(15);
+    s->graphics.size = 0;
+    s->graphics.anim = gUnknown_084ADA0A[outcome];
+    s->variant = gUnknown_084ADA0E[outcome];
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+    UpdateSpriteAnimation(s);
+#elif (GAME == GAME_SA2)
+    s = &outcomeScreen->spr100;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = DISPLAY_HEIGHT - 20;
+    s->graphics.dest = (void *)OBJ_VRAM0;
+    s->oamFlags = SPRITE_OAM_ORDER(15);
+    s->graphics.size = 0;
+    s->graphics.anim = SA2_ANIM_MP_MSG;
+    s->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#endif
 
-    s3 = &outcomeScreen->unkD0;
-    s3->x = (DISPLAY_WIDTH / 2);
-    s3->y = 36;
-    s3->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
-    s3->oamFlags = SPRITE_OAM_ORDER(15);
-    s3->graphics.size = 0;
-    s3->graphics.anim = sCheeseSittingAnims[outcome];
-    s3->variant = sCheeseSittingVariants[outcome];
-    s3->animCursor = 0;
-    s3->qAnimDelay = 0;
-    s3->prevVariant = -1;
-    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s3->palId = 0;
-    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#if (GAME == GAME_SA1)
+    s = &outcomeScreen->spr40;
+    s->x = 0;
+    s->y = 32;
+    s->graphics.dest = (void *)OBJ_VRAM0;
+    s->oamFlags = SPRITE_OAM_ORDER(15);
+    s->graphics.size = 0;
+    s->graphics.anim = SA1_ANIM_MP_OUTCOME_MESSAGES;
+    s->variant = outcomeScreen->unk203 + 8;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+    UpdateSpriteAnimation(s);
+#elif (GAME == GAME_SA2)
+    s = &outcomeScreen->sprD0;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = 36;
+    s->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
+    s->oamFlags = SPRITE_OAM_ORDER(15);
+    s->graphics.size = 0;
+    s->graphics.anim = sBackgroundAnims[outcome];
+    s->variant = sBackgroundVariants[outcome];
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#endif
 
-    s3 = &outcomeScreen->unkA0;
-    s3->x = (DISPLAY_WIDTH / 2);
-    s3->y = DISPLAY_HEIGHT - 40;
-    s3->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
-    s3->oamFlags = SPRITE_OAM_ORDER(15);
-    s3->graphics.size = 0;
-    s3->graphics.anim = sCheeseSittingAnims[outcome];
-    s3->variant = sCheeseSittingVariants[outcome];
-    s3->animCursor = 0;
-    s3->qAnimDelay = 0;
-    s3->prevVariant = -1;
-    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s3->palId = 0;
-    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#if (GAME == GAME_SA1)
+    s = &outcomeScreen->spr70;
+    s->x = 0;
+    s->y = 21;
+    s->graphics.dest = (void *)OBJ_VRAM0 + 0x180;
+    s->oamFlags = SPRITE_OAM_ORDER(16);
+    s->graphics.size = 0;
+    s->graphics.anim = SA1_ANIM_OPTS_BLACK_RECT;
+    s->variant = 0;
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+    UpdateSpriteAnimation(s);
+#elif (GAME == GAME_SA2)
+    s = &outcomeScreen->sprA0;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = DISPLAY_HEIGHT - 40;
+    s->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
+    s->oamFlags = SPRITE_OAM_ORDER(15);
+    s->graphics.size = 0;
+    s->graphics.anim = sBackgroundAnims[outcome];
+    s->variant = sBackgroundVariants[outcome];
+    s->animCursor = 0;
+    s->qAnimDelay = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+#endif
 
     background = &outcomeScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -156,21 +221,31 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
+#if (GAME == GAME_SA1)
+    background->tilemapId = sTilemapIds[outcome];
+    DrawBackground(background);
+#elif (GAME == GAME_SA2)
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
     DrawBackground(background);
     m4aMPlayAllStop();
+#endif
+
+#if (GAME == GAME_SA1)
+    m4aSongNumStart(sResultSongs[outcome]);
+#elif (GAME == GAME_SA2)
     if (outcome != OUTCOME_CONNECTION_SUCCESS) {
         m4aSongNumStart(MUS_VS_MISS);
     } else {
         m4aSongNumStart(MUS_VS_SUCCESS);
     }
+#endif
 }
 
-static void sub_805BC40(void)
+static void Task_MultipackOutcomeScreen(void)
 {
     Sprite *s;
     struct CommunicationOutcomeScreen *outcomeScreen = TASK_DATA(gCurTask);
-    s = &outcomeScreen->unkA0;
+    s = &outcomeScreen->sprA0;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
@@ -178,7 +253,7 @@ static void sub_805BC40(void)
         const TileInfo *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
-        s = &outcomeScreen->unkD0;
+        s = &outcomeScreen->sprD0;
         unk9090 = sCommMessages[0];
         offset = gLoadedSaveGame->language + 7;
 
@@ -190,7 +265,7 @@ static void sub_805BC40(void)
         DisplaySprite(s);
     } else {
         const TileInfo *unk9090;
-        s = &outcomeScreen->unkD0;
+        s = &outcomeScreen->sprD0;
         unk9090 = sCommMessages[0];
 
         s->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
@@ -200,7 +275,7 @@ static void sub_805BC40(void)
         DisplaySprite(s);
     }
 
-    s = &outcomeScreen->s3;
+    s = &outcomeScreen->spr100;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
