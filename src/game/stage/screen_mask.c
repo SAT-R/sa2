@@ -1,12 +1,20 @@
+/**
+ * The functions in this file are mostly focused on generating masks against
+ * the background associated with gBgOffsetsHBlank.
+ *
+ * For example, masking the Upper portion of the background above a generated
+ * line from the given origin using a given angle to construct the mask line.
+ */
+
 #include "global.h"
 #include "core.h"
 #include "trig.h"
 #include "flags.h"
 #include "game/stage/screen_mask.h"
 
-#define MAX_PAIRS 8
+#define MAX_SHAPE_PAIRS 8
 
-void sub_802DBC0(int_vcount y, u16 angle)
+void ScreenMask_Lower_OriginLeft(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
 #ifdef BUG_FIX
@@ -88,7 +96,7 @@ void sub_802DBC0(int_vcount y, u16 angle)
     }
 }
 
-UNUSED void sub_802DCC8(int_vcount inY, u16 inAngle)
+UNUSED void ScreenMask_Upper_OriginLeft(int_vcount inY, u16 inAngle)
 {
     u32 y = inY;
     s16 i;
@@ -160,7 +168,7 @@ UNUSED void sub_802DCC8(int_vcount inY, u16 inAngle)
     }
 }
 
-void sub_802DDC4(int_vcount y, u16 angle)
+void ScreenMask_Lower_OriginRight(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r5 = 0;
@@ -248,7 +256,7 @@ void sub_802DDC4(int_vcount y, u16 angle)
     }
 }
 
-void sub_802DF18(int_vcount y, u16 angle)
+void ScreenMask_Upper_OriginRight(int_vcount y, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r2;
@@ -329,7 +337,7 @@ void sub_802DF18(int_vcount y, u16 angle)
     }
 }
 
-void sub_802E044(s32 qX, u16 angle)
+void ScreenMask_Right_OriginBottom(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     angle = angle % SIN_PERIOD;
@@ -372,7 +380,7 @@ void sub_802E044(s32 qX, u16 angle)
     }
 }
 
-void sub_802E0D4(s32 inQX, u16 angle)
+void ScreenMask_Left_OriginBottom(s32 inQX, u16 angle)
 {
     s32 qX = inQX;
     int_vcount *bgOffsets = gBgOffsetsHBlank;
@@ -417,7 +425,7 @@ void sub_802E0D4(s32 inQX, u16 angle)
     }
 }
 
-void sub_802E164(s32 qX, u16 angle)
+void ScreenMask_Right_OriginTop(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     angle = angle % SIN_PERIOD;
@@ -460,7 +468,7 @@ void sub_802E164(s32 qX, u16 angle)
     }
 }
 
-void sub_802E1EC(s32 qX, u16 angle)
+void ScreenMask_Left_OriginTop(s32 qX, u16 angle)
 {
     int_vcount *bgOffsets = gBgOffsetsHBlank;
     angle = angle % SIN_PERIOD;
@@ -504,16 +512,16 @@ void sub_802E1EC(s32 qX, u16 angle)
     }
 }
 
-void sub_802E278(s16 *p0, u8 pairCount)
+static void sub_802E278(s16 *p0, u8 pairCount)
 {
     s16 i, j;
 
-    s16 pairs[MAX_PAIRS][2];
+    s16 pairs[MAX_SHAPE_PAIRS][2];
 
 #ifdef BUG_FIX
     // Make sure pairCount isn't bigger than the # of elements in pairs
-    if (pairCount > MAX_PAIRS)
-        pairCount = MAX_PAIRS;
+    if (pairCount > MAX_SHAPE_PAIRS)
+        pairCount = MAX_SHAPE_PAIRS;
 #endif
 
     for (j = 0; j < pairCount; j++) {
@@ -560,15 +568,15 @@ void sub_802E278(s16 *p0, u8 pairCount)
     }
 }
 
-void sub_802E384(s16 *p0, u16 pairCount)
+static void sub_802E384(s16 *p0, u16 pairCount)
 {
     s16 i, j;
-    s16 sp[MAX_PAIRS][2];
+    s16 sp[MAX_SHAPE_PAIRS][2];
 
 #ifdef NON_MATCHING
     // Make sure pairCount isn't bigger than the # of elements in sp
-    if (pairCount > MAX_PAIRS)
-        pairCount = MAX_PAIRS;
+    if (pairCount > MAX_SHAPE_PAIRS)
+        pairCount = MAX_SHAPE_PAIRS;
 #endif
 
     for (i = 0; i < pairCount; i++) {
@@ -625,18 +633,18 @@ void sub_802E384(s16 *p0, u16 pairCount)
     }
 }
 
-void sub_802E49C(s16 *input, u8 pairCount)
+static void sub_802E49C(s16 *input, u8 pairCount)
 {
     u8 i, j;
     s32 temp3, temp5, temp;
-    s16 pairs[MAX_PAIRS][2];
-    s16 last_pairs_1[MAX_PAIRS][2];
-    s16 last_pairs_2[MAX_PAIRS][2];
+    s16 pairs[MAX_SHAPE_PAIRS][2];
+    s16 last_pairs_1[MAX_SHAPE_PAIRS][2];
+    s16 last_pairs_2[MAX_SHAPE_PAIRS][2];
     s16 another_pair_1[2];
     s16 another_pair_2[2];
     u8 array[DISPLAY_HEIGHT];
 
-    if (pairCount > MAX_PAIRS) {
+    if (pairCount > MAX_SHAPE_PAIRS) {
         return;
     }
 
@@ -734,7 +742,7 @@ void sub_802E49C(s16 *input, u8 pairCount)
     sub_802E384(last_pairs_2[0], j);
 }
 
-void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
+void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
 {
     s32 r6, r7, r1;
 
@@ -748,6 +756,8 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
     gHBlankCopyTarget = (void *)REG_ADDR_WIN0H;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
+    // BUG: should the last check be `y > 0`?
+    // Origin visible on screen
     if (x > 0 && x < DISPLAY_WIDTH && y < DISPLAY_HEIGHT && x > 0) {
         u16 i;
 #ifndef NON_MATCHING
@@ -759,16 +769,16 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
         }
 
-        r1 = CLAMP_SIN_PERIOD(a - DEG_TO_SIN(90));
-        r6 = (COS(r1) * b) >> 15;
+        r1 = CLAMP_SIN_PERIOD(angle - DEG_TO_SIN(90));
+        r6 = (COS(r1) * width) >> 15;
 #ifndef NON_MATCHING
         {
             register void *r1_2 asm("r1") = (r1 * 2) + ((void *)gSineTable);
             r8 = *(s16 *)r1_2;
-            r7 = (r8 * b) >> 15;
+            r7 = (r8 * width) >> 15;
         }
 #else
-        r7 = (COS(r1) * b) >> 15;
+        r7 = (COS(r1) * width) >> 15;
 #endif
 
         pairs[1][0] = x + r6;
@@ -776,8 +786,8 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
         pairs[0][0] = (x - r6);
         pairs[0][1] = (y - r7);
 
-        r6 = Q_2_14_TO_INT(COS(a) * d);
-        r7 = Q_2_14_TO_INT(SIN(a) * d);
+        r6 = Q_2_14_TO_INT(COS(angle) * d);
+        r7 = Q_2_14_TO_INT(SIN(angle) * d);
 
         pairs[1][0] += r6;
         pairs[1][1] += r7;
@@ -802,8 +812,8 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
         pairs[3][0] = x - r6;
         pairs[3][1] = y - r7;
 
-        r6 = (COS(a) * 15) >> 2;
-        r7 = SIN_24_8(a);
+        r6 = (COS(angle) * 15) >> 2;
+        r7 = SIN_24_8(angle);
 
         if (r6 != 0) {
             if (r7 != 0) {
@@ -815,7 +825,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
 
         r1 = Q(limitX1);
 
-        if (a < DEG_TO_SIN(180)) {
+        if (angle < DEG_TO_SIN(180)) {
             for (i = limitY1; i < (DISPLAY_HEIGHT - 1); i++) {
                 r1 += r6;
                 sl = I(r1);
@@ -850,7 +860,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
 
         r1 = Q(limitX2);
 
-        if (a < DEG_TO_SIN(180)) {
+        if (angle < DEG_TO_SIN(180)) {
             for (i = limitY2; i < (DISPLAY_HEIGHT - 1); i++) {
                 r1 += r6;
                 sl = I(r1);
@@ -901,7 +911,9 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             sub_802E49C(pairs[0], 6);
         }
     } else {
-        if ((b / 2) == 0) {
+        // Origin point not visible, so just create a mask for the shape
+        // over the whole screen
+        if ((width / 2) == 0) {
             if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
                 DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
             } else {
@@ -910,8 +922,8 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
             return;
         }
 
-        if (a > DEG_TO_SIN(90) && a < DEG_TO_SIN(270) && x >= DISPLAY_WIDTH) {
-            r7 = Q_2_14_TO_INT(SIN(a) * (x - DISPLAY_WIDTH));
+        if (angle > DEG_TO_SIN(90) && angle < DEG_TO_SIN(270) && x >= DISPLAY_WIDTH) {
+            r7 = Q_2_14_TO_INT(SIN(angle) * (x - DISPLAY_WIDTH));
             r7 += y;
 
             if (r7 > 0 && r7 < DISPLAY_HEIGHT) {
@@ -923,29 +935,29 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
                     DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
                 }
 
-                r4 = r7 - (b / 2);
+                r4 = r7 - (width / 2);
                 if (r4 < 0) {
                     r4 = 0;
                 } else if (r4 > DISPLAY_HEIGHT) {
                     r4 = DISPLAY_HEIGHT;
                 }
-                sub_802DF18(r4, a);
+                ScreenMask_Upper_OriginRight(r4, angle);
 
-                r4 = r7 + (b / 2);
+                r4 = r7 + (width / 2);
                 if (r4 < 0) {
                     r4 = 0;
                 } else if (r4 > DISPLAY_HEIGHT) {
                     r4 = DISPLAY_HEIGHT;
                 }
-                sub_802DDC4(r4, a);
+                ScreenMask_Lower_OriginRight(r4, angle);
                 return;
             }
         }
 
-        if (a > DEG_TO_SIN(180)) {
+        if (angle > DEG_TO_SIN(180)) {
             if (y >= DISPLAY_HEIGHT) {
                 s16 r3, r4;
-                r6 = Q_2_14_TO_INT(COS(a) * (y - DISPLAY_HEIGHT));
+                r6 = Q_2_14_TO_INT(COS(angle) * (y - DISPLAY_HEIGHT));
                 r6 += x;
 
                 if (r6 > 0 && r6 < DISPLAY_WIDTH) {
@@ -956,30 +968,30 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
                         DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
                     }
 
-                    r4 = r6 - (b / 2);
+                    r4 = r6 - (width / 2);
                     if (r4 < 0) {
                         r4 = 0;
                     } else if (r4 > DISPLAY_WIDTH) {
                         r4 = DISPLAY_WIDTH;
                     }
-                    sub_802E0D4(Q(r4), a);
+                    ScreenMask_Left_OriginBottom(Q(r4), angle);
 
-                    r4 = r6 + (b / 2);
+                    r4 = r6 + (width / 2);
                     if (r4 < 0) {
                         r4 = 0;
                     } else if (r4 > DISPLAY_WIDTH) {
                         r4 = DISPLAY_WIDTH;
                     }
-                    sub_802E044(Q(r4), a);
+                    ScreenMask_Right_OriginBottom(Q(r4), angle);
                     return;
                 }
             }
         }
 
-        if (a <= DEG_TO_SIN(180)) {
+        if (angle <= DEG_TO_SIN(180)) {
             if (y < 0) {
                 s16 r3, r4;
-                r6 = Q_2_14_TO_INT(COS(a) * (y - DISPLAY_HEIGHT));
+                r6 = Q_2_14_TO_INT(COS(angle) * (y - DISPLAY_HEIGHT));
                 r6 += x;
                 if (r6 > 0 && r6 < DISPLAY_WIDTH) {
                     r3 = DISPLAY_WIDTH + 1;
@@ -989,21 +1001,21 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, u8 d)
                         DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
                     }
 
-                    r4 = r6 - (b / 2);
+                    r4 = r6 - (width / 2);
                     if (r4 < 0) {
                         r4 = 0;
                     } else if (r4 > DISPLAY_WIDTH) {
                         r4 = DISPLAY_WIDTH;
                     }
-                    sub_802E1EC(Q(r4), a);
+                    ScreenMask_Left_OriginTop(Q(r4), angle);
 
-                    r4 = r6 + (b / 2);
+                    r4 = r6 + (width / 2);
                     if (r4 < 0) {
                         r4 = 0;
                     } else if (r4 > DISPLAY_WIDTH) {
                         r4 = DISPLAY_WIDTH;
                     }
-                    sub_802E164(Q(r4), a);
+                    ScreenMask_Right_OriginTop(Q(r4), angle);
                 }
             }
         }

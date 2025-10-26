@@ -1173,11 +1173,11 @@ void sub_804AE40(SuperEggRoboZ *boss)
                         "str r1, [sp, #4]\n\t"
                         "add r1, %2, #0\n\t"
                         "mov r2, #6\n\t"
-                        "bl sub_802E784"
+                        "bl ScreenMask_CreateShape"
                         :
                         : "r"(r8), "r"(r6), "r"(r4), "r"(boss));
 #else
-                    sub_802E784(boss->unk10, r4, 6, r8, r6 + 1, 32);
+                    ScreenMask_CreateShape(boss->unk10, r4, 6, r8, r6 + 1, 32);
 #endif
 
                     boss->fade.brightness = Q(32) - (boss->unk12 * 91);
