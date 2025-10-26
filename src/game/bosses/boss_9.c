@@ -1314,7 +1314,7 @@ void sub_804E15C(struct TA53_unk48 *unk48)
             sb += ((COS(r6) * gUnknown_080D89A5[5]) >> 6);
             r8 += ((SIN(r6) * gUnknown_080D89A5[5]) >> 6);
 
-            sub_802E784(r6, (26 - (s8)r4), 16, (I(sb) - gCamera.x), (I(r8) - gCamera.y), r5);
+            ScreenMask_CreateShape(r6, (26 - (s8)r4), 16, (I(sb) - gCamera.x), (I(r8) - gCamera.y), r5);
         } else {
             u32 p0;
             // _0804E43C

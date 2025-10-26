@@ -5,6 +5,7 @@
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
+#include "trig.h"
 #include "lib/m4a/m4a.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/multiplayer/multipak_connection.h"
@@ -221,7 +222,7 @@ static void Task_EnterAnimPart1(void)
     gWinRegs[5] = 0x11;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E164(0x6400, (0x10 - modeScreen->animFrame) * 20);
+    ScreenMask_Right_OriginTop(Q(100), (DEG_TO_SIN(5.625) - modeScreen->animFrame) * DEG_TO_SIN(7.03125));
     if (gPressedKeys & A_BUTTON) {
         modeScreen->animFrame = 0;
         gCurTask->main = Task_EnterAnimPart2;
@@ -253,7 +254,7 @@ static void Task_EnterAnimPart2(void)
     gWinRegs[5] = 0x11;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E164(0x6400, 0x140);
+    ScreenMask_Right_OriginTop(Q(100), DEG_TO_SIN(112.5));
 
     unk80 = &modeScreen->unk80;
     if (modeScreen->animFrame < 10) {
@@ -321,7 +322,7 @@ static void Task_ScreenMain(void)
     gWinRegs[5] = 0x11;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E164(0x6400, 0x140);
+    ScreenMask_Right_OriginTop(Q(100), DEG_TO_SIN(112.5));
 
     if (gPressedKeys & (DPAD_DOWN | DPAD_UP)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -368,7 +369,7 @@ static void Task_FadeOutToSelectedMode(void)
     gWinRegs[5] = 0x31;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E164(0x6400, 0x140);
+    ScreenMask_Right_OriginTop(Q(100), DEG_TO_SIN(112.5));
 
     RenderUI(modeScreen);
 }
@@ -389,7 +390,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
     gWinRegs[5] = 0x31;
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
     InitHBlankBgOffsets(DISPLAY_WIDTH);
-    sub_802E164(0x6400, 0x140);
+    ScreenMask_Right_OriginTop(Q(100), DEG_TO_SIN(112.5));
 
     RenderUI(modeScreen);
 }
