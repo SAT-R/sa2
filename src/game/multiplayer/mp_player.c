@@ -51,12 +51,18 @@ const u16 gUnknown_02015B18[] = { 0x55, 0x59, 0x5D, 0x61 };
 
 void CreateMultiplayerPlayer(u8 id)
 {
-    u16 *p;
-    Sprite *s;
     struct Task *t = TaskCreate(Task_CreateMultiplayerPlayer, sizeof(MultiplayerPlayer), 0x2000, 0, TaskDestructor_MultiplayerPlayer);
     MultiplayerPlayer *mpp = TASK_DATA(t);
+    Sprite *s;
+    SpriteTransform *tf;
+    u16 *p;
+    u32 pid;
     mpp->unk56 = id;
+#if (GAME == GAME_SA1)
+    mpp->unk54 = 0x0;
+#elif (GAME == GAME_SA2)
     mpp->unk54 = 0x40;
+#endif
     mpp->unk44 = 0;
     mpp->unk48 = 0;
     mpp->unk66 = 0;
@@ -81,6 +87,67 @@ void CreateMultiplayerPlayer(u8 id)
     mpp->pos.x = 0;
     mpp->pos.y = 0;
 
+#if (GAME == GAME_SA1)
+#ifndef COLLECT_RINGS_ROM
+    if (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_RACE || gGameMode == GAME_MODE_MULTI_PLAYER) {
+        mpp->pos.x = gSpawnPositions[gCurrentLevel][0];
+        mpp->pos.y = gSpawnPositions[gCurrentLevel][1];
+    } else if (gGameMode == GAME_MODE_CHAO_HUNT) {
+        u32 pid = SIO_MULTI_CNT->id;
+        mpp->pos.x = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][pid][0];
+        mpp->pos.y = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][pid][1];
+    } else if (gGameMode == GAME_MODE_TEAM_PLAY) {
+        pid = SIO_MULTI_CNT->id;
+        if (gCurrentLevel == 16) {
+            mpp->pos.x = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][SIO_MULTI_CNT->id][0];
+            mpp->pos.y = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][SIO_MULTI_CNT->id][1];
+        } else {
+            u32 r4;
+            u32 i;
+            u32 outerBit = (gMultiplayerConnections & (0x10 << pid)) >> (pid + 4);
+
+            r4 = 0;
+            for (i = 0; i < pid; i++) {
+                bool32 innerBit = (gMultiplayerConnections & (0x10 << i)) >> (i + 4);
+                if (innerBit == outerBit) {
+                    r4++;
+                }
+            }
+
+            if (outerBit == 0) {
+                r4 = -r4;
+            }
+
+            mpp->pos.x = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][outerBit][0] + r4 * 24;
+            mpp->pos.y = gSpawnPositions_Modes_4_and_5[gCurrentLevel - NUM_LEVEL_IDS_SP][outerBit][1];
+        }
+    } else
+#endif // COLLECT_RINGS_ROM
+    {
+        switch (SIO_MULTI_CNT->id) {
+            case 0: {
+                mpp->pos.x = 232;
+                mpp->pos.y = 829;
+                break;
+            }
+            case 1: {
+                mpp->pos.x = 1585;
+                mpp->pos.y = 926;
+                break;
+            }
+            case 2: {
+                mpp->pos.x = 232;
+                mpp->pos.y = 348;
+                break;
+            }
+            case 3: {
+                mpp->pos.x = 1585;
+                mpp->pos.y = 279;
+                break;
+            }
+        }
+    }
+#elif (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
     if (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY) {
         mpp->pos.x = gSpawnPositions[gCurrentLevel][0];
@@ -111,15 +178,28 @@ void CreateMultiplayerPlayer(u8 id)
             }
         }
     }
+#endif
 
     s = &mpp->s;
+    tf = &mpp->transform;
+#if (GAME == GAME_SA1)
+    if (mpp->unk56 != SIO_MULTI_CNT->id) {
+        s->graphics.dest = VramMalloc(64);
+    } else {
+        s->graphics.dest = (void *)OBJ_VRAM0;
+    }
+#endif
     s->oamFlags = SPRITE_OAM_ORDER(16);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+#if (GAME == GAME_SA1)
+    s->palId = 0;
+#elif (GAME == GAME_SA2)
     s->palId = mpp->unk56;
+#endif
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
@@ -128,10 +208,12 @@ void CreateMultiplayerPlayer(u8 id)
     s->x = 0;
     s->y = 0;
 
-    mpp->transform.qScaleY = 256;
+    tf->qScaleY = 256;
+
+#if (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
     s->graphics.anim = gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
-#endif
+#endif // COLLECT_RINGS_ROM
 
     if (mpp->unk56 != SIO_MULTI_CNT->id) {
         s->graphics.dest = VramMalloc(64);
@@ -141,6 +223,8 @@ void CreateMultiplayerPlayer(u8 id)
     }
 
     UpdateSpriteAnimation(s);
+#endif // (GAME == GAME_SA2)
+
     gMultiplayerPlayerTasks[mpp->unk56] = t;
 }
 
