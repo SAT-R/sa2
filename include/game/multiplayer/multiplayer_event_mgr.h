@@ -62,6 +62,12 @@ typedef struct {
 
 typedef struct {
     ROOMEVENT_BASE;
+    u8 x;
+    u8 y;
+} RoomEvent_GoalReached;
+
+typedef struct {
+    ROOMEVENT_BASE;
     u8 effect;
     u8 targetPlayer;
 } RoomEvent_ItemEffect;

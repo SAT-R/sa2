@@ -317,8 +317,8 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.moveState &= ~MOVESTATE_400;
                         gPlayer.moveState &= ~MOVESTATE_100;
                         PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
-                        gPlayer.unk61 = 0;
-                        gPlayer.unk62 = 0;
+                        gPlayer.SA2_LABEL(unk61) = 0;
+                        gPlayer.SA2_LABEL(unk62) = 0;
 
                         gPlayer.charState = CHARSTATE_WALK_A;
                         gPlayer.moveState |= MOVESTATE_800000;
@@ -597,14 +597,25 @@ void SA2_LABEL(sub_8016D20)(void)
     Sprite *s = &mpp->s;
     SpriteTransform *transform = &mpp->transform;
     u32 val;
+    u8 *modePtr;
+    u8 *vModePtr;
 
     if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
         SA2_LABEL(sub_8017F34)();
     }
 
+#if (GAME == GAME_SA1)
+    // Checks twice for gGameMode 3, 5 !
+    if (((gGameMode == 3 || gGameMode == 5)
+         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
+             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+        || (gGameMode != 3 && gGameMode != 5))
+#elif (GAME == GAME_SA2)
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+#endif
+    {
         if (!SA2_LABEL(sub_8018300)()) {
             return;
         }
@@ -625,14 +636,21 @@ void SA2_LABEL(sub_8016D20)(void)
                 mpp->unk4C = 0;
             }
 
-            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
+#if (GAME == GAME_SA1)
+            if (s->graphics.anim != CHARSTATE_18)
+#elif (GAME == GAME_SA2)
+            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC))
+#endif
+            {
                 return;
             }
 
             gPlayer.charState = CHARSTATE_WALK_A;
+#if (GAME == GAME_SA2)
             gPlayer.callback = Player_TouchGround;
-            gPlayer.unk61 = 0;
-            gPlayer.unk62 = 0;
+#endif
+            gPlayer.SA2_LABEL(unk61) = 0;
+            gPlayer.SA2_LABEL(unk62) = 0;
 
             if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
                 gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
@@ -662,11 +680,11 @@ void SA2_LABEL(sub_8016D20)(void)
                 return;
             }
 
-            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.SA2_LABEL(unk61) != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
 
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
+            val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
             if (mpp->unk4C & MOVESTATE_20 && !(val & MOVESTATE_20)) {
                 gPlayer.moveState &= ~MOVESTATE_20;
@@ -682,13 +700,20 @@ void SA2_LABEL(sub_8016D20)(void)
                 return;
             }
 
-            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
+#if (GAME == GAME_SA1)
+            if (s->graphics.anim != CHARSTATE_18)
+#elif (GAME == GAME_SA2)
+            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC))
+#endif
+            {
                 return;
             }
             gPlayer.charState = CHARSTATE_WALK_A;
+#if (GAME == GAME_SA2)
             gPlayer.callback = Player_TouchGround;
-            gPlayer.unk61 = 0;
-            gPlayer.unk62 = 0;
+#endif
+            gPlayer.SA2_LABEL(unk61) = 0;
+            gPlayer.SA2_LABEL(unk62) = 0;
 
             if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
                 gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
@@ -725,7 +750,7 @@ void SA2_LABEL(sub_8016D20)(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
+        val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -776,7 +801,7 @@ void SA2_LABEL(sub_801707C)(void)
         return;
     }
 
-    if (gPlayer.unk61 != 0 && gPlayer.character == CHARACTER_KNUCKLES) {
+    if (gPlayer.SA2_LABEL(unk61) != 0 && gPlayer.character == CHARACTER_KNUCKLES) {
         return;
     }
 
@@ -866,8 +891,8 @@ void SA2_LABEL(sub_801707C)(void)
         gPlayer.charState = CHARSTATE_IDLE;
         gPlayer.callback = Player_TouchGround;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
-        gPlayer.unk61 = 0;
-        gPlayer.unk62 = 0;
+        gPlayer.SA2_LABEL(unk61) = 0;
+        gPlayer.SA2_LABEL(unk62) = 0;
 
         if (Player_TryJump(&gPlayer)) {
             mpp->unk60 = 30;
@@ -1015,7 +1040,7 @@ void SA2_LABEL(sub_8017670)(void)
         return;
     }
 
-    if (gPlayer.unk61 != 0 && gPlayer.character == CHARACTER_TAILS) {
+    if (gPlayer.SA2_LABEL(unk61) != 0 && gPlayer.character == CHARACTER_TAILS) {
         return;
     }
 
@@ -1069,8 +1094,8 @@ void SA2_LABEL(sub_8017670)(void)
                         gPlayer.qSpeedGround = 0;
                         gPlayer.qSpeedAirX = 0;
                         gPlayer.charState = CHARSTATE_IDLE;
-                        gPlayer.unk61 = 0;
-                        gPlayer.unk62 = 0;
+                        gPlayer.SA2_LABEL(unk61) = 0;
+                        gPlayer.SA2_LABEL(unk62) = 0;
                         if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                         } else {
@@ -1230,7 +1255,7 @@ void SA2_LABEL(sub_8017C28)(void)
 
     if (mpp->unk60 == 0) {
         if (!HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.SA2_LABEL(unk61) != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
 
@@ -1242,7 +1267,7 @@ void SA2_LABEL(sub_8017C28)(void)
             mpp->unk4C = val;
             return;
         } else {
-            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.SA2_LABEL(unk61) != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
             val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
@@ -1419,12 +1444,12 @@ bool32 SA2_LABEL(sub_80181E0)(void)
         val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
 
         if ((val & 1)) {
-            if (gPlayer.unk61 == 0 && (val & 0x20000)) {
+            if (gPlayer.SA2_LABEL(unk61) == 0 && (val & 0x20000)) {
                 if (gPlayer.qSpeedAirX > 0) {
                     gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
                     gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
-            } else if (gPlayer.unk61 == 0 && (val & 0x40000)) {
+            } else if (gPlayer.SA2_LABEL(unk61) == 0 && (val & 0x40000)) {
                 if (gPlayer.qSpeedAirX < 0) {
                     gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
                     gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
@@ -1468,12 +1493,12 @@ bool32 SA2_LABEL(sub_8018300)(void)
         }
 
         if (val2 & 1) {
-            if (gPlayer.unk61 == 0 && (val2 & 0x20000)) {
+            if (gPlayer.SA2_LABEL(unk61) == 0 && (val2 & 0x20000)) {
                 if (gPlayer.qSpeedAirX > 0) {
                     gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
                     gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
                 }
-            } else if (gPlayer.unk61 == 0 && (val2 & 0x40000)) {
+            } else if (gPlayer.SA2_LABEL(unk61) == 0 && (val2 & 0x40000)) {
                 if (gPlayer.qSpeedAirX < 0) {
                     gPlayer.qSpeedAirX = -gPlayer.qSpeedAirX;
                     gPlayer.qSpeedGround = -gPlayer.qSpeedGround;
