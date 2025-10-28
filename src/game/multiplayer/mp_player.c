@@ -1477,6 +1477,8 @@ void SA2_LABEL(sub_8017F34)(void)
 }
 #endif
 
+#if (GAME == GAME_SA2)
+// This function is at the bottom of the file in SA1!
 void SA2_LABEL(sub_8018120)(void)
 {
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
@@ -1499,6 +1501,7 @@ void SA2_LABEL(sub_8018120)(void)
         mpp->unk4C = 0;
     }
 }
+#endif // (GAME == GAME_SA2)
 
 #ifndef COLLECT_RINGS_ROM
 bool32 SA2_LABEL(sub_80181E0)(void)
@@ -1510,7 +1513,7 @@ bool32 SA2_LABEL(sub_80181E0)(void)
     u32 val;
 
     if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-        val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
+        val = SA2_LABEL(sub_800DA4C)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
 
         if ((val & 1)) {
             if (gPlayer.SA2_LABEL(unk61) == 0 && (val & 0x20000)) {
@@ -1544,20 +1547,25 @@ bool32 SA2_LABEL(sub_80181E0)(void)
 bool32 SA2_LABEL(sub_8018300)(void)
 {
     MultiplayerPlayer *mpp;
+    MultiplayerPlayer *otherMPP;
     Sprite *s, *sprPlayer;
     u32 val;
 
     sprPlayer = &gPlayer.spriteInfoBody->s;
     mpp = TASK_DATA(gCurTask);
     s = &mpp->s;
+#if (GAME == GAME_SA1)
+    // spC
+    otherMPP = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+#endif
 
     if (mpp->unk60 == 0) {
-        u32 val2 = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
+        u32 val2 = SA2_LABEL(sub_800DA4C)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && !(val2 & 3)) {
             if (mpp->pos.x > 960) {
-                val2 = sub_800DA4C(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
+                val2 = SA2_LABEL(sub_800DA4C)(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             } else {
-                val2 = sub_800DA4C(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
+                val2 = SA2_LABEL(sub_800DA4C)(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             }
         }
 
@@ -1591,7 +1599,7 @@ bool32 SA2_LABEL(sub_8018300)(void)
                 } else {
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 }
-                sub_800DE44(&gPlayer);
+                SA2_LABEL(sub_800DE44)(&gPlayer);
             } else
 #endif
             {
@@ -1612,18 +1620,22 @@ bool32 SA2_LABEL(sub_8018300)(void)
             Sprite *existingS = gPlayer.stoodObj;
             s16 x, y;
 
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val2 & 2);
+            val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val2 & 2);
 
+#if (GAME == GAME_SA2)
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && val == 0) {
                 gPlayer.moveState = existingMoveState;
                 gPlayer.stoodObj = existingS;
 
                 if (mpp->pos.x > 960) {
-                    val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+                    val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1,
+                                                 val);
                 } else {
-                    val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+                    val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1,
+                                                 val);
                 }
             }
+#endif
 
             if (mpp->unk4C & 0x20 && !(val & 0x20)) {
                 gPlayer.moveState &= ~MOVESTATE_20;
@@ -1655,15 +1667,17 @@ bool32 SA2_LABEL(sub_8018300)(void)
         return FALSE;
     }
 
-    val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
+    val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
+#if (GAME == GAME_SA2)
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && val == 0) {
         if (mpp->pos.x > 960) {
-            val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+            val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
         } else {
-            val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+            val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
         }
     }
+#endif
 
     if (mpp->unk4C & 0x20 && !(val & 0x20)) {
         gPlayer.moveState &= ~MOVESTATE_20;
