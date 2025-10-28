@@ -3,6 +3,7 @@
 
 #include "core.h"
 #include "rect.h"
+#include "game/sa1_sa2_shared/camera.h" // for CamCoord
 #include "game/sa1_sa2_shared/player.h"
 
 #define COLL_NONE        0
@@ -38,7 +39,7 @@ u32 Coll_Player_Platform(Sprite *, s32 x, s32 y, Player *);
 u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *param3, Player *p);
 bool32 SA2_LABEL(sub_800DD54)(Player *p);
 bool32 SA2_LABEL(sub_800DE44)(Player *p);
-u32 SA2_LABEL(sub_800D0A0)(Sprite *s, CamCoord worldX, CamCoord worldY, s16 qSpeedX, s16 qSpeedY, u8 layer, u8 arg6);
+u32 SA2_LABEL(sub_800D0A0)(Sprite *s, s16 worldX, s16 worldY, s16 qSpeedX, s16 qSpeedY, u8 layer, u32 arg6);
 
 bool32 Coll_Player_Enemy_Attack(Sprite *, s32, s32, u8);
 

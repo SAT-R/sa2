@@ -1763,6 +1763,15 @@ void Task_HandleLaunchPlayer(void)
 }
 #endif
 
+#if (GAME == GAME_SA1)
+void TaskDestructor_MultiplayerPlayer(struct Task *t)
+{
+    MultiplayerPlayer *mpp = TASK_DATA(t);
+    gMultiplayerPlayerTasks[mpp->unk56] = NULL;
+    VramFree(mpp->s.graphics.dest);
+}
+#endif // (GAME == GAME_SA1)
+
 void SA2_LABEL(sub_8018818)(void)
 {
     u32 i;
