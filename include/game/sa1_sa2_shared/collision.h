@@ -36,14 +36,12 @@ void Coll_Player_Enemy_AdjustSpeed(Player *);
 u32 Coll_Player_Platform(Sprite *, s32 x, s32 y, Player *);
 
 u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *param3, Player *p);
-bool32 sub_800DD54(Player *p);
-bool32 sub_800DE44(Player *p);
-u32 sub_800D0A0(Sprite *, s16, s16, s16, s16, u8, u32);
+bool32 SA2_LABEL(sub_800DD54)(Player *p);
+bool32 SA2_LABEL(sub_800DE44)(Player *p);
+u32 SA2_LABEL(sub_800D0A0)(Sprite *s, CamCoord worldX, CamCoord worldY, s16 qSpeedX, s16 qSpeedY, u8 layer, u8 arg6);
 
-// HandlePlayerDestroy?
 bool32 Coll_Player_Enemy_Attack(Sprite *, s32, s32, u8);
 
-// HandleHitPlayer
 u32 Coll_Player_Projectile(Sprite *, s32, s32);
 
 #endif // GUARD_STAGE_ENTITIES_0_H

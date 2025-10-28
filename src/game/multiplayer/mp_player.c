@@ -1624,7 +1624,7 @@ bool32 SA2_LABEL(sub_8018300)(void)
                 } else {
                     gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 }
-                sub_800DD54(&gPlayer);
+                SA2_LABEL(sub_800DD54)(&gPlayer);
             }
 
             mpp->unk60 = 30;
@@ -1642,12 +1642,12 @@ bool32 SA2_LABEL(sub_8018300)(void)
 
                     {
                         ChaoTask *chao = TASK_DATA(gChaoTasks[i]);
-                        chao->unk41 = otherMPP->unk56;
+                        chao->unk41 = mpp->unk56;
                         {
                             RoomEvent_ChaoCollected *roomEvent = CreateRoomEvent();
                             roomEvent->type = ROOMEVENT_TYPE_CHAO_COLLECTED;
                             roomEvent->id1 = i;
-                            roomEvent->id2 = otherMPP->unk56;
+                            roomEvent->id2 = mpp->unk56;
                         }
                     }
                 }
@@ -1661,9 +1661,10 @@ bool32 SA2_LABEL(sub_8018300)(void)
             Sprite *existingS = gPlayer.stoodObj;
             s16 x, y;
 
+#if (GAME == GAME_SA1)
+            val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, 0);
+#elif (GAME == GAME_SA2)
             val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val2 & 2);
-
-#if (GAME == GAME_SA2)
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && val == 0) {
                 gPlayer.moveState = existingMoveState;
                 gPlayer.stoodObj = existingS;
