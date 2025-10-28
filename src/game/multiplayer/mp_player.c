@@ -26,6 +26,18 @@
 #include "constants/game_modes.h"
 #include "constants/songs.h"
 
+// TODO: Name
+#if (GAME == GAME_SA1)
+#define IS_SPECIFIC_TAILS_ANIM                                                                                                             \
+    (s->graphics.anim != SA1_ANIM_CHAR(TAILS, 58) && s->graphics.anim != SA1_ANIM_CHAR(TAILS, 57)                                          \
+     && s->graphics.anim != SA1_ANIM_CHAR(TAILS, 56))
+#elif (GAME == GAME_SA2)
+#define IS_SPECIFIC_TAILS_ANIM                                                                                                             \
+    (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)                                                                  \
+     && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)                                                               \
+     && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
+#endif
+
 u32 unused_3005838 = 0;
 bool8 gShouldSpawnMPAttack2Effect = FALSE;
 
@@ -590,6 +602,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 END_NONMATCH
 
 #ifndef COLLECT_RINGS_ROM
+// Sonic/Cream
 void SA2_LABEL(sub_8016D20)(void)
 {
     Sprite *sprPlayer = &gPlayer.spriteInfoBody->s;
@@ -763,6 +776,7 @@ void SA2_LABEL(sub_8016D20)(void)
 
 #define SOME_INVERTED_GRAVITY_MACRO (!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8) || !(mpp->unk5C & 0x100) != !GRAVITY_IS_INVERTED)
 
+// Tails
 void SA2_LABEL(sub_801707C)(void)
 {
 
@@ -785,9 +799,18 @@ void SA2_LABEL(sub_801707C)(void)
         someBool = TRUE;
     }
 
+#if (GAME == GAME_SA1)
+    // Checks twice for gGameMode 3, 5 !
+    if (((gGameMode == 3 || gGameMode == 5)
+         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
+             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+        || (gGameMode != 3 && gGameMode != 5))
+#elif (GAME == GAME_SA2)
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+#endif
+    {
         if (SA2_LABEL(sub_8018300)() == 0) {
             return;
         }
@@ -810,9 +833,7 @@ void SA2_LABEL(sub_801707C)(void)
 
         mpp->unk60 = 0;
 
-        if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
-            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS)) {
+        if (IS_SPECIFIC_TAILS_ANIM) {
             if (SA2_LABEL(sub_80181E0)()) {
                 if (!(mpp->unk4C & 0x20)) {
                     return;
@@ -824,15 +845,12 @@ void SA2_LABEL(sub_801707C)(void)
             }
         }
 
-        if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
-            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS) && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1])
-            && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+        if (IS_SPECIFIC_TAILS_ANIM && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
             return;
         }
 
         someOtherBool = (gPlayer.moveState >> 1) & 1;
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
+        val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
         if ((mpp->unk4C & 0x20) && !(val & 0x20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -845,20 +863,15 @@ void SA2_LABEL(sub_801707C)(void)
         }
 
         if (!(mpp->unk5C & 4)) {
-            if ((someOtherBool || someBool)
-                && (val & 0x10028
-                    && (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
-                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
-                    && (!!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8)))) {
+            if ((someOtherBool || someBool) && (val & 0x10028 && !IS_SPECIFIC_TAILS_ANIM && (!!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8)))) {
 
                 s32 y;
                 if (!GRAVITY_IS_INVERTED) {
-                    result = sub_801E4E4(MAX(I(gPlayer.qWorldY), mpp->pos.y) + gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, 8,
-                                         &unusedByte, sub_801EE64);
+                    result = SA2_LABEL(sub_801E4E4)(MAX(I(gPlayer.qWorldY), mpp->pos.y) + gPlayer.spriteOffsetY, I(gPlayer.qWorldX),
+                                                    gPlayer.layer, 8, &unusedByte, SA2_LABEL(sub_801EE64));
                 } else {
-                    result = sub_801E4E4(MIN(I(gPlayer.qWorldY), mpp->pos.y) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, -8,
-                                         &unusedByte, sub_801EE64);
+                    result = SA2_LABEL(sub_801E4E4)(MIN(I(gPlayer.qWorldY), mpp->pos.y) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX),
+                                                    gPlayer.layer, -8, &unusedByte, SA2_LABEL(sub_801EE64));
                 }
 
                 if (result - gPlayer.spriteOffsetY > 0) {
@@ -870,7 +883,7 @@ void SA2_LABEL(sub_801707C)(void)
 
                     {
                         RoomEvent_Unknown *roomEvent = CreateRoomEvent();
-                        roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
+                        roomEvent->type = ROOMEVENT_TYPE_8;
                         roomEvent->unk1 = mpp->unk56;
                         roomEvent->unk2 = 1;
                     }
@@ -888,8 +901,12 @@ void SA2_LABEL(sub_801707C)(void)
             }
         }
 
+#if (GAME > GAME_SA1)
         gPlayer.charState = CHARSTATE_IDLE;
         gPlayer.callback = Player_TouchGround;
+#else
+        gPlayer.charState = CHARSTATE_38;
+#endif
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.SA2_LABEL(unk61) = 0;
         gPlayer.SA2_LABEL(unk62) = 0;
@@ -900,15 +917,14 @@ void SA2_LABEL(sub_801707C)(void)
             mpp->unk5C &= ~4;
 
         } else {
-            if ((s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
-                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
-                || I(gPlayer.qWorldX) <= gCamera.minX || I(gPlayer.qWorldX) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO
-                || moveStateVal != 0) {
+            if (IS_SPECIFIC_TAILS_ANIM || I(gPlayer.qWorldX) <= gCamera.minX || I(gPlayer.qWorldX) >= gCamera.maxX
+                || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
                 mpp->unk5C &= ~4;
                 gPlayer.charState = CHARSTATE_IDLE;
+#if (GAME > GAME_SA1)
                 gPlayer.callback = Player_TouchGround;
+#endif
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     gPlayer.timerInvulnerability = 60;
                 }
@@ -924,9 +940,13 @@ void SA2_LABEL(sub_801707C)(void)
 
                     // TODO: potential macro
                     if (!invertedGravity) {
+#if (GAME == GAME_SA1)
+                        y = Q(mpp->pos.y + (s->hitboxes[0].b.bottom) + 17);
+#elif (GAME == GAME_SA2)
                         y = Q(mpp->pos.y + (s->hitboxes[0].bottom) + 17);
-                        result = sub_801E4E4(I(gPlayer.qWorldY) + gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, 8, &unusedByte,
-                                             sub_801EE64);
+#endif
+                        result = SA2_LABEL(sub_801E4E4)(I(gPlayer.qWorldY) + gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, 8,
+                                                        &unusedByte, SA2_LABEL(sub_801EE64));
 
                         if (result < 0) {
                             y += Q(result);
@@ -936,9 +956,14 @@ void SA2_LABEL(sub_801707C)(void)
                         }
 
                     } else {
+#if (GAME == GAME_SA1)
+                        y = Q(mpp->pos.y + (s->hitboxes[0].b.bottom) - 17);
+#elif (GAME == GAME_SA2)
+                        // TODO: Is this a bug-fix... or a bug?
                         y = Q(mpp->pos.y + (s->hitboxes[0].top) - 17);
-                        result = sub_801E4E4(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, -8, &unusedByte,
-                                             sub_801EE64);
+#endif
+                        result = SA2_LABEL(sub_801E4E4)(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, I(gPlayer.qWorldX), gPlayer.layer, -8,
+                                                        &unusedByte, SA2_LABEL(sub_801EE64));
 
                         if (result < 0) {
                             y -= Q(result);
@@ -975,7 +1000,7 @@ void SA2_LABEL(sub_801707C)(void)
 
         if (!(mpp->unk5C & 4)) {
             RoomEvent_Unknown *roomEvent = CreateRoomEvent();
-            roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
+            roomEvent->type = ROOMEVENT_TYPE_8;
             roomEvent->unk1 = mpp->unk56;
             roomEvent->unk2 = 0;
         }
@@ -996,7 +1021,7 @@ void SA2_LABEL(sub_801707C)(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
+        val = SA2_LABEL(sub_800D0A0)(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
