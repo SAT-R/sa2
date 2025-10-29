@@ -275,18 +275,14 @@ extern u8 gFrameInputsBufIndex;
 #define INCREMENT_RINGS(_inc)                                                                                                              \
     {                                                                                                                                      \
         s32 prevLives, newLives;                                                                                                           \
-        s32 oldRings = gRingCount;                                                                                                         \
-        gRingCount += _inc;                                                                                                                \
-                                                                                                                                           \
+        u16 oldRings = gRingCount;                                                                                                         \
+        gRingCount = oldRings + (_inc);                                                                                                    \
         if (!(IS_EXTRA_STAGE(gCurrentLevel))) {                                                                                            \
             newLives = Div(gRingCount, 100);                                                                                               \
             prevLives = Div(oldRings, 100);                                                                                                \
-                                                                                                                                           \
             if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                                                       \
                 u16 lives = gNumLives + 1;                                                                                                 \
-                                                                                                                                           \
                 gNumLives = LIVES_BOUND_CHECK_A(lives);                                                                                    \
-                                                                                                                                           \
                 gMusicManagerState.unk3 = 0x10 | 0x0;                                                                                      \
             }                                                                                                                              \
         }                                                                                                                                  \
