@@ -26,7 +26,7 @@ static const u8 demo3[] = INCBIN_U8("data/recordings/demo_3.bin.lz");
 static const u8 demo4[] = INCBIN_U8("data/recordings/demo_4.bin.lz");
 
 #if TAS_TESTING
-static const u8 speedrun[] = INCBIN_U8("data/recordings/dashjump_any_percent.bin.lz");
+static const u8 speedrun[] = INCBIN_U8("data/recordings/grindersky_collision_bug.bin.lz");
 #endif
 
 // Unused - not sure what this data represent

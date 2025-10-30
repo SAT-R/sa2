@@ -96,7 +96,7 @@ void GameInit(void)
     gInputPlaybackData = gDemoRecordings[4];
     InputRecorderLoadTape();
     gInputRecorder.mode = RECORDER_PLAYBACK;
-    CreateNewProfileScreen();
+    CreateTitleScreen();
 
     // Use this snippet to skip to a specific level
     // zone 7 act 1 starts at frame 44928

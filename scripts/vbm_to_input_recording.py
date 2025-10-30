@@ -44,7 +44,7 @@ with open("test.vbm", "rb") as vbm:
     save_state_offset = read_u32(vbm)
     
     if save_state_offset != 0:
-        print("This filed contains a save state which means that it's unlikely to be supported")
+        print("This file contains a save state which means that it's unlikely to be supported")
         
     controller_data_offset = read_u32(vbm)
 
