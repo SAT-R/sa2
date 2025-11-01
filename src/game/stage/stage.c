@@ -319,8 +319,14 @@ void Task_GameStage(void)
 #if DEBUG
 #include "game/character_select.h"
         if (gInput & SELECT_BUTTON) {
+            const u32 initialCharacter = CHARACTER_TAILS;
+            const bool32 allUnlocked = TRUE;
             TasksDestroyAll();
-            CreateCharacterSelectionScreen(CHARACTER_TAILS);
+#if (GAME == GAME_SA1)
+            CreateCharacterSelectionScreen(initialCharacter);
+#elif (GAME == GAME_SA2)
+            CreateCharacterSelectionScreen(initialCharacter, allUnlocked);
+#endif
             return;
         }
 #endif

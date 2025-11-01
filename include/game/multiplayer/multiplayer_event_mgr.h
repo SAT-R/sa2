@@ -17,6 +17,7 @@
 #define ROOMEVENT_TYPE_MYSTERY_ITEMBOX_BREAK 5
 #define ROOMEVENT_TYPE_ITEMEFFECT_APPLIED    6
 #define ROOMEVENT_TYPE_REACHED_STAGE_GOAL    7
+#define ROOMEVENT_TYPE_8                     8
 #define ROOMEVENT_TYPE_UNKNOWN               8
 
 // RoomEvent variable structs
@@ -59,6 +60,12 @@ typedef struct {
     u8 id;
     u8 unk4;
 } RoomEvent_MysteryItemBoxBreak;
+
+typedef struct {
+    ROOMEVENT_BASE;
+    u8 x;
+    u8 y;
+} RoomEvent_GoalReached;
 
 typedef struct {
     ROOMEVENT_BASE;
