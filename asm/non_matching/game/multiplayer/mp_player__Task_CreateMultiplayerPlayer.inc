@@ -577,7 +577,7 @@ _0801666C:
 	ldr r0, _080166DC @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	ldr r1, _080166E0 @ =gUnknown_03005390
+	ldr r1, _080166E0 @ =gBgSpritesCount
 	movs r0, #0
 	strb r0, [r1]
 	ldr r1, _080166E4 @ =gVramGraphicsCopyCursor
@@ -592,7 +592,7 @@ _0801666C:
 _080166D4: .4byte 0x0000FFFF
 _080166D8: .4byte gBackgroundsCopyQueueCursor
 _080166DC: .4byte gBackgroundsCopyQueueIndex
-_080166E0: .4byte gUnknown_03005390
+_080166E0: .4byte gBgSpritesCount
 _080166E4: .4byte gVramGraphicsCopyCursor
 _080166E8: .4byte gVramGraphicsCopyQueueIndex
 _080166EC: .4byte gGameMode

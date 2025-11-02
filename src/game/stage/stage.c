@@ -527,7 +527,7 @@ void HandleLifeLost(void)
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
 
-        SA2_LABEL(gUnknown_03005390) = 0;
+        SA2_LABEL(gBgSpritesCount) = 0;
 
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
@@ -558,7 +558,7 @@ void HandleLifeLost(void)
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
 
-            SA2_LABEL(gUnknown_03005390) = 0;
+            SA2_LABEL(gBgSpritesCount) = 0;
 
             PAUSE_GRAPHICS_QUEUE();
             CreateGameStage();
@@ -724,7 +724,7 @@ void HandleDeath(void)
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         gNumLives = 2;
@@ -746,7 +746,7 @@ void GoToNextLevel(void)
 
     TasksDestroyAll();
     PAUSE_BACKGROUNDS_QUEUE();
-    SA2_LABEL(gUnknown_03005390) = 0;
+    SA2_LABEL(gBgSpritesCount) = 0;
     PAUSE_GRAPHICS_QUEUE();
 
 #if (GAME == GAME_SA1)

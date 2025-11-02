@@ -597,7 +597,7 @@ static void sub_805D1F8(void)
             if (packet->pat0.unk0 > 0x4041) {
                 TasksDestroyAll();
                 PAUSE_BACKGROUNDS_QUEUE();
-                gUnknown_03005390 = 0;
+                gBgSpritesCount = 0;
                 PAUSE_GRAPHICS_QUEUE();
                 LinkCommunicationError();
                 return;

@@ -363,13 +363,13 @@ extern u16 gUnknown_03002A8C;
 // of the OAM. This is the index of the first currently-inactive element
 extern u8 gOamFirstPausedIndex;
 extern u8 gBackgroundsCopyQueueCursor;
-extern Sprite *gUnknown_03004D10[16];
+extern Sprite *gBgSprites[16];
 extern u8 gNumVBlankCallbacks;
 extern void *gUnknown_03004D54;
 extern u16 gUnknown_03004D58;
 extern u8 gVramGraphicsCopyCursor;
 extern u8 gUnknown_03004D60[0x20];
-extern u8 gUnknown_03005390;
+extern u8 gBgSpritesCount;
 extern u16 gUnknown_03005394;
 extern u16 gUnknown_03005398;
 extern FuncType_030053A0 gVBlankIntrs[4];

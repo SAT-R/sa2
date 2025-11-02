@@ -447,7 +447,7 @@ static void Render(EggFrog *boss)
     s->x = 32;
     s->y = 40;
     UpdateSpriteAnimation(s);
-    sub_8003914(s);
+    DisplaySprite_BG(s);
     gBgScrollRegs[0][0] = 32 - (I(boss->x) - gCamera.x);
     gBgScrollRegs[0][1] = 40 - (I(boss->y) - gCamera.y);
 

@@ -39,7 +39,7 @@ static void Task_StagePaletteLoader(void)
 {
     Sprite *s = TASK_DATA(gCurTask);
 
-    if (sub_80036E0(s) == 0) {
+    if (UpdateSpriteAnimation_BG(s) == 0) {
         TaskDestroy(gCurTask);
     }
 }

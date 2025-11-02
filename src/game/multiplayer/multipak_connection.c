@@ -217,7 +217,7 @@ static void sub_805ADAC(void)
             if (gMultiplayerMissingHeartbeats[SIO_MULTI_CNT->id]++ > 180) {
                 TasksDestroyAll();
                 PAUSE_BACKGROUNDS_QUEUE();
-                gUnknown_03005390 = 0;
+                gBgSpritesCount = 0;
                 PAUSE_GRAPHICS_QUEUE();
                 LinkCommunicationError();
                 return;
@@ -236,7 +236,7 @@ static void sub_805ADAC(void)
         if (++connectScreen->unkFD >= 9) {
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             LinkCommunicationError();
             return;
@@ -297,7 +297,7 @@ static void sub_805ADAC(void)
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             LinkCommunicationError();
             return;
@@ -357,7 +357,7 @@ static void sub_805ADAC(void)
     if (recv->unk0 >= 0x4013) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         LinkCommunicationError();
         return;
@@ -491,7 +491,7 @@ static void sub_805B4C0(void)
             gUnknown_03002280[0][3] = 32;
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             LinkCommunicationError();
             return;
@@ -552,7 +552,7 @@ static void sub_805B4C0(void)
         gUnknown_03002280[0][3] = 32;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         LinkCommunicationError();
         return;
@@ -560,7 +560,7 @@ static void sub_805B4C0(void)
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT && connectScreen->unkFB++ >= 0x3D) {
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             LinkCommunicationError();
             return;

@@ -691,7 +691,7 @@ void UpdateBgAnimationTiles(Background *bg)
 // Differences to UpdateSpriteAnimation:
 // - SPRITE_INIT_ANIM_IF_CHANGED gets executed *after* the if.
 // - Uses animCmdTable_BG instead of animCmdTable
-s32 sub_80036E0(Sprite *s)
+s32 UpdateSpriteAnimation_BG(Sprite *s)
 {
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
@@ -810,12 +810,12 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
     return 1;
 }
 
-void sub_8003914(Sprite *s)
+void DisplaySprite_BG(Sprite *s)
 {
     const SpriteOffset *dims;
 
-    gUnknown_03004D10[gUnknown_03005390] = s;
-    gUnknown_03005390++;
+    gBgSprites[gBgSpritesCount] = s;
+    gBgSpritesCount++;
 
     if (s->dimensions != (void *)-1) {
         u32 bgId;
@@ -868,12 +868,12 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 
 // TODO: once function matches this can be removed
 #if PORTABLE
-    gUnknown_03005390 = 0;
+    gBgSpritesCount = 0;
     return TRUE;
 #endif
 
 #if (RENDERER == RENDERER_SOFTWARE)
-    if (gUnknown_03005390 != 0) {
+    if (gBgSpritesCount != 0) {
         OamDataShort oam;
         s32 r5;
         s32 sp08;
@@ -889,9 +889,9 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
         s32 yPos; // =r5
         u16 oamX, oamY;
 
-        for (r5 = 0; r5 < gUnknown_03005390; r5++) {
+        for (r5 = 0; r5 < gBgSpritesCount; r5++) {
             // _08003A1A
-            s = gUnknown_03004D10[r5];
+            s = gBgSprites[r5];
             dims = s->dimensions;
 
             if (dims != (void *)-1) {
@@ -1009,7 +1009,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
             }
         }
 
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
     }
 #endif
 

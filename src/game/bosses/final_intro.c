@@ -920,7 +920,7 @@ void sub_8037F68(void)
             // exit to stage
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             gGameMode = GAME_MODE_SINGLE_PLAYER;
             gSelectedCharacter = CHARACTER_SONIC;
@@ -1627,7 +1627,7 @@ void Task_SkipHandlerMain(void)
     if (gPressedKeys & START_BUTTON) {
         TasksDestroyInPriorityRange(0, priorityMax);
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         TaskCreate(sub_8039AD4, 0, priority, 0, NULL);
     }

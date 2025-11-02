@@ -1038,7 +1038,7 @@ void Task_804DC60(void)
         TasksDestroyAll();
 
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
 
         PAUSE_GRAPHICS_QUEUE();
 

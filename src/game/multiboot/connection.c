@@ -396,7 +396,7 @@ void StartSinglePakConnect(void)
     } else {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         LinkCommunicationError();
     }
@@ -415,7 +415,7 @@ void sub_8081604(void)
     if (SomeSioCheck()) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         LinkCommunicationError();
     }
@@ -457,7 +457,7 @@ void sub_8081604(void)
         || multiBootFlags == MULTIBOOT_ERROR_BOOT_FAILURE || multiBootFlags == MULTIBOOT_ERROR_HANDSHAKE_FAILURE) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         gFlags &= ~0x4000;
         gFlags &= ~FLAGS_8000;
@@ -524,7 +524,7 @@ void sub_80818B8(void)
         if (!sub_8081E38(connectScreen, i)) {
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             gFlags &= ~0x4000;
             gFlags &= ~FLAGS_8000;

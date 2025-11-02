@@ -111,7 +111,7 @@ void Task_PauseMenuUpdate(void)
 
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         return;
@@ -121,7 +121,7 @@ void Task_PauseMenuUpdate(void)
 
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreenAndSkipIntro();
         return;

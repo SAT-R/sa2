@@ -22,7 +22,7 @@ void LinkCommunicationError(void);
                     if (gMultiplayerMissingHeartbeats[i]++ > 0xB4) {                                                                       \
                         TasksDestroyAll();                                                                                                 \
                         PAUSE_BACKGROUNDS_QUEUE();                                                                                         \
-                        gUnknown_03005390 = 0;                                                                                             \
+                        gBgSpritesCount = 0;                                                                                               \
                         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;                                                             \
                         LinkCommunicationError();                                                                                          \
                         return;                                                                                                            \

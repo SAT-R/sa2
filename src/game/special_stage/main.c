@@ -639,7 +639,7 @@ void sub_806C6A4(void)
 
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         WriteSaveGame();
         GameStageStart();
@@ -714,7 +714,7 @@ bool32 SpecialStagePauseMenuMain(void)
             }
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             CreateTitleScreenAndSkipIntro();
 

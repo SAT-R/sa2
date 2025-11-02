@@ -462,7 +462,7 @@ static void Task_HandleModeSelectedExit(void)
 
     TasksDestroyAll();
     PAUSE_BACKGROUNDS_QUEUE();
-    gUnknown_03005390 = 0;
+    gBgSpritesCount = 0;
     PAUSE_GRAPHICS_QUEUE();
     CreateCharacterSelectionScreen(0, gLoadedSaveGame->unlockedCharacters & 0x10);
 }

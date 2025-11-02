@@ -3744,7 +3744,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     WriteSaveGame();
     TasksDestroyAll();
     PAUSE_BACKGROUNDS_QUEUE();
-    gUnknown_03005390 = 0;
+    gBgSpritesCount = 0;
     PAUSE_GRAPHICS_QUEUE();
 
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
@@ -4686,7 +4686,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
             EwramFree(timeRecordsScreen->timeRecords);
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             CreateCharacterSelectionScreen(timeRecordsScreen->character, allCharactersUnlocked);
             break;
@@ -5609,7 +5609,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
     WriteSaveGame();
     TasksDestroyAll();
     PAUSE_BACKGROUNDS_QUEUE();
-    gUnknown_03005390 = 0;
+    gBgSpritesCount = 0;
     PAUSE_GRAPHICS_QUEUE();
     CreateTitleScreenAtSinglePlayerMenu();
 }

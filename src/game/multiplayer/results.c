@@ -348,7 +348,7 @@ static void sub_805C3D0(void)
         gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
             CreateMultiplayerLobbyScreen();

@@ -199,7 +199,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         s->animSpeed = 16;
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        sub_80036E0(s);
+        UpdateSpriteAnimation_BG(s);
     }
 }
 
@@ -281,8 +281,8 @@ void sub_806EB74(void)
         for (i = 0; i < num; i++) {
             Sprite *s = &world->unk90[i];
 
-            sub_80036E0(s);
-            sub_8003914(s);
+            UpdateSpriteAnimation_BG(s);
+            DisplaySprite_BG(s);
         }
     }
 }

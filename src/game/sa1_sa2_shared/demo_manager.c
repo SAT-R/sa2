@@ -228,7 +228,7 @@ void Task_DemoManagerEndFadeout(void)
         LOADED_SAVE->timeLimitDisabled = dm->timeLimitDisabled;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        SA2_LABEL(gUnknown_03005390) = 0;
+        SA2_LABEL(gBgSpritesCount) = 0;
         PAUSE_GRAPHICS_QUEUE();
 
 #if (GAME == GAME_SA1)

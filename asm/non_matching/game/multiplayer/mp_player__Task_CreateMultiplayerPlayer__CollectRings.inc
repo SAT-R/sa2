@@ -627,7 +627,7 @@ _02009608:
 	ldr r0, _02009674 @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	ldr r1, _02009678 @ =gUnknown_03005390
+	ldr r1, _02009678 @ =gBgSpritesCount
 	movs r0, #0
 	strb r0, [r1]
 	ldr r1, _0200967C @ =gVramGraphicsCopyCursor
@@ -640,7 +640,7 @@ _02009608:
 _0200966C: .4byte 0x0000FFFF
 _02009670: .4byte gBackgroundsCopyQueueCursor
 _02009674: .4byte gBackgroundsCopyQueueIndex
-_02009678: .4byte gUnknown_03005390
+_02009678: .4byte gBgSpritesCount
 _0200967C: .4byte gVramGraphicsCopyCursor
 _02009680: .4byte gVramGraphicsCopyQueueIndex
 _02009684:

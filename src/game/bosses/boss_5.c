@@ -318,8 +318,8 @@ void CreateEggSaucer(void)
     s->graphics.dest = (void *)VRAM + 0xC000;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_DISK, 0, 31, 3, SPRITE_FLAG(18, 1));
 
-    sub_80036E0(s);
-    sub_8003914(s);
+    UpdateSpriteAnimation_BG(s);
+    DisplaySprite_BG(s);
 
     s = &boss->pilot;
     s->x = 0;

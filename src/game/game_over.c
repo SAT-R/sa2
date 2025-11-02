@@ -78,7 +78,7 @@ void Task_FadeoutToOverScreen(void)
         gBldRegs.bldY = 16;
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         InitOverScreen(lostLifeCause);
 
@@ -282,7 +282,7 @@ void Task_TimeOverScreenMain(void)
     if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         gRingCount = 0;
 
@@ -317,7 +317,7 @@ void sub_8036B70(void)
     if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreen();
     } else {

@@ -325,7 +325,7 @@ static void Task_802BC10(void)
     if (sonic->shouldDestroy) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
-        gUnknown_03005390 = 0;
+        gBgSpritesCount = 0;
         PAUSE_GRAPHICS_QUEUE();
 
         if ((gNumLives != 0) && (--gNumLives != 0)) {

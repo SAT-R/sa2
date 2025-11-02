@@ -116,7 +116,7 @@ HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
 u8 gIwramHeap[0x2204] = {};
 
-Sprite *gUnknown_03004D10[] ALIGNED(16) = {};
+Sprite *gBgSprites[] ALIGNED(16) = {};
 u8 gNumVBlankCallbacks ALIGNED(4) = 0;
 void *gUnknown_03004D54 = NULL;
 u16 gUnknown_03004D58 ALIGNED(4) = 0;
@@ -125,7 +125,7 @@ u8 gUnknown_03004D60[] ALIGNED(16) = {};
 u8 gUnknown_03004D80[] = {};
 OamData gOamBuffer[] ALIGNED(16) = {};
 u16 gVramHeapState[] = {};
-u8 gUnknown_03005390 ALIGNED(4) = 0;
+u8 gBgSpritesCount ALIGNED(4) = 0;
 u16 gUnknown_03005394 ALIGNED(4) = 0;
 u16 gUnknown_03005398 ALIGNED(4) = 0;
 FuncType_030053A0 gVBlankIntrs[] ALIGNED(16) = {};
@@ -224,7 +224,7 @@ void EngineInit(void)
     sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
     gBackgroundsCopyQueueCursor = 0;
     gBackgroundsCopyQueueIndex = 0;
-    gUnknown_03005390 = 0;
+    gBgSpritesCount = 0;
     gVramGraphicsCopyCursor = 0;
     gVramGraphicsCopyQueueIndex = 0;
 

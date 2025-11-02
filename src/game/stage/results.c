@@ -352,7 +352,7 @@ static void Task_UpdateStageResults(void)
 
                 { // TODO: This is a macro!
                     PAUSE_BACKGROUNDS_QUEUE();
-                    gUnknown_03005390 = 0;
+                    gBgSpritesCount = 0;
                     PAUSE_GRAPHICS_QUEUE();
                 }
 
@@ -368,7 +368,7 @@ static void Task_UpdateStageResults(void)
 
                 { // TODO: This is a macro!
                     PAUSE_BACKGROUNDS_QUEUE();
-                    gUnknown_03005390 = 0;
+                    gBgSpritesCount = 0;
                     PAUSE_GRAPHICS_QUEUE();
                 }
 
@@ -387,7 +387,7 @@ static void Task_UpdateStageResults(void)
 
                     { // TODO: This is a macro!
                         PAUSE_BACKGROUNDS_QUEUE();
-                        gUnknown_03005390 = 0;
+                        gBgSpritesCount = 0;
                         PAUSE_GRAPHICS_QUEUE();
                     }
 
@@ -436,7 +436,7 @@ static void Task_UpdateStageResults(void)
 
                         { // TODO: This is a macro!
                             PAUSE_BACKGROUNDS_QUEUE();
-                            gUnknown_03005390 = 0;
+                            gBgSpritesCount = 0;
                             PAUSE_GRAPHICS_QUEUE();
                         }
 
@@ -459,7 +459,7 @@ static void Task_UpdateStageResults(void)
 
                     { // TODO: This is a macro!
                         PAUSE_BACKGROUNDS_QUEUE();
-                        gUnknown_03005390 = 0;
+                        gBgSpritesCount = 0;
                         PAUSE_GRAPHICS_QUEUE();
                     }
 

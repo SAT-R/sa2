@@ -21,19 +21,19 @@
 	.align 2, 0
 _08003A04: .4byte REG_DISPSTAT
 _08003A08:
-	ldr r0, _08003BA4 @ =gUnknown_03005390
+	ldr r0, _08003BA4 @ =gBgSpritesCount
 	ldrb r1, [r0]
 	cmp r1, #0
 	bne _08003A12
 	b sub_80039E4_return_1
 _08003A12:
 	movs r5, #0         @ r5 = r5 = 0
-	cmp r5, r1          @ for(; r5 < gUnknown_03005390; r5++)
+	cmp r5, r1          @ for(; r5 < gBgSpritesCount; r5++)
 	blo _08003A1A
 	b _08003EC2
 _08003A1A:
 	lsls r0, r5, #2
-	ldr r1, _08003BA8 @ =gUnknown_03004D10
+	ldr r1, _08003BA8 @ =gBgSprites
 	adds r0, r0, r1
 	ldr r0, [r0]
 	str r0, [sp, #0xc]  @ sp0C = s
@@ -238,8 +238,8 @@ _08003B96:
 	str r5, [sp, #0x24]
 	b _08003BDE
 	.align 2, 0
-_08003BA4: .4byte gUnknown_03005390
-_08003BA8: .4byte gUnknown_03004D10
+_08003BA4: .4byte gBgSpritesCount
+_08003BA8: .4byte gBgSprites
 _08003BAC: .4byte gBgCntRegs
 _08003BB0: .4byte gDispCnt
 _08003BB4: .4byte gRefSpriteTables
@@ -645,14 +645,14 @@ _08003EB2:
 	ldr r4, [sp, #0x3c]
 	lsls r0, r4, #0x18
 	lsrs r5, r0, #0x18
-	ldr r6, _08003EE0 @ =gUnknown_03005390
+	ldr r6, _08003EE0 @ =gBgSpritesCount
 	ldrb r6, [r6]
 	cmp r5, r6
 	bhs _08003EC2
 	b _08003A1A
 _08003EC2:
 	movs r0, #0
-	ldr r7, _08003EE0 @ =gUnknown_03005390
+	ldr r7, _08003EE0 @ =gBgSpritesCount
 	strb r0, [r7]
 sub_80039E4_return_1:
 	movs r0, #1
@@ -667,6 +667,6 @@ sub_80039E4_return:
 	bx r1
 	.align 2, 0
 _08003EDC: .4byte 0x0000F3FF
-_08003EE0: .4byte gUnknown_03005390
+_08003EE0: .4byte gBgSpritesCount
 
 .syntax divided

@@ -410,7 +410,7 @@ NONMATCH("asm/non_matching/game/multiplayer/sa1_mp_player__Task_CreateMultiplaye
         if (mpp->unk61++ > 30) {
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            sa2__gUnknown_03005390 = 0;
+            sa2__gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
 #ifndef NON_MATCHING
             // NOTE: MultiPakCommunicationError() does NOT take any arguments, neither in SA1 nor the others.
@@ -731,7 +731,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             //     // TODO: macro this
             //     TasksDestroyAll();
             //     PAUSE_BACKGROUNDS_QUEUE();
-            //     gUnknown_03005390 = 0;
+            //     gBgSpritesCount = 0;
             //     PAUSE_GRAPHICS_QUEUE();
             //     LinkCommunicationError();
             //     return;
@@ -746,7 +746,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             // TODO: macro this
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
-            gUnknown_03005390 = 0;
+            gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
             LinkCommunicationError();
             return;
