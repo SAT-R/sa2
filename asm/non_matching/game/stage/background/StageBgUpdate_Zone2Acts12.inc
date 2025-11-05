@@ -102,7 +102,7 @@ _0801C9FE:
 	str r0, [r1]
 	ldr r0, _0801CA68 @ =gHBlankCopySize
 	strb r2, [r0]
-	ldr r0, _0801CA6C @ =gBgOffsetsHBlank
+	ldr r0, _0801CA6C @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r0]
 	ldr r0, _0801CA70 @ =gStageTime
 	ldr r1, [r0]
@@ -145,7 +145,7 @@ _0801CA5C: .4byte gFlags
 _0801CA60: .4byte gHBlankCopyTarget
 _0801CA64: .4byte 0x0400001C
 _0801CA68: .4byte gHBlankCopySize
-_0801CA6C: .4byte gBgOffsetsHBlank
+_0801CA6C: .4byte gBgOffsetsHBlankPrimary
 _0801CA70: .4byte gStageTime
 _0801CA74:
 	cmp r1, #0x78

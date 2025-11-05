@@ -170,11 +170,7 @@ void LinkCommunicationError(void)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
     DmaFill32(3, 0, VRAM + ((gBgCntRegs[0] & 0xC) * 0x1000), 0x40);
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(0);
     gBgCntRegs[0] = 0x1E01;
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -539,7 +535,7 @@ void sub_80818B8(void)
                 for (j = 0; j < 4; j++) {
                     gMultiplayerCharacters[j] = 0;
                     gMPRingCollectWins[j] = 0;
-                    gUnknown_030054B4[j] = j;
+                    gMultiplayerRanks[j] = j;
                     gMultiplayerMissingHeartbeats[j] = 0;
                 }
                 gCurTask->main = sub_8081D58;
@@ -628,7 +624,7 @@ void ShowSinglePakResults(void)
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         gMultiplayerCharacters[i] = 0;
         gMPRingCollectWins[i] = 0;
-        gUnknown_030054B4[i] = i;
+        gMultiplayerRanks[i] = i;
         gMultiplayerMissingHeartbeats[i] = 0;
     }
 

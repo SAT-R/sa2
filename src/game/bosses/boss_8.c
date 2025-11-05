@@ -724,11 +724,7 @@ void CreateSuperEggRoboZ(void)
     gBgCntRegs[2] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(31) | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 0x40;
+    INIT_BG_SPRITES_LAYER_64(0);
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
@@ -1769,7 +1765,7 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
     s->y = I(sp00.y) - gCamera.y;
 
     s->frameFlags
-        = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        = (gOamMatrixIndex++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->qScaleX = Q(1);
@@ -1791,8 +1787,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
 
-        s->frameFlags = (gUnknown_030054B8++
-                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        s->frameFlags
+            = (gOamMatrixIndex++ | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->qScaleX = Q(1);
@@ -1856,7 +1852,7 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
     s->y = I(sp00.y) - gCamera.y + r3;
 
     s->frameFlags
-        = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        = (gOamMatrixIndex++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->qScaleX = Q(1);
@@ -1882,8 +1878,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
 
-        s->frameFlags = (gUnknown_030054B8++
-                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        s->frameFlags
+            = (gOamMatrixIndex++ | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->qScaleX = Q(1);

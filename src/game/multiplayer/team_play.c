@@ -112,11 +112,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     gBgScrollRegs[2][1] = 0;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xff;
-    gUnknown_03002280[2][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(2);
 
     t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0, NULL);
     teamPlayScreen = TASK_DATA(t);
@@ -334,11 +330,7 @@ static void sub_805CC34(void)
                 if (teamPlayScreen->unk316 != 0) {
                     Background *background = &teamPlayScreen->unk290;
 
-                    gUnknown_03004D80[2] = 0;
-                    gUnknown_03002280[2][0] = 0;
-                    gUnknown_03002280[2][1] = 0;
-                    gUnknown_03002280[2][2] = 0xFF;
-                    gUnknown_03002280[2][3] = 32;
+                    INIT_BG_SPRITES_LAYER_32(2);
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
@@ -378,11 +370,7 @@ static void sub_805CC34(void)
             if (teamPlayScreen->unk316 != 0) {
                 background = &teamPlayScreen->unk290;
 
-                gUnknown_03004D80[2] = 0;
-                gUnknown_03002280[2][0] = 0;
-                gUnknown_03002280[2][1] = 0;
-                gUnknown_03002280[2][2] = 0xFF;
-                gUnknown_03002280[2][3] = 32;
+                INIT_BG_SPRITES_LAYER_32(2);
 
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                 background->graphics.anim = 0;
@@ -463,7 +451,7 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen *teamPlayScreen)
     u16 i;
     s16 unk312, unk310;
 
-    u16 *unk1884 = gBgOffsetsHBlank;
+    u16 *unk1884 = gBgOffsetsHBlankPrimary;
     teamPlayScreen->unk314 = (teamPlayScreen->unk314 + 1) & 1023;
     teamPlayScreen->unk310 += gSineTable[teamPlayScreen->unk314] >> 4;
     teamPlayScreen->unk312 += gSineTable[teamPlayScreen->unk314 + 0x100] >> 4;

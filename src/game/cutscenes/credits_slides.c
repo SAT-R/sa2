@@ -51,11 +51,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     gBgCntRegs[1] = 0x1C04;
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(1);
 
     t = TaskCreate(sub_808F004, sizeof(CreditsSlidesCutScene), 0x3100, 0, sub_808F148);
     scene = TASK_DATA(t);

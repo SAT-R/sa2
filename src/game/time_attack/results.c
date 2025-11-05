@@ -234,7 +234,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gOamMatrixIndex++ | 0x20;
     UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.qScaleX = 0;

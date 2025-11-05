@@ -92,8 +92,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     s->graphics.dest = VramMalloc(0x10);
     SPRITE_INIT_ANIM(s, SA2_ANIM_KUBINAGA, 1, 19);
     SPRITE_INIT_SCRIPT(s, 1.0)
-    s->frameFlags
-        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1);
     UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -383,7 +382,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
     }
 
     sHead->frameFlags
-        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
+        = gOamMatrixIndex++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     UpdateSpriteAnimation(sHead);
     TransformSprite(sHead, transform);

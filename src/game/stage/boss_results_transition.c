@@ -148,7 +148,7 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
 
 void InitHBlankBgOffsets(u16 xOffset)
 {
-    if (gBgOffsetsHBlank == &gBgOffsetsBuffer) {
+    if (gBgOffsetsHBlankPrimary == &gBgOffsetsBuffer) {
 #if DISPLAY_WIDTH > 255
         DmaFill32(3, xOffset, &gBgOffsetsBuffer[0][0], sizeof(gBgOffsetsBuffer[0]));
 #else
@@ -166,7 +166,7 @@ void InitHBlankBgOffsets(u16 xOffset)
 // Unused
 void SetBgOffsetsInRange(u16 value, int_vcount from, int_vcount to)
 {
-    u16 *offsets = gBgOffsetsHBlank;
+    u16 *offsets = gBgOffsetsHBlankPrimary;
     offsets += from;
 
     for (; from < to; from++) {

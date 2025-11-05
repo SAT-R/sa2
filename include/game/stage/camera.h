@@ -9,7 +9,6 @@
 void InitCamera(u32);
 void DestroyCameraMovementTask(void);
 
-extern const Collision *gRefCollision;
 extern const u16 gBossCameraYClamps[][2];
 
 #endif // GUARD_GAME_STAGE_CAMERA_H

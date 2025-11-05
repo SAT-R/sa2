@@ -266,7 +266,7 @@ void Task_80159C8(void)
 
             if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
-                s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags |= (gOamMatrixIndex++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
                     transform->qScaleX = +Q(1);

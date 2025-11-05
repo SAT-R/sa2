@@ -3,7 +3,7 @@
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/multiplayer/multiplayer_event_mgr.h"
 
-u8 gUnknown_030053E0 = 0;
+u8 gSpikesUnknownTimer = 0;
 u32 gCheckpointTime = 0;
 u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gMultiplayerLanguage = 0;
@@ -38,7 +38,7 @@ u16 ALIGNED(4) gBossCameraClampYLower = 0;
 s8 ALIGNED(4) gTrappedAnimalVariant = 0;
 
 u8 ALIGNED(4) gNumLives = 0;
-u16 ALIGNED(4) gUnknown_0300544C = 0;
+u16 ALIGNED(4) gPrevStageFlags = 0;
 s32 gLevelScore = 0;
 
 #ifndef COLLECT_RINGS_ROM
@@ -50,8 +50,8 @@ CheeseTarget ALIGNED(8) gCheeseTarget = {};
 u32 gMPStageStartFrameCount = 0;
 MusicManagerState ALIGNED(8) gMusicManagerState = {};
 u8 gUnknown_030054B0 = 0;
-s8 ALIGNED(4) gUnknown_030054B4[MULTI_SIO_PLAYERS_MAX] = {};
-u8 gUnknown_030054B8 = 0;
+s8 ALIGNED(4) gMultiplayerRanks[MULTI_SIO_PLAYERS_MAX] = {};
+u8 gOamMatrixIndex = 0;
 u16 ALIGNED(4) gBossCameraClampYUpper = 0;
 HomingTarget gHomingTarget = {};
 

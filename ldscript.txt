@@ -50,6 +50,7 @@ SECTIONS
         src/game/dummy_task.o(.data);
         src/game/stage/stage.o(.data);
         src/game/stage/camera.o(.data);
+        src/game/stage/terrain_collision.o(.data);
         src/game/stage/dust_effect_braking.o(.data);
         src/game/stage/rings_scatter.o(.data);
         src/game/stage/player.o(.data);

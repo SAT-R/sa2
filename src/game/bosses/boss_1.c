@@ -293,7 +293,7 @@ void CreateEggHammerTankII(void)
     SPRITE_INIT_SCRIPT(s, 1.0);
 
     s->frameFlags
-        = (gUnknown_030054B8++) | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+        = (gOamMatrixIndex++) | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
 
@@ -597,7 +597,7 @@ static void Render(EggHammerTankII *boss)
 
     s->x = x - 8 + ((COS((boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 23);
     s->y = y + ((SIN((boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1)) * boss->hammerArmSegmentPositions[5]) >> 23);
-    s->frameFlags = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gOamMatrixIndex++ | 0x2060;
 
     transform->rotation = (boss->hammerArmSegmentAngles[5] - (boss->hammerAngle) + boss->hammerArmSegmentAngles[5]) & (SIN_PERIOD - 1);
     if (transform->rotation != DEG_TO_SIN(270)) {
@@ -1425,7 +1425,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
 
     s->x = I(ds->hammerX) - gCamera.x;
     s->y = I(ds->hammerY) - gCamera.y;
-    s->frameFlags = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gOamMatrixIndex++ | 0x2060;
 
     if (ds->hammerState != 0) {
         ds->hammerState = 2;

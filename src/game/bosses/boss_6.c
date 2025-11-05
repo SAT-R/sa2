@@ -571,7 +571,7 @@ static void Render(EggGoRound *boss)
             transform->x = s->x;
             transform->y = s->y;
 
-            s->frameFlags = gUnknown_030054B8++ | 0x1020;
+            s->frameFlags = gOamMatrixIndex++ | 0x1020;
             TransformSprite(s, transform);
         } else {
             s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
@@ -642,7 +642,7 @@ static void sub_804655C(EggGoRound *boss, u8 val)
             transform->x = s->x;
             transform->y = s->y;
 
-            s->frameFlags = gUnknown_030054B8++ | 0x1020;
+            s->frameFlags = gOamMatrixIndex++ | 0x1020;
             TransformSprite(s, transform);
         } else {
             s->frameFlags = SPRITE_FLAG(PRIORITY, 1);

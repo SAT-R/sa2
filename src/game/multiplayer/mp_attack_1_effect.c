@@ -84,7 +84,7 @@ void sub_80871C4(s16 a, s16 b, s16 c)
     s16 g;
     u8 i;
 
-    u8 *unk1884 = gBgOffsetsHBlank;
+    u8 *unk1884 = gBgOffsetsHBlankPrimary;
     gHBlankCopySize = 2;
     gHBlankCopyTarget = (void *)REG_ADDR_WIN0H;
 

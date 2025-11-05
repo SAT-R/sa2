@@ -6,6 +6,8 @@
 
 #include "constants/zones.h"
 
+const Collision *gRefCollision = NULL;
+
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 

@@ -731,7 +731,7 @@ _02008354: .4byte gCamera
 _02008358:
 	ldrb r1, [r1]
 	lsls r1, r1, #3
-	ldr r0, _02008428 @ =gOamBuffer2
+	ldr r0, _02008428 @ =gOamMallocBuffer
 	adds r6, r1, r0
 	ldr r3, [sp, #0x14]
 	ldrh r0, [r3, #0x1a]
@@ -838,7 +838,7 @@ _02008418:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02008428: .4byte gOamBuffer2
+_02008428: .4byte gOamMallocBuffer
 _0200842C: .4byte iwram_end
 _02008430: .4byte 0x040000D4
 _02008434: .4byte 0x80000003

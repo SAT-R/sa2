@@ -75,13 +75,12 @@ UNUSED u32 unused_3005950[3] = {};
 #endif
 
 struct Camera ALIGNED(8) gCamera = {};
-const Collision *gRefCollision = NULL;
 
 void RenderMetatileLayers(s32, s32);
 
 void Task_CallUpdateCamera(void);
 void TaskDestructor_Camera(struct Task *);
-void Task_CallUpdateCameraInternal(void);
+void Task_UpdateCamera(void);
 
 // Dummy callbacks
 void CreateStageBg_Default(void);
@@ -466,16 +465,8 @@ void InitCamera(u32 level)
     bgs->unkC0.targetTilesX = STGBG_WIDTH(bgDim);
     bgs->unkC0.targetTilesY = STGBG_HEIGHT(bgDim);
 
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 0x20;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xff;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_32(2);
 
 #ifndef COLLECT_RINGS_ROM
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
@@ -855,7 +846,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
         gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
         gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
         gHBlankCopySize = 4;
-        cursor = gBgOffsetsHBlank;
+        cursor = gBgOffsetsHBlankPrimary;
         initial1 = 0;
 
         if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
@@ -952,7 +943,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
         gHBlankCopySize = 4;
 
-        cursor = gBgOffsetsHBlank;
+        cursor = gBgOffsetsHBlankPrimary;
         dt = gStageTime * 0x18;
 
         // Sky and Clouds
@@ -1113,11 +1104,11 @@ void StageBgUpdate_Zone3Acts12(s32 cameraX, s32 cameraY)
     s32 pFlags;
 #ifndef NON_MATCHING
     register s16 sl asm("sl") = 0;
-    register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
+    register u16 *bgBuffer asm("r5") = gBgOffsetsHBlankPrimary;
     register s16 camFracY asm("r3") = (Div(cameraY, 60) << 16) >> 16;
 #else
     s16 sl = 0;
-    u16 *bgBuffer = gBgOffsetsHBlank;
+    u16 *bgBuffer = gBgOffsetsHBlankPrimary;
     s16 camFracY = Div(cameraY, 60);
 #endif
 
@@ -1320,7 +1311,7 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED cameraX, s32 UNUSED cameraY)
         gFlags = gFlags | FLAGS_EXECUTE_HBLANK_COPY;
         gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
         gHBlankCopySize = 2;
-        cursor = gBgOffsetsHBlank;
+        cursor = gBgOffsetsHBlankPrimary;
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_5, ACT_BOSS)) {
             gDispCnt |= DISPCNT_BG0_ON;
@@ -1475,11 +1466,7 @@ void CreateStageBg_Zone6_Acts(void)
 {
     gDispCnt |= DISPCNT_BG0_ON;
     gBgCntRegs[0] = 0x1a0f;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -1500,11 +1487,7 @@ void CreateStageBg_Zone6_Boss(void)
     Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= DISPCNT_BG0_ON;
     gBgCntRegs[0] = 0x1a0f;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -1544,7 +1527,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     gBldRegs.bldAlpha = BLDALPHA_BLEND(16, 8);
     gBldRegs.bldY = 16 * 10;
 
-    hOffsets = gBgOffsetsHBlank;
+    hOffsets = gBgOffsetsHBlankPrimary;
 
     stageTime = (gStageTime & 0x3FF);
     stageTime2 = ((gStageTime >> 1) & 0x3FF);
@@ -1906,7 +1889,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
     gHBlankCopyTarget = (void *)&REG_BG3HOFS;
     gHBlankCopySize = 4;
 
-    dst = (u16 *)gBgOffsetsHBlank;
+    dst = (u16 *)gBgOffsetsHBlankPrimary;
 
 #ifndef NON_MATCHING
     // Why call Div without using its return value?
@@ -1938,7 +1921,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
         if (r5 < 240) {
             // __0801DACA
             if (r5 > 80) {
-                dst = gBgOffsetsHBlank;
+                dst = gBgOffsetsHBlankPrimary;
                 r1 = ((r5 - 80) >> 4);
                 dst += (r5 - r1) << 1;
 
@@ -1949,7 +1932,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
                 }
             }
             // _0801DB1C
-            dst = gBgOffsetsHBlank;
+            dst = gBgOffsetsHBlankPrimary;
             dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16)); lineY++, r2++) {
@@ -1968,7 +1951,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
             }
         } else {
             // _0801DBAC
-            dst = gBgOffsetsHBlank;
+            dst = gBgOffsetsHBlankPrimary;
 
             for (lineY = 255 - r5; lineY < 16; lineY++) {
                 *dst++ = ip;
@@ -1992,7 +1975,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
         if (r5 < 224) {
             u8 val;
             if (r5 > 80) {
-                dst = gBgOffsetsHBlank;
+                dst = gBgOffsetsHBlankPrimary;
 
                 val = ((r5 - 80) >> 4);
                 dst += (r5 - val) << 1;
@@ -2004,7 +1987,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
                 }
             }
             // _0801DC66
-            dst = gBgOffsetsHBlank;
+            dst = gBgOffsetsHBlankPrimary;
             dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32)); lineY++, r2++) {
@@ -2020,7 +2003,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
             }
         } else {
             // _0801DCDC
-            dst = gBgOffsetsHBlank;
+            dst = gBgOffsetsHBlankPrimary;
 
             for (lineY = 255 - r5; lineY < 32; lineY++) {
                 *dst++ = ip;
@@ -2078,7 +2061,7 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
     gHBlankCopyTarget = (void *)&REG_BG0HOFS;
     gHBlankCopySize = 2;
-    cursor = (u16 *)gBgOffsetsHBlank;
+    cursor = (u16 *)gBgOffsetsHBlankPrimary;
 
     stageTime = gStageTime;
     frameCount = ((stageTime >> 3) & 0x1F);
@@ -2162,12 +2145,7 @@ void CreateStageBg_ZoneFinal_0(void)
     u8 i;
 
     gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
-    gUnknown_03004D80[2] = 0;
-
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(2);
 
     bgDst = &gStageBackgroundsRam.unk80;
     gBgCntRegs[2] = BGCNT_SCREENBASE(26) | BGCNT_256COLOR | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(1);
@@ -2260,13 +2238,18 @@ void Task_CallUpdateCamera(void)
         gDispCnt &= ~DISPCNT_WIN0_ON;
     }
 
-    gCurTask->main = Task_CallUpdateCameraInternal;
+    gCurTask->main = Task_UpdateCamera;
 }
 
-void Task_CallUpdateCameraInternal(void)
+void Task_UpdateCamera(void)
 {
     UpdateCamera();
-    gUnknown_030054B8 = 4;
+    // At the start of each frame in the stage we reset the oam matrix index
+    // so that when sprites are drawn they can be given a "unique" oam matrix index
+    // for effects
+    //
+    // Throuthout the codebase you'll see it's usage with frameFlags = gOamMatrixIndex++
+    gOamMatrixIndex = 4;
 }
 
 #ifndef COLLECT_RINGS_ROM
@@ -2413,7 +2396,7 @@ void StageBgUpdate_ZoneFinalActTA53(UNUSED s32 a, UNUSED s32 b)
         gHBlankCopyTarget = (void *)&REG_BG1HOFS;
         gHBlankCopySize = 2;
 
-        offset = (u16 *)gBgOffsetsHBlank;
+        offset = (u16 *)gBgOffsetsHBlankPrimary;
         for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
             s16 val = SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12;
             *offset++ = val;
@@ -2447,7 +2430,7 @@ void HBlankCB_801E434(int_vcount vcount)
 void HBlankCB_801E454(int_vcount vcount)
 {
     if (vcount != 0) {
-        u16 *p = &((u16 *)gUnknown_030022AC)[vcount * 2], *q;
+        u16 *p = &((u16 *)gBgOffsetsHBlankSecondary)[vcount * 2], *q;
         q = p - 1;
 
         if (p[1] != *q) {

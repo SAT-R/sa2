@@ -153,7 +153,7 @@ static void Task_SpikesUpMain(void)
     HandleSpikeMovementUp(s, me, spikes, &gPlayer);
 #endif
 #ifndef COLLECT_RINGS_ROM
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gUnknown_030053E0 == 0)) {
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gSpikesUnknownTimer == 0)) {
         if (spikes->playerMoveState[0] & (MOVESTATE_40000 | MOVESTATE_80000)) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
@@ -191,7 +191,7 @@ static void Task_SpikesDownMain(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0) || (gUnknown_030053E0 != 0)) {
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0) || (gSpikesUnknownTimer != 0)) {
         if (!GRAVITY_IS_INVERTED) {
             HandleSpikeMovementDown(s, me, spikes, &gPlayer);
         } else {
@@ -199,7 +199,7 @@ static void Task_SpikesDownMain(void)
         }
     }
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gUnknown_030053E0 == 0)) {
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gSpikesUnknownTimer == 0)) {
         if (spikes->playerMoveState[0] & MOVESTATE_20) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
@@ -213,7 +213,7 @@ static void Task_SpikesDownMain(void)
         me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0 || gSpikesUnknownTimer != 0)) {
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }
@@ -289,7 +289,7 @@ static void Task_SpikesLeftRightMain(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || me->d.sData[0] != 0 || gUnknown_030053E0 != 0) {
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || me->d.sData[0] != 0 || gSpikesUnknownTimer != 0) {
         // _0805FC16
         s32 r4 = Coll_Player_Platform(s, screenX, screenY, &gPlayer);
 #ifdef NON_MATCHING
@@ -374,7 +374,7 @@ static void Task_SpikesLeftRightMain(void)
     }
     // _0805FDA4
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gUnknown_030053E0 == 0)) {
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gSpikesUnknownTimer == 0)) {
         if (spikes->playerMoveState[0] & MOVESTATE_20) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
@@ -388,7 +388,7 @@ static void Task_SpikesLeftRightMain(void)
         me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0) || (gUnknown_030053E0 != 0)) {
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0) || (gSpikesUnknownTimer != 0)) {
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }
@@ -542,7 +542,7 @@ static bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spi
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gUnknown_030053E0 == 30)) {
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0) && (gSpikesUnknownTimer == 30)) {
         u32 flags = Coll_Player_Platform(s, screenX, screenY, player);
 
         if (flags) {

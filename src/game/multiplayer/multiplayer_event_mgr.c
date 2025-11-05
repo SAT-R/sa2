@@ -97,7 +97,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
     MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
     MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
 
-    if (!(us->unk5C & 1) && PLAYER_IS_ALIVE && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
+    if (!(us->unk5C & 1) && PLAYER_IS_ALIVE && gMultiplayerRanks[SIO_MULTI_CNT->id] == -1) {
         switch (recv->pat0.unkF) {
 #ifndef COLLECT_RINGS_ROM
             case 0: {
@@ -198,20 +198,20 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
         mpp2 = TASK_DATA(gMultiplayerPlayerTasks[j]);
         if (gGameMode != GAME_MODE_TEAM_PLAY) {
 
-            if (mpp2->unk5C & 1 && gUnknown_030054B4[j] != -1) {
+            if (mpp2->unk5C & 1 && gMultiplayerRanks[j] != -1) {
                 count2++;
                 count3++;
             }
         } else {
             if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
                     != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
-                && (s8)gUnknown_030054B4[j] == 0) {
+                && (s8)gMultiplayerRanks[j] == 0) {
                 count2 = 1;
             }
         }
     }
 
-    if (gUnknown_030054B4[i] == -1) {
+    if (gMultiplayerRanks[i] == -1) {
         CreateMultiplayerFinishResult(i, count2);
     } else {
         somebool = 1;
@@ -219,7 +219,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 
     if (gGameMode == GAME_MODE_TEAM_PLAY) {
         for (j = 0; j < 4 && gMultiplayerPlayerTasks[j] != NULL; j++) {
-            if (j != i && gUnknown_030054B4[j] == -1
+            if (j != i && gMultiplayerRanks[j] == -1
                 && (gMultiplayerConnections & (0x10 << (j))) >> ((j + 4)) == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
                 CreateMultiplayerFinishResult(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
@@ -263,7 +263,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
             }
 
             mpp2 = TASK_DATA(gMultiplayerPlayerTasks[j]);
-            if (gUnknown_030054B4[j] == -1) {
+            if (gMultiplayerRanks[j] == -1) {
                 if (gGameMode == GAME_MODE_TEAM_PLAY) {
                     CreateMultiplayerFinishResult(j, 1);
                 } else {

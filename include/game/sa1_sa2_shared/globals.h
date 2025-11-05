@@ -136,7 +136,7 @@ extern s32 gUnknown_030054FC;
 extern u16 gBossCameraClampYLower;
 extern u16 gBossCameraClampYUpper;
 extern u8 gRandomItemBox;
-extern u8 gUnknown_030053E0;
+extern u8 gSpikesUnknownTimer;
 
 extern s8 gUnknown_0300543C;
 extern struct Task *gEntitiesManagerTask;
@@ -148,7 +148,7 @@ extern u8 gRoomEventQueueSendPos;
 // "Extra State" (see above #defines for states)
 // TODO: Find better name. Put somewhere else?
 extern u16 gStageFlags;
-extern u16 gUnknown_0300544C;
+extern u16 gPrevStageFlags;
 
 extern u8 gDifficultyLevel;
 
@@ -172,8 +172,8 @@ extern bool8 gUnknown_030055BC;
 
 extern struct Task *gMultiplayerPlayerTasks[4];
 extern s8 gMultiplayerCharacters[4];
-extern s8 gUnknown_030054B4[4];
-extern u8 gUnknown_030054B8;
+extern s8 gMultiplayerRanks[4];
+extern u8 gOamMatrixIndex;
 
 extern u8 gMultiplayerMissingHeartbeats[4];
 extern u8 gActiveCollectRingEffectCount;

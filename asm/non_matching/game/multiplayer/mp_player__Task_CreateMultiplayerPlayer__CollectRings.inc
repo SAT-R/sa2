@@ -785,7 +785,7 @@ _02009778:
 	ands r0, r3
 	cmp r0, #0
 	bne _020097BE
-	ldr r1, _02009828 @ =gUnknown_030054B4
+	ldr r1, _02009828 @ =gMultiplayerRanks
 	adds r0, r7, #0
 	adds r0, #0x56
 	ldrb r0, [r0]
@@ -827,7 +827,7 @@ _020097E2:
 	rsbs r1, r1, #0
 	ands r0, r1
 	str r0, [r5, #0x10]
-	ldr r2, _0200982C @ =gUnknown_030054B8
+	ldr r2, _0200982C @ =gOamMatrixIndex
 	ldrb r1, [r2]
 	adds r0, r1, #1
 	strb r0, [r2]
@@ -850,8 +850,8 @@ _020097E2:
 	b _02009838
 	.align 2, 0
 _02009824: .4byte gPlayer
-_02009828: .4byte gUnknown_030054B4
-_0200982C: .4byte gUnknown_030054B8
+_02009828: .4byte gMultiplayerRanks
+_0200982C: .4byte gOamMatrixIndex
 _02009830:
 	movs r0, #0x80
 	lsls r0, r0, #1
@@ -950,7 +950,7 @@ _020098BE:
 	ands r0, r2
 	cmp r0, #0
 	bne _02009916
-	ldr r1, _020099E4 @ =gUnknown_030054B4
+	ldr r1, _020099E4 @ =gMultiplayerRanks
 	adds r0, r7, #0
 	adds r0, #0x56
 	ldrb r0, [r0]
@@ -1082,7 +1082,7 @@ _020099B2:
 _020099D8: .4byte 0xFFFFF7FF
 _020099DC: .4byte 0xFFFFCFFF
 _020099E0: .4byte gStageTime
-_020099E4: .4byte gUnknown_030054B4
+_020099E4: .4byte gMultiplayerRanks
 _020099E8: .4byte 0xFFFFFE7F
 _020099EC: .4byte gGameMode
 _020099F0: .4byte gMultiplayerConnections

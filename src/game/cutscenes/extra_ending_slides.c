@@ -31,11 +31,7 @@ void CreateExtraEndingSlidesCutScene(void)
     gBgCntRegs[0] = 0x5C00;
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
 
     t = TaskCreate(sub_8091590, sizeof(struct ExtraEndingCutSceneSlides), 0x3100, 0, sub_8091680);
     scene = TASK_DATA(t);

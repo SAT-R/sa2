@@ -120,7 +120,7 @@
     {                                                                                                                                      \
         player->qWorldX += player->qSpeedAirX;                                                                                             \
                                                                                                                                            \
-        if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {                                                            \
+        if ((gStageFlags ^ gPrevStageFlags) & STAGE_FLAG__GRAVITY_INVERTED) {                                                              \
             player->qSpeedAirY = -player->qSpeedAirY;                                                                                      \
         }                                                                                                                                  \
                                                                                                                                            \
@@ -4334,7 +4334,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 p->w.cf.unkB0 = rotation;
                 psi->transform.rotation = rotation << 2;
                 s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-                s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags |= gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
                 TransformSprite(s, &psi->transform);
@@ -4364,7 +4364,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
 
                 psi->transform.rotation = shift << 2;
                 s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-                s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags |= gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
                 TransformSprite(s, &psi->transform);
@@ -5066,7 +5066,7 @@ void Player_Spindash(Player *p)
 
         p->qWorldX += p->qSpeedAirX;
 #ifndef COLLECT_RINGS_ROM
-        if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {
+        if ((gStageFlags ^ gPrevStageFlags) & STAGE_FLAG__GRAVITY_INVERTED) {
             p->qSpeedAirY = -p->qSpeedAirY;
         }
 #endif
@@ -5121,7 +5121,7 @@ void Player_Spindash(Player *p)
 
         p->qWorldX += p->qSpeedAirX;
 #ifndef COLLECT_RINGS_ROM
-        if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {
+        if ((gStageFlags ^ gPrevStageFlags) & STAGE_FLAG__GRAVITY_INVERTED) {
             p->qSpeedAirY = -p->qSpeedAirY;
         }
 #endif
@@ -5946,17 +5946,14 @@ void Player_8027C5C(Player *p)
     PLAYERFN_UPDATE_UNK2A(p);
 }
 
-// Multiplayer-only
-void Player_8027D3C(Player *p)
+void Player_HandleMultiplayerFinish(Player *p)
 {
-    s8 *someSio = gUnknown_030054B4;
-    s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
-    u16 r8 = someSio[sioDat];
+    u16 rank = gMultiplayerRanks[SIO_MULTI_CNT->id];
     s32 *pCmpX = &gStageGoalX;
     u32 cmpX;
-    s32 index = (0x40 + (r8 * 32));
+    s32 finalXPos = ((8 * TILE_WIDTH) + (rank * (4 * TILE_WIDTH)));
 
-    cmpX = Q(*pCmpX + index);
+    cmpX = Q(*pCmpX + finalXPos);
     if (p->qWorldX < cmpX) {
         p->heldInput = DPAD_RIGHT;
     } else if (p->qWorldX > cmpX) {
@@ -5993,7 +5990,7 @@ void Player_8027D3C(Player *p)
         p->qWorldX = cmpX;
 
         // TODO: Check correctness of MULTI_SIO_PLAYERS_MAX being here!
-        if (r8 < MULTI_SIO_PLAYERS_MAX) {
+        if (rank < MULTI_SIO_PLAYERS_MAX) {
             p->charState = CHARSTATE_ACT_CLEAR_A;
         } else {
             p->charState = CHARSTATE_IDLE;
@@ -7627,7 +7624,7 @@ void Player_InitReachedGoalMultiplayer(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    PLAYERFN_SET_AND_CALL(Player_8027D3C, p);
+    PLAYERFN_SET_AND_CALL(Player_HandleMultiplayerFinish, p);
 }
 
 void Player_Nop(Player *p) { }

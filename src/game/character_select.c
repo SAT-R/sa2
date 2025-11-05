@@ -1140,7 +1140,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transform->x = s->x;
     transform->y = s->y;
 
-    s->frameFlags = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gOamMatrixIndex++ | 0x60;
     UpdateSpriteAnimation(s);
     TransformSprite(s, transform);
     DisplaySprite(s);
@@ -1220,7 +1220,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transform->x = s->x;
     transform->y = s->y;
 
-    s->frameFlags = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gOamMatrixIndex++ | 0x20;
     UpdateSpriteAnimation(s);
     TransformSprite(s, transform);
     DisplaySprite(s);
@@ -1237,7 +1237,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transform->x = s->x;
     transform->y = s->y;
 
-    s->frameFlags = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gOamMatrixIndex++ | 0x20;
     UpdateSpriteAnimation(s);
     TransformSprite(s, transform);
     DisplaySprite(s);
@@ -1380,7 +1380,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transform->x = s->x;
         transform->y = s->y;
 
-        s->frameFlags = gUnknown_030054B8++ | 0x60;
+        s->frameFlags = gOamMatrixIndex++ | 0x60;
         UpdateSpriteAnimation(s);
         TransformSprite(s, transform);
         DisplaySprite(s);
@@ -1462,7 +1462,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transform->x = s->x;
         transform->y = s->y;
 
-        s->frameFlags = gUnknown_030054B8++ | 0x20;
+        s->frameFlags = gOamMatrixIndex++ | 0x20;
         UpdateSpriteAnimation(s);
         TransformSprite(s, transform);
     } else {
@@ -1483,7 +1483,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transform->x = s->x;
         transform->y = s->y;
 
-        s->frameFlags = gUnknown_030054B8++ | 0x20;
+        s->frameFlags = gOamMatrixIndex++ | 0x20;
         UpdateSpriteAnimation(s);
         TransformSprite(s, transform);
     } else {
@@ -1548,7 +1548,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         transform->x = s->x;
         transform->y = s->y;
 
-        s->frameFlags = gUnknown_030054B8++ | 0x60;
+        s->frameFlags = gOamMatrixIndex++ | 0x60;
         UpdateSpriteAnimation(s);
         TransformSprite(s, transform);
         DisplaySprite(s);

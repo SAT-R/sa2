@@ -207,12 +207,7 @@ void CreateEggSaucer(void)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    gUnknown_03004D80[0] = 0;
-
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 64;
+    INIT_BG_SPRITES_LAYER_64(0);
 
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
 
@@ -360,8 +355,7 @@ void CreateEggSaucer(void)
     // Seems a lot of tiles for this
     vram += 64 * TILE_SIZE_4BPP;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
-    s->frameFlags
-        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     s = &boss->gunCharge;
     s->x = 0;
@@ -591,7 +585,7 @@ void sub_80438C4(EggSaucer *boss)
         transform = &boss->transform;
         s->x = x + ((COS(boss->gunDiskAngle) * 5) >> 11) - 2;
         s->y = y + ((SIN(boss->gunDiskAngle) * 5) >> 11) - 19;
-        s->frameFlags = gUnknown_030054B8++ | 0x1060;
+        s->frameFlags = gOamMatrixIndex++ | 0x1060;
 
         transform->rotation = boss->gunAngle;
         transform->qScaleX = Q(1);
@@ -765,7 +759,7 @@ void sub_8043E2C(EggSaucer *boss)
         transform = &boss->transform;
         s->x = (I(x) - gCamera.x) - 2;
         s->y = (I(y) - gCamera.y) - 19;
-        s->frameFlags = gUnknown_030054B8++ | 0x1060;
+        s->frameFlags = gOamMatrixIndex++ | 0x1060;
 
         transform->rotation = boss->gunAngle;
         transform->qScaleX = 256;

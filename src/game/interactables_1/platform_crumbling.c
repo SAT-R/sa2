@@ -205,7 +205,7 @@ void Task_805E480(void)
                     gCurTask->main = Task_805E6A4;
                 }
 
-                r4 = (((((s16)value * 42) * (s16)value) << 8) >> 16);
+                r4 = I((value * 42) * value);
 
                 if (r4 > otherPos) {
                     if (r6 == 0)

@@ -665,7 +665,7 @@ _08016766:
 	ldrb r0, [r0]
 	cmp r0, #4
 	bne _0801680C
-	ldr r1, _08016898 @ =gUnknown_030054B4
+	ldr r1, _08016898 @ =gMultiplayerRanks
 	ldr r2, _0801689C @ =0x04000128
 	ldr r0, [r2]
 	lsls r0, r0, #0x1a
@@ -814,7 +814,7 @@ _08016880:
 _0801688C: .4byte gPlayerCharacterIdleAnims
 _08016890: .4byte gCamera
 _08016894: .4byte gGameMode
-_08016898: .4byte gUnknown_030054B4
+_08016898: .4byte gMultiplayerRanks
 _0801689C: .4byte 0x04000128
 _080168A0: .4byte gMultiplayerPlayerTasks
 _080168A4: .4byte gMultiplayerConnections
@@ -884,7 +884,7 @@ _08016910:
 	ands r0, r2
 	cmp r0, #0
 	bne _08016956
-	ldr r1, _080169DC @ =gUnknown_030054B4
+	ldr r1, _080169DC @ =gMultiplayerRanks
 	adds r0, r7, #0
 	adds r0, #0x56
 	ldrb r0, [r0]
@@ -965,7 +965,7 @@ _080169BC:
 	str r1, [r2, #0x20]
 	b _08016A12
 	.align 2, 0
-_080169DC: .4byte gUnknown_030054B4
+_080169DC: .4byte gMultiplayerRanks
 _080169E0: .4byte gGameMode
 _080169E4: .4byte 0x04000128
 _080169E8: .4byte gMultiplayerCharacters
@@ -1004,7 +1004,7 @@ _08016A1A:
 	rsbs r1, r1, #0
 	ands r0, r1
 	str r0, [r6, #0x10]
-	ldr r2, _08016A5C @ =gUnknown_030054B8
+	ldr r2, _08016A5C @ =gOamMatrixIndex
 	ldrb r1, [r2]
 	adds r0, r1, #1
 	strb r0, [r2]
@@ -1027,7 +1027,7 @@ _08016A1A:
 	strh r0, [r3, #2]
 	b _08016A68
 	.align 2, 0
-_08016A5C: .4byte gUnknown_030054B8
+_08016A5C: .4byte gOamMatrixIndex
 _08016A60:
 	movs r0, #0x80
 	lsls r0, r0, #1
@@ -1127,7 +1127,7 @@ _08016AEE:
 	ands r0, r2
 	cmp r0, #0
 	bne _08016B48
-	ldr r1, _08016C18 @ =gUnknown_030054B4
+	ldr r1, _08016C18 @ =gMultiplayerRanks
 	adds r0, r7, #0
 	adds r0, #0x56
 	ldrb r0, [r0]
@@ -1260,7 +1260,7 @@ _08016BE6:
 _08016C0C: .4byte 0xFFFFF7FF
 _08016C10: .4byte 0xFFFFCFFF
 _08016C14: .4byte gStageTime
-_08016C18: .4byte gUnknown_030054B4
+_08016C18: .4byte gMultiplayerRanks
 _08016C1C: .4byte 0xFFFFFE7F
 _08016C20: .4byte gGameMode
 _08016C24: .4byte gMultiplayerConnections

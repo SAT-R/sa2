@@ -378,12 +378,7 @@ static void sub_805ADAC(void)
         MultiSioInit(0);
         send = &gMultiSioSend.pat0;
         send->unk0 = 0;
-        gUnknown_03004D80[0] = 0;
-
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xff;
-        gUnknown_03002280[0][3] = 32;
+        INIT_BG_SPRITES_LAYER_32(0);
         CreateMultiplayerModeSelectScreen();
         TaskDestroy(gCurTask);
         return;
@@ -454,11 +449,7 @@ static void sub_805B454(void)
         gMultiSioEnabled = FALSE;
         MultiSioStop();
         MultiSioInit(0);
-        gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xFF;
-        gUnknown_03002280[0][3] = 32;
+        INIT_BG_SPRITES_LAYER_32(0);
         CreateMultiplayerModeSelectScreen();
         TaskDestroy(gCurTask);
     }
@@ -484,11 +475,7 @@ static void sub_805B4C0(void)
             MultiSioInit(0);
             send = &gMultiSioSend.pat0;
             send->unk0 = 0;
-            gUnknown_03004D80[0] = 0;
-            gUnknown_03002280[0][0] = 0;
-            gUnknown_03002280[0][1] = 0;
-            gUnknown_03002280[0][2] = 0xFF;
-            gUnknown_03002280[0][3] = 32;
+            INIT_BG_SPRITES_LAYER_32(0);
             TasksDestroyAll();
             PAUSE_BACKGROUNDS_QUEUE();
             gBgSpritesCount = 0;
@@ -545,11 +532,7 @@ static void sub_805B4C0(void)
         MultiSioInit(0);
         send = &gMultiSioSend.pat0;
         send->unk0 = 0;
-        gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xFF;
-        gUnknown_03002280[0][3] = 32;
+        INIT_BG_SPRITES_LAYER_32(0);
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
         gBgSpritesCount = 0;

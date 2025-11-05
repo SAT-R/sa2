@@ -19,6 +19,7 @@ s32 sub_801E6D4(s32, s32, s32, s32, u8 *, Func801F07C);
 
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
+extern const Collision *gRefCollision;
 extern const Collision *const gCollisionTable[];
 
 #endif // GUARD_STAGE_COLLISION_H

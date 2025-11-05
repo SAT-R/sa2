@@ -10,7 +10,7 @@
 	adds r0, r1, #0     @ r0 = b
 	movs r1, #0
 	mov sl, r1
-	ldr r1, _0801CC54 @ =gBgOffsetsHBlank
+	ldr r1, _0801CC54 @ =gBgOffsetsHBlankPrimary
 	ldr r5, [r1]        @ r5 = bgBuffer
 	movs r1, #0x3c
 	bl Div
@@ -55,7 +55,7 @@ _0801CC3E:
 	mov r8, r4
 	b _0801CC72
 	.align 2, 0
-_0801CC54: .4byte gBgOffsetsHBlank
+_0801CC54: .4byte gBgOffsetsHBlankPrimary
 _0801CC58: .4byte gBgScrollRegs
 _0801CC5C: .4byte gGameMode
 _0801CC60: .4byte gPlayer

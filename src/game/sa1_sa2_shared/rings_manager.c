@@ -368,7 +368,7 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/Task_RingsMgrMain_collect_rings.i
                                     DisplaySprite(s);
                                 } else {
                                     // _08008788
-                                    OamData *oamDat = &gOamBuffer2[s->oamBaseIndex];
+                                    OamData *oamDat = &gOamMallocBuffer[s->oamBaseIndex];
                                     OamData *oamAllocated = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
                                     if (iwram_end == oamAllocated)
@@ -429,7 +429,7 @@ NONMATCH("asm/non_matching/game/sa1_sa2_shared/Task_RingsMgrMain_collect_rings.i
                                     s->y = ry - gCamera.y;
                                     DisplaySprite(s);
                                 } else {
-                                    OamData *oamDat = &gOamBuffer2[s->oamBaseIndex];
+                                    OamData *oamDat = &gOamMallocBuffer[s->oamBaseIndex];
                                     OamData *oamAllocated = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
                                     if (iwram_end == oamAllocated)

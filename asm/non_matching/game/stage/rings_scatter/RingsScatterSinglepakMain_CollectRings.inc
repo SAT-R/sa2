@@ -551,7 +551,7 @@ _02012188: .4byte gStageTime
 _0201218C:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
-	ldr r1, _02012230 @ =gOamBuffer2
+	ldr r1, _02012230 @ =gOamMallocBuffer
 	adds r4, r0, r1
 	ldr r3, [sp, #8]
 	ldrh r0, [r3, #0x1a]
@@ -635,7 +635,7 @@ _02012220:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_02012230: .4byte gOamBuffer2
+_02012230: .4byte gOamMallocBuffer
 _02012234: .4byte iwram_end
 _02012238: .4byte 0x040000D4
 _0201223C: .4byte 0x80000003
