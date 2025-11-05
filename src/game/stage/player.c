@@ -683,8 +683,8 @@ void CreatePlayer(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 #endif
 
     gStageGoalX = 0;
-    gUnknown_030054FC = 0;
-    gUnknown_030054E0 = 0;
+    gWorldSpeedX = 0;
+    gWorldSpeedY = 0;
 
     InitNewInputCounters();
     AllocateCharacterStageGfx(p, p->spriteInfoBody);
@@ -2933,8 +2933,8 @@ void sub_80232D0(Player *p)
                         gCheese->posY += Q(iy);
                     }
 
-                    gUnknown_030054FC = Q(ix);
-                    gUnknown_030054E0 = Q(iy);
+                    gWorldSpeedX = Q(ix);
+                    gWorldSpeedY = Q(iy);
 
                     sub_8039F14(Q(ix), Q(iy));
 
@@ -3581,8 +3581,8 @@ void Task_PlayerMain(void)
     Player_ApplyBoostPhysics(p);
     Player_HandleWalkAnim(p);
 
-    gUnknown_030054FC = 0;
-    gUnknown_030054E0 = 0;
+    gWorldSpeedX = 0;
+    gWorldSpeedY = 0;
     Player_HandleInputs(p);
 #ifndef COLLECT_RINGS_ROM
     InputBuffer_HandleFrameInput(p);
@@ -6948,8 +6948,8 @@ void CreatePlayer(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     InitPlayerHitRingsScatter();
 
     gStageGoalX = 0;
-    gUnknown_030054FC = 0;
-    gUnknown_030054E0 = 0;
+    gWorldSpeedX = 0;
+    gWorldSpeedY = 0;
 
     AllocateCharacterStageGfx(p, p->spriteInfoBody);
 }

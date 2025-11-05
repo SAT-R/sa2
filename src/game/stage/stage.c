@@ -197,7 +197,7 @@ void CreateGameStage(void)
 
     gBossRingsShallRespawn = FALSE;
     gBossRingsRespawnCount = BOSS_RINGS_DEFAULT_RESPAWN_COUNT;
-    gUnknown_030055BC = 0;
+    gBoostEffectTasksCreated = 0;
 
     sub_801F044();
     gSpikesUnknownTimer = 0;

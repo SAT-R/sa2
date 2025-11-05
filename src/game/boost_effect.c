@@ -184,8 +184,8 @@ void CreateBoostEffectTasks(void)
     Sprite *s;
     u8 i;
 
-    if (IS_SINGLE_PLAYER && !gUnknown_030055BC && !IS_BOSS_STAGE(gCurrentLevel)) {
-        gUnknown_030055BC = TRUE;
+    if (IS_SINGLE_PLAYER && !gBoostEffectTasksCreated && !IS_BOSS_STAGE(gCurrentLevel)) {
+        gBoostEffectTasksCreated = TRUE;
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5674); i++) {
             struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0, TaskDestructor_8015B50);
@@ -234,7 +234,7 @@ void Task_80159C8(void)
     if (!(gPlayer.moveState & MOVESTATE_4000000)) {
         if (gPlayer.moveState & MOVESTATE_GOAL_REACHED) {
             TaskDestroy(gCurTask);
-            gUnknown_030055BC = FALSE;
+            gBoostEffectTasksCreated = FALSE;
             return;
         }
     }

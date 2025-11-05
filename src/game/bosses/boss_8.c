@@ -297,7 +297,7 @@ static void Task_BossRunManagerMain(void)
                             r6 = Q(r4);
                             r0 = r5 + r6;
                             gPlayer.qWorldX = r0;
-                            gUnknown_030054FC = r6;
+                            gWorldSpeedX = r6;
                             sub_8039F50(r6, manager->bossIndex);
                             gBossRingsShallRespawn = 1;
                             gCamera.x += r4;
@@ -324,7 +324,7 @@ static void Task_BossRunManagerMain(void)
                 r4 = gUnknown_080D8808[manager->bossIndex][1];
                 r5 = Q(r4);
                 gPlayer.qWorldX += r5;
-                gUnknown_030054FC = r5;
+                gWorldSpeedX = r5;
                 sub_8039F50(r5, manager->bossIndex);
                 gBossRingsShallRespawn = 1;
                 gCamera.x += r4;

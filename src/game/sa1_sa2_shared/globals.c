@@ -63,7 +63,7 @@ u8 gMultiplayerMissingHeartbeats[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gMultiplayerUnlockedLevels = 0;
 struct Task *gEntitiesManagerTask = NULL;
 
-s32 gUnknown_030054E0 = 0;
+s32 gWorldSpeedY = 0;
 u8 gDestroySpotlights = 0;
 
 u8 ALIGNED(4) gRandomItemBox = 0;
@@ -73,7 +73,7 @@ s8 ALIGNED(4) gSelectedCharacter = 0;
 u8 ALIGNED(4) gSpecialRingCount = 0;
 
 u8 ALIGNED(4) gNumSingleplayerCharacters = 0;
-s32 gUnknown_030054FC = 0;
+s32 gWorldSpeedX = 0;
 
 s8 gMultiplayerCharacters[4] = {};
 RoomEvent ALIGNED(16) gRoomEventQueue[16] = {};
@@ -96,7 +96,7 @@ u8 ALIGNED(4) gMultiplayerConnections = 0;
 u8 unused1[4] = {};
 #endif
 
-bool8 ALIGNED(4) gUnknown_030055BC = 0;
+bool8 ALIGNED(4) gBoostEffectTasksCreated = 0;
 
 #if COLLECT_RINGS_ROM
 u8 unused2[8] = {};
@@ -107,7 +107,7 @@ u8 unused2[8] = {};
 u32 unused_030055C0[4] = {};
 #endif
 
-// Maybe?
+// TODO: move to Input buffer
 u8 gFrameInputsBuf[4] = {};
 u8 gNewInputCountersIndex = 0;
 u8 ALIGNED(4) gFrameInputsBufIndex = 0;

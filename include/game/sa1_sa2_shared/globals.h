@@ -130,8 +130,8 @@ extern u32 gCourseTime;
 extern u8 gSpecialRingCount;
 
 // TODO: Types not checked yet!
-extern s32 gUnknown_030054E0;
-extern s32 gUnknown_030054FC;
+extern s32 gWorldSpeedY;
+extern s32 gWorldSpeedX;
 
 extern u16 gBossCameraClampYLower;
 extern u16 gBossCameraClampYUpper;
@@ -168,7 +168,7 @@ extern u8 gRoomEventQueueWritePos;
 
 extern u8 gBossRingsRespawnCount;
 extern bool8 gBossRingsShallRespawn;
-extern bool8 gUnknown_030055BC;
+extern bool8 gBoostEffectTasksCreated;
 
 extern struct Task *gMultiplayerPlayerTasks[4];
 extern s8 gMultiplayerCharacters[4];
