@@ -57,7 +57,7 @@ _0801DA1A:
 	str r0, [r1]
 	ldr r0, _0801DBA0 @ =gHBlankCopySize
 	strb r2, [r0]
-	ldr r0, _0801DBA4 @ =gBgOffsetsHBlank
+	ldr r0, _0801DBA4 @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r0]
 	movs r0, #0x2a
 	mov r1, sl          @ r1 = sl = x
@@ -134,7 +134,7 @@ __0801DACA:
 	str r1, [sp]
 	cmp r5, #0x50
 	bls _0801DB1C
-	ldr r1, _0801DBA4 @ =gBgOffsetsHBlank
+	ldr r1, _0801DBA4 @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r1]
 	adds r0, r5, #0
 	subs r0, #0x50
@@ -171,7 +171,7 @@ _0801DB02:
 	cmp r2, r1
 	blo _0801DB02
 _0801DB1C:
-	ldr r1, _0801DBA4 @ =gBgOffsetsHBlank
+	ldr r1, _0801DBA4 @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r1]
 	add r4, sb
 	adds r3, r5, #0
@@ -234,10 +234,10 @@ _0801DB94: .4byte gFlags
 _0801DB98: .4byte gHBlankCopyTarget
 _0801DB9C: .4byte 0x0400001C
 _0801DBA0: .4byte gHBlankCopySize
-_0801DBA4: .4byte gBgOffsetsHBlank
+_0801DBA4: .4byte gBgOffsetsHBlankPrimary
 _0801DBA8: .4byte gStageTime
 _0801DBAC:
-	ldr r2, _0801DCCC @ =gBgOffsetsHBlank
+	ldr r2, _0801DCCC @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r2]
 	movs r0, #0xff
 	subs r3, r0, r5
@@ -300,7 +300,7 @@ _0801DBFA:
 	mov sb, r3
 	cmp r5, #0x50
 	bls _0801DC66
-	ldr r0, _0801DCCC @ =gBgOffsetsHBlank
+	ldr r0, _0801DCCC @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r0]
 	adds r0, r5, #0
 	subs r0, #0x50
@@ -337,7 +337,7 @@ _0801DC4C:
 	cmp r2, r1
 	blo _0801DC4C
 _0801DC66:
-	ldr r1, _0801DCCC @ =gBgOffsetsHBlank
+	ldr r1, _0801DCCC @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r1]
 	add r4, sb
 	adds r3, r5, #0
@@ -391,12 +391,12 @@ _0801DCB0:
 	blo _0801DCB0
 	b _0801DD1A
 	.align 2, 0
-_0801DCCC: .4byte gBgOffsetsHBlank
+_0801DCCC: .4byte gBgOffsetsHBlankPrimary
 _0801DCD0: .4byte 0x000001EF
 _0801DCD4: .4byte 0x000001B7
 _0801DCD8: .4byte gStageTime
 _0801DCDC:
-	ldr r1, _0801DD64 @ =gBgOffsetsHBlank
+	ldr r1, _0801DD64 @ =gBgOffsetsHBlankPrimary
 	ldr r4, [r1]
 	movs r0, #0xff
 	subs r3, r0, r5
@@ -469,7 +469,7 @@ _0801DD2E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801DD64: .4byte gBgOffsetsHBlank
+_0801DD64: .4byte gBgOffsetsHBlankPrimary
 _0801DD68: .4byte 0x000001CF
 _0801DD6C: .4byte 0x000001A7
 _0801DD70: .4byte sPalette_Zone7BgCeiling

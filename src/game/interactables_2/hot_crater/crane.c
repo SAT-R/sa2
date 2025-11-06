@@ -613,7 +613,7 @@ static void Render(Sprite_HCCrane *crane)
                 transform.x = part->s->x;
                 transform.y = part->s->y;
 
-                part->s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1)
+                part->s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1)
                     | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
                 TransformSprite(part->s, &transform);

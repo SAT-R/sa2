@@ -150,9 +150,9 @@ void sub_806E7C0(struct SpecialStageWorld *world)
     }
 
     world->bgTransforms = EwramMalloc(DISPLAY_HEIGHT * sizeof(BgAffineReg));
-    gBgOffsetsHBlank = world->bgTransforms;
-    gUnknown_03004D54 = world->bgTransforms;
-    gUnknown_030022C0 = world->bgTransforms;
+    gBgOffsetsHBlankPrimary = world->bgTransforms;
+    gBgOffsetsPrimary = world->bgTransforms;
+    gBgOffsetsSecondary = world->bgTransforms;
     unk4 = world->bgTransforms;
 
     {
@@ -215,7 +215,7 @@ void sub_806EA04(void)
 
     gHBlankCopySize = sizeof(BgAffineReg);
     gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
-    gBgOffsetsHBlank = world->bgTransforms;
+    gBgOffsetsHBlankPrimary = world->bgTransforms;
 
     unk5A0 = stage->cameraRotX;
     sin = SIN(unk5A0) * 4;
@@ -225,7 +225,7 @@ void sub_806EA04(void)
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     i = stage->horizonHeight;
-    unk1884 = gBgOffsetsHBlank + (stage->horizonHeight * sizeof(BgAffineReg));
+    unk1884 = gBgOffsetsHBlankPrimary + (stage->horizonHeight * sizeof(BgAffineReg));
 
     for (; i < DISPLAY_HEIGHT; i++) {
         s32 *pos;

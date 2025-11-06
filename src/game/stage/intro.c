@@ -524,7 +524,7 @@ struct Task *SetupStageIntro(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+    s->frameFlags = (gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
     UpdateSpriteAnimation(s);
 
     /*    The icons of all unlocked zones in the upper-right    */
@@ -1131,7 +1131,7 @@ static void Task_IntroZoneNameAndIconAnimations(void)
     // _08030240
     /* Loading Wheel Icon */
     s = &introUI->sprLoadingWheelIcon;
-    s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+    s->frameFlags = (gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
     s->x = 35;
 
     if (counter <= 16) {

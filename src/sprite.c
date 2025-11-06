@@ -660,9 +660,9 @@ void DisplaySprite(Sprite *sprite)
         x = sprite->x;
         y = sprite->y;
 
-        if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
-            x -= SA2_LABEL(gUnknown_030017F4)[0];
-            y -= SA2_LABEL(gUnknown_030017F4)[1];
+        if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
+            x -= SA2_LABEL(gSpriteOffset).x;
+            y -= SA2_LABEL(gSpriteOffset).y;
         }
 
         sprWidth = sprDims->width;
@@ -835,9 +835,9 @@ UNUSED void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
         x = sprite->x;
         y = sprite->y;
 
-        if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
-            x -= SA2_LABEL(gUnknown_030017F4)[0];
-            y -= SA2_LABEL(gUnknown_030017F4)[1];
+        if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
+            x -= SA2_LABEL(gSpriteOffset).x;
+            y -= SA2_LABEL(gSpriteOffset).y;
         }
 
         sprWidth = sprDims->width;
@@ -951,87 +951,86 @@ UNUSED void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
 // the end of the OAM buffer, while the pause menu itself gets put to the beginning.
 OamData *OamMalloc(u8 order)
 {
-    OamData *result;
-
     if (order > 31) {
         order = 31;
     }
 
     if (gOamFreeIndex > OAM_ENTRY_COUNT - 1) {
-        result = (OamData *)iwram_end;
-    } else {
-        if (SA2_LABEL(gUnknown_03001850)[order] == 0xFF) {
-            gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
-            SA2_LABEL(gUnknown_03001850)[order] = gOamFreeIndex;
-            SA2_LABEL(gUnknown_03004D60)[order] = gOamFreeIndex;
-        } else {
-            gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
-            gOamBuffer2[SA2_LABEL(gUnknown_03004D60)[order]].split.fractional = gOamFreeIndex;
-            SA2_LABEL(gUnknown_03004D60)[order] = gOamFreeIndex;
-        }
-
-        gOamFreeIndex++;
-        result = &gOamBuffer2[gOamFreeIndex - 1];
+        return (OamData *)iwram_end;
     }
 
-    return result;
+    // This is the first oam in this layer
+    if (SA2_LABEL(gOamMallocOrders_StartIndex)[order] == 0xFF) {
+        gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
+        // And store the start of the chain
+        SA2_LABEL(gOamMallocOrders_StartIndex)[order] = gOamFreeIndex;
+        SA2_LABEL(gOamMallocOrders_EndIndex)[order] = gOamFreeIndex;
+    } else {
+        gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
+        // Store the next index on the previous in the chain
+        // This is a bit of a hack cos it requires writing to the "fractional" part of the oam
+        // but it's not used for this value
+        gOamMallocBuffer[SA2_LABEL(gOamMallocOrders_EndIndex)[order]].split.fractional = gOamFreeIndex;
+        SA2_LABEL(gOamMallocOrders_EndIndex)[order] = gOamFreeIndex;
+    }
+
+    gOamFreeIndex++;
+    return &gOamMallocBuffer[gOamFreeIndex - 1];
 }
 
-void CopyOamBufferToOam(void)
+void ProcessOamBuffers(void)
 {
     OamData *dstOam = &gOamBuffer[0];
-    u8 i = 0;
-    s32 r3;
+    u8 operationNumber = 0;
+    s32 layer;
 
-    for (r3 = 0; r3 < (s32)ARRAY_COUNT(SA2_LABEL(gUnknown_03001850)); r3++) {
-        s8 index = SA2_LABEL(gUnknown_03001850)[r3];
+    for (layer = 0; layer < (signed)ARRAY_COUNT(SA2_LABEL(gOamMallocOrders_StartIndex)); layer++) {
+        s8 oamMallocIndex = SA2_LABEL(gOamMallocOrders_StartIndex)[layer];
 
-        while (index != -1) {
-            u8 newI;
-            u8 *byteArray = SA2_LABEL(gUnknown_03002710);
-            DmaCopy16(3, &gOamBuffer2[index], dstOam, sizeof(OamDataShort));
+        while (oamMallocIndex != -1) {
+            u8 *debugCopyOrders = SA2_LABEL(gOamMallocCopiedOrder);
+            DmaCopy16(3, &gOamMallocBuffer[oamMallocIndex], dstOam, sizeof(OamDataShort));
             dstOam++;
 
-            byteArray += index;
-            newI = i++;
-            *byteArray = newI;
-            index = gOamBuffer2[index].split.fractional;
+            debugCopyOrders += oamMallocIndex;
+            *debugCopyOrders = operationNumber++;
+            oamMallocIndex = gOamMallocBuffer[oamMallocIndex].split.fractional;
         };
     }
 
     if (gFlags & FLAGS_800) {
-        r3 = gOamFreeIndex;
-        dstOam = &gOamBuffer[r3];
+        layer = gOamFreeIndex;
+        dstOam = &gOamBuffer[layer];
 
-        while (r3 < gOamFirstPausedIndex) {
+        while (layer < gOamFirstPausedIndex) {
             DmaFill16(3, 0x200, dstOam, sizeof(OamDataShort));
             dstOam++;
-            r3++;
+            layer++;
         }
     } else if (gFlags & FLAGS_PAUSE_GAME) {
         /* Push all active OAM entries to te end of OAM temporarily while
          * the game is paused */
         s32 k, l;
-        r3 = gOamFreeIndex - 1;
-        dstOam = &gOamBuffer[r3];
+        layer = gOamFreeIndex - 1;
+        dstOam = &gOamBuffer[layer];
 
-        for (k = l = 0; r3 >= 0;) {
+        for (k = l = 0; layer >= 0;) {
             s32 size = sizeof(OamDataShort);
             DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - l], size);
-            k++, r3--, l++;
+            k++, layer--, l++;
         }
 
         // _08005A5E
 
         gOamFirstPausedIndex = OAM_ENTRY_COUNT - gOamFreeIndex;
 
-        for (r3 = 0; r3 < gOamFirstPausedIndex; r3++) {
-            DmaFill16(3, 0x200, &gOamBuffer[r3], sizeof(OamDataShort));
+        for (layer = 0; layer < gOamFirstPausedIndex; layer++) {
+            DmaFill16(3, 0x200, &gOamBuffer[layer], sizeof(OamDataShort));
 #ifndef NON_MATCHING
             // unlike when using --, using ++ changes the condition to something entirely
             // different unless we tell the compiler that we want to use r3's values
             // (without actually doing so)
-            asm("" ::"r"(r3));
+            asm("" ::"r"(layer));
 #endif
         }
 
@@ -1041,11 +1040,11 @@ void CopyOamBufferToOam(void)
 
     gOamFreeIndex = 0;
     if (gFlags & FLAGS_4000) {
-        CpuFill32(-1, SA2_LABEL(gUnknown_03001850), sizeof(SA2_LABEL(gUnknown_03001850)));
-        CpuFill32(-1, SA2_LABEL(gUnknown_03004D60), sizeof(SA2_LABEL(gUnknown_03004D60)));
+        CpuFill32(-1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        CpuFill32(-1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     } else {
-        DmaFill32(3, -1, SA2_LABEL(gUnknown_03001850), sizeof(SA2_LABEL(gUnknown_03001850)));
-        DmaFill32(3, -1, SA2_LABEL(gUnknown_03004D60), sizeof(SA2_LABEL(gUnknown_03004D60)));
+        DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     }
 }
 

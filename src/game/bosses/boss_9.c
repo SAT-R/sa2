@@ -836,7 +836,7 @@ void Task_EggmanKidnapsVanilla(void)
     gHBlankCopyTarget = (void *)&REG_BG1VOFS;
     gHBlankCopySize = 2;
 
-    offset = gBgOffsetsHBlank;
+    offset = gBgOffsetsHBlankPrimary;
     for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
         s16 val = (SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12) + 0x2C;
         *offset++ = val;
@@ -2678,8 +2678,8 @@ void sub_80501D4(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->frameFlags |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
-                          | (u8)gUnknown_030054B8++);
+        s->frameFlags
+            |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | gOamMatrixIndex++);
 
         transform->rotation = r7;
         transform->qScaleX = Q(1);
@@ -2701,8 +2701,8 @@ void sub_80501D4(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->frameFlags |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
-                      | (u8)gUnknown_030054B8++);
+    s->frameFlags
+        |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | gOamMatrixIndex++);
 
     transform->rotation = sinIndex;
     transform->qScaleX = Q(1);
@@ -2800,8 +2800,8 @@ void sub_80505B8(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->frameFlags |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
-                          | (u8)gUnknown_030054B8++);
+        s->frameFlags
+            |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | gOamMatrixIndex++);
 
         transform->rotation = r7;
         transform->qScaleX = Q(1);
@@ -2823,8 +2823,8 @@ void sub_80505B8(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->frameFlags |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
-                      | (u8)gUnknown_030054B8++);
+    s->frameFlags
+        |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gOamMatrixIndex++);
 
     transform->rotation = sinIndex;
     transform->qScaleX = Q(1);

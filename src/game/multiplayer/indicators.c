@@ -156,7 +156,7 @@
         (transf)->y = tfy;                                                                                                                 \
                                                                                                                                            \
         (s)->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;                                                                                    \
-        (s)->frameFlags |= gUnknown_030054B8++;                                                                                            \
+        (s)->frameFlags |= gOamMatrixIndex++;                                                                                              \
         UpdateSpriteAnimation((s));                                                                                                        \
         TransformSprite((s), (transf));                                                                                                    \
         DisplaySprite((s));                                                                                                                \

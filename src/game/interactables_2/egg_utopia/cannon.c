@@ -216,7 +216,7 @@ static void Render(Sprite_Cannon *cannon)
     transform.x = s->x;
     transform.y = s->y;
 
-    s->frameFlags = 0x2060 | gUnknown_030054B8++;
+    s->frameFlags = 0x2060 | gOamMatrixIndex++;
     if (!cannon->facingRight) {
         s->frameFlags |= 0x400;
     }

@@ -136,16 +136,8 @@ void CreateFinalEndingLandingCutScene(void)
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 0x20;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(1);
 
     t = TaskCreate(sub_8093EDC, sizeof(struct FinalEndingLandCutScene), 0x3100, 0, sub_8093F9C);
     scene = TASK_DATA(t);

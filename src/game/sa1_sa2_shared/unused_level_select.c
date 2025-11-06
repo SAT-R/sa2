@@ -98,11 +98,7 @@ static void Task_Poll(void)
             gCurTask->main = Task_CreateSelectedTask;
         }
 #elif (GAME == GAME_SA2)
-        gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xFF;
-        gUnknown_03002280[0][3] = 0x20;
+        INIT_BG_SPRITES_LAYER_32(0);
 
         gCurTask->main = Task_LoadStage;
 #endif
@@ -119,11 +115,7 @@ static void Task_Poll(void)
         sa2__gUnknown_03002280[0][2] = 0xFF;
         sa2__gUnknown_03002280[0][3] = 0x20;
 #elif (GAME == GAME_SA2)
-        gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xFF;
-        gUnknown_03002280[0][3] = 0x20;
+        INIT_BG_SPRITES_LAYER_32(0);
 #endif
     } else {
         if (gRepeatedKeys & DPAD_LEFT) {

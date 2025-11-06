@@ -19,17 +19,11 @@ void CreateUnusedFlashTask(void)
     gBgCntRegs[2] = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
     DmaFill32(3, 0, VRAM, 2 * TILE_SIZE_4BPP);
 
-    SA2_LABEL(gUnknown_03004D80)[2] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][0] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][1] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][2] = 0xFF;
-    SA2_LABEL(gUnknown_03002280)[2][3] = 0x40;
+    INIT_BG_SPRITES_LAYER_64(2);
 
-    {
-        struct Task *t = TaskCreate(Task_UnusedFlashTask, 0, 0x1000, 0, NULL);
-        gBgPalette[1] = RGB_WHITE;
-        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
-    }
+    TaskCreate(Task_UnusedFlashTask, 0, 0x1000, 0, NULL);
+    gBgPalette[1] = RGB_WHITE;
+    gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
 
 void Task_UnusedFlashTask(void)
@@ -43,12 +37,7 @@ void Task_UnusedFlashTask(void)
 
 void DestroyUnusedFlashTask(void)
 {
-    SA2_LABEL(gUnknown_03004D80)[2] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][0] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][1] = 0;
-    SA2_LABEL(gUnknown_03002280)[2][2] = 0xFF;
-    SA2_LABEL(gUnknown_03002280)[2][3] = 0x20;
-
+    INIT_BG_SPRITES_LAYER_32(2);
     TaskDestroy(gCurTask);
 
 #if (GAME == GAME_SA1)

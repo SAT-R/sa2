@@ -448,7 +448,7 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
                     sp10 = TRUE;
                 } else {
-                    OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                    OamData *oam = &gOamMallocBuffer[s->oamBaseIndex];
 
                     OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -500,8 +500,8 @@ void RingsScatterSingleplayer_NormalGravity(void)
         ring->x += ring->velX;
         ring->y += ring->velY;
 #elif (GAME == GAME_SA2)
-        ring->x += ring->velX + gUnknown_030054FC;
-        ring->y += ring->velY + gUnknown_030054E0;
+        ring->x += ring->velX + gWorldSpeedX;
+        ring->y += ring->velY + gWorldSpeedY;
 #endif
 
         ringIntX = I(ring->x);
@@ -568,7 +568,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
 
                     sp10 = TRUE;
                 } else {
-                    OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                    OamData *oam = &gOamMallocBuffer[s->oamBaseIndex];
 
                     OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -688,7 +688,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_Flipped
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                        OamData *oam = &gOamMallocBuffer[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -743,8 +743,8 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
             continue;
         }
 
-        ring->x += ring->velX + gUnknown_030054FC;
-        ring->y += ring->velY + gUnknown_030054E0;
+        ring->x += ring->velX + gWorldSpeedX;
+        ring->y += ring->velY + gWorldSpeedY;
 
         ringIntX = I(ring->x);
         ringIntY = I(ring->y);
@@ -807,7 +807,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                        OamData *oam = &gOamMallocBuffer[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -870,8 +870,8 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain_Co
             continue;
         }
 
-        ring->x += ring->velX + gUnknown_030054FC;
-        ring->y += ring->velY + gUnknown_030054E0;
+        ring->x += ring->velX + gWorldSpeedX;
+        ring->y += ring->velY + gWorldSpeedY;
 
         ringIntX = I(ring->x);
         ringIntY = I(ring->y);
@@ -934,7 +934,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain_Co
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                        OamData *oam = &gOamMallocBuffer[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 

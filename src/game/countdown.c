@@ -216,7 +216,7 @@ void CreateRaceStartMessage(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     s = &startMessage->sRight;
     s->graphics.dest = VramMalloc(64);
@@ -230,7 +230,7 @@ void CreateRaceStartMessage(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 }
 
 void Task_RaceStartMessageMain(void)
@@ -251,7 +251,7 @@ void Task_RaceStartMessageMain(void)
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;
     timer = startMessage->timer;
     if (timer < 16) {
@@ -273,7 +273,7 @@ void Task_RaceStartMessageMain(void)
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;
     timer = startMessage->timer;
     if (timer < 16) {

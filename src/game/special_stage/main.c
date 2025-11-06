@@ -156,16 +156,8 @@ static void SetupIntroScreenRegisters(void)
     gBgScrollRegs[2][0] = 0;
     gBgScrollRegs[2][1] = 0;
 
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xFF;
-    gUnknown_03002280[1][3] = 0x20;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x80;
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_128(2);
 }
 
 void Task_IntroScreenMain(void)
@@ -733,8 +725,8 @@ bool32 SpecialStagePauseMenuMain(void)
 
 static void SpecialStageOnDestroy(UNUSED struct Task *t)
 {
-    gUnknown_03004D54 = &gBgOffsetsBuffer[0];
-    gUnknown_030022C0 = &gBgOffsetsBuffer[1];
+    gBgOffsetsPrimary = &gBgOffsetsBuffer[0];
+    gBgOffsetsSecondary = &gBgOffsetsBuffer[1];
 }
 
 static void Task_ShowIntroScreen(void)

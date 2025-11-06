@@ -393,21 +393,9 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     gBgCntRegs[2] = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(26) | BGCNT_AFF256x256 | BGCNT_256COLOR;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 0x20;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 0x20;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_32(2);
 
     gBgScrollRegs[1][0] = 8;
     gBgScrollRegs[1][1] = 512;
@@ -476,21 +464,9 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     gBgCntRegs[0] = 0x1f04;
     gBgCntRegs[1] = 0x9d0a;
     gBgCntRegs[2] = 0x7a81;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 0x20;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xFF;
-    gUnknown_03002280[1][3] = 0x20;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_32(2);
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
@@ -844,11 +820,11 @@ static void Task_IntroPanSkyAnim(void)
     if (titleScreen->animFrame > 60 && titleScreen->introTransitionStep > 2) {
         gBgCntRegs[2] &= ~BGCNT_WRAP;
 
-        gUnknown_03004D80[0] = 2;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0x20;
-        gUnknown_03002280[0][3] = 0x20;
+        gBgSprites_Unknown1[0] = 2;
+        gBgSprites_Unknown2[0][0] = 0;
+        gBgSprites_Unknown2[0][1] = 0;
+        gBgSprites_Unknown2[0][2] = 0x20;
+        gBgSprites_Unknown2[0][3] = 0x20;
 
         gBldRegs.bldCnt = 0;
 
@@ -938,16 +914,12 @@ static void Task_IntroSkyAnim(void)
         // Probably wrong size here (0x4000)
         DmaFill32(3, 0, (void *)VRAM, OBJ_VRAM1_SIZE);
 
-        gUnknown_03004D80[0] = 2;
-        gUnknown_03002280[0][0] = 0;
-        gUnknown_03002280[0][1] = 0;
-        gUnknown_03002280[0][2] = 0xff;
-        gUnknown_03002280[0][3] = 0x20;
-        gUnknown_03004D80[2] = 0;
-        gUnknown_03002280[2][0] = 0;
-        gUnknown_03002280[2][1] = 0;
-        gUnknown_03002280[2][2] = 0xff;
-        gUnknown_03002280[2][3] = 0x20;
+        gBgSprites_Unknown1[0] = 2;
+        gBgSprites_Unknown2[0][0] = 0;
+        gBgSprites_Unknown2[0][1] = 0;
+        gBgSprites_Unknown2[0][2] = 0xff;
+        gBgSprites_Unknown2[0][3] = 0x20;
+        INIT_BG_SPRITES_LAYER_32(2);
 
         bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         bg0->graphics.anim = 0;
@@ -1339,16 +1311,8 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     Background *config40;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 32;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(2);
 
     bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     bg0->graphics.anim = 0;
@@ -1476,7 +1440,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
-    gBgOffsetsHBlank = titleScreen->unk3F4;
+    gBgOffsetsHBlankPrimary = titleScreen->unk3F4;
     pointer = (void *)titleScreen->unk3F4;
     for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
         s32 temp, r3;

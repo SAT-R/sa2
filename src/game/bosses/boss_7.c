@@ -247,11 +247,7 @@ void CreateEggFrog(void)
     gBgCntRegs[0] = 0x5A0D;
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 255;
-    gUnknown_03002280[0][3] = 64;
+    INIT_BG_SPRITES_LAYER_64(0);
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;

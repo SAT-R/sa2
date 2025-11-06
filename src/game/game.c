@@ -43,10 +43,10 @@ void GameInit(void)
     // NOTE: cast because of const
     gTilemapsRef = (Tilemap **)gTilemaps;
     gRefSpriteTables = &gSpriteTables;
-    gUnknown_03004D54 = gBgOffsetsBuffer[0];
-    gUnknown_030022C0 = gBgOffsetsBuffer[1];
+    gBgOffsetsPrimary = gBgOffsetsBuffer[0];
+    gBgOffsetsSecondary = gBgOffsetsBuffer[1];
 
-    gStageFlags = gUnknown_0300544C = STAGE_FLAG__CLEAR;
+    gStageFlags = gPrevStageFlags = STAGE_FLAG__CLEAR;
 
     gRingsScatterTask = NULL;
     gDummyTask = NULL;
@@ -75,7 +75,7 @@ void GameInit(void)
 
     for (i = 0; i < 4; i++) {
         gMultiplayerCharacters[i] = 0;
-        gUnknown_030054B4[i] = 0;
+        gMultiplayerRanks[i] = 0;
         gMultiplayerMissingHeartbeats[i] = 0;
     }
 
@@ -140,8 +140,8 @@ void GameInit(void)
 #endif
     gGameMode = 5;
 
-    gUnknown_03004D54 = gBgOffsetsBuffer[0];
-    gUnknown_030022C0 = gBgOffsetsBuffer[1];
+    gBgOffsetsPrimary = gBgOffsetsBuffer[0];
+    gBgOffsetsSecondary = gBgOffsetsBuffer[1];
 
     i = 0;
 #ifndef NON_MATCHING
@@ -151,7 +151,7 @@ void GameInit(void)
     for (; i < 4; i++) {
         gMultiplayerCharacters[i] = 0;
         gMPRingCollectWins[i] = 0;
-        gUnknown_030054B4[i] = i;
+        gMultiplayerRanks[i] = i;
         gMultiplayerMissingHeartbeats[i] = 0;
     }
 #ifndef NON_MATCHING
