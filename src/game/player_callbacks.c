@@ -530,7 +530,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
 
 void Player_SonicAmy_StopNSlam_AfterGroundCollision(Player *p)
 {
-    p->qSpeedAirY += Q(56.0 / 256.0);
+    p->qSpeedAirY += TRICK__STOP_N_SLAM__DROP_SPEED;
 
     if (p->qSpeedAirY >= 0) {
         p->variant++;
