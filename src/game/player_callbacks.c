@@ -1980,7 +1980,7 @@ void Player_Knuckles_WindupDrillClaw(Player *p)
     }
 }
 
-void Player_8013E34(Player *p);
+void Player_Knuckles_DrillClawLanding(Player *p);
 
 void Player_Knuckles_DrillClaw(Player *p)
 {
@@ -1989,14 +1989,14 @@ void Player_Knuckles_DrillClaw(Player *p)
     sub_80283C4(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        PLAYERFN_SET(Player_8013E34);
+        PLAYERFN_SET(Player_Knuckles_DrillClawLanding);
 
         p->charState = CHARSTATE_KNUCKLES_DRILL_CLAW_GROUND;
         p->qSpeedAirY = 0;
     }
 }
 
-void Player_8013E34(Player *p)
+void Player_Knuckles_DrillClawLanding(Player *p)
 {
     Player_HandlePhysicsWithAirInput(p);
 
