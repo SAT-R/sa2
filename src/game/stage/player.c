@@ -6640,7 +6640,7 @@ bool32 Player_TryMidAirAction(Player *p)
                     } else {
                         p->moveState |= MOVESTATE_SOME_ATTACK;
                         p->charState = CHARSTATE_SOME_ATTACK;
-                        Player_SonicAmy_InitSkidAttackGfxTask(I(p->qWorldX), I(p->qWorldY), 1);
+                        CreateSonicAmySkidAttackEffect(I(p->qWorldX), I(p->qWorldY), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto Player_TryMidAirAction_PlaySfx;
                     }
