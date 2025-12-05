@@ -204,6 +204,7 @@ void EngineInit(void)
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     gFlags = 0;
     gFlagsPreVBlank = 0;
+
 #ifndef COLLECT_RINGS_ROM
     if ((REG_RCNT & 0xC000) != 0x8000) {
         gFlags = FLAGS_200;
@@ -220,7 +221,7 @@ void EngineInit(void)
     }
 
 #if COLLECT_RINGS_ROM
-    DmaCopy16(3, (void *)OBJ_VRAM0, (void *)0x0203b000, 0x5000);
+    DmaCopy16(3, (void *)OBJ_VRAM0, (void *)(EWRAM_START + 0x3b000), 0x5000);
 #else
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
 #endif
@@ -277,13 +278,13 @@ void EngineInit(void)
 #if (ENGINE >= ENGINE_3)
     gNextFreeAffineIndex = 0;
 #endif
-    gUnknown_03001944 = 0;
-    gUnknown_030017F0 = 0x100;
+    SA2_LABEL(gUnknown_03001944) = 0;
+    SA2_LABEL(gUnknown_030017F0) = 0x100;
     SA2_LABEL(gUnknown_03005394) = 0x100;
     SA2_LABEL(gUnknown_03002A8C) = 0;
-    gUnknown_03004D58 = 0;
-    gUnknown_0300194C = 0;
-    gUnknown_03002820 = 0;
+    SA2_LABEL(gUnknown_03004D58) = 0;
+    SA2_LABEL(gUnknown_0300194C) = 0;
+    SA2_LABEL(gUnknown_03002820) = 0;
     SA2_LABEL(gUnknown_03005398) = 0x100;
 
     gWinRegs[WINREG_WIN0H] = 0;
