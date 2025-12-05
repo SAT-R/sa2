@@ -260,7 +260,7 @@ void CreateGameStage(void)
     gUnknown_03004D58 = 0x50;
     gUnknown_0300194C = 0x78;
     gUnknown_03002820 = 0x50;
-    gUnknown_03005398 = 0x80;
+    SA2_LABEL(gUnknown_03005398) = 0x80;
 
     if (IS_MULTI_PLAYER) {
         CreateMultiplayerReceiveEventMgr();

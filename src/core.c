@@ -133,13 +133,11 @@ OamData gOamBuffer[] ALIGNED(16) = {};
 u16 gVramHeapState[] = {};
 u8 gBgSpritesCount ALIGNED(4) = 0;
 u16 SA2_LABEL(gUnknown_03005394) ALIGNED(4) = 0;
-u16 gUnknown_03005398 ALIGNED(4) = 0;
+u16 SA2_LABEL(gUnknown_03005398) ALIGNED(4) = 0;
 IntrFunc gVBlankIntrs[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
 s32 gPseudoRandom = 0;
-
-extern void IntrMain(void);
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
@@ -160,6 +158,8 @@ static void Dma2Intr(void);
 static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
+
+extern void IntrMain(void);
 
 // Warning: array contains an empty slot which would have
 // been used for a Timer3Intr function
@@ -189,11 +189,11 @@ IntrFunc const gIntrTableTemplate[] = {
 // TRUE:  Currently in VBlank /
 static VBlankProcessFunc const sVblankFuncs[] = {
     ProcessVramGraphicsCopyQueue,
-    sub_8004010,
+    SA2_LABEL(sub_8004010),
 #ifndef COLLECT_RINGS_ROM
-    sub_80039E4,
+    SA2_LABEL(sub_80039E4),
 #endif
-    sub_8002B20,
+    SA2_LABEL(sub_8002B20),
 };
 
 void EngineInit(void)
@@ -284,7 +284,7 @@ void EngineInit(void)
     gUnknown_03004D58 = 0;
     gUnknown_0300194C = 0;
     gUnknown_03002820 = 0;
-    gUnknown_03005398 = 0x100;
+    SA2_LABEL(gUnknown_03005398) = 0x100;
 
     gWinRegs[WINREG_WIN0H] = 0;
     gWinRegs[WINREG_WIN1H] = 0;

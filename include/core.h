@@ -371,7 +371,7 @@ extern u8 gVramGraphicsCopyCursor;
 extern u8 gOamMallocOrders_EndIndex[0x20];
 extern u8 gBgSpritesCount;
 extern u16 SA2_LABEL(gUnknown_03005394);
-extern u16 gUnknown_03005398;
+extern u16 SA2_LABEL(gUnknown_03005398);
 extern IntrFunc gVBlankIntrs[4];
 extern s32 gPseudoRandom;
 extern u8 gOamMallocCopiedOrder[128];
