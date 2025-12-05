@@ -86,7 +86,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
-    platform->base.spriteX = me->x;
+    platform->base.meX = me->x;
     platform->base.id = spriteY;
 
     platform->offsetX = 0;
@@ -128,7 +128,7 @@ static void Task_PlatformThinMain(void)
     platform = TASK_DATA(gCurTask);
     s = &platform->s;
     me = platform->base.me;
-    x = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    x = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     y = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = x - gCamera.x;
@@ -201,7 +201,7 @@ static void Task_PlatformThinMain(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, x - gCamera.x, y - gCamera.y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
         return;
     }

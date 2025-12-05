@@ -40,7 +40,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     bar->base.regionX = spriteRegionX;
     bar->base.regionY = spriteRegionY;
     bar->base.me = me;
-    bar->base.spriteX = me->x;
+    bar->base.meX = me->x;
     bar->base.id = spriteY;
 
     bar->landingSpeed = 0;
@@ -67,7 +67,7 @@ static void Task_BouncyBarIdle(void)
 
     s32 screenX, screenY;
 
-    screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
+    screenX = TO_WORLD_POS(bar->base.meX, bar->base.regionX);
     screenY = TO_WORLD_POS(me->y, bar->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -97,7 +97,7 @@ static void Task_BouncyBarIdle(void)
         bar->landingSpeed = 2 - bar->landingSpeed;
         m4aSongNumStart(SE_279);
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = bar->base.spriteX;
+        me->x = bar->base.meX;
         TaskDestroy(gCurTask);
         return;
     }
@@ -114,7 +114,7 @@ static void Task_BouncyBarLaunch(void)
 
     s32 screenX, screenY;
 
-    screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
+    screenX = TO_WORLD_POS(bar->base.meX, bar->base.regionX);
     screenY = TO_WORLD_POS(me->y, bar->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -139,7 +139,7 @@ static void Task_BouncyBarLaunch(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = bar->base.spriteX;
+        me->x = bar->base.meX;
         TaskDestroy(gCurTask);
         return;
     }

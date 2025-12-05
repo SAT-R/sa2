@@ -302,7 +302,7 @@ static bool32 sub_807B9F0(Sprite_Propeller *propeller)
 
 static void DestroyPropeller(Sprite_Propeller *propeller)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(propeller->base.me, propeller->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(propeller->base.me, propeller->base.meX);
     TaskDestroy(gCurTask);
 }
 
@@ -330,7 +330,7 @@ void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     propeller->base.regionX = spriteRegionX;
     propeller->base.regionY = spriteRegionY;
     propeller->base.me = me;
-    propeller->base.spriteX = me->x;
+    propeller->base.meX = me->x;
     propeller->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

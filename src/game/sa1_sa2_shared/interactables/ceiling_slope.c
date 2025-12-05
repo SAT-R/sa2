@@ -30,7 +30,7 @@ void Task_Interactable_CeilingSlope(void)
     s32 playerX, playerY;
     s32 spriteX;
 
-    spriteX = base->spriteX;
+    spriteX = base->meX;
     regionX = base->regionX;
     regionY = base->regionY;
     screenX = TO_WORLD_POS(spriteX, regionX);
@@ -89,7 +89,7 @@ void CreateEntity_CeilingSlope(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     ceilingSlope->base.regionX = spriteRegionX;
     ceilingSlope->base.regionY = spriteRegionY;
     ceilingSlope->base.me = me;
-    ceilingSlope->base.spriteX = me->x;
+    ceilingSlope->base.meX = me->x;
     ceilingSlope->base.id = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

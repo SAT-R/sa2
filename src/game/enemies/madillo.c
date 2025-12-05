@@ -33,7 +33,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     madillo->base.regionX = spriteRegionX;
     madillo->base.regionY = spriteRegionY;
     madillo->base.me = me;
-    madillo->base.spriteX = me->x;
+    madillo->base.meX = me->x;
     madillo->base.id = spriteY;
 
     if (me->d.sData[1] != 0) {

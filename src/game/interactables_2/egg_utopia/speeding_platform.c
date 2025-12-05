@@ -72,7 +72,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
-    platform->base.spriteX = me->x;
+    platform->base.meX = me->x;
     platform->base.id = spriteY;
 
     for (i = 0; i < 3; i++) {
@@ -290,7 +290,7 @@ static bool32 ShouldDespawn(Sprite_SpeedingPlatform *platform)
 
 static void sub_807FEEC(Sprite_SpeedingPlatform *platform)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(platform->base.me, platform->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(platform->base.me, platform->base.meX);
     TaskDestroy(gCurTask);
 }
 

@@ -203,7 +203,7 @@ static bool32 sub_807C598(Sprite_IA85 *ia85)
 
 static void sub_807C5E0(Sprite_IA85 *ia85)
 {
-    ia85->base.me->x = ia85->base.spriteX;
+    ia85->base.me->x = ia85->base.meX;
     TaskDestroy(gCurTask);
 }
 
@@ -236,7 +236,7 @@ void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     ia85->base.regionX = spriteRegionX;
     ia85->base.regionY = spriteRegionY;
     ia85->base.me = me;
-    ia85->base.spriteX = me->x;
+    ia85->base.meX = me->x;
     ia85->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

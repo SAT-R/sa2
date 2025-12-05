@@ -55,7 +55,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
     spring->base.me = me;
-    spring->base.spriteX = me->x;
+    spring->base.meX = me->x;
     spring->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -95,7 +95,7 @@ static void Task_Interactable_BouncySpring()
     s32 screenX, screenY;
     s16 airSpeed;
 
-    screenX = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    screenX = TO_WORLD_POS(spring->base.meX, spring->base.regionX);
     screenY = TO_WORLD_POS(me->y, spring->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -149,7 +149,7 @@ static void Task_Interactable_BouncySpring()
     }
     // _0805DFBA
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = spring->base.spriteX;
+        me->x = spring->base.meX;
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
@@ -165,14 +165,14 @@ static void Task_805E02C()
     s32 screenX, screenY;
     u32 variant = 0;
 
-    screenX = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    screenX = TO_WORLD_POS(spring->base.meX, spring->base.regionX);
     screenY = TO_WORLD_POS(me->y, spring->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = spring->base.spriteX;
+        me->x = spring->base.meX;
         TaskDestroy(gCurTask);
     } else {
         if (UpdateSpriteAnimation(s) == 0) {

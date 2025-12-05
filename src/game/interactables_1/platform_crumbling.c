@@ -51,7 +51,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     base->regionX = spriteRegionX;
     base->regionY = spriteRegionY;
     base->me = me;
-    base->spriteX = me->x;
+    base->meX = me->x;
     base->id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
@@ -94,7 +94,7 @@ void Task_Interactable_019(void)
     MapEntity *me = base->me;
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(base->spriteX, base->regionX);
+    screenX = TO_WORLD_POS(base->meX, base->regionX);
     screenY = TO_WORLD_POS(me->y, base->regionY);
 
     s->x = screenX - gCamera.x;
@@ -115,7 +115,7 @@ void Task_Interactable_019(void)
     if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)) || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
-        me->x = base->spriteX;
+        me->x = base->meX;
         TaskDestroy(gCurTask);
     } else {
         DisplaySprite(s);
@@ -129,7 +129,7 @@ void Task_805E35C(void)
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -148,7 +148,7 @@ void Task_805E35C(void)
     if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)) || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
-        me->x = platform->base.spriteX;
+        me->x = platform->base.meX;
         TaskDestroy(gCurTask);
     } else {
         DisplaySprite(s);
@@ -166,7 +166,7 @@ void Task_805E480(void)
     const u16 *oam_ptr;
     const u16 *oam;
 
-    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
@@ -179,7 +179,7 @@ void Task_805E480(void)
 
     if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
         if ((u16)(s->x + (CAM_REGION_WIDTH / 2)) > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
-            me->x = platform->base.spriteX;
+            me->x = platform->base.meX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -266,7 +266,7 @@ void Task_805E6A4(void)
     const u16 *oam_ptr;
     const u16 *oam;
 
-    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
@@ -277,7 +277,7 @@ void Task_805E6A4(void)
 
     if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
         if ((u16)(s->x + (CAM_REGION_WIDTH / 2)) > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
-            me->x = platform->base.spriteX;
+            me->x = platform->base.meX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -299,7 +299,7 @@ void Task_805E6A4(void)
             if (r4 > otherPos) {
                 if (r6 == 0) {
                     TaskDestroy(gCurTask);
-                    me->x = platform->base.spriteX;
+                    me->x = platform->base.meX;
                 }
                 return;
             }

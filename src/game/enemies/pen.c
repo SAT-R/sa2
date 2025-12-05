@@ -35,7 +35,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     pen->base.regionX = spriteRegionX;
     pen->base.regionY = spriteRegionY;
     pen->base.me = me;
-    pen->base.spriteX = me->x;
+    pen->base.meX = me->x;
     pen->base.id = spriteY;
 
     if (me->d.sData[1] != 0) {

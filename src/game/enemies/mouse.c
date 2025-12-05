@@ -37,7 +37,7 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         mouse->base.regionX = spriteRegionX;
         mouse->base.regionY = spriteRegionY;
         mouse->base.me = me;
-        mouse->base.spriteX = me->x;
+        mouse->base.meX = me->x;
         mouse->base.id = spriteY;
 
         if (me->d.sData[1] != 0) {

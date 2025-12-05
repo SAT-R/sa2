@@ -52,7 +52,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
         flickey->base.regionX = spriteRegionX;
         flickey->base.regionY = spriteRegionY;
         flickey->base.me = me;
-        flickey->base.spriteX = me->x;
+        flickey->base.meX = me->x;
         flickey->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(flickey, me);

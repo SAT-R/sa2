@@ -95,7 +95,7 @@ void CreateEntity_Platform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
-    platform->base.spriteX = me->x;
+    platform->base.meX = me->x;
     platform->base.id = spriteY;
     platform->offsetX = 0;
     platform->offsetY = 0;
@@ -190,7 +190,7 @@ void Task_PlatformMain(void)
         deltaY = r5;
     }
 
-    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = posX - gCamera.x + I(platform->offsetX);
@@ -218,7 +218,7 @@ void Task_PlatformMain(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
     } else {
         if (!(gPlayer.moveState & MOVESTATE_IA_OVERRIDE)) {
@@ -253,7 +253,7 @@ void CreateEntity_FallingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
-    platform->base.spriteX = me->x;
+    platform->base.meX = me->x;
     platform->base.id = spriteY;
     platform->offsetX = 0;
     platform->offsetY = 0;
@@ -308,7 +308,7 @@ void Task_FallingPlatformMain_Idle(void)
         HandlePlatformOffsetYStorage(platform);
     }
 
-    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = posX - gCamera.x;
@@ -331,7 +331,7 @@ void Task_FallingPlatformMain_Idle(void)
     if (((posX > gCamera.x + (DISPLAY_WIDTH + 128)) || (posX < (gCamera.x - 128)) || (posY > (gCamera.y + (DISPLAY_HEIGHT + 128)))
          || ((posY < gCamera.y - 128)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
     } else {
         if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
@@ -367,7 +367,7 @@ void Task_FallingPlatformMain_FallDelay(void)
         HandlePlatformOffsetYStorage(platform);
     }
 
-    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = posX - gCamera.x;
@@ -404,7 +404,7 @@ void Task_FallingPlatformMain_FallDelay(void)
     if (((posX > gCamera.x + (DISPLAY_WIDTH + 128)) || (posX < (gCamera.x - 128)) || (posY > (gCamera.y + (DISPLAY_HEIGHT + 128)))
          || ((posY < gCamera.y - 128)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
     } else {
         if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {
@@ -442,7 +442,7 @@ void Task_FallingPlatformMain_Falling(void)
     platform->velocityY += 0x2A;
     platform->offsetY += platform->velocityY;
 
-    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     s->x = posX - gCamera.x;
@@ -476,7 +476,7 @@ void Task_FallingPlatformMain_Falling(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
     } else {
         if ((gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ) && (gPlayer.stoodObj == s)) {

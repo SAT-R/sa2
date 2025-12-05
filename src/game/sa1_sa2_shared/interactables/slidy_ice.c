@@ -25,7 +25,7 @@ void Task_SlidyIce(void)
 {
     Sprite_SlidyIce *ice = TASK_DATA(gCurTask);
     MapEntity_SlidyIce *me = (MapEntity_SlidyIce *)ice->base.me;
-    u8 spriteX = ice->base.spriteX;
+    u8 spriteX = ice->base.meX;
 
     s32 regionX, regionY;
     s32 screenX, screenY;
@@ -64,6 +64,6 @@ void CreateEntity_SlidyIce(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     ice->base.regionX = spriteRegionX;
     ice->base.regionY = spriteRegionY;
     ice->base.me = me;
-    ice->base.spriteX = me->x;
+    ice->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

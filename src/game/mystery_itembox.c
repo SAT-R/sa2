@@ -79,7 +79,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     itemBox->base.regionX = spriteRegionX;
     itemBox->base.regionY = spriteRegionY;
     itemBox->base.me = me;
-    itemBox->base.spriteX = me->x;
+    itemBox->base.meX = me->x;
     itemBox->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
@@ -159,7 +159,7 @@ static inline void sub_80865E4_inline(void)
         }
 
         if (sub_80868F4(itemBox)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.spriteX);
+            SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.meX);
             TaskDestroy(gCurTask);
             return;
         }
@@ -215,7 +215,7 @@ static inline void sub_808673C_inline(void)
     }
 
     if (sub_80868F4(itemBox) != 0) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.meX);
         TaskDestroy(gCurTask);
         return;
     }
@@ -339,7 +339,7 @@ static void sub_80865E4(void)
             }
 
             if (sub_80868F4(itemBox) != 0) {
-                SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.spriteX);
+                SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.meX);
                 TaskDestroy(gCurTask);
                 return;
             } else {
@@ -399,7 +399,7 @@ static void sub_808673C(void)
     }
 
     if (sub_80868F4(itemBox) != 0) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, itemBox->base.meX);
         TaskDestroy(gCurTask);
         return;
     }

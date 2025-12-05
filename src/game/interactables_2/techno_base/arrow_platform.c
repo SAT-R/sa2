@@ -66,7 +66,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->base.me = me;
     ia75->base.regionX = spriteRegionX;
     ia75->base.regionY = spriteRegionY;
-    ia75->base.spriteX = me->x;
+    ia75->base.meX = me->x;
     ia75->base.id = spriteY;
 
     switch (ia75->unk94) {
@@ -390,7 +390,7 @@ static void sub_807AB18(Sprite_IA75 *ia75)
 
 static void sub_807AB54(Sprite_IA75 *ia75)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(ia75->base.me, ia75->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(ia75->base.me, ia75->base.meX);
     TaskDestroy(gCurTask);
 }
 

@@ -117,7 +117,7 @@ void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX, u16 sp
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
     spring->base.me = me;
-    spring->base.spriteX = me->x;
+    spring->base.meX = me->x;
     spring->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -188,7 +188,7 @@ static void Task_Spring_Idle(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = spring->base.spriteX;
+        me->x = spring->base.meX;
         TaskDestroy(gCurTask);
     } else {
         DisplaySprite(s);
@@ -204,7 +204,7 @@ static void Task_Spring_Activated(void)
     CheckSpringPlayerCollisions(s, me, spring, &gPlayer);
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = spring->base.spriteX;
+        me->x = spring->base.meX;
         TaskDestroy(gCurTask);
     } else {
         if (UpdateSpriteAnimation(s) == 0) {
@@ -225,7 +225,7 @@ static void Task_Spring_Activated(void)
 
 static bool32 CheckSpringPlayerCollisions(Sprite *s, MapEntity *me, Sprite_Spring *spring, Player *player)
 {
-    s16 xPos = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    s16 xPos = TO_WORLD_POS(spring->base.meX, spring->base.regionX);
     s16 yPos = TO_WORLD_POS(me->y, spring->base.regionY);
     s->x = xPos - gCamera.x;
     s->y = yPos - gCamera.y;

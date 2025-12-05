@@ -49,7 +49,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     kiki->base.regionX = spriteRegionX;
     kiki->base.regionY = spriteRegionY;
     kiki->base.me = me;
-    kiki->base.spriteX = me->x;
+    kiki->base.meX = me->x;
     kiki->base.id = spriteY;
 
     kiki->unk3C = 1;
@@ -78,7 +78,7 @@ static void Task_KikiMain(void)
     MapEntity *me = kiki->base.me;
     s16 x, y;
 
-    x = TO_WORLD_POS(kiki->base.spriteX, kiki->base.regionX);
+    x = TO_WORLD_POS(kiki->base.meX, kiki->base.regionX);
     y = TO_WORLD_POS(me->y, kiki->base.regionY);
 
     kiki->unk3D += kiki->unk3C;
@@ -105,7 +105,7 @@ static void Task_KikiMain(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y - kiki->unk3D)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, kiki->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, kiki->base.meX);
         TaskDestroy(gCurTask);
         return;
     }
@@ -127,7 +127,7 @@ static void sub_8053A38(void)
     MapEntity *me = kiki->base.me;
     s16 x, y;
 
-    x = TO_WORLD_POS(kiki->base.spriteX, kiki->base.regionX);
+    x = TO_WORLD_POS(kiki->base.meX, kiki->base.regionX);
     y = TO_WORLD_POS(me->y, kiki->base.regionY);
 
     y += kiki->unk3D;
@@ -141,7 +141,7 @@ static void sub_8053A38(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y - kiki->unk3D)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, kiki->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, kiki->base.meX);
         TaskDestroy(gCurTask);
         return;
     }

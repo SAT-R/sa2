@@ -35,7 +35,7 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
         balloon->base.regionX = spriteRegionX;
         balloon->base.regionY = spriteRegionY;
         balloon->base.me = me;
-        balloon->base.spriteX = me->x;
+        balloon->base.meX = me->x;
         balloon->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(balloon, me);

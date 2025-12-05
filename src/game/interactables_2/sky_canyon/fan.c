@@ -92,7 +92,7 @@ static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     prop->base.regionX = spriteRegionX;
     prop->base.regionY = spriteRegionY;
     prop->base.me = me;
-    prop->base.spriteX = me->x;
+    prop->base.meX = me->x;
     prop->base.id = spriteY;
 
     s = &prop->s;
@@ -332,7 +332,7 @@ static bool32 IsPropellerOffScreen(Sprite_Fan *prop)
 
 void DestroyTask_Interactable087(Sprite_Fan *prop)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(prop->base.me, prop->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(prop->base.me, prop->base.meX);
     TaskDestroy(gCurTask);
 }
 

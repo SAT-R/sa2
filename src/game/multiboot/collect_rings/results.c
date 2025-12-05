@@ -448,7 +448,7 @@ void SA2_LABEL(Task_8082630)(void)
         gBldRegs.bldY = 0x10;
         gCurTask->main = SA2_LABEL(sub_808267C);
     }
-    
+
     gBldRegs.bldY = I(resultsScreen->unk430);
 }
 

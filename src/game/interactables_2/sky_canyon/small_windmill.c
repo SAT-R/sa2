@@ -54,7 +54,7 @@ void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     windmill->base.regionX = spriteRegionX;
     windmill->base.regionY = spriteRegionY;
     windmill->base.me = me;
-    windmill->base.spriteX = me->x;
+    windmill->base.meX = me->x;
     windmill->base.id = spriteY;
 
     s = &windmill->s;
@@ -343,6 +343,6 @@ static bool32 ShouldDespawn(Sprite_SmallWindmill *windmill)
 
 static void Despawn(Sprite_SmallWindmill *windmill)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(windmill->base.me, windmill->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(windmill->base.me, windmill->base.meX);
     TaskDestroy(gCurTask);
 }

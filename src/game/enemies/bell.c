@@ -34,7 +34,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     bell->base.regionX = spriteRegionX;
     bell->base.regionY = spriteRegionY;
     bell->base.me = me;
-    bell->base.spriteX = me->x;
+    bell->base.meX = me->x;
     bell->base.id = spriteY;
 
     bell->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
@@ -60,7 +60,7 @@ static void Task_BellMain(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, bell->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, bell->base.meX);
         TaskDestroy(gCurTask);
         return;
     }
@@ -96,7 +96,7 @@ void sub_8054D20(void)
     Coll_Player_Projectile(s, pos.x, pos.y);
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, bell->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, bell->base.meX);
         TaskDestroy(gCurTask);
         return;
     }

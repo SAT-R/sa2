@@ -65,7 +65,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     booster->base.regionX = spriteRegionX;
     booster->base.regionY = spriteRegionY;
     booster->base.me = me;
-    booster->base.spriteX = me->x;
+    booster->base.meX = me->x;
     booster->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -108,7 +108,7 @@ void Task_Interactable_Booster(void)
 
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(booster->base.spriteX, booster->base.regionX);
+    screenX = TO_WORLD_POS(booster->base.meX, booster->base.regionX);
     screenY = TO_WORLD_POS(me->y, booster->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -160,7 +160,7 @@ void Task_Interactable_Booster(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = booster->base.spriteX;
+        me->x = booster->base.meX;
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);

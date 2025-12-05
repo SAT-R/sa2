@@ -45,7 +45,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     ball->base.me = me;
     ball->base.regionX = spriteRegionX;
     ball->base.regionY = spriteRegionY;
-    ball->base.spriteX = me->x;
+    ball->base.meX = me->x;
     ball->base.id = spriteY;
 
     s = &ball->s;
@@ -95,7 +95,7 @@ static void UpdatePosition(Sprite_IronBall *ball)
         ball->unk48 = (temp * SIN((ball->unk4E * ((gStageTime + ball->unk50) & 255)) & ONE_CYCLE)) >> 15;
     }
 
-    ball->posX = TO_WORLD_POS(ball->base.spriteX, ball->base.regionX) + I(ball->unk44);
+    ball->posX = TO_WORLD_POS(ball->base.meX, ball->base.regionX) + I(ball->unk44);
     ball->posY = TO_WORLD_POS(me->y, ball->base.regionY) + I(ball->unk48);
 }
 
@@ -162,6 +162,6 @@ static bool32 IsTouchingPlayer(Sprite_IronBall *ball)
 
 static void Despawn(Sprite_IronBall *ball)
 {
-    ball->base.me->x = ball->base.spriteX;
+    ball->base.me->x = ball->base.meX;
     TaskDestroy(gCurTask);
 }

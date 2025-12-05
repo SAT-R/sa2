@@ -205,7 +205,7 @@ typedef struct {
 
 #define ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(_enemy, _mapEntity, _sprite)                                                                     \
     if (IS_OUT_OF_CAM_RANGE(_sprite->x, _sprite->y)) {                                                                                     \
-        SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.meX);                                                                  \
+        SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.meX);                                                                      \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }
