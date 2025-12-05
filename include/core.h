@@ -1,8 +1,8 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
-// for memcpy
+
 #ifndef GEN_CTX
-#include <string.h>
+#include <string.h> // for memcpy
 #endif
 
 #include "global.h"

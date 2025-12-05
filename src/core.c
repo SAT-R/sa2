@@ -23,7 +23,7 @@ typedef bool32 (*VBlankProcessFunc)(void);
 IntrFunc gIntrTable[] = {};
 u32 gIntrMainBuf[] = {};
 struct Task gTasks[] = {};
-u16 gUnknown_030017F0 ALIGNED(4) = 0;
+u16 SA2_LABEL(gUnknown_030017F0) ALIGNED(4) = 0;
 Vec2_16 gSpriteOffset ALIGNED(4) = {};
 Background *gBackgroundsCopyQueue[] ALIGNED(16) = {};
 u32 gFlags = 0;
@@ -45,11 +45,11 @@ struct Task gEmptyTask ALIGNED(16) = {};
 // NOTE: gNextFreeAffineIndex introduced in SA3, unused before.
 u8 gNextFreeAffineIndex = 0;
 #endif
-BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
+BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(16) = {};
 void *gVramHeapStartAddr = NULL;
-u16 gUnknown_03001944 ALIGNED(4) = 0;
+u16 SA2_LABEL(gUnknown_03001944) ALIGNED(4) = 0;
 u8 gNumVBlankIntrs ALIGNED(4) = 0;
-s16 gUnknown_0300194C ALIGNED(4) = 0;
+s16 SA2_LABEL(gUnknown_0300194C) ALIGNED(4) = 0;
 
 u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;

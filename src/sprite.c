@@ -661,8 +661,8 @@ void DisplaySprite(Sprite *sprite)
         y = sprite->y;
 
         if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
-            x -= SA2_LABEL(gSpriteOffset).x;
-            y -= SA2_LABEL(gSpriteOffset).y;
+            x -= gSpriteOffset.x;
+            y -= gSpriteOffset.y;
         }
 
         sprWidth = sprDims->width;
