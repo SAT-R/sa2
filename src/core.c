@@ -1,5 +1,5 @@
-#include "core.h"
 #include "global.h"
+#include "core.h"
 #include "malloc_ewram.h"
 #include "malloc_vram.h"
 #include "multi_sio.h"

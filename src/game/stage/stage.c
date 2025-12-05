@@ -42,7 +42,6 @@ struct Task *gGameStageTask = NULL;
 void Task_GameStage(void);
 
 void TaskDestructor_GameStage(struct Task *);
-void sub_801F044(void);
 
 void CreatePlayer(u32, u32, Player *);
 void CreateBossRunManager(u8);

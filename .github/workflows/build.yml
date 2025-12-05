@@ -93,6 +93,7 @@ jobs:
           python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa2-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
           cp sa2.map gh-pages/maps/${GITHUB_SHA}.map
+
       - name: Generate reports (Collect Rings)
         if: ${{ github.event_name == 'push' }}
         run: |
