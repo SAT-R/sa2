@@ -145,12 +145,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     gMultiplayerMissingHeartbeats[1] = 0;
     gMultiplayerMissingHeartbeats[0] = 0;
 
-    gUnknown_03004D80[3] = 0;
-
-    gUnknown_03002280[3][0] = 0;
-    gUnknown_03002280[3][1] = 0;
-    gUnknown_03002280[3][2] = 0xFF;
-    gUnknown_03002280[3][3] = 0x40;
+    INIT_BG_SPRITES_LAYER_64(3);
 
     DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
     t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0, NULL);
@@ -191,7 +186,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     DrawBackground(background);
 
     for (; count < 4; count++) {
-        if (gUnknown_030054B4[count] == -1) {
+        if (gMultiplayerRanks[count] == -1) {
             break;
         }
     }
@@ -206,7 +201,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
             s->oamFlags = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
-            temp = gUnknown_030054B4[i];
+            temp = gMultiplayerRanks[i];
             if (temp == 5) {
                 s->graphics.anim = gUnknown_080D9100[lang][1].anim;
                 s->variant = gUnknown_080D9100[lang][1].variant;
@@ -254,7 +249,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
 static void sub_805C0F0(void)
 {
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gBgOffsetsHBlank;
+    u16 *unk1884 = gBgOffsetsHBlankPrimary;
     gDispCnt |= 0x1800;
 
     MultiPakHeartbeat();
@@ -391,7 +386,7 @@ static void sub_805C504(void)
     u16 j, x;
 
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gBgOffsetsHBlank;
+    u16 *unk1884 = gBgOffsetsHBlankPrimary;
     MultiPakHeartbeat();
 
     selectionResultsScreen = TASK_DATA(gCurTask);

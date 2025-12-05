@@ -196,10 +196,10 @@ void CreateGameStage(void)
 
     gBossRingsShallRespawn = FALSE;
     gBossRingsRespawnCount = BOSS_RINGS_DEFAULT_RESPAWN_COUNT;
-    gUnknown_030055BC = 0;
+    gBoostEffectTasksCreated = 0;
 
     sub_801F044();
-    gUnknown_030053E0 = 0;
+    gSpikesUnknownTimer = 0;
 
     if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         CreatePlayer(gSelectedCharacter, gCurrentLevel, &gPlayer);
@@ -280,7 +280,7 @@ void CreateGameStage(void)
                 }
             }
 
-            gUnknown_030054B4[i] = -1;
+            gMultiplayerRanks[i] = -1;
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                 gMultiplayerCharacters[i] = i;
             }
@@ -293,7 +293,7 @@ void CreateGameStage(void)
 #ifndef COLLECT_RINGS_ROM
     else {
         for (i = 0; i < 4; i++) {
-            gUnknown_030054B4[i] = -1;
+            gMultiplayerRanks[i] = -1;
         }
     }
 
@@ -391,12 +391,12 @@ void Task_GameStage(void)
             gCamera.spectatorTarget = sioId;
         }
 
-        if (SA2_LABEL(gUnknown_030053E0) > 0) {
-            SA2_LABEL(gUnknown_030053E0)--;
+        if (SA2_LABEL(gSpikesUnknownTimer) > 0) {
+            SA2_LABEL(gSpikesUnknownTimer)--;
         }
     }
 
-    SA2_LABEL(gUnknown_0300544C) = gStageFlags;
+    SA2_LABEL(gPrevStageFlags) = gStageFlags;
 
     if (gStageFlags & STAGE_FLAG__ACT_START) {
         return;

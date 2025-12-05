@@ -231,14 +231,14 @@ static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
         // TODO: make this a macro? What does it even mean
         if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
                 != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
-            && gUnknown_030054B4[j] == 0) {
+            && gMultiplayerRanks[j] == 0) {
             thing = 1;
             break;
         }
     }
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL; j++) {
-        if (gUnknown_030054B4[j] == -1) {
+        if (gMultiplayerRanks[j] == -1) {
             if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
                 == (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)) {
                 CreateMultiplayerFinishResult(j, thing);
@@ -262,7 +262,7 @@ static void StageGoalToggle_PlayerReachedGoal(void)
     u32 id = SIO_MULTI_CNT->id;
     u32 count = 0;
 
-    if (gUnknown_030054B4[id] != -1) {
+    if (gMultiplayerRanks[id] != -1) {
         u32 j;
         struct Task **tasks;
         for (j = 0, tasks = gMultiplayerPlayerTasks; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {

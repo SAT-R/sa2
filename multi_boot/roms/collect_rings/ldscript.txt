@@ -18,6 +18,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/multiplayer/mp_player.o(.data);
         build/collect_rings/src/sa2/game/multiplayer/mp_attack_2_effect.o(.data);
         build/collect_rings/src/sa2/game/stage/camera.o(.data);
+        build/collect_rings/src/sa2/game/stage/terrain_collision.o(.data);
         build/collect_rings/src/sa2/game/stage/player.o(.data);
         build/collect_rings/src/sa2/game/stage/rings_scatter.o(.data);
         build/collect_rings/src/sa2/game/stage/player_controls.o(.data);

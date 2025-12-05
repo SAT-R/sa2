@@ -94,7 +94,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 
 /* Character: Sonic */
 
-struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
+struct Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2)
 {
     MultiplayerSpriteTask *ts;
     struct Task *t;
@@ -137,7 +137,7 @@ struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2)
 }
 
 // For Sonic's Down-Trick "Bound"
-struct Task *Player_Sonic_Bound(s32 x, s32 y)
+struct Task *CreateSonicBoundEffect(s32 x, s32 y)
 {
     if (IS_MULTI_PLAYER) {
         return NULL;
@@ -228,7 +228,7 @@ void Player_SonicAmy_WindupSkidAttack(Player *p)
                     p->qSpeedGround = +Q(4.0);
                 }
             } else {
-                Player_SonicAmy_InitSkidAttackGfxTask(I(p->qWorldX), I(p->qWorldY), 0);
+                CreateSonicAmySkidAttackEffect(I(p->qWorldX), I(p->qWorldY), 0);
             }
 
             p->unk72 = 32;
@@ -521,7 +521,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
         PLAYERFN_SET(Player_SonicAmy_StopNSlam);
 
         if (p->character == CHARACTER_SONIC) {
-            Player_Sonic_Bound(I(p->qWorldX), I(p->qWorldY));
+            CreateSonicBoundEffect(I(p->qWorldX), I(p->qWorldY));
         } else if (p->character == CHARACTER_AMY) {
             CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_STOP_N_SLAM);
         }
@@ -530,7 +530,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
 
 void Player_SonicAmy_StopNSlam_AfterGroundCollision(Player *p)
 {
-    p->qSpeedAirY += Q(56.0 / 256.0);
+    p->qSpeedAirY += TRICK__STOP_N_SLAM__DROP_SPEED;
 
     if (p->qSpeedAirY >= 0) {
         p->variant++;
@@ -808,7 +808,7 @@ void Player_Cream_WindupMidAirChaoAttack(Player *p)
 
 /* Character: Tails */
 
-struct Task *sub_80129DC(s32 x, s32 y)
+struct Task *CreateTailsTailSwipeEffect(s32 x, s32 y)
 {
     struct Task *result;
 
@@ -978,7 +978,7 @@ void Player_Tails_InitTailSwipe(Player *p)
 
     p->moveState |= MOVESTATE_SOME_ATTACK;
 
-    sub_80129DC(I(p->qWorldX), I(p->qWorldY));
+    CreateTailsTailSwipeEffect(I(p->qWorldX), I(p->qWorldY));
 
     m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
 
@@ -1010,7 +1010,7 @@ void Player_Tails_TailSwipe(Player *p)
 
 /* Character: Knuckles */
 
-struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
+struct Task *CreateKnucklesFireEffect(s32 x, s32 y, u16 p2)
 {
     struct Task *result;
 
@@ -1145,7 +1145,7 @@ void Player_Knuckles_InitSpiralAttack(Player *p)
 
     p->moveState |= MOVESTATE_SOME_ATTACK;
 
-    sub_8012DF8(I(p->qWorldX), I(p->qWorldY), 0);
+    CreateKnucklesFireEffect(I(p->qWorldX), I(p->qWorldY), 0);
 
     p->unk72 = 32;
 
@@ -1974,13 +1974,13 @@ void Player_Knuckles_WindupDrillClaw(Player *p)
         p->qSpeedAirX = Q(0.0);
         p->qSpeedAirY = Q(1.0);
 
-        sub_8012DF8(I(p->qWorldX), I(p->qWorldY), 1);
+        CreateKnucklesFireEffect(I(p->qWorldX), I(p->qWorldY), 1);
 
         PLAYERFN_SET_AND_CALL(Player_Knuckles_DrillClaw, p);
     }
 }
 
-void Player_8013E34(Player *p);
+void Player_Knuckles_DrillClawLanding(Player *p);
 
 void Player_Knuckles_DrillClaw(Player *p)
 {
@@ -1989,14 +1989,14 @@ void Player_Knuckles_DrillClaw(Player *p)
     sub_80283C4(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        PLAYERFN_SET(Player_8013E34);
+        PLAYERFN_SET(Player_Knuckles_DrillClawLanding);
 
         p->charState = CHARSTATE_KNUCKLES_DRILL_CLAW_GROUND;
         p->qSpeedAirY = 0;
     }
 }
 
-void Player_8013E34(Player *p)
+void Player_Knuckles_DrillClawLanding(Player *p)
 {
     Player_HandlePhysicsWithAirInput(p);
 

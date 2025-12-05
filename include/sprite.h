@@ -32,6 +32,37 @@ struct GraphicsData {
 #define BACKGROUND_UPDATE_ANIMATIONS      0x200
 #define BACKGROUND_FLAG_400               0x400
 #define BACKGROUND_FLAG_800               0x800
+
+// TODO: potentially rename these. For now, all we know is
+// that they are used in the same functions which handles
+// bg sprites
+#define INIT_BG_SPRITES_LAYER_32(index)                                                                                                    \
+    ({                                                                                                                                     \
+        gBgSprites_Unknown1[(index)] = 0;                                                                                                  \
+        gBgSprites_Unknown2[(index)][0] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][1] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][2] = 255;                                                                                             \
+        gBgSprites_Unknown2[(index)][3] = 32;                                                                                              \
+    });
+
+#define INIT_BG_SPRITES_LAYER_64(index)                                                                                                    \
+    ({                                                                                                                                     \
+        gBgSprites_Unknown1[(index)] = 0;                                                                                                  \
+        gBgSprites_Unknown2[(index)][0] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][1] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][2] = 255;                                                                                             \
+        gBgSprites_Unknown2[(index)][3] = 64;                                                                                              \
+    })
+
+#define INIT_BG_SPRITES_LAYER_128(index)                                                                                                   \
+    ({                                                                                                                                     \
+        gBgSprites_Unknown1[(index)] = 0;                                                                                                  \
+        gBgSprites_Unknown2[(index)][0] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][1] = 0;                                                                                               \
+        gBgSprites_Unknown2[(index)][2] = 255;                                                                                             \
+        gBgSprites_Unknown2[(index)][3] = 128;                                                                                             \
+    })
+
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
 
@@ -251,7 +282,7 @@ void DrawBackground(Background *);
 bool32 sub_8002B20(void);
 bool32 sub_80039E4(void);
 bool32 sub_8004010(void);
-void CopyOamBufferToOam(void);
+void ProcessOamBuffers(void);
 OamData *OamMalloc(u8 order);
 
 void TransformSprite(Sprite *, SpriteTransform *);
@@ -372,7 +403,7 @@ void numToASCII(u8 digits[5], u16 number);
 #define SPRITE_FLAG_MASK_PRIORITY  SPRITE_FLAG(PRIORITY, 3) // 0x3000
 #define SPRITE_FLAG_MASK_ANIM_OVER SPRITE_FLAG(ANIM_OVER, 1)
 #define SPRITE_FLAG_MASK_BG_ID     SPRITE_FLAG(BG_ID, 3)
-#define SPRITE_FLAG_MASK_17        SPRITE_FLAG(17, 1)
+#define SPRITE_FLAG_GLOBAL_OFFSET  SPRITE_FLAG(17, 1)
 #define SPRITE_FLAG_MASK_18        SPRITE_FLAG(18, 1) // 0x40000
 #define SPRITE_FLAG_MASK_19        SPRITE_FLAG(19, 1)
 #define SPRITE_FLAG_MASK_26        SPRITE_FLAG(26, 1)

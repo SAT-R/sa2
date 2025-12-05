@@ -341,7 +341,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->rotation -= 0x2A;
 
     s->frameFlags &= ~0x1F;
-    s->frameFlags |= gUnknown_030054B8++;
+    s->frameFlags |= gOamMatrixIndex++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -367,7 +367,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->rotation += 0x2A;
 
     s->frameFlags &= ~0x1F;
-    s->frameFlags |= gUnknown_030054B8++;
+    s->frameFlags |= gOamMatrixIndex++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -392,7 +392,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->rotation += 0xE;
 
     s->frameFlags &= ~0x1F;
-    s->frameFlags |= gUnknown_030054B8++;
+    s->frameFlags |= gOamMatrixIndex++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -417,7 +417,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->rotation -= 0xE;
 
     s->frameFlags &= ~0x1F;
-    s->frameFlags |= gUnknown_030054B8++;
+    s->frameFlags |= gOamMatrixIndex++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 

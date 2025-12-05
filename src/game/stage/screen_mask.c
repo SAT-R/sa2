@@ -1,6 +1,6 @@
 /**
  * The functions in this file are mostly focused on generating masks against
- * the background associated with gBgOffsetsHBlank.
+ * the background associated with gBgOffsetsHBlankPrimary.
  *
  * For example, masking the Upper portion of the background above a generated
  * line from the given origin using a given angle to construct the mask line.
@@ -16,7 +16,7 @@
 
 void ScreenMask_Lower_OriginLeft(int_vcount y, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
 #ifdef BUG_FIX
     if (bgOffsets == NULL) {
         return;
@@ -100,7 +100,7 @@ UNUSED void ScreenMask_Upper_OriginLeft(int_vcount inY, u16 inAngle)
 {
     u32 y = inY;
     s16 i;
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     s32 r5 = 0;
 
     u16 angle = inAngle = inAngle % SIN_PERIOD;
@@ -170,7 +170,7 @@ UNUSED void ScreenMask_Upper_OriginLeft(int_vcount inY, u16 inAngle)
 
 void ScreenMask_Lower_OriginRight(int_vcount y, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     s32 r5 = 0;
     angle = angle % SIN_PERIOD;
 
@@ -235,7 +235,7 @@ void ScreenMask_Lower_OriginRight(int_vcount y, u16 angle)
                 bgOffsets--;
             }
 
-            bgOffsets = gBgOffsetsHBlank;
+            bgOffsets = gBgOffsetsHBlankPrimary;
             bgOffsets = &bgOffsets[y * 2];
 
             for (i = y; i >= 0; i--) {
@@ -258,7 +258,7 @@ void ScreenMask_Lower_OriginRight(int_vcount y, u16 angle)
 
 void ScreenMask_Upper_OriginRight(int_vcount y, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     s32 r2;
     s32 r7 = 0;
     s16 i, j;
@@ -339,7 +339,7 @@ void ScreenMask_Upper_OriginRight(int_vcount y, u16 angle)
 
 void ScreenMask_Right_OriginBottom(s32 qX, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     angle = angle % SIN_PERIOD;
 
     if (angle > DEG_TO_SIN(180)) {
@@ -383,7 +383,7 @@ void ScreenMask_Right_OriginBottom(s32 qX, u16 angle)
 void ScreenMask_Left_OriginBottom(s32 inQX, u16 angle)
 {
     s32 qX = inQX;
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     angle = angle % SIN_PERIOD;
 
     if (angle > DEG_TO_SIN(180)) {
@@ -427,7 +427,7 @@ void ScreenMask_Left_OriginBottom(s32 inQX, u16 angle)
 
 void ScreenMask_Right_OriginTop(s32 qX, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     angle = angle % SIN_PERIOD;
 
     if (angle <= DEG_TO_SIN(180)) {
@@ -470,7 +470,7 @@ void ScreenMask_Right_OriginTop(s32 qX, u16 angle)
 
 void ScreenMask_Left_OriginTop(s32 qX, u16 angle)
 {
-    int_vcount *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
     angle = angle % SIN_PERIOD;
 
     if (angle <= DEG_TO_SIN(180)) {
@@ -536,7 +536,7 @@ static void sub_802E278(s16 *p0, u8 pairCount)
     }
 
     for (i = 0; i < pairCount - 1; i++) {
-        int_vcount *bgOffsets = gBgOffsetsHBlank;
+        int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
         s16 xVal;
         s32 xVal2;
         s32 r4;
@@ -592,7 +592,7 @@ static void sub_802E384(s16 *p0, u16 pairCount)
 
     for (j = 0; j < pairCount - 1; j++) {
 
-        int_vcount *bgOffsets = gBgOffsetsHBlank;
+        int_vcount *bgOffsets = gBgOffsetsHBlankPrimary;
 #ifndef NON_MATCHING
         register s32 yVal asm("r3") = sp[j][1];
 #else
@@ -763,7 +763,7 @@ void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
 #ifndef NON_MATCHING
         s32 r8;
 #endif
-        if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+        if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
             DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
         } else {
             DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
@@ -914,7 +914,7 @@ void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
         // Origin point not visible, so just create a mask for the shape
         // over the whole screen
         if ((width / 2) == 0) {
-            if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+            if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
                 DmaFill16(3, 0, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
             } else {
                 DmaFill16(3, 0, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
@@ -929,7 +929,7 @@ void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
             if (r7 > 0 && r7 < DISPLAY_HEIGHT) {
                 s16 r3, r4;
                 r3 = DISPLAY_WIDTH + 1;
-                if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
                     DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
                 } else {
                     DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
@@ -962,7 +962,7 @@ void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
 
                 if (r6 > 0 && r6 < DISPLAY_WIDTH) {
                     r3 = DISPLAY_WIDTH + 1;
-                    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                    if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
                         DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
                     } else {
                         DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));
@@ -995,7 +995,7 @@ void ScreenMask_CreateShape(u16 angle, u16 width, u16 c, s16 x, s16 y, u8 d)
                 r6 += x;
                 if (r6 > 0 && r6 < DISPLAY_WIDTH) {
                     r3 = DISPLAY_WIDTH + 1;
-                    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                    if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
                         DmaFill16(3, r3, &gBgOffsetsBuffer[0], sizeof(gBgOffsetsBuffer[0]));
                     } else {
                         DmaFill16(3, r3, &gBgOffsetsBuffer[1], sizeof(gBgOffsetsBuffer[1]));

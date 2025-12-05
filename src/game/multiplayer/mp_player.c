@@ -439,7 +439,7 @@ block_57:
     }
     UpdateSpriteAnimation(&mpp->s);
     sp4 = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
-    if (((gGameMode == 3) || (gGameMode == 5)) && (sa2__gUnknown_030054B4[SIO_MULTI_CNT->id] == -1)) {
+    if (((gGameMode == 3) || (gGameMode == 5)) && (sa2__gMultiplayerRanks[SIO_MULTI_CNT->id] == -1)) {
         var_sl = 1;
         for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
             u32 connection = gMultiplayerConnections;
@@ -491,7 +491,7 @@ block_57:
     } else {
     block_101:
         if ((0x80 & gPlayer.itemEffect) || (0x80 & mpp->unk57) || (gPlayer.timerInvulnerability != 0) || (gPlayer.moveState & 0x80)
-            || (sa2__gUnknown_030054B4[mpp->unk56] != -1)) {
+            || (sa2__gMultiplayerRanks[mpp->unk56] != -1)) {
         block_106:
             if (gGameMode != 6) {
                 if (mpp->unk56 != SIO_MULTI_CNT->id) {
@@ -524,7 +524,7 @@ block_57:
     }
     if (1 & mpp->unk54) {
         s->frameFlags &= ~0x1F;
-        s->frameFlags |= (SA2_LABEL(gUnknown_030054B8)++ | 0x20);
+        s->frameFlags |= (SA2_LABEL(gOamMatrixIndex)++ | 0x20);
         if (2 & mpp->unk54) {
             tf->qScaleX = -Q(1.0);
         } else {
@@ -556,7 +556,7 @@ block_57:
         return;
     }
 
-    if ((gStageTime & 2) || (0x20 & mpp->unk57) || (((1 & mpp->unk5C) != 0)) || (sa2__gUnknown_030054B4[mpp->unk56] != -1)
+    if ((gStageTime & 2) || (0x20 & mpp->unk57) || (((1 & mpp->unk5C) != 0)) || (sa2__gMultiplayerRanks[mpp->unk56] != -1)
         || ((mpp->unk60 == 0) && !(4 & mpp->unk54) && !(mpp->unk5C & 2))) {
         s->oamFlags = (mpp->unk54 & 0x80) ? 0x440 : 0x400;
         s->frameFlags &= ~0x180;
@@ -774,7 +774,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         UpdateSpriteAnimation(s);
     }
 
-    if (gGameMode == GAME_MODE_TEAM_PLAY && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
+    if (gGameMode == GAME_MODE_TEAM_PLAY && gMultiplayerRanks[SIO_MULTI_CNT->id] == -1) {
         u32 someBool = TRUE;
         for (i = 0; i < 4; i++) {
             if (gMultiplayerPlayerTasks[i] == NULL) {
@@ -830,7 +830,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     } else {
         if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT) || (mpp->unk57 & 0x80) || gPlayer.timerInvincibility == 0
-            || !PLAYER_IS_ALIVE || gUnknown_030054B4[mpp->unk56] != -1) {
+            || !PLAYER_IS_ALIVE || gMultiplayerRanks[mpp->unk56] != -1) {
             if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                 if (mpp->unk56 == SIO_MULTI_CNT->id && gMultiplayerCharacters[mpp->unk56] == CHARACTER_TAILS
                     && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES && mpp->unk5C & 4) {
@@ -862,7 +862,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
     if (mpp->unk54 & 1) {
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-        s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE;
+        s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE;
         if (mpp->unk54 & 2) {
             transform->qScaleX = -256;
         } else {
@@ -891,7 +891,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     s->frameFlags |= (mpp->unk54 & 0x30) << 8;
 
     if (!(mpp->unk54 & 0x40)
-        && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1 || gUnknown_030054B4[mpp->unk56] != -1)
+        && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1 || gMultiplayerRanks[mpp->unk56] != -1)
             || (mpp->unk60 == 0 && !(mpp->unk54 & 4) && !(mpp->unk5C & 2)))) {
         s->oamFlags = SPRITE_OAM_ORDER(16);
         if (mpp->unk54 & 0x80) {

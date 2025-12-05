@@ -135,11 +135,7 @@ void CreateExtraEndingFallCutScene(void)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 64;
+    INIT_BG_SPRITES_LAYER_64(0);
 
     m4aMPlayAllStop();
     m4aSongNumStart(MUS_EXTRA_ENDING);

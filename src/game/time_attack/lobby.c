@@ -70,23 +70,11 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     gBgCntRegs[0] = 0x1D05;
     gBgCntRegs[1] = 0x702;
 
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 32;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 32;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xff;
-    gUnknown_03002280[2][3] = 32;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_32(2);
 
-    gBgScrollRegs[0][0] = 0xFFF8;
+    gBgScrollRegs[0][0] = -8;
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;

@@ -87,16 +87,12 @@ void CreateMissingChaosEmaraldsCutScene(void)
     gDispCnt = 0x1040;
     gBgCntRegs[0] = 0x1e03;
     gBgCntRegs[1] = 0x1c05;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 0x20;
-    gUnknown_03004D80[1] = 0xff;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xff;
-    gUnknown_03002280[1][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
+    gBgSprites_Unknown1[1] = 0xff;
+    gBgSprites_Unknown2[1][0] = 0;
+    gBgSprites_Unknown2[1][1] = 0;
+    gBgSprites_Unknown2[1][2] = 0xff;
+    gBgSprites_Unknown2[1][3] = 0x20;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 

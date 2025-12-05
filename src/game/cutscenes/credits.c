@@ -61,11 +61,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     gBgCntRegs[0] = 0x5c00;
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
 
     t = TaskCreate(sub_808EBC4, sizeof(struct CreditsCutScene), 0x3100, 0, TaskDestroy_CreditsCutScene);
 

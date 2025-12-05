@@ -22,25 +22,25 @@
 	ands r0, r2
 	cmp r0, #0
 	beq _0800676C
-	ldr r0, _08006768 @ =gBgOffsetsHBlank
+	ldr r0, _08006768 @ =gBgOffsetsHBlankPrimary
 	ldr r0, [r0]
 	adds r7, r0, #2
 	b _080067A0
 	.align 2, 0
 _08006760: .4byte gFlags
 _08006764: .4byte gHBlankCopySize
-_08006768: .4byte gBgOffsetsHBlank
+_08006768: .4byte gBgOffsetsHBlankPrimary
 _0800676C:
-	ldr r0, _08006774 @ =gBgOffsetsHBlank
+	ldr r0, _08006774 @ =gBgOffsetsHBlankPrimary
 	ldr r7, [r0]
 	b _080067A0
 	.align 2, 0
-_08006774: .4byte gBgOffsetsHBlank
+_08006774: .4byte gBgOffsetsHBlankPrimary
 _08006778:
 	ldr r1, _08006790 @ =gHBlankCopySize
 	movs r0, #2
 	strb r0, [r1]
-	ldr r0, _08006794 @ =gBgOffsetsHBlank
+	ldr r0, _08006794 @ =gBgOffsetsHBlankPrimary
 	ldr r7, [r0]
 	movs r0, #1
 	ands r0, r2
@@ -51,7 +51,7 @@ _08006778:
 	b _080067A4
 	.align 2, 0
 _08006790: .4byte gHBlankCopySize
-_08006794: .4byte gBgOffsetsHBlank
+_08006794: .4byte gBgOffsetsHBlankPrimary
 _08006798: .4byte gHBlankCopyTarget
 _0800679C: .4byte 0x04000042
 _080067A0:

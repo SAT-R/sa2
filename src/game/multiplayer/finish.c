@@ -96,7 +96,7 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
     u32 i = 0;
 
 #if (GAME == GAME_SA2)
-    if (SA2_LABEL(gUnknown_030054B4)[sioId] == -1)
+    if (SA2_LABEL(gMultiplayerRanks)[sioId] == -1)
 #endif
     {
         struct Task *t = TaskCreate(SA2_LABEL(Task_8019E70), sizeof(MpFinish1), 0x2010, 0, SA2_LABEL(TaskDestructor_8019EF4));
@@ -112,10 +112,10 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
         }
 
         if (count < 6) {
-            SA2_LABEL(gUnknown_030054B4)[sioId] = count;
+            SA2_LABEL(gMultiplayerRanks)[sioId] = count;
         } else {
             // BUG(?): Value underflows if i is 0
-            SA2_LABEL(gUnknown_030054B4)[sioId] = i - 1;
+            SA2_LABEL(gMultiplayerRanks)[sioId] = i - 1;
         }
 
         finish->unk30 = sioId;
@@ -268,20 +268,20 @@ void CreateMultiplayerFinishHandler(void)
 
                 if (var_r6 != 0) {
                     if (arr2[var_r6] != arr2[0]) {
-                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 1;
+                        SA2_LABEL(gMultiplayerRanks)[*ptr] = 1;
                     } else {
-                        SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                        SA2_LABEL(gMultiplayerRanks)[*ptr] = 4;
                     }
                 } else if (arr2[0] == arr2[1]) {
-                    SA2_LABEL(gUnknown_030054B4)[*ptr] = 4;
+                    SA2_LABEL(gMultiplayerRanks)[*ptr] = 4;
                 } else {
-                    SA2_LABEL(gUnknown_030054B4)[arr[0]] = var_r6;
+                    SA2_LABEL(gMultiplayerRanks)[arr[0]] = var_r6;
                 }
             }
 
             for (var_r6 = 0; var_r6 < 4; var_r6++) {
                 if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                    CreateMultiplayerFinishResult(var_r6, (u8)SA2_LABEL(gUnknown_030054B4)[var_r6]);
+                    CreateMultiplayerFinishResult(var_r6, (u8)SA2_LABEL(gMultiplayerRanks)[var_r6]);
                 }
             }
         } else if (gGameMode == 5) {
@@ -297,23 +297,23 @@ void CreateMultiplayerFinishHandler(void)
             if (arr2[0] == arr2[1]) {
                 for (var_r6 = 0; var_r6 < 4; var_r6++) {
                     if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                        SA2_LABEL(gUnknown_030054B4)[var_r6] = 4;
+                        SA2_LABEL(gMultiplayerRanks)[var_r6] = 4;
                     }
                 }
             } else {
                 for (var_r6 = 0; var_r6 < 4; var_r6++) {
                     if (gMultiplayerPlayerTasks[var_r6] != NULL) {
                         if (((gMultiplayerConnections & (0x10 << var_r6)) >> (var_r6 + 4)) == arr[0]) {
-                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 0;
+                            SA2_LABEL(gMultiplayerRanks)[var_r6] = 0;
                         } else {
-                            SA2_LABEL(gUnknown_030054B4)[var_r6] = 1;
+                            SA2_LABEL(gMultiplayerRanks)[var_r6] = 1;
                         }
                     }
                 }
             }
             for (var_r6 = 0; var_r6 < 4; var_r6++) {
                 if (gMultiplayerPlayerTasks[var_r6] != NULL) {
-                    CreateMultiplayerFinishResult(var_r6, SA2_LABEL(gUnknown_030054B4)[var_r6]);
+                    CreateMultiplayerFinishResult(var_r6, SA2_LABEL(gMultiplayerRanks)[var_r6]);
                 }
             }
         } else if (gGameMode != 6) {
@@ -322,7 +322,7 @@ void CreateMultiplayerFinishHandler(void)
                 u32 var_r2 = 0;
                 if ((gGameMode != 3) && (gGameMode != 5)) {
                     for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
-                        if (SA2_LABEL(gUnknown_030054B4)[var_r4] != -1) {
+                        if (SA2_LABEL(gMultiplayerRanks)[var_r4] != -1) {
                             var_r2 += 1;
                         }
                     }
@@ -339,7 +339,7 @@ void CreateMultiplayerFinishHandler(void)
                 }
 
                 for (var_r4 = 0; var_r4 < 4 && (gMultiplayerPlayerTasks[var_r4] != NULL); var_r4++) {
-                    if ((SA2_LABEL(gUnknown_030054B4)[var_r4] == -1) || (gGameMode == 3) || (gGameMode == 5)) {
+                    if ((SA2_LABEL(gMultiplayerRanks)[var_r4] == -1) || (gGameMode == 3) || (gGameMode == 5)) {
                         CreateMultiplayerFinishResult(var_r4, var_r5);
                     }
                 }
@@ -363,7 +363,7 @@ void CreateMultiplayerFinishHandler(void)
                     break;
                 }
 
-                if (SA2_LABEL(gUnknown_030054B4)[i] != -1) {
+                if (SA2_LABEL(gMultiplayerRanks)[i] != -1) {
                     r2++;
                 }
             }
@@ -384,7 +384,7 @@ void CreateMultiplayerFinishHandler(void)
                 break;
             }
 
-            if (SA2_LABEL(gUnknown_030054B4)[i] == -1) {
+            if (SA2_LABEL(gMultiplayerRanks)[i] == -1) {
                 MultiplayerPlayer *mpp;
                 mpt = gMultiplayerPlayerTasks[i];
                 mpp = TASK_DATA(mpt);
@@ -465,14 +465,14 @@ void Task_TransitionToResultsScreen(void)
 
                 if (i != 0) {
                     if (sp04[i] != sp04[0]) {
-                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
+                        SA2_LABEL(gMultiplayerRanks)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 1;
                     } else {
 #ifndef NON_MATCHING
                         // TODO: Match without goto
                         goto else_block;
 #else
-                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
+                        SA2_LABEL(gMultiplayerRanks)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
 #endif
                     }
@@ -482,10 +482,10 @@ void Task_TransitionToResultsScreen(void)
 #ifndef NON_MATCHING
                     else_block:
 #endif
-                        SA2_LABEL(gUnknown_030054B4)[sp00[i]] = i;
+                        SA2_LABEL(gMultiplayerRanks)[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
                     } else {
-                        SA2_LABEL(gUnknown_030054B4)[sp00[0]] = i;
+                        SA2_LABEL(gMultiplayerRanks)[sp00[0]] = i;
                         gMPRingCollectWins[sp00[0]]++;
                         gMultiplayerCharacters[sp00[0]] = i;
                     }
@@ -534,9 +534,9 @@ void Task_TransitionToResultsScreen(void)
                 if (pid == SIO_MULTI_CNT->id)
                     continue;
 
-                if (SA2_LABEL(gUnknown_030054B4)[SIO_MULTI_CNT->id] < SA2_LABEL(gUnknown_030054B4)[pid]) {
+                if (SA2_LABEL(gMultiplayerRanks)[SIO_MULTI_CNT->id] < SA2_LABEL(gMultiplayerRanks)[pid]) {
                     foeResult = 0;
-                } else if (SA2_LABEL(gUnknown_030054B4)[SIO_MULTI_CNT->id] > SA2_LABEL(gUnknown_030054B4)[pid]) {
+                } else if (SA2_LABEL(gMultiplayerRanks)[SIO_MULTI_CNT->id] > SA2_LABEL(gMultiplayerRanks)[pid]) {
                     foeResult = 1;
                     ownResult = 1;
                 } else {

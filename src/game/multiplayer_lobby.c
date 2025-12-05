@@ -131,21 +131,9 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     gDispCnt |= 0x1141;
 
     gBgCntRegs[0] = 0x1E01;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xFF;
-    gUnknown_03002280[0][3] = 0x20;
-    gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[1][0] = 0;
-    gUnknown_03002280[1][1] = 0;
-    gUnknown_03002280[1][2] = 0xFF;
-    gUnknown_03002280[1][3] = 0x20;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xFF;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(0);
+    INIT_BG_SPRITES_LAYER_32(1);
+    INIT_BG_SPRITES_LAYER_32(2);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -248,7 +236,7 @@ static void Task_FadeInOrHandleExit(void)
 
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                         gMultiplayerCharacters[i] = 0;
-                        gUnknown_030054B4[i] = 0;
+                        gMultiplayerRanks[i] = 0;
                         gMultiplayerMissingHeartbeats[i] = 0;
                     }
                 } else {

@@ -493,11 +493,11 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
         gBgScrollRegs[2][0] = 0;
         gBgScrollRegs[2][1] = 0;
 
-        gUnknown_03004D80[2] = 0;
-        gUnknown_03002280[2][0] = 0;
-        gUnknown_03002280[2][1] = 0;
-        gUnknown_03002280[2][2] = 0xff;
-        gUnknown_03002280[2][3] = 0x14;
+        gBgSprites_Unknown1[2] = 0;
+        gBgSprites_Unknown2[2][0] = 0;
+        gBgSprites_Unknown2[2][1] = 0;
+        gBgSprites_Unknown2[2][2] = 0xff;
+        gBgSprites_Unknown2[2][3] = 0x14;
 
         DrawBackground(&sequence->background);
         gCurTask->main = Task_DisplaySonicSonicArtworkAndDestroyTask;
@@ -1395,7 +1395,7 @@ void sub_80393A4(void)
 
     intro->unk8++;
     gStageTime++;
-    gUnknown_030054B8 = 0;
+    gOamMatrixIndex = 0;
 
     intro->animFrame += 7;
     if (intro->animFrame > 250) {
@@ -1540,11 +1540,7 @@ void CreateBackgrounds(void)
     gBgScrollRegs[1][1] = 0x48;
     gBgScrollRegs[2][0] = 0;
     gBgScrollRegs[2][1] = 0;
-    gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0] = 0;
-    gUnknown_03002280[2][1] = 0;
-    gUnknown_03002280[2][2] = 0xff;
-    gUnknown_03002280[2][3] = 0x20;
+    INIT_BG_SPRITES_LAYER_32(2);
 
     t = TaskCreate(sub_8039A38, sizeof(WorldBackgrounds), 0x8100, 0, NULL);
     worldBgs = TASK_DATA(t);
@@ -1637,8 +1633,8 @@ void sub_8039AD4(void)
 {
     gOamFreeIndex = 0;
     gOamFirstPausedIndex = 0;
-    CpuFill16(-1, gUnknown_03001850, sizeof(gUnknown_03001850));
-    CpuFill16(-1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
+    CpuFill16(-1, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
+    CpuFill16(-1, gOamMallocOrders_EndIndex, sizeof(gOamMallocOrders_EndIndex));
 
     m4aMPlayAllStop();
     gGameMode = GAME_MODE_SINGLE_PLAYER;

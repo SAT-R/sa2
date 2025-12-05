@@ -331,10 +331,8 @@ typedef struct {
 } BgAffineReg;
 
 // TODO: Find better place for this
-typedef void (*HBlankFunc)(int_vcount vcount);
+typedef void (*HBlankIntrFunc)(int_vcount vcount);
 typedef void (*IntrFunc)(void);
-typedef void (*FuncType_030053A0)(void);
-typedef bool32 (*VBlankFunc)(void);
 
 extern void *iwram_end;
 extern void *ewram_end;

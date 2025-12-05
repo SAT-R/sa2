@@ -193,9 +193,9 @@ static void sub_808623C(void)
 
     itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
 
-    itemBox->box.frameFlags |= gUnknown_030054B8;
+    itemBox->box.frameFlags |= gOamMatrixIndex;
     itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    itemBox->identifier.frameFlags |= gUnknown_030054B8++;
+    itemBox->identifier.frameFlags |= gOamMatrixIndex++;
 
     TransformSprite(&itemBox->box, transform);
     TransformSprite(&itemBox->identifier, transform);
@@ -245,9 +245,9 @@ static void sub_808636C(void)
 
     itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
 
-    itemBox->box.frameFlags |= gUnknown_030054B8;
+    itemBox->box.frameFlags |= gOamMatrixIndex;
     itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    itemBox->identifier.frameFlags |= gUnknown_030054B8++;
+    itemBox->identifier.frameFlags |= gOamMatrixIndex++;
 
     TransformSprite(&itemBox->box, transform);
     TransformSprite(&itemBox->identifier, transform);
