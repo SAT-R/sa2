@@ -68,7 +68,9 @@ void *gBgOffsetsHBlankSecondary = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
+#if (ENGINE == ENGINE_2)
 void *gBgOffsetsSecondary = NULL;
+#endif
 
 OamData gOamMallocBuffer[OAM_ENTRY_COUNT] ALIGNED(16) = {};
 
@@ -91,12 +93,12 @@ struct GraphicsData gVramGraphicsCopyQueueBuffer[32] = {};
 #endif
 struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 
-s16 gUnknown_03002820 = 0;
+s16 SA2_LABEL(gUnknown_03002820) = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
 u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
 union MultiSioData gMultiSioSend ALIGNED(8) = {};
-u8 gUnknown_03002874 = 0;
+u8 SA2_LABEL(gUnknown_03002874) = 0;
 
 void *gHBlankCopyTarget ALIGNED(4) = NULL;
 
@@ -107,7 +109,7 @@ u8 gHBlankCopySize ALIGNED(4) = 0;
 
 u8 gVramGraphicsCopyQueueIndex ALIGNED(4) = 0;
 u16 gPrevInput ALIGNED(4) = 0;
-u16 gUnknown_03002A8C ALIGNED(4) = 0;
+u16 SA2_LABEL(gUnknown_03002A8C) ALIGNED(4) = 0;
 
 struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
 
@@ -116,19 +118,21 @@ u8 gOamFirstPausedIndex ALIGNED(4) = 0;
 u8 gBackgroundsCopyQueueCursor ALIGNED(4) = 0;
 HBlankIntrFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
-u8 gIwramHeap[0x2204] = {};
+u8 gIwramHeap[TASK_HEAP_SIZE] = {};
 
 Sprite *gBgSprites[] ALIGNED(16) = {};
 u8 gNumVBlankCallbacks ALIGNED(4) = 0;
+#if (ENGINE == ENGINE_2)
 void *gBgOffsetsPrimary = NULL;
-u16 gUnknown_03004D58 ALIGNED(4) = 0;
+#endif
+u16 SA2_LABEL(gUnknown_03004D58) ALIGNED(4) = 0;
 u8 gVramGraphicsCopyCursor ALIGNED(4) = 0;
 u8 gOamMallocOrders_EndIndex[] ALIGNED(16) = {};
 u8 gBgSprites_Unknown1[] = {};
 OamData gOamBuffer[] ALIGNED(16) = {};
 u16 gVramHeapState[] = {};
 u8 gBgSpritesCount ALIGNED(4) = 0;
-u16 gUnknown_03005394 ALIGNED(4) = 0;
+u16 SA2_LABEL(gUnknown_03005394) ALIGNED(4) = 0;
 u16 gUnknown_03005398 ALIGNED(4) = 0;
 IntrFunc gVBlankIntrs[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
@@ -275,8 +279,8 @@ void EngineInit(void)
 #endif
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;
-    gUnknown_03005394 = 0x100;
-    gUnknown_03002A8C = 0;
+    SA2_LABEL(gUnknown_03005394) = 0x100;
+    SA2_LABEL(gUnknown_03002A8C) = 0;
     gUnknown_03004D58 = 0;
     gUnknown_0300194C = 0;
     gUnknown_03002820 = 0;
@@ -682,7 +686,7 @@ static void VBlankIntr(void)
     if (gFlagsPreVBlank & FLAGS_40) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
-        REG_DISPSTAT |= gUnknown_03002874 << 8;
+        REG_DISPSTAT |= SA2_LABEL(gUnknown_03002874) << 8;
         REG_DISPSTAT &= ~DISPSTAT_VCOUNT;
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_IE |= INTR_FLAG_VCOUNT;
@@ -885,10 +889,10 @@ static void ClearOamBufferCpuSet(void)
     if (!(gFlags & FLAGS_20)) {
         if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer) {
             gBgOffsetsHBlankPrimary = &gBgOffsetsBuffer[1];
-            sa2__gUnknown_030022AC = &gBgOffsetsBuffer[0];
+            gBgOffsetsHBlankSecondary = &gBgOffsetsBuffer[0];
         } else {
             gBgOffsetsHBlankPrimary = &gBgOffsetsBuffer[0];
-            sa2__gUnknown_030022AC = &gBgOffsetsBuffer[1];
+            gBgOffsetsHBlankSecondary = &gBgOffsetsBuffer[1];
         }
     }
     gFlags &= ~4;

@@ -86,7 +86,7 @@ static void Task_Poll(void)
 #if (GAME == GAME_SA1)
         m4aSongNumStop(MUS_CHARACTER_SELECTION);
 
-        sa2__gUnknown_03004D80[0] = 0;
+        gBgSprites_Unknown1[0] = 0;
         gBgSprites_Unknown2[0][0] = 0;
         gBgSprites_Unknown2[0][1] = 0;
         gBgSprites_Unknown2[0][2] = 0xFF;
@@ -109,7 +109,7 @@ static void Task_Poll(void)
 #if (GAME == GAME_SA1)
         CreateCharacterSelectionScreen(0);
 
-        sa2__gUnknown_03004D80[0] = 0;
+        gBgSprites_Unknown1[0] = 0;
         gBgSprites_Unknown2[0][0] = 0;
         gBgSprites_Unknown2[0][1] = 0;
         gBgSprites_Unknown2[0][2] = 0xFF;

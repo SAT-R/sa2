@@ -247,7 +247,7 @@ extern HBlankIntrFunc gHBlankCallbacks[4];
 extern u8 gNumHBlankCallbacks;
 extern u8 gNumHBlankIntrs;
 
-extern u8 gIwramHeap[0x2204];
+extern u8 gIwramHeap[TASK_HEAP_SIZE];
 
 extern void *gVramHeapStartAddr;
 extern u16 gVramHeapMaxTileSlots;
@@ -370,7 +370,7 @@ extern u16 gUnknown_03004D58;
 extern u8 gVramGraphicsCopyCursor;
 extern u8 gOamMallocOrders_EndIndex[0x20];
 extern u8 gBgSpritesCount;
-extern u16 gUnknown_03005394;
+extern u16 SA2_LABEL(gUnknown_03005394);
 extern u16 gUnknown_03005398;
 extern IntrFunc gVBlankIntrs[4];
 extern s32 gPseudoRandom;
