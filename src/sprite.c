@@ -960,10 +960,10 @@ OamData *OamMalloc(u8 order)
     }
 
     // This is the first oam in this layer
-    if (SA2_LABEL(gOamMallocOrders_StartIndex)[order] == 0xFF) {
+    if (gOamMallocOrders_StartIndex[order] == 0xFF) {
         gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
         // And store the start of the chain
-        SA2_LABEL(gOamMallocOrders_StartIndex)[order] = gOamFreeIndex;
+        gOamMallocOrders_StartIndex[order] = gOamFreeIndex;
         SA2_LABEL(gOamMallocOrders_EndIndex)[order] = gOamFreeIndex;
     } else {
         gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
@@ -984,8 +984,8 @@ void ProcessOamBuffers(void)
     u8 operationNumber = 0;
     s32 layer;
 
-    for (layer = 0; layer < (signed)ARRAY_COUNT(SA2_LABEL(gOamMallocOrders_StartIndex)); layer++) {
-        s8 oamMallocIndex = SA2_LABEL(gOamMallocOrders_StartIndex)[layer];
+    for (layer = 0; layer < (signed)ARRAY_COUNT(gOamMallocOrders_StartIndex); layer++) {
+        s8 oamMallocIndex = gOamMallocOrders_StartIndex[layer];
 
         while (oamMallocIndex != -1) {
             u8 *debugCopyOrders = SA2_LABEL(gOamMallocCopiedOrder);
@@ -1040,10 +1040,10 @@ void ProcessOamBuffers(void)
 
     gOamFreeIndex = 0;
     if (gFlags & FLAGS_4000) {
-        CpuFill32(-1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        CpuFill32(-1, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
         CpuFill32(-1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     } else {
-        DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        DmaFill32(3, -1, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
         DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     }
 }

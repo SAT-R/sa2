@@ -36,6 +36,10 @@ void *gBgOffsetsHBlankPrimary = NULL;
 u16 gVramHeapMaxTileSlots = 0;
 u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
+#if (ENGINE == ENGINE_3)
+u8 gUnknown_03002BE0[] = { 0 }; // unused?
+u32 gUnknown_03002BF0 = 0;
+#endif
 u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
