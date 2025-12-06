@@ -1428,7 +1428,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     }
 
     gVBlankCallbacks[gNumVBlankCallbacks++] = ResetWavesPalette;
-    gFlags |= FLAGS_10;
+    gFlags |= FLAGS_EXECUTE_VBLANK_CALLBACKS;
 
     titleScreen->bgEffect.offset = (titleScreen->wavesTopOffset - 2);
 

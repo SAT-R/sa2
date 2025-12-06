@@ -432,6 +432,7 @@ void EngineMainLoop(void)
 #endif
         {
             UpdateScreenDma();
+
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferDma();
             }
@@ -516,7 +517,7 @@ static void UpdateScreenDma(void)
         }
     }
 
-    if (gFlags & FLAGS_10) {
+    if (gFlags & FLAGS_EXECUTE_VBLANK_CALLBACKS) {
         DmaFill32(3, 0, gVBlankIntrs, sizeof(gVBlankIntrs));
         if (gNumVBlankCallbacks != 0) {
             DmaCopy32(3, gVBlankCallbacks, gVBlankIntrs, gNumVBlankCallbacks * sizeof(IntrFunc));
@@ -583,7 +584,7 @@ static void ClearOamBufferDma(void)
     DmaFill16(3, 0x200, gOamBuffer + (OAM_ENTRY_COUNT / 4) * 3, OAM_SIZE / 4);
 
     gNumVBlankCallbacks = 0;
-    gFlags &= ~FLAGS_10;
+    gFlags &= ~FLAGS_EXECUTE_VBLANK_CALLBACKS;
 }
 
 #ifndef COLLECT_RINGS_ROM
@@ -896,10 +897,10 @@ static void ClearOamBufferCpuSet(void)
             gBgOffsetsHBlankSecondary = &gBgOffsetsBuffer[1];
         }
     }
-    gFlags &= ~4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
     CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
     gNumVBlankCallbacks = 0;
-    gFlags &= ~FLAGS_10;
+    gFlags &= ~FLAGS_EXECUTE_VBLANK_CALLBACKS;
 }
 #else
 #ifndef COLLECT_RINGS_ROM
@@ -917,10 +918,10 @@ static void ClearOamBufferCpuSet(void)
             gBgOffsetsHBlankSecondary = gBgOffsetsSecondary;
         }
     }
-    gFlags &= ~4;
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
     CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
     gNumVBlankCallbacks = 0;
-    gFlags &= ~FLAGS_10;
+    gFlags &= ~FLAGS_EXECUTE_VBLANK_CALLBACKS;
 }
 #endif
 #endif
