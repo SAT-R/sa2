@@ -15,11 +15,6 @@
 
 typedef bool32 (*VBlankProcessFunc)(void);
 
-// TODO: the order of these vars has
-// been shuffled due to compilation losses.
-// It's possible to use `ramscrgen` to reorder
-// these variables in here and provide
-// the matching order separately
 IntrFunc gIntrTable[] = {};
 u32 gIntrMainBuf[] = {};
 struct Task gTasks[] = {};
@@ -37,7 +32,6 @@ u16 gVramHeapMaxTileSlots = 0;
 u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
 #if (ENGINE == ENGINE_3)
-u8 gUnknown_03002BE0[] = { 0 }; // unused?
 u32 gUnknown_03002BF0 = 0;
 #endif
 u8 gNumHBlankIntrs = 0;
@@ -55,6 +49,9 @@ u16 SA2_LABEL(gUnknown_03001944) ALIGNED(4) = 0;
 u8 gNumVBlankIntrs ALIGNED(4) = 0;
 s16 SA2_LABEL(gUnknown_0300194C) ALIGNED(4) = 0;
 
+#if (ENGINE >= ENGINE_3)
+u8 gUnknown_03002C60 ALIGNED(4) = 0;
+#endif
 u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
@@ -67,11 +64,21 @@ winreg_t gWinRegs[6] ALIGNED(16) = {};
 s32 gNumTasks = 0;
 u8 gBgSprites_Unknown2[4][4] = {};
 u16 gInput = 0;
+#if (ENGINE >= ENGINE_3)
+s32 gUnknown_030035A4 = 0;
+struct Task *gNextTaskToCheckForDestruction = NULL;
+#endif // (ENGINE >= ENGINE_3)
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
 void *gBgOffsetsHBlankSecondary = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
+#if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
+// Only here in SA3
+// struct GraphicsData *gVramGraphicsCopyQueue[];
+#else
+struct GraphicsData gVramGraphicsCopyQueue[] = {};
+#endif
 #if (ENGINE == ENGINE_2)
 void *gBgOffsetsSecondary = NULL;
 #endif
@@ -93,10 +100,20 @@ u32 gFlagsPreVBlank = 0;
 /* 0x03002794 */ const struct SpriteTables *gRefSpriteTables = NULL;
 
 #if PORTABLE
-struct GraphicsData gVramGraphicsCopyQueueBuffer[32] = {};
-#endif
+// TODO: Once SA3 works in PORTABLE, it can just use
+// the regular gVramGraphicsCopyQueue[].
+struct GraphicsData gVramGraphicsCopyQueueBuffer[] = {};
+#endif // PORTABLE
+#if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
 struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
+#else
+// NOT here in SA3
+// struct GraphicsData gVramGraphicsCopyQueue[32] = {};
+#endif
 
+#if (ENGINE == ENGINE_3)
+VoidFn gUnknown_03003C08 = NULL;
+#endif
 s16 SA2_LABEL(gUnknown_03002820) = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
@@ -105,6 +122,11 @@ union MultiSioData gMultiSioSend ALIGNED(8) = {};
 u8 SA2_LABEL(gUnknown_03002874) = 0;
 
 void *gHBlankCopyTarget ALIGNED(4) = NULL;
+
+#if (ENGINE == ENGINE_3)
+// Name inferred from KATAM
+u16 gRgbMap[3][2 * 16] __attribute__((aligned(4))) = {};
+#endif // (ENGINE == ENGINE_3)
 
 u8 gBackgroundsCopyQueueIndex = 0;
 u16 gBgPalette[] ALIGNED(16) = {};
@@ -131,6 +153,9 @@ void *gBgOffsetsPrimary = NULL;
 #endif
 u16 SA2_LABEL(gUnknown_03004D58) ALIGNED(4) = 0;
 u8 gVramGraphicsCopyCursor ALIGNED(4) = 0;
+#if (ENGINE == ENGINE_3)
+u8 gUnknown_0300620C ALIGNED(4) = 0;
+#endif
 u8 gOamMallocOrders_EndIndex[] ALIGNED(16) = {};
 u8 gBgSprites_Unknown1[] = {};
 OamData gOamBuffer[] ALIGNED(16) = {};
