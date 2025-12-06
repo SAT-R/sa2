@@ -50,7 +50,7 @@ typedef void *IwramData;
 
 #define USE_SA2_TASK_SYSTEM ((GAME == GAME_SA2) && !defined(NON_MATCHING))
 
-struct Task {
+typedef struct Task {
     /* 0x00 */ TaskPtr parent;
     /* 0x02 */ TaskPtr prev;
     /* 0x04 */ TaskPtr next;
@@ -74,7 +74,7 @@ struct Task {
 #if ENABLE_TASK_LOGGING
     const char *name;
 #endif
-};
+} Task;
 
 #if PLATFORM_GBA
 typedef u16 IwramNodePtr;
@@ -102,7 +102,7 @@ struct IwramNode {
 
 #define TASK_HEAP_SIZE ((0x881) * sizeof(uintptr_t))
 
-// TODO: DO NOT USE, unless ABSOLUTELY necessary for matching!!!
+// NOTE: DO NOT USE, unless ABSOLUTELY necessary for matching!!!
 #define TASK_GET_MEMBER(_taskType, _task, _memberType, _memberName)                                                                        \
     *(_memberType *)((unsigned char *)TASK_DATA(_task) + offsetof(_taskType, _memberName))
 #define TASK_SET_MEMBER(_taskType, _task, _memberType, _memberName, _value)                                                                \
@@ -112,6 +112,9 @@ extern struct Task gTasks[MAX_TASK_NUM];
 extern struct Task gEmptyTask;
 extern struct Task *gTaskPtrs[MAX_TASK_NUM];
 extern s32 gNumTasks;
+#if (ENGINE == ENGINE_3)
+extern struct Task *gNextTaskToCheckForDestruction;
+#endif
 extern struct Task *gNextTask;
 extern struct Task *gCurTask;
 extern u8 gIwramHeap[TASK_HEAP_SIZE];
@@ -138,6 +141,7 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
 
 void TaskDestroy(struct Task *);
 void *IwramMalloc(u16);
+void IwramFree(void *p);
 void TasksDestroyInPriorityRange(u16, u16);
 
 #endif // GUARD_TASK_H
