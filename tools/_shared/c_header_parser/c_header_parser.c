@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ArenaAlloc.h"
+#include "arena_alloc.h"
 
-#include "parser.h"
+#include "c_header_parser.h"
 #include "types.h"
 
 /* (c) 2023 JaceCear
@@ -286,7 +286,7 @@ static char *read_entire_file(char* path, long *outSize)
     }
 }
 
-// TODO: Make this work without ArenaAlloc.c!
+// TODO: Make this work without arena_alloc.c!
 TokenList tokenize(MemArena *arena, char *headerPath)
 {
     TokenList tokens = {0};

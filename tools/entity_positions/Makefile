@@ -18,12 +18,12 @@ LDFLAGS = -L$(ARENA_ALLOC_DIR) -L$(PARSER_DIR) -L $(CSV_CONV_DIR) -lcsv_conv -lc
 .PHONY: all clean
 
 
-SRCS = epos.c
+SRCS = entity_positions.c
 
-all: epos
+all: entity_positions
 	@:
 
-epos: $(SRCS) $(LIB_OBJS)
+entity_positions: $(SRCS) $(LIB_OBJS)
 	$(CC) $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS)
 
 $(ARENA_ALLOC_LIB):
@@ -36,4 +36,4 @@ $(CSV_CONV_LIB):
 	make -C ../_shared/csv_conv
 
 clean:
-	$(RM) epos epos.exe
+	$(RM) entity_positions entity_positions.exe

@@ -1,8 +1,4 @@
-#if defined(__unix__) || defined(__unix) || \
-        (defined(__APPLE__) && defined(__MACH__))
 #include <assert.h>
-#endif
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,7 +36,7 @@ static void PrintUsage(char *exe_path)
            "    '%s', '%s', '%s' or '%s'\n"
            "\n"
            "-header <c_header.h> should be a header file containing #defines for\n"
-           "the indices of MapEntities to use (not required for %s\n",
+           "the indices of MapEntities to use (not required for %s)\n",
            exe_path,
            sMapEntityKinds[EntInteractable], sMapEntityKinds[EntItem], sMapEntityKinds[EntEnemy], sMapEntityKinds[EntRing],
            sMapEntityKinds[EntRing]);

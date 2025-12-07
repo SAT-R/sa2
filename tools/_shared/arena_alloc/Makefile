@@ -1,7 +1,7 @@
 AR = ar
 CC = gcc
 
-SOURCE = ArenaAlloc.c
+SOURCE = arena_alloc.c
 
 # Clear the default suffixes
 .SUFFIXES:
@@ -14,8 +14,8 @@ all: libarena_alloc.a
 %.o: $(SOURCE)
 	$(CC) -O2 -std=gnu11 $(SOURCE) -static -c $< $(LDFLAGS)
 
-libarena_alloc.a: ArenaAlloc.o
+libarena_alloc.a: arena_alloc.o
 	$(AR) -rcs $@ $<
 
 clean:
-	$(RM) ArenaAlloc.o libarena_alloc.a
+	$(RM) arena_alloc.o libarena_alloc.a
