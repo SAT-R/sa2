@@ -225,19 +225,41 @@ static VBlankProcessFunc const sVblankFuncs[] = {
     SA2_LABEL(sub_8002B20),
 };
 
+#if (ENGINE == ENGINE_3)
+// Multiboot area?
+extern u8 gUnknown_02035000[0xA000];
+extern void sub_80C4B48(void);
+
+// (99.97%) https://decomp.me/scratch/hVNLQ
+NONMATCH("asm/non_matching/engine/EngineInit_sa3.inc", void EngineInit(void))
+#else
+// TODO: All DMAs are followed by a DmaWait(3) call in SA3... is this global and should be part of the macros?
 void EngineInit(void)
+#endif
 {
     s16 i;
     u16 errorIdentifying;
 
+#if (ENGINE == ENGINE_3)
+    REG_IME = 0;
+#endif
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     gFlags = 0;
     gFlagsPreVBlank = 0;
+#if (ENGINE >= ENGINE_3)
+    gUnknown_030035A4 = ~0;
+#endif
 
 #ifndef COLLECT_RINGS_ROM
     if ((REG_RCNT & 0xC000) != 0x8000) {
         gFlags = FLAGS_200;
+
+#if (ENGINE == ENGINE_3)
+        DmaCopy16(3, (void *)BG_SCREEN_ADDR(24), gUnknown_02035000, sizeof(gUnknown_02035000));
+        DmaWait(3);
+#else
         DmaCopy16(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x5000);
+#endif
     }
 #endif
 
@@ -246,30 +268,57 @@ void EngineInit(void)
     if (gInput == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
         gFlags |= FLAGS_SKIP_INTRO;
     } else {
+#if (ENGINE == ENGINE_3)
+        gFlags = 0;
+#else
         gFlags &= ~FLAGS_SKIP_INTRO;
+#endif
     }
 
 #if COLLECT_RINGS_ROM
     DmaCopy16(3, (void *)OBJ_VRAM0, (void *)(EWRAM_START + 0x3b000), 0x5000);
 #else
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 #endif
     DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE);
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
+#if (ENGINE == ENGINE_3)
+    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
+
+    gBackgroundsCopyQueueIndex = gBackgroundsCopyQueueCursor = 0;
+    gBgSpritesCount = 0;
+    gVramGraphicsCopyCursor = 0;
+    gVramGraphicsCopyQueueIndex = gVramGraphicsCopyCursor = 0;
+#else
     sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
     gBackgroundsCopyQueueCursor = 0;
     gBackgroundsCopyQueueIndex = 0;
     gBgSpritesCount = 0;
     gVramGraphicsCopyCursor = 0;
     gVramGraphicsCopyQueueIndex = 0;
-
+#endif
     DmaFill32(3, 0, gBgSprites_Unknown2, sizeof(gBgSprites_Unknown2));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     // TODO: sort out this type
     *(u32 *)gBgSprites_Unknown1 = 0;
 
     DmaFill32(3, 0, gBgScrollRegs, sizeof(gBgScrollRegs));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     gSpriteOffset.x = 0;
     gSpriteOffset.y = 0;
@@ -277,16 +326,38 @@ void EngineInit(void)
     gDispCnt = DISPCNT_FORCED_BLANK;
 
     DmaFill32(3, 0, gVramGraphicsCopyQueue, sizeof(gVramGraphicsCopyQueue));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     gOamFreeIndex = 0;
     gOamFirstPausedIndex = 0;
 
     DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill16(3, 0x200, gOamMallocBuffer, sizeof(gOamMallocBuffer));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, ~0, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, ~0, gOamMallocOrders_EndIndex, sizeof(gOamMallocOrders_EndIndex));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, gBgPalette, sizeof(gBgPalette));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+    sub_80C4B48();
+#endif
 
     // BG2
     gBgAffineRegs[0].pa = 0x100;
@@ -355,6 +426,9 @@ void EngineInit(void)
     }
 
     DmaFill32(3, 0, &gBgOffsetsBuffer, sizeof(gBgOffsetsBuffer));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     gBgOffsetsHBlankPrimary = gBgOffsetsBuffer[0];
     gBgOffsetsHBlankSecondary = gBgOffsetsBuffer[1];
@@ -364,13 +438,25 @@ void EngineInit(void)
     gNumHBlankIntrs = 0;
 
     DmaFill32(3, 0, gHBlankCallbacks, sizeof(gHBlankCallbacks));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, gHBlankIntrs, sizeof(gHBlankCallbacks));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     gNumVBlankCallbacks = 0;
     gNumVBlankIntrs = 0;
 
     DmaFill32(3, 0, gVBlankCallbacks, sizeof(gVBlankCallbacks));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, gVBlankIntrs, sizeof(gVBlankIntrs));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
 
     m4aSoundInit();
     m4aSoundMode(DEFAULT_SOUND_MODE);
@@ -404,24 +490,48 @@ void EngineInit(void)
     // On GBA the function gets pushed into IWRAM because executing it there is very,
     // very fast
     DmaCopy32(3, IntrMain, gIntrMainBuf, sizeof(gIntrMainBuf));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     INTR_VECTOR = (void *)gIntrMainBuf;
 #else
     // On platforms where the whole program is in main RAM anyway, that is not necessary
     INTR_VECTOR = IntrMain;
 #endif
 
+#if (ENGINE == ENGINE_3)
+    REG_IE = INTR_FLAG_VBLANK;
+    REG_DISPSTAT = DISPSTAT_HBLANK_INTR | DISPSTAT_VBLANK_INTR;
+    REG_IME = INTR_FLAG_VBLANK;
+#else
     REG_IME = INTR_FLAG_VBLANK;
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_HBLANK_INTR | DISPSTAT_VBLANK_INTR;
+#endif
 
     // Setup multi sio
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
+#if (ENGINE == ENGINE_3)
+    DmaWait(3);
+#endif
     gMultiSioStatusFlags = 0;
     gMultiSioEnabled = FALSE;
 
     MultiSioInit(0);
+
+#if (ENGINE == ENGINE_3)
+    gUnknown_0300620C = 0;
+    gUnknown_03002BF0 = 0;
+    gUnknown_03002C60 = 0;
+#endif
 }
+#if (ENGINE == ENGINE_3)
+END_NONMATCH
+#endif
 
 void EngineMainLoop(void)
 {
