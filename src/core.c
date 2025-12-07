@@ -540,9 +540,15 @@ void EngineMainLoop(void)
 #endif
     {
         gExecSoundMain = FALSE;
+#if (ENGINE == ENGINE_3)
+        if (gFlags & FLAGS_40000) {
+            sub_80BCB84();
+        }
+#else
         if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
         }
+#endif
 
         if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
             GetInput();
@@ -550,6 +556,11 @@ void EngineMainLoop(void)
             if (gMultiSioEnabled) {
                 gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
+#if (ENGINE == ENGINE_3)
+            else if ((gFlags & (FLAGS_80000 | FLAGS_10000)) == FLAGS_80000) {
+                sub_80C6908();
+            }
+#endif
 
             TasksExec();
         }
@@ -576,11 +587,17 @@ void EngineMainLoop(void)
                 ClearOamBufferDma();
             }
         }
+
         if (gFlags & FLAGS_PAUSE_GAME) {
             gFlags |= FLAGS_800;
         } else {
             gFlags &= ~FLAGS_800;
         }
+#if (ENGINE == ENGINE_3)
+        if (!(gFlags & FLAGS_4000)) {
+            m4aSoundMain();
+        }
+#endif
 
         // Wait for vblank to finish
         while (REG_DISPSTAT & DISPSTAT_VBLANK)
