@@ -172,8 +172,8 @@ static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
 static void ClearOamBufferCpuSet(void);
 static void ClearOamBufferDma(void);
-static void GetInput(void);
-static bool32 ProcessVramGraphicsCopyQueue(void);
+void GetInput(void);
+bool32 ProcessVramGraphicsCopyQueue(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -184,6 +184,9 @@ static void Timer2Intr(void);
 static void Dma0Intr(void);
 static void Dma1Intr(void);
 static void Dma2Intr(void);
+#if (GAME == GAME_SA3)
+void sub_80C66DC(void);
+#endif
 static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
@@ -204,19 +207,24 @@ IntrFunc const gIntrTableTemplate[] = {
     Timer0Intr,
     Timer1Intr,
     Timer2Intr,
+#if (GAME == GAME_SA3)
+    sub_80C66DC,
+#endif
     Dma0Intr,
     Dma1Intr,
     Dma2Intr,
     Dma3Intr,
     KeypadIntr,
     GamepakIntr,
+#if (GAME != GAME_SA3)
     NULL,
+#endif
 };
 
 // Result of these:
 // FALSE: Not currently in vblank
 // TRUE:  Currently in VBlank /
-static VBlankProcessFunc const sVblankFuncs[] = {
+VBlankProcessFunc const sVblankFuncs[] = {
     ProcessVramGraphicsCopyQueue,
     SA2_LABEL(sub_8004010),
 #ifndef COLLECT_RINGS_ROM
@@ -229,6 +237,8 @@ static VBlankProcessFunc const sVblankFuncs[] = {
 // Multiboot area?
 extern u8 gUnknown_02035000[0xA000];
 extern void sub_80C4B48(void);
+extern void sub_80C6908(void);
+void sub_80BCB84(void); // inside core.c in SA3
 
 // (99.97%) https://decomp.me/scratch/hVNLQ
 NONMATCH("asm/non_matching/engine/EngineInit_sa3.inc", void EngineInit(void))
@@ -254,11 +264,11 @@ void EngineInit(void)
     if ((REG_RCNT & 0xC000) != 0x8000) {
         gFlags = FLAGS_200;
 
-#if (ENGINE == ENGINE_3)
+#if (ENGINE != ENGINE_3)
+        DmaCopy16(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x5000);
+#else
         DmaCopy16(3, (void *)BG_SCREEN_ADDR(24), gUnknown_02035000, sizeof(gUnknown_02035000));
         DmaWait(3);
-#else
-        DmaCopy16(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x5000);
 #endif
     }
 #endif
@@ -268,10 +278,10 @@ void EngineInit(void)
     if (gInput == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
         gFlags |= FLAGS_SKIP_INTRO;
     } else {
-#if (ENGINE == ENGINE_3)
-        gFlags = 0;
-#else
+#if (ENGINE != ENGINE_3)
         gFlags &= ~FLAGS_SKIP_INTRO;
+#else
+        gFlags = 0;
 #endif
     }
 
@@ -292,20 +302,20 @@ void EngineInit(void)
     DmaWait(3);
 #endif
 
-#if (ENGINE == ENGINE_3)
-    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
-
-    gBackgroundsCopyQueueIndex = gBackgroundsCopyQueueCursor = 0;
-    gBgSpritesCount = 0;
-    gVramGraphicsCopyCursor = 0;
-    gVramGraphicsCopyQueueIndex = gVramGraphicsCopyCursor = 0;
-#else
+#if (ENGINE != ENGINE_3)
     sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
     gBackgroundsCopyQueueCursor = 0;
     gBackgroundsCopyQueueIndex = 0;
     gBgSpritesCount = 0;
     gVramGraphicsCopyCursor = 0;
     gVramGraphicsCopyQueueIndex = 0;
+#else
+    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
+
+    gBackgroundsCopyQueueIndex = gBackgroundsCopyQueueCursor = 0;
+    gBgSpritesCount = 0;
+    gVramGraphicsCopyCursor = 0;
+    gVramGraphicsCopyQueueIndex = gVramGraphicsCopyCursor = 0;
 #endif
     DmaFill32(3, 0, gBgSprites_Unknown2, sizeof(gBgSprites_Unknown2));
 #if (ENGINE == ENGINE_3)
@@ -499,14 +509,14 @@ void EngineInit(void)
     INTR_VECTOR = IntrMain;
 #endif
 
-#if (ENGINE == ENGINE_3)
+#if (ENGINE != ENGINE_3)
+    REG_IME = INTR_FLAG_VBLANK;
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_HBLANK_INTR | DISPSTAT_VBLANK_INTR;
-    REG_IME = INTR_FLAG_VBLANK;
 #else
-    REG_IME = INTR_FLAG_VBLANK;
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_HBLANK_INTR | DISPSTAT_VBLANK_INTR;
+    REG_IME = INTR_FLAG_VBLANK;
 #endif
 
     // Setup multi sio
@@ -540,13 +550,13 @@ void EngineMainLoop(void)
 #endif
     {
         gExecSoundMain = FALSE;
-#if (ENGINE == ENGINE_3)
-        if (gFlags & FLAGS_40000) {
-            sub_80BCB84();
-        }
-#else
+#if (ENGINE != ENGINE_3)
         if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
+        }
+#else
+        if (gFlags & FLAGS_40000) {
+            sub_80BCB84();
         }
 #endif
 
@@ -605,7 +615,7 @@ void EngineMainLoop(void)
     };
 }
 
-static void UpdateScreenDma(void)
+void UpdateScreenDma(void)
 {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
@@ -709,13 +719,13 @@ static void UpdateScreenDma(void)
     }
 }
 
-static void ClearOamBufferDma(void)
+void ClearOamBufferDma(void)
 {
     gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & FLAGS_20)) {
-#if (GAME == GAME_SA1)
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA3))
         if (gBgOffsetsHBlankPrimary == gBgOffsetsBuffer[0]) {
             gBgOffsetsHBlankPrimary = gBgOffsetsBuffer[1];
             gBgOffsetsHBlankSecondary = gBgOffsetsBuffer[0];
@@ -744,7 +754,7 @@ static void ClearOamBufferDma(void)
 }
 
 #ifndef COLLECT_RINGS_ROM
-static void UpdateScreenCpuSet(void)
+void UpdateScreenCpuSet(void)
 {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
@@ -820,7 +830,7 @@ static void UpdateScreenCpuSet(void)
 }
 #endif
 
-static void VBlankIntr(void)
+void VBlankIntr(void)
 {
     u16 keys;
     DmaStop(0);
@@ -862,8 +872,11 @@ static void VBlankIntr(void)
             REG_IE = 0;
             REG_IME = 0;
             REG_DISPSTAT = DISPCNT_MODE_0;
+#if (ENGINE != ENGINE_3)
+            // TODO: Maybe BUG_FIX?
             m4aMPlayAllStop();
             m4aSoundVSyncOff();
+#endif
             gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
             DmaStop(0);
             DmaStop(1);
@@ -888,7 +901,7 @@ struct GraphicsData_Hack {
 
 #define COPY_CHUNK_SIZE 1024
 
-static bool32 ProcessVramGraphicsCopyQueue(void)
+bool32 ProcessVramGraphicsCopyQueue(void)
 {
     u32 offset;
 #ifndef NON_MATCHING
@@ -898,7 +911,11 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
 #endif
 
     while (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex) {
+#if (ENGINE != ENGINE_3)
         graphics = (void *)gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
+#else
+        graphics = (void *)&gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
+#endif
 
         if (graphics->size != 0) {
             for (offset = 0; graphics->size > 0; offset += COPY_CHUNK_SIZE) {
@@ -1002,6 +1019,43 @@ void GetInput(void)
     }
 }
 
+#if (ENGINE == ENGINE_3)
+void sub_80BCB84(void)
+{
+    volatile u16 sp0;
+    volatile u16 sp2;
+    volatile u32 sp4;
+    volatile u16 sp8;
+
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+    sp4 = gFlagsPreVBlank;
+    gFlagsPreVBlank |= 0x8000;
+    sp0 = REG_DISPCNT;
+    sp8 = REG_DISPSTAT;
+    REG_DISPCNT = 0x80U;
+    REG_KEYCNT = 0x8304;
+    REG_IME = 0;
+    REG_DISPSTAT = 0;
+    sp2 = REG_IE;
+    REG_IE = 0x1000;
+    REG_IE |= 0x2000;
+    REG_IME = 1;
+    SoundBiasReset();
+    Stop();
+    SoundBiasSet();
+    REG_IME = 0;
+    REG_IE = sp2;
+    REG_IME = 1;
+    REG_DISPSTAT = sp8;
+    VBlankIntrWait();
+    REG_DISPCNT = sp0;
+    gFlagsPreVBlank = sp4;
+    gFlags &= ~FLAGS_40000;
+    m4aSoundVSyncOn();
+}
+#endif // (ENGINE == ENGINE_3)
+
 static void HBlankIntr(void)
 {
     u8 i;
@@ -1017,28 +1071,21 @@ static void HBlankIntr(void)
 }
 
 static void VCountIntr(void) { REG_IF = INTR_FLAG_VCOUNT; }
-
 static void Dma0Intr(void) { REG_IF = INTR_FLAG_DMA0; }
-
 static void Dma1Intr(void) { REG_IF = INTR_FLAG_DMA1; }
-
 static void Dma2Intr(void) { REG_IF = INTR_FLAG_DMA2; }
-
 static void Dma3Intr(void) { REG_IF = INTR_FLAG_DMA3; }
-
 static void Timer0Intr(void) { REG_IF = INTR_FLAG_TIMER0; }
-
 static void Timer1Intr(void) { REG_IF = INTR_FLAG_TIMER1; }
-
 static void Timer2Intr(void) { REG_IF = INTR_FLAG_TIMER2; }
-
+#if (ENGINE == ENGINE_3)
+static void Timer3Intr(void) { REG_IF = INTR_FLAG_TIMER3; }
+#endif
 static void KeypadIntr(void) { REG_IF = INTR_FLAG_KEYPAD; }
-
 static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
+static void DummyFunc(void) { }
 
-void DummyFunc(void) { }
-
-#if (GAME == GAME_SA1)
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA3))
 static void ClearOamBufferCpuSet(void)
 {
     gNumHBlankCallbacks = 0;
