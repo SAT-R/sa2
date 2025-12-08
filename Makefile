@@ -203,7 +203,7 @@ FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ex
 CPPFLAGS ?= $(INCLUDE_CPP_ARGS) -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
-ifneq ($(GAME_VARIANT), 0)
+ifneq ($(GAME_VARIANT), DEFAULT)
 	CPPFLAGS += -D $(GAME_VARIANT)
 endif
 
