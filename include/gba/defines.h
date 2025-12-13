@@ -97,8 +97,8 @@ extern uint8_t OAM[OAM_SIZE];
 #define IWRAM_START 0x03000000
 
 #define PLTT         0x5000000
-#define BG_PLTT      (u16 *)(PLTT)
-#define OBJ_PLTT     (u16 *)(PLTT + BG_PLTT_SIZE)
+#define BG_PLTT      ((u16 *)(PLTT))
+#define OBJ_PLTT     ((u16 *)(PLTT + BG_PLTT_SIZE))
 
 #define VRAM      0x6000000
 
