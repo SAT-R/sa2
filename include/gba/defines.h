@@ -69,8 +69,8 @@ extern void (*INTR_VECTOR)(void);
 extern uint8_t EWRAM_START[EWRAM_SIZE];
 extern uint8_t IWRAM_START[IWRAM_SIZE];
 extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
-#define BG_PLTT (u8*)&PLTT[0]
-#define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
+#define BG_PLTT (u16*)&PLTT[0]
+#define OBJ_PLTT (u16*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
 extern uint8_t OAM[OAM_SIZE];
 
 #define BG_VRAM           &VRAM[0]
@@ -97,8 +97,8 @@ extern uint8_t OAM[OAM_SIZE];
 #define IWRAM_START 0x03000000
 
 #define PLTT         0x5000000
-#define BG_PLTT      PLTT
-#define OBJ_PLTT      (PLTT + BG_PLTT_SIZE)
+#define BG_PLTT      (u16 *)(PLTT)
+#define OBJ_PLTT     (u16 *)(PLTT + BG_PLTT_SIZE)
 
 #define VRAM      0x6000000
 
