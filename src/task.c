@@ -199,7 +199,7 @@ void TaskDestroy(struct Task *task)
                 task->flags = 0;
                 task->data = (IwramData)NULL;
 
-#if (GAME == GAME_SA2)
+#if (ENGINE == ENGINE_2)
                 task->unk15 = 0;
                 task->unk16 = 0;
                 task->unk18 = 0;
@@ -409,7 +409,7 @@ static struct Task *TaskGetNextSlot(void)
     }
 }
 
-#if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
+#if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
 void TasksDestroyInPriorityRange(u16 lbound, u16 rbound)
 {
     struct Task *cur = gTaskPtrs[0];
@@ -476,7 +476,7 @@ void TasksDestroyInPriorityRange(u16 lbound, u16 rbound)
 }
 #endif
 
-#if (GAME == GAME_SA3)
+#if (ENGINE == ENGINE_3)
 static s32 IwramActiveNodeTotalSize(void)
 {
     s32 activeSize = 0;
