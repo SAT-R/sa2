@@ -199,7 +199,7 @@ void TaskDestroy(struct Task *task)
                 task->flags = 0;
                 task->data = (IwramData)NULL;
 
-#if (ENGINE == ENGINE_2)
+#if USE_SA2_TASK_SYSTEM
                 task->unk15 = 0;
                 task->unk16 = 0;
                 task->unk18 = 0;

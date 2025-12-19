@@ -48,6 +48,8 @@ typedef void *IwramData;
 #define TASK_x0004            0x0004
 #define TASK_USE_EWRAM        0x0010
 
+// NOTE(Jace):
+// Used for uses of unk14, unk15, unk16 and unk18, which might have been debug data.
 #define USE_SA2_TASK_SYSTEM (GAME == GAME_SA2)
 
 typedef struct Task {
