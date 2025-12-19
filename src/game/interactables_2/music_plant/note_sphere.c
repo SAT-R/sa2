@@ -68,7 +68,7 @@ void CreateEntity_NoteSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     note->base.regionX = spriteRegionX;
     note->base.regionY = spriteRegionY;
     note->base.me = me;
-    note->base.spriteX = me->x;
+    note->base.meX = me->x;
     note->base.id = spriteY;
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
@@ -256,6 +256,6 @@ static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)
 
 static void NoteSphere_Despawn(Sprite_NoteSphere *note)
 {
-    note->base.me->x = note->base.spriteX;
+    note->base.me->x = note->base.meX;
     TaskDestroy(gCurTask);
 }

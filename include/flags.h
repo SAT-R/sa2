@@ -8,7 +8,7 @@
 #define FLAGS_UPDATE_SPRITE_PALETTES     0x2
 #define FLAGS_EXECUTE_HBLANK_COPY        0x4
 #define FLAGS_EXECUTE_HBLANK_CALLBACKS   0x8
-#define FLAGS_10                         0x10
+#define FLAGS_EXECUTE_VBLANK_CALLBACKS   0x10
 #define FLAGS_20                         0x20
 #define FLAGS_40                         0x40
 #define FLAGS_80                         0x80

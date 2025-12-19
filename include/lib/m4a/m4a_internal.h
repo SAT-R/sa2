@@ -39,7 +39,11 @@
 #if COLLECT_RINGS_ROM
 #define DEFAULT_SOUND_MODE (SOUND_MODE_DA_BIT_8 | SOUND_MODE_FREQ_07884 | (15 << SOUND_MODE_MASVOL_SHIFT) | (4 << SOUND_MODE_MAXCHN_SHIFT))
 #else
+#if (ENGINE == ENGINE_3)
+#define DEFAULT_SOUND_MODE (SOUND_MODE_DA_BIT_8 | SOUND_MODE_FREQ_10512 | (10 << SOUND_MODE_MASVOL_SHIFT) | (6 << SOUND_MODE_MAXCHN_SHIFT))
+#else
 #define DEFAULT_SOUND_MODE (SOUND_MODE_DA_BIT_8 | SOUND_MODE_FREQ_10512 | (15 << SOUND_MODE_MASVOL_SHIFT) | (5 << SOUND_MODE_MAXCHN_SHIFT))
+#endif
 #endif
 
 #define TONEDATA_TYPE_CGB 0x07
@@ -187,7 +191,7 @@ struct MixerSource {
         } sound;
     } data;
 
-    void *wav; // The next peice of data to be loading
+    void *wav; // The next piece of data to be loading
     void *current; // The working pointer from wav
 
     struct MP2KTrack *track;

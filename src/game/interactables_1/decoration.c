@@ -44,7 +44,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
         base->base.regionY = regionY;
 
         base->base.me = me;
-        base->base.spriteX = me->x;
+        base->base.meX = me->x;
         base->base.id = spriteY;
 
         s->x = TO_WORLD_POS(me->x, regionX);
@@ -80,7 +80,7 @@ void Task_Decoration(void)
     s32 screenY;
 #endif
 
-    screenX = (base->base.spriteX) * TILE_WIDTH;
+    screenX = (base->base.meX) * TILE_WIDTH;
     screenX += (base->base.regionX) * CAM_REGION_WIDTH;
     screenY = (me->y) * TILE_WIDTH;
     screenY += (base->base.regionY) * CAM_REGION_WIDTH;
@@ -91,7 +91,7 @@ void Task_Decoration(void)
     s->y = screenY;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, s->y)) {
-        me->x = base->base.spriteX;
+        me->x = base->base.meX;
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);

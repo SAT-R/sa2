@@ -478,7 +478,16 @@ void AsmFile::ExpectEmptyRestOfLine()
     }
     else if (m_buffer[m_pos] == '\r')
     {
-        RaiseError("only Unix-style LF newlines are supported");
+        m_pos++;
+
+        if (m_buffer[m_pos] == '\n')
+        {
+            m_pos++;
+            m_lineStart = m_pos;
+            m_lineNum++;
+        } else {
+            RaiseError("'\\r without following \\n");
+        }
     }
     else
     {

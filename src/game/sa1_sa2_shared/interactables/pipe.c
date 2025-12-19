@@ -41,7 +41,7 @@ static void Task_Pipe_Start(void)
     SpriteBase *base = &pipe->base;
     MapEntity_PipeStart *me = (MapEntity_PipeStart *)base->me;
 
-    u8 spriteX = base->spriteX;
+    u8 spriteX = base->meX;
     s32 regionX = base->regionX;
     s32 regionY = base->regionY;
 
@@ -85,7 +85,7 @@ static void Task_Pipe_End(void)
     SpriteBase *base = &pipe->base;
     MapEntity_PipeEnd *me = (MapEntity_PipeEnd *)base->me;
 
-    u8 spriteX = base->spriteX;
+    u8 spriteX = base->meX;
     s32 regionX = base->regionX;
     s32 regionY = base->regionY;
 
@@ -130,7 +130,7 @@ void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;
-    pipe->base.spriteX = me->x;
+    pipe->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -142,6 +142,6 @@ void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;
-    pipe->base.spriteX = me->x;
+    pipe->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

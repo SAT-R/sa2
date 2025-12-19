@@ -48,7 +48,7 @@ typedef struct {
     /* 0x00 */ MapEntity *me;
     /* 0x04 */ u16 regionX;
     /* 0x06 */ u16 regionY;
-    /* 0x08 */ u8 spriteX;
+    /* 0x08 */ u8 meX;
     /* 0x09 */ u8 id;
 } SpriteBase;
 
@@ -205,7 +205,7 @@ typedef struct {
 
 #define ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(_enemy, _mapEntity, _sprite)                                                                     \
     if (IS_OUT_OF_CAM_RANGE(_sprite->x, _sprite->y)) {                                                                                     \
-        SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.spriteX);                                                                  \
+        SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.meX);                                                                      \
         TaskDestroy(gCurTask);                                                                                                             \
         return;                                                                                                                            \
     }

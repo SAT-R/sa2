@@ -23,7 +23,7 @@ static void Task_GappedLoopForwardsMain(void)
 {
     Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
-    u16 spriteX = gappedLoop->base.spriteX;
+    u16 spriteX = gappedLoop->base.meX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x = TO_WORLD_POS(spriteX, regionX);
@@ -56,7 +56,7 @@ static void Task_JumpSequenceForwards(void)
 {
     Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
-    u16 spriteX = gappedLoop->base.spriteX;
+    u16 spriteX = gappedLoop->base.meX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x, y;
@@ -96,7 +96,7 @@ static void Task_GappedLoopReverseMain(void)
 {
     Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
-    u16 spriteX = gappedLoop->base.spriteX;
+    u16 spriteX = gappedLoop->base.meX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x = TO_WORLD_POS(spriteX, regionX);
@@ -130,7 +130,7 @@ static void Task_JumpSequenceReverse(void)
 {
     Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
-    u16 spriteX = gappedLoop->base.spriteX;
+    u16 spriteX = gappedLoop->base.meX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x, y;
@@ -172,10 +172,10 @@ void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteR
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;
-    gappedLoop->base.spriteX = me->x;
+    gappedLoop->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    gappedLoop->unkC = Q(TO_WORLD_POS(gappedLoop->base.spriteX, spriteRegionX) - 96);
+    gappedLoop->unkC = Q(TO_WORLD_POS(gappedLoop->base.meX, spriteRegionX) - 96);
     gappedLoop->unk10 = Q(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }
 
@@ -186,10 +186,10 @@ void CreateEntity_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;
-    gappedLoop->base.spriteX = me->x;
+    gappedLoop->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     // BUG: not sure if these offset values are correct for the reverse
-    gappedLoop->unkC = Q(TO_WORLD_POS(gappedLoop->base.spriteX, spriteRegionX) + 96);
+    gappedLoop->unkC = Q(TO_WORLD_POS(gappedLoop->base.meX, spriteRegionX) + 96);
     gappedLoop->unk10 = Q(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }

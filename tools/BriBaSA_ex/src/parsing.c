@@ -6,7 +6,7 @@
 #include "global.h"
 #include "file_paths.h"
 
-#include "../../_shared/c_header_parser/parser.h"
+#include "../../_shared/c_header_parser/c_header_parser.h"
 
 void SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et);
 

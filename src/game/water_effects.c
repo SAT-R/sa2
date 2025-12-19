@@ -209,7 +209,7 @@ static void Task_StageWaterTask(void)
     }
 
     gVBlankCallbacks[gNumVBlankCallbacks++] = sub_8011A4C;
-    gFlags |= FLAGS_10;
+    gFlags |= FLAGS_EXECUTE_VBLANK_CALLBACKS;
 
     unk1 = water->unk1 - 1;
     if (unk1 < DISPLAY_HEIGHT - 1) {

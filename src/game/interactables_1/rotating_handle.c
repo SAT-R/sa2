@@ -43,7 +43,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         rotatingHandle->base.regionX = spriteRegionX;
         rotatingHandle->base.regionY = spriteRegionY;
         rotatingHandle->base.me = me;
-        rotatingHandle->base.spriteX = me->x;
+        rotatingHandle->base.meX = me->x;
         rotatingHandle->base.id = spriteY;
         rotatingHandle->rot = 0;
         rotatingHandle->rotSpeed = 0;
@@ -74,7 +74,7 @@ static void Task_Idle(void)
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
-    s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    s32 x = TO_WORLD_POS(rotatingHandle->base.meX, rotatingHandle->base.regionX);
     s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     s->x = x - gCamera.x;
@@ -134,7 +134,7 @@ static void Task_Idle(void)
         gCurTask->main = Task_Rotating;
     } else {
         if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-            me->x = rotatingHandle->base.spriteX;
+            me->x = rotatingHandle->base.meX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -165,7 +165,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
     sprite = &rotatingHandle->s;
     me = rotatingHandle->base.me;
 
-    posX = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    posX = TO_WORLD_POS(rotatingHandle->base.meX, rotatingHandle->base.regionX);
     posY = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     rotatingHandle->rot = (rotatingHandle->rot + rotatingHandle->rotSpeed) & 0x3FF0;
@@ -187,7 +187,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
     if (gPlayer.frameInput & gPlayerControls.jump) {
         s16 r4;
         gPlayer.transition = PLTRANS_UNCURL;
-        me->x = rotatingHandle->base.spriteX;
+        me->x = rotatingHandle->base.meX;
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
         PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 9);
         gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
@@ -277,7 +277,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", void Task_Ro
 #ifndef NON_MATCHING
         do {
 #endif
-            me->x = rotatingHandle->base.spriteX;
+            me->x = rotatingHandle->base.meX;
             TaskDestroy(gCurTask);
 #ifndef NON_MATCHING
         } while (0);
@@ -295,7 +295,7 @@ static void Task_AfterJump(void)
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
-    s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    s32 x = TO_WORLD_POS(rotatingHandle->base.meX, rotatingHandle->base.regionX);
     s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     u8 temp3;
@@ -320,7 +320,7 @@ static void Task_AfterJump(void)
     s->y = y - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = rotatingHandle->base.spriteX;
+        me->x = rotatingHandle->base.meX;
         TaskDestroy(gCurTask);
         return;
     }

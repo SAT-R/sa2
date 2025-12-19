@@ -56,7 +56,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     floatingSpring->base.me = me;
     floatingSpring->base.regionX = spriteRegionX;
     floatingSpring->base.regionY = spriteRegionY;
-    floatingSpring->base.spriteX = me->x;
+    floatingSpring->base.meX = me->x;
     floatingSpring->base.id = spriteY;
 
     s->oamFlags = SPRITE_OAM_ORDER(18);
@@ -116,7 +116,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
         floatingSpring->unk48 = (SIN((floatingSpring->unk54 * ((gStageTime + floatingSpring->unk56) & 255)) & ONE_CYCLE) * temp) >> 15;
     }
 
-    floatingSpring->unk3C = TO_WORLD_POS(floatingSpring->base.spriteX, floatingSpring->base.regionX) + I(floatingSpring->unk44);
+    floatingSpring->unk3C = TO_WORLD_POS(floatingSpring->base.meX, floatingSpring->base.regionX) + I(floatingSpring->unk44);
     floatingSpring->unk40 = TO_WORLD_POS(me->y, floatingSpring->base.regionY) + I(floatingSpring->unk48);
 }
 
@@ -230,7 +230,7 @@ static void sub_80750A8(void)
     }
 
     if (sub_80751CC(floatingSpring)) {
-        floatingSpring->base.me->x = floatingSpring->base.spriteX;
+        floatingSpring->base.me->x = floatingSpring->base.meX;
         TaskDestroy(gCurTask);
 
     } else {

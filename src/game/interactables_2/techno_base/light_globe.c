@@ -45,7 +45,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     globe->base.regionX = spriteRegionX;
     globe->base.regionY = spriteRegionY;
     globe->base.me = me;
-    globe->base.spriteX = me->x;
+    globe->base.meX = me->x;
     globe->base.id = spriteY;
 
     s = &globe->s;
@@ -170,7 +170,7 @@ static void sub_807B350(Sprite_LightGlobe *globe)
 
 static void sub_807B398(Sprite_LightGlobe *globe)
 {
-    globe->base.me->x = globe->base.spriteX;
+    globe->base.me->x = globe->base.meX;
     TaskDestroy(gCurTask);
 }
 

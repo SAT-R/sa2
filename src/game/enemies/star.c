@@ -44,7 +44,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     star->base.regionX = spriteRegionX;
     star->base.regionY = spriteRegionY;
     star->base.me = me;
-    star->base.spriteX = me->x;
+    star->base.meX = me->x;
     star->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(star, me);

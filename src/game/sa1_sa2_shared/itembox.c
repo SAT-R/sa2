@@ -103,7 +103,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     itembox->base.regionX = spriteRegionX;
     itembox->base.regionY = spriteRegionY;
     itembox->base.me = me;
-    itembox->base.spriteX = me->x;
+    itembox->base.meX = me->x;
     itembox->base.id = spriteY;
 
     s = &itembox->s;
@@ -424,7 +424,7 @@ void Task_ItemBoxMain(void)
         }
 
         if (CheckItemBoxOutOfBounds(itembox)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(itembox->base.me, itembox->base.spriteX);
+            SET_MAP_ENTITY_NOT_INITIALIZED(itembox->base.me, itembox->base.meX);
             TaskDestroy(gCurTask);
         } else {
             DrawItemBox(itembox, FALSE);

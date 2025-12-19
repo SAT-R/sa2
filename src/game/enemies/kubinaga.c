@@ -61,7 +61,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     k->base.regionX = spriteRegionX;
     k->base.regionY = spriteRegionY;
     k->base.me = me;
-    k->base.spriteX = me->x;
+    k->base.meX = me->x;
     k->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(k, me);

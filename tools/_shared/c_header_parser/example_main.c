@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "ArenaAlloc.h"
+#include "arena_alloc.h"
 
 #include "parser.h"
 

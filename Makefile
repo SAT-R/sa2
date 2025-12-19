@@ -86,7 +86,7 @@ FORMAT    := clang-format-13
 
 ### TOOLS ###
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
-EPOS 	  := tools/entity_positions/epos$(EXE)
+ENT_POS   := tools/entity_positions/entity_positions$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
 MID2AGB   := tools/mid2agb/mid2agb$(EXE)
 SCANINC   := tools/scaninc/scaninc$(EXE)
@@ -203,7 +203,7 @@ FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ex
 CPPFLAGS ?= $(INCLUDE_CPP_ARGS) -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
-ifneq ($(GAME_VARIANT), 0)
+ifneq ($(GAME_VARIANT), DEFAULT)
 	CPPFLAGS += -D $(GAME_VARIANT)
 endif
 
@@ -438,16 +438,16 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 	$(GFX) $< $@ -search 1
 
 %interactables.bin: %interactables.csv
-	$(EPOS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
+	$(ENT_POS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
 
 %itemboxes.bin: %itemboxes.csv
-	$(EPOS) $< $@ -entities ITEMS -header "./include/constants/items.h"
+	$(ENT_POS) $< $@ -entities ITEMS -header "./include/constants/items.h"
 
 %enemies.bin: %enemies.csv
-	$(EPOS) $< $@ -entities ENEMIES -header "./include/constants/enemies.h"
+	$(ENT_POS) $< $@ -entities ENEMIES -header "./include/constants/enemies.h"
 
 %rings.bin: %rings.csv
-	$(EPOS) $< $@ -entities RINGS
+	$(ENT_POS) $< $@ -entities RINGS
 
 %.gba.lz: %.gba 
 	$(GFX) $< $@

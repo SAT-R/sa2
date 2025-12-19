@@ -61,7 +61,7 @@ void CreateEntity_BounceBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     noteBlock->base.regionX = spriteRegionX;
     noteBlock->base.regionY = spriteRegionY;
     noteBlock->base.me = me;
-    noteBlock->base.spriteX = me->x;
+    noteBlock->base.meX = me->x;
     noteBlock->base.id = spriteY;
 
     s = &noteBlock->s;
@@ -251,6 +251,6 @@ static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)
 
 static void sub_8079D9C(Sprite_TecBaseNoteBlock *noteBlock)
 {
-    noteBlock->base.me->x = noteBlock->base.spriteX;
+    noteBlock->base.me->x = noteBlock->base.meX;
     TaskDestroy(gCurTask);
 }

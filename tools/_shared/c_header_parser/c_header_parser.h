@@ -1,7 +1,7 @@
 #ifndef GUARD_C_HEADER_PARSER_PARSER_H
 #define GUARD_C_HEADER_PARSER_PARSER_H
 
-#include "../arena_alloc/ArenaAlloc.h"
+#include "../arena_alloc/arena_alloc.h"
 
 typedef struct {
     char *text;

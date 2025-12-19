@@ -33,7 +33,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     hammerhead->base.regionX = spriteRegionX;
     hammerhead->base.regionY = spriteRegionY;
     hammerhead->base.me = me;
-    hammerhead->base.spriteX = me->x;
+    hammerhead->base.meX = me->x;
     hammerhead->base.id = spriteY;
 
     hammerhead->unk48 = 0;
@@ -76,7 +76,7 @@ static void Task_Hammerhead(void)
     hammerhead->unk48 = (sin * 15) >> 3;
     ip = hammerhead->unk48 - prevUnk48;
 
-    posX = TO_WORLD_POS(hammerhead->base.spriteX, hammerhead->base.regionX);
+    posX = TO_WORLD_POS(hammerhead->base.meX, hammerhead->base.regionX);
     posY = TO_WORLD_POS(me->y, hammerhead->base.regionY);
 
     s->x = posX - gCamera.x;
@@ -107,7 +107,7 @@ static void Task_Hammerhead(void)
 
         if (IS_OUT_OF_RANGE_3(s->x, s->y, (CAM_REGION_WIDTH / 2), CAM_REGION_WIDTH)
             && IS_OUT_OF_RANGE_3(posX, posY, (CAM_REGION_WIDTH / 2), CAM_REGION_WIDTH)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.spriteX);
+            SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.meX);
             TaskDestroy(gCurTask);
         } else {
             Player_UpdateHomingPosition(posX << 8, (posY << 8) + hammerhead->unk48);

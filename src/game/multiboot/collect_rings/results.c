@@ -56,9 +56,8 @@ struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16);
 void sub_8081FB0(void);
 void sub_80823FC(void);
 void sub_8082AA8(void);
-void Task_8082630(void);
-void sub_8082788(void);
-void sub_808267C(void);
+void SA2_LABEL(Task_8082630)(void);
+void SA2_LABEL(sub_808267C)(void);
 void sub_8082788(void);
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *);
@@ -141,8 +140,8 @@ void sub_8081FB0(void)
     gBgSprites_Unknown2[3][2] = 0xff;
     gBgSprites_Unknown2[3][3] = 64;
 
-    DmaFill32(3, 0, (void *)VRAM + 0x9FE0, 65);
-    DmaFill32(3, 0, (void *)VRAM + 0xCFE0, 65);
+    DmaFill32(3, 0, (void *)VRAM + 0x9FE0, 64);
+    DmaFill32(3, 0, (void *)VRAM + 0xCFE0, 64);
 }
 
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
@@ -438,30 +437,29 @@ void sub_80823FC(void)
     }
 }
 
-void Task_8082630(void)
+void SA2_LABEL(Task_8082630)(void)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->unk430 += 0x20;
-    sub_8082788();
+    SA2_LABEL(sub_8082788)();
 
-    if (resultsScreen->unk430 > 0x1000) {
-        resultsScreen->unk430 = 0x1000;
-        // irrelevant
+    if (resultsScreen->unk430 > Q(16)) {
+        resultsScreen->unk430 = Q(16);
         gBldRegs.bldY = 0x10;
-        gCurTask->main = sub_808267C;
+        gCurTask->main = SA2_LABEL(sub_808267C);
     }
 
-    gBldRegs.bldY = resultsScreen->unk430 >> 8;
+    gBldRegs.bldY = I(resultsScreen->unk430);
 }
 
-void sub_808267C(void)
+void SA2_LABEL(sub_808267C)(void)
 {
     union MultiSioData *packet;
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
 
     packet = &gMultiSioRecv[0];
 
-    if (packet->pat3.unk0 == 0x4080) {
+    if (packet->pat3.unk0 == COMM_DATA(0x80)) {
         u32 i;
         gMultiplayerPseudoRandom = packet->pat3.unk8;
 
@@ -478,29 +476,31 @@ void sub_808267C(void)
             TaskDestroy(gCurTask);
             gBldRegs.bldCnt = 0;
             gBldRegs.bldY = 0;
-            sub_8081200();
+            SA2_LABEL(sub_8081200)();
+#if (GAME == GAME_SA2)
             GameStageStart();
+#endif
         }
         return;
     }
 
-    sub_8082788();
+    SA2_LABEL(sub_8082788)();
     packet = &gMultiSioSend;
-    packet->pat0.unk0 = 0x4051;
+    packet->pat0.unk0 = COMM_DATA(0x51);
     packet->pat0.unk2 = 0;
 
-    if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+    if ((gMultiSioStatusFlags & MULTI_SIO_TYPE) == MULTI_SIO_PARENT) {
         u8 i;
         for (i = 0; i < 4; i++) {
             if (GetBit(gMultiplayerConnections, i)) {
                 packet = &gMultiSioRecv[i];
-                if (packet->pat0.unk0 != 0x4051) {
+                if (packet->pat0.unk0 != COMM_DATA(0x51)) {
                     return;
                 }
             }
         }
         packet = &gMultiSioSend;
-        packet->pat3.unk0 = 0x4080;
+        packet->pat3.unk0 = COMM_DATA(0x80);
         packet->pat3.unk8 = resultsScreen->unk43C;
     }
 }

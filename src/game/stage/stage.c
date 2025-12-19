@@ -42,7 +42,6 @@ struct Task *gGameStageTask = NULL;
 void Task_GameStage(void);
 
 void TaskDestructor_GameStage(struct Task *);
-void sub_801F044(void);
 
 void CreatePlayer(u32, u32, Player *);
 void CreateBossRunManager(u8);
@@ -254,14 +253,14 @@ void CreateGameStage(void)
     CreateStageRingsManager();
     CreateStageEntitiesManager();
 
-    gUnknown_03001944 = 0;
-    gUnknown_030017F0 = 0x100;
-    gUnknown_03005394 = 0x100;
-    gUnknown_03002A8C = 0x78;
-    gUnknown_03004D58 = 0x50;
-    gUnknown_0300194C = 0x78;
-    gUnknown_03002820 = 0x50;
-    gUnknown_03005398 = 0x80;
+    SA2_LABEL(gUnknown_03001944) = 0;
+    SA2_LABEL(gUnknown_030017F0) = 0x100;
+    SA2_LABEL(gUnknown_03005394) = 0x100;
+    SA2_LABEL(gUnknown_03002A8C) = 0x78;
+    SA2_LABEL(gUnknown_03004D58) = 0x50;
+    SA2_LABEL(gUnknown_0300194C) = 0x78;
+    SA2_LABEL(gUnknown_03002820) = 0x50;
+    SA2_LABEL(gUnknown_03005398) = 0x80;
 
     if (IS_MULTI_PLAYER) {
         CreateMultiplayerReceiveEventMgr();

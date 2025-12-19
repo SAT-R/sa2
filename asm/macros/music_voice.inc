@@ -119,5 +119,5 @@ mAlignWord
 	.byte 0x80, 0, 0, 0
 mAlignWord
 	mPtr \voice_group_pointer
-	.int 0
+	mPtr 0
 	.endm

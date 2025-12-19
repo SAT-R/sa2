@@ -43,7 +43,7 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         straw->base.regionX = spriteRegionX;
         straw->base.regionY = spriteRegionY;
         straw->base.me = me;
-        straw->base.spriteX = me->x;
+        straw->base.meX = me->x;
         straw->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(straw, me);

@@ -2,8 +2,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../arena_alloc/ArenaAlloc.h"
-#include "../c_header_parser/parser.h"
+#include "../arena_alloc/arena_alloc.h"
+#include "../c_header_parser/c_header_parser.h"
 
 #include "csv_conv.h"
 

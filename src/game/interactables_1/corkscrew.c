@@ -31,7 +31,7 @@ void Task_8060D34(void)
 
     u16 regionX = corkscrew->base.regionX;
     u16 regionY = corkscrew->base.regionY;
-    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 x = TO_WORLD_POS(corkscrew->base.meX, regionX);
     s32 y = TO_WORLD_POS(corkscrew->base.me->y, regionY);
 
     if (PLAYER_IS_ALIVE) {
@@ -66,7 +66,7 @@ void Task_8060D34(void)
     y -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, x, y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.meX);
         TaskDestroy(gCurTask);
     }
 }
@@ -81,11 +81,11 @@ void sub_8060ED0(void)
     u16 regionX = corkscrew->base.regionX;
     u16 regionY = corkscrew->base.regionY;
     Player *player = &gPlayer;
-    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 x = TO_WORLD_POS(corkscrew->base.meX, regionX);
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (!PLAYER_IS_ALIVE) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.meX);
         TaskDestroy(gCurTask);
         return;
     }
@@ -139,7 +139,7 @@ void sub_8061088(void)
 
     u16 regionX = corkscrew->base.regionX;
     u16 regionY = corkscrew->base.regionY;
-    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 x = TO_WORLD_POS(corkscrew->base.meX, regionX);
     s32 y = TO_WORLD_POS(corkscrew->base.me->y, regionY);
 
     if (PLAYER_IS_ALIVE) {
@@ -174,7 +174,7 @@ void sub_8061088(void)
     y -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, x, y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.meX);
         TaskDestroy(gCurTask);
     }
 }
@@ -189,11 +189,11 @@ void sub_8061228(void)
     u16 regionX = corkscrew->base.regionX;
     u16 regionY = corkscrew->base.regionY;
     Player *player = &gPlayer;
-    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 x = TO_WORLD_POS(corkscrew->base.meX, regionX);
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (!PLAYER_IS_ALIVE) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.meX);
         TaskDestroy(gCurTask);
         return;
     }
@@ -245,7 +245,7 @@ void CreateEntity_Corkscrew_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
     corkscrew->base.me = me;
-    corkscrew->base.spriteX = me->x;
+    corkscrew->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     // Direction?
@@ -260,7 +260,7 @@ void CreateEntity_Corkscrew_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
     corkscrew->base.me = me;
-    corkscrew->base.spriteX = me->x;
+    corkscrew->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     corkscrew->unk10 = -Q(4);

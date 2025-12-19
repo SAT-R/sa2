@@ -73,7 +73,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     chkPt->base.regionX = spriteRegionX;
     chkPt->base.regionY = spriteRegionY;
     chkPt->base.me = me;
-    chkPt->base.spriteX = me->x;
+    chkPt->base.meX = me->x;
     chkPt->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -106,14 +106,14 @@ void Task_CheckpointMain_Idle(void)
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posX = TO_WORLD_POS(chkPt->base.meX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     s->x = posX - gCamera.x;
     s->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = chkPt->base.spriteX;
+        me->x = chkPt->base.meX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
@@ -145,14 +145,14 @@ void Task_StageCheckpointMain_Activated(void)
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posX = TO_WORLD_POS(chkPt->base.meX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     s->x = posX - gCamera.x;
     s->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = chkPt->base.spriteX;
+        me->x = chkPt->base.meX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
@@ -170,14 +170,14 @@ void Task_CheckpointMain_Used(void)
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posX = TO_WORLD_POS(chkPt->base.meX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     s->x = posX - gCamera.x;
     s->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = chkPt->base.spriteX;
+        me->x = chkPt->base.meX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     }
@@ -220,14 +220,14 @@ static void Task_Interactable_Toggle_Checkpoint(void)
     s32 posX, posY;
     s16 screenX, screenY;
 
-    posX = TO_WORLD_POS(toggle->base.spriteX, toggle->base.regionX);
+    posX = TO_WORLD_POS(toggle->base.meX, toggle->base.regionX);
     posY = TO_WORLD_POS(me->y, toggle->base.regionY);
 
     screenX = posX - gCamera.x;
     screenY = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, screenY)) {
-        me->x = toggle->base.spriteX;
+        me->x = toggle->base.meX;
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD)) && posX <= I(gPlayer.qWorldX)) {
         gPlayer.checkPointX = gCheckpointPositions[gCurrentLevel].x;
@@ -253,7 +253,7 @@ void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX, u16 spr
         toggle->base.regionX = spriteRegionX;
         toggle->base.regionY = spriteRegionY;
         toggle->base.me = in_ia;
-        toggle->base.spriteX = in_ia->x;
+        toggle->base.meX = in_ia->x;
         toggle->base.id = spriteY;
     }
 

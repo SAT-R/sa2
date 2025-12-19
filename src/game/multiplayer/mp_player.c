@@ -413,10 +413,10 @@ NONMATCH("asm/non_matching/game/multiplayer/sa1_mp_player__Task_CreateMultiplaye
             sa2__gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
 #ifndef NON_MATCHING
-            // NOTE: MultiPakCommunicationError() does NOT take any arguments, neither in SA1 nor the others.
+            // NOTE: LinkCommunicationError() does NOT take any arguments, neither in SA1 nor the others.
             *(volatile u8 *)&gGameMode;
 #endif
-            MultiPakCommunicationError();
+            LinkCommunicationError();
             return;
         }
     }

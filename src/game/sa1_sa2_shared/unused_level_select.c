@@ -86,11 +86,11 @@ static void Task_Poll(void)
 #if (GAME == GAME_SA1)
         m4aSongNumStop(MUS_CHARACTER_SELECTION);
 
-        sa2__gUnknown_03004D80[0] = 0;
-        sa2__gUnknown_03002280[0][0] = 0;
-        sa2__gUnknown_03002280[0][1] = 0;
-        sa2__gUnknown_03002280[0][2] = 0xFF;
-        sa2__gUnknown_03002280[0][3] = 0x20;
+        gBgSprites_Unknown1[0] = 0;
+        gBgSprites_Unknown2[0][0] = 0;
+        gBgSprites_Unknown2[0][1] = 0;
+        gBgSprites_Unknown2[0][2] = 0xFF;
+        gBgSprites_Unknown2[0][3] = 0x20;
 
         if (IS_MULTI_PLAYER) {
             gCurTask->main = Task_CreateMultiplayer;
@@ -109,11 +109,11 @@ static void Task_Poll(void)
 #if (GAME == GAME_SA1)
         CreateCharacterSelectionScreen(0);
 
-        sa2__gUnknown_03004D80[0] = 0;
-        sa2__gUnknown_03002280[0][0] = 0;
-        sa2__gUnknown_03002280[0][1] = 0;
-        sa2__gUnknown_03002280[0][2] = 0xFF;
-        sa2__gUnknown_03002280[0][3] = 0x20;
+        gBgSprites_Unknown1[0] = 0;
+        gBgSprites_Unknown2[0][0] = 0;
+        gBgSprites_Unknown2[0][1] = 0;
+        gBgSprites_Unknown2[0][2] = 0xFF;
+        gBgSprites_Unknown2[0][3] = 0x20;
 #elif (GAME == GAME_SA2)
         INIT_BG_SPRITES_LAYER_32(0);
 #endif

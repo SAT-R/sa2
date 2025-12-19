@@ -75,7 +75,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     block->base.regionY = spriteRegionY;
     block->base.me = me;
 
-    block->base.spriteX = me->x;
+    block->base.meX = me->x;
     block->base.id = spriteY;
 
     SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 18, 2, 0);
@@ -256,6 +256,6 @@ static bool32 IsPlayerTouchingBlock(Sprite_NoteBlock *block)
 
 static void Despawn(Sprite_NoteBlock *block)
 {
-    block->base.me->x = block->base.spriteX;
+    block->base.me->x = block->base.meX;
     TaskDestroy(gCurTask);
 }

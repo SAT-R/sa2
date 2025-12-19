@@ -1,8 +1,8 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
-// for memcpy
+
 #ifndef GEN_CTX
-#include <string.h>
+#include <string.h> // for memcpy
 #endif
 
 #include "global.h"
@@ -247,7 +247,7 @@ extern HBlankIntrFunc gHBlankCallbacks[4];
 extern u8 gNumHBlankCallbacks;
 extern u8 gNumHBlankIntrs;
 
-extern u8 gIwramHeap[0x2204];
+extern u8 gIwramHeap[TASK_HEAP_SIZE];
 
 extern void *gVramHeapStartAddr;
 extern u16 gVramHeapMaxTileSlots;
@@ -285,15 +285,15 @@ extern Background *gBackgroundsCopyQueue[16];
 // This is used to buffer the xy-shift for each background scanline
 extern void *gBgOffsetsHBlankPrimary;
 
-extern u16 gUnknown_030017F0;
+extern u16 SA2_LABEL(gUnknown_030017F0);
 extern Vec2_16 gSpriteOffset;
 extern u8 gOamMallocOrders_StartIndex[32];
 extern IntrFunc gVBlankCallbacks[4];
 
 extern u8 gOamFreeIndex;
-extern u16 gUnknown_03001944;
+extern u16 SA2_LABEL(gUnknown_03001944);
 extern u8 gNumVBlankIntrs;
-extern s16 gUnknown_0300194C;
+extern s16 SA2_LABEL(gUnknown_0300194C);
 
 extern Tilemap **gTilemapsRef;
 extern u8 gBgSprites_Unknown2[4][4];
@@ -353,7 +353,7 @@ extern void *gBgOffsetsSecondary;
 extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
 #endif
-extern s16 gUnknown_03002820;
+extern s16 SA2_LABEL(gUnknown_03002820);
 extern u8 gUnknown_03002874;
 extern void *gHBlankCopyTarget;
 extern u8 gBackgroundsCopyQueueIndex;
@@ -366,12 +366,12 @@ extern u8 gBackgroundsCopyQueueCursor;
 extern Sprite *gBgSprites[16];
 extern u8 gNumVBlankCallbacks;
 extern void *gBgOffsetsPrimary;
-extern u16 gUnknown_03004D58;
+extern u16 SA2_LABEL(gUnknown_03004D58);
 extern u8 gVramGraphicsCopyCursor;
 extern u8 gOamMallocOrders_EndIndex[0x20];
 extern u8 gBgSpritesCount;
-extern u16 gUnknown_03005394;
-extern u16 gUnknown_03005398;
+extern u16 SA2_LABEL(gUnknown_03005394);
+extern u16 SA2_LABEL(gUnknown_03005398);
 extern IntrFunc gVBlankIntrs[4];
 extern s32 gPseudoRandom;
 extern u8 gOamMallocCopiedOrder[128];

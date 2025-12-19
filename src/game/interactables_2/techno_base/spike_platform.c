@@ -51,7 +51,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia78->base.me = me;
     ia78->base.regionX = spriteRegionX;
     ia78->base.regionY = spriteRegionY;
-    ia78->base.spriteX = me->x;
+    ia78->base.meX = me->x;
     ia78->base.id = spriteY;
 
     ia78->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
@@ -276,6 +276,6 @@ static bool32 sub_807B028(Sprite_IA78 *ia78)
 
 static void sub_807B070(Sprite_IA78 *ia78)
 {
-    ia78->base.me->x = ia78->base.spriteX;
+    ia78->base.me->x = ia78->base.meX;
     TaskDestroy(gCurTask);
 }

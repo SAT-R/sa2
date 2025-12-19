@@ -56,7 +56,7 @@ void CreateEntity_Chord(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     chord->base.regionX = spriteRegionX;
     chord->base.regionY = spriteRegionY;
     chord->base.me = me;
-    chord->base.spriteX = me->x;
+    chord->base.meX = me->x;
     chord->base.id = spriteY;
 
     SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 18, 2, 0);
@@ -251,7 +251,7 @@ static void Task_Idle(void)
     }
 
     if (ShouldDespawn(chord)) {
-        chord->base.me->x = chord->base.spriteX;
+        chord->base.me->x = chord->base.meX;
         TaskDestroy(gCurTask);
         return;
     }

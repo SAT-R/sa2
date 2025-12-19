@@ -40,7 +40,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     turnAroundBar->base.regionX = spriteRegionX;
     turnAroundBar->base.regionY = spriteRegionY;
     turnAroundBar->base.me = me;
-    turnAroundBar->base.spriteX = me->x;
+    turnAroundBar->base.meX = me->x;
     turnAroundBar->base.id = spriteY;
 
     s->oamFlags = SPRITE_OAM_ORDER(18);
@@ -128,7 +128,7 @@ static void Task_TurnAroundBarMain(void)
     }
 
     if (sub_8073784(turnAroundBar)) {
-        me->x = turnAroundBar->base.spriteX;
+        me->x = turnAroundBar->base.meX;
         TaskDestroy(gCurTask);
     } else {
         sub_8073760(turnAroundBar);

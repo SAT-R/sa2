@@ -246,6 +246,9 @@ void sub_8081200(void)
     gDummyTask = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
+#if (GAME == GAME_SA1)
+    gPartner.spriteTask = NULL;
+#endif
     gCamera.movementTask = NULL;
     gUnknown_0300543C = 0;
 #ifndef COLLECT_RINGS_ROM

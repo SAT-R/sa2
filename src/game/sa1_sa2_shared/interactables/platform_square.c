@@ -49,7 +49,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
-    platform->base.spriteX = me->x;
+    platform->base.meX = me->x;
     platform->base.id = spriteY;
     platform->offsetX = 0;
     platform->offsetY = 0;
@@ -152,7 +152,7 @@ static void Task_Platform_Square(void)
         deltaY = r5;
     }
 
-    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posX = TO_WORLD_POS(platform->base.meX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     if (IS_MULTI_PLAYER) {
@@ -330,7 +330,7 @@ static void Task_Platform_Square(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.meX);
         TaskDestroy(gCurTask);
     } else {
         DisplaySprite(s);

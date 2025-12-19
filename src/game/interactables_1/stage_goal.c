@@ -48,7 +48,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     stageGoal->base.regionX = spriteRegionX;
     stageGoal->base.regionY = spriteRegionY;
     stageGoal->base.me = me;
-    stageGoal->base.spriteX = me->x;
+    stageGoal->base.meX = me->x;
     stageGoal->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -76,14 +76,14 @@ static void Task_StageGoalMain(void)
     Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
-    s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
+    s32 x = TO_WORLD_POS(stageGoal->base.meX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = stageGoal->base.spriteX;
+        me->x = stageGoal->base.meX;
         TaskDestroy(gCurTask);
         return;
     }
@@ -105,14 +105,14 @@ static void Task_StageGoalAnimate(void)
     Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
-    s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
+    s32 x = TO_WORLD_POS(stageGoal->base.meX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = stageGoal->base.spriteX;
+        me->x = stageGoal->base.meX;
         TaskDestroy(gCurTask);
         return;
     }
@@ -126,7 +126,7 @@ static void Task_StageGoalToggleMain(void)
     Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(gCurTask);
     MapEntity *me = stageGoalToggle->base.me;
 
-    u8 spriteX = stageGoalToggle->base.spriteX;
+    u8 spriteX = stageGoalToggle->base.meX;
     u16 regionX = stageGoalToggle->base.regionX;
     u16 regionY = stageGoalToggle->base.regionY;
     s32 x = TO_WORLD_POS(spriteX, regionX);
@@ -301,7 +301,7 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
     stageGoalToggle->base.regionX = spriteRegionX;
     stageGoalToggle->base.regionY = spriteRegionY;
     stageGoalToggle->base.me = me;
-    stageGoalToggle->base.spriteX = me->x;
+    stageGoalToggle->base.meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

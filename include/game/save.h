@@ -117,7 +117,7 @@ typedef struct SaveGame {
 extern struct SaveGame *gLoadedSaveGame;
 #endif
 
-#if (GAME == GAME_SA1)
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA3))
 #define LOADED_SAVE (&gLoadedSaveGame)
 #elif (GAME == GAME_SA2)
 #define LOADED_SAVE (gLoadedSaveGame)

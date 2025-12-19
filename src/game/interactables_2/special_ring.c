@@ -45,7 +45,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
         ring->base.me = me;
-        ring->base.spriteX = me->x;
+        ring->base.meX = me->x;
         ring->base.id = spriteY;
 
         s = &ring->displayed;
@@ -171,7 +171,7 @@ static bool32 sub_8081164(Sprite_SpecialRing *ring)
 static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
 {
     if (param1 != 0) {
-        ring->base.me->x = ring->base.spriteX;
+        ring->base.me->x = ring->base.meX;
     }
     TaskDestroy(gCurTask);
 }

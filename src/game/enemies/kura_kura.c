@@ -39,7 +39,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     kk->base.regionX = spriteRegionX;
     kk->base.regionY = spriteRegionY;
     kk->base.me = me;
-    kk->base.spriteX = me->x;
+    kk->base.meX = me->x;
     kk->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(kk, me);

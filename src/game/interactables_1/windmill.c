@@ -39,7 +39,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     windmill->base.regionX = spriteRegionX;
     windmill->base.regionY = spriteRegionY;
     windmill->base.me = me;
-    windmill->base.spriteX = me->x;
+    windmill->base.meX = me->x;
     windmill->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -97,13 +97,13 @@ static void Task_WindmillMain(void)
 
     s32 screenX, screenY;
 
-    screenX = TO_WORLD_POS(windmill->base.spriteX, windmill->base.regionX);
+    screenX = TO_WORLD_POS(windmill->base.meX, windmill->base.regionX);
     screenY = TO_WORLD_POS(me->y, windmill->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        me->x = windmill->base.spriteX;
+        me->x = windmill->base.meX;
         TaskDestroy(gCurTask);
         return;
     }

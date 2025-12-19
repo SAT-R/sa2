@@ -36,7 +36,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     ramp->base.regionX = spriteRegionX;
     ramp->base.regionY = spriteRegionY;
     ramp->base.me = me;
-    ramp->base.spriteX = me->x;
+    ramp->base.meX = me->x;
     ramp->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -91,7 +91,7 @@ static void Task_Ramp(void)
     do {
 #endif
 
-        screenX = TO_WORLD_POS(ramp->base.spriteX, ramp->base.regionX);
+        screenX = TO_WORLD_POS(ramp->base.meX, ramp->base.regionX);
         screenY = TO_WORLD_POS(me->y, ramp->base.regionY);
         s->x = screenX - gCamera.x;
         s->y = screenY - gCamera.y;
@@ -176,7 +176,7 @@ static void Task_Ramp(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX - gCamera.x, screenY - gCamera.y)) {
-        me->x = ramp->base.spriteX;
+        me->x = ramp->base.meX;
         TaskDestroy(gCurTask);
         return;
     }

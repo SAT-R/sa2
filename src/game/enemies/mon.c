@@ -37,7 +37,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     mon->base.regionX = spriteRegionX;
     mon->base.regionY = spriteRegionY;
     mon->base.me = me;
-    mon->base.spriteX = me->x;
+    mon->base.meX = me->x;
     mon->base.id = spriteY;
 
     // TODO: Isn't this always -1?
@@ -82,7 +82,7 @@ static void Task_MonMain(void)
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.meX);
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -113,7 +113,7 @@ static void Task_Mon_2(void)
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.meX);
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -147,7 +147,7 @@ static void Task_Mon_3(void)
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.meX);
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -176,7 +176,7 @@ static void Task_Mon_4(void)
         TaskDestroy(gCurTask);
         return;
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.meX);
         TaskDestroy(gCurTask);
         return;
     } else {

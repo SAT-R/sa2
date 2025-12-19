@@ -28,7 +28,7 @@ static void Task_MapEntity_Toggle_PlayerLayer(void)
     TogglePlayerLayer *toggle = TASK_DATA(gCurTask);
     SpriteBase *base = &toggle->base;
     MapEntity_Toggle_PlayerLayer *me = (MapEntity_Toggle_PlayerLayer *)base->me;
-    u8 spriteX = base->spriteX;
+    u8 spriteX = base->meX;
     u32 regionX = base->regionX;
     u32 regionY = base->regionY;
     s32 screenX, screenY;
@@ -68,6 +68,6 @@ void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 sprit
     base->regionX = spriteRegionX;
     base->regionY = spriteRegionY;
     base->me = me;
-    base->spriteX = me->x;
+    base->meX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

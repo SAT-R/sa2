@@ -551,14 +551,14 @@ NONMATCH("asm/non_matching/engine/sa2__sub_8004E14.inc", void SA2_LABEL(sub_8004
         // 2D Rotation matrix:
         // { +cos(a), -sin(a) }
         // { +sin(a), +cos(a) }
-        us.unk18[0][0] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_030017F0)) >> 16)
-                           * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398)) >> 16));
-        us.unk18[0][1] = I((Q(-SIN_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_030017F0)) >> 16)
-                           * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398)) >> 16));
-        us.unk18[1][0] = I((Q(+SIN_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_03005394)) >> 16)
-                           * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398)) >> 16));
-        us.unk18[1][1] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944)) * SA2_LABEL(gUnknown_03005394)) >> 16)
-                           * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398)) >> 16));
+        us.unk18[0][0] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944))) * SA2_LABEL(gUnknown_030017F0)) >> 16)
+            * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398) >> 16));
+        us.unk18[0][1] = I((Q(-SIN_24_8(SA2_LABEL(gUnknown_03001944))) * SA2_LABEL(gUnknown_030017F0)) >> 16)
+            * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398) >> 16));
+        us.unk18[1][0] = I((Q(+SIN_24_8(SA2_LABEL(gUnknown_03001944))) * SA2_LABEL(gUnknown_03005394)) >> 16)
+            * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398) >> 16));
+        us.unk18[1][1] = I((Q(+COS_24_8(SA2_LABEL(gUnknown_03001944))) * SA2_LABEL(gUnknown_03005394)) >> 16)
+            * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398) >> 16));
 
         us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(SA2_LABEL(gUnknown_0300194C)));
         us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(SA2_LABEL(gUnknown_03002820)));
@@ -661,8 +661,8 @@ void DisplaySprite(Sprite *sprite)
         y = sprite->y;
 
         if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
-            x -= SA2_LABEL(gSpriteOffset).x;
-            y -= SA2_LABEL(gSpriteOffset).y;
+            x -= gSpriteOffset.x;
+            y -= gSpriteOffset.y;
         }
 
         sprWidth = sprDims->width;
@@ -960,10 +960,10 @@ OamData *OamMalloc(u8 order)
     }
 
     // This is the first oam in this layer
-    if (SA2_LABEL(gOamMallocOrders_StartIndex)[order] == 0xFF) {
+    if (gOamMallocOrders_StartIndex[order] == 0xFF) {
         gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
         // And store the start of the chain
-        SA2_LABEL(gOamMallocOrders_StartIndex)[order] = gOamFreeIndex;
+        gOamMallocOrders_StartIndex[order] = gOamFreeIndex;
         SA2_LABEL(gOamMallocOrders_EndIndex)[order] = gOamFreeIndex;
     } else {
         gOamMallocBuffer[gOamFreeIndex].split.fractional = 0xFF;
@@ -984,8 +984,8 @@ void ProcessOamBuffers(void)
     u8 operationNumber = 0;
     s32 layer;
 
-    for (layer = 0; layer < (signed)ARRAY_COUNT(SA2_LABEL(gOamMallocOrders_StartIndex)); layer++) {
-        s8 oamMallocIndex = SA2_LABEL(gOamMallocOrders_StartIndex)[layer];
+    for (layer = 0; layer < (signed)ARRAY_COUNT(gOamMallocOrders_StartIndex); layer++) {
+        s8 oamMallocIndex = gOamMallocOrders_StartIndex[layer];
 
         while (oamMallocIndex != -1) {
             u8 *debugCopyOrders = SA2_LABEL(gOamMallocCopiedOrder);
@@ -1040,10 +1040,10 @@ void ProcessOamBuffers(void)
 
     gOamFreeIndex = 0;
     if (gFlags & FLAGS_4000) {
-        CpuFill32(-1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        CpuFill32(-1, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
         CpuFill32(-1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     } else {
-        DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_StartIndex), sizeof(SA2_LABEL(gOamMallocOrders_StartIndex)));
+        DmaFill32(3, -1, gOamMallocOrders_StartIndex, sizeof(gOamMallocOrders_StartIndex));
         DmaFill32(3, -1, SA2_LABEL(gOamMallocOrders_EndIndex), sizeof(SA2_LABEL(gOamMallocOrders_EndIndex)));
     }
 }

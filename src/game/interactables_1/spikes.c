@@ -62,7 +62,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
-    spikes->base.spriteX = me->x;
+    spikes->base.meX = me->x;
     spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -105,7 +105,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
-    spikes->base.spriteX = me->x;
+    spikes->base.meX = me->x;
     spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -137,7 +137,7 @@ static void Task_SpikesUpMain(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -165,7 +165,7 @@ static void Task_SpikesUpMain(void)
 #endif
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        me->x = spikes->base.spriteX;
+        me->x = spikes->base.meX;
         TaskDestroy(gCurTask);
     } else {
 #ifndef COLLECT_RINGS_ROM
@@ -185,7 +185,7 @@ static void Task_SpikesDownMain(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -210,7 +210,7 @@ static void Task_SpikesDownMain(void)
     }
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        me->x = spikes->base.spriteX;
+        me->x = spikes->base.meX;
         TaskDestroy(gCurTask);
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0 || gSpikesUnknownTimer != 0)) {
@@ -230,7 +230,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
-    spikes->base.spriteX = me->x;
+    spikes->base.meX = me->x;
     spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -283,7 +283,7 @@ static void Task_SpikesLeftRightMain(void)
     s = &spikes->s;
     me = spikes->base.me;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -385,7 +385,7 @@ static void Task_SpikesLeftRightMain(void)
     }
     // _0805FDF0
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        me->x = spikes->base.spriteX;
+        me->x = spikes->base.meX;
         TaskDestroy(gCurTask);
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0) || (gSpikesUnknownTimer != 0)) {
@@ -405,7 +405,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
-    spikes->base.spriteX = me->x;
+    spikes->base.meX = me->x;
     spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -437,13 +437,13 @@ static void Task_SpikesHidingUpMain(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        me->x = spikes->base.spriteX;
+        me->x = spikes->base.meX;
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
@@ -470,7 +470,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
-    spikes->base.spriteX = me->x;
+    spikes->base.meX = me->x;
     spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -502,13 +502,13 @@ static void Task_SpikesHidingDownMain(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        me->x = spikes->base.spriteX;
+        me->x = spikes->base.meX;
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
@@ -536,7 +536,7 @@ static bool32 HandleSpikeMovementUp(Sprite *s, MapEntity *me, Sprite_Spikes *spi
     --s;
 #endif
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -656,7 +656,7 @@ static bool32 HandleSpikeMovementDown(Sprite *s, MapEntity *me, Sprite_Spikes *s
 
     s16 screenX, screenY;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -702,7 +702,7 @@ static bool32 HandleSpikeMovementHidingUp(Sprite *s, MapEntity *me, Sprite_Spike
     u32 stageTimer[1] = { gStageTime & 0x7F };
     s32 playerID = player->playerID;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
@@ -866,7 +866,7 @@ static bool32 HandleSpikeMovementHidingDown(Sprite *s, MapEntity *me, Sprite_Spi
     u32 stageTimer[1] = { gStageTime & 0x7F };
     s32 playerID = player->playerID;
 
-    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenX = TO_WORLD_POS(spikes->base.meX, spikes->base.regionX);
     screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;

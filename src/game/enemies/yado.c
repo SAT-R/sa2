@@ -46,7 +46,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     yado->base.regionX = spriteRegionX;
     yado->base.regionY = spriteRegionY;
     yado->base.me = me;
-    yado->base.spriteX = me->x;
+    yado->base.meX = me->x;
     yado->base.id = spriteY;
 
     // This value was left uninitialised on the real game,
