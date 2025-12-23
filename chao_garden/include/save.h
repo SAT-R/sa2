@@ -22,7 +22,8 @@ struct TCG_SaveSectorData {
     u8 unk1E;
     u8 unk1F;
     u8 unk20;
-    u8 filler21[0x38];
+    u8 filler21[0x37];
+    u8 unk58;
     u8 unk59;
     u8 filler[0xA];
     u32 unk64;
@@ -31,7 +32,7 @@ struct TCG_SaveSectorData {
     u8 pad[0x7EE];
 }; /* size:0x858 according to LoadGameState */
 
-extern struct TCG_SaveSectorData gUnknown_03003B80;
+extern struct TCG_SaveSectorData gGameState;
 
 void LoadGameState(void);
 

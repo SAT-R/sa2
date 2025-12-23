@@ -489,6 +489,10 @@
 #define REG_KEYCNT      (*(vu16 *)REG_ADDR_KEYCNT)
 
 #define REG_RCNT        (*(vu16 *)REG_ADDR_RCNT)
+#define REG_JOYCNT      (*(vu16 *)REG_ADDR_JOYCNT)
+#define REG_JOYSTAT     (*(vu16 *)REG_ADDR_JOYSTAT)
+#define REG_JOY_RECV    (*(vu32 *)REG_ADDR_JOY_RECV)
+#define REG_JOY_TRANS   (*(vu32 *)REG_ADDR_JOY_TRANS)
 
 #define REG_IME         (*(vu16 *)REG_ADDR_IME)
 #define REG_IE          (*(vu16 *)REG_ADDR_IE)

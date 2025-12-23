@@ -27,16 +27,16 @@ void LoadGameState(void)
     sector = -1;
 
     for (i = 0; i < 6; i++) {
-        ReadFlash(i + 10, 0, &gUnknown_03003B80, sizeof(struct TCG_SaveSectorData));
-        if (gUnknown_03003B80.header.unk2 == 0x1965) {
-            u16 checksum = sub_0200185c((void *)&gUnknown_03003B80.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
-            if (checksum == gUnknown_03003B80.header.checksum) {
+        ReadFlash(i + 10, 0, &gGameState, sizeof(struct TCG_SaveSectorData));
+        if (gGameState.header.unk2 == 0x1965) {
+            u16 checksum = sub_0200185c((void *)&gGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
+            if (checksum == gGameState.header.checksum) {
                 if (sector < 0) {
                     sector = i;
-                    p = gUnknown_03003B80.header.unk4;
-                } else if (gUnknown_03003B80.header.unk4 > p) {
+                    p = gGameState.header.unk4;
+                } else if (gGameState.header.unk4 > p) {
                     sector = i;
-                    p = gUnknown_03003B80.header.unk4;
+                    p = gGameState.header.unk4;
                 }
             }
         }
@@ -46,40 +46,39 @@ void LoadGameState(void)
         gSaveSectorNum = TCG_SAVE_SECTOR_COUNT;
         gSaveVersion = 0;
         InitGameState();
-        gUnknown_03003B80.unk59 = 0;
-        gUnknown_03003B80.unk1F = 0x58;
-        gUnknown_03003B80.unk20 = 0x68;
+        gGameState.unk59 = 0;
+        gGameState.unk1F = 0x58;
+        gGameState.unk20 = 0x68;
     } else {
         gSaveSectorNum = sector;
         gSaveVersion = p;
-        ReadFlash(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, 0, &gUnknown_03003B80, sizeof(struct TCG_SaveSectorData));
-        sub_02001528(gUnknown_03003B80.unk18);
+        ReadFlash(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, 0, &gGameState, sizeof(struct TCG_SaveSectorData));
+        sub_02001528(gGameState.unk18);
     }
-    if (gUnknown_03003B80.unk8 >= gUnknown_02000008.unk0) {
-        gUnknown_03005274 = gUnknown_03003B80.unkC;
+    if (gGameState.unk8 >= gUnknown_02000008.unk0) {
+        gUnknown_03005274 = gGameState.unkC;
     } else {
-        p = gUnknown_03003B80.unkC + (gUnknown_02000008.unk0 - gUnknown_03003B80.unk8);
+        p = gGameState.unkC + (gUnknown_02000008.unk0 - gGameState.unk8);
         if (p > 0x1869F) {
             p = 0x1869F;
         }
         gUnknown_03005274 = p;
-        gUnknown_03003B80.unk8 = gUnknown_02000008.unk0;
+        gGameState.unk8 = gUnknown_02000008.unk0;
     }
-    gUnknown_03003B80.unk64 = (gUnknown_03005274 & 0xFF) << 24 | ((gUnknown_03005274 & 0xFF00) << 8) | (gUnknown_03005274 & 0xFF0000) >> 8
+    gGameState.unk64 = (gUnknown_03005274 & 0xFF) << 24 | ((gUnknown_03005274 & 0xFF00) << 8) | (gUnknown_03005274 & 0xFF0000) >> 8
         | gUnknown_03005274 >> 24;
-    gUnknown_03003B80.unk68 = 0;
+    gGameState.unk68 = 0;
 }
 
 void SaveGameState(void)
 {
     s32 i;
-    gUnknown_03003B80.header.unk2 = 0x1965;
+    gGameState.header.unk2 = 0x1965;
     gSaveVersion++;
-    gUnknown_03003B80.header.unk4 = gSaveVersion;
-    gUnknown_03003B80.unkC = gUnknown_03005274;
-    gUnknown_03003B80.unk18 = sub_0200151c();
-    gUnknown_03003B80.header.checksum
-        = sub_0200185c((void *)&gUnknown_03003B80.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
+    gGameState.header.unk4 = gSaveVersion;
+    gGameState.unkC = gUnknown_03005274;
+    gGameState.unk18 = sub_0200151c();
+    gGameState.header.checksum = sub_0200185c((void *)&gGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
     m4aMPlayAllStop();
     m4aSoundMain();
     VBlankIntrWait();
@@ -92,8 +91,7 @@ void SaveGameState(void)
             gSaveSectorNum = 0;
         }
 
-        failure = ProgramFlashSectorAndVerifyNBytes(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, &gUnknown_03003B80,
-                                                    sizeof(struct TCG_SaveSectorData));
+        failure = ProgramFlashSectorAndVerifyNBytes(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, &gGameState, sizeof(struct TCG_SaveSectorData));
 
         if (!failure) {
             break;
@@ -103,20 +101,27 @@ void SaveGameState(void)
     VBlankIntrWait();
 }
 
-// void InitGameState(void)
-// {
-//     u32 i = 0;
-//     u8 *p = (u8*)&gUnknown_03003B80.unk8;
-//     u8 *p2;
-//     for (i = 0; i < 0x50; i++) {
-//         *p = 0;
-//         p++;
-//     }
+NONMATCH("asm/non_matching/InitGameState.inc", void InitGameState(void))
+{
+    u8 *p, *p2;
+    u32 r1, i;
+    p = (u8 *)(&gGameState.unk8);
 
-//     p2 = &gUnknown_03003B80.unk68;
-//     while ((u32)p2 < (u32)&gUnknown_03003B80 + sizeof(gUnknown_03003B80)) {
-//         p2 = 0;
-//     }
-//     gUnknown_03003B80.unk10 = sub_02008810();
-//     gUnknown_03003B80.unk1C = -1;
-// }
+    i = 0;
+    r1 = 0x50;
+    for (i = 0; i < r1; i++) {
+        *p = 0;
+        p++;
+    }
+
+    p = (u8 *)&gGameState.unk58;
+    r1 = 0xFF;
+    p2 = p + 0x11;
+    do {
+        *p2-- = r1;
+    } while ((s32)p2 >= (s32)p);
+
+    gGameState.unk10 = sub_02008810();
+    gGameState.unk1C = 0xFF;
+}
+END_NONMATCH

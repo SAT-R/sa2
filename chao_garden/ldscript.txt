@@ -182,7 +182,9 @@ SECTIONS {
         . = 0x00003B60; gIntrTable = .;
 
         . = 0x00003B70; gUnknown_03003B70 = .;
-        . = 0x00003B80; gUnknown_03003B80 = .;
+
+        /* japan this is all game state */
+        . = 0x00003B80; gGameState = .;
         . = 0x00003B88; gUnknown_03003B88 = .;
         . = 0x00003BA1; gUnknown_03003BA1 = .;
         . = 0x00003BB5; gUnknown_03003BB5 = .;
@@ -196,6 +198,7 @@ SECTIONS {
         . = 0x00003C08; gUnknown_03003C08 = .;
         . = 0x00003C10; gUnknown_03003C10 = .;
         . = 0x00003C58; gUnknown_03003C58 = .;
+
         . = 0x000043D8; gUnknown_030043D8 = .;
         . = 0x000043DC; gUnknown_030043DC = .;
         . = 0x000043E0; gUnknown_030043E0 = .;
@@ -238,6 +241,8 @@ SECTIONS {
 		build/mb_chao_garden/asm/crt0.o(.text);
 		build/mb_chao_garden/src/main.o(.text);
 		build/mb_chao_garden/src/save.o(.text);
+        build/mb_chao_garden/src/game.o(.text);
+        build/mb_chao_garden/asm/game.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);
