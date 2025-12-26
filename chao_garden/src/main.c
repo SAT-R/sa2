@@ -1,5 +1,7 @@
 #include "global.h"
 #include "save.h"
+#include "joy_bus.h"
+#include "input.h"
 #include "m4a.h"
 
 #define ROM_MAKER_CODE_ADDR ((vu8 *)(ROM_BASE + 0xB2))
@@ -31,8 +33,8 @@ static void GameInit(void)
     sub_02001528(gUnknown_02000008.unk8);
     SetupInterrupts();
     LoadGameState();
-    sub_02000480();
-    sub_02000c6c();
+    JoyBusInit();
+    InputInit();
     sub_020018a0();
     sub_0200be24();
     sub_0200d27c();
@@ -48,7 +50,7 @@ void AgbMain()
     gUnknown_03003330.unk0 = sub_020018c8;
     while (TRUE) {
         VBlankIntrWait();
-        sub_02000bd0();
+        GetInput();
         gUnknown_03003330.unk0();
         m4aSoundMain();
         gUnknown_03003330.unk8++;

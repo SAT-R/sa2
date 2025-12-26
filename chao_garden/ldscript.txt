@@ -16,7 +16,7 @@ SECTIONS {
         . = 0x00000000; IntrMain_RAM = .;
         . = 0x00000080; gSaveSectorNum = .;
         . = 0x00000084; gSaveVersion = .;
-        . = 0x00000088; gUnknown_03000088 = .;
+        . = 0x00000088; gJoyBusIntrRAM = .;
         . = 0x000005A8; gUnknown_030005A8 = .;
         . = 0x000005AC; gUnknown_030005AC = .;
         . = 0x000005B0; gUnknown_030005B0 = .;
@@ -205,7 +205,7 @@ SECTIONS {
         . = 0x000043E4; gUnknown_030043E4 = .;
         . = 0x000043E8; gUnknown_030043E8 = .;
         . = 0x000043EC; gUnknown_030043EC = .;
-        . = 0x000043F0; gUnknown_030043F0 = .;
+        . = 0x000043F0; gInput = .;
         . = 0x00004400; gUnknown_03004400 = .;
         . = 0x00004424; gUnknown_03004424 = .;
         . = 0x00004E20; gUnknown_03004E20 = .;
@@ -241,8 +241,8 @@ SECTIONS {
 		build/mb_chao_garden/asm/crt0.o(.text);
 		build/mb_chao_garden/src/main.o(.text);
 		build/mb_chao_garden/src/save.o(.text);
-        build/mb_chao_garden/src/game.o(.text);
-        build/mb_chao_garden/asm/game.o(.text);
+        build/mb_chao_garden/src/joy_bus.o(.text);
+        build/mb_chao_garden/src/input.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);

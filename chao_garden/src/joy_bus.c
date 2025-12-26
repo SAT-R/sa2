@@ -1,5 +1,7 @@
 #include "global.h"
 #include "m4a.h"
+#include "joy_bus.h"
+#include "input.h"
 #include "save.h"
 
 extern s32 gUnknown_030005A8;
@@ -12,8 +14,8 @@ extern vu8 gUnknown_030043DC;
 extern vu8 gUnknown_030043E4;
 extern vu8 gUnknown_030043E8;
 extern vu8 gUnknown_030043EC;
-extern u16 gUnknown_030043F0;
-extern IntrFunc gUnknown_03000088;
+
+extern IntrFunc gJoyBusIntrRAM;
 extern u8 *gUnknown_030005B4;
 extern u16 gUnknown_030005B8;
 extern u16 gUnknown_030005BA;
@@ -29,9 +31,9 @@ void sub_02000b0c(u32);
 void sub_02000b64(u32);
 void sub_02000bb0(void);
 
-void sub_020006b8(void);
+void JoyBusIntr(void);
 
-void sub_02000480(void)
+void JoyBusInit(void)
 {
     REG_IME = 0;
     REG_IE &= ~0x80;
@@ -42,10 +44,10 @@ void sub_02000480(void)
     REG_JOY_TRANS = 0;
     REG_JOYCNT = 0x47;
 #if !PORTABLE
-    CpuCopy32(&sub_020006b8, &gUnknown_03000088, 0x520);
-    gIntrTable[0] = (void *)&gUnknown_03000088 + 1;
+    CpuCopy32(&JoyBusIntr, &gJoyBusIntrRAM, 0x520);
+    gIntrTable[0] = (void *)&gJoyBusIntrRAM + 1;
 #else
-    gIntrTable[0] = sub_020006b8;
+    gIntrTable[0] = JoyBusIntr;
 #endif
     gUnknown_030043DC = 0;
     gUnknown_030043EC = 0;
@@ -106,7 +108,7 @@ void sub_02000590(void)
     REG_IME = 1;
 }
 
-void sub_020006b8(void)
+void JoyBusIntr(void)
 {
     s32 r4;
     u16 joyCnt;
@@ -178,13 +180,13 @@ void sub_020006b8(void)
                     u16 a;
                     gUnknown_030005B1 = 0;
                     gUnknown_030043E8 = 0;
-                    a = gUnknown_030043F0;
+                    a = gInput.unk0;
                     r4 = ((0xFF00 & a) << 8) | 0x4B43 | ((a << 0x18));
                 } else if (r4 == 0x4F414843) {
                     u16 a;
                     gUnknown_030005B1 = 0;
                     gUnknown_030043E8 = 1;
-                    a = gUnknown_030043F0;
+                    a = gInput.unk0;
                     r4 = ((0xFF00 & a) << 8) | 0x4B43 | ((a << 0x18));
                 } else {
                     if ((r4 & 0xFF) == 0x2A) {
@@ -277,7 +279,7 @@ s32 sub_02000988(s32 in)
     if ((gUnknown_030005B8 == (gUnknown_030005BA + 1)) && (ret == 0x6F616843)) {
         gUnknown_030005B1 = 0;
         ret = ({
-            u16 a = gUnknown_030043F0;
+            u16 a = gInput.unk0;
             ((0xFF00 & a) << 8) | 0x4B43 | (a << 0x18);
         });
         gUnknown_030043DC = 5;
@@ -306,7 +308,7 @@ s32 sub_02000a40(s32 in)
     if (gUnknown_030005B8 == (gUnknown_030005BA + 1) && gUnknown_030005BC == ret) {
         gUnknown_030005B1 = 0;
         ret = ({
-            u16 a = gUnknown_030043F0;
+            u16 a = gInput.unk0;
             ((0xFF00 & a) << 8) | 0x4B43 | (a << 0x18);
         });
         gUnknown_030043DC = 5;

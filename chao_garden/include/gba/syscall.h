@@ -12,6 +12,7 @@
 #define RESET_ALL        0xFF
 
 void SoftReset(u32 resetFlags);
+void SoftResetRom(u32 resetFlags);
 void SoftResetExram(u32 resetFlags);
 
 void RegisterRamReset(u32 resetFlags);
