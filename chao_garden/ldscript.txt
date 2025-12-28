@@ -206,18 +206,16 @@ SECTIONS {
         . = 0x000043E8; gUnknown_030043E8 = .;
         . = 0x000043EC; gUnknown_030043EC = .;
         . = 0x000043F0; gInput = .;
+        
         . = 0x00004400; gUnknown_03004400 = .;
         . = 0x00004424; gUnknown_03004424 = .;
+
         . = 0x00004E20; gUnknown_03004E20 = .;
         . = 0x00004E70; gUnknown_03004E70 = .;
-        . = 0x00004E76; gUnknown_03004E76 = .;
         . = 0x00005270; gUnknown_03005270 = .;
         . = 0x00005274; gUnknown_03005274 = .;
         . = 0x00005280; gSoundInfo = .;
         . = 0x00006230; gMPlayJumpTable = .;
-        . = 0x00006234; gUnknown_03006234 = .;
-        . = 0x000062B8; gUnknown_030062B8 = .;
-        . = 0x000062BC; gUnknown_030062BC = .;
         . = 0x000062C0; gCgbChans = .;
 
         . = 0x000063C0; gMPlayInfo_BGM = .;
@@ -243,6 +241,7 @@ SECTIONS {
 		build/mb_chao_garden/src/save.o(.text);
         build/mb_chao_garden/src/joy_bus.o(.text);
         build/mb_chao_garden/src/input.o(.text);
+        build/mb_chao_garden/src/game.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);
