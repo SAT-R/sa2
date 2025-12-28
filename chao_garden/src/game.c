@@ -63,6 +63,13 @@ extern u8 gUnknown_030013A2;
 extern u16 gUnknown_03004E70[128][4];
 extern u8 gUnknown_03001088[4][2];
 
+extern u8 gUnknown_03001080[4];
+extern u8 gUnknown_0300111C;
+extern u8 gUnknown_03001148[10][2];
+extern u8 gUnknown_030011D8[10];
+extern u8 gUnknown_0300127A;
+extern u8 gUnknown_03004E20[10];
+
 void sub_020013DC(UNK_30005C0 *);
 void DummyCallback(UNK_30005C0 *);
 
@@ -284,5 +291,33 @@ void sub_02001088(void)
     while (--r6 != (u8)-1) {
         *r5 = 512;
         r5 += 4;
+    }
+}
+
+void sub_0200117c(void)
+{
+    s32 i;
+
+    gUnknown_03005270 = gUnknown_0300127A;
+    if (gUnknown_0300127A != 0) {
+        for (i = 0; i < gUnknown_0300127A; i++) {
+            gUnknown_030011D8[gUnknown_03001148[i][0]]++;
+        }
+
+        for (i = 0; i <= DISPLAY_HEIGHT; i++) {
+            u8 *p = &gUnknown_030011D8[i];
+            p[1] += p[0];
+        }
+
+        for (i = gUnknown_0300127A - 1; i >= 0; i--) {
+            gUnknown_03004E20[--gUnknown_030011D8[gUnknown_03001148[i][0]]] = gUnknown_03001148[i][1];
+        }
+
+        for (i = gUnknown_0300127A - 1; i >= 0; i--) {
+            u8 val = gUnknown_03004E20[i];
+            gUnknown_03001088[gUnknown_03001080[3]][0] = gUnknown_0300111C;
+            gUnknown_03001088[gUnknown_0300111C][1] = val;
+            gUnknown_03001080[3] = gUnknown_0300111C++;
+        }
     }
 }
