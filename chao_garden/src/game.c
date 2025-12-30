@@ -50,12 +50,12 @@ extern s8 gUnknown_03005270;
 u8 gUnknown_03001030[0x45];
 u8 gUnknown_030005C0[0x45];
 
-extern u8 gUnknown_03001120[32];
+extern s8 gUnknown_03001120[32];
 extern u8 gUnknown_03001140;
 extern u8 gUnknown_03001141;
 extern u8 gUnknown_03001142;
 extern u16 gUnknown_03001280[128];
-extern u8 gUnknown_03001380[32];
+extern s8 gUnknown_03001380[32];
 extern u8 gUnknown_030013A0;
 extern u8 gUnknown_030013A1;
 extern u8 gUnknown_030013A2;
@@ -75,8 +75,7 @@ void DummyCallback(UNK_30005C0 *);
 
 void sub_02000c90(void)
 {
-    s8 *p, *arr;
-    u32 i, val;
+    s32 i;
 
     sub_02001290();
     gUnknown_03004400[0].unk0 = (void *)sub_020013DC;
@@ -88,17 +87,11 @@ void sub_02000c90(void)
     gUnknown_03004400[1].unk6 = 0;
     gUnknown_03004400[1].unk5 = 0;
 
-    arr = gUnknown_030005C0;
-    i = 71;
-    p = arr + 69;
-    do {
-        *p = i;
-        i -= 1;
-        p -= 1;
-    } while ((s32)p >= (s32)arr);
+    for (i = 0; i < 70; i++) {
+        gUnknown_030005C0[i] = i + 2;
+    }
 
-    val = 0;
-    gUnknown_03000606 = gUnknown_03000607 = gUnknown_03000608 = gUnknown_03005270 = val;
+    gUnknown_03000606 = gUnknown_03000607 = gUnknown_03000608 = gUnknown_03005270 = 0;
 }
 
 UNK_30005C0 *sub_02000d04(CallbackFunc arg0, UNK_30005C0 *arg1, u8 arg2)
@@ -319,5 +312,97 @@ void sub_0200117c(void)
             gUnknown_03001088[gUnknown_0300111C][1] = val;
             gUnknown_03001080[3] = gUnknown_0300111C++;
         }
+    }
+}
+
+void sub_02001254(s8 p0, u8 p1)
+{
+    gUnknown_03001088[gUnknown_03001080[p1]][0] = gUnknown_0300111C;
+    gUnknown_03001088[gUnknown_0300111C][1] = p0;
+    gUnknown_03001080[p1] = gUnknown_0300111C++;
+}
+
+void sub_02001290(void)
+{
+    s32 i;
+#ifndef NON_MATCHING
+    register u8 *r5 asm("r5") = &gUnknown_03001140;
+    register u8 *r4 asm("r4") = &gUnknown_03001141;
+#endif
+
+    for (i = 0; i < 128; i++) {
+        gUnknown_03004E70[i][0] = 0x200;
+    }
+
+    for (i = 0; i < 32; i++) {
+        gUnknown_03001120[i] = i * 2;
+    }
+
+    gUnknown_03001142 = 0;
+#ifndef NON_MATCHING
+    *r4 = 0;
+    *r5 = 0;
+#else
+    gUnknown_03001141 = 0;
+    gUnknown_03001140 = 0;
+#endif
+}
+
+void sub_020012e0(void) { CpuFastCopy(gUnknown_03004E70, (void *)OAM, sizeof(gUnknown_03004E70)); }
+
+s8 sub_020012f8(void)
+{
+    s8 ret;
+
+    if (gUnknown_03001140 > 0x1F) {
+        return -1;
+    }
+
+    ret = gUnknown_03001120[gUnknown_03001141++];
+    gUnknown_03001141 = gUnknown_03001141 & 0x1F;
+    gUnknown_03001140 += 1;
+    return ret;
+}
+
+void sub_0200133c(s8 arg0)
+{
+    gUnknown_03001120[gUnknown_03001142++] = arg0;
+    gUnknown_03001142 &= 0x1F;
+    gUnknown_03001140 -= 1;
+}
+
+void sub_02001374(void)
+{
+    s32 i;
+    for (i = 0; i <= DISPLAY_HEIGHT + 1; i++) {
+        gUnknown_030011D8[i] = 0;
+    }
+    gUnknown_0300127A = 0;
+}
+
+void sub_02001398(u8 arg0, u8 arg1)
+{
+    if (arg1 > DISPLAY_HEIGHT + 48) {
+        arg1 = 0;
+    } else if (arg1 > DISPLAY_HEIGHT + 1) {
+        arg1 = DISPLAY_HEIGHT + 1;
+    }
+    gUnknown_03001148[gUnknown_0300127A][0] = arg1;
+    gUnknown_03001148[gUnknown_0300127A++][1] = arg0;
+}
+
+void sub_020013DC(UNK_30005C0 *unused)
+{
+    s32 var_r2;
+
+    for (var_r2 = 0; var_r2 < 4; var_r2++) {
+        gUnknown_03001080[var_r2] = var_r2;
+        gUnknown_03001088[var_r2][0] = 0;
+    }
+
+    gUnknown_0300111C = var_r2;
+
+    for (; var_r2 <= 0x49; var_r2++) {
+        gUnknown_03001088[var_r2][0] = 0;
     }
 }
