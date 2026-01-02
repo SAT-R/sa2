@@ -101,27 +101,20 @@ void SaveGameState(void)
     VBlankIntrWait();
 }
 
-NONMATCH("asm/non_matching/InitGameState.inc", void InitGameState(void))
+void InitGameState(void)
 {
-    u8 *p, *p2;
-    u32 r1, i;
-    p = (u8 *)(&gGameState.unk8);
+    u8 *p;
+    s32 i;
 
-    i = 0;
-    r1 = 0x50;
-    for (i = 0; i < r1; i++) {
-        *p = 0;
-        p++;
+    p = (u8 *)&gGameState.unk8;
+    for (i = 0; i < (uintptr_t)&gGameState.unk58 - (uintptr_t)&gGameState.unk8; i++) {
+        *p++ = 0;
     }
 
-    p = (u8 *)&gGameState.unk58;
-    r1 = 0xFF;
-    p2 = p + 0x11;
-    do {
-        *p2-- = r1;
-    } while ((s32)p2 >= (s32)p);
+    for (i = 0; i < 18; i++) {
+        ((u8 *)&gGameState.unk58)[i] = 0xff;
+    }
 
     gGameState.unk10 = sub_02008810();
     gGameState.unk1C = 0xFF;
 }
-END_NONMATCH
