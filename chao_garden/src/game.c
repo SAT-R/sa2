@@ -38,6 +38,14 @@ typedef struct {
     u32 unk20;
 } UNK_30005C0;
 
+typedef struct {
+    u16 *unk0;
+    u16 *unk4;
+    u8 unk8;
+    u8 unk9;
+    u16 unkA;
+} UNK_30013D8;
+
 extern UNK_30005C0 gUnknown_03004400[72];
 extern UNK_30005C0 gUnknown_03000610[72];
 
@@ -69,6 +77,10 @@ extern u8 gUnknown_03001148[10][2];
 extern u8 gUnknown_030011D8[10];
 extern u8 gUnknown_0300127A;
 extern u8 gUnknown_03004E20[10];
+
+extern u32 gUnknown_030013A8;
+extern UNK_30013D8 gUnknown_030013D8[10];
+extern u8 gUnknown_030014F8;
 
 void sub_020013DC(UNK_30005C0 *);
 void DummyCallback(UNK_30005C0 *);
@@ -405,4 +417,63 @@ void sub_020013DC(UNK_30005C0 *unused)
     for (; var_r2 <= 0x49; var_r2++) {
         gUnknown_03001088[var_r2][0] = 0;
     }
+}
+
+void sub_02001420(void)
+{
+    u16 *p, *unk0;
+    s32 j;
+
+    while (gUnknown_030014F8 != 0) {
+        gUnknown_030014F8 -= 1;
+        unk0 = gUnknown_030013D8[gUnknown_030014F8].unk0;
+        if (unk0 == NULL) {
+            if (gUnknown_030013D8[gUnknown_030014F8].unk8 != (u8)-1) {
+                u16 *r2 = gUnknown_030013D8[gUnknown_030014F8].unk4;
+                u8 r4 = gUnknown_030013D8[gUnknown_030014F8].unk8;
+                u8 i = gUnknown_030013D8[gUnknown_030014F8].unk9;
+                u16 r5 = gUnknown_030013D8[gUnknown_030014F8].unkA;
+                while (--i != (u8)-1) {
+                    p = r2;
+                    for (j = 0; j < r4; j++) {
+                        *p++ = r5;
+                    }
+                    r2 += 32;
+                }
+            } else {
+                CpuFastFill(gUnknown_030013D8[gUnknown_030014F8].unkA, gUnknown_030013D8[gUnknown_030014F8].unk4, 0x800);
+            }
+        } else {
+            u16 *r2 = gUnknown_030013D8[gUnknown_030014F8].unk4;
+            u8 temp_r5 = gUnknown_030013D8[gUnknown_030014F8].unk8;
+            u8 i = gUnknown_030013D8[gUnknown_030014F8].unk9;
+            u16 r7 = gUnknown_030013D8[gUnknown_030014F8].unkA;
+            while (--i != (u8)-1) {
+                p = r2;
+                for (j = 0; j < temp_r5; j++) {
+                    *p++ = r7 + *unk0++;
+                }
+                r2 += 32;
+            }
+        }
+    }
+}
+
+// Random?
+u32 sub_0200151c(void) { return gUnknown_030013A8; }
+
+void sub_02001528(u32 val) { gUnknown_030013A8 = val; }
+
+u32 sub_02001534(void)
+{
+    gUnknown_030013A8 = gUnknown_030013A8 * 0x41c64e6d + 0x3039;
+    return (gUnknown_030013A8 * 2) >> 0x11;
+}
+
+s16 sub_02001554(u16 arg0)
+{
+    u32 temp_r0;
+    gUnknown_030013A8 = (gUnknown_030013A8 * 0x41C64E6D) + 0x3039;
+    temp_r0 = gUnknown_030013A8 * 2;
+    return Mod(temp_r0 >> 0x11, arg0);
 }
