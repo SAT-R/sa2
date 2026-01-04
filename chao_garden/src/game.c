@@ -477,3 +477,44 @@ s16 sub_02001554(u16 arg0)
     temp_r0 = gUnknown_030013A8 * 2;
     return Mod(temp_r0 >> 0x11, arg0);
 }
+
+// Very likely a fake match: https://decomp.me/scratch/L9Uxl
+u8 sub_02001588(s32 p0, u8 *arg1, u32 arg2)
+{
+    u8 *var_r4;
+    s32 var_r5;
+    u8 r0;
+
+#ifndef NON_MATCHING
+    var_r4 = arg1;
+    asm("" ::"r"(var_r4));
+    var_r4 = &var_r4[(u8)arg2];
+#else
+    var_r4 = &arg1[(u8)arg2];
+#endif
+    var_r5 = (u8)arg2;
+    while (var_r5 > 0) {
+#ifndef NON_MATCHING
+        register u32 r1 asm("r1");
+#else
+        u32 r1;
+#endif
+        if (p0 <= 9) {
+            *--var_r4 = p0;
+            break;
+        }
+        r1 = 10;
+        p0 = Div(p0, r1);
+        *--var_r4 = r1;
+        var_r5 -= 1;
+    }
+
+    r0 = 0;
+    while (var_r5 > 1) {
+        *--var_r4 = 0;
+        r0++;
+        var_r5 -= 1;
+    }
+
+    return r0;
+}
