@@ -478,43 +478,76 @@ s16 sub_02001554(u16 arg0)
     return Mod(temp_r0 >> 0x11, arg0);
 }
 
-// Very likely a fake match: https://decomp.me/scratch/L9Uxl
-u8 sub_02001588(s32 p0, u8 *arg1, u32 arg2)
+u8 sub_02001588(s32 p0, u8 *arg1, u8 arg2)
 {
-    u8 *var_r4;
-    s32 var_r5;
+    s32 i;
     u8 r0;
 
-#ifndef NON_MATCHING
-    var_r4 = arg1;
-    asm("" ::"r"(var_r4));
-    var_r4 = &var_r4[(u8)arg2];
-#else
-    var_r4 = &arg1[(u8)arg2];
-#endif
-    var_r5 = (u8)arg2;
-    while (var_r5 > 0) {
-#ifndef NON_MATCHING
-        register u32 r1 asm("r1");
-#else
-        u32 r1;
+    arg1 += arg2;
+    i = arg2;
+    while (i > 0) {
+#if !PORTABLE
+        register u32 rem asm("r1");
 #endif
         if (p0 <= 9) {
-            *--var_r4 = p0;
+            *--arg1 = p0;
             break;
         }
-        r1 = 10;
-        p0 = Div(p0, r1);
-        *--var_r4 = r1;
-        var_r5 -= 1;
+        p0 = Div(p0, 10);
+#if PORTABLE
+        *--arg1 = Mod(p0, 10);
+#else
+        *--arg1 = rem;
+#endif
+        i -= 1;
     }
 
     r0 = 0;
-    while (var_r5 > 1) {
-        *--var_r4 = 0;
+    while (i > 1) {
+        *--arg1 = 0;
         r0++;
-        var_r5 -= 1;
+        i -= 1;
     }
 
     return r0;
+}
+
+void sub_020015cc(s32 p0, u8 *arg1, u8 arg2, u8 arg3)
+{
+    s32 i, j;
+    u8 r0;
+    u8 *arr;
+
+    arr = arg1;
+    arr += arg2;
+    i = arg2;
+    while (i > 0) {
+#if !PORTABLE
+        register u32 rem asm("r1");
+#endif
+        if (p0 <= 9) {
+            *--arr = p0;
+            break;
+        }
+        p0 = Div(p0, 10);
+#if PORTABLE
+        *--arr = Mod(p0, 10);
+#else
+        *--arr = rem;
+#endif
+        i -= 1;
+    }
+
+    r0 = 0;
+    while (i > 1) {
+        *--arr = 0;
+        r0++;
+        i -= 1;
+    }
+
+    arg1 += r0;
+    for (j = 0; j < arg2 - r0; j++) {
+        *arg1 += arg3;
+        arg1 += 1;
+    }
 }
