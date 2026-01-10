@@ -5,6 +5,9 @@ extern u8 gUnknown_03000606;
 extern u8 gUnknown_03000607;
 extern u8 gUnknown_03000608;
 
+extern u16 gUnknown_030013B0[8][2];
+extern u8 gUnknown_030013D0;
+
 typedef void (*CallbackFunc)(void *);
 
 typedef struct {
@@ -78,7 +81,7 @@ extern u8 gUnknown_030011D8[10];
 extern u8 gUnknown_0300127A;
 extern u8 gUnknown_03004E20[10];
 
-extern u32 gUnknown_030013A8;
+extern u32 gRandomSeed;
 extern UNK_30013D8 gUnknown_030013D8[10];
 extern u8 gUnknown_030014F8;
 
@@ -459,24 +462,28 @@ void sub_02001420(void)
     }
 }
 
-// Random?
-u32 sub_0200151c(void) { return gUnknown_030013A8; }
+/* MATH? */
 
-void sub_02001528(u32 val) { gUnknown_030013A8 = val; }
+// Random?
+u32 sub_0200151c(void) { return gRandomSeed; }
+
+void sub_02001528(u32 val) { gRandomSeed = val; }
 
 u32 sub_02001534(void)
 {
-    gUnknown_030013A8 = gUnknown_030013A8 * 0x41c64e6d + 0x3039;
-    return (gUnknown_030013A8 * 2) >> 0x11;
+    gRandomSeed = gRandomSeed * 0x41c64e6d + 0x3039;
+    return (gRandomSeed * 2) >> 0x11;
 }
 
 s16 sub_02001554(u16 arg0)
 {
     u32 temp_r0;
-    gUnknown_030013A8 = (gUnknown_030013A8 * 0x41C64E6D) + 0x3039;
-    temp_r0 = gUnknown_030013A8 * 2;
+    gRandomSeed = (gRandomSeed * 0x41C64E6D) + 0x3039;
+    temp_r0 = gRandomSeed * 2;
     return Mod(temp_r0 >> 0x11, arg0);
 }
+
+/** something new */
 
 u8 sub_02001588(s32 p0, u8 *arg1, u8 arg2)
 {
@@ -550,4 +557,113 @@ void sub_020015cc(s32 p0, u8 *arg1, u8 arg2, u8 arg3)
         *arg1 += arg3;
         arg1 += 1;
     }
+}
+
+void sub_0200163c(u16 *arg0, u8 arg1)
+{
+    while (--arg1 != (u8)-1) {
+        u16 idx = *arg0++;
+        // TODO: for a port this is gonna require changes
+        // since these registers can change size
+        *(u16 *)(REG_BASE + idx) = *arg0;
+        arg0++;
+    }
+}
+
+void sub_02001670(void) { gUnknown_030013D0 = 0; }
+
+bool32 sub_02001698(u16, u16);
+
+void sub_0200167c(u16 p1, u16 p2)
+{
+    gUnknown_030013D0 = 0;
+    sub_02001698(p1, p2);
+}
+
+bool32 sub_02001698(u16 arg0, u16 arg1)
+{
+    u8 temp_r0;
+
+    if (gUnknown_030013D0 > 7) {
+        return FALSE;
+    }
+    gUnknown_030013B0[gUnknown_030013D0][0] = arg0;
+    gUnknown_030013B0[gUnknown_030013D0++][1] = arg1;
+    return TRUE;
+}
+
+void sub_020016d8(void)
+{
+    while (gUnknown_030013D0 != 0) {
+        gUnknown_030013D0--;
+        *(u16 *)(REG_BASE + gUnknown_030013B0[gUnknown_030013D0][0]) = gUnknown_030013B0[gUnknown_030013D0][1];
+    }
+}
+
+void sub_02001718(u16 *arg0, u16 *arg1, u8 arg2, u8 arg3, u16 arg4)
+{
+    u16 *p;
+    s32 j;
+
+    while (--arg3 != (u8)-1) {
+        p = arg1;
+        for (j = 0; j < arg2; j++) {
+            *p = *arg0 + arg4;
+            arg0++;
+            p++;
+        }
+        arg1 += 32;
+    }
+}
+
+void sub_02001760(u16 *arg0, u8 arg2, u8 arg3, u16 arg4)
+{
+    u16 *p;
+    s32 j;
+
+    while (--arg3 != (u8)-1) {
+        p = arg0;
+        for (j = 0; j < arg2; j++) {
+            *p = arg4;
+            p++;
+        }
+        arg0 += 32;
+    }
+}
+
+void sub_020017a4(void) { gUnknown_030014F8 = 0; }
+
+bool32 sub_020017b0(u16 *arg0, u16 *arg1, u8 arg2, u8 arg3, u16 arg4)
+{
+    if (gUnknown_030014F8 > 0x17) {
+        return 0;
+    }
+
+    gUnknown_030013D8[gUnknown_030014F8].unk0 = arg0;
+    gUnknown_030013D8[gUnknown_030014F8].unk4 = arg1;
+    gUnknown_030013D8[gUnknown_030014F8].unk8 = arg2;
+    gUnknown_030013D8[gUnknown_030014F8].unk9 = arg3;
+    gUnknown_030013D8[gUnknown_030014F8++].unkA = arg4;
+    return 1;
+}
+
+extern const s16 gUnknown_0201FB74[];
+
+s32 sub_0200182c(u8 p1) { return gUnknown_0201FB74[p1]; }
+
+s32 sub_02001840(u8 index) { return gUnknown_0201FB74[(index + 0xC0) & 0xFF]; }
+
+extern const s16 gUnknown_0201FD74[];
+
+u16 sub_0200185c(u8 *arg0, s32 arg1)
+{
+    u16 result = 0xFFFF;
+
+    while (--arg1 != -1) {
+        u32 thing = (result >> 8);
+        u8 idx = result ^ *arg0;
+        result = gUnknown_0201FD74[idx] ^ thing;
+        arg0 += 1;
+    }
+    return (u16)~result;
 }
