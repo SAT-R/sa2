@@ -347,7 +347,7 @@ void sub_02000b0c(u32 arg0)
 void sub_02000b64(u32 p1)
 {
     gUnknown_030005B1 = 0;
-    gUnknown_030005B4 = &gGameState.unk58;
+    gUnknown_030005B4 = &gSaveGameState.unk58;
     gUnknown_030005B8 = ((p1 >> 8) & 0xFF00) | (p1 >> 0x18);
     gUnknown_030005BA = 0;
     gUnknown_030043E4 = 1;

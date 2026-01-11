@@ -1,4 +1,8 @@
 #include "global.h"
+#include "m4a.h"
+#include "save.h"
+
+#include "constants/songs.h"
 
 void sub_02001290(void);
 extern u8 gUnknown_03000606;
@@ -36,7 +40,8 @@ typedef struct {
     u8 unk17;
     u8 unk18;
     u8 unk19;
-    u16 unk1A;
+    u8 unk1A;
+    u8 unk1B;
     s8 unk1C;
     u32 unk20;
 } UNK_30005C0;
@@ -648,12 +653,11 @@ bool32 sub_020017b0(u16 *arg0, u16 *arg1, u8 arg2, u8 arg3, u16 arg4)
 }
 
 extern const s16 gUnknown_0201FB74[];
+extern const s16 gUnknown_0201FD74[];
 
 s32 sub_0200182c(u8 p1) { return gUnknown_0201FB74[p1]; }
 
 s32 sub_02001840(u8 index) { return gUnknown_0201FB74[(index + 0xC0) & 0xFF]; }
-
-extern const s16 gUnknown_0201FD74[];
 
 u16 sub_0200185c(u8 *arg0, s32 arg1)
 {
@@ -666,4 +670,274 @@ u16 sub_0200185c(u8 *arg0, s32 arg1)
         arg0 += 1;
     }
     return (u16)~result;
+}
+
+void sub_020018B4(void);
+// TODO: include main.h
+extern void SetVBlankIntr(IntrFunc func);
+void sub_020018a0(void)
+
+{
+    m4aSoundInit();
+    SetVBlankIntr(sub_020018B4);
+}
+
+void sub_020018B4(void)
+{
+    m4aSoundVSync();
+    gUnknown_03003330.unkE = 0;
+}
+
+/* garden.c */
+
+#include "joy_bus.h"
+
+extern UNK_30005C0 *gUnknown_03001510;
+extern UNK_30005C0 *gUnknown_0300150C;
+extern UNK_30005C0 gUnknown_03004400[72];
+
+extern void sub_020017a4(void);
+extern void sub_02001c60(void);
+
+extern void sub_02001D68(void);
+extern void sub_0200218c(void *);
+extern void sub_02003424(void *);
+extern void sub_020035CC(void *);
+extern void sub_02003e04(void *);
+extern void sub_020041E0(void *);
+extern void sub_020074c0(void *);
+extern void sub_02007500(void *);
+extern void sub_02008324(void *);
+extern void sub_020083e4(void *);
+extern void sub_020088b0(void *);
+extern void sub_020089B0(void *);
+extern void sub_020089D4(void *);
+extern void sub_02008A04(void *);
+extern void sub_020088f8(void *);
+
+extern const u16 gUnknown_02021BC4[];
+extern const u8 gUnknown_02024618[];
+extern s8 gUnknown_03001500;
+extern s8 gUnknown_03001501;
+extern s8 gUnknown_03001509;
+extern u16 gUnknown_0300152A;
+extern s8 gUnknown_0300152D;
+extern u8 gUnknown_0300152F;
+extern u8 gUnknown_03001530;
+extern u8 gUnknown_0300159A;
+extern u8 gUnknown_0300159B;
+extern u8 gUnknown_030015A8[4][2];
+
+extern u16 gUnknown_02020E9C[];
+extern u16 gUnknown_02020EDC[];
+
+u16 gUnknown_03001538[7];
+u8 gUnknown_03003BEA[7];
+
+void InitGarden(void)
+{
+    s32 i;
+    UNK_30005C0 *temp_r0;
+
+    sub_02001c60();
+    sub_020017a4();
+    CpuFastFill(0, (void *)BG_SCREEN_ADDR(28), 0x2000);
+    LZ77UnCompWram(&gUnknown_02024618, (void *)0x0203F800);
+
+    if (gUnknown_03003330.unk10 == 0) {
+        sub_02001718((u16 *)0x0203F800, (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
+    } else {
+        sub_02001718((u16 *)0x0203F968, (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
+    }
+
+    sub_02001718((u16 *)gUnknown_02021BC4, (u16 *)BG_SCREEN_ADDR(31), 0x16, 0x14, 0x200);
+
+    gUnknown_030015A8[3][0] = 0;
+    gUnknown_030015A8[1][0] = 0;
+    gUnknown_030015A8[2][0] = 0;
+    gUnknown_030015A8[0][0] = 0;
+    sub_02000c90();
+    sub_02000d04(&sub_02003424, &gUnknown_03004400[1], 1);
+    gUnknown_0300159B = 0;
+
+    for (i = 0; i < 16; i++) {
+        if (gSaveGameState.unk36[i][1] != 0) {
+            temp_r0 = sub_02000d04(&sub_020035CC, &gUnknown_03004400[1], 1);
+            temp_r0->unk1A = i;
+            gUnknown_0300159B += 1;
+        }
+    }
+
+    gUnknown_0300152F = gSaveGameState.unk58;
+    temp_r0 = sub_02000d04(&sub_020074c0, &gUnknown_03004400[0], 0);
+    temp_r0->unk1A = 1;
+    temp_r0 = sub_02000d04(&sub_020074c0, &gUnknown_03004400[0], 0);
+    temp_r0->unk1A = 0;
+    gUnknown_0300152D = 0;
+    gUnknown_03001510 = sub_02000d04(&sub_020041E0, &gUnknown_03004400[0], 0);
+    sub_02000d04(&sub_020089B0, &gUnknown_03004400[0], 0);
+
+    for (i = 0; i < 3; i++) {
+        if (gSaveGameState.unk30[i][1] != 0) {
+            temp_r0 = sub_02000d04(&sub_020083e4, &gUnknown_03004400[0], 0);
+            temp_r0->unk1A = i;
+        }
+    }
+
+    gUnknown_0300159A = 0;
+    for (i = 0; i < 8; i++) {
+        if (gSaveGameState.unk5A[i] != 0xFF) {
+            temp_r0 = sub_02000d04(&sub_02008324, &gUnknown_03004400[0], 0);
+            temp_r0->unk19 = i;
+            temp_r0->unk1A = gSaveGameState.unk5A[i];
+            gUnknown_0300159A += 1;
+        }
+    }
+
+    gUnknown_03001530 = 0xFF;
+    if (gSaveGameState.unk59 != 0xFF) {
+        temp_r0 = sub_02000d04(&sub_02003e04, &gUnknown_03004400[0], 0);
+        temp_r0->unk1A = gSaveGameState.unk59;
+    }
+
+    sub_02000d04(&sub_02007500, &gUnknown_03004400[0], 0);
+    gUnknown_0300150C = sub_02000d04(&sub_02008A04, &gUnknown_03004400[0], 0);
+    sub_02000d04(&sub_0200218c, &gUnknown_03004400[0], 0);
+    sub_02000d04(&sub_020089D4, &gUnknown_03004400[0], 0);
+    temp_r0 = sub_02000d04(&sub_020088b0, &gUnknown_03004400[0], 0);
+    temp_r0->unk1A = 16;
+    gUnknown_03001509 = 0;
+    gUnknown_0300152A = 0x1F40;
+    sub_0200167c(0, gUnknown_0300152A);
+    m4aSongNumStart(MUS_GARDEN);
+    gUnknown_03003330.unkF = 1;
+    gUnknown_03003330.unk0 = &sub_02001D68;
+    gUnknown_03001500 = gUnknown_03001501 = 0;
+}
+
+void sub_02001b58(void)
+{
+    s16 *var_r2;
+    s32 i;
+
+    sub_0200163c(gUnknown_02020E9C, 0xD);
+    sub_0200163c(gUnknown_02020EDC, 3);
+    i = 0;
+    for (i = 0; i < 7; i++) {
+        gUnknown_03001538[i] = gUnknown_03003BEA[i] + 0x2AF;
+    }
+    sub_02001718(gUnknown_03001538, (void *)0x0600F042, 7, 1, 0xA000);
+    sub_02000d04(sub_020088f8, gUnknown_03004400, 0)->unk1A = 0x10;
+    gUnknown_0300152A = 0x1F40;
+    sub_0200167c(0, gUnknown_0300152A);
+    gUnknown_03003330.unkF = 1;
+    gUnknown_03003330.unk0 = &sub_02001D68;
+}
+
+void sub_02001BF8(void)
+{
+    sub_02001c60();
+    gUnknown_030015A8[0][0] = gUnknown_030015A8[1][0];
+    gUnknown_030015A8[2][0] = gUnknown_030015A8[3][0];
+    gUnknown_03001530 = 0xFF;
+    sub_02000d04(&sub_020088b0, gUnknown_03004400, 0)->unk1A = 0x10;
+    gUnknown_0300152A = 0x1F40;
+    sub_0200167c(0, gUnknown_0300152A);
+    m4aSongNumStart(MUS_GARDEN);
+    gUnknown_03003330.unkF = 1;
+    gUnknown_03003330.unk0 = &sub_02001D68;
+}
+
+extern u16 gUnknown_02020ED0[];
+extern u8 gUnknown_020233FC[];
+extern u8 gUnknown_020235FC[];
+extern u8 gUnknown_020235FC[];
+extern u8 gUnknown_02022C44[];
+extern u8 gUnknown_020220EC[];
+extern u8 gUnknown_020211C8[];
+extern u8 gUnknown_020246E4[];
+extern u8 gUnknown_02024C24[];
+extern u8 gUnknown_020268B4[];
+extern u16 gUnknown_030015B0[32];
+extern u16 gUnknown_020248E4[][16];
+extern u16 gUnknown_02024AA4[][16];
+
+void sub_02001c60(void)
+{
+    s32 j, k, i;
+    s32 *var_r3, *var_r6;
+
+    sub_0200163c(gUnknown_02020E9C, 0xD);
+    sub_0200163c(gUnknown_02020ED0, 3);
+    CpuFastFill(0, (void *)BG_VRAM, 64);
+    CpuFastCopy(&gUnknown_020233FC, (void *)BG_PLTT, BG_PLTT_SIZE);
+    LZ77UnCompVram(&gUnknown_020235FC, (void *)BG_VRAM + 0x1C00);
+    LZ77UnCompVram(&gUnknown_02022C44, (void *)BG_VRAM + 0x41E0);
+    LZ77UnCompVram(&gUnknown_020220EC, (void *)BG_VRAM + 0x55E0);
+    LZ77UnCompVram(&gUnknown_020211C8, (void *)BG_VRAM + 0x8000);
+    var_r6 = (void *)BG_VRAM + 0xF80;
+    for (i = 0; i < 10; i++) {
+        CpuFastSet((void *)BG_VRAM + 0x2980, (void *)BG_VRAM + 0xF80 + (i * 0x140), 0x50);
+        var_r3 = (void *)BG_VRAM + 0x2AC0 + (i * 32);
+        for (j = 0; j < 10; j++) {
+            for (k = 0; k < 8; k++) {
+                *var_r6++ |= *var_r3++;
+            }
+            var_r3 -= 8;
+        }
+    };
+    CpuFastSet(&gUnknown_020246E4, (void *)OBJ_PLTT, 0x80);
+    LZ77UnCompVram(&gUnknown_02024C24, (void *)OBJ_VRAM0 + 0x2D80);
+    LZ77UnCompVram(&gUnknown_020268B4, (void *)OBJ_VRAM0 + 0x1580);
+}
+
+void sub_02001D68(void)
+{
+    sub_020016d8();
+    sub_020012e0();
+    sub_02001420();
+
+    if (gUnknown_030015A8[0][0] != 0) {
+        gUnknown_030015A8[0][0] = 0;
+        gUnknown_030015A8[1][0] = 1;
+        if (gUnknown_030015A8[0][1] > 13) {
+            CpuCopy16(gUnknown_030015B0, (void *)OBJ_PLTT, ARRAY_COUNT(gUnknown_030015B0));
+        } else {
+            CpuCopy16(gUnknown_020248E4[gUnknown_030015A8[0][1]], (void *)OBJ_PLTT, 32);
+        }
+    }
+
+    if (gUnknown_030015A8[2][0] != 0) {
+        gUnknown_030015A8[2][0] = 0;
+        gUnknown_030015A8[3][0] = 1;
+        CpuCopy16(gUnknown_02024AA4[gUnknown_030015A8[2][1]], (void *)OBJ_PLTT + 0x1C0, 32);
+    }
+
+    sub_02000590();
+    sub_02001374();
+    sub_02000eac();
+    sub_0200117c();
+    sub_02001088();
+}
+
+void sub_02001e00(void)
+{
+    REG_BLDCNT = 0x8BF;
+    REG_BLDY = ++gUnknown_03003330.unkC;
+    REG_BLDALPHA = (((0x10 - gUnknown_03003330.unkC) & 0xFE) << 7) | gUnknown_03003330.unkC;
+
+    if (gUnknown_03003330.unkC > 0xF) {
+        void *r4 = gUnknown_03003330.unk4;
+        if (r4 == NULL) {
+            m4aMPlayAllStop();
+            m4aSoundMain();
+            VBlankIntrWait();
+            m4aSoundVSyncOff();
+            REG_IME = 0;
+            REG_IE = 0;
+            SoftResetRom(0x20);
+            return;
+        }
+        gUnknown_03003330.unk0 = r4;
+    }
 }

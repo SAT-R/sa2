@@ -183,13 +183,12 @@ SECTIONS {
 
         . = 0x00003B70; gUnknown_03003B70 = .;
 
-        /* japan this is all game state */
-        . = 0x00003B80; gGameState = .;
+        /* this is all game state */
+        . = 0x00003B80; gSaveGameState = .;
         . = 0x00003B88; gUnknown_03003B88 = .;
         . = 0x00003BA1; gUnknown_03003BA1 = .;
         . = 0x00003BB5; gUnknown_03003BB5 = .;
         . = 0x00003BD8; gUnknown_03003BD8 = .;
-        . = 0x00003BDA; gUnknown_03003BDA = .;
         . = 0x00003BEA; gUnknown_03003BEA = .;
         . = 0x00003BF3; gUnknown_03003BF3 = .;
         . = 0x00003BF8; gUnknown_03003BF8 = .;
@@ -208,7 +207,6 @@ SECTIONS {
         . = 0x000043F0; gInput = .;
         
         . = 0x00004400; gUnknown_03004400 = .;
-        . = 0x00004424; gUnknown_03004424 = .;
 
         . = 0x00004E20; gUnknown_03004E20 = .;
         . = 0x00004E70; gUnknown_03004E70 = .;

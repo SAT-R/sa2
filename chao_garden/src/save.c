@@ -27,16 +27,16 @@ void LoadGameState(void)
     sector = -1;
 
     for (i = 0; i < 6; i++) {
-        ReadFlash(i + 10, 0, &gGameState, sizeof(struct TCG_SaveSectorData));
-        if (gGameState.header.unk2 == 0x1965) {
-            u16 checksum = sub_0200185c((void *)&gGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
-            if (checksum == gGameState.header.checksum) {
+        ReadFlash(i + 10, 0, &gSaveGameState, sizeof(struct TCG_SaveSectorData));
+        if (gSaveGameState.header.unk2 == 0x1965) {
+            u16 checksum = sub_0200185c((void *)&gSaveGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
+            if (checksum == gSaveGameState.header.checksum) {
                 if (sector < 0) {
                     sector = i;
-                    p = gGameState.header.unk4;
-                } else if (gGameState.header.unk4 > p) {
+                    p = gSaveGameState.header.unk4;
+                } else if (gSaveGameState.header.unk4 > p) {
                     sector = i;
-                    p = gGameState.header.unk4;
+                    p = gSaveGameState.header.unk4;
                 }
             }
         }
@@ -46,39 +46,39 @@ void LoadGameState(void)
         gSaveSectorNum = TCG_SAVE_SECTOR_COUNT;
         gSaveVersion = 0;
         InitGameState();
-        gGameState.unk59 = 0;
-        gGameState.unk1F = 0x58;
-        gGameState.unk20 = 0x68;
+        gSaveGameState.unk59 = 0;
+        gSaveGameState.unk1F = 0x58;
+        gSaveGameState.unk20 = 0x68;
     } else {
         gSaveSectorNum = sector;
         gSaveVersion = p;
-        ReadFlash(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, 0, &gGameState, sizeof(struct TCG_SaveSectorData));
-        sub_02001528(gGameState.unk18);
+        ReadFlash(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, 0, &gSaveGameState, sizeof(struct TCG_SaveSectorData));
+        sub_02001528(gSaveGameState.unk18);
     }
-    if (gGameState.unk8 >= gUnknown_02000008.unk0) {
-        gUnknown_03005274 = gGameState.unkC;
+    if (gSaveGameState.unk8 >= gUnknown_02000008.unk0) {
+        gUnknown_03005274 = gSaveGameState.unkC;
     } else {
-        p = gGameState.unkC + (gUnknown_02000008.unk0 - gGameState.unk8);
-        if (p > 0x1869F) {
-            p = 0x1869F;
+        p = gSaveGameState.unkC + (gUnknown_02000008.unk0 - gSaveGameState.unk8);
+        if (p > 99999) {
+            p = 99999;
         }
         gUnknown_03005274 = p;
-        gGameState.unk8 = gUnknown_02000008.unk0;
+        gSaveGameState.unk8 = gUnknown_02000008.unk0;
     }
-    gGameState.unk64 = (gUnknown_03005274 & 0xFF) << 24 | ((gUnknown_03005274 & 0xFF00) << 8) | (gUnknown_03005274 & 0xFF0000) >> 8
+    gSaveGameState.unk64 = (gUnknown_03005274 & 0xFF) << 24 | ((gUnknown_03005274 & 0xFF00) << 8) | (gUnknown_03005274 & 0xFF0000) >> 8
         | gUnknown_03005274 >> 24;
-    gGameState.unk68 = 0;
+    gSaveGameState.unk68 = 0;
 }
 
 void SaveGameState(void)
 {
     s32 i;
-    gGameState.header.unk2 = 0x1965;
+    gSaveGameState.header.unk2 = 0x1965;
     gSaveVersion++;
-    gGameState.header.unk4 = gSaveVersion;
-    gGameState.unkC = gUnknown_03005274;
-    gGameState.unk18 = sub_0200151c();
-    gGameState.header.checksum = sub_0200185c((void *)&gGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
+    gSaveGameState.header.unk4 = gSaveVersion;
+    gSaveGameState.unkC = gUnknown_03005274;
+    gSaveGameState.unk18 = sub_0200151c();
+    gSaveGameState.header.checksum = sub_0200185c((void *)&gSaveGameState.header.unk2, sizeof(struct TCG_SaveSectorData) - sizeof(u16));
     m4aMPlayAllStop();
     m4aSoundMain();
     VBlankIntrWait();
@@ -91,7 +91,8 @@ void SaveGameState(void)
             gSaveSectorNum = 0;
         }
 
-        failure = ProgramFlashSectorAndVerifyNBytes(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, &gGameState, sizeof(struct TCG_SaveSectorData));
+        failure
+            = ProgramFlashSectorAndVerifyNBytes(gSaveSectorNum + TCG_FIRST_SAVE_SECTOR, &gSaveGameState, sizeof(struct TCG_SaveSectorData));
 
         if (!failure) {
             break;
@@ -106,15 +107,15 @@ void InitGameState(void)
     u8 *p;
     s32 i;
 
-    p = (u8 *)&gGameState.unk8;
-    for (i = 0; i < (uintptr_t)&gGameState.unk58 - (uintptr_t)&gGameState.unk8; i++) {
+    p = (u8 *)&gSaveGameState.unk8;
+    for (i = 0; i < (uintptr_t)&gSaveGameState.unk58 - (uintptr_t)&gSaveGameState.unk8; i++) {
         *p++ = 0;
     }
 
     for (i = 0; i < 18; i++) {
-        ((u8 *)&gGameState.unk58)[i] = 0xff;
+        ((u8 *)&gSaveGameState.unk58)[i] = 0xff;
     }
 
-    gGameState.unk10 = sub_02008810();
-    gGameState.unk1C = 0xFF;
+    gSaveGameState.unk10 = sub_02008810();
+    gSaveGameState.unk1C = 0xFF;
 }

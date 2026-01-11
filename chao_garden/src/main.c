@@ -47,7 +47,7 @@ static void GameInit(void)
 void AgbMain()
 {
     GameInit();
-    gUnknown_03003330.unk0 = sub_020018c8;
+    gUnknown_03003330.unk0 = InitGarden;
     while (TRUE) {
         VBlankIntrWait();
         GetInput();
