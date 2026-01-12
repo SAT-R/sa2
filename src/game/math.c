@@ -3,11 +3,12 @@
 
 #include "trig.h"
 
+// TODO: This is just UNK_8085F1C_1
 typedef struct {
     s16 unk0;
     s16 unk2;
     s16 unk4;
-    u16 unk6;
+    s16 unk6;
     u16 unk8;
     u16 unkA;
     u16 unkC;
@@ -18,6 +19,21 @@ typedef struct {
     u32 unk18;
     u32 unk1C;
 } UNK_8085D14;
+
+// Something different?
+typedef struct {
+    u16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s32 unk8;
+    s32 unkC;
+    u16 unk10;
+    u16 unk12;
+    u32 unk14;
+    u32 unk18;
+    u32 unk1C;
+} UNK_8085D14_2;
 
 typedef struct {
     void *unk0;
@@ -38,33 +54,142 @@ const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
 
 #define RAND_CONST 0x37119371;
 
+#define Q_6_10_MUL(qValA, qValB) ((qValA * qValB) >> 10)
+
 NONMATCH("asm/non_matching/game/math/unused_sub_80832FC.inc", void sub_80832FC()) { }
 END_NONMATCH
 
 NONMATCH("asm/non_matching/game/math/unused_sub_808343C.inc", void sub_808343C()) { }
 END_NONMATCH
 
-NONMATCH("asm/non_matching/game/math/unused_sub_8083504.inc", void sub_8083504()) { }
-END_NONMATCH
+void sub_8083504(UNK_8085D14_2 *arg0, UNK_8085D14_2 *arg1, UNK_8085D14_2 *arg2)
+{
+    s32 var_r3, var_r4;
+
+    if (arg1->unk2 != 0x400) {
+        var_r3 = (arg1->unk2 * arg0->unk8) >> 0xA;
+        arg2->unk2 = ((arg1->unk2 * arg0->unk2) >> 0xA);
+    } else {
+        var_r3 = arg0->unk8;
+    }
+    if (arg1->unk4 != 0x400) {
+        var_r4 = (arg1->unk4 * arg0->unkC) >> 0xA;
+        arg2->unk4 = ((arg1->unk4 * arg0->unk4) >> 0xA);
+    } else {
+        var_r4 = arg0->unkC;
+    }
+
+    if (arg1->unk0 != 0) {
+        arg2->unk8 = (arg1->unk8 + (((var_r3 * (COS(arg1->unk0) >> 6)) >> 8) - ((var_r4 * (SIN(arg1->unk0) >> 6)) >> 8)));
+        arg2->unkC = arg1->unkC + (((var_r3 * (SIN(arg1->unk0) >> 6)) >> 8) + ((var_r4 * (COS(arg1->unk0) >> 6)) >> 8));
+    } else {
+        arg2->unk8 = (arg1->unk8 + var_r3);
+        arg2->unkC = arg1->unkC + var_r4;
+    }
+    arg2->unk0 = ((arg0->unk0 + arg1->unk0) & (SIN_PERIOD - 1));
+}
 
 // This is used in this file, but it's not used by the game
-NONMATCH("asm/non_matching/game/math/unused_sub_80835E0.inc", void sub_80835E0(struct UNK_8085F1C *p2, s32 *b)) { }
-END_NONMATCH
+void sub_80835E0(UNK_8085D14_2 *arg0, UNK_8085D14_2 *arg1)
+{
+    s32 var_r3, var_r4;
 
-NONMATCH("asm/non_matching/game/math/unused_sub_80836BC.inc", void sub_80836BC()) { }
-END_NONMATCH
+    if (arg1->unk2 != 0x400) {
+        var_r3 = (s32)(arg1->unk2 * arg0->unk8) >> 0xA;
+        arg0->unk2 = (s16)((s32)(arg1->unk2 * arg0->unk2) >> 0xA);
+    } else {
+        var_r3 = arg0->unk8;
+    }
+    if (arg1->unk4 != 0x400) {
+        var_r4 = (s32)(arg1->unk4 * arg0->unkC) >> 0xA;
+        arg0->unk4 = (s16)((s32)(arg1->unk4 * arg0->unk4) >> 0xA);
+    } else {
+        var_r4 = arg0->unkC;
+    }
+    if (arg1->unk0 != 0) {
+        arg0->unk8 = (arg1->unk8 + (((var_r3 * (COS(arg1->unk0) >> 6)) >> 8) - ((var_r4 * (SIN(arg1->unk0) >> 6)) >> 8)));
+        arg0->unkC = arg1->unkC + (((var_r3 * (SIN(arg1->unk0) >> 6)) >> 8) + ((var_r4 * (COS(arg1->unk0) >> 6)) >> 8));
+    } else {
+        arg0->unk8 = (s32)(arg1->unk8 + var_r3);
+        arg0->unkC = arg1->unkC + var_r4;
+    }
+    arg0->unk0 = ((arg0->unk0 + arg1->unk0) & (SIN_PERIOD - 1));
+}
 
-NONMATCH("asm/non_matching/game/math/unused_sub_8083798.inc", void sub_8083798()) { }
-END_NONMATCH
+void sub_80836BC(UNK_8085D14_2 *arg0, UNK_8085D14_2 *arg1)
+{
+    s32 var_r3, var_r4;
+
+    if (arg1->unk2 != 0x400) {
+        var_r3 = (s32)(arg1->unk2 * arg0->unk8) >> 0xA;
+        arg1->unk2 = (s16)((s32)(arg1->unk2 * arg0->unk2) >> 0xA);
+    } else {
+        var_r3 = arg0->unk8;
+    }
+    if (arg1->unk4 != 0x400) {
+        var_r4 = (s32)(arg1->unk4 * arg0->unkC) >> 0xA;
+        arg1->unk4 = (s16)((s32)(arg1->unk4 * arg0->unk4) >> 0xA);
+    } else {
+        var_r4 = arg0->unkC;
+    }
+    if (arg1->unk0 != 0) {
+        arg1->unk8 = (arg1->unk8 + (((var_r3 * (COS(arg1->unk0) >> 6)) >> 8) - ((var_r4 * (SIN(arg1->unk0) >> 6)) >> 8)));
+        arg1->unkC = arg1->unkC + (((var_r3 * (SIN(arg1->unk0) >> 6)) >> 8) + ((var_r4 * (COS(arg1->unk0) >> 6)) >> 8));
+    } else {
+        arg1->unk8 = (s32)(arg1->unk8 + var_r3);
+        arg1->unkC = arg1->unkC + var_r4;
+    }
+    arg1->unk0 = ((arg0->unk0 + arg1->unk0) & (SIN_PERIOD - 1));
+}
+
+void sub_8083798(UNK_8085D14_2 *arg0)
+{
+    u16 temp_r0;
+
+    if (arg0->unk2 != 0x400) {
+        arg0->unk2 = Div(0x100000, arg0->unk2);
+        arg0->unk8 = (arg0->unk2 * arg0->unk8) >> 0xA;
+    }
+    if (arg0->unk4 != 0x400) {
+        arg0->unk4 = Div(0x100000, arg0->unk4);
+        arg0->unkC = (arg0->unk4 * arg0->unkC) >> 0xA;
+    }
+    temp_r0 = (0x400 - arg0->unk0) & 0x3FF;
+    arg0->unk0 = temp_r0;
+    if (temp_r0 != 0) {
+        s32 unk8, unkC;
+        unk8 = ((-arg0->unk8 * (COS(arg0->unk0) >> 6)) >> 8) - ((-arg0->unkC * (SIN(arg0->unk0) >> 6)) >> 8);
+        unkC = ((-arg0->unk8 * (SIN(arg0->unk0) >> 6)) >> 8) + ((-arg0->unkC * (COS(arg0->unk0) >> 6)) >> 8);
+
+        arg0->unkC = unkC;
+        arg0->unk8 = unk8;
+        return;
+    }
+    arg0->unk8 = (0 - arg0->unk8);
+    arg0->unkC = (0 - arg0->unkC);
+}
 
 NONMATCH("asm/non_matching/game/math/unused_sub_8083858.inc", void sub_8083858()) { }
 END_NONMATCH
 
-NONMATCH("asm/non_matching/game/math/unused_sub_80838CC.inc", void sub_80838CC()) { }
-END_NONMATCH
+void sub_80838CC(UNK_8085D14 *arg0, UNK_8085D14 *arg1, UNK_8085D14 *arg2)
+{
+    arg2->unk0 = (((arg0->unk6 * arg1->unk0) + (arg0->unk0 * arg1->unk6) + (arg0->unk2 * arg1->unk4)) - (arg0->unk4 * arg1->unk2)) >> 0xA;
+    arg2->unk2 = (((arg0->unk6 * arg1->unk2) - (arg0->unk0 * arg1->unk4)) + (arg0->unk2 * arg1->unk6) + (arg0->unk4 * arg1->unk0)) >> 0xA;
+    arg2->unk4 = ((((arg0->unk6 * arg1->unk4) + (arg0->unk0 * arg1->unk2)) - (arg0->unk2 * arg1->unk0)) + (arg0->unk4 * arg1->unk6)) >> 0xA;
+    arg2->unk6 = ((((arg0->unk6 * arg1->unk6) - (arg0->unk0 * arg1->unk0)) - (arg0->unk2 * arg1->unk2)) - (arg0->unk4 * arg1->unk4)) >> 0xA;
+}
 
-NONMATCH("asm/non_matching/game/math/unused_sub_808399C.inc", void sub_808399C()) { }
-END_NONMATCH
+void sub_808399C(UNK_8085D14 *arg0, UNK_8085D14 *arg1)
+{
+    s16 r6 = arg0->unk0;
+    s16 r5 = arg0->unk2;
+    s16 r4 = arg0->unk4;
+    arg0->unk0 = (((arg0->unk6 * arg1->unk0) + (r6 * arg1->unk6) + (r5 * arg1->unk4)) - (r4 * arg1->unk2)) >> 10;
+    arg0->unk2 = (((arg0->unk6 * arg1->unk2) - (r6 * arg1->unk4)) + (r5 * arg1->unk6) + (r4 * arg1->unk0)) >> 10;
+    arg0->unk4 = ((((arg0->unk6 * arg1->unk4) + (r6 * arg1->unk2)) - (r5 * arg1->unk0)) + (r4 * arg1->unk6)) >> 10;
+    arg0->unk6 = ((((arg0->unk6 * arg1->unk6) - (r6 * arg1->unk0)) - (r5 * arg1->unk2)) - (r4 * arg1->unk4)) >> 10;
+}
 
 NONMATCH("asm/non_matching/game/math/unused_sub_8083A48.inc", void sub_8083A48()) { }
 END_NONMATCH
@@ -97,25 +222,106 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/math/unused_sub_808477C.inc", void sub_808477C()) { }
 END_NONMATCH
 
-NONMATCH("asm/non_matching/game/math/unused_sub_8084904.inc", void sub_8084904()) { }
-END_NONMATCH
+void sub_8084904(UNK_8085D14 *arg0, u16 arg1)
+{
+    u32 *r1;
+    s16 temp_r0;
+    s16 temp_r1;
+    u8 i;
 
-NONMATCH("asm/non_matching/game/math/unused_sub_8084964.inc", void sub_8084964()) { }
-END_NONMATCH
+    r1 = (u32 *)arg0;
+    for (i = 0; i < sizeof(UNK_8085D14); i += 4) {
+        *r1++ = 0;
+    };
+    ((UNK_8085D14 *)r1)->unk12 = 0x400;
+    ((UNK_8085D14 *)r1)->unkA = 0x400;
+    ((UNK_8085D14 *)r1)->unk2 = 0x400;
+    temp_r1 = SIN(arg1) >> 4;
+    temp_r0 = COS(arg1) >> 4;
+    arg0->unkA = temp_r0;
+    arg0->unkC = temp_r1;
+    arg0->unk10 = -temp_r1;
+    arg0->unk12 = temp_r0;
+}
 
-NONMATCH("asm/non_matching/game/math/unused_sub_80849C4.inc", void sub_80849C4()) { }
-END_NONMATCH
+void sub_8084964(UNK_8085D14 *arg0, u16 arg1)
+{
+    u32 *r1;
+    s16 temp_r0;
+    s16 temp_r1;
+    u8 i;
 
+    r1 = (u32 *)arg0;
+    for (i = 0; i < sizeof(UNK_8085D14); i += 4) {
+        *r1++ = 0;
+    };
+    ((UNK_8085D14 *)r1)->unk12 = 0x400;
+    ((UNK_8085D14 *)r1)->unkA = 0x400;
+    ((UNK_8085D14 *)r1)->unk2 = 0x400;
+    temp_r1 = SIN(arg1) >> 4;
+    temp_r0 = COS(arg1) >> 4;
+    arg0->unk2 = temp_r0;
+    arg0->unk6 = -temp_r1;
+    arg0->unkE = temp_r1;
+    arg0->unk12 = temp_r0;
+}
+
+void sub_80849C4(UNK_8085D14 *arg0, u16 arg1)
+{
+    u32 *r1;
+    s16 temp_r0;
+    s16 temp_r1;
+    u8 i;
+
+    r1 = (u32 *)arg0;
+    for (i = 0; i < sizeof(UNK_8085D14); i += 4) {
+        *r1++ = 0;
+    };
+    ((UNK_8085D14 *)r1)->unk12 = 0x400;
+    ((UNK_8085D14 *)r1)->unkA = 0x400;
+    ((UNK_8085D14 *)r1)->unk2 = 0x400;
+    temp_r1 = SIN(arg1) >> 4;
+    temp_r0 = COS(arg1) >> 4;
+    arg0->unk2 = temp_r0;
+    arg0->unk4 = temp_r1;
+    arg0->unk8 = -temp_r1;
+    arg0->unkA = temp_r0;
+}
+
+// https://decomp.me/scratch/hG6JM
 NONMATCH("asm/non_matching/game/math/unused_sub_8084A24.inc", void sub_8084A24()) { }
 END_NONMATCH
 
 // This is used in this file, but it's not used by the game
-NONMATCH("asm/non_matching/game/math/unused_sub_8084B54.inc", void sub_8084B54(struct UNK_8085F1C_1 *a, u16 b, u16 c, u16 d)) { }
-END_NONMATCH
+void sub_8084B54(struct UNK_8085F1C_1 *matrix, u16 anglez, u16 angley, u16 anglex)
+{
+    s16 sy = SIN(angley) >> 4;
+    s16 cy = COS(angley) >> 4;
+    s16 sz = SIN(anglez) >> 4;
+    s16 cz = COS(anglez) >> 4;
+    s16 sx = SIN(anglex) >> 4;
+    s16 cx = COS(anglex) >> 4;
 
+    matrix->unk2[0] = Q_6_10_MUL(cx, cz) + Q_6_10_MUL(Q_6_10_MUL(sx, sy), sz);
+    matrix->unk2[1] = Q_6_10_MUL(sx, cy);
+    matrix->unk2[2] = Q_6_10_MUL(-cx, sz) + Q_6_10_MUL(Q_6_10_MUL(sx, sy), cz);
+    matrix->unk2[3] = Q_6_10_MUL(-sx, cz) + Q_6_10_MUL(sz, Q_6_10_MUL(sy, cx));
+    matrix->unk2[4] = Q_6_10_MUL(cx, cy);
+    matrix->unk2[5] = Q_6_10_MUL(sz, sx) + Q_6_10_MUL(cz, Q_6_10_MUL(sy, cx));
+    matrix->unk2[6] = Q_6_10_MUL(cy, sz);
+    matrix->unk2[7] = -sy;
+    matrix->unk2[8] = Q_6_10_MUL(cy, cz);
+
+    matrix->unk1C = 0;
+    matrix->unk18 = 0;
+    matrix->unk14 = 0;
+}
+
+// https://decomp.me/scratch/ROe1T
 NONMATCH("asm/non_matching/game/math/unused_sub_8084C70.inc", void sub_8084C70()) { }
 END_NONMATCH
 
+// https://decomp.me/scratch/zRCAD
 NONMATCH("asm/non_matching/game/math/unused_sub_8084EAC.inc", void sub_8084EAC()) { }
 END_NONMATCH
 
@@ -705,7 +911,8 @@ UNUSED void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
     memcpy(p2, &p1->unk10, 0x10);
 
     while (p1 = p1->unk0, p1 != NULL) {
-        sub_80835E0(p2, &p1->unk10);
+        // TODO: fix all these types
+        sub_80835E0((UNK_8085D14_2 *)p2, (UNK_8085D14_2 *)&p1->unk10);
     }
 }
 
