@@ -71,28 +71,31 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
         } else {
             printf("realloc: w 0x%X, h 0x%X, full: 0x%X\n", width, height, (u32)(width * height * sizeof(u32)));
         }
+
+        sDynTextureBuffer.width = width;
+        sDynTextureBuffer.height = height;
     }
 
     u8 *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
 
-    sDynTextureBuffer.width = width;
-    sDynTextureBuffer.height = height;
 
     u16 widthInTiles = width >> 3;
 
     int numSourcePixels = width * height;
     for (int frameY = 0; frameY < height; frameY++) {
         for (int frameX = 0; frameX < width; frameX++) {
-            u8 colorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7));
+            int tileIndex = (frameY >> 3) * widthInTiles + (frameX >> 3);
+            int tileColorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7)) + (tileIndex * (8*8));
+            int targetColorIndex = ((frameY * width) + frameX);
 
-            bool8 doShift = (colorIndex & 1);
-            u8 textureColorId = bitmap4bpp[colorIndex >> 1] & (0xF << (doShift * 4));
+            bool8 doShift = (targetColorIndex  & 1);
+            int textureColorId = bitmap4bpp[tileColorIndex >> 1] & (0xF << (doShift * 4));
             textureColorId >>= doShift * 4;
 
-            sDynTextureBuffer.data[colorIndex * 4 + 0] = tempRgbaPalette[textureColorId][0];
-            sDynTextureBuffer.data[colorIndex * 4 + 1] = tempRgbaPalette[textureColorId][1];
-            sDynTextureBuffer.data[colorIndex * 4 + 2] = tempRgbaPalette[textureColorId][2];
-            sDynTextureBuffer.data[colorIndex * 4 + 3] = 0xFF;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 0] = texturePalette[textureColorId * 4 + 0];
+            sDynTextureBuffer.data[targetColorIndex * 4 + 1] = texturePalette[textureColorId * 4 + 1];
+            sDynTextureBuffer.data[targetColorIndex * 4 + 2] = texturePalette[textureColorId * 4 + 2];
+            sDynTextureBuffer.data[targetColorIndex * 4 + 3] = 0;
         }
     }
 }
@@ -109,14 +112,14 @@ void OpenGL_OnInit()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glGenTextures(2, &sTempTextureHandles[0]);
+    glGenTextures(3, &sTempTextureHandles[0]);
 }
 
 void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 {
     const SpriteOffset *dims = sprite->dimensions;
-
-    if (dims != (void *)-1) {
+    
+	if (dims != (void *)-1) {
         // Convert vertices screenspace -> unit space
         glMatrixMode(GL_PROJECTION);
 #if 0
@@ -124,7 +127,10 @@ void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 #else
         float a = 2.0f / DISPLAY_WIDTH;
         float b = 2.0f / DISPLAY_HEIGHT;
-        float projMtx[] = { a, 0, 0, 0, 0, b, 0, 0, 0, 0, 1, 0, -1, -1, 0, 1 };
+        float projMtx[] = {  a,  0,  0,  0, //
+							 0,  b,  0,  0, //
+							 0,  0,  0,  0, //
+							-1, -1,  0, +1 }; //
         glLoadMatrixf(projMtx);
 #endif
 
@@ -193,7 +199,7 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
     glLoadMatrixf(projMtx);
 #endif
 
-    // TempConvertPLTTToRGBA8();
+    //TempConvertPLTTToRGBA8();
 
     // Convert the "software-rendered" image from ABGR1555 -> RGBA8
     for (int i = 0; i < ARRAY_COUNT(tempRgbaFrame); i++) {
@@ -225,9 +231,9 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+    return;
     glClearColor(1.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[1]);
     glBegin(GL_TRIANGLES);
     {

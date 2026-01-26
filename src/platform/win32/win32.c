@@ -328,8 +328,8 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 #if (RENDERER == RENDERER_OPENGL)
         // TEMP - Currently the display buffer gets drawn in software, but we should load the assets as a textures and let OpenGL render
         // everything
-        //  OpenGL_DisplaySprite(sprite, oamPaletteNum);
-        //  return;
+        OpenGL_DisplaySprite(sprite, oamPaletteNum);
+        return;
 #endif
 
     const SpriteOffset *dims = sprite->dimensions;
@@ -376,7 +376,9 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
     u16 widthInTiles = dims->width >> 3;
 
     for (int frameY = 0; frameY < dims->height; frameY++) {
-        s32 finalY = (tempY + frameY);
+        s32 finalY = (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)
+			? (tempY + dims->height - 1 - frameY)
+			: (tempY + frameY);
 
         if (finalY < 0)
             continue;
@@ -386,7 +388,9 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 
         for (int frameX = 0; frameX < dims->width; frameX++) {
 
-            s32 finalX = (tempX + frameX);
+            s32 finalX = (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP)
+				? (tempX + dims->width - 1 - frameX)
+				: (tempX + frameX);
 
             if (finalX < 0)
                 continue;
