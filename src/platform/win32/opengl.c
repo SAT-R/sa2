@@ -1,8 +1,10 @@
 #include <malloc.h> // realloc
 #include <stdio.h> // printf
 #include <GL/gl.h>
+#include <math.h> // sinf/cosf
 #include "global.h" // TEMP for PLTT
 #include "platform/shared/opengl.h"
+#include "trig.h" // ONE_CYCLE
 
 // NOTE: This is NOT final at all. EXPERIMENTAL!!!!!
 
@@ -13,13 +15,23 @@ static GLuint sTempTextureHandles[3] = { 0 };
 
 #define NUM_RGB_CHANNELS 4
 u8 tempRgbaPalette[16 * 32][NUM_RGB_CHANNELS] = {};
-u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
+//u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
 
 typedef struct {
     u8 *data;
     int width, height;
 } TextureBuffer;
 static TextureBuffer sDynTextureBuffer = { 0 };
+
+void Debug_PrintMatrix(float *mtx)
+{
+    printf("%f %f %f %f\n"
+           "%f %f %f %f\n"
+           "%f %f %f %f\n"
+           "%f %f %f %f\n\n",
+           mtx[0], mtx[1], mtx[2], mtx[3], mtx[4], mtx[5], mtx[6], mtx[7], mtx[8], mtx[9], mtx[10], mtx[11], mtx[12], mtx[13], mtx[14],
+           mtx[15]);
+}
 
 static void TempConvertPLTTToRGBA8(void)
 {
@@ -115,11 +127,38 @@ void OpenGL_OnInit()
     glGenTextures(3, &sTempTextureHandles[0]);
 }
 
+void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
+{
+    glMatrixMode(GL_MODELVIEW);
+    s16 rotation = (transform->rotation & ONE_CYCLE);
+    float theta = 2.0f * M_PI * (((float)rotation) / 1024.0f);
+    float sinTheta = sinf(theta);
+    float cosTheta = cosf(theta);
+    float modelViewMatrix[] = {
+        +cosTheta, +sinTheta, 0, 0,
+		-sinTheta, +cosTheta, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
+    };
+    glLoadMatrixf(modelViewMatrix);
+
+	Debug_PrintMatrix(modelViewMatrix);
+
+	// TODO: This doesn't happen in the original TransformSprite() procedure!
+    SPRITE_FLAG_SET(sprite, ROT_SCALE_ENABLE);
+}
+
 void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 {
     const SpriteOffset *dims = sprite->dimensions;
-    
+    int x = sprite->x;
+    int y = sprite->y;
+
 	if (dims != (void *)-1) {
+        if (!(sprite->oamFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE)) {
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+		}
         // Convert vertices screenspace -> unit space
         glMatrixMode(GL_PROJECTION);
 #if 0
@@ -127,8 +166,8 @@ void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 #else
         float a = 2.0f / DISPLAY_WIDTH;
         float b = 2.0f / DISPLAY_HEIGHT;
-        float projMtx[] = {  a,  0,  0,  0, //
-							 0,  b,  0,  0, //
+        float projMtx[] = { +a,  0,  0,  0, //
+							 0, +b,  0,  0, //
 							 0,  0,  0,  0, //
 							-1, -1,  0, +1 }; //
         glLoadMatrixf(projMtx);
@@ -145,17 +184,33 @@ void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-        // glClearColor((float)tempRgbaPalette[1][0] / 255.,
-        //              (float)tempRgbaPalette[1][1] / 255.,
-        //              (float)tempRgbaPalette[1][2] / 255.,
-        //              1.0);
-        // glClear(GL_COLOR_BUFFER_BIT);
-
-        float minX = sprite->x - (dims->width >> 1);
+#if 0
+		x -= (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) ? dims->width - dims->offsetX : dims->offsetX;
+		y -= (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) ? dims->height - dims->offsetY : dims->offsetY;
+#else
+        x -= dims->offsetX;
+        y -= dims->offsetY;
+#endif
+		y -= dims->offsetY;
+		x += (dims->width >> 1);
+		y += (dims->height >> 1);
+        float minX = x - (dims->width >> 1);
         float maxX = minX + dims->width;
 
-        float minY = sprite->y - (dims->height >> 1);
+        float minY = (DISPLAY_HEIGHT - y) - (dims->height >> 1);
         float maxY = minY + dims->height;
+
+		if (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+            float temp = minX;
+            minX = maxX;
+            maxX = temp;
+        }
+		
+		if (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
+            float temp = minY;
+            minY = maxY;
+            maxY = temp;
+        }
 
         glBegin(GL_TRIANGLES);
         {
@@ -175,6 +230,9 @@ void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
         }
         glEnd();
     }
+
+    // TODO: This doesn't happen in the original DisplaySprite() procedure!
+    SPRITE_FLAG_CLEAR(sprite, ROT_SCALE_ENABLE);
 }
 
 void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight)
@@ -201,6 +259,7 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
 
     //TempConvertPLTTToRGBA8();
 
+#if 0
     // Convert the "software-rendered" image from ABGR1555 -> RGBA8
     for (int i = 0; i < ARRAY_COUNT(tempRgbaFrame); i++) {
         u16 color = ((u16 *)tempBufferPixels)[i];
@@ -213,7 +272,9 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
         tempRgbaFrame[i][2] = r * 255.0;
         tempRgbaFrame[i][3] = 1 * 255.0;
     }
+#endif
 
+	// Update palette
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[0]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempRgbaPalette);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
@@ -222,16 +283,16 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+#if 0
+	// Update software-rendered image
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[1]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempRgbaFrame);
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    return;
     glClearColor(1.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[1]);
@@ -252,4 +313,5 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
         glVertex2f(DISPLAY_WIDTH, 0);
     }
     glEnd();
+#endif
 }

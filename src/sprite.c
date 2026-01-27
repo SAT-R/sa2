@@ -11,6 +11,7 @@
 
 #if !PLATFORM_GBA && !PLATFORM_SDL
 extern void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum);
+extern void Platform_TransformSprite(Sprite *sprite, SpriteTransform *transform);
 #endif
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
@@ -393,7 +394,10 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
     // sp24 = s
     UnkSpriteStruct big;
     const SpriteOffset *dimensions = s->dimensions;
-
+#if PORTABLE
+    Platform_TransformSprite(s, transform);
+	return;
+#endif
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
         s16 x16, y16;

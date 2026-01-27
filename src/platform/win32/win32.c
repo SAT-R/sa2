@@ -320,6 +320,11 @@ static void Win32_ProcessPendingMessages(HWND window)
 // Converts GBA -> Win32 RGB value
 #define RGB_SHIFT(value) (((value >> 10) & 0x1F) | (value & 0x3E0) | (((value & 0x1F) << 10)))
 
+void Platform_TransformSprite(Sprite *s, SpriteTransform *transform)
+{
+	OpenGL_TransformSprite(s, transform);
+}
+
 void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 {
     if (sprite->graphics.src == NULL)
@@ -343,6 +348,12 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 
     x = sprite->x;
     y = sprite->y;
+
+	// Effectively unused, but here for accuracy's sake
+    if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
+        x -= gSpriteOffset.x;
+        y -= gSpriteOffset.y;
+    }
 
     {
         // TEMP - from sprite.c
