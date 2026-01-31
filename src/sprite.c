@@ -394,9 +394,9 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
     // sp24 = s
     UnkSpriteStruct big;
     const SpriteOffset *dimensions = s->dimensions;
-#if PORTABLE
+#if PORTABLE && (RENDERER != RENDERER_SOFTWARE)
     Platform_TransformSprite(s, transform);
-	return;
+    return;
 #endif
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;

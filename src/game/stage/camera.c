@@ -783,8 +783,8 @@ void RenderMetatileLayers(s32 x, s32 y)
 void CreateStageBg_Zone1(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
+    gDispCnt |= DISPCNT_BG0_ON;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
 #ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -795,8 +795,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->targetTilesX = 0x20;
-        background->targetTilesY = 0x20;
+        background->targetTilesX = 256 / TILE_WIDTH;
+        background->targetTilesY = 256 / TILE_WIDTH;
     } else
 #endif
     {
@@ -807,8 +807,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->targetTilesX = 0x20;
-        background->targetTilesY = 0x1E;
+        background->targetTilesX = 256 / TILE_WIDTH;
+        background->targetTilesY = 240 / TILE_WIDTH;
     }
 
     DrawBackground(background);
@@ -999,10 +999,8 @@ const u8 gUnknown_080D5B20[16][3] = {
     { 255, 5, 6 }, //
 };
 
-// TODO: This data is unused in this module
-//       But the place that references this is
-//       further down in code than the .rodata after this.
-const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-105
+// NOTE: Only values > 105 appear to be used.
+const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-94
                                                10, 10, 10, //
                                                10, 10, 10, //
                                                10, 10, 10, //
@@ -1034,13 +1032,11 @@ const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-105
                                                10, 10, 10, //
                                                10, 10, 10, //
                                                10, 10, 10, //
-                                               10, 10, 8, //
-                                               8, 8, 8, //
-                                               7, 7, 7, //
-                                               7, 6, 6, //
-
-                                               // 106-159 | This data appears to be unused
-                                               6, 6, 6, //
+                                               10, 10, 8, 8, 8, 8, // 95-98
+                                               7, 7, 7, 7, // 99-102
+                                               6, 6, 6, // 103-104
+                                               /* 105-159 */
+                                               6, 6, //
                                                6, 6, 6, //
                                                5, 5, 5, //
                                                5, 5, 5, //
@@ -1070,8 +1066,8 @@ static s16 sUnknown_03000408;
 void CreateStageBg_Zone3(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
+    gDispCnt |= DISPCNT_BG0_ON;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
     *background = gStageCameraBgTemplates[3];
 
@@ -1189,7 +1185,7 @@ void CreateStageBg_Zone4(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     const Background *templates;
-    gBgCntRegs[0] = 0x1B0F;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
     *background = gStageCameraBgTemplates[CAMBG_BACK_B_LAYER];
 
@@ -1465,7 +1461,7 @@ const u8 gUnknown_080D5C02[2][16][3] = {
 void CreateStageBg_Zone6_Acts(void)
 {
     gDispCnt |= DISPCNT_BG0_ON;
-    gBgCntRegs[0] = 0x1a0f;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
     INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
@@ -1486,7 +1482,7 @@ void CreateStageBg_Zone6_Boss(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= DISPCNT_BG0_ON;
-    gBgCntRegs[0] = 0x1a0f;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
     INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
@@ -2316,9 +2312,9 @@ void StageBgUpdate_Zone5ActBoss(UNUSED s32 a, UNUSED s32 b)
 
 void StageBgUpdate_Zone6ActBoss(UNUSED s32 a, UNUSED s32 b)
 {
-    gBgCntRegs[0] |= 0x3;
-    gBgCntRegs[3] &= ~0x3;
-    gBgCntRegs[3] |= 0x2;
+    gBgCntRegs[0] |= BGCNT_PRIORITY(3);
+    gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
+    gBgCntRegs[3] |= BGCNT_PRIORITY(2);
     gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 2) & 0xFF;
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] + 1) & 0xFF;
 }

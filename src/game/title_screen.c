@@ -21,6 +21,7 @@
 #include "game/stage/screen_fade.h"
 #include "game/time_attack/lobby.h"
 #include "game/time_attack/mode_select.h"
+#include "game/sa1_sa2_shared/camera.h" // TILE_WIDTH
 
 #include "data/recordings.h"
 
@@ -415,8 +416,8 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->targetTilesX = 26;
-    bg0->targetTilesY = 10;
+    bg0->targetTilesX = 208 / TILE_WIDTH;
+    bg0->targetTilesY = 80 / TILE_WIDTH;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
@@ -441,8 +442,8 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     config40->unk20 = 0;
     config40->unk22 = 0;
     config40->unk24 = 0;
-    config40->targetTilesX = 0x20;
-    config40->targetTilesY = 0x40;
+    config40->targetTilesX = 256 / TILE_WIDTH;
+    config40->targetTilesY = 512 / TILE_WIDTH;
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
 
@@ -461,9 +462,9 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     gDispCnt = DISPCNT_MODE_1;
     gDispCnt |= DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
 
-    gBgCntRegs[0] = 0x1f04;
-    gBgCntRegs[1] = 0x9d0a;
-    gBgCntRegs[2] = 0x7a81;
+    gBgCntRegs[0] = BGCNT_16COLOR | BGCNT_TXT256x256 | BGCNT_SCREENBASE(31) | BGCNT_CHARBASE(1) | BGCNT_PRIORITY(0);
+    gBgCntRegs[1] = BGCNT_16COLOR | BGCNT_TXT256x512 | BGCNT_SCREENBASE(29) | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(2);
+    gBgCntRegs[2] = BGCNT_256COLOR | BGCNT_AFF256x256 | BGCNT_WRAP | BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1);
     INIT_BG_SPRITES_LAYER_32(0);
     INIT_BG_SPRITES_LAYER_32(1);
     INIT_BG_SPRITES_LAYER_32(2);
@@ -489,8 +490,8 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     bg80->unk20 = 0;
     bg80->unk22 = 0;
     bg80->unk24 = 0;
-    bg80->targetTilesX = 30;
-    bg80->targetTilesY = 20;
+    bg80->targetTilesX = DISPLAY_WIDTH / TILE_WIDTH;
+    bg80->targetTilesY = DISPLAY_HEIGHT / TILE_WIDTH;
     bg80->paletteOffset = 0;
     bg80->flags = 0;
 
@@ -508,8 +509,8 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->targetTilesX = 32;
-    bg0->targetTilesY = 32;
+    bg0->targetTilesX = 256 / TILE_WIDTH;
+    bg0->targetTilesY = 256 / TILE_WIDTH;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
@@ -795,13 +796,13 @@ static void Task_IntroPanSkyAnim(void)
     }
 
     gBgScrollRegs[1][1] -= titleScreen->introPanUpVelocity;
-    if (gBgScrollRegs[1][1] < 0xAF) {
-        gBgScrollRegs[1][1] = 0xAF;
+    if (gBgScrollRegs[1][1] < 175) {
+        gBgScrollRegs[1][1] = 175;
     }
 
-    if (gBgScrollRegs[1][1] < 0x15F) {
-        gDispCnt &= 0xFBFF;
-        gDispCnt &= 0xBFFF;
+    if (gBgScrollRegs[1][1] < 351) {
+        gDispCnt &= ~DISPCNT_BG2_ON;
+        gDispCnt &= ~DISPCNT_WIN1_ON;
     } else {
         titleScreen->wavesTopOffset += titleScreen->introPanUpVelocity;
         WavesBackgroundAnim(titleScreen);
@@ -944,11 +945,11 @@ static void Task_IntroSkyAnim(void)
 
         DrawBackground(bg0);
 
-        gBgCntRegs[2] &= 0xDFFF;
+        gBgCntRegs[2] &= ~DISPCNT_WIN0_ON;
         gCurTask->main = Task_IntroFadeInTitleScreenAnim;
 
-        gDispCnt |= 0x400;
-        gDispCnt &= 0xFEFF;
+        gDispCnt |= DISPCNT_BG2_ON;
+        gDispCnt &= ~DISPCNT_BG0_ON;
 
         gBldRegs.bldAlpha = 0x1000;
         gBldRegs.bldCnt = 0x244;
