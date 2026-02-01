@@ -589,6 +589,7 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *inRect, Player *p)
     return result;
 }
 
+// https://decomp.me/scratch/Mjin3
 NONMATCH(
 #ifndef COLLECT_RINGS_ROM
     "asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0.inc",
