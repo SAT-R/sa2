@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "trig.h"
 #include "lib/m4a/m4a.h"
+#include "platform/platform.h"
 
 #include "animation_commands.h"
 
@@ -72,6 +73,7 @@ void DrawBackground(Background *background)
 
 // (85.37%) https://decomp.me/scratch/617Jb
 // (87.46%) https://decomp.me/scratch/1CFim
+// TODO: ProcessBackgroundsCopyQueue might be a good name for this function?
 NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
@@ -90,6 +92,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
 #if (RENDERER == RENDERER_OPENGL)
     // TEMP
+    Platform_ProcessBackgroundsCopyQueue();
     return TRUE;
 #endif
 

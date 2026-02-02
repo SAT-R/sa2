@@ -320,21 +320,26 @@ static void Win32_ProcessPendingMessages(HWND window)
 // Converts GBA -> Win32 RGB value
 #define RGB_SHIFT(value) (((value >> 10) & 0x1F) | (value & 0x3E0) | (((value & 0x1F) << 10)))
 
-void Platform_TransformSprite(Sprite *s, SpriteTransform *transform)
+void Platform_ProcessBackgroundsCopyQueue(void)
 {
-	OpenGL_TransformSprite(s, transform);
+#if (RENDERER == RENDERER_OPENGL)
+    OpenGL_ProcessBackgroundsCopyQueue();
+#endif
 }
+
+void Platform_TransformSprite(Sprite *s, SpriteTransform *transform) { OpenGL_TransformSprite(s, transform); }
 
 void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 {
-    if (sprite->graphics.src == NULL)
+    if (sprite->graphics.src == NULL) {
         return;
+    }
 
 #if (RENDERER == RENDERER_OPENGL)
-        // TEMP - Currently the display buffer gets drawn in software, but we should load the assets as a textures and let OpenGL render
-        // everything
-        OpenGL_DisplaySprite(sprite, oamPaletteNum);
-        return;
+    // TEMP - Currently the display buffer gets drawn in software, but we should load the assets as a textures and let OpenGL render
+    // everything
+    OpenGL_DisplaySprite(sprite, oamPaletteNum);
+    return;
 #endif
 
     const SpriteOffset *dims = sprite->dimensions;
@@ -349,7 +354,7 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
     x = sprite->x;
     y = sprite->y;
 
-	// Effectively unused, but here for accuracy's sake
+    // Effectively unused, but here for accuracy's sake
     if (sprite->frameFlags & SPRITE_FLAG_GLOBAL_OFFSET) {
         x -= gSpriteOffset.x;
         y -= gSpriteOffset.y;
@@ -387,9 +392,7 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
     u16 widthInTiles = dims->width >> 3;
 
     for (int frameY = 0; frameY < dims->height; frameY++) {
-        s32 finalY = (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)
-			? (tempY + dims->height - 1 - frameY)
-			: (tempY + frameY);
+        s32 finalY = (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) ? (tempY + dims->height - 1 - frameY) : (tempY + frameY);
 
         if (finalY < 0)
             continue;
@@ -399,9 +402,7 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 
         for (int frameX = 0; frameX < dims->width; frameX++) {
 
-            s32 finalX = (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP)
-				? (tempX + dims->width - 1 - frameX)
-				: (tempX + frameX);
+            s32 finalX = (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) ? (tempX + dims->width - 1 - frameX) : (tempX + frameX);
 
             if (finalX < 0)
                 continue;
