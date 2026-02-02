@@ -1,6 +1,7 @@
 #include "global.h"
 #include "m4a.h"
 #include "save.h"
+#include "input.h"
 
 #include "constants/songs.h"
 
@@ -11,8 +12,6 @@ extern u8 gUnknown_03000608;
 
 extern u16 gUnknown_030013B0[8][2];
 extern u8 gUnknown_030013D0;
-
-typedef void (*CallbackFunc)(void *);
 
 typedef struct {
     u16 unk0;
@@ -25,7 +24,8 @@ typedef struct {
 } UNK_30005C0_UNK10;
 
 typedef struct {
-    CallbackFunc unk0;
+    // TODO: should be CallbackFunc
+    void *unk0;
     u8 unk4;
     u8 unk5;
     u8 unk6;
@@ -33,7 +33,7 @@ typedef struct {
     u16 unk8;
     u16 unkA;
     u16 unkC;
-    u16 unkE;
+    s16 unkE;
     UNK_30005C0_UNK10 *unk10;
     u16 unk14;
     u8 unk16;
@@ -46,8 +46,10 @@ typedef struct {
     u32 unk20;
 } UNK_30005C0;
 
+typedef void (*CallbackFunc)(UNK_30005C0 *);
+
 typedef struct {
-    u16 *unk0;
+    const u16 *unk0;
     u16 *unk4;
     u8 unk8;
     u8 unk9;
@@ -194,7 +196,7 @@ void sub_02000eac(void)
 {
     u8 i = 0;
     do {
-        gUnknown_03004400[i].unk0(&gUnknown_03004400[i]);
+        ((CallbackFunc)gUnknown_03004400[i].unk0)(&gUnknown_03004400[i]);
         i = gUnknown_03004400[i].unk6;
     } while (i != 0);
 }
@@ -429,7 +431,8 @@ void sub_020013DC(UNK_30005C0 *unused)
 
 void sub_02001420(void)
 {
-    u16 *p, *unk0;
+    u16 *p;
+    const u16 *unk0;
     s32 j;
 
     while (gUnknown_030014F8 != 0) {
@@ -638,7 +641,7 @@ void sub_02001760(u16 *arg0, u8 arg2, u8 arg3, u16 arg4)
 
 void sub_020017a4(void) { gUnknown_030014F8 = 0; }
 
-bool32 sub_020017b0(u16 *arg0, u16 *arg1, u8 arg2, u8 arg3, u16 arg4)
+bool32 sub_020017b0(const u16 *arg0, u16 *arg1, u8 arg2, u8 arg3, u16 arg4)
 {
     if (gUnknown_030014F8 > 0x17) {
         return 0;
@@ -700,20 +703,20 @@ extern void sub_020017a4(void);
 extern void sub_02001c60(void);
 
 extern void sub_02001D68(void);
-extern void sub_0200218c(void *);
-extern void sub_02003424(void *);
-extern void sub_020035CC(void *);
-extern void sub_02003e04(void *);
-extern void sub_020041E0(void *);
-extern void sub_020074c0(void *);
-extern void sub_02007500(void *);
-extern void sub_02008324(void *);
-extern void sub_020083e4(void *);
-extern void sub_020088b0(void *);
-extern void sub_020089B0(void *);
-extern void sub_020089D4(void *);
-extern void sub_02008A04(void *);
-extern void sub_020088f8(void *);
+extern void sub_0200218c(UNK_30005C0 *);
+extern void sub_02003424(UNK_30005C0 *);
+extern void sub_020035CC(UNK_30005C0 *);
+extern void sub_02003e04(UNK_30005C0 *);
+extern void sub_020041E0(UNK_30005C0 *);
+extern void sub_020074c0(UNK_30005C0 *);
+extern void sub_02007500(UNK_30005C0 *);
+extern void sub_02008324(UNK_30005C0 *);
+extern void sub_020083e4(UNK_30005C0 *);
+extern void sub_020088b0(UNK_30005C0 *);
+extern void sub_020089B0(UNK_30005C0 *);
+extern void sub_020089D4(UNK_30005C0 *);
+extern void sub_02008A04(UNK_30005C0 *);
+extern void sub_020088f8(UNK_30005C0 *);
 
 extern const u16 gUnknown_02021BC4[];
 extern const u8 gUnknown_02024618[];
@@ -732,7 +735,6 @@ extern u16 gUnknown_02020E9C[];
 extern u16 gUnknown_02020EDC[];
 
 u16 gUnknown_03001538[7];
-u8 gUnknown_03003BEA[7];
 
 void InitGarden(void)
 {
@@ -824,7 +826,7 @@ void sub_02001b58(void)
     sub_0200163c(gUnknown_02020EDC, 3);
     i = 0;
     for (i = 0; i < 7; i++) {
-        gUnknown_03001538[i] = gUnknown_03003BEA[i] + 0x2AF;
+        gUnknown_03001538[i] = gSaveGameState.unk6A[i] + 0x2AF;
     }
     sub_02001718(gUnknown_03001538, (void *)0x0600F042, 7, 1, 0xA000);
     sub_02000d04(sub_020088f8, gUnknown_03004400, 0)->unk1A = 0x10;
@@ -1079,4 +1081,76 @@ brk:
         u8 *tmp = UNK_80(i);
         gSaveGameState.unk4EC[i][0] = gSaveGameState.unk4EC[i][1] = *tmp;
     }
+}
+
+void sub_020021F4(UNK_30005C0 *);
+
+void sub_0200218c(UNK_30005C0 *arg0)
+{
+    if (!(gUnknown_03003330.unkF & -(0x81))) {
+        if (((arg0->unk19 == 0) || ((--arg0->unk19 == 0))) && (8 & gInput.unk4)) {
+            m4aMPlayAllStop();
+            m4aSongNumStart(0xE);
+            arg0->unkE = 0;
+            arg0->unk19 = 8U;
+            arg0->unk0 = (void *)&sub_020021F4;
+            gUnknown_03003330.unkF |= 0x80;
+        } else {
+            gUnknown_03003330.unkF &= ~0x80;
+        }
+    }
+}
+
+extern const u16 gUnknown_0202003E[][96];
+extern const u16 gUnknown_020201BE[2][2][24];
+extern const u16 gUnknown_0202027E[][4];
+
+extern void sub_02008940(void);
+
+void sub_020021F4(UNK_30005C0 *arg0)
+{
+    const u16 *var_r2;
+    u32 temp_r0_5;
+
+    if (((arg0->unk19 == 0) || (--arg0->unk19 == 0)) && (gInput.unk4 & (START_BUTTON | A_BUTTON | B_BUTTON))) {
+        u16 song;
+        if (gInput.unk0 & 2) {
+            song = 0xD;
+        } else if (arg0->unkE != 0) {
+            m4aSongNumStart(0xC);
+            arg0->unk19 = 0x2DU;
+            arg0->unk0 = (void *)&sub_02008940;
+            return;
+        } else {
+            song = 0xC;
+        }
+        m4aMPlayAllContinue();
+        m4aSongNumStart(song);
+        arg0->unk19 = 8U;
+        arg0->unk0 = (void *)&sub_0200218c;
+        sub_020017b0(NULL, (void *)VRAM + 0xE000, 0xFF, 0, 0);
+        return;
+    }
+
+    if (gInput.unk4 & 0x80) {
+        if (++arg0->unkE > 1) {
+            arg0->unkE = 1;
+        } else {
+            m4aSongNumStart(0xB);
+        }
+    } else if (0x40 & gInput.unk4) {
+        if (--arg0->unkE < 0) {
+            arg0->unkE = 0;
+        } else {
+            m4aSongNumStart(0xB);
+        }
+    }
+    temp_r0_5 = gUnknown_03003330.unk10 != 0;
+    sub_020017b0(gUnknown_020201BE[temp_r0_5][arg0->unkE], (void *)VRAM + 0xE014 + ((arg0->unkE * 2) + 1) * 64, 0xC, 2, 0x416B);
+    var_r2 = gUnknown_0202027E[0];
+    if (!(gUnknown_03003330.unk8 & 0x10)) {
+        var_r2 = gUnknown_0202027E[1];
+    }
+    sub_020017b0(var_r2, (void *)VRAM + 0xE010 + ((arg0->unkE * 2) + 1) * 64, 2, 2, 0x31E5);
+    sub_020017b0(gUnknown_0202003E[temp_r0_5], (void *)VRAM + 0xE00E, 0x10, 6, 0x316B);
 }
