@@ -6,6 +6,7 @@
 #include "core.h" // temp?
 #include "platform/shared/opengl.h"
 #include "trig.h" // ONE_CYCLE
+#include "game/stage/camera.h" // TEMP?
 #include "game/sa1_sa2_shared/globals.h" // gCurrentLevel - TEMP: this shouldn't be exposed to the OpenGL backend...
 
 // NOTE: This is NOT final at all. EXPERIMENTAL!!!!!
@@ -122,25 +123,112 @@ typedef struct ChunkTileVertex {
 
 typedef struct ChunkGfx {
     ChunkTileVertex *tileVerts;
-    s16 levelId;
+    u8 *rgbaChunks;
+	u16 count;
+    u16 capacity;
 } ChunkGfx;
 
-static ChunkGfx chunkGfx = { NULL, -1 };
+static ChunkGfx sChunkGfx = { 0 };
+#define RENDERED_CHUNKS_W ((DISPLAY_WIDTH  / 96) + 1)
+#define RENDERED_CHUNKS_H ((DISPLAY_HEIGHT / 96) + 1)
+#define RENDERED_CHUNKS   (RENDERED_CHUNKS_W * RENDERED_CHUNKS_H)
+
+// Set of chunks that have to be drawn this frame
+typedef struct ChunkSet {
+    u16 *items;
+    u16 count, capacity;
+} ChunkSet;
+static ChunkSet sChunkSet = {0};
+
+void CreateChunkSet(void)
+{
+    const int defaultCap = 16;
+    sChunkSet.items = calloc(defaultCap, sizeof(*sChunkSet.items));
+    sChunkSet.count = 0;
+    sChunkSet.capacity = defaultCap;
+}
+
+void FindUniqueChunks(ChunkSet *set, Background *bg, u16 mapChunkX, u16 mapChunkY, u8 screenChunkWidth, u8 screenChunkHeight)
+{
+
+    for (int y = 0; y < screenChunkHeight; y++) {
+		for (int x = 0; x < screenChunkWidth; x++) {
+            u32 screenChunksStartIndex = (mapChunkY + y) * bg->mapWidth + (mapChunkX + x);
+            u16 chunkId = bg->metatileMap[screenChunksStartIndex];
+            bool8 isInSet = FALSE;
+        
+			// Find chunk ID in set
+			for (int setI = 0; setI < set->count; setI++) {
+				if (set->items[setI] == chunkId) {
+					isInSet = TRUE;
+					break;
+				}
+			}
+
+			// Add if not inside
+			if (!isInSet) {
+				while (set->count + 1 >= set->capacity) {
+					set->items = realloc(set->items, set->capacity * 2 * sizeof(u16));
+					set->capacity *= 2;
+				}
+
+				set->items[set->count] = chunkId;
+				set->count++;
+			}
+		}
+	}
+}
+
+
+void CacheUncachedUniqueChunks(ChunkSet *set, ChunkGfx *gfx) {
+
+}
 
 void UpdateChunkGfx(ChunkGfx *gfx, Background *bg)
 {
-    bool32 updateAll = TRUE;
+	u32 mapWidthPixels  = bg->mapWidth  * 96;
+	u32 mapHeightPixels = bg->mapHeight * 96;
+    u16 mapChunkX = gCamera.x / 96;
+    u16 mapChunkY = gCamera.y / 96;
+    u8 screenChunkWidth  = MIN(bg->mapWidth  - mapChunkX, RENDERED_CHUNKS_W);
+    u8 screenChunkHeight = MIN(bg->mapHeight - mapChunkY, RENDERED_CHUNKS_H);
+    //bool8 updateAll = TRUE;
 
-    if (chunkGfx.tileVerts == NULL || chunkGfx.levelId != gCurrentLevel) {
-        // 288 KB
-        gfx->tileVerts = calloc(32 * 32, CHUNK_SIZE_TEXCOORD);
+    if (sChunkGfx.tileVerts == NULL || sChunkGfx.rgbaChunks == NULL) {
+        const int DEFAULT_CAP = 16;
+        gfx->tileVerts = calloc(RENDERED_CHUNKS, CHUNK_SIZE_TEXCOORD * DEFAULT_CAP);
+        gfx->rgbaChunks = calloc(RENDERED_CHUNKS, 96 * 96 * NUM_RGB_CHANNELS * DEFAULT_CAP);
+        gfx->count = 0;
+        gfx->capacity = DEFAULT_CAP;
     }
 
-    //!(bg->flags & BACKGROUND_DISABLE_TILESET_UPDATE)
-    // If the palette didn't change, all tiles have to be updated
-    // if (bg->flags & BACKGROUND_DISABLE_PALETTE_UPDATE) {
-    //     updateAll = FALSE;
-    // }
+	// TODO/PERFORMANCE:
+	//   This should probably be two sets, like a "Double Buffer",
+	//   with the previous set not getting reset and chunks from it getting copied over if needed.
+	//   Both would somehow have to be reset on a stage transition
+	//   (more accurately: when the tileset/tilemap changes), though!
+    sChunkSet.count = 0;
+    FindUniqueChunks(&sChunkSet, bg, mapChunkX, mapChunkY, screenChunkWidth, screenChunkHeight);
+#if DEBUG
+    printf("Unique : %d\n", sChunkSet.count);
+#endif
+
+	CacheUncachedUniqueChunks(&sChunkSet, &sChunkGfx);
+
+	// Draw metatile RGBA graphics
+    if (!(bg->flags & (BACKGROUND_DISABLE_TILESET_UPDATE | BACKGROUND_DISABLE_PALETTE_UPDATE))) {
+        for (int chunkSetItemIndex = 0; chunkSetItemIndex < sChunkSet.count; chunkSetItemIndex++) {
+            int chunkIndex = sChunkSet->items[chunkSetItemIndex];
+            if (chunkIndex == 0)
+                continue;
+
+			for (int tileIdY; tileIdY < 12; tileIdY++) {
+                for (int tileIdX; tileIdX < 12; tileIdX++) {
+
+				}
+            }
+        }
+	}
 
 #if 0
     // NOTE: Need to call glEnableClientState(GL_TEXTURE_COORD_ARRAY) first!
@@ -163,7 +251,7 @@ void OpenGL_ProcessBackgroundsCopyQueue(void)
             continue;
 
         if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
-            UpdateChunkGfx(&chunkGfx, bg);
+            UpdateChunkGfx(&sChunkGfx, bg);
 
             int k = 123;
         } else {
@@ -189,6 +277,9 @@ void OpenGL_OnInit()
     glLoadIdentity();
 
     glGenTextures(3, &sTempTextureHandles[0]);
+
+	// TODO: Maybe this shuld be done in the platform layers?
+	CreateChunkSet();
 }
 
 void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
@@ -199,7 +290,7 @@ void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
     float sinTheta = sinf(theta);
     float cosTheta = cosf(theta);
     float modelViewMatrix[] = {
-#if 0
+#if 01
         1, 0, 0, 0, //
         0, 1, 0, 0, //
         0, 0, 1, 0, //
