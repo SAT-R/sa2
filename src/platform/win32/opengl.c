@@ -246,18 +246,21 @@ void CacheUncachedUniqueChunks(Background *bg, ChunkSet *set, ChunkGfx *gfx)
                     Tile tile = *(const Tile *)&bg->layout[tileInChunkIndex];
                     const u8 *srcTile4BPP = &tileset4BPP[(tile.index * TILE_SIZE_PIXELS) >> 1];
 
-                    for (int tileY = 0; tileY < 8; tileY++) {
-                        for (int tileX = 0; tileX < 8; tileX++) {
+                    for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
+                        int tileY = (tile.yFlip) ? (7 - tileLoopY) : tileLoopY;
+                        for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
+                            int tileX = (tile.xFlip) ? (7 - tileLoopX) : tileLoopX;
+
                             int targetColorIndex = ((tileY * 8) + tileX);
                             bool8 doShift = (targetColorIndex & 1);
                             int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
                             colorId >>= doShift * 4;
 
                             ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[tile.pal * 16 + colorId]);
-                            dstTileRGBA[tileY * (TILES_PER_CHUNK_AXIS * 8) + tileX].r = tilePalette->r;
-                            dstTileRGBA[tileY * (TILES_PER_CHUNK_AXIS * 8) + tileX].g = tilePalette->g;
-                            dstTileRGBA[tileY * (TILES_PER_CHUNK_AXIS * 8) + tileX].b = tilePalette->b;
-                            dstTileRGBA[tileY * (TILES_PER_CHUNK_AXIS * 8) + tileX].a = tilePalette->a;
+                            dstTileRGBA[tileLoopY * (TILES_PER_CHUNK_AXIS * 8) + tileLoopX].r = tilePalette->r;
+                            dstTileRGBA[tileLoopY * (TILES_PER_CHUNK_AXIS * 8) + tileLoopX].g = tilePalette->g;
+                            dstTileRGBA[tileLoopY * (TILES_PER_CHUNK_AXIS * 8) + tileLoopX].b = tilePalette->b;
+                            dstTileRGBA[tileLoopY * (TILES_PER_CHUNK_AXIS * 8) + tileLoopX].a = tilePalette->a;
                         }
                     }
                 }
