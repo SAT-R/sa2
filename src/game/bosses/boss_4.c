@@ -762,11 +762,11 @@ static void sub_8042560(AeroEgg *boss)
 
     if (boss->main.unk16 != 0) {
         for (i = 0; i < ARRAY_COUNT(sPalAeroEggHit[PAL_BOSS_4_DEFAULT]); i++) {
-            gObjPalette[128 + i] = sPalAeroEggHit[((gStageTime & 0x2) >> 1)][i];
+            gObjPalette[8 * 16 + i] = sPalAeroEggHit[((gStageTime & 0x2) >> 1)][i];
         }
     } else {
         for (i = 0; i < ARRAY_COUNT(sPalAeroEggHit[PAL_BOSS_4_HIT]); i++) {
-            gObjPalette[128 + i] = sPalAeroEggHit[PAL_BOSS_4_HIT][i];
+            gObjPalette[8 * 16 + i] = sPalAeroEggHit[PAL_BOSS_4_HIT][i];
         }
     }
 

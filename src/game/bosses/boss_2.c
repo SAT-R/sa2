@@ -576,22 +576,22 @@ static void UpdateBomberTankPalette(EggBomberTank *boss)
     u8 i;
     if (boss->bossHitTimer != 0) {
         for (i = 0; i < 16; i++) {
-            gObjPalette[i + 0x80] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
+            gObjPalette[8 * 16 + i] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[i + 0x80] = gUnknown_080D7B70[1][i];
+            gObjPalette[8 * 16 + i] = gUnknown_080D7B70[1][i];
         }
     }
 
     if (boss->cannonHitTimer != 0) {
         boss->cannonHitTimer--;
         for (i = 0; i < 16; i++) {
-            gObjPalette[i + 0xD0] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
+            gObjPalette[13 * 16 + i] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[i + 0xD0] = gUnknown_080D7B70[1][i];
+            gObjPalette[13 * 16 + i] = gUnknown_080D7B70[1][i];
         }
     }
 

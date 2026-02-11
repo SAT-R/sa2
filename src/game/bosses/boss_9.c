@@ -1385,7 +1385,7 @@ void sub_804E4CC(struct TA53_unk48 *unk48)
             b = sRGB_080D8E20[3][c][2];
             b = ((b * r6) >> 12) & 0x1F;
 
-            gObjPalette[c + 8 * 16] = RGB16_REV(r, g, b);
+            gObjPalette[8 * 16 + c] = RGB16_REV(r, g, b);
             gBgPalette[c] = RGB16_REV(r, g, b);
         }
 
@@ -2870,8 +2870,8 @@ void sub_8050958(TA53Boss *boss)
     if (boss->unkD > 0) {
         if (--boss->unkD == 0) {
             for (i = 0; i < 16; i++) {
-                gObjPalette[i + 8 * 16] = gUnknown_080D8EF0[1][i];
-                gBgPalette[i + 0 * 16] = gObjPalette[i + 8 * 16];
+                gObjPalette[8 * 16 + i] = gUnknown_080D8EF0[1][i];
+                gBgPalette[0 * 16 + i] = gObjPalette[i + 8 * 16];
             }
         } else {
             // _080509B0
@@ -2887,7 +2887,7 @@ void sub_8050958(TA53Boss *boss)
                     u32 r0;
                     u32 r2;
                     u32 colId;
-                    u16 *objPalTgt = &gObjPalette[0];
+                    u16 *objPalTgt = &gObjPalette[0 * 16 + 0];
                     u32 objPalId;
 
                     colId = ((i + r6) % 16u);

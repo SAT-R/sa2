@@ -516,7 +516,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < 16; i++) {
-        gObjPalette[i + 240] = 0;
+        gObjPalette[15 * 16 + i] = 0;
     }
 
     gFlags |= 0x2;

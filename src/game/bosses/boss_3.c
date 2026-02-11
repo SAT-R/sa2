@@ -1505,11 +1505,11 @@ void sub_8040F14(EggTotem *totem)
 
     if (totem->unk35 != 0) {
         for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
+            gObjPalette[8 * 16 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F14[1][i];
+            gObjPalette[8 * 16 + i] = gUnknown_080D7F14[1][i];
         }
     }
 
@@ -1517,11 +1517,11 @@ void sub_8040F14(EggTotem *totem)
         totem->unk36--;
 
         for (i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
+            gObjPalette[11 * 16 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F14[1][i];
+            gObjPalette[11 * 16 + i] = gUnknown_080D7F14[1][i];
         }
     }
 

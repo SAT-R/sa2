@@ -220,7 +220,7 @@ struct Task *CreateStageUI(void)
     ui->ringCurrentFrame = 0;
 
     for (i = 0; i < 16; i++) {
-        gObjPalette[0x70 + i] = sPalette1UpIcons[i];
+        gObjPalette[7 * 16 + i] = sPalette1UpIcons[i];
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

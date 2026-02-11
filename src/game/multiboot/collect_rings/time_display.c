@@ -86,7 +86,7 @@ void CreateCollectRingsTimeDisplay(void)
     }
 
     for (i = 0; i < 16; i++) {
-        gObjPalette[i + 0x70] = gUnknown_080E0270[i];
+        gObjPalette[7 * 16 + i] = gUnknown_080E0270[i];
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

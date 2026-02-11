@@ -1757,22 +1757,22 @@ void sub_8045898(EggSaucer *boss)
         val = (gStageTime & 2) >> 1;
         if (boss->unk13 != 0) {
             for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x80] = gUnknown_080D7FF0[val][i];
+                gObjPalette[8 * 16 + i] = gUnknown_080D7FF0[val][i];
             }
         } else {
             for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x80] = gUnknown_080D7FF0[1][i];
+                gObjPalette[8 * 16 + i] = gUnknown_080D7FF0[1][i];
             }
         }
 
         if (boss->unk1F != 0) {
             boss->unk1F--;
             for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x90] = gUnknown_080D7FF0[val][i];
+                gObjPalette[9 * 16 + i] = gUnknown_080D7FF0[val][i];
             }
         } else {
             for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x90] = gUnknown_080D7FF0[1][i];
+                gObjPalette[9 * 16 + i] = gUnknown_080D7FF0[1][i];
             }
         }
 

@@ -737,7 +737,7 @@ static void Task_802F9F8(void)
                 g = ((gUnknown_080D6FF5[gSelectedCharacter][i][1] * frameCounter) / 16u);
                 b = ((gUnknown_080D6FF5[gSelectedCharacter][i][2] * frameCounter) / 16u);
 
-                gObjPalette[i] = RGB16_REV(r, g, b);
+                gObjPalette[0 * 16 + i] = RGB16_REV(r, g, b);
 
                 if (gCheese != NULL) {
                     r = gUnknown_080D6FF5[5][i][0];
