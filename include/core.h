@@ -251,7 +251,7 @@ extern u8 gIwramHeap[TASK_HEAP_SIZE];
 
 extern void *gVramHeapStartAddr;
 extern u16 gVramHeapMaxTileSlots;
-extern u16 gVramHeapState[256];
+extern u16 gVramHeapState[OBJ_VRAM_TOTAL_SIZE / VRAM_HEAP_SEGMENT_SIZE];
 
 extern bool8 gExecSoundMain;
 

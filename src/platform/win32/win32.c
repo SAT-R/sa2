@@ -123,7 +123,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
             DWORD threadId;
 
 #if 01
-            REG_KEYINPUT &= ~START_BUTTON;
+            // REG_KEYINPUT &= ~START_BUTTON;
             while (sRunning) {
                 memset(sImageBuffer, 0, sizeof(sImageBuffer));
 

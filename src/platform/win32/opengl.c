@@ -39,6 +39,7 @@ typedef struct {
 static TextureBuffer sDynTextureBuffer = { 0 };
 
 ColorRGBA tempRgbaPalette[16 * 32] = {};
+static Background *sActiveBackgrounds[4] = { 0 };
 
 void Debug_PrintMatrix(float *mtx)
 {
@@ -363,8 +364,22 @@ void UpdateChunkGfx(ChunkGfx *gfx, Background *bg)
 #endif
 }
 
+Background *SwitchActiveBackground(Background *bg)
+{
+    u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+
+    Background *prev = sActiveBackgrounds[bgId];
+    sActiveBackgrounds[bgId] = bg;
+    return prev;
+}
+
 void OpenGL_ProcessBackgroundsCopyQueue(void)
 {
+    // 'renderOrder' contains one background ID in each slot.
+    u8 renderOrder[4] = { 0 };
+    u8 orderIndex = 0;
+    bool8 needsUpdate[4] = { 0 };
+
     while (gBackgroundsCopyQueueCursor != gBackgroundsCopyQueueIndex) {
         Background *bg = gBackgroundsCopyQueue[gBackgroundsCopyQueueCursor];
         INC_BACKGROUNDS_QUEUE_CURSOR(gBackgroundsCopyQueueCursor);
@@ -372,18 +387,49 @@ void OpenGL_ProcessBackgroundsCopyQueue(void)
         if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX) && bg->scrollY == bg->prevScrollY)
             continue;
 
-        if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
-            UpdateChunkGfx(&sChunkGfx, bg);
-        } else {
-#if 0
-            // TEMP!!!
-            // DON'T MALLOC WITHOUT FREEING!!!
-            // (Doing it like this only works for 1 frame, anyway)
-            void *tilemapRGBA = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
-            TempConvertPLTTToRGBA8();
-            RenderTilemap(tilemapRGBA, bg, 0);
-            OpenGL_RenderRGBABuffer(tilemapRGBA, bg->xTiles * 8, bg->yTiles * 8, 0, -DISPLAY_HEIGHT, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        Background *prev = SwitchActiveBackground(bg);
+        u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+        needsUpdate[bgId] = (prev != bg);
+    }
+
+    for (int prioIndex = 3; prioIndex >= 0; prioIndex--) {
+        for (int i = 3; i >= 0; i--) {
+            u8 bgPrio = gBgCntRegs[i] & BGCNT_PRIORITY(0x3);
+            if (bgPrio == prioIndex) {
+                renderOrder[orderIndex] = i;
+
+                if (++orderIndex == 4) {
+                    goto loopBreak;
+                }
+            }
+        }
+    }
+loopBreak:
+
+    for (orderIndex = 0; orderIndex < 4; orderIndex++) {
+        u8 bgId = renderOrder[orderIndex];
+        Background *bg = sActiveBackgrounds[bgId];
+
+        // TODO: Find way to go without REG_DISPCNT!
+        if (REG_DISPCNT & (DISPCNT_BG0_ON << bgId)) {
+            if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+                UpdateChunkGfx(&sChunkGfx, bg);
+            } else {
+#if 01
+                // TEMP!!!
+                // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
+                // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
+                //if (needsUpdate[bgId]) {
+                //}
+                //bg->graphics.dest = (needsUpdate[bgId]) ? malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA) : bg->graphics.dest;
+                bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
+                TempConvertPLTTToRGBA8();
+                RenderTilemap(bg->graphics.dest, bg, 0);
+                OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, 0, 0, bg->targetTilesX * 8,
+                                        bg->targetTilesY * 8);
+                free(bg->graphics.dest);
 #endif
+            }
         }
     }
 }
