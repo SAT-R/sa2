@@ -116,7 +116,7 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
     gPlayer.qSpeedAirY = 0;
     gPlayer.moveState &= ~MOVESTATE_IN_AIR;
 
-    if (!(gPlayer.moveState & MOVESTATE_4)) {
+    if (!(gPlayer.moveState & MOVESTATE_SPIN_ATTACK)) {
         r3 = sin / (halfPipe->height - halfPipe->offsetY);
 
         if (r3 < 32) {

@@ -667,7 +667,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         mpp2->unk64 = SIO_MULTI_CNT->id;
                         gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                         gPlayer.moveState &= ~MOVESTATE_20;
-                        gPlayer.moveState &= ~MOVESTATE_4;
+                        gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
                         gPlayer.moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         gPlayer.moveState &= ~MOVESTATE_400;
@@ -1566,7 +1566,7 @@ void SA2_LABEL(sub_8017670)(void)
 
             if ((mpp->unk5C & 4)) {
                 gPlayer.moveState |= MOVESTATE_STOOD_ON_OBJ;
-                gPlayer.moveState &= ~MOVESTATE_4;
+                gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
                 gPlayer.moveState &= ~MOVESTATE_IN_AIR;
 
                 gPlayer.stoodObj = s;

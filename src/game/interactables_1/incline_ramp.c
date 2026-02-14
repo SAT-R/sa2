@@ -38,7 +38,7 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
-                moveState &= ~MOVESTATE_4;
+                moveState &= ~MOVESTATE_SPIN_ATTACK;
                 gPlayer.moveState = moveState;
 
                 PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
@@ -60,7 +60,7 @@ static void Task_InclineRamp(void)
                 moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
-                moveState &= ~MOVESTATE_4;
+                moveState &= ~MOVESTATE_SPIN_ATTACK;
                 gPlayer.moveState = moveState;
 
                 PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);

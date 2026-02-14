@@ -156,7 +156,7 @@ static void HandlePlayerJumpOff(Sprite_FlyingHandle *flyingHandle)
     gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
-    gPlayer.moveState &= ~MOVESTATE_4;
+    gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
     gPlayer.transition = PLTRANS_INIT_JUMP;
     gPlayer.qSpeedGround = 0;
     gPlayer.qSpeedAirX = 0;

@@ -107,7 +107,7 @@ void sub_8061AB0(void)
     if ((I(player->qWorldX) - x) > 0x8C) {
         player->qWorldX = Q(x + 0x8C);
 
-        if (!(player->moveState & MOVESTATE_4)) {
+        if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
             player->charState = CHARSTATE_IN_CORKSCREW_3D_RUNNING_DOWN;
         }
         gCurTask->main = Task_8061C70;
@@ -123,12 +123,12 @@ void sub_8061AB0(void)
             player->qSpeedAirY = -Q(4.875);
             player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
-        } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
             PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-            player->moveState |= MOVESTATE_4;
+            player->moveState |= MOVESTATE_SPIN_ATTACK;
             m4aSongNumStart(SE_SPIN_ATTACK);
-        } else if (!(player->moveState & MOVESTATE_4)) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
             player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
@@ -161,7 +161,7 @@ void Task_8061C70(void)
     if ((I(player->qWorldY) - y) > 0xBE) {
         player->qWorldY = Q(y + 0xBE);
 
-        if (!(player->moveState & MOVESTATE_4)) {
+        if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
             player->charState = CHARSTATE_IN_CORKSCREW;
         }
         gCurTask->main = Task_8061DA4;
@@ -178,10 +178,10 @@ void Task_8061C70(void)
             player->qSpeedAirY = -Q(4.875);
             player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061914;
-        } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
             PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-            player->moveState |= MOVESTATE_4;
+            player->moveState |= MOVESTATE_SPIN_ATTACK;
             m4aSongNumStart(SE_SPIN_ATTACK);
         }
     }
@@ -207,7 +207,7 @@ void Task_8061DA4(void)
     }
 
     if (I(player->qWorldX) - x > 0x1A8) {
-        if (player->moveState & MOVESTATE_4) {
+        if (player->moveState & MOVESTATE_SPIN_ATTACK) {
             player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
@@ -237,12 +237,12 @@ void Task_8061DA4(void)
         player->qSpeedAirY = -Q(4.875);
         player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061914;
-    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
         PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-        player->moveState |= MOVESTATE_4;
+        player->moveState |= MOVESTATE_SPIN_ATTACK;
         m4aSongNumStart(SE_SPIN_ATTACK);
-    } else if (!(player->moveState & MOVESTATE_4)) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
         player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
@@ -324,7 +324,7 @@ void Task_8062100(void)
         if ((I(player->qWorldX) - x) < -288) {
             player->qWorldX = Q(x + -288);
 
-            if (!(player->moveState & MOVESTATE_4)) {
+            if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
                 player->charState = CHARSTATE_IN_CORKSCREW_3D_RUNNING_UP;
             }
 
@@ -340,12 +340,12 @@ void Task_8062100(void)
             player->qSpeedAirY = -Q(4.875);
             player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
-        } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
             PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-            player->moveState |= MOVESTATE_4;
+            player->moveState |= MOVESTATE_SPIN_ATTACK;
             m4aSongNumStart(SE_SPIN_ATTACK);
-        } else if (!(player->moveState & MOVESTATE_4)) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
             player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
@@ -376,7 +376,7 @@ void Task_80622C8(void)
         if ((I(player->qWorldY) - y) < -255) {
             player->qWorldY = Q(y - 255);
 
-            if (!(player->moveState & MOVESTATE_4)) {
+            if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
                 player->charState = CHARSTATE_IN_CORKSCREW;
             }
 
@@ -393,10 +393,10 @@ void Task_80622C8(void)
             player->qSpeedAirY = -Q(4.875);
             player->transition = PLTRANS_UNCURL;
             gCurTask->main = Task_8061F60;
-        } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
             player->charState = CHARSTATE_SPIN_ATTACK;
             PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-            player->moveState |= MOVESTATE_4;
+            player->moveState |= MOVESTATE_SPIN_ATTACK;
             m4aSongNumStart(SE_SPIN_ATTACK);
         }
     }
@@ -422,7 +422,7 @@ void Task_8062414(void)
     }
 
     if (I(player->qWorldX) - x < -424) {
-        if (player->moveState & MOVESTATE_4) {
+        if (player->moveState & MOVESTATE_SPIN_ATTACK) {
             player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
@@ -452,12 +452,12 @@ void Task_8062414(void)
         player->qSpeedAirY = -Q(4.875);
         player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8061F60;
-    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
         PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-        player->moveState |= MOVESTATE_4;
+        player->moveState |= MOVESTATE_SPIN_ATTACK;
         m4aSongNumStart(SE_SPIN_ATTACK);
-    } else if (!(player->moveState & MOVESTATE_4)) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
         player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }

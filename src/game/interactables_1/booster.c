@@ -117,7 +117,7 @@ void Task_Interactable_Booster(void)
         && (Coll_Player_Entity_HitboxN(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
-        if (gPlayer.moveState & MOVESTATE_4) {
+        if (gPlayer.moveState & MOVESTATE_SPIN_ATTACK) {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 9);
         } else {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
