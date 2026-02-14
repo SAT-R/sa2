@@ -736,6 +736,8 @@ extern u16 gUnknown_02020EDC[];
 
 u16 gUnknown_03001538[7];
 
+#define WORK_RAM (void *)0x0203F800
+
 void InitGarden(void)
 {
     s32 i;
@@ -744,12 +746,12 @@ void InitGarden(void)
     sub_02001c60();
     sub_020017a4();
     CpuFastFill(0, (void *)BG_SCREEN_ADDR(28), 0x2000);
-    LZ77UnCompWram(&gUnknown_02024618, (void *)0x0203F800);
+    LZ77UnCompWram(&gUnknown_02024618, WORK_RAM);
 
     if (gUnknown_03003330.unk10 == 0) {
-        sub_02001718((u16 *)0x0203F800, (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
+        sub_02001718((u16 *)WORK_RAM, (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
     } else {
-        sub_02001718((u16 *)0x0203F968, (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
+        sub_02001718((u16 *)(WORK_RAM + 0x168), (u16 *)BG_SCREEN_ADDR(30), 9, 0x14, 0xE0);
     }
 
     sub_02001718((u16 *)gUnknown_02021BC4, (u16 *)BG_SCREEN_ADDR(31), 0x16, 0x14, 0x200);
@@ -1153,4 +1155,95 @@ void sub_020021F4(UNK_30005C0 *arg0)
     }
     sub_020017b0(var_r2, (void *)VRAM + 0xE010 + ((arg0->unkE * 2) + 1) * 64, 2, 2, 0x31E5);
     sub_020017b0(gUnknown_0202003E[temp_r0_5], (void *)VRAM + 0xE00E, 0x10, 6, 0x316B);
+}
+
+extern u8 gUnknown_020277C0[];
+extern u8 *gUnknown_02027798[][2];
+extern u8 *gUnknown_0202A2DC[][3];
+
+void sub_02002364(u8 arg0, u8 *arg1, s8 *arg2)
+{
+    s32 j, i, k;
+
+    u8 r5, r7;
+
+    s16 r8;
+    s32 r6;
+
+    s16 *p2, *p3;
+    u8 *p1;
+
+    for (i = 0; i < 5; i++) {
+        if (gUnknown_020277C0[i] == arg0) {
+            break;
+        }
+    }
+
+    if (i > 4) {
+        // wtf
+        while (TRUE) { }
+    }
+
+    if (gUnknown_03003330.unk10 <= 1) {
+        p1 = gUnknown_02027798[i][gUnknown_03003330.unk10];
+    } else {
+        p1 = gUnknown_0202A2DC[i][gUnknown_03003330.unk10 - 2];
+    }
+    r5 = *p1++;
+    r7 = *p1++;
+
+    p2 = (s16 *)WORK_RAM;
+    *p2++ = 0x1ED;
+    for (i = 0; i < r5; i++) {
+        *p2++ = 0x1EE;
+    }
+    *p2++ = 0x5ED;
+
+    for (j = 0; j < r7; j++) {
+        *p2++ = 0x1EF;
+        for (i = 0; i < r5; i++) {
+            *p2++ = 0x1F0;
+        }
+        *p2++ = 0x5EF;
+    }
+
+    *p2++ = 0x9ED;
+
+    for (i = 0; i < r5; i++) {
+        *p2++ = 0x9EE;
+    }
+
+    *p2 = 0xDED;
+
+    r5 += 2;
+    r8 = 0;
+    r6 = 0;
+    for (k = 0; k < r7; k++) {
+        j = (k + 1) * r5;
+        p3 = (s16 *)WORK_RAM + j + 1;
+
+        while (TRUE) {
+            u8 r3 = *p1++;
+            if (r3 == 0x5F) {
+                r3 = *p1++;
+                if ((s8)r3 < 0) {
+                    break;
+                }
+                r8 = r3 * 4096;
+            } else if (r3 == 0xFF) {
+                s32 j_2 = 0;
+                if (r6 == 0) {
+                    j_2 = 0x100;
+                }
+                r6 = j_2;
+            } else {
+                s32 temp = r6 + r3;
+                temp += 0x2AF;
+                *p3++ = temp + r8;
+            }
+        }
+    }
+
+    *arg1 = r5;
+    *arg2 = r7 + 2;
 }
