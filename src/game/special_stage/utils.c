@@ -7,8 +7,8 @@
 #include "data/sprite_data.h"
 #include "trig.h"
 
-void *gUnknown_03005B58 = NULL;
-void *gUnknown_03005B5C = NULL;
+void *gSpecialStageSubMenuVramPointer = NULL;
+void *gSpecialStageVramPointer = NULL;
 
 // Copied from `options.c` so contains some of that submenu logic
 void sub_806CA88(Sprite *obj, s8 target, u32 size, AnimId anim, u32 frameFlags, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId)
@@ -22,12 +22,12 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, AnimId anim, u32 frameFlags, 
     }
 
     if (target != 0) {
-        if (gUnknown_03005B58 == NULL) {
-            gUnknown_03005B58 = gUnknown_03005B5C;
+        if (gSpecialStageSubMenuVramPointer == NULL) {
+            gSpecialStageSubMenuVramPointer = gSpecialStageVramPointer;
         }
-        s->graphics.dest = gUnknown_03005B58;
+        s->graphics.dest = gSpecialStageSubMenuVramPointer;
     } else {
-        s->graphics.dest = gUnknown_03005B5C;
+        s->graphics.dest = gSpecialStageVramPointer;
     }
 
     s->graphics.size = 0;
@@ -48,12 +48,12 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, AnimId anim, u32 frameFlags, 
 
     switch (target) {
         case RENDER_TARGET_SCREEN:
-            gUnknown_03005B5C += size * TILE_SIZE_4BPP;
+            gSpecialStageVramPointer += size * TILE_SIZE_4BPP;
             // if we render to screen then the sub menu address should reset
             ResetSpecialStateScreenSubMenuVram();
             break;
         case RENDER_TARGET_SUB_MENU:
-            gUnknown_03005B58 += size * TILE_SIZE_4BPP;
+            gSpecialStageSubMenuVramPointer += size * TILE_SIZE_4BPP;
             break;
     }
 }
@@ -199,8 +199,8 @@ void sub_806CD68(Sprite *s)
 
 void InitSpecialStageScreenVram(void)
 {
-    gUnknown_03005B5C = (void *)OBJ_VRAM0;
-    gUnknown_03005B58 = NULL;
+    gSpecialStageVramPointer = (void *)OBJ_VRAM0;
+    gSpecialStageSubMenuVramPointer = NULL;
 }
 
 void SpecialStageDrawBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX,

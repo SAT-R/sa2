@@ -86,15 +86,15 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
 
     player->sprites = characterSprites[stage->character];
     result = MaxSpriteSize(player->sprites);
-    player->unk98 = gUnknown_03005B5C;
-    gUnknown_03005B5C += (result * TILE_SIZE_4BPP);
-    player->unk9C = gUnknown_03005B5C;
-    player->unkA0 = gUnknown_03005B5C + (TILE_SIZE_4BPP * 2);
+    player->unk98 = gSpecialStageVramPointer;
+    gSpecialStageVramPointer += (result * TILE_SIZE_4BPP);
+    player->unk9C = gSpecialStageVramPointer;
+    player->unkA0 = gSpecialStageVramPointer + (TILE_SIZE_4BPP * 2);
 
     // required for match
     variant = SA2_ANIM_VARIANT_SP_STAGE_ARROW_RED;
 
-    gUnknown_03005B5C += 0xC0;
+    gSpecialStageVramPointer += 0xC0;
 
     sub_806D548(&player->unk8, player->unk98, stage->cameraHeight, 9, player->sprites);
     sub_806D548(&player->unk38, player->unk9C, stage->cameraHeight, 10, &gUnknown_080DF668);
