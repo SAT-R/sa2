@@ -19,9 +19,8 @@ static void TaskDestructor_MPAttackEffect2(struct Task *);
 
 void CreateMPAttack2Effect(void)
 {
-    if ((IS_MULTI_PLAYER) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)
-        && ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) || gUnknown_030054B0)
-        && (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
+
+    if ((IS_MULTI_PLAYER) && !IS_BOSS_STAGE(gCurrentLevel)) {
         if (gMPAttackEffect2Regs != NULL) {
             gMPAttackEffect2Regs->sizeChangeDelay = 600;
         } else {
