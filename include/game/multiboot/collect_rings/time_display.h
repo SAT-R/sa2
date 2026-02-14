@@ -4,7 +4,7 @@
 #include "global.h"
 
 // Some timer difference
-extern u32 gUnknown_03005B6C;
+extern u32 gCollectRingsLastLapTime;
 
 void CreateCollectRingsTimeDisplay(void);
 

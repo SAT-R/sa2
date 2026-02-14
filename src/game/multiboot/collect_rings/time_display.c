@@ -15,7 +15,7 @@ typedef struct {
 void sub_80832E0(struct Task *);
 void sub_808328C(void);
 
-u32 gUnknown_03005B6C = 0;
+u32 gCollectRingsLastLapTime = 0;
 
 const u8 gUnknown_080E0234[] = {
     0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,  37,  39,  40,  48,  50,
@@ -37,7 +37,7 @@ void CreateCollectRingsTimeDisplay(void)
     TimeDisplay *timeDisplay;
     Sprite *s;
     struct Task *t = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
-    gUnknown_03005B6C = 0;
+    gCollectRingsLastLapTime = 0;
     timeDisplay = TASK_DATA(t);
 
     s = &timeDisplay->unk0;
@@ -223,8 +223,8 @@ void sub_8083104(TimeDisplay *timeDisplay)
     u32 temp3;
     u16 temp6;
 
-    temp = Div(gUnknown_03005B6C, 60);
-    index = gUnknown_03005B6C - (temp * 60);
+    temp = Div(gCollectRingsLastLapTime, 60);
+    index = gCollectRingsLastLapTime - (temp * 60);
     temp *= 0x10000;
     temp /= 0x10000;
     digit1 = gUnknown_080E0234[index];
@@ -312,7 +312,7 @@ void sub_808328C(void)
         if (!(gStageFlags & STAGE_FLAG__TURN_OFF_TIMER)) {
             sub_8082E9C(timeDisplay);
 
-            if (gUnknown_03005B6C != 0) {
+            if (gCollectRingsLastLapTime != 0) {
                 sub_8083104(timeDisplay);
             }
         }

@@ -81,7 +81,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/105.h"
 #include "game/interactables_2/special_ring.h"
-#include "game/interactables_2/multiplayer_teleport.h"
+#include "game/interactables_2/collect_rings_lap_trigger.h"
 #include "game/interactables_2/sky_canyon_init.h"
 
 #include "game/mystery_itembox.h"
@@ -413,7 +413,7 @@ const MapEntityInit gSpriteInits_CollectRingsInteractables[] = {
     CreateEntity_GrindRail_EndGround_Left,
     CreateEntity_GrindRail_EndAir_Left,
     CreateEntity_MysteryItemBox,
-    CreateEntity_MultiplayerTeleport,
+    CreateEntity_CollectRingsLapTrigger,
 };
 
 #ifndef COLLECT_RINGS_ROM
