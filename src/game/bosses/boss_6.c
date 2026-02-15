@@ -1165,11 +1165,11 @@ static void SetPalette(EggGoRound *boss)
     u8 i;
     if (boss->invincibilityTimer > 0) {
         for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = sPalettes[(gStageTime & 2) / 2][i];
+            gObjPalette[8 * 16 + i] = sPalettes[(gStageTime & 2) / 2][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = sPalettes[1][i];
+            gObjPalette[8 * 16 + i] = sPalettes[1][i];
         }
     }
 

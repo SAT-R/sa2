@@ -37,6 +37,13 @@ static void Task_LoadStage(void);
 
 void CreateUnusedLevelSelect(void)
 {
+#ifdef BUG_FIX
+    // You can come into a situation where a backgorund gets put onto the queue,
+    // but the memory gets free'd.
+    // So we need to make sure the Background Copy Queue is clear.
+    PAUSE_BACKGROUNDS_QUEUE();
+    PAUSE_GRAPHICS_QUEUE();
+#endif
     struct Task *t = TaskCreate(Task_UnusedLevelSelectInit, sizeof(LevelSelect), 0x2000, 0, NULL);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;

@@ -1,8 +1,14 @@
-#include <malloc.h> // realloc
+//#include <malloc.h> // realloc
 #include <stdio.h> // printf
+#include <stdlib.h>
 #include <GL/gl.h>
+#include <math.h> // sinf/cosf
 #include "global.h" // TEMP for PLTT
+#include "core.h" // temp?
+#include "tilemap.h" // struct Tile
 #include "platform/shared/opengl.h"
+#include "trig.h" // ONE_CYCLE
+#include "game/sa1_sa2_shared/globals.h" // gCurrentLevel - TEMP: this shouldn't be exposed to the OpenGL backend...
 
 // NOTE: This is NOT final at all. EXPERIMENTAL!!!!!
 
@@ -11,15 +17,39 @@
 // TEMP
 static GLuint sTempTextureHandles[3] = { 0 };
 
-#define NUM_RGB_CHANNELS 4
-u8 tempRgbaPalette[16 * 32][NUM_RGB_CHANNELS] = {};
-u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
+#define TILES_PER_CHUNK_AXIS 12
+#define TILES_PER_CHUNK      (SQUARE(TILES_PER_CHUNK_AXIS))
+#define TILE_SIZE_PIXELS     (8 * 8)
+#define TILE_SIZE_RGBA       (TILE_SIZE_PIXELS * sizeof(u32))
+#define CHUNK_SIZE_RGBA      (TILES_PER_CHUNK * TILE_SIZE_RGBA)
+#define CHUNK_SIZE_TEXCOORD  (TILES_PER_CHUNK * sizeof(ChunkTileVertex))
+#define NUM_RGB_CHANNELS     4
+// u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
 
+typedef struct ColorRGBA {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} ColorRGBA;
 typedef struct {
     u8 *data;
     int width, height;
 } TextureBuffer;
 static TextureBuffer sDynTextureBuffer = { 0 };
+
+ColorRGBA tempRgbaPalette[16 * 32] = {};
+static Background *sActiveBackgrounds[4] = { 0 };
+
+void Debug_PrintMatrix(float *mtx)
+{
+    printf("%f %f %f %f\n"
+           "%f %f %f %f\n"
+           "%f %f %f %f\n"
+           "%f %f %f %f\n\n",
+           mtx[0], mtx[1], mtx[2], mtx[3], mtx[4], mtx[5], mtx[6], mtx[7], mtx[8], mtx[9], mtx[10], mtx[11], mtx[12], mtx[13], mtx[14],
+           mtx[15]);
+}
 
 static void TempConvertPLTTToRGBA8(void)
 {
@@ -30,14 +60,14 @@ static void TempConvertPLTTToRGBA8(void)
         float g = (float)((color & 0x3E0) >> 5) / 31.0;
         float b = (float)((color & 0x7C00) >> 10) / 31.0;
 
-        tempRgbaPalette[i][0] = r * 255.0;
-        tempRgbaPalette[i][1] = g * 255.0;
-        tempRgbaPalette[i][2] = b * 255.0;
-        tempRgbaPalette[i][3] = 1 * 255.0;
+        tempRgbaPalette[i].r = r * 255.0;
+        tempRgbaPalette[i].g = g * 255.0;
+        tempRgbaPalette[i].b = b * 255.0;
+        tempRgbaPalette[i].a = 1 * 255.0;
     }
 }
 
-static u8 *TempConvertPLTTEntryToRGBA8(u8 paletteId)
+static ColorRGBA *TempConvertPLTTEntryToRGBA8(u8 paletteId)
 {
     // Convert PLTT from ABGR1555 -> RGBA8
     u16 *pal4BPP = &PLTT[(paletteId + 16) * 16];
@@ -49,13 +79,13 @@ static u8 *TempConvertPLTTEntryToRGBA8(u8 paletteId)
         float g = (float)((color & 0x3E0) >> 5) / 31.0;
         float b = (float)((color & 0x7C00) >> 10) / 31.0;
 
-        tempRgbaPalette[paletteId * 16 + i][0] = r * 255.0;
-        tempRgbaPalette[paletteId * 16 + i][1] = g * 255.0;
-        tempRgbaPalette[paletteId * 16 + i][2] = b * 255.0;
-        tempRgbaPalette[paletteId * 16 + i][3] = 1 * 255.0;
+        tempRgbaPalette[paletteId * 16 + i].r = r * 255.0;
+        tempRgbaPalette[paletteId * 16 + i].g = g * 255.0;
+        tempRgbaPalette[paletteId * 16 + i].b = b * 255.0;
+        tempRgbaPalette[paletteId * 16 + i].a = 1 * 255.0;
     }
 
-    return tempRgbaPalette[paletteId * 16];
+    return &tempRgbaPalette[paletteId * 16];
 }
 
 // TODO: This should be done offline.
@@ -71,28 +101,362 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
         } else {
             printf("realloc: w 0x%X, h 0x%X, full: 0x%X\n", width, height, (u32)(width * height * sizeof(u32)));
         }
+
+        sDynTextureBuffer.width = width;
+        sDynTextureBuffer.height = height;
     }
 
-    u8 *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
-
-    sDynTextureBuffer.width = width;
-    sDynTextureBuffer.height = height;
+    ColorRGBA *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
 
     u16 widthInTiles = width >> 3;
 
     int numSourcePixels = width * height;
     for (int frameY = 0; frameY < height; frameY++) {
         for (int frameX = 0; frameX < width; frameX++) {
-            u8 colorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7));
+            int tileIndex = (frameY >> 3) * widthInTiles + (frameX >> 3);
+            int tileColorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7)) + (tileIndex * (8 * 8));
+            int targetColorIndex = ((frameY * width) + frameX);
 
-            bool8 doShift = (colorIndex & 1);
-            u8 textureColorId = bitmap4bpp[colorIndex >> 1] & (0xF << (doShift * 4));
+            bool8 doShift = (targetColorIndex & 1);
+            int textureColorId = bitmap4bpp[tileColorIndex >> 1] & (0xF << (doShift * 4));
             textureColorId >>= doShift * 4;
 
-            sDynTextureBuffer.data[colorIndex * 4 + 0] = tempRgbaPalette[textureColorId][0];
-            sDynTextureBuffer.data[colorIndex * 4 + 1] = tempRgbaPalette[textureColorId][1];
-            sDynTextureBuffer.data[colorIndex * 4 + 2] = tempRgbaPalette[textureColorId][2];
-            sDynTextureBuffer.data[colorIndex * 4 + 3] = 0xFF;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 0] = texturePalette[textureColorId].r;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 1] = texturePalette[textureColorId].g;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 2] = texturePalette[textureColorId].b;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 3] = (textureColorId == 0) ? 0x00 : 0xFF;
+        }
+    }
+}
+
+typedef struct ChunkTileVertex {
+    u8 x, y;
+} ChunkTileVertex;
+
+typedef struct ChunkGfx {
+    ChunkTileVertex *tileVerts;
+    u8 *rgbaChunks;
+    u16 count;
+    u16 capacity;
+} ChunkGfx;
+
+static ChunkGfx sChunkGfx = { 0 };
+#define RENDERED_CHUNKS_W ((DISPLAY_WIDTH / 96) + 2)
+#define RENDERED_CHUNKS_H ((DISPLAY_HEIGHT / 96) + 2)
+#define RENDERED_CHUNKS   (RENDERED_CHUNKS_W * RENDERED_CHUNKS_H)
+
+// Set of chunks that have to be drawn this frame
+typedef struct ChunkSet {
+    u16 *items;
+    u16 count, capacity;
+} ChunkSet;
+static ChunkSet sChunkSet = { 0 };
+
+// TODO: minY should be from upper-left corner, not bottom-left!
+void OpenGL_RenderRGBABuffer(u8 *buffer, u16 bufferWidth, u16 bufferHeight, float minX, float minY, float maxX, float maxY)
+{
+    glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[2]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glBegin(GL_TRIANGLES);
+    {
+        glTexCoord2f(0.0, 0.0);
+        glVertex2f(minX, maxY);
+        glTexCoord2f(1.0, 1.0);
+        glVertex2f(maxX, minY);
+        glTexCoord2f(0.0, 1.0);
+        glVertex2f(minX, minY);
+
+        glTexCoord2f(0.0, 0.0);
+        glVertex2f(minX, maxY);
+        glTexCoord2f(1.0, 0.0);
+        glVertex2f(maxX, maxY);
+        glTexCoord2f(1.0, 1.0);
+        glVertex2f(maxX, minY);
+    }
+    glEnd();
+}
+
+void CreateChunkSet(void)
+{
+    const int defaultCap = 16;
+    void *mem = malloc(defaultCap * sizeof(*sChunkSet.items));
+    sChunkSet.items = mem;
+    sChunkSet.items[0] = 0;
+    sChunkSet.count = 1; // initialize to 1, to skip zero-filled chunk (which always exists)
+    sChunkSet.capacity = defaultCap;
+}
+
+void FindUniqueChunks(ChunkSet *set, Background *bg, u16 mapChunkX, u16 mapChunkY, u8 screenChunkWidth, u8 screenChunkHeight)
+{
+    for (int y = 0; y < screenChunkHeight; y++) {
+        for (int x = 0; x < screenChunkWidth; x++) {
+            u32 screenChunkIndex = (mapChunkY + y) * bg->mapWidth + (mapChunkX + x);
+            const u16 *chunk = &bg->metatileMap[screenChunkIndex];
+            const u16 chunkId = *chunk;
+            bool8 isInSet = FALSE;
+
+            // Find chunk ID in set
+            for (int setI = 0; setI < set->count; setI++) {
+                if (set->items[setI] == chunkId) {
+                    isInSet = TRUE;
+                    break;
+                }
+            }
+
+            // Add if not inside
+            if (!isInSet) {
+                while (set->count + 1 >= set->capacity) {
+                    set->items = realloc(set->items, set->capacity * 2 * sizeof(*set->items));
+                    set->capacity *= 2;
+                }
+
+                set->items[set->count] = chunkId;
+                set->count++;
+            }
+        }
+    }
+}
+
+void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
+{
+    const u8 *tileset = bg->graphics.src;
+    int chunkTileCount = bg->xTiles * bg->yTiles;
+    u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+    bool8 mapIs4BPP = (gBgCntRegs[bgId] & BGCNT_256COLOR) ? FALSE : TRUE;
+
+    if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
+        // NOTE(Jace): Non-stage maps do not have any "chunks",
+        //             but chunks themselves get rendered like all other tilemaps
+        chunkIndex = 0;
+    }
+
+    for (int tileIdY = 0; tileIdY < bg->yTiles; tileIdY++) {
+        for (int tileIdX = 0; tileIdX < bg->xTiles; tileIdX++) {
+            // int tileId = tileIdY * bg->xTiles + tileIdX;
+            ColorRGBA *dstTileRGBA = &dstBuffer[tileIdY * 8 * (bg->xTiles * 8) + tileIdX * 8];
+
+            if (mapIs4BPP) {
+                int tileInChunkIndex = (chunkIndex * chunkTileCount) + tileIdY * bg->xTiles + tileIdX;
+                Tile tile = *(const Tile *)&bg->layout[tileInChunkIndex];
+                const u8 *srcTile4BPP = &tileset[(tile.index * TILE_SIZE_PIXELS) >> 1];
+
+                for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
+                    int tileY = (tile.yFlip) ? (7 - tileLoopY) : tileLoopY;
+                    for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
+                        int tileX = (tile.xFlip) ? (7 - tileLoopX) : tileLoopX;
+
+                        int targetColorIndex = ((tileY * 8) + tileX);
+                        bool8 doShift = (targetColorIndex & 1);
+                        int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
+                        colorId >>= doShift * 4;
+
+                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[tile.pal * 16 + colorId]);
+                        int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
+                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
+                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
+                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
+                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                    }
+                }
+            } else {
+                // 8BPP
+                u8 tile = ((const u8 *)bg->layout)[tileIdY * bg->xTiles + tileIdX];
+                const u8 *srcTile8BPP = &tileset[tile * TILE_SIZE_PIXELS];
+
+                for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
+                    int tileY = tileLoopY;
+                    for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
+                        int tileX = tileLoopX;
+
+                        int targetColorIndex = ((tileY * 8) + tileX);
+                        int colorId = srcTile8BPP[targetColorIndex];
+
+                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[colorId]);
+                        int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
+                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
+                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
+                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
+                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void CacheUncachedUniqueChunks(Background *bg, ChunkSet *set, ChunkGfx *gfx)
+{
+    // if (!(bg->flags & (BACKGROUND_DISABLE_TILESET_UPDATE | BACKGROUND_DISABLE_PALETTE_UPDATE)))
+    {
+        for (int chunkSetItemIndex = 0; chunkSetItemIndex < sChunkSet.count; chunkSetItemIndex++) {
+            int chunkIndex = sChunkSet.items[chunkSetItemIndex];
+            if (chunkIndex == 0)
+                continue;
+
+            ColorRGBA *chunkRGBA = (ColorRGBA *)(&gfx->rgbaChunks[chunkSetItemIndex * CHUNK_SIZE_RGBA]);
+            const u8 *tileset4BPP = &((const u8 *)bg->graphics.src)[0];
+            RenderTilemap(chunkRGBA, bg, chunkIndex);
+        }
+    }
+}
+
+u16 GetChunkSetIndexFromChunkId(ChunkSet *set, u16 chunkId)
+{
+    for (int i = 0; i < set->count; i++) {
+        if (set->items[i] == chunkId) {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
+void RenderScreenChunks(ChunkSet *set, ChunkGfx *gfx, Background *bg, s16 mapChunkX, s16 mapChunkY, s16 screenX, s16 screenY,
+                        u8 screenChunkWidth, u8 screenChunkHeight)
+{
+    for (int chunkY = 0; chunkY < screenChunkHeight; chunkY++) {
+        int chunkPosIndexY = (mapChunkY + chunkY);
+        if (chunkPosIndexY >= bg->mapHeight) {
+            break;
+        }
+
+        for (int chunkX = 0; chunkX < screenChunkWidth; chunkX++) {
+            int chunkPosIndexX = (mapChunkX + chunkX);
+            if (chunkPosIndexX >= bg->mapWidth) {
+                break;
+            }
+            int chunkPosIndex = chunkPosIndexY * bg->mapWidth + chunkPosIndexX;
+            int chunkSetIndex = GetChunkSetIndexFromChunkId(set, bg->metatileMap[chunkPosIndex]);
+            int chunkStartIndex = chunkSetIndex * CHUNK_SIZE_RGBA;
+            int chunkScreenX = (screenX + (chunkX * 96));
+            int chunkScreenY = DISPLAY_HEIGHT - (screenY + (chunkY * 96));
+            OpenGL_RenderRGBABuffer(&gfx->rgbaChunks[chunkStartIndex], 96, 96, chunkScreenX, chunkScreenY, chunkScreenX + 96,
+                                    chunkScreenY + 96);
+        }
+    }
+}
+
+void UpdateChunkGfx(ChunkGfx *gfx, Background *bg)
+{
+    u32 mapWidthPixels = bg->mapWidth * 96;
+    u32 mapHeightPixels = bg->mapHeight * 96;
+    u16 mapChunkX = bg->scrollX / 96;
+    u16 mapChunkY = bg->scrollY / 96;
+    s16 screenX = -(bg->scrollX % 96u);
+    s16 screenY = 96 - (bg->scrollY % 96u);
+    u8 screenChunkWidth = MIN(bg->mapWidth - mapChunkX, RENDERED_CHUNKS_W);
+    u8 screenChunkHeight = MIN(bg->mapHeight - mapChunkY, RENDERED_CHUNKS_H);
+    // bool8 updateAll = TRUE;
+
+    if (sChunkGfx.tileVerts == NULL || sChunkGfx.rgbaChunks == NULL) {
+        const int DEFAULT_CAP = 16;
+        gfx->tileVerts = calloc(RENDERED_CHUNKS, CHUNK_SIZE_TEXCOORD * DEFAULT_CAP);
+        gfx->rgbaChunks = calloc(RENDERED_CHUNKS, 96 * 96 * NUM_RGB_CHANNELS * DEFAULT_CAP);
+        gfx->count = 1; // initialize to 1, to skip zero-filled chunk (which always exists)
+        gfx->capacity = DEFAULT_CAP;
+    }
+
+    // TODO/PERFORMANCE:
+    //   This should probably be two sets, like a "Double Buffer",
+    //   with the previous set not getting reset and chunks from it getting copied over if needed.
+    //   Both would somehow have to be reset on a stage transition
+    //   (more accurately: when the tileset/tilemap changes), though!
+    sChunkSet.count = 1; // initialize to 1, to skip zero-filled chunk (which always exists)
+    FindUniqueChunks(&sChunkSet, bg, mapChunkX, mapChunkY, screenChunkWidth, screenChunkHeight);
+
+    TempConvertPLTTToRGBA8();
+    CacheUncachedUniqueChunks(bg, &sChunkSet, &sChunkGfx);
+
+    // Draw metatile RGBA graphics
+    RenderScreenChunks(&sChunkSet, gfx, bg, mapChunkX, mapChunkY, screenX, screenY, screenChunkWidth, screenChunkHeight);
+
+#if 0
+    // NOTE: Need to call glEnableClientState(GL_TEXTURE_COORD_ARRAY) first!
+    // 
+    // Call using this:
+    void glTexCoordPointer(2, // coordinates per vertex
+ 	     GL_BYTE, // data type of each vertex coordinate
+ 	     0, // stride (0 = tightly packed)
+ 	     chunkIndex*CHUNK_SIZE_TEXCOORD);
+#endif
+}
+
+Background *SwitchActiveBackground(Background *bg)
+{
+    u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+
+    Background *prev = sActiveBackgrounds[bgId];
+    sActiveBackgrounds[bgId] = bg;
+    return prev;
+}
+
+// TODO/TEMP: The VRAM memory mimmicking the GBA, used by the software-renderer, shall not be part "hardware renderers".
+//            We need to initialize all sprites and tilemaps without hardcoded values (as happens in the base games).
+#define IN_VRAM(ptr) (((ptr) >= (void *)&VRAM[0]) && ((ptr) < (void *)&VRAM[VRAM_SIZE]))
+
+void OpenGL_ProcessBackgroundsCopyQueue(void)
+{
+    // 'renderOrder' contains one background ID in each slot.
+    u8 renderOrder[4] = { 0 };
+    u8 orderIndex = 0;
+    bool8 needsUpdate[4] = { 0 };
+
+    while (gBackgroundsCopyQueueCursor != gBackgroundsCopyQueueIndex) {
+        Background *bg = gBackgroundsCopyQueue[gBackgroundsCopyQueueCursor];
+        INC_BACKGROUNDS_QUEUE_CURSOR(gBackgroundsCopyQueueCursor);
+
+        if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX) && bg->scrollY == bg->prevScrollY)
+            continue;
+
+        Background *prev = SwitchActiveBackground(bg);
+        u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+        needsUpdate[bgId] = (prev != bg);
+    }
+
+    for (int prioIndex = 3; prioIndex >= 0; prioIndex--) {
+        for (int bgId = 3; bgId >= 0; bgId--) {
+            u8 bgPrio = gBgCntRegs[bgId] & BGCNT_PRIORITY(0x3);
+            if (bgPrio == prioIndex) {
+                renderOrder[orderIndex] = bgId;
+
+                if (++orderIndex == 4) {
+                    goto loopBreak;
+                }
+            }
+        }
+    }
+loopBreak:
+
+    for (orderIndex = 0; orderIndex < 4; orderIndex++) {
+        u8 bgId = renderOrder[orderIndex];
+        Background *bg = sActiveBackgrounds[bgId];
+        s16 bgScrollX = gBgScrollRegs[bgId][0];
+        s16 bgScrollY = gBgScrollRegs[bgId][1];
+
+        if (gDispCnt & (DISPCNT_BG0_ON << bgId)) {
+            if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+                UpdateChunkGfx(&sChunkGfx, bg);
+            } else {
+                // TEMP!!!
+                // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
+                // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
+                if (needsUpdate[bgId]) {
+                    if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
+                        free(bg->graphics.dest);
+                    }
+                    bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
+                }
+                TempConvertPLTTToRGBA8();
+                RenderTilemap(bg->graphics.dest, bg, 0);
+                OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
+                                        bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
+            }
         }
     }
 }
@@ -102,6 +466,11 @@ void OpenGL_OnInit()
     // Enable texturing
     glEnable(GL_TEXTURE_2D);
 
+    // Enable blending via Alpha Test
+    // TODO: Maybe only do this for sprites?
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_EQUAL, 1.0);
+
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
 
@@ -109,14 +478,78 @@ void OpenGL_OnInit()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glGenTextures(2, &sTempTextureHandles[0]);
+    glGenTextures(3, &sTempTextureHandles[0]);
+
+    // TODO: Maybe this shuld be done in the platform layers?
+    CreateChunkSet();
+}
+
+void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
+{
+    glMatrixMode(GL_MODELVIEW);
+    s16 rotation = (transform->rotation & ONE_CYCLE);
+    float rotNormalized = (((float)rotation) / 1024.0f);
+    float theta = -(2.0f * M_PI * rotNormalized);
+    float sinTheta = sinf(theta);
+    float cosTheta = cosf(theta);
+    float modelViewMatrix[] = {
+#if 01
+        1,
+        0,
+        0,
+        0, //
+        0,
+        1,
+        0,
+        0, //
+        0,
+        0,
+        1,
+        0, //
+        0,
+        0,
+        0,
+        1, //
+#else
+        +cosTheta,
+        +sinTheta,
+        0,
+        0,
+        -sinTheta,
+        +cosTheta,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+#endif
+    };
+
+    // glLoadMatrixf(modelViewMatrix);
+    //  glTranslatef(transform->x, transform->y, 0);
+
+    // Debug_PrintMatrix(modelViewMatrix);
+
+    // TODO: This doesn't happen in the original TransformSprite() procedure!
+    SPRITE_FLAG_SET(sprite, ROT_SCALE_ENABLE);
 }
 
 void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 {
     const SpriteOffset *dims = sprite->dimensions;
+    int x = sprite->x;
+    int y = sprite->y;
 
     if (dims != (void *)-1) {
+        if (!(sprite->oamFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE)) {
+            //	glMatrixMode(GL_MODELVIEW);
+            //	glLoadIdentity();
+        }
         // Convert vertices screenspace -> unit space
         glMatrixMode(GL_PROJECTION);
 #if 0
@@ -124,57 +557,55 @@ void OpenGL_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
 #else
         float a = 2.0f / DISPLAY_WIDTH;
         float b = 2.0f / DISPLAY_HEIGHT;
-        float projMtx[] = { a, 0, 0, 0, 0, b, 0, 0, 0, 0, 1, 0, -1, -1, 0, 1 };
+        float projMtx[] = { +a, 0,  0, 0, //
+                            0,  +b, 0, 0, //
+                            0,  0,  0, 0, //
+                            -1, -1, 0, +1 }; //
         glLoadMatrixf(projMtx);
 #endif
 
         TempConvert4bppToRGBA8_DynTextureBuffer(sprite->graphics.src, dims->width, dims->height, sprite->palId + oamPaletteNum);
 
-        // glGenTextures(1, &sTempTextureHandles[2]);
-        glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[2]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, dims->width, dims->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, sDynTextureBuffer.data);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-        // glClearColor((float)tempRgbaPalette[1][0] / 255.,
-        //              (float)tempRgbaPalette[1][1] / 255.,
-        //              (float)tempRgbaPalette[1][2] / 255.,
-        //              1.0);
-        // glClear(GL_COLOR_BUFFER_BIT);
-
-        float minX = sprite->x - (dims->width >> 1);
+#if 0
+		x -= (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) ? dims->width - dims->offsetX : dims->offsetX;
+		y -= (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) ? dims->height - dims->offsetY : dims->offsetY;
+#else
+        x -= dims->offsetX;
+        y -= dims->offsetY;
+#endif
+        x += (dims->width >> 1);
+        y += (dims->height >> 1);
+        float minX = x - (dims->width >> 1);
         float maxX = minX + dims->width;
 
-        float minY = sprite->y - (dims->height >> 1);
+        float minY = (DISPLAY_HEIGHT - y) - (dims->height >> 1);
         float maxY = minY + dims->height;
 
-        glBegin(GL_TRIANGLES);
-        {
-            glTexCoord2f(0.0, 0.0);
-            glVertex2f(minX, maxY);
-            glTexCoord2f(1.0, 1.0);
-            glVertex2f(maxX, minY);
-            glTexCoord2f(0.0, 1.0);
-            glVertex2f(minX, minY);
-
-            glTexCoord2f(0.0, 0.0);
-            glVertex2f(minX, maxY);
-            glTexCoord2f(1.0, 0.0);
-            glVertex2f(maxX, maxY);
-            glTexCoord2f(1.0, 1.0);
-            glVertex2f(maxX, minY);
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+            float temp = minX;
+            minX = maxX;
+            maxX = temp;
         }
-        glEnd();
+
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
+            float temp = minY;
+            minY = maxY;
+            maxY = temp;
+        }
+
+        OpenGL_RenderRGBABuffer(sDynTextureBuffer.data, dims->width, dims->height, minX, minY, maxX, maxY);
     }
+
+    // TODO: This doesn't happen in the original DisplaySprite() procedure!
+    SPRITE_FLAG_CLEAR(sprite, ROT_SCALE_ENABLE);
 }
 
 void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight)
 {
     glViewport(0, 0, viewportWidth, viewportHeight);
 
+    Background **bgQueue = &gBackgroundsCopyQueue[0];
+//    __debugbreak();
 #if 0
     // Don't convert input-vertices
     glMatrixMode(GL_PROJECTION);
@@ -195,6 +626,7 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
 
     // TempConvertPLTTToRGBA8();
 
+#if 0
     // Convert the "software-rendered" image from ABGR1555 -> RGBA8
     for (int i = 0; i < ARRAY_COUNT(tempRgbaFrame); i++) {
         u16 color = ((u16 *)tempBufferPixels)[i];
@@ -208,6 +640,7 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
         tempRgbaFrame[i][3] = 1 * 255.0;
     }
 
+    // Update palette
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[0]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempRgbaPalette);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
@@ -215,35 +648,5 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[1]);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempRgbaFrame);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glClearColor(1.0, 1.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[1]);
-    glBegin(GL_TRIANGLES);
-    {
-        glTexCoord2f(0.0, 0.0);
-        glVertex2f(0.0, +DISPLAY_HEIGHT);
-        glTexCoord2f(1.0, 1.0);
-        glVertex2f(+DISPLAY_WIDTH, 0);
-        glTexCoord2f(0.0, 1.0);
-        glVertex2f(0, 0);
-
-        glTexCoord2f(0.0, 0.0);
-        glVertex2f(0, DISPLAY_HEIGHT);
-        glTexCoord2f(1.0, 0.0);
-        glVertex2f(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-        glTexCoord2f(1.0, 1.0);
-        glVertex2f(DISPLAY_WIDTH, 0);
-    }
-    glEnd();
+#endif
 }

@@ -118,7 +118,7 @@ typedef struct {
     /* 0x36 */ u16 prevScrollY;
 
     /* Only used by stage maps (they are encoded as Tilemaps) */
-    /* 0x38 */ const u16 *metatileMap;
+    /* 0x38 */ const MetatileIndexType *metatileMap;
     /* 0x3C */ u16 mapWidth;
     /* 0x3E */ u16 mapHeight;
 } Background; /* size = 0x40 */

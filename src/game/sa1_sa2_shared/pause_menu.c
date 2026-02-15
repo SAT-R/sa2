@@ -182,8 +182,8 @@ void Task_PauseMenuInit(void)
     m4aSongNumStart(SE_PAUSE_SCREEN);
 
     gFlags |= FLAGS_PAUSE_GAME;
-    DmaCopy16(3, &gObjPalette[249], pm->pal64, sizeof(pm->pal64));
-    DmaCopy16(3, &gObjPalette[252], pm->pal6A, sizeof(pm->pal6A));
+    DmaCopy16(3, &gObjPalette[15 * 16 + 9], pm->pal64, sizeof(pm->pal64));
+    DmaCopy16(3, &gObjPalette[15 * 16 + 12], pm->pal6A, sizeof(pm->pal6A));
 
     gCurTask->main = Task_PauseMenuUpdate;
 }
@@ -200,7 +200,7 @@ void sub_800AE58(void)
 {
     DmaCopy16(3, &Tileset_zone_1_act_1_fg[(4 * 16 * TILE_SIZE_4BPP) / sizeof(u16)], (void *)(OBJ_VRAM1 + 0x3EC0), 0x140);
 
-    gObjPalette[1] = RGB_WHITE;
+    gObjPalette[0 * 16 + 1] = RGB_WHITE;
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     gFlags &= ~FLAGS_PAUSE_GAME;
 }

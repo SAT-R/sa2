@@ -201,6 +201,13 @@ void InitSpecialStageScreenVram(void)
 {
     gSpecialStageVramPointer = (void *)OBJ_VRAM0;
     gSpecialStageSubMenuVramPointer = NULL;
+#ifdef BUG_FIX
+    // You can come into a situation where a backgorund gets put onto the queue,
+    // but the memory gets free'd.
+    // So we need to make sure the Background Copy Queue is clear.
+    PAUSE_BACKGROUNDS_QUEUE();
+    PAUSE_GRAPHICS_QUEUE();
+#endif
 }
 
 void SpecialStageDrawBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX,
