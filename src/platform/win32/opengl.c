@@ -420,10 +420,10 @@ void OpenGL_ProcessBackgroundsCopyQueue(void)
     }
 
     for (int prioIndex = 3; prioIndex >= 0; prioIndex--) {
-        for (int i = 3; i >= 0; i--) {
-            u8 bgPrio = gBgCntRegs[i] & BGCNT_PRIORITY(0x3);
+        for (int bgId = 3; bgId >= 0; bgId--) {
+            u8 bgPrio = gBgCntRegs[bgId] & BGCNT_PRIORITY(0x3);
             if (bgPrio == prioIndex) {
-                renderOrder[orderIndex] = i;
+                renderOrder[orderIndex] = bgId;
 
                 if (++orderIndex == 4) {
                     goto loopBreak;
