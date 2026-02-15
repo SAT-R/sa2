@@ -409,6 +409,8 @@ loopBreak:
     for (orderIndex = 0; orderIndex < 4; orderIndex++) {
         u8 bgId = renderOrder[orderIndex];
         Background *bg = sActiveBackgrounds[bgId];
+        s16 bgScrollX = gBgScrollRegs[bgId][0];
+        s16 bgScrollY = gBgScrollRegs[bgId][1];
 
         // TODO: Find way to go without REG_DISPCNT!
         if (REG_DISPCNT & (DISPCNT_BG0_ON << bgId)) {
@@ -419,14 +421,15 @@ loopBreak:
                 // TEMP!!!
                 // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
                 // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
-                //if (needsUpdate[bgId]) {
+                // if (needsUpdate[bgId]) {
                 //}
-                //bg->graphics.dest = (needsUpdate[bgId]) ? malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA) : bg->graphics.dest;
+                // bg->graphics.dest = (needsUpdate[bgId]) ? malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA) :
+                // bg->graphics.dest;
                 bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
                 TempConvertPLTTToRGBA8();
                 RenderTilemap(bg->graphics.dest, bg, 0);
-                OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, 0, 0, bg->targetTilesX * 8,
-                                        bg->targetTilesY * 8);
+                OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
+                                        bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
                 free(bg->graphics.dest);
 #endif
             }
@@ -461,7 +464,8 @@ void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
 {
     glMatrixMode(GL_MODELVIEW);
     s16 rotation = (transform->rotation & ONE_CYCLE);
-    float theta = -(2.0f * M_PI * (((float)rotation) / 1024.0f));
+    float rotNormalized = (((float)rotation) / 1024.0f);
+    float theta = -(2.0f * M_PI * rotNormalized);
     float sinTheta = sinf(theta);
     float cosTheta = cosf(theta);
     float modelViewMatrix[] = {
@@ -501,8 +505,9 @@ void OpenGL_TransformSprite(Sprite *sprite, SpriteTransform *transform)
         1,
 #endif
     };
-    glLoadMatrixf(modelViewMatrix);
-    // glTranslatef(transform->x, transform->y, 0);
+
+    // glLoadMatrixf(modelViewMatrix);
+    //  glTranslatef(transform->x, transform->y, 0);
 
     // Debug_PrintMatrix(modelViewMatrix);
 

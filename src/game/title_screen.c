@@ -684,8 +684,8 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         bg->unk20 = 0;
         bg->unk22 = 0;
         bg->unk24 = 0;
-        bg->targetTilesX = 30;
-        bg->targetTilesY = 20;
+        bg->targetTilesX = DISPLAY_WIDTH / 8;
+        bg->targetTilesY = DISPLAY_HEIGHT / 8;
         bg->paletteOffset = 0;
         bg->flags = 0x10;
         DrawBackground(bg);
@@ -846,7 +846,7 @@ static void Task_IntroPanSkyAnim(void)
         bg0->flags = 0x10;
         DrawBackground(bg0);
 
-        gBgScrollRegs[0][1] = 0x4F;
+        gBgScrollRegs[0][1] = 79;
         gCurTask->main = Task_IntroSkyAnim;
 
         titleScreen->animFrame = 0;
