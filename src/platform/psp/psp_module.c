@@ -33,8 +33,7 @@ int callbackThread(SceSize args, void *argp)
 int setupPspCallbacks(void)
 {
     int thid = sceKernelCreateThread("update_thread", callbackThread, 0x11, 0xFA0, 0, 0);
-    if (thid >= 0)
-    {
+    if (thid >= 0) {
         sceKernelStartThread(thid, 0, 0);
     }
     return thid;

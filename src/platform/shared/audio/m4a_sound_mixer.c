@@ -370,10 +370,7 @@ void MP2K_event_fine(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 
 // mPtr aligns to 4 bytes on MIPS; match that here before reading pointer data
 #ifdef __mips__
-static inline u8 *alignCmdPtr4(u8 *p)
-{
-    return (u8 *)(((uintptr_t)p + 3) & ~(uintptr_t)3);
-}
+static inline u8 *alignCmdPtr4(u8 *p) { return (u8 *)(((uintptr_t)p + 3) & ~(uintptr_t)3); }
 #else
 #define alignCmdPtr4(p) (p)
 #endif

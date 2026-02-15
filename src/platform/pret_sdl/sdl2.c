@@ -114,7 +114,7 @@ double accumulator = 0.0;
 static FILE *sSaveFile = NULL;
 
 extern void AgbMain(void);
-void DoSoftReset(void) {};
+void DoSoftReset(void) { };
 
 void ProcessSDLEvents(void);
 void VDraw(SDL_Texture *texture);
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 #ifdef __PSP__
     // SDL_RenderSetLogicalSize is broken on PSP, stretch to fill manually
-    pspDestRect = (SDL_Rect){ 0, 0, PSP_SCREEN_W, PSP_SCREEN_H };
+    pspDestRect = (SDL_Rect) { 0, 0, PSP_SCREEN_W, PSP_SCREEN_H };
 #else
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 #endif
@@ -1375,7 +1375,7 @@ const u8 spriteSizes[][2] = {
     { 32, 64 },
 };
 
-#define isbgEnabled(x)     ((REG_DISPCNT >> 8) & 0xF) & (1 << x)
+#define isbgEnabled(x) ((REG_DISPCNT >> 8) & 0xF) & (1 << x)
 
 // outputs the blended pixel in colorOutput, the prxxx are the bg priority and
 // subpriority, pixelpos is pixel offset in scanline
@@ -1538,101 +1538,101 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
             bool is8BPP = oam->split.bpp & 1;
 
             {
-            uint8_t *tiledata = (uint8_t *)objtiles;
-            uint16_t *sprpal = (uint16_t *)(PLTT + (0x200 / 2));
-            for (int local_x = -half_width; local_x <= half_width; local_x++) {
-                int local_mosaicX;
-                int tex_x;
-                int tex_y;
+                uint8_t *tiledata = (uint8_t *)objtiles;
+                uint16_t *sprpal = (uint16_t *)(PLTT + (0x200 / 2));
+                for (int local_x = -half_width; local_x <= half_width; local_x++) {
+                    int local_mosaicX;
+                    int tex_x;
+                    int tex_y;
 
-                unsigned int global_x = local_x + x;
+                    unsigned int global_x = local_x + x;
 
-                if (global_x < 0 || global_x >= DISPLAY_WIDTH)
-                    continue;
-
-                if (oam->split.mosaic == 1) {
-                    // mosaic effect has to be applied to global coordinates otherwise
-                    // the mosaic will scroll
-                    local_mosaicX = applySpriteHorizontalMosaicEffect(global_x) - x;
-                    tex_x = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8) + (width / 2);
-                    tex_y = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8) + (height / 2);
-                } else {
-                    tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8) + (width / 2);
-                    tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8) + (height / 2);
-                }
-
-                /* Check if transformed coordinates are inside bounds. */
-
-                if (tex_x >= width || tex_y >= height || tex_x < 0 || tex_y < 0)
-                    continue;
-
-                if (flipX)
-                    tex_x = width - tex_x - 1;
-                if (flipY)
-                    tex_y = height - tex_y - 1;
-
-                int tile_x = tex_x & 7;
-                int tile_y = tex_y & 7;
-                int block_x = tex_x >> 3;
-                int block_y = tex_y >> 3;
-                int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width >> 3) : 16)) + block_x);
-                uint16_t pixel = 0;
-
-                uint16_t *pixpal;
-                if (!is8BPP) {
-                    int tileDataIndex = ((block_offset + oam->split.tileNum) << 5) + (tile_y << 2) + (tile_x >> 1);
-                    pixel = tiledata[tileDataIndex];
-                    if (tile_x & 1)
-                        pixel >>= 4;
-                    else
-                        pixel &= 0xF;
-                    pixpal = sprpal + (oam->split.paletteNum << 4);
-#if ENABLE_VRAM_VIEW
-                    vramPalIdBuffer[0x800 + (tileDataIndex >> 5)] = 16 + oam->split.paletteNum;
-#endif
-                } else {
-                    pixel = tiledata[((block_offset * 2 + oam->split.tileNum) << 5) + (tile_y << 3) + tile_x];
-                    pixpal = sprpal;
-                }
-
-                if (pixel != 0) {
-                    uint16_t color = pixpal[pixel];
-
-                    // if sprite mode is 2 then write to the window mask instead
-                    if (isObjWin) {
-                        if (scanline->winMask[global_x] & WINMASK_WINOUT)
-                            scanline->winMask[global_x] = (REG_WINOUT >> 8) & 0x3F;
+                    if (global_x < 0 || global_x >= DISPLAY_WIDTH)
                         continue;
+
+                    if (oam->split.mosaic == 1) {
+                        // mosaic effect has to be applied to global coordinates otherwise
+                        // the mosaic will scroll
+                        local_mosaicX = applySpriteHorizontalMosaicEffect(global_x) - x;
+                        tex_x = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8) + (width / 2);
+                        tex_y = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8) + (height / 2);
+                    } else {
+                        tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8) + (width / 2);
+                        tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8) + (height / 2);
                     }
-                    // this code runs if pixel is to be drawn
-                    if (global_x < DISPLAY_WIDTH && global_x >= 0) {
-                        // check if its enabled in the window (if window is enabled)
-                        winShouldBlendPixel = (windowsEnabled == false || scanline->winMask[global_x] & WINMASK_CLR);
 
-                        // has to be separated from the blend mode switch statement
-                        // because of OBJ semi transparancy feature
-                        if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent) {
-                            uint16_t targetA = color;
-                            uint16_t targetB = 0;
-                            if (alphaBlendSelectTargetB(scanline, &targetB, oam->split.priority, 0, global_x, false)) {
-                                color = alphaBlendColor(targetA, targetB, REG_BLDALPHA & 0x1F, (REG_BLDALPHA >> 8) & 0x1F);
-                            }
-                        } else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) {
-                            switch (blendMode) {
-                                case 2:
-                                    color = alphaBrightnessIncrease(color, REG_BLDY & 0x1F);
-                                    break;
-                                case 3:
-                                    color = alphaBrightnessDecrease(color, REG_BLDY & 0x1F);
-                                    break;
-                            }
+                    /* Check if transformed coordinates are inside bounds. */
+
+                    if (tex_x >= width || tex_y >= height || tex_x < 0 || tex_y < 0)
+                        continue;
+
+                    if (flipX)
+                        tex_x = width - tex_x - 1;
+                    if (flipY)
+                        tex_y = height - tex_y - 1;
+
+                    int tile_x = tex_x & 7;
+                    int tile_y = tex_y & 7;
+                    int block_x = tex_x >> 3;
+                    int block_y = tex_y >> 3;
+                    int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width >> 3) : 16)) + block_x);
+                    uint16_t pixel = 0;
+
+                    uint16_t *pixpal;
+                    if (!is8BPP) {
+                        int tileDataIndex = ((block_offset + oam->split.tileNum) << 5) + (tile_y << 2) + (tile_x >> 1);
+                        pixel = tiledata[tileDataIndex];
+                        if (tile_x & 1)
+                            pixel >>= 4;
+                        else
+                            pixel &= 0xF;
+                        pixpal = sprpal + (oam->split.paletteNum << 4);
+#if ENABLE_VRAM_VIEW
+                        vramPalIdBuffer[0x800 + (tileDataIndex >> 5)] = 16 + oam->split.paletteNum;
+#endif
+                    } else {
+                        pixel = tiledata[((block_offset * 2 + oam->split.tileNum) << 5) + (tile_y << 3) + tile_x];
+                        pixpal = sprpal;
+                    }
+
+                    if (pixel != 0) {
+                        uint16_t color = pixpal[pixel];
+
+                        // if sprite mode is 2 then write to the window mask instead
+                        if (isObjWin) {
+                            if (scanline->winMask[global_x] & WINMASK_WINOUT)
+                                scanline->winMask[global_x] = (REG_WINOUT >> 8) & 0x3F;
+                            continue;
                         }
+                        // this code runs if pixel is to be drawn
+                        if (global_x < DISPLAY_WIDTH && global_x >= 0) {
+                            // check if its enabled in the window (if window is enabled)
+                            winShouldBlendPixel = (windowsEnabled == false || scanline->winMask[global_x] & WINMASK_CLR);
 
-                        // write pixel to pixel framebuffer
-                        pixels[global_x] = color | (1 << 15);
+                            // has to be separated from the blend mode switch statement
+                            // because of OBJ semi transparancy feature
+                            if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent) {
+                                uint16_t targetA = color;
+                                uint16_t targetB = 0;
+                                if (alphaBlendSelectTargetB(scanline, &targetB, oam->split.priority, 0, global_x, false)) {
+                                    color = alphaBlendColor(targetA, targetB, REG_BLDALPHA & 0x1F, (REG_BLDALPHA >> 8) & 0x1F);
+                                }
+                            } else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) {
+                                switch (blendMode) {
+                                    case 2:
+                                        color = alphaBrightnessIncrease(color, REG_BLDY & 0x1F);
+                                        break;
+                                    case 3:
+                                        color = alphaBrightnessDecrease(color, REG_BLDY & 0x1F);
+                                        break;
+                                }
+                            }
+
+                            // write pixel to pixel framebuffer
+                            pixels[global_x] = color | (1 << 15);
+                        }
                     }
                 }
-            }
             }
         }
     }
@@ -1825,8 +1825,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
                                 case 1: {
                                     char isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
                                     // find targetB and blend it
-                                    if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos,
-                                                                isSpriteBlendingEnabled)) {
+                                    if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos, isSpriteBlendingEnabled)) {
                                         color = alphaBlendColor(targetA, targetB, REG_BLDALPHA & 0x1F, (REG_BLDALPHA >> 8) & 0x1F);
                                     }
                                 } break;

@@ -1369,7 +1369,7 @@ void MP2K_event_memacc(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *trac
             return;
     }
 
-cond_true : {
+cond_true: {
     {
         void (*func)(struct MP2KPlayerState *, struct MP2KTrack *) = *(&gMPlayJumpTable[1]);
         func(mplayInfo, track);
