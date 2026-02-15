@@ -40,10 +40,10 @@ static void GuardRoboInit(struct SpecialStageGuardRobo *guardRobo)
     u8 level = guardRobo->stage->zone;
     const struct UNK_80DF670 *sprites = gUnknown_080DF914;
     s16 maxSize = MaxSpriteSize(sprites);
-    void *vramOld = gUnknown_03005B5C;
+    void *vramOld = gSpecialStageVramPointer;
 
-    guardRobo->unk34 = gUnknown_03005B5C;
-    gUnknown_03005B5C += maxSize * TILE_SIZE_4BPP;
+    guardRobo->vram = gSpecialStageVramPointer;
+    gSpecialStageVramPointer += maxSize * TILE_SIZE_4BPP;
 
     sub_8071380(&guardRobo->sprite, vramOld, DISPLAY_WIDTH / 2, (DISPLAY_HEIGHT / 2) - 20, 7, sprites);
     guardRobo->sprites = sprites;

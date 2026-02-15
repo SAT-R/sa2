@@ -6,10 +6,10 @@
 #include "game/special_stage/data.h"
 #include "sprite.h"
 
-extern void *gUnknown_03005B58;
-extern void *gUnknown_03005B5C;
+extern void *gSpecialStageSubMenuVramPointer;
+extern void *gSpecialStageVramPointer;
 
-#define ResetSpecialStateScreenSubMenuVram() ({ gUnknown_03005B58 = NULL; })
+#define ResetSpecialStateScreenSubMenuVram() ({ gSpecialStageSubMenuVramPointer = NULL; })
 
 #define RENDER_TARGET_SCREEN   0
 #define RENDER_TARGET_SUB_MENU 1

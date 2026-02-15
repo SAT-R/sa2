@@ -194,7 +194,7 @@ void Task_InitComponents(void)
         case 0:
             stage->physicsTask = CreateSpecialStagePhysics(stage);
             stage->playerTask = CreateSpecialStagePlayer(stage);
-            stage->screenVram = gUnknown_03005B5C;
+            stage->screenVram = gSpecialStageVramPointer;
             stage->guardRoboTask = CreateSpecialStageGuardRobo(stage);
             break;
         case 1:

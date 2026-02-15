@@ -58,7 +58,7 @@ SECTIONS {
         build/collect_rings/src/sa2/game/sa1_sa2_shared/interactables/ramp.o(.text);
         build/collect_rings/src/sa2/game/interactables_1/spikes.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/interactables/grind_rail.o(.text);
-        build/collect_rings/src/sa2/game/interactables_2/multiplayer_teleport.o(.text);
+        build/collect_rings/src/sa2/game/interactables_2/collect_rings_lap_trigger.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/dust_cloud.o(.text);
         build/collect_rings/src/sa2/game/sa1_sa2_shared/collect_ring_effect.o(.text);
         build/collect_rings/src/sa2/game/multiplayer/mp_attack_2_effect.o(.text);

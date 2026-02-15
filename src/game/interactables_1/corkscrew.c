@@ -91,7 +91,7 @@ void sub_8060ED0(void)
     }
 
     if (I(player->qWorldX) - x > 0x230) {
-        if (player->moveState & MOVESTATE_4) {
+        if (player->moveState & MOVESTATE_SPIN_ATTACK) {
             player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
@@ -119,12 +119,12 @@ void sub_8060ED0(void)
         player->qSpeedAirY = -Q(4.875);
         player->transition = PLTRANS_UNCURL;
         gCurTask->main = Task_8060D34;
-    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
         PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-        player->moveState |= MOVESTATE_4;
+        player->moveState |= MOVESTATE_SPIN_ATTACK;
         m4aSongNumStart(SE_SPIN_ATTACK);
-    } else if (!(player->moveState & MOVESTATE_4)) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
         player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
@@ -199,7 +199,7 @@ void sub_8061228(void)
     }
 
     if (I(player->qWorldX) - x < -0x230) {
-        if (player->moveState & MOVESTATE_4) {
+        if (player->moveState & MOVESTATE_SPIN_ATTACK) {
             player->transition = PLTRANS_CORKSCREW_END;
         } else {
             player->transition = PLTRANS_TOUCH_GROUND;
@@ -227,12 +227,12 @@ void sub_8061228(void)
         player->qSpeedAirY = -Q(4.875);
         player->transition = PLTRANS_UNCURL;
         gCurTask->main = sub_8061088;
-    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK) && player->frameInput & DPAD_DOWN) {
         player->charState = CHARSTATE_SPIN_ATTACK;
         PLAYERFN_CHANGE_SHIFT_OFFSETS(player, 6, 9);
-        player->moveState |= MOVESTATE_4;
+        player->moveState |= MOVESTATE_SPIN_ATTACK;
         m4aSongNumStart(SE_SPIN_ATTACK);
-    } else if (!(player->moveState & MOVESTATE_4)) {
+    } else if (!(player->moveState & MOVESTATE_SPIN_ATTACK)) {
         player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }

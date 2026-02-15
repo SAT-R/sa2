@@ -371,7 +371,7 @@
     "pipe_sequence.h": "c",
     "terrain_collision.h": "c",
     "indicators.h": "c",
-    "multiplayer_teleport.h": "c",
+    "collect_rings_lap_trigger.h": "c",
     "input_buffer.h": "c",
     "*.inc": "arm",
     "extra_ending_slides.h": "c",

@@ -29,11 +29,60 @@ struct TCG_SaveSectorData {
     u8 unk57;
     u8 unk58;
     u8 unk59;
-    u8 unk5A[0xA];
+    u8 unk5A[4];
+    u8 unk5E;
+    u8 unk5F;
+    u8 unk60;
+    u8 unk61;
+    u8 unk62;
+    u8 unk63;
     u32 unk64;
     u8 unk68;
     u8 unk69;
-    u8 pad[0x7EE];
+
+    // size: 0x7EE
+    // Probably something special from now on
+    u8 unk6A[6];
+    u8 unk70;
+    u8 unk71;
+    u8 unk72;
+    u8 unk73;
+    u8 unk74;
+    u8 filler75[0xB];
+    u8 unk80[15];
+    u8 filler90[0x49];
+
+    // size: 0x780
+    // Another break?
+    u8 unkD8[0x10];
+    u8 unkE8;
+    u8 unkE9;
+    u8 unkEA;
+    u8 unkEB;
+    u8 unkEC;
+    u8 unkED;
+    u8 unkEE;
+    u8 unkEF;
+    u8 unkF0;
+    u8 unkF1;
+    u8 unkF2;
+    u8 unkF3;
+    u8 unkF4;
+    u8 unkF5;
+    u8 unkF6;
+    u8 unkF7;
+    u8 unkF8;
+    u8 unkF9;
+    u8 unkFA;
+    u8 unkFB;
+    u8 fillerFC[0x36];
+    u8 unk132;
+    u8 filler133[0x3b9];
+    u8 unk4EC[4][2];
+    u8 filler4ED[0x34];
+    u8 unk528;
+    u8 unk529;
+    u8 filler52A[0x32E];
 }; /* size:0x858 according to LoadGameState */
 
 extern struct TCG_SaveSectorData gSaveGameState;

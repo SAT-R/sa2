@@ -185,18 +185,13 @@ SECTIONS {
 
         /* this is all game state */
         . = 0x00003B80; gSaveGameState = .;
-        . = 0x00003B88; gUnknown_03003B88 = .;
         . = 0x00003BA1; gUnknown_03003BA1 = .;
         . = 0x00003BB5; gUnknown_03003BB5 = .;
-        . = 0x00003BD8; gUnknown_03003BD8 = .;
         . = 0x00003BEA; gUnknown_03003BEA = .;
         . = 0x00003BF3; gUnknown_03003BF3 = .;
         . = 0x00003BF8; gUnknown_03003BF8 = .;
-        . = 0x00003C00; gUnknown_03003C00 = .;
         . = 0x00003C06; gUnknown_03003C06 = .;
-        . = 0x00003C08; gUnknown_03003C08 = .;
         . = 0x00003C10; gUnknown_03003C10 = .;
-        . = 0x00003C58; gUnknown_03003C58 = .;
 
         . = 0x000043D8; gUnknown_030043D8 = .;
         . = 0x000043DC; gUnknown_030043DC = .;

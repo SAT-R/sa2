@@ -589,6 +589,7 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *inRect, Player *p)
     return result;
 }
 
+// https://decomp.me/scratch/Mjin3
 NONMATCH(
 #ifndef COLLECT_RINGS_ROM
     "asm/non_matching/game/sa1_sa2_shared/collision__sub_800D0A0.inc",
@@ -683,7 +684,7 @@ bool32 sub_800DD54(Player *p)
 
     p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     p->moveState &= ~MOVESTATE_20;
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~MOVESTATE_400;
@@ -746,7 +747,7 @@ bool32 sub_800DE44(Player *p)
 
     p->moveState &= ~MOVESTATE_STOOD_ON_OBJ;
     p->moveState &= ~MOVESTATE_20;
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~MOVESTATE_400;

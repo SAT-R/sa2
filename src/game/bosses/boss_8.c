@@ -343,7 +343,7 @@ static void Task_BossRunManagerMain(void)
                 gCamera.unkC = 1;
                 gCamera.unk8 = 1280;
             }
-            gUnknown_030054B0 = 1;
+            gFinalBossActive = TRUE;
         } else {
             manager->unk5++;
         }

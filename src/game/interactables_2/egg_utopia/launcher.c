@@ -218,7 +218,7 @@ static void HandleActivate(Sprite_EggUtopia_Launcher *launcher)
 
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
-    gPlayer.moveState &= ~MOVESTATE_4;
+    gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
 
     if (IS_LAUNCHER_DIR_LEFT(launcher->kind)) {
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;

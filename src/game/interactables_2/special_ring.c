@@ -23,19 +23,19 @@ typedef struct {
     /* 0x40 */ s32 worldY;
 } Sprite_SpecialRing; /* size = 0x44 */
 
-static void Task_Interactable_SpecialRing(void);
+static void Task_SpecialRingVisible(void);
 static void TaskDestructor_Interactable_SpecialRing(struct Task *);
-static void sub_80810FC(Sprite_SpecialRing *);
-static bool32 sub_8081164(Sprite_SpecialRing *);
-static void sub_80811A0(Sprite_SpecialRing *, u32);
-static void sub_8081134(Sprite_SpecialRing *);
-static void Task_80811BC(void);
+static void CollectRing(Sprite_SpecialRing *);
+static bool32 ShouldDespawn(Sprite_SpecialRing *);
+static void Despawn(Sprite_SpecialRing *, u32);
+static void Render(Sprite_SpecialRing *);
+static void Task_SpecialRingCollected(void);
 
 void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (IS_SINGLE_PLAYER) {
         struct Task *t
-            = TaskCreate(Task_Interactable_SpecialRing, sizeof(Sprite_SpecialRing), 0x4040, 0, TaskDestructor_Interactable_SpecialRing);
+            = TaskCreate(Task_SpecialRingVisible, sizeof(Sprite_SpecialRing), 0x4040, 0, TaskDestructor_Interactable_SpecialRing);
 
         Sprite_SpecialRing *ring = TASK_DATA(t);
         Sprite *s;
@@ -66,7 +66,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     }
 }
 
-static bool32 sub_8081010(Sprite_SpecialRing *ring)
+static bool32 IsTouchingPlayer(Sprite_SpecialRing *ring)
 {
     Cheese *cheese = gCheese;
 
@@ -102,7 +102,7 @@ static bool32 sub_8081010(Sprite_SpecialRing *ring)
     return FALSE;
 }
 
-static void Task_Interactable_SpecialRing(void)
+static void Task_SpecialRingVisible(void)
 {
     Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
 
@@ -110,13 +110,13 @@ static void Task_Interactable_SpecialRing(void)
         Player_UpdateHomingPosition(Q(ring->worldX), Q(ring->worldY));
     }
 
-    if (sub_8081010(ring)) {
-        sub_80810FC(ring);
+    if (IsTouchingPlayer(ring)) {
+        CollectRing(ring);
     } else {
-        if (sub_8081164(ring)) {
-            sub_80811A0(ring, 1);
+        if (ShouldDespawn(ring)) {
+            Despawn(ring, 1);
         } else {
-            sub_8081134(ring);
+            Render(ring);
         }
     }
 }
@@ -128,17 +128,17 @@ static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
     VramFree(gfx);
 }
 
-static void sub_80810FC(Sprite_SpecialRing *ring)
+static void CollectRing(Sprite_SpecialRing *ring)
 {
     gSpecialRingCount++;
 
     ring->displayed.graphics.anim = SA2_ANIM_SPECIAL_RING;
     ring->displayed.variant = SA2_ANIM_VARIANT_SP_RING__COLLECT;
     m4aSongNumStart(SE_SPECIAL_RING);
-    gCurTask->main = Task_80811BC;
+    gCurTask->main = Task_SpecialRingCollected;
 }
 
-static void sub_8081134(Sprite_SpecialRing *ring)
+static void Render(Sprite_SpecialRing *ring)
 {
     Sprite *s = &ring->displayed;
 
@@ -149,7 +149,7 @@ static void sub_8081134(Sprite_SpecialRing *ring)
     DisplaySprite(s);
 }
 
-static bool32 sub_8081164(Sprite_SpecialRing *ring)
+static bool32 ShouldDespawn(Sprite_SpecialRing *ring)
 {
     s32 screenPosX, screenPosY;
     u16 posX, posY;
@@ -168,7 +168,7 @@ static bool32 sub_8081164(Sprite_SpecialRing *ring)
         return FALSE;
 }
 
-static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
+static void Despawn(Sprite_SpecialRing *ring, u32 param1)
 {
     if (param1 != 0) {
         ring->base.me->x = ring->base.meX;
@@ -176,14 +176,14 @@ static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
     TaskDestroy(gCurTask);
 }
 
-static void Task_80811BC(void)
+static void Task_SpecialRingCollected(void)
 {
     Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
     Sprite *s = &ring->displayed;
 
-    if ((s->frameFlags & 0x4000) || sub_8081164(ring)) {
-        sub_80811A0(ring, 0);
+    if ((s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) || ShouldDespawn(ring)) {
+        Despawn(ring, 0);
     } else {
-        sub_8081134(ring);
+        Render(ring);
     }
 }

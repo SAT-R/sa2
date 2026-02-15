@@ -374,7 +374,7 @@ void Player_SonicForwardThrust(Player *p)
 
     Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
-    p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_4);
+    p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_SPIN_ATTACK);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -633,8 +633,8 @@ void Player_Cream_InitFlying(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    if (p->moveState & MOVESTATE_4) {
-        p->moveState &= ~MOVESTATE_4;
+    if (p->moveState & MOVESTATE_SPIN_ATTACK) {
+        p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
@@ -894,8 +894,8 @@ void Player_Tails_InitFlying(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    if (p->moveState & MOVESTATE_4) {
-        p->moveState &= ~MOVESTATE_4;
+    if (p->moveState & MOVESTATE_SPIN_ATTACK) {
+        p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
@@ -1690,7 +1690,7 @@ void sub_801394C(Player *p)
         if (p->moveState & MOVESTATE_FACING_LEFT)
             p->qSpeedAirX = -p->qSpeedAirX;
 
-        p->moveState |= MOVESTATE_4;
+        p->moveState |= MOVESTATE_SPIN_ATTACK;
         p->moveState |= MOVESTATE_IN_AIR;
         p->moveState |= MOVESTATE_100;
 
@@ -1776,7 +1776,7 @@ END_NONMATCH
 
 void Player_Knuckles_InitGlide(Player *p)
 {
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->spriteOffsetX = 6;
     p->spriteOffsetY = 6;
 
