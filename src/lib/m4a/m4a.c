@@ -1369,7 +1369,7 @@ void MP2K_event_memacc(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *trac
             return;
     }
 
-cond_true: {
+cond_true : {
     {
         void (*func)(struct MP2KPlayerState *, struct MP2KTrack *) = *(&gMPlayJumpTable[1]);
         func(mplayInfo, track);
@@ -1377,7 +1377,7 @@ cond_true: {
     return;
 }
 
-cond_false: {
+cond_false : {
 #ifdef __mips__
     // Align to 4 bytes (mPtr adds .balign 4 on MIPS)
     u8 *ptrStart = (u8 *)(((uintptr_t)track->cmdPtr + 3) & ~(uintptr_t)3);

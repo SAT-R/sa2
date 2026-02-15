@@ -53,7 +53,7 @@ extern const u8 gOamShapesSizes[12][2];
 #define ApplyMosaicSprY(y) ((y) - ((y) % (MOSAIC_SPR_Y + 1)))
 
 // tilemap entry fields
-#define TILE_NUM(e)     ((e) & 0x3FF)
+#define TILE_NUM(e)     ((e)&0x3FF)
 #define TILE_PALETTE(e) (((e) >> 12) & 0xF)
 #define TILE_HFLIP(e)   ((e) & (1 << 10))
 #define TILE_VFLIP(e)   ((e) & (1 << 11))
