@@ -439,8 +439,7 @@ loopBreak:
         s16 bgScrollX = gBgScrollRegs[bgId][0];
         s16 bgScrollY = gBgScrollRegs[bgId][1];
 
-        // TODO: Find way to go without REG_DISPCNT!
-        if (REG_DISPCNT & (DISPCNT_BG0_ON << bgId)) {
+        if (gDispCnt & (DISPCNT_BG0_ON << bgId)) {
             if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
                 UpdateChunkGfx(&sChunkGfx, bg);
             } else {
