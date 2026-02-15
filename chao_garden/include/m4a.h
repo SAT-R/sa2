@@ -18,6 +18,7 @@ void m4aSongNumStart(u16);
 void m4aSongNumStartOrChange(u16);
 void m4aSongNumStartOrContinue(u16);
 void m4aSongNumStop(u16 n);
+void m4aMPlayAllContinue(void);
 void m4aMPlayAllStop(void);
 void m4aMPlayContinue(struct MusicPlayerInfo *mplayInfo);
 void m4aMPlayFadeOut(struct MusicPlayerInfo *mplayInfo, u16 speed);

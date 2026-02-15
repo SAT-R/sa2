@@ -610,7 +610,7 @@ static const u8 disableTrickTimerTable[4] = { 4, 3, 2, 2 };
 static inline void Player_InitIceSlide_inline(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -1170,8 +1170,8 @@ void sub_8021BE0(Player *p)
             p->moveState &= ~(MOVESTATE_FLIP_WITH_MOVE_DIR | MOVESTATE_IN_AIR);
         }
 
-        if (p->moveState & MOVESTATE_4) {
-            p->moveState &= ~MOVESTATE_4;
+        if (p->moveState & MOVESTATE_SPIN_ATTACK) {
+            p->moveState &= ~MOVESTATE_SPIN_ATTACK;
             Player_HandleSpriteYOffsetChange(p, 14);
         }
         PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
@@ -1690,11 +1690,11 @@ void sub_8022318(Player *p)
 {
     s32 offsetY;
 
-    if (!(p->moveState & MOVESTATE_4)) {
+    if (!(p->moveState & MOVESTATE_SPIN_ATTACK)) {
         p->spriteOffsetX = 6;
         p->spriteOffsetY = 14;
     } else {
-        p->moveState &= ~MOVESTATE_4;
+        p->moveState &= ~MOVESTATE_SPIN_ATTACK;
         p->charState = CHARSTATE_IDLE;
 
         offsetY = p->spriteOffsetY - 14;
@@ -2857,7 +2857,7 @@ void sub_80231C0(Player *p)
             case 1: {
                 p->qWorldX -= r2;
                 p->qSpeedAirX = 0;
-                p->moveState &= ~MOVESTATE_4;
+                p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
                 PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
                 p->qSpeedGround = 0;
@@ -2872,7 +2872,7 @@ void sub_80231C0(Player *p)
             case 3: {
                 p->qWorldX += r2;
                 p->qSpeedAirX = 0;
-                p->moveState &= ~MOVESTATE_4;
+                p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
                 PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
                 p->qSpeedGround = 0;
@@ -3926,7 +3926,7 @@ void sub_80246DC(Player *p)
     if ((charState == CHARSTATE_JUMP_1) || (charState == CHARSTATE_JUMP_2)) {
         if (p->variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) && (((u16)anim - 10) == 0 || ((u16)anim - 10) == 1)) {
             p->variant = 1;
-            p->moveState |= MOVESTATE_4;
+            p->moveState |= MOVESTATE_SPIN_ATTACK;
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
@@ -4413,7 +4413,7 @@ void Player_TouchGround(Player *p)
 
 #endif
 
-        p->moveState &= ~(MOVESTATE_4 | MOVESTATE_IN_AIR);
+        p->moveState &= ~(MOVESTATE_SPIN_ATTACK | MOVESTATE_IN_AIR);
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -4620,7 +4620,7 @@ void Player_SpinAttack(Player *p)
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-        p->moveState |= MOVESTATE_4;
+        p->moveState |= MOVESTATE_SPIN_ATTACK;
         p->unk99[0] = 0;
         PLAYERFN_SET_AND_CALL(Player_Rolling, p);
     }
@@ -4758,7 +4758,7 @@ void Player_InitJump(Player *p)
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-    if (p->moveState & MOVESTATE_4) {
+    if (p->moveState & MOVESTATE_SPIN_ATTACK) {
         p->moveState |= MOVESTATE_FLIP_WITH_MOVE_DIR;
     }
 
@@ -4980,7 +4980,7 @@ void Player_InitSpindash(Player *p)
 {
     p->charState = CHARSTATE_SPIN_DASH;
 
-    p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
+    p->moveState |= (MOVESTATE_400 | MOVESTATE_SPIN_ATTACK);
     p->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -5193,7 +5193,7 @@ void Player_InitGrinding(Player *p)
     p->unk70 = FALSE;
 #endif
 
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState |= MOVESTATE_1000000;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -5280,7 +5280,7 @@ void Player_InitGrindRailEndGround(Player *p)
     Player_TransitionCancelBoost(p);
 #endif
 
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState &= ~(MOVESTATE_100 | MOVESTATE_IN_AIR);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -5306,7 +5306,7 @@ void Player_GrindRailEndAir(Player *p)
     Player_TransitionCancelBoost(p);
 #endif
 
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -5354,13 +5354,13 @@ void Player_8026D2C(Player *p);
 void Player_802A258(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        if (p->moveState & MOVESTATE_4) {
+        if (p->moveState & MOVESTATE_SPIN_ATTACK) {
             p->spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             p->charState = CHARSTATE_SPIN_ATTACK;
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-            p->moveState |= MOVESTATE_4;
+            p->moveState |= MOVESTATE_SPIN_ATTACK;
             p->unk99[0] = 0;
             PLAYERFN_SET_AND_CALL(Player_Rolling, p);
         } else {
@@ -5452,7 +5452,7 @@ void Player_InitPipeEntry(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->moveState |= (MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_4);
+    p->moveState |= (MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_SPIN_ATTACK);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
@@ -5511,7 +5511,7 @@ void Player_InitPipeExit(Player *p)
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-        p->moveState |= MOVESTATE_4;
+        p->moveState |= MOVESTATE_SPIN_ATTACK;
 
         p->unk99[0] = 30;
 
@@ -5523,7 +5523,7 @@ void Player_InitPropellorSpring(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -5561,9 +5561,9 @@ void Player_InitCorkscrew(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    if ((!(p->moveState & MOVESTATE_4) || (p->charState != CHARSTATE_SPIN_ATTACK))) {
+    if ((!(p->moveState & MOVESTATE_SPIN_ATTACK) || (p->charState != CHARSTATE_SPIN_ATTACK))) {
         p->charState = CHARSTATE_IN_CORKSCREW;
-        p->moveState &= ~MOVESTATE_4;
+        p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
@@ -5658,7 +5658,7 @@ void Player_InitHurt(Player *p)
 #endif
 
     p->moveState |= MOVESTATE_IN_AIR;
-    p->moveState &= ~(MOVESTATE_200 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_4);
+    p->moveState &= ~(MOVESTATE_200 | MOVESTATE_STOOD_ON_OBJ | MOVESTATE_SPIN_ATTACK);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -5690,7 +5690,7 @@ void Player_InitReachedGoal(Player *p)
         } else {
             Player_TransitionCancelFlyingAndBoost(p);
 
-            p->moveState &= ~(MOVESTATE_4 | MOVESTATE_FACING_LEFT);
+            p->moveState &= ~(MOVESTATE_SPIN_ATTACK | MOVESTATE_FACING_LEFT);
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -6696,7 +6696,7 @@ bool32 Player_TryInitSpindash(Player *p)
             PLAYERFN_SET(Player_InitSpindash);
             p->charState = CHARSTATE_SPIN_DASH;
 
-            p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
+            p->moveState |= (MOVESTATE_400 | MOVESTATE_SPIN_ATTACK);
             p->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -7420,11 +7420,11 @@ bool32 Player_TryCrouchOrSpinAttack(Player *p)
 {
     if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
         if ((p->qSpeedGround == 0) && (((p->rotation + Q(0.125)) & 0xC0) == 0)
-            && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+            && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_SPIN_ATTACK | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(Player_InitCrouch);
             return TRUE;
         } else if (((u16)(p->qSpeedGround + (Q(0.5) - 1)) > Q(1.0) - 2)
-                   && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+                   && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_SPIN_ATTACK | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(Player_SpinAttack);
             m4aSongNumStart(SE_SPIN_ATTACK);
             return TRUE;
@@ -7455,7 +7455,7 @@ void Player_ApplyBoostPhysics(Player *p)
     if (p->isBoosting) {
         p->topSpeed = Q(12.0);
         p->maxSpeed = Q(15.0);
-    } else if (p->moveState & MOVESTATE_4) {
+    } else if (p->moveState & MOVESTATE_SPIN_ATTACK) {
         p->topSpeed = Q(6.0);
         p->maxSpeed = Q(15.0);
     } else {
@@ -7475,7 +7475,7 @@ void Player_SpinAttack(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->moveState |= MOVESTATE_4;
+    p->moveState |= MOVESTATE_SPIN_ATTACK;
     p->unk99[0] = 0;
     PLAYERFN_SET_AND_CALL(Player_Rolling, p);
 }
@@ -7496,7 +7496,7 @@ void Player_InitSpindash(Player *p)
 {
     p->charState = CHARSTATE_SPIN_DASH;
 
-    p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
+    p->moveState |= (MOVESTATE_400 | MOVESTATE_SPIN_ATTACK);
     p->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -7531,7 +7531,7 @@ void sub_02011950(Player *p)
 void Player_802A258(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        if (p->moveState & MOVESTATE_4)
+        if (p->moveState & MOVESTATE_SPIN_ATTACK)
             Player_SpinAttack(p);
         else
             Player_TouchGround(p);
@@ -7590,7 +7590,7 @@ void Player_CameraShift(Player *p) { Player_CameraShift_inline(p); }
 void Player_InitSpecialStageTransition(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -7606,7 +7606,7 @@ void Player_InitSpecialStageTransition(Player *p)
 void Player_InitKilledBoss(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -7619,7 +7619,7 @@ void Player_InitKilledBoss(Player *p)
 void Player_InitReachedGoalMultiplayer(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
-    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     p->moveState |= MOVESTATE_IGNORE_INPUT;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);

@@ -355,8 +355,8 @@ static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *
     u8 chaosEmeralds = gLoadedSaveGame->chaosEmeralds[stage->character];
     u8 character = stage->character;
 
-    gUnknown_03005B5C = stage->screenVram;
-    gUnknown_03005B58 = NULL;
+    gSpecialStageVramPointer = stage->screenVram;
+    gSpecialStageSubMenuVramPointer = NULL;
 
     if (stage->targetReached) {
         sub_806CA88(&resultsScreen->unk4, 1, 0x28, SA2_ANIM_SP_STAGE_NOTIFS, 0, DISPLAY_WIDTH + 16 + a, (DISPLAY_HEIGHT / 2) - 48, 0, 1, 0);
@@ -749,7 +749,7 @@ void CreateStartText(struct SpecialStageUI *ui)
 {
     Sprite *s = &ui->startText;
     ui->unk2A8 = 1;
-    ui->unk2A4 = gUnknown_03005B5C;
+    ui->unk2A4 = gSpecialStageVramPointer;
     sub_806CA88(s, 0, 20, 0x376, 0x1000, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1, 0, 0);
 }
 
@@ -757,7 +757,7 @@ void RenderStartText(struct SpecialStageUI *ui) { DisplaySprite(&ui->startText);
 
 void sub_8070DE0(struct SpecialStageUI *ui)
 {
-    gUnknown_03005B5C = ui->unk2A4;
+    gSpecialStageVramPointer = ui->unk2A4;
     ui->unk2A4 = NULL;
     ui->unk2A8 = 0;
 }
@@ -784,7 +784,7 @@ static void RenderPauseMenu(struct SpecialStageUI *ui)
 static void HandleUnpaused(struct SpecialStageUI *ui)
 {
     ui->wasPaused = 0;
-    gUnknown_03005B58 = NULL;
+    gSpecialStageSubMenuVramPointer = NULL;
     m4aMPlayAllContinue();
 }
 

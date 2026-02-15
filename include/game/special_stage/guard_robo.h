@@ -10,7 +10,7 @@
 struct SpecialStageGuardRobo {
     struct SpecialStage *stage;
     Sprite sprite;
-    void *unk34;
+    void *vram;
     const struct UNK_80DF670 *sprites;
     s16 state;
     u8 filler3E[2];

@@ -128,7 +128,7 @@ extern const u8 CollFlags_zone_1_act_1_fg[];
 void ApplyGameStageSettings(void)
 {
     gLevelScore = 0;
-    gUnknown_030054B0 = 0;
+    gFinalBossActive = FALSE;
     gNumLives = 3;
 
     if (IS_MULTI_PLAYER) {
@@ -189,7 +189,7 @@ void CreateGameStage(void)
     gGameStageTask = TaskCreate(Task_GameStage, 0, 0xff00, 0, TaskDestructor_GameStage);
     gActiveCollectRingEffectCount = 0;
     gSpecialRingCount = 0;
-    gUnknown_030054B0 = 0;
+    gFinalBossActive = FALSE;
 
     gStageFlags |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__ACT_START);
     gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
@@ -480,7 +480,7 @@ void Task_GameStage(void)
 void ApplyGameStageSettings(void)
 {
     gLevelScore = 0;
-    gUnknown_030054B0 = 0;
+    gFinalBossActive = FALSE;
     gNumLives = 3;
 
     if (IS_MULTI_PLAYER) {

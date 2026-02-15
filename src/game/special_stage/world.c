@@ -185,7 +185,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
 
     for (i = 0; i < num; i++) {
         Sprite *s = &world->unk90[i];
-        s->graphics.dest = gUnknown_03005B5C;
+        s->graphics.dest = gSpecialStageVramPointer;
         s->graphics.size = 0;
         s->graphics.anim = assets[i].anim;
         s->frameFlags = 0x80000;

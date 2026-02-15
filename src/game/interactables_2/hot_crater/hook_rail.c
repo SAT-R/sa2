@@ -189,7 +189,7 @@ static void sub_8072DCC(Sprite_HookRail *hookRail)
     gPlayer.charState = CHARSTATE_HANGING;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
-    gPlayer.moveState &= ~MOVESTATE_4;
+    gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
     gPlayer.qWorldY = Q(hookRail->y + HOOK_HEIGHT);
     hookRail->grindDistance = 0;
     if (hookRail->triggerType == 0) {
