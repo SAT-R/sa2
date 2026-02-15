@@ -1703,15 +1703,16 @@ void sub_801394C(Player *p)
 
 // (76.32%) https://decomp.me/scratch/8fUWD
 // (97.64%) https://decomp.me/scratch/Bd3kQ
+// (98.61%) https://decomp.me/scratch/0zv3B
 NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_UpdateSpeed(Player *player))
 {
     s32 speedGrnd = ABS(player->qSpeedGround);
-    u8 r2 = player->w.tf.shift;
+    s8 shift = player->w.kf.shift;
 
     if (speedGrnd < Q_24_8(3.0)) {
         speedGrnd += Q_24_8(6.0 / 256.0);
     } else if (speedGrnd < Q_24_8(15.0)) {
-        if ((player->w.tf.shift & 0x7F) == 0)
+        if ((player->w.kf.shift & 0x7F) == 0)
             speedGrnd += Q_24_8(3.0 / 256.0);
     }
     // _080139E4
@@ -1723,7 +1724,7 @@ NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_Up
     }
 
     {
-        s8 shift = player->w.tf.shift + Q_24_8(0.25);
+        s8 shift = player->w.kf.shift + Q_24_8(0.25);
         if (shift <= 0) {
             player->qSpeedGround = -speedGrnd;
         } else {
@@ -1732,32 +1733,28 @@ NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_Up
     }
 
     {
-        s32 r0;
-        u8 shift = r2;
         if (player->heldInput & DPAD_LEFT) {
-            s32 r0 = r2;
-            if ((u8)r0 != 128) {
-                r2 = ABS((s8)shift);
-                shift = r2 + 2;
+            if ((u8)shift != 128) {
+                if (shift < 0)
+                    shift = -shift;
+                shift += 2;
             }
+            player->w.kf.shift = shift;
         } else if (player->heldInput & DPAD_RIGHT) {
-            s32 r0 = r2;
-            if (((s8)r0 != 0)) {
-                s8 r2Signed = (s8)r2 > 0 ? -r0 : r2;
-                shift = r2Signed + 2;
+            if (shift != 0) {
+                if (shift > 0)
+                    shift = -shift;
+                shift += 2;
             }
+            player->w.kf.shift = shift;
         } else {
-            s32 r0;
-            s8 r1;
-            r1 = shift;
-            if (r1 & 0x7F) {
-                r0 = r1 + 2;
-                shift = (u8)r0;
+            if (shift & 0x7F) {
+                shift += 2;
             }
+            player->w.kf.shift = shift;
         }
-        player->w.tf.shift = (u8)shift;
-        r0 = shift;
-        player->qSpeedAirX = Q_24_8_TO_INT(COS_24_8((u8)r0 << 2) * speedGrnd);
+
+        player->qSpeedAirX = I(COS_24_8(shift << 2) * speedGrnd);
 
         if (player->qSpeedAirY < Q_24_8(0.5)) {
             player->qSpeedAirY += Q_24_8(0.09375);

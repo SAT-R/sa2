@@ -119,7 +119,7 @@ s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
 u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
 union MultiSioData gMultiSioSend ALIGNED(8) = {};
-u8 SA2_LABEL(gUnknown_03002874) = 0;
+u8 SA2_LABEL(gVCountSetting) = 0;
 
 void *gHBlankCopyTarget ALIGNED(4) = NULL;
 
@@ -854,7 +854,7 @@ void VBlankIntr(void)
     if (gFlagsPreVBlank & FLAGS_40) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
-        REG_DISPSTAT |= SA2_LABEL(gUnknown_03002874) << 8;
+        REG_DISPSTAT |= SA2_LABEL(gVCountSetting) << 8; // V-Count Setting
         REG_DISPSTAT &= ~DISPSTAT_VCOUNT;
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_IE |= INTR_FLAG_VCOUNT;
