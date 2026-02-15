@@ -185,10 +185,7 @@ void OpenGL_RenderRGBABuffer(u8 *buffer, u16 bufferWidth, u16 bufferHeight, floa
 void CreateChunkSet(void)
 {
     const int defaultCap = 16;
-    // NOTE(Jace): For some reason, malloc and realloc (at least with current compile settings on Win32) use different heaps.
-    //             That means, calling realloc with a pointer from malloc, which *should* work, crashes inside realloc.
-    //             So for dynamic memory, we need to init with realloc for now...
-    void *mem = realloc(NULL, defaultCap * sizeof(*sChunkSet.items));
+    void *mem = malloc(defaultCap * sizeof(*sChunkSet.items));
     sChunkSet.items = mem;
     sChunkSet.items[0] = 0;
     sChunkSet.count = 1; // initialize to 1, to skip zero-filled chunk (which always exists)
@@ -373,6 +370,10 @@ Background *SwitchActiveBackground(Background *bg)
     return prev;
 }
 
+// TODO/TEMP: The VRAM memory mimmicking the GBA, used by the software-renderer, shall not be part "hardware renderers".
+//            We need to initialize all sprites and tilemaps without hardcoded values (as happens in the base games).
+#define IN_VRAM(ptr) (((ptr) >= (void *)&VRAM[0]) && ((ptr) < (void *)&VRAM[VRAM_SIZE]))
+
 void OpenGL_ProcessBackgroundsCopyQueue(void)
 {
     // 'renderOrder' contains one background ID in each slot.
@@ -417,21 +418,19 @@ loopBreak:
             if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
                 UpdateChunkGfx(&sChunkGfx, bg);
             } else {
-#if 01
                 // TEMP!!!
                 // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
                 // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
-                // if (needsUpdate[bgId]) {
-                //}
-                // bg->graphics.dest = (needsUpdate[bgId]) ? malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA) :
-                // bg->graphics.dest;
-                bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
+                if (needsUpdate[bgId]) {
+                    if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
+                        free(bg->graphics.dest);
+                    }
+                    bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
+                }
                 TempConvertPLTTToRGBA8();
                 RenderTilemap(bg->graphics.dest, bg, 0);
                 OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
                                         bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
-                free(bg->graphics.dest);
-#endif
             }
         }
     }

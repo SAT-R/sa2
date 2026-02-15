@@ -462,7 +462,15 @@ void VBlankIntrWait()
 }
 
 void *Platform_malloc(size_t numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
-
+void *Platform_realloc(void *ptr, size_t numBytes)
+{
+    if (ptr == NULL) {
+        // HeapReAlloc returns NULL when called with NULL, unlike C std realloc().
+        return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes);
+    } else {
+        return HeapReAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, ptr, numBytes);
+    }
+}
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
 void Platform_QueueAudio(const u8 *data, u32 numBytes) { }

@@ -1234,8 +1234,13 @@ void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
         gBldRegs.bldAlpha = 0xc0c;
     }
 
+#ifdef BUG_FIX
+    UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
+    DrawBackground(&gStageBackgroundsRam.unk0);
+#else
     DrawBackground(&gStageBackgroundsRam.unk0);
     UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
+#endif
 
     if ((gStageTime % 16u) == 0) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
