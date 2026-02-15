@@ -73,7 +73,7 @@
 #define CHAOS_EMERALDS_COMPLETED CHAOS_EMERALD(7)
 
 #define IS_BOSS_STAGE(lvl)                                                                                                                 \
-    ((ACT_INDEX(lvl) == ACT_BOSS) || (((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) && (gUnknown_030054B0 == 0))                   \
+    ((ACT_INDEX(lvl) == ACT_BOSS) || (((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) && !gFinalBossActive)                          \
      || (((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))))
 
 #define IS_FINAL_STAGE(lvl)          ((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
