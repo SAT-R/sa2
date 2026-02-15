@@ -25,6 +25,7 @@ It can also build:
 * **sa2.sdl** `make sdl` (Linux/MacOS SDL 64bit port)
 * **sa2.sdl_win32.exe** `make sdl_win32` (Windows SDL 64bit port)
 * :construction: **sa2.win32.exe** `make win32` (Win32 native port, not functional)
+* **EBOOT.PBP** `make psp` (PlayStation Portable homebrew port, requires [PSPDEV](https://github.com/pspdev/pspdev))
 
 ## Current state
 

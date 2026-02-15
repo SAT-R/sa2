@@ -368,10 +368,20 @@ void MP2K_event_fine(struct MP2KPlayerState *unused, struct MP2KTrack *track)
     track->status = 0;
 }
 
+// mPtr aligns to 4 bytes on MIPS; match that here before reading pointer data
+#ifdef __mips__
+static inline u8 *alignCmdPtr4(u8 *p)
+{
+    return (u8 *)(((uintptr_t)p + 3) & ~(uintptr_t)3);
+}
+#else
+#define alignCmdPtr4(p) (p)
+#endif
+
 // Sets the track's cmdPtr to the specified address.
 void MP2K_event_goto(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 {
-    u8 *cmdPtr = track->cmdPtr;
+    u8 *cmdPtr = alignCmdPtr4(track->cmdPtr);
     uintptr_t addr = 0;
     for (size_t i = sizeof(uintptr_t) - 1; i > 0; i--) {
         addr |= cmdPtr[i];
@@ -386,7 +396,9 @@ void MP2K_event_patt(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 {
     u8 level = track->patternLevel;
     if (level < 3) {
-        track->patternStack[level] = track->cmdPtr + sizeof(u8 *);
+        // Return address is past the aligned pointer data
+        u8 *ptrStart = alignCmdPtr4(track->cmdPtr);
+        track->patternStack[level] = ptrStart + sizeof(u8 *);
         track->patternLevel++;
         MP2K_event_goto(unused, track);
     } else {
@@ -419,7 +431,9 @@ void MP2K_event_rept(struct MP2KPlayerState *unused, struct MP2KTrack *track)
             MP2K_event_goto(unused, track);
         } else {
             track->repeatCount = 0;
-            track->cmdPtr += sizeof(u8) + sizeof(u8 *);
+            // Skip past the aligned pointer data
+            u8 *ptrStart = alignCmdPtr4(track->cmdPtr);
+            track->cmdPtr = ptrStart + sizeof(u8 *);
         }
     }
 }
