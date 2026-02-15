@@ -234,7 +234,7 @@ static void Task_StageWaterTask(void)
     unk2_0 = (water->unk2);
     if ((unk2_2 = unk2_0 - 1) < DISPLAY_HEIGHT - 1) {
         gIntrTable[INTR_INDEX_VCOUNT] = VCountIntr_8011ACC;
-        gUnknown_03002874 = unk2_2;
+        gVCountSetting = unk2_2;
         gFlags |= FLAGS_40;
     } else {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
