@@ -227,6 +227,8 @@ void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
 {
     const u8 *tileset = bg->graphics.src;
     int chunkTileCount = bg->xTiles * bg->yTiles;
+    u8 bgId = bg->flags & BACKGROUND_FLAGS_MASK_BG_ID;
+    bool8 mapIs4BPP = (gBgCntRegs[bgId] & BGCNT_256COLOR) ? FALSE : TRUE;
 
     if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
         // NOTE(Jace): Non-stage maps do not have any "chunks",
@@ -239,25 +241,49 @@ void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
             // int tileId = tileIdY * bg->xTiles + tileIdX;
             ColorRGBA *dstTileRGBA = &dstBuffer[tileIdY * 8 * (bg->xTiles * 8) + tileIdX * 8];
 
-            int tileInChunkIndex = (chunkIndex * chunkTileCount) + tileIdY * bg->xTiles + tileIdX;
-            Tile tile = *(const Tile *)&bg->layout[tileInChunkIndex];
-            const u8 *srcTile4BPP = &tileset[(tile.index * TILE_SIZE_PIXELS) >> 1];
+            if (mapIs4BPP) {
+                int tileInChunkIndex = (chunkIndex * chunkTileCount) + tileIdY * bg->xTiles + tileIdX;
+                Tile tile = *(const Tile *)&bg->layout[tileInChunkIndex];
+                const u8 *srcTile4BPP = &tileset[(tile.index * TILE_SIZE_PIXELS) >> 1];
 
-            for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
-                int tileY = (tile.yFlip) ? (7 - tileLoopY) : tileLoopY;
-                for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
-                    int tileX = (tile.xFlip) ? (7 - tileLoopX) : tileLoopX;
+                for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
+                    int tileY = (tile.yFlip) ? (7 - tileLoopY) : tileLoopY;
+                    for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
+                        int tileX = (tile.xFlip) ? (7 - tileLoopX) : tileLoopX;
 
-                    int targetColorIndex = ((tileY * 8) + tileX);
-                    bool8 doShift = (targetColorIndex & 1);
-                    int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
-                    colorId >>= doShift * 4;
+                        int targetColorIndex = ((tileY * 8) + tileX);
+                        bool8 doShift = (targetColorIndex & 1);
+                        int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
+                        colorId >>= doShift * 4;
 
-                    ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[tile.pal * 16 + colorId]);
-                    dstTileRGBA[tileLoopY * (bg->xTiles * 8) + tileLoopX].r = tilePalette->r;
-                    dstTileRGBA[tileLoopY * (bg->xTiles * 8) + tileLoopX].g = tilePalette->g;
-                    dstTileRGBA[tileLoopY * (bg->xTiles * 8) + tileLoopX].b = tilePalette->b;
-                    dstTileRGBA[tileLoopY * (bg->xTiles * 8) + tileLoopX].a = (colorId == 0) ? 0x00 : 0xFF;
+                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[tile.pal * 16 + colorId]);
+                        int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
+                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
+                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
+                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
+                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                    }
+                }
+            } else {
+                // 8BPP
+                u8 tile = ((const u8 *)bg->layout)[tileIdY * bg->xTiles + tileIdX];
+                const u8 *srcTile8BPP = &tileset[tile * TILE_SIZE_PIXELS];
+
+                for (int tileLoopY = 0; tileLoopY < 8; tileLoopY++) {
+                    int tileY = tileLoopY;
+                    for (int tileLoopX = 0; tileLoopX < 8; tileLoopX++) {
+                        int tileX = tileLoopX;
+
+                        int targetColorIndex = ((tileY * 8) + tileX);
+                        int colorId = srcTile8BPP[targetColorIndex];
+
+                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[colorId]);
+                        int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
+                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
+                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
+                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
+                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                    }
                 }
             }
         }
