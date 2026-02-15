@@ -114,7 +114,7 @@ double accumulator = 0.0;
 static FILE *sSaveFile = NULL;
 
 extern void AgbMain(void);
-void DoSoftReset(void) { };
+void DoSoftReset(void) {};
 
 void ProcessSDLEvents(void);
 void VDraw(SDL_Texture *texture);
@@ -1942,7 +1942,7 @@ void VDraw(SDL_Texture *texture)
 {
 #if RENDERER == RENDERER_SOFTWARE_FAST
     {
-        extern void DrawFrame_Fast(uint16_t *pixels);
+        extern void DrawFrame_Fast(uint16_t * pixels);
         DrawFrame_Fast(gameImage);
     }
 #else
