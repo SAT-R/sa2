@@ -10,6 +10,11 @@
 #include <xinput.h>
 #endif
 
+#ifdef __PSP__
+#include <pspkernel.h>
+extern int setupPspCallbacks(void);
+#endif
+
 #include <SDL.h>
 
 #include "global.h"
@@ -21,6 +26,7 @@
 #include "lib/agb_flash/flash_internal.h"
 #include "platform/shared/dma.h"
 #include "platform/shared/input.h"
+#include "platform/shared/rendering/sw_renderer_common.h"
 
 #if ENABLE_AUDIO
 #include "platform/shared/audio/cgb_audio.h"
@@ -92,6 +98,13 @@ bool paused = false;
 bool stepOneFrame = false;
 bool headless = false;
 
+#ifdef __PSP__
+static SDL_Joystick *pspJoystick = NULL;
+#define PSP_SCREEN_W 480
+#define PSP_SCREEN_H 272
+static SDL_Rect pspDestRect;
+#endif
+
 double lastGameTime = 0;
 double curGameTime = 0;
 double fixedTimestep = 1.0 / 60.0; // 16.666667ms
@@ -122,6 +135,10 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
 int main(int argc, char **argv)
 {
+#ifdef __PSP__
+    setupPspCallbacks();
+#endif
+
     const char *headlessEnv = getenv("HEADLESS");
 
     if (headlessEnv && strcmp(headlessEnv, "true") == 0) {
@@ -162,14 +179,24 @@ int main(int argc, char **argv)
         return 1;
     }
 
+#ifdef __PSP__
+    if (SDL_NumJoysticks() > 0) {
+        pspJoystick = SDL_JoystickOpen(0);
+    }
+#endif
+
 #ifdef TITLE_BAR
     const char *title = STR(TITLE_BAR);
 #else
     const char *title = "SAT-R sa2";
 #endif
 
+#ifdef __PSP__
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 480, 272, SDL_WINDOW_SHOWN);
+#else
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
                                  DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+#endif
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -191,7 +218,15 @@ int main(int argc, char **argv)
     }
 #endif
 
+#ifdef __PSP__
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (sdlRenderer == NULL)
+        sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+    if (sdlRenderer == NULL)
+        sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
+#else
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+#endif
     if (sdlRenderer == NULL) {
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -208,7 +243,12 @@ int main(int argc, char **argv)
     SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
     SDL_RenderClear(sdlRenderer);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+#ifdef __PSP__
+    // SDL_RenderSetLogicalSize is broken on PSP, stretch to fill manually
+    pspDestRect = (SDL_Rect){ 0, 0, PSP_SCREEN_W, PSP_SCREEN_H };
+#else
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+#endif
 #if ENABLE_VRAM_VIEW
     SDL_SetRenderDrawColor(vramRenderer, 0, 0, 0, 255);
     SDL_RenderClear(vramRenderer);
@@ -239,9 +279,9 @@ int main(int argc, char **argv)
     want.samples = (want.freq / 60);
     cgb_audio_init(want.freq);
 
-    if (SDL_OpenAudio(&want, 0) < 0)
+    if (SDL_OpenAudio(&want, 0) < 0) {
         SDL_Log("Failed to open audio: %s", SDL_GetError());
-    else {
+    } else {
         if (want.format != AUDIO_F32) /* we let this one thing change. */
             SDL_Log("We didn't get Float32 audio format.");
         SDL_PauseAudio(0);
@@ -259,12 +299,10 @@ int main(int argc, char **argv)
 
 bool newFrameRequested = FALSE;
 
-// Every GBA frame we process the SDL events and render the number of times
-// SDL requires us to for vsync. When we need another frame we break out of
-// the loop via a return
+// called every gba frame. we process sdl events and render as many times
+// as vsync needs, then return when a new game frame is needed.
 void VBlankIntrWait(void)
 {
-    // ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)
 #define HANDLE_VBLANK_INTRS()                                                                                                              \
     ({                                                                                                                                     \
         REG_DISPSTAT |= INTR_FLAG_VBLANK;                                                                                                  \
@@ -281,6 +319,11 @@ void VBlankIntrWait(void)
     }
 
     bool frameAvailable = TRUE;
+    bool frameDrawn = false;
+#ifdef __PSP__
+    static int psp_frames_skipped = 0;
+#define PSP_MAX_FRAME_SKIP 2
+#endif
 
     while (isRunning) {
         ProcessSDLEvents();
@@ -288,9 +331,8 @@ void VBlankIntrWait(void)
         if (!paused || stepOneFrame) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
 
-            // Hack to emulate the behaviour of threaded sdl
-            // it will not add any new values to the accumulator
-            // when a new frame was requested within a frame cycle
+            // don't accumulate time if we already requested a new frame
+            // this frame cycle (emulates threaded sdl behavior)
             if (!newFrameRequested) {
                 double deltaTime = 0;
 
@@ -312,8 +354,21 @@ void VBlankIntrWait(void)
             while (accumulator >= dt) {
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
                 if (frameAvailable) {
+#ifdef __PSP__
+                    // frame skip: let game logic catch up when behind
+                    if (accumulator >= dt * 2.0 && psp_frames_skipped < PSP_MAX_FRAME_SKIP) {
+                        psp_frames_skipped++;
+                        frameAvailable = FALSE;
+                        HANDLE_VBLANK_INTRS();
+                        accumulator -= dt;
+                        newFrameRequested = TRUE;
+                        return;
+                    }
+                    psp_frames_skipped = 0;
+#endif
                     VDraw(sdlTexture);
                     frameAvailable = FALSE;
+                    frameDrawn = true;
 
                     HANDLE_VBLANK_INTRS();
 
@@ -329,6 +384,17 @@ void VBlankIntrWait(void)
             }
         }
 
+        // present
+#ifdef __PSP__
+        // manual blit since SDL_RenderSetLogicalSize doesn't work on psp
+        if (frameDrawn) {
+            SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, &pspDestRect);
+            SDL_RenderPresent(sdlRenderer);
+            frameDrawn = false;
+        } else {
+            SDL_Delay(1);
+        }
+#else
         SDL_RenderClear(sdlRenderer);
         SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 
@@ -346,14 +412,18 @@ void VBlankIntrWait(void)
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
 #endif
+#endif
     }
 
     CloseSaveFile();
 
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
+#ifdef __PSP__
+    sceKernelExitGame();
+#endif
     exit(0);
-#undef RUN_VBLANK_INTRS
+#undef HANDLE_VBLANK_INTRS
 }
 
 static void ReadSaveFile(char *path)
@@ -420,6 +490,55 @@ static void CloseSaveFile()
         break;
 
 static u16 keys;
+
+#ifdef __PSP__
+#define PSP_BTN_TRIANGLE 0
+#define PSP_BTN_CIRCLE   1
+#define PSP_BTN_CROSS    2
+#define PSP_BTN_SQUARE   3
+#define PSP_BTN_LTRIGGER 4
+#define PSP_BTN_RTRIGGER 5
+#define PSP_BTN_DOWN     6
+#define PSP_BTN_LEFT     7
+#define PSP_BTN_UP       8
+#define PSP_BTN_RIGHT    9
+#define PSP_BTN_SELECT   10
+#define PSP_BTN_START    11
+
+static u16 PollPSPButtons(void)
+{
+    u16 pspKeys = 0;
+    if (pspJoystick == NULL)
+        return pspKeys;
+
+    SDL_JoystickUpdate();
+
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_CROSS))
+        pspKeys |= A_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_CIRCLE))
+        pspKeys |= B_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_SQUARE))
+        pspKeys |= B_BUTTON; // Square also B
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_START))
+        pspKeys |= START_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_SELECT))
+        pspKeys |= SELECT_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_LTRIGGER))
+        pspKeys |= L_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_RTRIGGER))
+        pspKeys |= R_BUTTON;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_UP))
+        pspKeys |= DPAD_UP;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_DOWN))
+        pspKeys |= DPAD_DOWN;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_LEFT))
+        pspKeys |= DPAD_LEFT;
+    if (SDL_JoystickGetButton(pspJoystick, PSP_BTN_RIGHT))
+        pspKeys |= DPAD_RIGHT;
+
+    return pspKeys;
+}
+#endif
 
 u32 fullScreenFlags = 0;
 static SDL_DisplayMode sdlDispMode = { 0 };
@@ -561,18 +680,33 @@ u16 Platform_GetKeyInput(void)
     return (gamepadKeys != 0) ? gamepadKeys : keys;
 #endif
 
+#ifdef __PSP__
+    return keys | PollPSPButtons();
+#endif
+
     return keys;
 }
 
 // BIOS function implementations are based on the VBA-M source code.
 
-static uint32_t CPUReadMemory(const void *src) { return *(uint32_t *)src; }
+// safe unaligned access for MIPS
+static uint32_t CPUReadMemory(const void *src)
+{
+    uint32_t val;
+    memcpy(&val, src, sizeof(val));
+    return val;
+}
 
-static void CPUWriteMemory(void *dest, uint32_t val) { *(uint32_t *)dest = val; }
+static void CPUWriteMemory(void *dest, uint32_t val) { memcpy(dest, &val, sizeof(val)); }
 
-static uint16_t CPUReadHalfWord(const void *src) { return *(uint16_t *)src; }
+static uint16_t CPUReadHalfWord(const void *src)
+{
+    uint16_t val;
+    memcpy(&val, src, sizeof(val));
+    return val;
+}
 
-static void CPUWriteHalfWord(void *dest, uint16_t val) { *(uint16_t *)dest = val; }
+static void CPUWriteHalfWord(void *dest, uint16_t val) { memcpy(dest, &val, sizeof(val)); }
 
 static uint8_t CPUReadByte(const void *src) { return *(uint8_t *)src; }
 
@@ -968,25 +1102,26 @@ static const uint16_t bgMapSizes[][2] = {
 #define applySpriteHorizontalMosaicEffect(x) (x - (x % (mosaicSpriteEffectX + 1)))
 #define applySpriteVerticalMosaicEffect(y)   (y - (y % (mosaicSpriteEffectY + 1)))
 
-// NOTE: This is the corrected function.
 static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs, int lineNum, uint16_t *line)
 {
     unsigned int charBaseBlock = (control >> 2) & 3;
     unsigned int screenBaseBlock = (control & BGCNT_SCREENBASE_MASK) >> 8;
-    unsigned int bitsPerPixel = ((control >> 7) & 1) ? 8 : 4;
+    unsigned int is8bpp = (control >> 7) & 1;
 
     // Determine background dimensions from the control register
     unsigned int mapWidth = bgMapSizes[control >> 14][0]; // in tiles
-    unsigned int mapHeight = bgMapSizes[control >> 14][1]; // in tiles
-    unsigned int mapPixelWidth = mapWidth * TILE_WIDTH;
-    unsigned int mapPixelHeight = mapHeight * TILE_WIDTH;
+    unsigned int mapPixelWidth = mapWidth << 3;
+    unsigned int mapPixelHeight = bgMapSizes[control >> 14][1] << 3;
+    unsigned int pixelWidthMask = mapPixelWidth - 1;
+    unsigned int pixelHeightMask = mapPixelHeight - 1;
 
     uint8_t *bgtiles = (uint8_t *)BG_CHAR_ADDR(charBaseBlock);
     uint16_t *bgmap = (uint16_t *)BG_SCREEN_ADDR(screenBaseBlock);
     uint16_t *pal = (uint16_t *)PLTT;
 
     // Apply vertical mosaic effect to the entire scanline if enabled
-    if (control & BGCNT_MOSAIC) {
+    bool hasMosaic = control & BGCNT_MOSAIC;
+    if (hasMosaic) {
         lineNum = applyBGVerticalMosaicEffect(lineNum);
     }
 
@@ -994,29 +1129,22 @@ static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16
     hoffs &= 0x1FF;
     voffs &= 0x1FF;
 
+    unsigned int yy = (lineNum + voffs) & pixelHeightMask;
+    unsigned int mapY = yy >> 3;
+    unsigned int tileY = yy & 7;
+    unsigned int mapRowBase = mapY * mapWidth;
+
     for (unsigned int x = 0; x < DISPLAY_WIDTH; x++) {
-        unsigned int xx, yy;
+        unsigned int xx;
 
-        // Calculate the source coordinate in the background map, applying scroll and mosaic
-        if (control & BGCNT_MOSAIC) {
-            xx = applyBGHorizontalMosaicEffect(x) + hoffs;
+        if (hasMosaic) {
+            xx = (applyBGHorizontalMosaicEffect(x) + hoffs) & pixelWidthMask;
         } else {
-            xx = x + hoffs;
+            xx = (x + hoffs) & pixelWidthMask;
         }
-        yy = lineNum + voffs;
 
-        // Wrap the coordinates based on the background's actual pixel dimensions.
-        // This fixes issues with backgrounds that are not 256x256.
-        xx &= (mapPixelWidth - 1);
-        yy &= (mapPixelHeight - 1);
-
-        // Convert pixel coordinates to tile coordinates
-        unsigned int mapX = xx / TILE_WIDTH;
-        unsigned int mapY = yy / TILE_WIDTH;
-
-        // Calculate the 1D index into the tilemap. This was the primary source of bugs,
-        // as the original code used a hardcoded map width of 32 tiles.
-        unsigned int mapIndex = mapY * mapWidth + mapX;
+        unsigned int mapX = xx >> 3;
+        unsigned int mapIndex = mapRowBase + mapX;
 
         uint16_t entry = bgmap[mapIndex];
         unsigned int tileNum = entry & 0x3FF;
@@ -1026,40 +1154,30 @@ static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16
         vramPalIdBuffer[tileNum] = paletteNum;
 #endif
 
-        // Get the coordinate within the specific tile
-        unsigned int tileX = xx % TILE_WIDTH;
-        unsigned int tileY = yy % TILE_WIDTH;
+        unsigned int tx = xx & 7;
+        unsigned int ty = tileY;
 
-        // Handle horizontal and vertical tile flipping
         if (entry & (1 << 10))
-            tileX = (TILE_WIDTH - 1) - tileX; // H-flip
+            tx = 7 - tx;
         if (entry & (1 << 11))
-            tileY = (TILE_WIDTH - 1) - tileY; // V-flip
+            ty = 7 - ty;
 
-        // Calculate address of the pixel data and extract the color
-        if (bitsPerPixel == 4) {
-            uint32_t tileDataOffset = tileNum * TILE_SIZE_4BPP;
-            uint32_t pixelByteOffset = (tileY * TILE_WIDTH + tileX) / 2;
+        if (!is8bpp) {
+            uint32_t tileDataOffset = tileNum << 5;
+            uint32_t pixelByteOffset = (ty << 2) + (tx >> 1);
             uint8_t pixelPair = bgtiles[tileDataOffset + pixelByteOffset];
 
-            uint8_t pixel;
-            if (tileX & 1) {
-                pixel = pixelPair >> 4;
-            } else {
-                pixel = pixelPair & 0xF;
-            }
+            uint8_t pixel = (tx & 1) ? (pixelPair >> 4) : (pixelPair & 0xF);
 
             if (pixel != 0) {
-                line[x] = pal[16 * paletteNum + pixel] | 0x8000;
+                line[x] = pal[(paletteNum << 4) + pixel] | 0x8000;
             }
         } else { // 8 bits per pixel
-            uint32_t tileDataOffset = tileNum * TILE_SIZE_8BPP;
-            uint32_t pixelByteOffset = tileY * TILE_WIDTH + tileX;
+            uint32_t tileDataOffset = tileNum << 6;
+            uint32_t pixelByteOffset = (ty << 3) + tx;
             uint8_t pixel = bgtiles[tileDataOffset + pixelByteOffset];
 
             if (pixel != 0) {
-                // For 8bpp tiles, the palette number in the tile entry is ignored.
-                // The pixel value is a direct index into the 256-color palette.
                 line[x] = pal[pixel] | 0x8000;
             }
         }
@@ -1257,64 +1375,7 @@ const u8 spriteSizes[][2] = {
     { 32, 64 },
 };
 
-#define getAlphaBit(x)     ((x >> 15) & 1)
-#define getRedChannel(x)   ((x >> 0) & 0x1F)
-#define getGreenChannel(x) ((x >> 5) & 0x1F)
-#define getBlueChannel(x)  ((x >> 10) & 0x1F)
 #define isbgEnabled(x)     ((REG_DISPCNT >> 8) & 0xF) & (1 << x)
-
-static uint16_t alphaBlendColor(uint16_t targetA, uint16_t targetB)
-{
-    unsigned int eva = REG_BLDALPHA & 0x1F;
-    unsigned int evb = (REG_BLDALPHA >> 8) & 0x1F;
-    // shift right by 4 = division by 16
-    unsigned int r = ((getRedChannel(targetA) * eva) + (getRedChannel(targetB) * evb)) >> 4;
-    unsigned int g = ((getGreenChannel(targetA) * eva) + (getGreenChannel(targetB) * evb)) >> 4;
-    unsigned int b = ((getBlueChannel(targetA) * eva) + (getBlueChannel(targetB) * evb)) >> 4;
-
-    if (r > 31)
-        r = 31;
-    if (g > 31)
-        g = 31;
-    if (b > 31)
-        b = 31;
-
-    return r | (g << 5) | (b << 10) | (1 << 15);
-}
-
-static uint16_t alphaBrightnessIncrease(uint16_t targetA)
-{
-    unsigned int evy = (REG_BLDY & 0x1F);
-    unsigned int r = getRedChannel(targetA) + (31 - getRedChannel(targetA)) * evy / 16;
-    unsigned int g = getGreenChannel(targetA) + (31 - getGreenChannel(targetA)) * evy / 16;
-    unsigned int b = getBlueChannel(targetA) + (31 - getBlueChannel(targetA)) * evy / 16;
-
-    if (r > 31)
-        r = 31;
-    if (g > 31)
-        g = 31;
-    if (b > 31)
-        b = 31;
-
-    return r | (g << 5) | (b << 10) | (1 << 15);
-}
-
-static uint16_t alphaBrightnessDecrease(uint16_t targetA)
-{
-    unsigned int evy = (REG_BLDY & 0x1F);
-    unsigned int r = getRedChannel(targetA) - getRedChannel(targetA) * evy / 16;
-    unsigned int g = getGreenChannel(targetA) - getGreenChannel(targetA) * evy / 16;
-    unsigned int b = getBlueChannel(targetA) - getBlueChannel(targetA) * evy / 16;
-
-    if (r > 31)
-        r = 31;
-    if (g > 31)
-        g = 31;
-    if (b > 31)
-        b = 31;
-
-    return r | (g << 5) | (b << 10) | (1 << 15);
-}
 
 // outputs the blended pixel in colorOutput, the prxxx are the bg priority and
 // subpriority, pixelpos is pixel offset in scanline
@@ -1396,8 +1457,6 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
 
         bool isAffine = oam->split.affineMode & 1;
         bool doubleSizeOrDisabled = (oam->split.affineMode >> 1) & 1;
-        bool isSemiTransparent = (oam->split.objMode == 1);
-        bool isObjWin = (oam->split.objMode == 2);
 
         if (!(isAffine) && doubleSizeOrDisabled) // disable for non-affine
         {
@@ -1408,31 +1467,41 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
         width = gOamShapesSizes[index][0];
         height = gOamShapesSizes[index][1];
 
-        int rect_width = width;
-        int rect_height = height;
-
         int half_width = width / 2;
         int half_height = height / 2;
-
-        pixels = scanline->spriteLayers[oam->split.priority];
 
         int32_t x = oam->split.x;
         int32_t y = oam->split.y;
 
 #if !EXTENDED_OAM
-        // The regular, unextended values are 9 and 8 unsigned bits for x and y respectively.
-        // Once they have exceeded the screen's right or bottom, they get treated as signed values on original hardware.
-        // This is done so that, for example, a sprite at 0 on either axis that moves left or up will not suddenly disappear.
-        //
-        // With EXTENDED_OAM we are using signed 16 bit values, so we don't want to change the raw value.
         if (x >= DISPLAY_WIDTH)
             x -= 512;
         if (y >= DISPLAY_HEIGHT)
             y -= 256;
 #endif
 
+        if (isAffine && doubleSizeOrDisabled) {
+            half_width *= 2;
+            half_height *= 2;
+        }
+
+        int spriteTop = y;
+        int spriteBottom = y + (half_height * 2);
+        if ((int)vcount < spriteTop || (int)vcount >= spriteBottom)
+            continue;
+
+        int spriteLeft = x;
+        int spriteRight = x + (half_width * 2);
+        if (spriteRight < 0 || spriteLeft >= DISPLAY_WIDTH)
+            continue;
+
+        bool isSemiTransparent = (oam->split.objMode == 1);
+        bool isObjWin = (oam->split.objMode == 2);
+
+        int rect_width = width;
+        int rect_height = height;
+
         if (isAffine) {
-            // TODO: there is probably a better way to do this
             u8 matrixNum = oam->split.matrixNum * 4;
 
             OamData *oam1 = &((OamData *)OAM)[matrixNum];
@@ -1445,26 +1514,22 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
             matrix[1][0] = oam3->all.affineParam;
             matrix[1][1] = oam4->all.affineParam;
 
-            if (doubleSizeOrDisabled) // double size for affine
-            {
+            if (doubleSizeOrDisabled) {
                 rect_width *= 2;
                 rect_height *= 2;
-                half_width *= 2;
-                half_height *= 2;
             }
         } else {
-            // Identity
             matrix[0][0] = 0x100;
             matrix[0][1] = 0;
             matrix[1][0] = 0;
             matrix[1][1] = 0x100;
         }
 
+        pixels = scanline->spriteLayers[oam->split.priority];
         x += half_width;
         y += half_height;
 
-        // Does this sprite actually draw on this scanline?
-        if (vcount >= (y - half_height) && vcount < (y + half_height)) {
+        {
             int local_y = (oam->split.mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
             int number = oam->split.tileNum;
             int palette = oam->split.paletteNum;
@@ -1472,9 +1537,10 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
             bool flipY = !isAffine && ((oam->split.matrixNum >> 4) & 1);
             bool is8BPP = oam->split.bpp & 1;
 
+            {
+            uint8_t *tiledata = (uint8_t *)objtiles;
+            uint16_t *sprpal = (uint16_t *)(PLTT + (0x200 / 2));
             for (int local_x = -half_width; local_x <= half_width; local_x++) {
-                uint8_t *tiledata = (uint8_t *)objtiles;
-                uint16_t *palette = (uint16_t *)(PLTT + (0x200 / 2));
                 int local_mosaicX;
                 int tex_x;
                 int tex_y;
@@ -1505,30 +1571,32 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
                 if (flipY)
                     tex_y = height - tex_y - 1;
 
-                int tile_x = tex_x % 8;
-                int tile_y = tex_y % 8;
-                int block_x = tex_x / 8;
-                int block_y = tex_y / 8;
-                int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width / 8) : 16)) + block_x);
+                int tile_x = tex_x & 7;
+                int tile_y = tex_y & 7;
+                int block_x = tex_x >> 3;
+                int block_y = tex_y >> 3;
+                int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width >> 3) : 16)) + block_x);
                 uint16_t pixel = 0;
 
+                uint16_t *pixpal;
                 if (!is8BPP) {
-                    int tileDataIndex = (block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2);
+                    int tileDataIndex = ((block_offset + oam->split.tileNum) << 5) + (tile_y << 2) + (tile_x >> 1);
                     pixel = tiledata[tileDataIndex];
                     if (tile_x & 1)
                         pixel >>= 4;
                     else
                         pixel &= 0xF;
-                    palette += oam->split.paletteNum * 16;
+                    pixpal = sprpal + (oam->split.paletteNum << 4);
 #if ENABLE_VRAM_VIEW
-                    vramPalIdBuffer[0x800 + (tileDataIndex / 32)] = 16 + oam->split.paletteNum;
+                    vramPalIdBuffer[0x800 + (tileDataIndex >> 5)] = 16 + oam->split.paletteNum;
 #endif
                 } else {
-                    pixel = tiledata[(block_offset * 2 + oam->split.tileNum) * 32 + (tile_y * 8) + tile_x];
+                    pixel = tiledata[((block_offset * 2 + oam->split.tileNum) << 5) + (tile_y << 3) + tile_x];
+                    pixpal = sprpal;
                 }
 
                 if (pixel != 0) {
-                    uint16_t color = palette[pixel];
+                    uint16_t color = pixpal[pixel];
 
                     // if sprite mode is 2 then write to the window mask instead
                     if (isObjWin) {
@@ -1547,15 +1615,15 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
                             uint16_t targetA = color;
                             uint16_t targetB = 0;
                             if (alphaBlendSelectTargetB(scanline, &targetB, oam->split.priority, 0, global_x, false)) {
-                                color = alphaBlendColor(targetA, targetB);
+                                color = alphaBlendColor(targetA, targetB, REG_BLDALPHA & 0x1F, (REG_BLDALPHA >> 8) & 0x1F);
                             }
                         } else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) {
                             switch (blendMode) {
                                 case 2:
-                                    color = alphaBrightnessIncrease(color);
+                                    color = alphaBrightnessIncrease(color, REG_BLDY & 0x1F);
                                     break;
                                 case 3:
-                                    color = alphaBrightnessDecrease(color);
+                                    color = alphaBrightnessDecrease(color, REG_BLDY & 0x1F);
                                     break;
                             }
                         }
@@ -1564,6 +1632,7 @@ static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool 
                         pixels[global_x] = color | (1 << 15);
                     }
                 }
+            }
             }
         }
     }
@@ -1574,14 +1643,19 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     unsigned int mode = REG_DISPCNT & 3;
     unsigned char numOfBgs = (mode == 0 ? 4 : 3);
     int bgnum, prnum;
-    struct scanlineData scanline;
+    static struct scanlineData scanline;
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
     unsigned int xpos;
+    unsigned int enabledBgs = (REG_DISPCNT >> 8) & 0xF;
 
-    // initialize all priority bookkeeping data
-    memset(scanline.layers, 0, sizeof(scanline.layers));
-    memset(scanline.winMask, 0, sizeof(scanline.winMask));
-    memset(scanline.spriteLayers, 0, sizeof(scanline.spriteLayers));
+    // Only zero the layers that are actually enabled,
+    // instead of blindly zeroing all 4+4 layers (~8KB total) every scanline.
+    for (bgnum = 0; bgnum < numOfBgs; bgnum++) {
+        if (enabledBgs & (1 << bgnum))
+            memset(scanline.layers[bgnum], 0, sizeof(scanline.layers[bgnum]));
+    }
+    if (REG_DISPCNT & DISPCNT_OBJ_ON)
+        memset(scanline.spriteLayers, 0, sizeof(scanline.spriteLayers));
     memset(scanline.prioritySortedBgsCount, 0, sizeof(scanline.prioritySortedBgsCount));
 
     for (bgnum = 0; bgnum < numOfBgs; bgnum++) {
@@ -1696,63 +1770,89 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     if (REG_DISPCNT & DISPCNT_OBJ_ON)
         DrawOamSprites(&scanline, vcount, windowsEnabled);
 
-    // iterate trough every priority in order
-    for (prnum = 3; prnum >= 0; prnum--) {
-        for (char prsub = scanline.prioritySortedBgsCount[prnum] - 1; prsub >= 0; prsub--) {
-            char bgnum = scanline.prioritySortedBgs[prnum][prsub];
-            // if background is enabled then draw it
-            if (isbgEnabled(bgnum)) {
-                uint16_t *src = scanline.layers[bgnum];
-                // copy all pixels to framebuffer
+    // iterate through every priority in order
+    if (blendMode == 0 && !windowsEnabled) {
+        for (prnum = 3; prnum >= 0; prnum--) {
+            for (char prsub = scanline.prioritySortedBgsCount[prnum] - 1; prsub >= 0; prsub--) {
+                char bgnum = scanline.prioritySortedBgs[prnum][prsub];
+                if (isbgEnabled(bgnum)) {
+                    uint16_t *src = scanline.layers[bgnum];
+                    for (xpos = 0; xpos < DISPLAY_WIDTH; xpos++) {
+                        uint16_t color = src[xpos];
+                        if (color & 0x8000) // alpha bit set = opaque
+                            pixels[xpos] = color;
+                    }
+                }
+            }
+            // draw sprites on current priority
+            if (REG_DISPCNT & DISPCNT_OBJ_ON) {
+                uint16_t *src = scanline.spriteLayers[prnum];
                 for (xpos = 0; xpos < DISPLAY_WIDTH; xpos++) {
-                    uint16_t color = src[xpos];
-                    bool winEffectEnable = true;
-
-                    if (!getAlphaBit(color))
-                        continue; // do nothing if alpha bit is not set
-
-                    if (windowsEnabled) {
-                        winEffectEnable = ((scanline.winMask[xpos] & WINMASK_CLR) >> 5);
-                        // if bg is disabled inside the window then do not draw the pixel
-                        if (!(scanline.winMask[xpos] & 1 << bgnum))
-                            continue;
-                    }
-
-                    // blending code
-                    if (blendMode != 0 && REG_BLDCNT & (1 << bgnum) && winEffectEnable) {
-                        uint16_t targetA = color;
-                        uint16_t targetB = 0;
-
-                        switch (blendMode) {
-                            case 1: {
-                                char isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
-                                // find targetB and blend it
-                                if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos, isSpriteBlendingEnabled)) {
-                                    color = alphaBlendColor(targetA, targetB);
-                                }
-                            } break;
-                            case 2:
-                                color = alphaBrightnessIncrease(targetA);
-                                break;
-                            case 3:
-                                color = alphaBrightnessDecrease(targetA);
-                                break;
-                        }
-                    }
-                    // write the pixel to scanline buffer output
-                    pixels[xpos] = color;
+                    if (src[xpos] & 0x8000)
+                        pixels[xpos] = src[xpos];
                 }
             }
         }
-        // draw sprites on current priority
-        uint16_t *src = scanline.spriteLayers[prnum];
-        for (xpos = 0; xpos < DISPLAY_WIDTH; xpos++) {
-            if (getAlphaBit(src[xpos])) {
-                // check if sprite pixel draws inside window
-                if (windowsEnabled && !(scanline.winMask[xpos] & WINMASK_OBJ))
-                    continue;
-                // draw the pixel
-                pixels[xpos] = src[xpos];
+    } else {
+        // FULL PATH: blending and/or windows are active
+        for (prnum = 3; prnum >= 0; prnum--) {
+            for (char prsub = scanline.prioritySortedBgsCount[prnum] - 1; prsub >= 0; prsub--) {
+                char bgnum = scanline.prioritySortedBgs[prnum][prsub];
+                // if background is enabled then draw it
+                if (isbgEnabled(bgnum)) {
+                    uint16_t *src = scanline.layers[bgnum];
+                    // copy all pixels to framebuffer
+                    for (xpos = 0; xpos < DISPLAY_WIDTH; xpos++) {
+                        uint16_t color = src[xpos];
+                        bool winEffectEnable = true;
+
+                        if (!getAlphaBit(color))
+                            continue; // do nothing if alpha bit is not set
+
+                        if (windowsEnabled) {
+                            winEffectEnable = ((scanline.winMask[xpos] & WINMASK_CLR) >> 5);
+                            // if bg is disabled inside the window then do not draw the pixel
+                            if (!(scanline.winMask[xpos] & 1 << bgnum))
+                                continue;
+                        }
+
+                        // blending code
+                        if (blendMode != 0 && REG_BLDCNT & (1 << bgnum) && winEffectEnable) {
+                            uint16_t targetA = color;
+                            uint16_t targetB = 0;
+
+                            switch (blendMode) {
+                                case 1: {
+                                    char isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
+                                    // find targetB and blend it
+                                    if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos,
+                                                                isSpriteBlendingEnabled)) {
+                                        color = alphaBlendColor(targetA, targetB, REG_BLDALPHA & 0x1F, (REG_BLDALPHA >> 8) & 0x1F);
+                                    }
+                                } break;
+                                case 2:
+                                    color = alphaBrightnessIncrease(targetA, REG_BLDY & 0x1F);
+                                    break;
+                                case 3:
+                                    color = alphaBrightnessDecrease(targetA, REG_BLDY & 0x1F);
+                                    break;
+                            }
+                        }
+                        // write the pixel to scanline buffer output
+                        pixels[xpos] = color;
+                    }
+                }
+            }
+            // draw sprites on current priority
+            uint16_t *src = scanline.spriteLayers[prnum];
+            for (xpos = 0; xpos < DISPLAY_WIDTH; xpos++) {
+                if (getAlphaBit(src[xpos])) {
+                    // check if sprite pixel draws inside window
+                    if (windowsEnabled && !(scanline.winMask[xpos] & WINMASK_OBJ))
+                        continue;
+                    // draw the pixel
+                    pixels[xpos] = src[xpos];
+                }
             }
         }
     }
@@ -1760,21 +1860,25 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
 
 uint16_t *memsetu16(uint16_t *dst, uint16_t fill, size_t count)
 {
-    for (int i = 0; i < count; i++) {
-        *dst++ = fill;
+    uint32_t fill32 = ((uint32_t)fill << 16) | fill;
+    uint32_t *dst32 = (uint32_t *)dst;
+    size_t pairs = count >> 1;
+    for (size_t i = 0; i < pairs; i++) {
+        dst32[i] = fill32;
     }
-
-    return 0;
+    if (count & 1) {
+        dst[count - 1] = fill;
+    }
+    return dst;
 }
 
 static void DrawFrame(uint16_t *pixels)
 {
     int i;
-    int j;
-    static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-    unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
+        uint16_t *scanline = &pixels[i * DISPLAY_WIDTH];
+
         REG_VCOUNT = i;
         if (((REG_DISPSTAT >> 8) & 0xFF) == REG_VCOUNT) {
             REG_DISPSTAT |= INTR_FLAG_VCOUNT;
@@ -1782,10 +1886,10 @@ static void DrawFrame(uint16_t *pixels)
                 gIntrTable[INTR_INDEX_VCOUNT]();
         }
 
-        // Render the backdrop color before the each individual scanline.
-        // HBlank interrupt code could have changed it inbetween lines.
-        memsetu16(scanlines[i], *(uint16_t *)PLTT, DISPLAY_WIDTH);
-        DrawScanline(scanlines[i], i);
+        // Render the backdrop color before each individual scanline.
+        // HBlank interrupt code could have changed it in between lines.
+        memsetu16(scanline, *(uint16_t *)PLTT, DISPLAY_WIDTH);
+        DrawScanline(scanline, i);
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
 
@@ -1796,14 +1900,6 @@ static void DrawFrame(uint16_t *pixels)
 
         REG_DISPSTAT &= ~INTR_FLAG_HBLANK;
         REG_DISPSTAT &= ~INTR_FLAG_VCOUNT;
-    }
-
-    // Copy to screen
-    for (i = 0; i < DISPLAY_HEIGHT; i++) {
-        uint16_t *src = scanlines[i];
-        for (j = 0; j < DISPLAY_WIDTH; j++) {
-            pixels[i * DISPLAY_WIDTH + j] = src[j];
-        }
     }
 }
 
@@ -1845,8 +1941,14 @@ void VramDraw(SDL_Texture *texture)
 
 void VDraw(SDL_Texture *texture)
 {
-    memset(gameImage, 0, sizeof(gameImage));
+#if RENDERER == RENDERER_SOFTWARE_FAST
+    {
+        extern void DrawFrame_Fast(uint16_t *pixels);
+        DrawFrame_Fast(gameImage);
+    }
+#else
     DrawFrame(gameImage);
+#endif
     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
     REG_VCOUNT = DISPLAY_HEIGHT + 1; // prep for being in VBlank period
 }
