@@ -419,7 +419,7 @@ void MP2K_event_rept(struct MP2KPlayerState *unused, struct MP2KTrack *track)
             MP2K_event_goto(unused, track);
         } else {
             track->repeatCount = 0;
-            track->cmdPtr += sizeof(u8) + sizeof(u8 *);
+            track->cmdPtr = track->cmdPtr + sizeof(u8 *);
         }
     }
 }
