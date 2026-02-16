@@ -52,6 +52,14 @@ else ifeq ($(CPU_ARCH),i386)
     TOOLCHAIN := /usr/x86_64-w64-mingw32/
     PREFIX := x86_64-w64-mingw32-
   endif
+# PSP
+else ifeq ($(PLATFORM),psp)
+  PSPDEV    ?= $(HOME)/pspdev
+  PSPSDK    := $(PSPDEV)/psp/sdk
+  export PATH := $(PSPDEV)/bin:$(PATH)
+  PREFIX    := psp-
+else ifeq ($(PLATFORM),ps2)
+  PREFIX := mips64r5900el-ps2-elf-
 else
 # Native
   ifneq ($(PLATFORM),sdl)
@@ -120,6 +128,14 @@ else ifeq ($(PLATFORM),sdl)
 ROM      := $(BUILD_NAME).sdl
 ELF      := $(ROM).elf
 MAP      := $(ROM).map
+else ifeq ($(PLATFORM),psp)
+ROM      := EBOOT.PBP
+ELF      := $(BUILD_NAME).psp.elf
+MAP      := $(BUILD_NAME).psp.map
+else ifeq ($(PLATFORM),ps2)
+ROM      := $(BUILD_NAME).$(PLATFORM).iso
+ELF      := $(ROM:.iso=.elf)
+MAP      := $(ROM:.iso=.map)
 else
 ROM      := $(BUILD_NAME).$(PLATFORM).exe
 ELF      := $(ROM:.exe=.elf)
@@ -156,11 +172,15 @@ TILESETS_SUBDIR = graphics/tilesets/
 ifeq ($(PLATFORM),gba)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*")
+else ifeq ($(PLATFORM),psp)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),ps2)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*")
 else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*")
 else ifeq ($(PLATFORM),win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/psp/*")
 else
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
@@ -225,6 +245,12 @@ else
 	ifeq ($(PLATFORM),sdl)
 		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
+	else ifeq ($(PLATFORM),psp)
+		CC1FLAGS += -G0
+		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D SDL_MAIN_HANDLED -I$(PSPDEV)/psp/include/SDL2 -I$(PSPDEV)/psp/include -I$(PSPSDK)/include -D_PSP_FW_VERSION=600
+	else ifeq ($(PLATFORM),ps2)
+		CC1FLAGS += -G0 -Wno-parentheses-equality -Wno-unused-value -ffast-math
+		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D SDL_MAIN_HANDLED -D_EE -D__PS2__ -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2SDK)/ports/include $(shell $(PS2SDK)/ports/bin/sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else ifeq ($(PLATFORM),win32)
@@ -249,6 +275,10 @@ else
     # for modern we are using a modern compiler
     # so instead of CPP we can use gcc -E to "preprocess only"
     CPP := $(CC1) -E
+  else ifeq ($(PLATFORM), psp)
+    CPP := $(CC1) -E
+  else ifeq ($(PLATFORM), ps2)
+    ASFLAGS  += -msingle-float
   endif
   # Allow file input through stdin on modern GCC and set it to "compile only"
   CC1FLAGS += -x c -S
@@ -258,7 +288,14 @@ ifeq ($(DEBUG),1)
   CC1FLAGS += -g3 -O0
   CPPFLAGS += -D DEBUG=1
 else
-  CC1FLAGS += -O2
+  ifeq ($(PLATFORM),psp)
+    # -O3 for PSP (Allegrex MIPS, small D-cache)
+    CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
+  else ifeq ($(PLATFORM),ps2)
+    CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
+  else
+    CC1FLAGS += -O2
+  endif
   CPPFLAGS += -D DEBUG=0
 endif
 
@@ -297,6 +334,11 @@ else ifeq ($(PLATFORM),sdl)
     else
         MAP_FLAG := -Xlinker -Map=
     endif
+# PSP
+else ifeq ($(PLATFORM),psp)
+    MAP_FLAG := -Xlinker -Map=
+else ifeq ($(PLATFORM),ps2)
+    MAP_FLAG := -Xlinker -Map=
 # Win32
 else
     MAP_FLAG := -Xlinker -Map=
@@ -307,6 +349,10 @@ ifeq ($(PLATFORM),gba)
     LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 else ifeq ($(PLATFORM),sdl)
     LIBS := $(shell sdl2-config --cflags --libs)
+else ifeq ($(PLATFORM),psp)
+    LIBS := -L$(PSPDEV)/psp/lib -L$(PSPSDK)/lib -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower -lpspdebug -lpspnet -lpspnet_apctl -Wl,-zmax-page-size=128
+else ifeq ($(PLATFORM),ps2)
+    LIBS := -lSDL2 $(shell $(PS2SDK)/ports/bin/sdl2-config --libs) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),sdl_win32)
     LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(SDL_MINGW_LIBS)
 else ifeq ($(PLATFORM), win32)
@@ -316,7 +362,7 @@ endif
 #### MAIN TARGETS ####
 
 # these commands will run regardless of deps being completed
-.PHONY: clean tools tidy clean-tools $(TOOLDIRS) libagbsyscall
+.PHONY: clean tools tidy clean-tools $(TOOLDIRS) libagbsyscall ps2
 
 # Ensure required directories exist
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
@@ -397,7 +443,8 @@ clean-tools:
 tidy:
 	$(RM) -r build/*
 	$(RM) SDL2.dll
-	$(RM) $(BUILD_NAME)*.exe $(BUILD_NAME)*.elf $(BUILD_NAME)*.map $(BUILD_NAME)*.sdl $(BUILD_NAME)*.gba
+	$(RM) $(BUILD_NAME)*.exe $(BUILD_NAME)*.elf $(BUILD_NAME)*.map $(BUILD_NAME)*.sdl $(BUILD_NAME)*.gba $(BUILD_NAME)*.iso
+	$(RM) EBOOT.PBP PARAM.SFO
 
 usa_beta: ; @$(MAKE) GAME_REGION=USA GAME_VARIANT=BETA
 
@@ -408,6 +455,10 @@ japan_vc: ; @$(MAKE) GAME_REGION=JAPAN GAME_VARIANT=VIRTUAL_CONSOLE
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 sdl: ; @$(MAKE) PLATFORM=sdl
+
+psp: ; @$(MAKE) PLATFORM=psp
+
+ps2: ; @$(MAKE) PLATFORM=ps2
 
 tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
 
@@ -459,7 +510,7 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 %.bin: %.aif ; $(AIF) $< $@
 
-$(ELF): $(OBJS) libagbsyscall
+$(ELF): $(OBJS)
 ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) $(MAP_FLAG) $(MAP) <objects> <lib> -o $@"
 	@$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(OBJ_DIR)/$(LDSCRIPT)
@@ -476,6 +527,17 @@ ifeq ($(PLATFORM),gba)
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 else ifeq ($(PLATFORM),sdl)
 	cp $< $@
+else ifeq ($(PLATFORM),psp)
+	psp-fixup-imports $<
+	mksfoex 'Sonic Advance 2' PARAM.SFO
+	psp-strip $< -o $(BUILD_NAME).psp_strip.elf
+	pack-pbp $@ PARAM.SFO NULL NULL NULL NULL NULL $(BUILD_NAME).psp_strip.elf NULL
+	-rm -f $(BUILD_NAME).psp_strip.elf
+else ifeq ($(PLATFORM),ps2)
+	@echo Creating $(ROM) from $(ELF)
+	@cp -r ps2/ntsc $(OBJ_DIR)/iso
+	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
+	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
 else
 	$(OBJCOPY) -O pei-x86-64 $< $@
 endif

@@ -1377,8 +1377,9 @@ cond_true : {
     return;
 }
 
-cond_false:
+cond_false : {
     track->cmdPtr += 4;
+}
 }
 
 void MP2K_event_xcmd(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
