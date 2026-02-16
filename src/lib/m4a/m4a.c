@@ -1378,13 +1378,7 @@ cond_true : {
 }
 
 cond_false : {
-#ifdef __mips__
-    // Align to 4 bytes (mPtr adds .balign 4 on MIPS)
-    u8 *ptrStart = (u8 *)(((uintptr_t)track->cmdPtr + 3) & ~(uintptr_t)3);
-    track->cmdPtr = ptrStart + 4;
-#else
     track->cmdPtr += 4;
-#endif
 }
 }
 

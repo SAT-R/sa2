@@ -11,8 +11,7 @@
 #if defined(__aarch64__) || defined(__x86_64__)
     .quad \value
 #elif defined(__mips__)
-    .balign 4
-    .int \value
+    .4byte \value
 #else
     .int \value
 #endif

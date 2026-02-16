@@ -85,6 +85,7 @@ libagbsyscall/*.s
 *.exe
 *.dll
 *.sdl
+*.iso
 
 # PSP build outputs
 EBOOT.PBP

@@ -39,7 +39,7 @@
 #define OAM_ENTRY_COUNT 128
 #if PORTABLE
 // NOTE: Used in gba/types.h, so they have to be defined before the #include
-#ifdef __PSP__
+#if defined(__PSP__)
 // PSP: Use GBA-native resolution, SDL scales to 480x272
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
