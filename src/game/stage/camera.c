@@ -1612,7 +1612,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     }
     // _0801D4A2
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
         s32 b, g, r;
         r = (p0 * gUnknown_080D5C02[1][i][0]) >> 4;
         r &= 0x1F;
@@ -1623,7 +1623,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
         b = (p0 * gUnknown_080D5C02[1][i][2]) >> 4;
         b &= 0x1F;
 
-        gBgPalette[15 * 16 + i] = ((b << 10) + (g << 5) + (r << 0));
+        SET_PALETTE_COLOR_BG(15, i, RGB16_REV(r, g, b));
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -1664,7 +1664,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
         r5 = 5;
     }
 
-    gBgPalette[0] = RGB_BLACK;
+    SET_PALETTE_COLOR_BG(0, 0, RGB_BLACK);
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     switch (r5) {
@@ -1723,7 +1723,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             gBgCntRegs[3] |= BGCNT_PRIORITY(2);
 
             for (i = 0; i < 16; i++) {
-                gBgPalette[(15 * 16) + i] = RGB_BLACK;
+                SET_PALETTE_COLOR_BG(15, i, RGB_BLACK);
             }
 
             // jumps to _0801D8EE for this
@@ -1756,7 +1756,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 5) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 5) & 0x1F;
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             // jumps to _0801D83C for this
@@ -1774,7 +1774,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = gUnknown_080D5C02[0][i][1];
                 u32 blue = gUnknown_080D5C02[0][i][2];
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             // _0801D83C
@@ -1800,7 +1800,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 4) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 4) & 0x1F;
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -1809,7 +1809,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
         case 7: {
             s8 i;
             for (i = 0; i < 16; i++) {
-                gBgPalette[(15 * 16) + i] = RGB_BLACK;
+                SET_PALETTE_COLOR_BG(15, i, RGB_BLACK);
             }
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
             gDispCnt &= ~(DISPCNT_BG0_ON);
@@ -2035,9 +2035,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
 #else
         { // Draw the "ceiling" movement
             for (lineY = 0; lineY < 8; lineY++) {
-                dst = gBgPalette;
-                dst += 209;
-                dst[lineY] = sPalette_Zone7BgCeiling[((x >> 4) & 0x7) + 1];
+                SET_PALETTE_COLOR_BG(13, lineY + 1, sPalette_Zone7BgCeiling[((x >> 4) & 0x7) + 1]);
             }
         }
 #endif
@@ -2137,7 +2135,7 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
     { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
 };
 
-const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
+const u16 gUnknown_080D5CC2[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void CreateStageBg_ZoneFinal_0(void)
 {
@@ -2188,7 +2186,7 @@ void CreateStageBg_ZoneFinal_0(void)
     gBgScrollRegs[3][1] = 0;
 
     for (i = 0; i < ARRAY_COUNT(gUnknown_080D5CC2); i++) {
-        gBgPalette[i] = gUnknown_080D5CC2[i];
+        SET_PALETTE_COLOR_BG(0, i, gUnknown_080D5CC2[i]);
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

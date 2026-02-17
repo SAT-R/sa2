@@ -147,7 +147,7 @@ static void Task_Poll(void)
 static void Task_UnusedLevelSelectInit(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
-    gBgPalette[1] = RGB_WHITE;
+    SET_PALETTE_COLOR_BG(0, 1, RGB_WHITE);
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     levelSelect->vram += RenderText(levelSelect->vram, Tileset_DebugAscii, 6, 14, 0, "STAGE", 0);

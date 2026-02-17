@@ -1160,8 +1160,8 @@ static void sub_804931C(EggFrog *boss)
     if (boss->unk16 != 0) {
         u8 i;
 
-        for (i = 0; i < 16; i++) {
-            gBgPalette[i + 0xB0] = gUnknown_080D8796[(boss->unk16 & 2) >> 1][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_BG(11, i, gUnknown_080D8796[(boss->unk16 & 2) >> 1][i]);
         }
     }
 

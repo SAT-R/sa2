@@ -504,7 +504,7 @@ void CreateFinalEndingLandingCutScene(void)
 
     if (!(gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
         memcpy(unk1AF4, gUnknown_080E1AF4, sizeof(unk1AF4));
-        DmaCopy32(3, unk1AF4, &gBgPalette[32], sizeof(unk1AF4));
+        DmaCopy32(3, unk1AF4, &GET_PALETTE_COLOR_BG(2, 0), sizeof(unk1AF4));
     }
 }
 

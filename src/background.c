@@ -55,7 +55,7 @@ void DrawBackground(Background *background)
     background->paletteOffset = mapHeader->tileset.palOffset;
 
     if (!(background->flags & BACKGROUND_DISABLE_PALETTE_UPDATE)) {
-        DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
+        DmaCopy16(3, pal, &GET_PALETTE_COLOR_BG(0, background->paletteOffset), palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         background->flags ^= BACKGROUND_DISABLE_PALETTE_UPDATE;
     }
@@ -1292,7 +1292,12 @@ static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
     if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gBgPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
+        // NOTE:
+        // For some reason, this only matches with a size of:
+        // (cmd->numColors * 2), not (cmd->numColors * sizeof(u16))
+        // Same goes for sprite.c version called animCmd_GetPalette()...
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16], &GET_PALETTE_COLOR_BG(s->palId, cmd->insertOffset),
+                  cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }

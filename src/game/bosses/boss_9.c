@@ -1407,7 +1407,12 @@ void sub_804E4CC(struct TA53_unk48 *unk48)
                 g = ((g * r6) >> 9) & 0x1F;
                 b = sRGB_080D8E20[i][c][2];
                 b = ((b * r6) >> 9) & 0x1F;
+#ifndef NON_MATCHING
+                // TODO: This should work...
                 gBgPalette[7 * PALETTE_LEN_4BPP + c + (i * PALETTE_LEN_4BPP)] = RGB16_REV(r, g, b);
+#else
+                SET_PALETTE_COLOR_BG(7, c + (i * PALETTE_LEN_4BPP), RGB16_REV(r, g, b));
+#endif
             }
         }
 

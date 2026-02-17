@@ -109,10 +109,10 @@ void InitWaterPalettes(void)
 #ifndef NON_MATCHING
             {
                 const u16 *src = gSpritePalettes[pal];
-                CopyPalette((u32 *)wd->pal[j], (u32 *)src, 16);
+                CopyPalette((u32 *)wd->pal[j], (u32 *)src, PALETTE_LEN_4BPP);
             };
 #else
-            CopyPalette((u32 *)wd->pal[j], (u32 *)gSpritePalettes[pal], 16);
+            CopyPalette((u32 *)wd->pal[j], (u32 *)gSpritePalettes[pal], PALETTE_LEN_4BPP);
 #endif
         }
     } else {
@@ -121,21 +121,21 @@ void InitWaterPalettes(void)
         animId = gUnknown_080D550C[character];
         animation = gAnimations[animId];
         pal = animation[0]->pal.palId;
-        CopyPalette((u32 *)wd->pal[0], (u32 *)gSpritePalettes[pal], 16);
+        CopyPalette((u32 *)wd->pal[0], (u32 *)gSpritePalettes[pal], PALETTE_LEN_4BPP);
 
         character = gPlayer.character;
         animId = sCharacterPalettesBoostEffect[character];
         animation = gAnimations[animId];
         pal = animation[0]->pal.palId;
-        CopyPalette((u32 *)wd->pal[1], (u32 *)gSpritePalettes[pal], 16);
+        CopyPalette((u32 *)wd->pal[1], (u32 *)gSpritePalettes[pal], PALETTE_LEN_4BPP);
     }
 
     animId = SA2_ANIM_PALETTE_554;
     animation = gAnimations[animId];
     pal = (animation[0]->pal.palId + 4);
-    CopyPalette((u32 *)wd->pal[4], (u32 *)gSpritePalettes[pal], 12 * 16);
+    CopyPalette((u32 *)wd->pal[4], (u32 *)gSpritePalettes[pal], 12 * PALETTE_LEN_4BPP);
 
-    MaskPaletteWithUnderwaterColor_inline((u32 *)wd->pal[16], (u32 *)gBgPalette, water->mask, 16 * 16);
+    MaskPaletteWithUnderwaterColor_inline((u32 *)wd->pal[16], (u32 *)&GET_PALETTE_COLOR_BG(0, 0), water->mask, 16 * PALETTE_LEN_4BPP);
 }
 
 void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)

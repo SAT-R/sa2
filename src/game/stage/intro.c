@@ -1234,7 +1234,7 @@ static void Task_UpdateStageLoadingScreen(void)
     IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
     u32 counter = introBackgrounds->controller->counter;
 
-    gBgPalette[0] = sZoneLoadingCharacterColors[gSelectedCharacter];
+    SET_PALETTE_COLOR_BG(0, 0, sZoneLoadingCharacterColors[gSelectedCharacter]);
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
