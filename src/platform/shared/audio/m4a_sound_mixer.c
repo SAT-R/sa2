@@ -31,6 +31,9 @@ struct SoundMixerState *SOUND_INFO_PTR = &sSoundInfo;
 
 void SoundMain(void)
 {
+#if !ENABLE_AUDIO
+    return;
+#endif
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
 
     if (mixer->lockStatus != ID_NUMBER) {
@@ -419,7 +422,7 @@ void MP2K_event_rept(struct MP2KPlayerState *unused, struct MP2KTrack *track)
             MP2K_event_goto(unused, track);
         } else {
             track->repeatCount = 0;
-            track->cmdPtr = track->cmdPtr + sizeof(u8 *);
+            track->cmdPtr += sizeof(u8) + sizeof(u8 *);
         }
     }
 }
@@ -908,7 +911,6 @@ void m4aSoundVSync(void)
         float *m4aBuffer = mixer->pcmBuffer;
         float *cgbBuffer = cgb_get_buffer();
         s32 dmaCounter = mixer->dmaCounter;
-        bool8 shouldQueue = FALSE;
 
         if (dmaCounter > 1) {
             m4aBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1));
@@ -916,14 +918,9 @@ void m4aSoundVSync(void)
 
         for (u32 i = 0; i < samplesPerFrame; i++) {
             audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
-            if (audioBuffer[i] != 0) {
-                shouldQueue = TRUE;
-            }
         }
 
-        if (shouldQueue) {
-            Platform_QueueAudio(audioBuffer, samplesPerFrame * 4);
-        }
+        Platform_QueueAudio(audioBuffer, samplesPerFrame * sizeof(float));
         if ((s8)(--mixer->dmaCounter) <= 0)
             mixer->dmaCounter = mixer->framesPerDmaCycle;
     }

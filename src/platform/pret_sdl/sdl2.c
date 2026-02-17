@@ -625,7 +625,7 @@ static u16 PollJoystickButtons(void)
 u32 fullScreenFlags = 0;
 static SDL_DisplayMode sdlDispMode = { 0 };
 
-void Platform_QueueAudio(const void *data, uint32_t bytesCount)
+void Platform_QueueAudio(const float *data, uint32_t bytesCount)
 {
     if (headless) {
         return;

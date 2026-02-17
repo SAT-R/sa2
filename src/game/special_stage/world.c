@@ -239,14 +239,14 @@ void sub_806EA04(void)
 
         *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PA
         // HACK: in SDL we don't handle these PB and PD values properly
-#if PLATFORM_SDL
+#if !PLATFORM_GBA && (RENDERER == RENDERER_SOFTWARE_FAST || RENDERER == RENDERER_SOFTWARE)
         *unk1884++ = 0;
 #else
         *unk1884++ = (Q_16_16_TO_INT(temp) * sin) >> 0x10; // BG2PB
 #endif
 
         *unk1884++ = (Q_16_16_TO_INT(temp) * -sin) >> 0x10; // BG2PC
-#if PLATFORM_SDL
+#if !PLATFORM_GBA && (RENDERER == RENDERER_SOFTWARE_FAST || RENDERER == RENDERER_SOFTWARE)
         *unk1884++ = 0;
 #else
         *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PD
