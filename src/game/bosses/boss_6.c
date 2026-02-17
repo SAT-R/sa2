@@ -168,7 +168,7 @@ static const u16 gUnknown_080D809E[][10] = {
     { 257, 257, 257, 257, 257, 256, 256, 256, 222, 222 },
 };
 
-static const u16 sPalettes[][16] = {
+static const u16 sPalettes[][PALETTE_LEN_4BPP] = {
     INCBIN_U16("graphics/80D80C6.gbapal"), // hit palette
     INCBIN_U16("graphics/80D80E6.gbapal"), // normal palette
 };
@@ -1164,16 +1164,16 @@ static void SetPalette(EggGoRound *boss)
 {
     u8 i;
     if (boss->invincibilityTimer > 0) {
-        for (i = 0; i < 16; i++) {
-            gObjPalette[8 * 16 + i] = sPalettes[(gStageTime & 2) / 2][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(8, i, sPalettes[(gStageTime & 2) / 2][i]);
         }
     } else {
-        for (i = 0; i < 16; i++) {
-            gObjPalette[8 * 16 + i] = sPalettes[1][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(8, i, sPalettes[1][i]);
         }
     }
 
-    gFlags |= 2;
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
 static void HandleCollisions(EggGoRound *boss)

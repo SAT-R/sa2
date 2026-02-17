@@ -23,7 +23,7 @@ const u8 gUnknown_080E0234[] = {
     103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
 };
 
-const u16 gUnknown_080E0270[] = INCBIN_U16("graphics/80E0270.gbapal");
+const u16 gUnknown_080E0270[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/80E0270.gbapal");
 
 #ifndef COLLECT_RINGS_ROM
 #define NUM_TILES 9
@@ -85,8 +85,8 @@ void CreateCollectRingsTimeDisplay(void)
         UpdateSpriteAnimation(s);
     }
 
-    for (i = 0; i < 16; i++) {
-        gObjPalette[7 * 16 + i] = gUnknown_080E0270[i];
+    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+        SET_PALETTE_COLOR_OBJ(7, i, gUnknown_080E0270[i]);
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

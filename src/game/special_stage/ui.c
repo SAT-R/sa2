@@ -335,8 +335,8 @@ static void HandlePaused(struct SpecialStageUI *ui)
     sub_806CA88(s, 1, pauseMenuVariants[lang][0], pauseMenuVariants[lang][1], 0x1000, (DISPLAY_WIDTH / 2), (DISPLAY_HEIGHT / 2), 0,
                 pauseMenuVariants[lang][2], 0);
 
-    DmaCopy16(3, &gObjPalette[15 * 16 + 9], ui->pauseMenuPalette1, sizeof(ui->pauseMenuPalette1));
-    DmaCopy16(3, &gObjPalette[15 * 16 + 12], ui->pauseMenuPalette2, sizeof(ui->pauseMenuPalette2));
+    DmaCopy16(3, &GET_PALETTE_COLOR_OBJ(15, 9), ui->pauseMenuPalette1, sizeof(ui->pauseMenuPalette1));
+    DmaCopy16(3, &GET_PALETTE_COLOR_OBJ(15, 12), ui->pauseMenuPalette2, sizeof(ui->pauseMenuPalette2));
     ui->wasPaused = TRUE;
     m4aMPlayAllStop();
     m4aSongNumStart(SE_PAUSE_SCREEN);

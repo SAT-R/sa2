@@ -834,9 +834,9 @@ void sub_8090F6C(struct ExtraEndingCutScene *scene)
         if (scene->unk37F != 0) {
             scene->unk37F--;
             if (scene->unk37E <= 3) {
-                DmaCopy32(3, gUnknown_080E15C8[scene->unk37E], &gObjPalette[3 * 16 + 0], sizeof(gUnknown_080E15C8[0]));
+                DmaCopy32(3, gUnknown_080E15C8[scene->unk37E], &GET_PALETTE_COLOR_OBJ(3, 0), sizeof(gUnknown_080E15C8[0]));
             } else {
-                DmaCopy32(3, gUnknown_080E15C8[6 - scene->unk37E], &gObjPalette[3 * 16 + 0], sizeof(gUnknown_080E15C8[0]));
+                DmaCopy32(3, gUnknown_080E15C8[6 - scene->unk37E], &GET_PALETTE_COLOR_OBJ(3, 0), sizeof(gUnknown_080E15C8[0]));
             }
         } else {
             scene->unk37E++;

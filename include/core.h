@@ -264,11 +264,18 @@ extern u16 gDispCnt;
 #define WINREG_WININ  4
 #define WINREG_WINOUT 5
 
+#define PALETTE_LEN_4BPP                                    16u
+#define GET_PALETTE_COLOR_OBJ(_paletteId, _colorId)         gObjPalette[(_paletteId)*PALETTE_LEN_4BPP + (_colorId)]
+#define GET_PALETTE_COLOR_BG(_paletteId, _colorId)          gBgPalette[(_paletteId)*PALETTE_LEN_4BPP + (_colorId)]
+#define SET_PALETTE_COLOR_OBJ(_paletteId, _colorId, _color) GET_PALETTE_COLOR_OBJ(_paletteId, _colorId) = (_color);
+#define SET_PALETTE_COLOR_BG(_paletteId, _colorId, _color)  GET_PALETTE_COLOR_BG(_paletteId, _colorId) = (_color);
+
 extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
-extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
-extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
+extern u16 gObjPalette[16 * PALETTE_LEN_4BPP];
+extern u16 gBgPalette[16 * PALETTE_LEN_4BPP];
+
 extern u16 gBgCntRegs[4];
 
 // TODO: Turn this into a struct-array?

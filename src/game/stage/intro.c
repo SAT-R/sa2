@@ -165,7 +165,7 @@ static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
     = { [CHARACTER_SONIC] = 40, [CHARACTER_CREAM] = 55, [CHARACTER_TAILS] = 52, [CHARACTER_KNUCKLES] = 40, [CHARACTER_AMY] = 40 };
 
 // Each byte represents one RGB channel (0-31)
-static const u8 gUnknown_080D6FF5[NUM_CHARACTERS + 1][16][3] = {
+static const u8 gUnknown_080D6FF5[NUM_CHARACTERS + 1][PALETTE_LEN_4BPP][3] = {
     {
         { 0x00, 0x17, 0x06 },
         { 0x16, 0x16, 0x16 },
@@ -731,13 +731,13 @@ static void Task_802F9F8(void)
 
         if (IS_SINGLE_PLAYER) {
             // _0802FA4C+8
-            for (i = 0; i < 16; i++) {
+            for (i = 0; i < PALETTE_LEN_4BPP; i++) {
                 r = gUnknown_080D6FF5[gSelectedCharacter][i][0];
                 r = (r * frameCounter) / 16u;
                 g = ((gUnknown_080D6FF5[gSelectedCharacter][i][1] * frameCounter) / 16u);
                 b = ((gUnknown_080D6FF5[gSelectedCharacter][i][2] * frameCounter) / 16u);
 
-                gObjPalette[0 * 16 + i] = RGB16_REV(r, g, b);
+                SET_PALETTE_COLOR_OBJ(0, i, RGB16_REV(r, g, b));
 
                 if (gCheese != NULL) {
                     r = gUnknown_080D6FF5[5][i][0];
@@ -745,7 +745,7 @@ static void Task_802F9F8(void)
                     g = ((gUnknown_080D6FF5[5][i][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[5][i][2] * frameCounter) / 16u);
 
-                    gObjPalette[14 * 16 + i] = RGB16_REV(r, g, b);
+                    SET_PALETTE_COLOR_OBJ(14, i, RGB16_REV(r, g, b));
                 }
             }
         } else {
@@ -754,25 +754,25 @@ static void Task_802F9F8(void)
 
             for (sid = 0; sid < MULTI_SIO_PLAYERS_MAX; sid++) {
                 if (GetBit(gMultiplayerConnections, sid)) {
-                    for (i = 0; i < 16; i++) {
+                    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
                         r = gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][0];
                         r = (r * frameCounter) / 16u;
                         g = ((gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][1] * frameCounter) / 16u);
                         b = ((gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][2] * frameCounter) / 16u);
 
-                        gObjPalette[sid * 16 + i] = RGB16_REV(r, g, b);
+                        SET_PALETTE_COLOR_OBJ(sid, i, RGB16_REV(r, g, b));
                     }
                 }
             }
 
             if (gCheese != NULL) {
-                for (i = 0; i < 16; i++) {
+                for (i = 0; i < PALETTE_LEN_4BPP; i++) {
                     r = gUnknown_080D6FF5[5][i][0];
                     r = (r * frameCounter) / 16u;
                     g = ((gUnknown_080D6FF5[5][i][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[5][i][2] * frameCounter) / 16u);
 
-                    gObjPalette[14 * 16 + i] = RGB16_REV(r, g, b);
+                    SET_PALETTE_COLOR_OBJ(14, i, RGB16_REV(r, g, b));
                 }
             }
         }

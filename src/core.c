@@ -622,12 +622,12 @@ void UpdateScreenDma(void)
     DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
     if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
-        DmaCopy32(3, gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
+        DmaCopy32(3, gBgPalette, (void *)BG_PLTT, sizeof(gBgPalette));
         gFlags ^= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 
     if (gFlags & FLAGS_UPDATE_SPRITE_PALETTES) {
-        DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
+        DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, sizeof(gObjPalette));
         gFlags ^= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
@@ -761,12 +761,12 @@ void UpdateScreenCpuSet(void)
     CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
     if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
-        CpuFastCopy(gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
+        CpuFastCopy(gBgPalette, (void *)BG_PLTT, sizeof(gBgPalette));
         gFlags ^= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 
     if (gFlags & FLAGS_UPDATE_SPRITE_PALETTES) {
-        CpuFastCopy(gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
+        CpuFastCopy(gObjPalette, (void *)OBJ_PLTT, sizeof(gObjPalette));
         gFlags ^= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 

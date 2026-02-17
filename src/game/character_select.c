@@ -515,11 +515,11 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
-    for (i = 0; i < 16; i++) {
-        gObjPalette[15 * 16 + i] = 0;
+    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+        SET_PALETTE_COLOR_OBJ(15, i, 0);
     }
 
-    gFlags |= 0x2;
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
 static void Task_FadeInAndStartRollInAnim(void)
