@@ -321,7 +321,7 @@ const TA53_Data1 gUnknown_080D8DCC[6] = {
 };
 
 const TA53_Rocket_Callback gUnknown_080D8E14[3] = { sub_804E974, sub_804EB6C, sub_804EC6C };
-const u8 sRGB_080D8E20[4][16][3] = {
+const u8 sRGB_080D8E20[4][PALETTE_LEN_4BPP][3] = {
     {
         { 0, 0, 0 },
         { 2, 2, 28 },
@@ -1385,8 +1385,8 @@ void sub_804E4CC(struct TA53_unk48 *unk48)
             b = sRGB_080D8E20[3][c][2];
             b = ((b * r6) >> 12) & 0x1F;
 
-            gObjPalette[c + 8 * 16] = RGB16_REV(r, g, b);
-            gBgPalette[c] = RGB16_REV(r, g, b);
+            SET_PALETTE_COLOR_OBJ(8, c, RGB16_REV(r, g, b));
+            SET_PALETTE_COLOR_BG(0, c, RGB16_REV(r, g, b));
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
@@ -1407,7 +1407,12 @@ void sub_804E4CC(struct TA53_unk48 *unk48)
                 g = ((g * r6) >> 9) & 0x1F;
                 b = sRGB_080D8E20[i][c][2];
                 b = ((b * r6) >> 9) & 0x1F;
-                gBgPalette[0x70 + c + (i * 16)] = RGB16_REV(r, g, b);
+#ifndef NON_MATCHING
+                // TODO: This should work...
+                gBgPalette[7 * PALETTE_LEN_4BPP + c + (i * PALETTE_LEN_4BPP)] = RGB16_REV(r, g, b);
+#else
+                SET_PALETTE_COLOR_BG(7, c + (i * PALETTE_LEN_4BPP), RGB16_REV(r, g, b));
+#endif
             }
         }
 
@@ -2870,31 +2875,24 @@ void sub_8050958(TA53Boss *boss)
     if (boss->unkD > 0) {
         if (--boss->unkD == 0) {
             for (i = 0; i < 16; i++) {
-                gObjPalette[i + 8 * 16] = gUnknown_080D8EF0[1][i];
-                gBgPalette[i + 0 * 16] = gObjPalette[i + 8 * 16];
+                SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D8EF0[1][i]);
+                SET_PALETTE_COLOR_BG(0, i, gUnknown_080D8EF0[1][i]);
             }
         } else {
             // _080509B0
-            u16 r6 = (gStageTime >> 1) % 16u;
+            u16 r6 = (gStageTime >> 1) % PALETTE_LEN_4BPP;
 
             if (boss->lives < 4) {
-                for (i = 0; i < 16; i++) {
-                    gObjPalette[8 * 16 + ((i + r6) % 16u)] = gUnknown_080D8EF0[0][i] >> 5;
-                    gBgPalette[0 * 16 + ((i + r6) % 16u)] = gObjPalette[8 * 16 + ((i + r6) % 16u)];
+                for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                    SET_PALETTE_COLOR_OBJ(8, ((i + r6) % PALETTE_LEN_4BPP), gUnknown_080D8EF0[0][i] >> 5);
+                    SET_PALETTE_COLOR_BG(0, ((i + r6) % PALETTE_LEN_4BPP), gUnknown_080D8EF0[0][i] >> 5);
                 }
             } else {
-                for (i = 0; i < 16; i++) {
-                    u32 r0;
-                    u32 r2;
-                    u32 colId;
-                    u16 *objPalTgt = &gObjPalette[0];
-                    u32 objPalId;
-
-                    colId = ((i + r6) % 16u);
-                    objPalId = 8 * 16 + colId;
-                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i];
-                    gBgPalette[0 * 16 + colId]
-                        = ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i];
+                for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                    SET_PALETTE_COLOR_OBJ(8, ((i + r6) % PALETTE_LEN_4BPP),
+                                          ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i]);
+                    SET_PALETTE_COLOR_BG(0, ((i + r6) % PALETTE_LEN_4BPP),
+                                         ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i]);
                 }
             }
         }

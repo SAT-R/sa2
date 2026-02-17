@@ -43,7 +43,7 @@ const u16 sAnims1UpIcons[][3]
         [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
         [CHARACTER_AMY] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER, SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
 
-const u16 sPalette1UpIcons[] = INCBIN_U16("graphics/ui_icon_1_up.gbapal");
+const u16 sPalette1UpIcons[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/ui_icon_1_up.gbapal");
 
 const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
@@ -219,8 +219,8 @@ struct Task *CreateStageUI(void)
     s->frameFlags = 0;
     ui->ringCurrentFrame = 0;
 
-    for (i = 0; i < 16; i++) {
-        gObjPalette[0x70 + i] = sPalette1UpIcons[i];
+    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+        SET_PALETTE_COLOR_OBJ(7, i, sPalette1UpIcons[i]);
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

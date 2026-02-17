@@ -184,7 +184,7 @@ static const HammertankFunc sBossStateHandlers[] = {
     [EGG_HAMMER_TANK_II_STATE_DRAG] = StateHandler_HammerDrag,   [EGG_HAMMER_TANK_II_STATE_RETRACT] = StateHandler_HammerRetract,
 };
 
-static const u16 gUnknown_080D7AD0[][16] = {
+static const u16 gUnknown_080D7AD0[][PALETTE_LEN_4BPP] = {
     INCBIN_U16("graphics/80D7AD0.gbapal"),
     INCBIN_U16("graphics/80D7AF0.gbapal"),
 };
@@ -1613,8 +1613,8 @@ static void HandleBossHitPalette(EggHammerTankII *boss)
     if (boss->timerInvulnerability > 0) {
         u8 i;
 
-        for (i = 0; i < 16; i++) {
-            gObjPalette[8 * 16 + i] = gUnknown_080D7AD0[(boss->timerInvulnerability & 4) >> 2][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7AD0[(boss->timerInvulnerability & 4) >> 2][i]);
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

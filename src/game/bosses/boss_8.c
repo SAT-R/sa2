@@ -173,7 +173,7 @@ const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 static const EggRoboFn sArmFuncs[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984, sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
-const u16 sArmPalettes[2][16] = {
+const u16 sArmPalettes[2][PALETTE_LEN_4BPP] = {
     INCBIN_U16("graphics/boss_8_a.gbapal"),
     INCBIN_U16("graphics/boss_8_b.gbapal"),
 };
@@ -2009,31 +2009,31 @@ static void sub_804CA70(SuperEggRoboZ *boss)
 
     if (boss->unkB != 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[8 * 16 + i] = sArmPalettes[pal][i];
+            SET_PALETTE_COLOR_OBJ(8, i, sArmPalettes[pal][i]);
         }
     } else {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[8 * 16 + i] = sArmPalettes[0][i];
+            SET_PALETTE_COLOR_OBJ(8, i, sArmPalettes[0][i]);
         }
     }
 
     if (boss->unk3E[0] > 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[9 * 16 + i] = sArmPalettes[pal][i];
+            SET_PALETTE_COLOR_OBJ(9, i, sArmPalettes[pal][i]);
         }
     } else {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[9 * 16 + i] = sArmPalettes[0][i];
+            SET_PALETTE_COLOR_OBJ(9, i, sArmPalettes[0][i]);
         }
     }
 
     if (boss->unk3E[1] > 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[12 * 16 + i] = sArmPalettes[pal][i];
+            SET_PALETTE_COLOR_OBJ(12, i, sArmPalettes[pal][i]);
         }
     } else {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[12 * 16 + i] = sArmPalettes[0][i];
+            SET_PALETTE_COLOR_OBJ(12, i, sArmPalettes[0][i]);
         }
     }
 

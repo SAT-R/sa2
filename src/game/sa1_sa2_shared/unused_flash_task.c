@@ -22,7 +22,7 @@ void CreateUnusedFlashTask(void)
     INIT_BG_SPRITES_LAYER_64(2);
 
     TaskCreate(Task_UnusedFlashTask, 0, 0x1000, 0, NULL);
-    gBgPalette[1] = RGB_WHITE;
+    SET_PALETTE_COLOR_BG(0, 1, RGB_WHITE);
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
 

@@ -149,7 +149,7 @@ static const TileInfo gUnknown_080D7FB0[] = {
     { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP, 0 },    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
 };
 
-static const u16 gUnknown_080D7FF0[][16] = {
+static const u16 gUnknown_080D7FF0[][PALETTE_LEN_4BPP] = {
     INCBIN_U16("graphics/80D7FF0.gbapal"),
     INCBIN_U16("graphics/80D8010.gbapal"),
 };
@@ -1293,6 +1293,7 @@ static void sub_8044CBC(EggSaucer *boss)
             s->prevVariant = -1;
         }
     }
+
     boss->unk36[0][boss->unkB6] = boss->unkB8;
     boss->unk36[1][boss->unkB6] = boss->unkBA;
 
@@ -1756,27 +1757,27 @@ void sub_8045898(EggSaucer *boss)
     if (boss->unk15 == 0) {
         val = (gStageTime & 2) >> 1;
         if (boss->unk13 != 0) {
-            for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x80] = gUnknown_080D7FF0[val][i];
+            for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7FF0[val][i]);
             }
         } else {
-            for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x80] = gUnknown_080D7FF0[1][i];
+            for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7FF0[1][i]);
             }
         }
 
         if (boss->unk1F != 0) {
             boss->unk1F--;
-            for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x90] = gUnknown_080D7FF0[val][i];
+            for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                SET_PALETTE_COLOR_OBJ(9, i, gUnknown_080D7FF0[val][i]);
             }
         } else {
-            for (i = 0; i < 0x10; i++) {
-                gObjPalette[i + 0x90] = gUnknown_080D7FF0[1][i];
+            for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+                SET_PALETTE_COLOR_OBJ(9, i, gUnknown_080D7FF0[1][i]);
             }
         }
 
-        gFlags |= 2;
+        gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 }
 
