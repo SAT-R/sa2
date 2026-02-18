@@ -294,11 +294,11 @@ void customHBlank(void)
 {
     u16 vcount = REG_VCOUNT;
     if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
-        ((u16 *)BG_PLTT)[0] = RGB_WHITE;
+        SET_PALETTE_COLOR_BG(0, 0, RGB_WHITE);
     } else if ((vcount >= (DISPLAY_HEIGHT / 2) - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
-        ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * 16];
+        SET_PALETTE_COLOR_BG(0, 0, GET_PALETTE_COLOR_OBJ(3, 0));
     } else {
-        ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * 16];
+        SET_PALETTE_COLOR_BG(0, 0, GET_PALETTE_COLOR_OBJ(2, 0));
     }
 }
 #endif
