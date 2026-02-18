@@ -218,8 +218,10 @@ int main(int argc, char **argv)
     REG_KEYINPUT = 0x3FF;
 
     if (headless) {
+#if ENABLE_AUDIO
         // Required or it makes an infinite loop
         cgb_audio_init(48000);
+#endif
         AgbMain();
         return 1;
     }

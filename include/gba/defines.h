@@ -48,8 +48,8 @@
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
 #else
-#define DISPLAY_WIDTH  240
-#define DISPLAY_HEIGHT 160
+#define DISPLAY_WIDTH  426
+#define DISPLAY_HEIGHT 240
 #endif
 
 // NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
@@ -58,8 +58,7 @@
 #undef VRAM_SIZE
 #define VRAM_SIZE (0x18000 + (0x800 * (12)))
 #define WIDESCREEN_HACK TRUE
-// TODO: extend oam again once fast renderer supports
-#define EXTENDED_OAM FALSE
+#define EXTENDED_OAM TRUE
 #else
 #define WIDESCREEN_HACK FALSE
 #define EXTENDED_OAM !TRUE

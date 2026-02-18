@@ -804,8 +804,8 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -813,7 +813,7 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -831,7 +831,7 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
         tile_extra_variables_8bpp();
 
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -880,7 +880,7 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
         tile_extra_variables_4bpp();
 
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -948,8 +948,8 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -957,7 +957,7 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -974,7 +974,7 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1022,7 +1022,7 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1090,8 +1090,8 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1099,7 +1099,7 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1115,7 +1115,7 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1162,7 +1162,7 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1232,8 +1232,8 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1241,7 +1241,7 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1257,7 +1257,7 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1304,7 +1304,7 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1374,8 +1374,8 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1383,7 +1383,7 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1399,7 +1399,7 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1446,7 +1446,7 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1516,8 +1516,8 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1525,7 +1525,7 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1541,7 +1541,7 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1590,7 +1590,7 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1660,8 +1660,8 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1669,7 +1669,7 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1685,7 +1685,7 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1732,7 +1732,7 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1800,8 +1800,8 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
     }
 
     if (map_size & 0x01) {
-        if (horizontal_offset >= 256) {
-            horizontal_offset -= 256;
+        if (horizontal_offset >= 512) {
+            horizontal_offset -= 512;
             map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
@@ -1809,7 +1809,7 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
             second_ptr = map_base + (32 * 32);
         }
     } else {
-        horizontal_offset %= 256;
+        horizontal_offset %= 512;
         map_ptr = map_base + (horizontal_offset / 8);
         second_ptr = map_base;
     }
@@ -1825,7 +1825,7 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -1872,7 +1872,7 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = VRAM + (((bg_control >> 2) & 0x03) * (1024 * 16)) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = 512 - (horizontal_offset % 512);
         u32 current_tile;
 
         map_base += ((vertical_offset % 256) / 8) * 32;
@@ -2321,18 +2321,18 @@ static const bitmap_layer_render_struct bitmap_mode_renderers[3]
 // Get the current row offset into an obj in 1D map space
 
 #define obj_tile_offset_1D(color_depth, flip_op)                                                                                           \
-    tile_ptr = tile_base + ((obj_attribute_2 & 0x3FF) * 32) + ((vertical_offset / 8) * (obj_width / 8) * tile_size_##color_depth)          \
+    tile_ptr = tile_base + (oam_data->split.tileNum * 32) + ((vertical_offset / 8) * (obj_width / 8) * tile_size_##color_depth)            \
         + ((vertical_offset % 8) * tile_width_##color_depth) obj_tile_offset_##flip_op(color_depth)
 
 // Get the current row offset into an obj in 2D map space
 
 #define obj_tile_offset_2D(color_depth, flip_op)                                                                                           \
-    tile_ptr = tile_base + ((obj_attribute_2 & 0x3FF) * 32) + ((vertical_offset / 8) * 1024)                                               \
+    tile_ptr = tile_base + (oam_data->split.tileNum * 32) + ((vertical_offset / 8) * 1024)                                                 \
         + ((vertical_offset % 8) * tile_width_##color_depth) obj_tile_offset_##flip_op(color_depth)
 
 // Get the palette for 4bpp obj.
 
-#define obj_get_palette_4bpp() current_palette = (obj_attribute_2 >> 8) & 0xF0
+#define obj_get_palette_4bpp() current_palette = oam_data->split.paletteNum << 4
 
 #define obj_get_palette_8bpp()
 
@@ -2405,14 +2405,14 @@ static const bitmap_layer_render_struct bitmap_mode_renderers[3]
     }
 
 #define obj_scale_offset_1D(color_depth)                                                                                                   \
-    tile_ptr = tile_base + ((obj_attribute_2 & 0x3FF) * 32) + ((vertical_offset / 8) * (max_x / 8) * tile_size_##color_depth)              \
+    tile_ptr = tile_base + (oam_data->split.tileNum * 32) + ((vertical_offset / 8) * (max_x / 8) * tile_size_##color_depth)                \
         + ((vertical_offset % 8) * tile_width_##color_depth)
 
 // Get the current row offset into an obj in 2D map space
 
 #define obj_scale_offset_2D(color_depth)                                                                                                   \
-    tile_ptr = tile_base + ((obj_attribute_2 & 0x3FF) * 32) + ((vertical_offset / 8) * 1024)                                               \
-        + ((vertical_offset % 8) * tile_width_##color_depth)
+    tile_ptr                                                                                                                               \
+        = tile_base + (oam_data->split.tileNum * 32) + ((vertical_offset / 8) * 1024) + ((vertical_offset % 8) * tile_width_##color_depth)
 
 #define obj_render_scale_pixel_4bpp(combine_op, alpha_op)                                                                                  \
     current_pixel = tile_ptr[tile_map_offset + ((tile_x >> 1) & 0x03)];                                                                    \
@@ -2481,7 +2481,7 @@ static const bitmap_layer_render_struct bitmap_mode_renderers[3]
 
 #define obj_render_rotate(combine_op, color_depth, alpha_op, map_space)                                                                    \
     {                                                                                                                                      \
-        tile_ptr = tile_base + ((obj_attribute_2 & 0x3FF) * 32);                                                                           \
+        tile_ptr = tile_base + (oam_data->split.tileNum * 32);                                                                             \
         obj_rotate_offset_##map_space(color_depth);                                                                                        \
                                                                                                                                            \
         source_x += (y_delta * dmx) - (middle_x * dx);                                                                                     \
@@ -2519,11 +2519,15 @@ static const bitmap_layer_render_struct bitmap_mode_renderers[3]
 
 #define obj_render_affine(combine_op, color_depth, alpha_op, map_space)                                                                    \
     {                                                                                                                                      \
-        u16 *params = (u16 *)OAM + (((obj_attribute_1 >> 9) & 0x1F) * 16);                                                                 \
-        s32 dx = (s16)eswap16(params[3]);                                                                                                  \
-        s32 dmx = (s16)eswap16(params[7]);                                                                                                 \
-        s32 dy = (s16)eswap16(params[11]);                                                                                                 \
-        s32 dmy = (s16)eswap16(params[15]);                                                                                                \
+        u8 matrix_num = oam_data->split.matrixNum * 4;                                                                                     \
+        OamData *oam1 = &((OamData *)OAM)[matrix_num];                                                                                     \
+        OamData *oam2 = &((OamData *)OAM)[matrix_num + 1];                                                                                 \
+        OamData *oam3 = &((OamData *)OAM)[matrix_num + 2];                                                                                 \
+        OamData *oam4 = &((OamData *)OAM)[matrix_num + 3];                                                                                 \
+        s32 dx = (s16)oam1->all.affineParam;                                                                                               \
+        s32 dmx = (s16)oam2->all.affineParam;                                                                                              \
+        s32 dy = (s16)oam3->all.affineParam;                                                                                               \
+        s32 dmy = (s16)oam4->all.affineParam;                                                                                              \
         s32 source_x, source_y;                                                                                                            \
         s32 tile_x, tile_y;                                                                                                                \
         u32 tile_map_offset;                                                                                                               \
@@ -2541,7 +2545,7 @@ static const bitmap_layer_render_struct bitmap_mode_renderers[3]
         source_x = (middle_x << 8);                                                                                                        \
         source_y = (middle_y << 8);                                                                                                        \
                                                                                                                                            \
-        if (obj_attribute_0 & 0x200) {                                                                                                     \
+        if ((oam_data->split.affineMode >> 1) & 1) {                                                                                       \
             obj_width *= 2;                                                                                                                \
             obj_height *= 2;                                                                                                               \
             middle_x *= 2;                                                                                                                 \
@@ -2625,8 +2629,8 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
 #define render_scanline_obj_extra_variables_copy_bitmap(map_space) render_scanline_obj_extra_variables_copy(bitmap)
 
 #define render_scanline_obj_main(combine_op, alpha_op, map_space)                                                                          \
-    if (obj_attribute_0 & 0x100) {                                                                                                         \
-        if ((obj_attribute_0 >> 13) & 0x01) {                                                                                              \
+    if (oam_data->split.affineMode & 1) {                                                                                                  \
+        if (oam_data->split.bpp & 1) {                                                                                                     \
             obj_render_affine(combine_op, 8bpp, alpha_op, map_space);                                                                      \
         } else {                                                                                                                           \
             obj_render_affine(combine_op, 4bpp, alpha_op, map_space);                                                                      \
@@ -2634,10 +2638,10 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
     } else {                                                                                                                               \
         vertical_offset = vcount - obj_y;                                                                                                  \
                                                                                                                                            \
-        if ((obj_attribute_1 >> 13) & 0x01)                                                                                                \
+        if ((oam_data->split.matrixNum >> 4) & 1)                                                                                          \
             vertical_offset = obj_height - vertical_offset - 1;                                                                            \
                                                                                                                                            \
-        switch (((obj_attribute_0 >> 12) & 0x02) | ((obj_attribute_1 >> 12) & 0x01)) {                                                     \
+        switch ((oam_data->split.bpp << 1) | ((oam_data->split.matrixNum >> 3) & 1)) {                                                     \
             case 0x0:                                                                                                                      \
                 obj_render(combine_op, 4bpp, alpha_op, map_space, noflip);                                                                 \
                 break;                                                                                                                     \
@@ -2659,7 +2663,7 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
 #define render_scanline_obj_no_partial_alpha(combine_op, alpha_op, map_space) render_scanline_obj_main(combine_op, alpha_op, map_space)
 
 #define render_scanline_obj_partial_alpha(combine_op, alpha_op, map_space)                                                                 \
-    if ((obj_attribute_0 >> 10) & 0x03) {                                                                                                  \
+    if (oam_data->split.objMode) {                                                                                                         \
         pixel_combine = 0x00000300;                                                                                                        \
         render_scanline_obj_main(combine_op, alpha_obj, map_space);                                                                        \
     } else {                                                                                                                               \
@@ -2672,7 +2676,7 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
 #define render_scanline_obj_prologue_copy_body(type)                                                                                       \
     copy_start = obj_x;                                                                                                                    \
     copy_end = obj_x + obj_width;                                                                                                          \
-    if (obj_attribute_0 & 0x200)                                                                                                           \
+    if (oam_data->split.affineMode & 2)                                                                                                    \
         copy_end += obj_width;                                                                                                             \
                                                                                                                                            \
     if (copy_start < start)                                                                                                                \
@@ -2701,7 +2705,6 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
         s32 obj_x, obj_y;                                                                                                                  \
         u32 obj_size;                                                                                                                      \
         u32 obj_width, obj_height;                                                                                                         \
-        u32 obj_attribute_0, obj_attribute_1, obj_attribute_2;                                                                             \
         s32 vcount = read_ioreg(REG_ADDR_VCOUNT);                                                                                          \
         u32 tile_run;                                                                                                                      \
         u32 current_pixels;                                                                                                                \
@@ -2710,7 +2713,6 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
         u32 vertical_offset;                                                                                                               \
         u32 partial_tile_run, partial_tile_offset;                                                                                         \
         u32 pixel_run;                                                                                                                     \
-        u16 *oam_ptr;                                                                                                                      \
         OamData *oam_data;                                                                                                                 \
         render_scanline_dest_##alpha_op *dest_ptr;                                                                                         \
         u8 *tile_base = VRAM + 0x10000;                                                                                                    \
@@ -2720,18 +2722,14 @@ static u8 obj_alpha_count[DISPLAY_HEIGHT];
                                                                                                                                            \
         for (obj_num = 0; obj_num < obj_count; obj_num++) {                                                                                \
             oam_data = (OamData *)&OAM[obj_list[obj_num] * OAM_DATA_SIZE_AFFINE];                                                          \
-            oam_ptr = (u16 *)OAM + (obj_list[obj_num] * 4);                                                                                \
-            obj_attribute_0 = eswap16(oam_ptr[0]);                                                                                         \
-            obj_attribute_1 = eswap16(oam_ptr[1]);                                                                                         \
-            obj_attribute_2 = eswap16(oam_ptr[2]);                                                                                         \
-            obj_size = ((obj_attribute_0 >> 12) & 0x0C) | (obj_attribute_1 >> 14);                                                         \
+            obj_size = (oam_data->split.shape << 2) | oam_data->split.size;                                                                \
                                                                                                                                            \
             obj_x = oam_data->split.x;                                                                                                     \
             obj_width = obj_width_table[obj_size];                                                                                         \
                                                                                                                                            \
             render_scanline_obj_prologue_##combine_op(alpha_op);                                                                           \
                                                                                                                                            \
-            obj_y = obj_attribute_0 & 0xFF;                                                                                                \
+            obj_y = oam_data->split.y;                                                                                                     \
                                                                                                                                            \
             if (!EXTENDED_OAM) {                                                                                                           \
                 if (obj_x > DISPLAY_WIDTH)                                                                                                 \
@@ -2772,34 +2770,29 @@ static void order_obj(u32 video_mode)
 {
     s32 obj_num;
     u32 row;
-    t_oam *oam_base = (t_oam *)OAM;
 
     memset(obj_priority_count, 0, sizeof(obj_priority_count));
     memset(obj_alpha_count, 0, sizeof(obj_alpha_count));
 
     for (obj_num = 127; obj_num >= 0; obj_num--) {
         OamData *oam_data = (OamData *)&OAM[obj_num * OAM_DATA_SIZE_AFFINE];
-        t_oam *oam_ptr = &oam_base[obj_num];
-        u16 obj_attr0 = eswap16(oam_ptr->attr0);
         // Bit 9 disables regular sprites. Used as double bit for affine ones.
         bool visible = oam_data->split.affineMode != 2;
         if (visible) {
-            u16 obj_shape = obj_attr0 >> 14;
-            u32 obj_mode = (obj_attr0 >> 10) & 0x03;
+            u16 obj_shape = oam_data->split.shape;
+            u32 obj_mode = oam_data->split.objMode;
 
             // Prohibited shape and mode
             bool invalid = (obj_shape == 0x3) || (obj_mode == OBJ_MOD_INVALID);
             if (!invalid) {
-                u16 obj_attr1 = eswap16(oam_ptr->attr1);
-                u16 obj_attr2 = eswap16(oam_ptr->attr2);
-                u32 obj_priority = (obj_attr2 >> 10) & 0x03;
+                u32 obj_priority = oam_data->split.priority;
 
-                if (((video_mode < 3) || ((obj_attr2 & 0x3FF) >= 512))) {
+                if (((video_mode < 3) || (oam_data->split.tileNum >= 512))) {
                     // Calculate object size (from size and shape attr bits)
-                    u16 obj_size = (obj_attr1 >> 14);
+                    u16 obj_size = oam_data->split.size;
                     s32 obj_height = obj_dim_table[obj_shape][obj_size][1];
                     s32 obj_width = obj_dim_table[obj_shape][obj_size][0];
-                    s32 obj_y = obj_attr0 & 0xFF;
+                    s32 obj_y = oam_data->split.y;
 
 #if !EXTENDED_OAM
                     if (obj_y > DISPLAY_HEIGHT)
@@ -2807,7 +2800,7 @@ static void order_obj(u32 video_mode)
 #endif
 
                     // Double size for affine sprites with double bit set
-                    if (obj_attr0 & 0x200) {
+                    if ((oam_data->split.affineMode >> 1) & 1) {
                         obj_height *= 2;
                         obj_width *= 2;
                     }
