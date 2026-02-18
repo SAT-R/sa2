@@ -43,9 +43,13 @@
 // PSP: Use GBA-native resolution, SDL scales to 480x272
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
+#elif defined(__PS2__)
+// Runs at 60fps with the "fast draw"
+#define DISPLAY_WIDTH  240
+#define DISPLAY_HEIGHT 160
 #else
-#define DISPLAY_WIDTH  426
-#define DISPLAY_HEIGHT 240
+#define DISPLAY_WIDTH  240
+#define DISPLAY_HEIGHT 160
 #endif
 
 // NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
@@ -54,7 +58,8 @@
 #undef VRAM_SIZE
 #define VRAM_SIZE (0x18000 + (0x800 * (12)))
 #define WIDESCREEN_HACK TRUE
-#define EXTENDED_OAM TRUE
+// TODO: extend oam again once fast renderer supports
+#define EXTENDED_OAM FALSE
 #else
 #define WIDESCREEN_HACK FALSE
 #define EXTENDED_OAM !TRUE

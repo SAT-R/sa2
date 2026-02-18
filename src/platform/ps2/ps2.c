@@ -161,7 +161,7 @@ static void deinit_drivers()
 void platform_video_init(void)
 {
     if (vid_mode == NULL) {
-        vid_mode = &vid_modes[2]; // Standard def 480p
+        vid_mode = &vid_modes[1]; // Standard def 480p
     } else {
         if (use_hires) {
             gsKit_hires_deinit_global(gsGlobal);
@@ -219,6 +219,7 @@ void platform_video_init(void)
 int main(int argc, char **argv)
 {
     prepare_IOP();
+    init_drivers();
 
     // ReadSaveFile("sa2.sav");
 
@@ -233,6 +234,11 @@ int main(int argc, char **argv)
     cgb_audio_init(48000);
 
     VDraw();
+    // while (true) {
+    //     UpdateTexture();
+    //     gsKit_sync_flip(gsGlobal);
+    //     gsKit_queue_exec(gsGlobal);
+    // }
     AgbMain();
 
     return 0;
@@ -260,11 +266,11 @@ void VBlankIntrWait(void)
     if (isRunning) {
         REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
 
-// Only render 30fps when in widescreen as the draw func is too slow for the ps2
-#if DISPLAY_WIDTH > 240
-        skipFrame++;
-        skipFrame %= 2;
-#endif
+        // Only render 30fps when in widescreen as the draw func is too slow for the ps2
+        // #if DISPLAY_WIDTH > 240
+        //         skipFrame++;
+        //         skipFrame %= 2;
+        // #endif
         if (skipFrame == 0) {
             VDraw();
         } else {
@@ -935,7 +941,6 @@ void UpdateTexture(void)
 
     gsKit_clear(gsGlobal, GS_SETREG_RGBAQ(0, 0, 0, 0, 0));
 
-    // Table
     gsKit_prim_sprite_texture(gsGlobal, &screen,
                               0.0f, // X1
                               0.0f, // Y2

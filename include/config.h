@@ -51,7 +51,7 @@
 // TODO: Only win32 for now
 #define RENDERER RENDERER_OPENGL
 #else
-#define RENDERER RENDERER_SOFTWARE
+#define RENDERER RENDERER_SOFTWARE_FAST
 #endif
 #endif
 
