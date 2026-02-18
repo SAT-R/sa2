@@ -48,7 +48,7 @@ void Task_OllieLogoMoves(void);
 
 //    1
 // -------
-// x^4 + 0.5
+// x^4 + 1
 s32 logoOllieMove(s32 frameNum)
 {
     s32 qTime = (Q_DIV(Q(frameNum), Q(GBA_FRAMES_PER_SECOND)));
