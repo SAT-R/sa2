@@ -289,16 +289,23 @@ void TaskDestructor_DecompCredits(struct Task *t)
     CreateTitleScreen();
 }
 
-// Colors the screen behind the "Press START ..." text white
+// Changes background colors depending on the current horizontal line
 void customHBlank(void)
 {
-    u16 vcount = REG_VCOUNT;
+    // NOTE:
+    // We have to use direct accesses to palette memory here instead of
+    // SET_PALETTE_COLOR_BG() and GET_PALETTE_COLOR_OBJ() because those are only taken into account
+    // at the end of the frame, while this HBlank-code need to update colors while the frame gets drawn;
+    int_vcount vcount = REG_VCOUNT;
     if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
-        SET_PALETTE_COLOR_BG(0, 0, RGB_WHITE);
+        // "PRESS START to continue"
+        ((u16 *)BG_PLTT)[0] = RGB_WHITE;
     } else if ((vcount >= (DISPLAY_HEIGHT / 2) - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
-        SET_PALETTE_COLOR_BG(0, 0, GET_PALETTE_COLOR_OBJ(3, 0));
+        // Logo background (JaceCear)
+        ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * PALETTE_LEN_4BPP];
     } else {
-        SET_PALETTE_COLOR_BG(0, 0, GET_PALETTE_COLOR_OBJ(2, 0));
+        // Logo background (freshollie)
+        ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * PALETTE_LEN_4BPP];
     }
 }
 #endif
