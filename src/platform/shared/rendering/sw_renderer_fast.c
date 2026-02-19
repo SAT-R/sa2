@@ -800,17 +800,17 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -831,10 +831,10 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
         tile_extra_variables_8bpp();
 
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -880,10 +880,10 @@ static void render_scanline_text_base_normal(u32 layer, u32 start, u32 end, void
         tile_extra_variables_4bpp();
 
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -945,18 +945,17 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
-        printf("%d\n", vertical_offset);
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -976,10 +975,10 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1024,10 +1023,10 @@ static void render_scanline_text_transparent_normal(u32 layer, u32 start, u32 en
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1088,17 +1087,17 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1117,10 +1116,10 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1164,10 +1163,10 @@ static void render_scanline_text_base_color16(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1230,17 +1229,17 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1259,10 +1258,10 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1306,10 +1305,10 @@ static void render_scanline_text_transparent_color16(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1372,17 +1371,17 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1401,10 +1400,10 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1448,10 +1447,10 @@ static void render_scanline_text_base_color32(u32 layer, u32 start, u32 end, voi
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1514,17 +1513,17 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1543,10 +1542,10 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1592,10 +1591,10 @@ static void render_scanline_text_transparent_color32(u32 layer, u32 start, u32 e
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1658,17 +1657,17 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1687,10 +1686,10 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1734,10 +1733,10 @@ static void render_scanline_text_base_alpha(u32 layer, u32 start, u32 end, void 
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1798,17 +1797,17 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
     if ((map_size & 0x02) && (vertical_offset >= 256)) {
         map_base += ((map_width / 8) * 32) + (((vertical_offset - 256) / 8) * 32);
     } else {
-        map_base += (((vertical_offset % 256) / 8) * 32);
+        map_base += (((vertical_offset % 256) / 8) * (map_width / 8));
     }
 
     if (map_size & 0x01) {
         if (horizontal_offset >= 256) {
             horizontal_offset -= 256;
-            map_ptr = map_base + (32 * 32) + (horizontal_offset / 8);
+            map_ptr = map_base + ((map_width / 8) * 32) + (horizontal_offset / 8);
             second_ptr = map_base;
         } else {
             map_ptr = map_base + (horizontal_offset / 8);
-            second_ptr = map_base + (32 * 32);
+            second_ptr = map_base + ((map_width / 8) * 32);
         }
     } else {
         horizontal_offset %= 256;
@@ -1827,10 +1826,10 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
         s32 vertical_pixel_flip = ((tile_size_8bpp - tile_width_8bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_8bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
@@ -1874,10 +1873,10 @@ static void render_scanline_text_transparent_alpha(u32 layer, u32 start, u32 end
         s32 vertical_pixel_flip = ((tile_size_4bpp - tile_width_4bpp) - vertical_pixel_offset) - vertical_pixel_offset;
         tile_extra_variables_4bpp();
         u8 *tile_base = BG_CHAR_ADDR((bg_control >> 2) & 0x03) + vertical_pixel_offset;
-        u32 pixel_run = 256 - (horizontal_offset % 256);
+        u32 pixel_run = map_width - (horizontal_offset % map_width);
         u32 current_tile;
 
-        map_base += ((vertical_offset % 256) / 8) * 32;
+        map_base += ((vertical_offset % 256) / 8) * (map_width / 8);
         partial_tile_offset = (horizontal_offset % 8);
 
         if (pixel_run >= end) {
