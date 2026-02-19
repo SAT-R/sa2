@@ -60,7 +60,7 @@
 #define WIDESCREEN_HACK TRUE
 #define EXTENDED_OAM TRUE
 #else
-#define WIDESCREEN_HACK FALSE
+#define WIDESCREEN_HACK TRUE
 #define EXTENDED_OAM !TRUE
 #endif
 extern uint8_t VRAM[VRAM_SIZE];

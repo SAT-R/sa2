@@ -161,7 +161,7 @@ static void deinit_drivers()
 void platform_video_init(void)
 {
     if (vid_mode == NULL) {
-        vid_mode = &vid_modes[1]; // Standard def 480p
+        vid_mode = &vid_modes[3]; // Standard def 480p
     } else {
         if (use_hires) {
             gsKit_hires_deinit_global(gsGlobal);
