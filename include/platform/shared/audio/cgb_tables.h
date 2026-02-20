@@ -3,58 +3,48 @@
 
 #include "platform/shared/audio/cgb_audio.h"
 
-#define SAMPLE_RATE    48000
-#define FREQUENCY_RATE (SAMPLE_RATE / 32)
+#define SAMPLE_RATE    48000.0
+#define FREQUENCY_RATE (SAMPLE_RATE / 32.0)
 
-// const fixed16_16 PU0[32]
-//     = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
+const fixed16_16 PU0[32]
+    = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
 
-// const fixed16_16 PU1[32]
-//     = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
+const fixed16_16 PU1[32]
+    = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
 
-// const fixed16_16 PU2[32]
-//     = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
+const fixed16_16 PU2[32]
+    = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
 
-// const fixed16_16 PU3[32]
-//     = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
-//         float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
-
-const int16_t PU0[32]
-    = { 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-
-const int16_t PU1[32]
-    = { 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-
-const int16_t PU2[32] = { 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1 };
-
-const int16_t PU3[32] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1 };
+const fixed16_16 PU3[32]
+    = { float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),  float_to_fp16_16(1.0 / 15),
+        float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15), float_to_fp16_16(-1.0 / 15) };
 
 int16_t WAV[32] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1 };
 

@@ -4,8 +4,8 @@
 
 static struct AudioCGB gb;
 static fixed16_16 soundChannelPos[4];
-static const int16_t *PU1Table;
-static const int16_t *PU2Table;
+static const fixed16_16 *PU1Table;
+static const fixed16_16 *PU2Table;
 static u32 apuFrame;
 static u8 apuCycle;
 static u32 sampleRate;
@@ -209,15 +209,15 @@ void cgb_audio_generate(u16 samplesPerFrame)
         if (REG_NR52 & 0x80) {
             if ((gb.DAC[0]) && (REG_NR52 & 0x01)) {
                 if (REG_NR51 & 0x10)
-                    outputL += (gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])] / 15.0f);
+                    outputL += fp16_16_to_float(gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])]);
                 if (REG_NR51 & 0x01)
-                    outputR += (gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])] / 15.0f);
+                    outputR += fp16_16_to_float(gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])]);
             }
             if ((gb.DAC[1]) && (REG_NR52 & 0x02)) {
                 if (REG_NR51 & 0x20)
-                    outputL += (gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])] / 15.0f);
+                    outputL += fp16_16_to_float(gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])]);
                 if (REG_NR51 & 0x02)
-                    outputR += (gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])] / 15.0f);
+                    outputR += fp16_16_to_float(gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])]);
             }
             if ((REG_NR30 & 0x80) && (REG_NR52 & 0x04)) {
                 if (REG_NR51 & 0x40)
