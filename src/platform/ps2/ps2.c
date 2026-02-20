@@ -773,63 +773,6 @@ const s16 sineTable[256]
         (s16)0xE783, (s16)0xE8F8, (s16)0xEA71, (s16)0xEBED, (s16)0xED6C, (s16)0xEEEF, (s16)0xF074, (s16)0xF1FB, (s16)0xF384, (s16)0xF50F,
         (s16)0xF69C, (s16)0xF82B, (s16)0xF9BB, (s16)0xFB4B, (s16)0xFCDD, (s16)0xFE6E };
 
-void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count)
-{
-    for (s32 i = 0; i < count; i++) {
-        s32 cx = src[i].texX;
-        s32 cy = src[i].texY;
-        s16 dispx = src[i].scrX;
-        s16 dispy = src[i].scrY;
-        s16 rx = src[i].sx;
-        s16 ry = src[i].sy;
-        u16 theta = src[i].alpha >> 8;
-        s32 a = sineTable[(theta + 0x40) & 255];
-        s32 b = sineTable[theta];
-
-        s16 dx = (rx * a) >> 14;
-        s16 dmx = (rx * b) >> 14;
-        s16 dy = (ry * b) >> 14;
-        s16 dmy = (ry * a) >> 14;
-
-        dest[i].pa = dx;
-        dest[i].pb = -dmx;
-        dest[i].pc = dy;
-        dest[i].pd = dmy;
-
-        s32 startx = cx - dx * dispx + dmx * dispy;
-        s32 starty = cy - dy * dispx - dmy * dispy;
-
-        dest[i].dx = startx;
-        dest[i].dy = starty;
-    }
-}
-
-void ObjAffineSet(struct ObjAffineSrcData *src, void *dest, s32 count, s32 offset)
-{
-    for (s32 i = 0; i < count; i++) {
-        s16 rx = src[i].xScale;
-        s16 ry = src[i].yScale;
-        u16 theta = src[i].rotation >> 8;
-
-        s32 a = (s32)sineTable[(theta + 64) & 255];
-        s32 b = (s32)sineTable[theta];
-
-        s16 dx = ((s32)rx * a) >> 14;
-        s16 dmx = ((s32)rx * b) >> 14;
-        s16 dy = ((s32)ry * b) >> 14;
-        s16 dmy = ((s32)ry * a) >> 14;
-
-        CPUWriteHalfWord(dest, dx);
-        dest += offset;
-        CPUWriteHalfWord(dest, -dmx);
-        dest += offset;
-        CPUWriteHalfWord(dest, dy);
-        dest += offset;
-        CPUWriteHalfWord(dest, dmy);
-        dest += offset;
-    }
-}
-
 void SoftReset(u32 resetFlags) { }
 
 void SoftResetExram(u32 resetFlags) { }

@@ -84,6 +84,7 @@ CC1       := tools/agbcc/bin/agbcc$(EXE)
 CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
 else
 CC1       := $(PREFIX)gcc$(EXE)
+CXX       := $(PREFIX)g++$(EXE)
 CC1_OLD   := $(CC1)
 endif
 
@@ -194,6 +195,14 @@ C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
+ifeq ($(PLATFORM),gba)
+CXX_SRCS := $(shell find $(C_SUBDIR) -name "*.cc" -not -path "*/platform/*")
+else
+CXX_SRCS := $(shell find $(C_SUBDIR) -name "*.cc")
+endif
+
+CXX_OBJS := $(patsubst $(C_SUBDIR)/%.cc,$(C_BUILDDIR)/%.o,$(CXX_SRCS))
+
 # Platform not included as we only need the headers for decomp scratches
 C_HEADERS := $(shell find $(INCLUDE_DIRS) -name "*.h" -not -path "*/platform/*")
 
@@ -217,7 +226,7 @@ MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS := $(C_OBJS) $(CXX_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
@@ -278,25 +287,6 @@ else
 	endif
 endif
 
-ifeq ($(PLATFORM),gba)
-  ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
-  CC1FLAGS += -mthumb-interwork
-else
-  ifeq ($(PLATFORM), sdl)
-    # for modern we are using a modern compiler
-    # so instead of CPP we can use gcc -E to "preprocess only"
-    CPP := $(CC1) -E
-  else ifeq ($(PLATFORM), psp)
-    CPP := $(CC1) -E
-  else ifeq ($(PLATFORM), sdl_ps2)
-    ASFLAGS  += -msingle-float
-  else ifeq ($(PLATFORM), ps2)
-    ASFLAGS  += -msingle-float
-  endif
-  # Allow file input through stdin on modern GCC and set it to "compile only"
-  CC1FLAGS += -x c -S
-endif
-
 ifeq ($(DEBUG),1)
   CC1FLAGS += -g3 -O0
   CPPFLAGS += -D DEBUG=1
@@ -307,7 +297,7 @@ else
   else ifeq ($(PLATFORM),sdl_ps2)
     CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
   else ifeq ($(PLATFORM),ps2)
-    CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
+    CC1FLAGS += -O3 -fomit-frame-pointer
   else
     CC1FLAGS += -O2
   endif
@@ -335,6 +325,28 @@ ifeq ($(ENABLE_DECOMP_CREDITS),0)
   CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
 else
   CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
+endif
+
+CXXFLAGS := $(CC1FLAGS) $(CPPFLAGS) -fno-rtti -fno-exceptions -std=c++11
+
+ifeq ($(PLATFORM),gba)
+  ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
+  CC1FLAGS += -mthumb-interwork
+else
+  ifeq ($(PLATFORM), sdl)
+    # for modern we are using a modern compiler
+    # so instead of CPP we can use gcc -E to "preprocess only"
+    CPP := $(CC1) -E
+  else ifeq ($(PLATFORM), psp)
+    CPP := $(CC1) -E
+  else ifeq ($(PLATFORM), sdl_ps2)
+    ASFLAGS  += -msingle-float
+  else ifeq ($(PLATFORM), ps2)
+    ASFLAGS  += -msingle-float
+  endif
+  # Allow file input through stdin on modern gcc/g++ and set it to "compile only"
+  CC1FLAGS += -x c -S
+  CXXFLAGS += -x c++ -S
 endif
 
 ### LINKER FLAGS ###
@@ -584,8 +596,18 @@ ifeq ($(PLATFORM), gba)
 endif
 	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
 
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.cc
+	@echo "$(CXX) <flags> -o $@ $<"
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.o'))
+	@$(CXX) $(CXXFLAGS) -o $(C_BUILDDIR)/$*.s $<
+	@$(AS) $(ASFLAGS) $(C_BUILDDIR)/$*.s -o $@
+
 # Scan the src dependencies to determine if any dependent files have changed
 $(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
+	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.d'))
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
+
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.cc
 	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.d'))
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) $<
 
@@ -608,6 +630,7 @@ $(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
     
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
+-include $(addprefix $(OBJ_DIR)/,$(CXX_SRCS:.cc=.d))
 -include $(addprefix $(OBJ_DIR)/,$(DATA_ASM_SRCS:.s=.d))
 endif
 

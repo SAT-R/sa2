@@ -45,8 +45,8 @@
 #define DISPLAY_HEIGHT 160
 #elif defined(__PS2__)
 // Runs at 60fps with the "fast draw"
-#define DISPLAY_WIDTH  240
-#define DISPLAY_HEIGHT 160
+#define DISPLAY_WIDTH  320
+#define DISPLAY_HEIGHT 180
 #else
 #define DISPLAY_WIDTH  426
 #define DISPLAY_HEIGHT 240
@@ -60,7 +60,7 @@
 #define WIDESCREEN_HACK TRUE
 #define EXTENDED_OAM TRUE
 #else
-#define WIDESCREEN_HACK TRUE
+#define WIDESCREEN_HACK FALSE
 #define EXTENDED_OAM !TRUE
 #endif
 extern uint8_t VRAM[VRAM_SIZE];
