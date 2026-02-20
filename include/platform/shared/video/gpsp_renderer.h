@@ -61,4 +61,6 @@ static inline uint16_t alphaBrightnessDecrease(uint16_t targetA, unsigned int ev
     return r | (g << 5) | (b << 10) | COLOR_OPAQUE;
 }
 
+extern void gpsp_draw_frame(uint16_t *framebuf);
+
 #endif // GUARD_SW_RENDERER_COMMON_H

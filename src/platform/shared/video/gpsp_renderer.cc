@@ -22,7 +22,7 @@ extern "C" {
 #include "config.h"
 }
 
-#if RENDERER == RENDERER_SOFTWARE_FAST
+#if RENDERER == RENDERER_SOFTWARE_GPSP
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -35,31 +35,13 @@ extern "C" {
 #include "gba/types.h"
 
 #include "platform/shared/dma.h"
+#include "platform/shared/video/gpsp_renderer.h"
 }
 
 #define eswap16(value) (value)
 #define eswap32(value) (value)
 
 #define GBA_SCREEN_PITCH DISPLAY_WIDTH
-
-typedef u32 fixed16_16;
-typedef u32 fixed8_24;
-
-#define float_to_fp16_16(value) (fixed16_16)((value)*65536.0)
-
-#define fp16_16_to_float(value) (float)((value) / 65536.0)
-
-#define u32_to_fp16_16(value) ((value) << 16)
-
-#define fp16_16_to_u32(value) ((value) >> 16)
-
-#define fp16_16_fractional_part(value) ((value)&0xFFFF)
-
-#define float_to_fp8_24(value) (fixed8_24)((value)*16777216.0)
-
-#define fp8_24_fractional_part(value) ((value)&0xFFFFFF)
-
-#define fixed_div(numerator, denominator, bits) (((numerator * (1 << bits)) + (denominator / 2)) / denominator)
 
 #define read_ioreg(regaddr)   (eswap16(*(u16 *)(regaddr)))
 #define read_ioreg32(regaddr) (read_ioreg(regaddr) | (read_ioreg((regaddr) + sizeof(u16)) << 16))
@@ -2255,12 +2237,11 @@ void update_scanline(void)
     }
 }
 
-extern "C" void DrawFrame_Fast(u16 *pixels)
+void gpsp_draw_frame(u16 *framebuf)
 {
     int i;
 
-    gba_screen_pixels = pixels;
-    // convert_whole_palette();
+    gba_screen_pixels = framebuf;
 
     // assume that the oam is only updated once before the frame
     // starts to be drawn
@@ -2269,7 +2250,6 @@ extern "C" void DrawFrame_Fast(u16 *pixels)
     order_obj(video_mode);
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
-
         REG_VCOUNT = i;
         if (((REG_DISPSTAT >> 8) & 0xFF) == REG_VCOUNT) {
             REG_DISPSTAT |= INTR_FLAG_VCOUNT;
@@ -2277,8 +2257,6 @@ extern "C" void DrawFrame_Fast(u16 *pixels)
                 gIntrTable[INTR_INDEX_VCOUNT]();
         }
 
-        // Render the backdrop color before each individual scanline.
-        // HBlank interrupt code could have changed it in between lines.
         update_scanline();
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;

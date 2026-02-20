@@ -1,16 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// PS2 libs
 #include <kernel.h>
 #include <sifrpc.h>
 #include <iopcontrol.h>
 #include <sbv_patches.h>
+
 #include <ps2_filesystem_driver.h>
 #include <ps2_audio_driver.h>
-
+#include <ps2_joystick_driver.h>
+#include <libpad.h>
+#include <libmtap.h>
 #include <gsKit.h>
-#include "audsrv.h"
+#include <audsrv.h>
 
+// Game
 #include "global.h"
 #include "core.h"
 #include "multi_sio.h"
@@ -18,12 +23,14 @@
 #include "gba/io_reg.h"
 #include "gba/types.h"
 #include "lib/agb_flash/flash_internal.h"
+
+// Emulation
 #include "platform/shared/dma.h"
+#include "platform/shared/audio/cgb_audio.h"
+#include "platform/shared/video/gpsp_renderer.h"
 
 static GSGLOBAL *gsGlobal;
 static GSTEXTURE screen;
-
-#include "platform/shared/audio/cgb_audio.h"
 
 #ifndef TILE_WIDTH
 #define TILE_WIDTH 8
@@ -64,13 +71,16 @@ static const struct VidMode vid_modes[] = {
     { "1080i", GS_MODE_DTV_1080I, GS_INTERLACED, GS_FRAME, 1920, 1080, 1920, 1080, 1, 2, 0, 0 },
 };
 
-static int vsync_sema_1st_id;
-static int vsync_sema_2nd_id;
-static int vsync_sema_id = -1;
-static int vsync_id = -1;
-
 static const struct VidMode *vid_mode;
 static bool use_hires = false;
+
+static u8 padbuf[256] __attribute__((aligned(64)));
+static int init_done = 0;
+
+static int joy_port = -1;
+static int joy_slot = -1;
+static int joy_id = -1;
+static struct padButtonStatus joy_buttons __attribute__((aligned(64)));
 
 bool speedUp = false;
 bool isRunning = true;
@@ -87,10 +97,8 @@ double accumulator = 0.0;
 static FILE *sSaveFile = NULL;
 
 extern void AgbMain(void);
-void DoSoftReset(void) {};
 
-void VDraw(void);
-void UpdateTexture(void);
+void VideoUpdateTexture(void);
 
 static void ReadSaveFile(char *path);
 static void StoreSaveFile(void);
@@ -98,10 +106,9 @@ static void CloseSaveFile(void);
 
 u16 Platform_GetKeyInput(void);
 
-#define SAMPLES_HIGH 544
-#define SAMPLES_LOW  528
+// Audio
 
-static bool audio_ps2_init(void)
+static bool AudioInit(void)
 {
     if (init_audio_driver() != 0)
         return false;
@@ -122,43 +129,16 @@ static bool audio_ps2_init(void)
     return true;
 }
 
-static int audio_ps2_buffered(void) { return audsrv_queued() / 4; }
-
-static void audio_ps2_play(const uint8_t *buf, size_t len)
+static void AudioPlay(const uint8_t *buf, size_t len)
 {
-    if (audio_ps2_buffered() < 6000) {
+    if ((audsrv_queued() / 4) < 6000) {
         audsrv_play_audio(buf, len);
     }
 }
 
-void reset_IOP()
-{
-    SifInitRpc(0);
-    while (!SifIopReset(NULL, 0)) { } // Comment this line if you want to "debug" through ps2link
-    while (!SifIopSync()) { }
-}
+// Video
 
-static void prepare_IOP()
-{
-    reset_IOP();
-    SifInitRpc(0);
-    sbv_patch_enable_lmb();
-    sbv_patch_disable_prefix_check();
-}
-
-static void init_drivers()
-{
-    init_only_boot_ps2_filesystem_driver();
-    init_memcard_driver(true);
-}
-
-static void deinit_drivers()
-{
-    deinit_memcard_driver(true);
-    deinit_only_boot_ps2_filesystem_driver();
-}
-
-void platform_video_init(void)
+void VideoInit(void)
 {
     if (vid_mode == NULL) {
         vid_mode = &vid_modes[3]; // Standard def 480p
@@ -167,10 +147,6 @@ void platform_video_init(void)
             gsKit_hires_deinit_global(gsGlobal);
         } else {
             gsKit_deinit_global(gsGlobal);
-            if (vsync_id != -1) {
-                gsKit_remove_vsync_handler(vsync_id);
-            }
-            vsync_sema_id = -1;
         }
     }
     use_hires = (vid_mode->mode == GS_MODE_DTV_720P || vid_mode->mode == GS_MODE_DTV_1080I);
@@ -216,10 +192,157 @@ void platform_video_init(void)
     screen.Mem = (void *)gameImage;
 }
 
+void VideoUpdateTexture(void)
+{
+    gsKit_TexManager_invalidate(gsGlobal, &screen);
+    gsKit_TexManager_bind(gsGlobal, &screen);
+
+    int startX = (gsGlobal->Width);
+    int startY = (gsGlobal->Height);
+
+    gsKit_clear(gsGlobal, GS_SETREG_RGBAQ(0, 0, 0, 0, 0));
+
+    gsKit_prim_sprite_texture(gsGlobal, &screen,
+                              0.0f, // X1
+                              0.0f, // Y2
+                              0.0f, // U1
+                              0.0f, // V1
+                              startX, // X2
+                              startY, // Y2
+                              gsGlobal->Width, // U2
+                              gsGlobal->Height, // V2
+                              0, GS_SETREG_RGBAQ(128, 128, 128, 0, 0));
+}
+
+// Controller
+
+static inline int WaitPad(int tries)
+{
+    int state = padGetState(joy_port, joy_slot);
+    if (state == PAD_STATE_DISCONN) {
+        joy_id = -1;
+        return -1;
+    }
+
+    while ((state != PAD_STATE_STABLE) && (state != PAD_STATE_FINDCTP1)) {
+        state = padGetState(joy_port, joy_slot);
+        if (--tries == 0)
+            break;
+    }
+
+    return 0;
+}
+
+static int DetectPad(void)
+{
+    int id = padInfoMode(joy_port, joy_slot, PAD_MODECURID, 0);
+    if (id <= 0)
+        return -1;
+
+    const int ext = padInfoMode(joy_port, joy_slot, PAD_MODECUREXID, 0);
+    if (ext)
+        id = ext;
+
+    printf("ControllerInit: detected pad type %d\n", id);
+
+    if (id == PAD_TYPE_DIGITAL || id == PAD_TYPE_DUALSHOCK)
+        padSetMainMode(joy_port, joy_slot, PAD_MMODE_DUALSHOCK, PAD_MMODE_LOCK);
+
+    return id;
+}
+
+static void ControllerInit(void)
+{
+    int ret = -1;
+
+    // MEMORY CARD already initied SIO2MAN
+    ret = init_joystick_driver(false);
+
+    if (ret != 0) {
+        printf("ControllerInit: failed to init joystick driver: %d\n", ret);
+        return;
+    }
+
+    const int numports = padGetPortMax();
+    // Find the first device connected
+    for (int port = 0; port < numports && joy_port < 0; ++port) {
+        if (joy_port == -1 && joy_slot == -1 && mtapPortOpen(port)) {
+            const int maxslots = padGetSlotMax(port);
+            for (int slot = 0; slot < maxslots; ++slot) {
+                if (joy_port == -1 && joy_slot == -1 && padPortOpen(port, slot, padbuf) >= 0) {
+                    joy_port = port;
+                    joy_slot = slot;
+                    printf("ControllerInit: using pad (%d, %d)\n", port, slot);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (joy_slot < 0 || joy_port < 0) {
+        printf("ControllerInit: could not open a single port\n");
+        return;
+    }
+
+    init_done = 1;
+}
+
+static u16 ControllerRead(void)
+{
+    if (!init_done)
+        return 0;
+
+    if (WaitPad(10) < 0)
+        return 0; // nothing received
+
+    if (joy_id < 0) {
+        // pad not detected yet, do it
+        joy_id = DetectPad();
+        if (joy_id < 0)
+            return 0; // still nothing
+        if (WaitPad(10) < 0)
+            return 0;
+    }
+
+    if (padRead(joy_port, joy_slot, &joy_buttons)) {
+        return 0xffff ^ joy_buttons.btns;
+    }
+
+    return 0;
+}
+
+// PS2 Drivers
+void ResetIOP()
+{
+    SifInitRpc(0);
+    while (!SifIopReset(NULL, 0)) { } // Comment this line if you want to "debug" through ps2link
+    while (!SifIopSync()) { }
+}
+
+static void PrepareIOP()
+{
+    ResetIOP();
+    SifInitRpc(0);
+    sbv_patch_enable_lmb();
+    sbv_patch_disable_prefix_check();
+}
+
+static void InitPS2Drivers()
+{
+    init_only_boot_ps2_filesystem_driver();
+    init_memcard_driver(true);
+}
+
+static void deInitPS2Drivers()
+{
+    deinit_memcard_driver(true);
+    deinit_only_boot_ps2_filesystem_driver();
+}
+
 int main(int argc, char **argv)
 {
-    prepare_IOP();
-    init_drivers();
+    PrepareIOP();
+    InitPS2Drivers();
 
     // ReadSaveFile("sa2.sav");
 
@@ -227,32 +350,26 @@ int main(int argc, char **argv)
     REG_RCNT = 0x8000;
     REG_KEYINPUT = 0x3FF;
 
-    audio_ps2_init();
-    platform_video_init();
-    // controller init
+    AudioInit();
+    VideoInit();
+    ControllerInit();
 
     cgb_audio_init(48000);
 
-    VDraw();
-    // while (true) {
-    //     UpdateTexture();
-    //     gsKit_sync_flip(gsGlobal);
-    //     gsKit_queue_exec(gsGlobal);
-    // }
+    VideoUpdateTexture();
+
+    // Allow the game loop to take control
     AgbMain();
 
     return 0;
 }
 
-bool newFrameRequested = FALSE;
-int skipFrame = 0;
-
-// called every gba frame. we process sdl events and render as many times
-// as vsync needs, then return when a new game frame is needed.
+// GBA callbacks
 void VBlankIntrWait(void)
 {
 #define HANDLE_VBLANK_INTRS()                                                                                                              \
     ({                                                                                                                                     \
+        REG_VCOUNT = DISPLAY_HEIGHT + 1;                                                                                                   \
         REG_DISPSTAT |= INTR_FLAG_VBLANK;                                                                                                  \
         RunDMAs(DMA_VBLANK);                                                                                                               \
         if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)                                                                                           \
@@ -266,20 +383,10 @@ void VBlankIntrWait(void)
     if (isRunning) {
         REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
 
-        // Only render 30fps when in widescreen as the draw func is too slow for the ps2
-        // #if DISPLAY_WIDTH > 240
-        //         skipFrame++;
-        //         skipFrame %= 2;
-        // #endif
-        if (skipFrame == 0) {
-            VDraw();
-        } else {
-            UpdateTexture();
-        }
+        gpsp_draw_frame(gameImage);
+
+        VideoUpdateTexture();
         HANDLE_VBLANK_INTRS();
-        if (skipFrame != 0) {
-            return;
-        }
 
         if (use_hires) {
             gsKit_hires_flip_ext(gsGlobal, GSFLIP_RATE_LIMIT_1);
@@ -290,80 +397,56 @@ void VBlankIntrWait(void)
         gsKit_TexManager_nextFrame(gsGlobal);
         return;
     }
-    // #define MAX_FRAME_SKIP 2
-
-    // while (isRunning) {
-    //     if (!paused || stepOneFrame) {
-    //         double dt = fixedTimestep / timeScale; // TODO: Fix speedup
-
-    //         // don't accumulate time if we already requested a new frame
-    //         // this frame cycle (emulates threaded sdl behavior)
-    //         if (!newFrameRequested) {
-    //             double deltaTime = 0;
-
-    //             // TODO: fix
-    //             curGameTime += dt;
-    //             if (stepOneFrame) {
-    //                 deltaTime = dt;
-    //             } else {
-    //                 // TODO: divide by expected frequency
-    //                 deltaTime = (double)((curGameTime - lastGameTime) / 1);
-    //                 if (deltaTime > (dt * 5))
-    //                     deltaTime = dt * 5;
-    //             }
-    //             lastGameTime = curGameTime;
-
-    //             accumulator += deltaTime;
-    //         } else {
-    //             newFrameRequested = FALSE;
-    //         }
-
-    //         while (accumulator >= dt) {
-    //             REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
-    //             if (frameAvailable) {
-    //                 // frame skip: let game logic catch up when behind
-    //                 if (accumulator >= dt * 2.0 && frames_skipped < MAX_FRAME_SKIP) {
-    //                     frames_skipped++;
-    //                     frameAvailable = FALSE;
-    //                     HANDLE_VBLANK_INTRS();
-    //                     accumulator -= dt;
-    //                     newFrameRequested = TRUE;
-    //                     return;
-    //                 }
-    //                 frames_skipped = 0;
-    //                 VDraw();
-    //                 frameAvailable = FALSE;
-    //                 frameDrawn = true;
-
-    //                 HANDLE_VBLANK_INTRS();
-
-    //                 accumulator -= dt;
-    //             } else {
-    //                 newFrameRequested = TRUE;
-    //                 return;
-    //             }
-    //         }
-
-    //         if (paused && stepOneFrame) {
-    //             stepOneFrame = false;
-    //         }
-    //     }
-
-    //     if (use_hires) {
-    //         gsKit_hires_flip_ext(gsGlobal, GSFLIP_RATE_LIMIT_1);
-    //     } else {
-    //         // gsKit_flip(gs_global);
-    //         gsKit_sync_flip(gsGlobal);
-    //         gsKit_queue_exec(gsGlobal);
-    //     }
-    //     gsKit_TexManager_nextFrame(gsGlobal);
-    // }
 
     CloseSaveFile();
 
-    deinit_drivers();
+    deInitPS2Drivers();
     exit(0);
 #undef HANDLE_VBLANK_INTRS
+}
+
+void Platform_StoreSaveFile(void) { StoreSaveFile(); }
+
+s16 convertedAudio[4096];
+
+void Platform_QueueAudio(const float *data, uint32_t bytesCount)
+{
+    u32 length = bytesCount / sizeof(float);
+
+    for (u32 i = 0; i < length; i++) {
+        float sample = data[i];
+
+        if (sample > 1.0f)
+            sample = 1.0f;
+        else if (sample < -1.0f)
+            sample = -1.0f;
+
+        // Convert to s16
+        convertedAudio[i] = (int16_t)(sample * 32767.0f + (sample >= 0 ? 0.5f : -0.5f));
+    }
+
+    AudioPlay((uint8_t *)convertedAudio, length * sizeof(u16));
+}
+
+u16 Platform_GetKeyInput(void)
+{
+    static struct {
+        u16 gbaBtn;
+        u16 sceBtn;
+    } binds[] = {
+        { A_BUTTON, PAD_CROSS },   { B_BUTTON, PAD_SQUARE }, { L_BUTTON, PAD_L2 },        { R_BUTTON, PAD_R2 },
+        { L_BUTTON, PAD_L1 },      { R_BUTTON, PAD_R1 },     { START_BUTTON, PAD_START }, { DPAD_LEFT, PAD_LEFT },
+        { DPAD_RIGHT, PAD_RIGHT }, { DPAD_UP, PAD_UP },      { DPAD_DOWN, PAD_DOWN },
+    };
+
+    u16 keys = 0;
+    u16 btns = ControllerRead();
+
+    for (int i = 0; i < ARRAY_COUNT(binds); ++i)
+        if (btns & binds[i].sceBtn)
+            keys |= binds[i].gbaBtn;
+
+    return keys;
 }
 
 static void ReadSaveFile(char *path)
@@ -398,8 +481,6 @@ static void StoreSaveFile()
     }
 }
 
-void Platform_StoreSaveFile(void) { StoreSaveFile(); }
-
 static void CloseSaveFile()
 {
     if (sSaveFile != NULL) {
@@ -407,35 +488,8 @@ static void CloseSaveFile()
     }
 }
 
-s16 converted_audio[4096];
-
-void float_audio_to_s16(const float *input, int16_t *output, size_t length)
-{
-    if (!input || !output)
-        return;
-
-    for (size_t i = 0; i < length; i++) {
-        float sample = input[i];
-
-        if (sample > 1.0f)
-            sample = 1.0f;
-        else if (sample < -1.0f)
-            sample = -1.0f;
-
-        output[i] = (int16_t)(sample * 32767.0f + (sample >= 0 ? 0.5f : -0.5f));
-    }
-}
-
-void Platform_QueueAudio(const float *data, uint32_t bytesCount)
-{
-    float_audio_to_s16(data, converted_audio, bytesCount / sizeof(float));
-    audio_ps2_play((void *)converted_audio, bytesCount / sizeof(float) * sizeof(u16));
-}
-
-// TODO: handle input
-u16 Platform_GetKeyInput(void) { return 0; }
-
 // BIOS function implementations are based on the VBA-M source code.
+// TODO: Link these functions from Libagbsyscall
 
 // safe unaligned access for MIPS
 static uint32_t CPUReadMemory(const void *src)
@@ -865,33 +919,3 @@ u16 Sqrt(u32 num)
 }
 
 int MultiBoot(struct MultiBootParam *mp) { return 0; }
-
-void VDraw(void)
-{
-    extern void DrawFrame_Fast(uint16_t * pixels);
-    DrawFrame_Fast(gameImage);
-    UpdateTexture();
-    REG_VCOUNT = DISPLAY_HEIGHT + 1; // prep for being in VBlank period
-}
-
-void UpdateTexture(void)
-{
-    gsKit_TexManager_invalidate(gsGlobal, &screen);
-    gsKit_TexManager_bind(gsGlobal, &screen);
-
-    int startX = (gsGlobal->Width);
-    int startY = (gsGlobal->Height);
-
-    gsKit_clear(gsGlobal, GS_SETREG_RGBAQ(0, 0, 0, 0, 0));
-
-    gsKit_prim_sprite_texture(gsGlobal, &screen,
-                              0.0f, // X1
-                              0.0f, // Y2
-                              0.0f, // U1
-                              0.0f, // V1
-                              startX, // X2
-                              startY, // Y2
-                              gsGlobal->Width, // U2
-                              gsGlobal->Height, // V2
-                              0, GS_SETREG_RGBAQ(128, 128, 128, 0, 0));
-}

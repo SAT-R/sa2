@@ -26,7 +26,7 @@ extern int setupPspCallbacks(void);
 #include "lib/agb_flash/flash_internal.h"
 #include "platform/shared/dma.h"
 #include "platform/shared/input.h"
-#include "platform/shared/rendering/sw_renderer_common.h"
+#include "platform/shared/video/gpsp_renderer.h"
 
 #if ENABLE_AUDIO
 #include "platform/shared/audio/cgb_audio.h"
@@ -2024,10 +2024,9 @@ void VramDraw(SDL_Texture *texture)
 
 void VDraw(SDL_Texture *texture)
 {
-#if RENDERER == RENDERER_SOFTWARE_FAST
+#if RENDERER == RENDERER_SOFTWARE_GPSP
     {
-        extern void DrawFrame_Fast(uint16_t * pixels);
-        DrawFrame_Fast(gameImage);
+        gpsp_draw_frame(gameImage);
     }
 #else
     DrawFrame(gameImage);
