@@ -42,12 +42,12 @@ typedef u16 MetatileIndexType;
 // If the DISPLAY_HEIGHT was >255, scanline effects would break,
 // so we have to make this variable bigger.
 // (u16 should be plenty for screen coordinates, right?)
-#if !defined(WIDESCREEN_HACK)
+#if !defined(WIDESCREEN_HACK) && !PLATFORM_GBA
 #error WIDESCREEN_HACK not defined.
 #endif
 /// TODO: Technically this should only be #if (DISPLAY_HEIGHT > 255),
 //        we should probably replace uses of int_vcount with a different type where a high DISPLAY_WIDTH necessitates u16.
-#if WIDESCREEN_HACK
+#if !PLATFORM_GBA && WIDESCREEN_HACK
 typedef u16 int_vcount;
 #else
 typedef u8 int_vcount;

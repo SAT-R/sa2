@@ -38,7 +38,7 @@ static GSTEXTURE screen;
 
 extern IntrFunc gIntrTable[16];
 
-ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * (DISPLAY_HEIGHT + 1)];
 
 struct VidMode {
     const char *name;

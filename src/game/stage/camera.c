@@ -1206,9 +1206,13 @@ void CreateStageBg_Zone4(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
+// Software renderer for these devices are too slow
+// to handle these spotlights
+#if !defined(__PS2__) && !defined(__PSP__)
     if (IS_SINGLE_PLAYER) {
         CreateSpotLightBeams();
     }
+#endif
 }
 
 void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
