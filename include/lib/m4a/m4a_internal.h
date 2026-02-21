@@ -212,7 +212,7 @@ struct MixerSource {
             u8 padding5;
 
             u32 ct;
-            float fw;
+            fixed16_16 fw;
 
             u32 freq;
         } sound;

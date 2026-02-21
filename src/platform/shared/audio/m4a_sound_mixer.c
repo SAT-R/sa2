@@ -266,8 +266,8 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         chan->data.sound.ct = samplesLeftInWav;
         chan->current = current;
     } else {
-        float finePos = chan->data.sound.fw;
-        float romSamplesPerOutputSample = chan->data.sound.freq * sampleRateReciprocal;
+        fixed16_16 finePos = chan->data.sound.fw;
+        fixed16_16 romSamplesPerOutputSample = float_to_fp16_16(chan->data.sound.freq * sampleRateReciprocal);
 
         s16 b = current[0];
         s16 m = current[1] - b;
@@ -276,15 +276,15 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             // Use linear interpolation to calculate a value between the current sample in the wav
             // and the next sample. Also cancel out the 9.23 stuff
-            float sample = (finePos * m) + b;
+            s32 sample = fp16_16_to_u32(finePos * m) + b;
 
-            pcmBuffer[1] += ((s32)sample * envR) << 1;
-            pcmBuffer[0] += ((s32)sample * envL) << 1;
+            pcmBuffer[1] += (sample * envR) << 1;
+            pcmBuffer[0] += (sample * envL) << 1;
 
             finePos += romSamplesPerOutputSample;
-            u32 newCoarsePos = finePos;
+            u32 newCoarsePos = fp16_16_to_u32(finePos);
             if (newCoarsePos != 0) {
-                finePos -= (int)finePos;
+                finePos = fp16_16_fractional_part(finePos);
                 samplesLeftInWav -= newCoarsePos;
                 if (samplesLeftInWav <= 0) {
                     if (loopLen != 0) {
