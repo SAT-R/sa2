@@ -109,9 +109,9 @@
 typedef s32 fixed16_16;
 typedef s32 fixed8_24;
 
-#define float_to_fp16_16(value) (fixed16_16)((value)*65536.0)
+#define float_to_fp16_16(value) (fixed16_16)((value)*65536.0f)
 
-#define fp16_16_to_float(value) (float)((value) / 65536.0)
+#define fp16_16_to_float(value) (float)((value) / 65536.0f)
 
 #define u32_to_fp16_16(value) ((value) << 16)
 

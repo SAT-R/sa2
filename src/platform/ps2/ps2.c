@@ -377,9 +377,12 @@ void VBlankIntrWait(void)
         REG_DISPSTAT &= ~INTR_FLAG_VBLANK;                                                                                                 \
     })
 
-    bool frameAvailable = TRUE;
-    bool frameDrawn = false;
-    static int frames_skipped = 0;
+    if (headless) {
+        REG_VCOUNT = DISPLAY_HEIGHT + 1;
+        HANDLE_VBLANK_INTRS();
+        return;
+    }
+
     if (isRunning) {
         REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
 
@@ -411,6 +414,9 @@ s16 convertedAudio[4096];
 
 void Platform_QueueAudio(const float *data, uint32_t bytesCount)
 {
+    if (headless) {
+        return;
+    }
     u32 length = bytesCount / sizeof(float);
 
     for (u32 i = 0; i < length; i++) {

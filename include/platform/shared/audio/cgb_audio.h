@@ -18,7 +18,7 @@ struct AudioCGB {
     u8 EnvCounterI[4];
     bool8 EnvDir[4];
     bool8 DAC[4];
-    float WAVRAM[32];
+    fixed16_16 WAVRAM[32];
     u16 ch4LFSR[2];
     float outBuffer[PCM_DMA_BUF_SIZE * 2];
 };
