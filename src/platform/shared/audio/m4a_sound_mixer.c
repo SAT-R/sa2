@@ -5,9 +5,9 @@
 #include "platform/platform.h"
 #include "platform/shared/audio/cgb_audio.h"
 
-static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, float *pcmBuffer,
+static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, fixed16_16 *pcmBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal);
-static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *pcmBuffer, u8 dmaCounter,
+static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, fixed16_16 *pcmBuffer, u8 dmaCounter,
                         u16 maxBufSize);
 static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData *wav);
 static void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track);
@@ -25,7 +25,7 @@ static void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track);
 #define FLOOR_DIV_POW2(a, b) ((a) > 0 ? (a) / (b) : (((a) + 1 - (b)) / (b)))
 #endif
 
-static float audioBuffer[PCM_DMA_BUF_SIZE];
+static s16 audioBuffer[PCM_DMA_BUF_SIZE];
 static struct SoundMixerState sSoundInfo = { 0 };
 struct SoundMixerState *SOUND_INFO_PTR = &sSoundInfo;
 
@@ -57,7 +57,7 @@ void SoundMain(void)
     mixer->CgbSound();
 
     s32 samplesPerFrame = mixer->samplesPerFrame;
-    float *pcmBuffer = mixer->pcmBuffer;
+    fixed16_16 *pcmBuffer = mixer->pcmBuffer;
     s32 dmaCounter = mixer->dmaCounter;
 
     if (dmaCounter > 1) {
@@ -68,7 +68,7 @@ void SoundMain(void)
     cgb_audio_generate(samplesPerFrame);
 }
 
-static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *pcmBuffer, u8 dmaCounter,
+static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, fixed16_16 *pcmBuffer, u8 dmaCounter,
                         u16 maxBufSize)
 {
     u32 reverb = mixer->reverb;
@@ -76,8 +76,8 @@ static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 sa
         // The vanilla reverb effect outputs a mono sound from four sources:
         //  - L/R channels as they were mixer->framesPerDmaCycle frames ago
         //  - L/R channels as they were (mixer->framesPerDmaCycle - 1) frames ago
-        float *tmp1 = pcmBuffer;
-        float *tmp2;
+        fixed16_16 *tmp1 = pcmBuffer;
+        fixed16_16 *tmp2;
         if (dmaCounter == 2) {
             tmp2 = mixer->pcmBuffer;
         } else {
@@ -85,8 +85,8 @@ static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 sa
         }
         u16 i = 0;
         do {
-            float s = tmp1[0] + tmp1[1] + tmp2[0] + tmp2[1];
-            s *= ((float)reverb / 512.0f);
+            fixed16_16 s = tmp1[0] + tmp1[1] + tmp2[0] + tmp2[1];
+            s = (s * reverb) >> 9;
             tmp1[0] = tmp1[1] = s;
             tmp1 += 2;
             tmp2 += 2;
@@ -95,7 +95,7 @@ static void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 sa
         // memset(pcmBuffer, 0, samplesPerFrame);
         // memset(pcmBuffer + maxBufSize, 0, samplesPerFrame);
         for (int i = 0; i < samplesPerFrame; i++) {
-            float *dst = &pcmBuffer[i * 2];
+            fixed16_16 *dst = &pcmBuffer[i * 2];
             dst[1] = dst[0] = 0.0f;
         }
     }
@@ -228,7 +228,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData *wav
     }
 }
 
-static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, float *pcmBuffer,
+static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, fixed16_16 *pcmBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal)
 { /*, [[[]]]) {*/
     u8 v = chan->data.sound.envelopeVol * (mixer->masterVol + 1) / 16U;
@@ -250,8 +250,8 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             s8 c = *(current++);
 
-            pcmBuffer[1] += (c * envR) / 32768.0f;
-            pcmBuffer[0] += (c * envL) / 32768.0f;
+            pcmBuffer[1] += ((s32)c * envR) << 1;
+            pcmBuffer[0] += ((s32)c * envL) << 1;
             if (--samplesLeftInWav == 0) {
                 samplesLeftInWav = loopLen;
                 if (loopLen != 0) {
@@ -278,8 +278,8 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
             // and the next sample. Also cancel out the 9.23 stuff
             float sample = (finePos * m) + b;
 
-            pcmBuffer[1] += (sample * envR) / 32768.0f;
-            pcmBuffer[0] += (sample * envL) / 32768.0f;
+            pcmBuffer[1] += ((s32)sample * envR) << 1;
+            pcmBuffer[0] += ((s32)sample * envL) << 1;
 
             finePos += romSamplesPerOutputSample;
             u32 newCoarsePos = finePos;
@@ -908,8 +908,8 @@ void m4aSoundVSync(void)
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
     if (mixer->lockStatus - ID_NUMBER <= 1) {
         s32 samplesPerFrame = mixer->samplesPerFrame * 2;
-        float *m4aBuffer = mixer->pcmBuffer;
-        float *cgbBuffer = cgb_get_buffer();
+        fixed16_16 *m4aBuffer = mixer->pcmBuffer;
+        fixed16_16 *cgbBuffer = cgb_get_buffer();
         s32 dmaCounter = mixer->dmaCounter;
 
         if (dmaCounter > 1) {
@@ -917,10 +917,21 @@ void m4aSoundVSync(void)
         }
 
         for (u32 i = 0; i < samplesPerFrame; i++) {
-            audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
+            // Sample is fixed 16.16 with a value of -1 to 1
+            fixed16_16 sample = (m4aBuffer[i] + cgbBuffer[i]);
+            // Prevent distorting
+            if (sample > u32_to_fp16_16(1))
+                sample = u32_to_fp16_16(1);
+            if (sample < -u32_to_fp16_16(1)) {
+                sample = -u32_to_fp16_16(1);
+            }
+            // 1 in 16.16 format is 65536
+            // so >> 1 will convert to the
+            // size expected for s16 audio
+            audioBuffer[i] = sample >> 1;
         }
 
-        Platform_QueueAudio(audioBuffer, samplesPerFrame * sizeof(float));
+        Platform_QueueAudio(audioBuffer, samplesPerFrame * sizeof(s16));
         if ((s8)(--mixer->dmaCounter) <= 0)
             mixer->dmaCounter = mixer->framesPerDmaCycle;
     }

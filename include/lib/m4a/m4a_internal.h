@@ -272,7 +272,7 @@ struct SoundMixerState {
 #else
     // TODO: let's not make this float, they are slow
     // on older systems
-    float pcmBuffer[PCM_DMA_BUF_SIZE * 2];
+    fixed16_16 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
 #endif
 };
 

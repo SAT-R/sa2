@@ -21,6 +21,6 @@ extern void Platform_RLFree(unsigned char *dest);
 extern void Platform_LZDecompressUnsafe(unsigned char *src, unsigned char *dest);
 extern void Platform_RLDecompressUnsafe(unsigned char *src, unsigned char *dest);
 
-extern void Platform_QueueAudio(const float *data, u32 numBytes);
+extern void Platform_QueueAudio(const s16 *data, u32 numBytes);
 
 #endif // GUARD_SA2_PLATFORM_H

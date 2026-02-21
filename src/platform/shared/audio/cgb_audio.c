@@ -113,7 +113,7 @@ int calls = 0;
 void cgb_audio_generate(u16 samplesPerFrame)
 {
     // clock_t begin = clock();
-    float *outBuffer = gb.outBuffer;
+    fixed16_16 *outBuffer = gb.outBuffer;
     switch (REG_NR11 & 0xC0) {
         case 0x00:
             PU1Table = PU0;
@@ -264,13 +264,13 @@ void cgb_audio_generate(u16 samplesPerFrame)
                 if (avgDiv > 1)
                     sample /= avgDiv;
                 if (REG_NR51 & 0x80)
-                    outputL += (gb.Vol[3] * sample / 15);
+                    outputL += (sample * volScale[gb.Vol[3]]) >> 16;
                 if (REG_NR51 & 0x08)
-                    outputR += (gb.Vol[3] * sample / 15);
+                    outputR += (sample * volScale[gb.Vol[3]]) >> 16;
             }
         }
-        outBuffer[0] = fp16_16_to_float(outputL >> 2);
-        outBuffer[1] = fp16_16_to_float(outputR >> 2);
+        outBuffer[0] = (outputL >> 2);
+        outBuffer[1] = (outputR >> 2);
     }
     // clock_t end = clock();
     // double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
@@ -281,4 +281,4 @@ void cgb_audio_generate(u16 samplesPerFrame)
     // }
 }
 
-float *cgb_get_buffer() { return gb.outBuffer; }
+fixed16_16 *cgb_get_buffer() { return gb.outBuffer; }

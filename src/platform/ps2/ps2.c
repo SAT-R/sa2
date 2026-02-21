@@ -141,7 +141,7 @@ static void AudioPlay(const uint8_t *buf, size_t len)
 void VideoInit(void)
 {
     if (vid_mode == NULL) {
-        vid_mode = &vid_modes[3]; // Standard def 480p
+        vid_mode = &vid_modes[1]; // Standard def 480p
     } else {
         if (use_hires) {
             gsKit_hires_deinit_global(gsGlobal);
@@ -412,26 +412,12 @@ void Platform_StoreSaveFile(void) { StoreSaveFile(); }
 
 s16 convertedAudio[4096];
 
-void Platform_QueueAudio(const float *data, uint32_t bytesCount)
+void Platform_QueueAudio(const s16 *data, uint32_t bytesCount)
 {
     if (headless) {
         return;
     }
-    u32 length = bytesCount / sizeof(float);
-
-    for (u32 i = 0; i < length; i++) {
-        float sample = data[i];
-
-        if (sample > 1.0f)
-            sample = 1.0f;
-        else if (sample < -1.0f)
-            sample = -1.0f;
-
-        // Convert to s16
-        convertedAudio[i] = (int16_t)(sample * 32767.0f + (sample >= 0 ? 0.5f : -0.5f));
-    }
-
-    AudioPlay((uint8_t *)convertedAudio, length * sizeof(u16));
+    AudioPlay((uint8_t *)data, bytesCount);
 }
 
 u16 Platform_GetKeyInput(void)
