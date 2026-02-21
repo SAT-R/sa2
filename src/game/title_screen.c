@@ -63,15 +63,15 @@ typedef struct {
     BgPaletteEffectState bgEffect;
 
     // Something to do with the wave effects
-    u16 wavesTransformX[DISPLAY_HEIGHT];
-    BgAffineReg unk3F4[DISPLAY_HEIGHT];
+    u16 wavesTransformPA[DISPLAY_HEIGHT];
+    BgAffineReg wavesAffineBuf[DISPLAY_HEIGHT];
     u16 wavesTransformY[DISPLAY_HEIGHT];
 
     u16 unkF34;
     u16 unkF36;
     u16 wavesTopOffset;
 
-    s16 unkF3A;
+    s16 qWaveBgAffineYOffset;
 
     u8 introTransitionStep;
     u8 introPanUpVelocity;
@@ -303,30 +303,30 @@ void CreateTitleScreen(void)
     t = TaskCreate(Task_IntroStartSegaLogoAnim, sizeof(TitleScreen), 0x1000, 0, NULL);
     titleScreen = TASK_DATA(t);
 
-    titleScreen->unkF34 = 512;
-    titleScreen->unkF36 = 0x100;
+    titleScreen->unkF34 = Q(2);
+    titleScreen->unkF36 = Q(1);
     titleScreen->wavesTopOffset = 2;
 
     titleScreen->menuCursor = 0;
     titleScreen->startScreenTimer = 0;
 
     titleScreen->animFrame = 0;
-    titleScreen->unkF3A = 0x20;
+    titleScreen->qWaveBgAffineYOffset = Q(0.125);
 
     titleScreen->introTransitionStep = 0;
     titleScreen->introPanUpVelocity = 1;
 
     // Generate the wave effects
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
-        denom = Div(65536, (i + 1) * 8);
+        denom = Div(Q(256), (i + 1) * TILE_WIDTH);
 
-        val = (titleScreen->unkF34 * denom) >> 8;
+        val = Q_MUL(titleScreen->unkF34, denom);
 
         // Goes from 16384 -> 102 in an log curve \_
-        titleScreen->wavesTransformX[i] = val;
+        titleScreen->wavesTransformPA[i] = val;
         // Goes from 4 -> 642 in steps of 4 but becomes
         // a slightly more jagged line as i increases
-        titleScreen->wavesTransformY[i] = Div(65536, val);
+        titleScreen->wavesTransformY[i] = Div(Q(256), val);
     };
 
     fade = &titleScreen->unk270;
@@ -363,14 +363,14 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
 
     // Size of filler between unk2B4
     // and unkDF4
-    titleScreen->unkF34 = 0xa00;
+    titleScreen->unkF34 = Q(10);
 
     titleScreen->unkF36 = 3;
     titleScreen->wavesTopOffset = 2;
     titleScreen->menuCursor = 0;
     titleScreen->startScreenTimer = 0;
     titleScreen->animFrame = 0;
-    titleScreen->unkF3A = 0x20;
+    titleScreen->qWaveBgAffineYOffset = Q(0.125);
     titleScreen->introTransitionStep = 0;
     titleScreen->introPanUpVelocity = 1;
 
@@ -1412,8 +1412,8 @@ static void Task_JumpToSinglePlayerMenu(void)
 static void WavesBackgroundAnim(TitleScreen *titleScreen)
 {
     u32 i;
-    u32 *pointer;
-    s32 j;
+    u32 *affine;
+    s32 line;
 
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
     gDispCnt |= DISPCNT_WIN1_ON;
@@ -1422,10 +1422,9 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gWinRegs[WINREG_WININ] |= 0x3F00;
     gWinRegs[WINREG_WINOUT] &= 0x13;
 
-    // Something which effects wave length
-    titleScreen->unkF3A -= 768;
-    if (titleScreen->unkF3A < 0) {
-        titleScreen->unkF3A = 7680;
+    titleScreen->qWaveBgAffineYOffset -= Q(3);
+    if (titleScreen->qWaveBgAffineYOffset < 0) {
+        titleScreen->qWaveBgAffineYOffset = Q(30);
     }
 
     gVBlankCallbacks[gNumVBlankCallbacks++] = ResetWavesPalette;
@@ -1440,42 +1439,44 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gHBlankCopySize = sizeof(BgAffineReg);
     gHBlankCopyTarget = (void *)REG_ADDR_BG2PA;
 
-    // TODO: not sure unk3F4 is the correct type
-    gBgOffsetsHBlankPrimary = titleScreen->unk3F4;
-    pointer = (void *)titleScreen->unk3F4;
-    for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
-        s32 temp, r3;
+    gBgOffsetsHBlankPrimary = titleScreen->wavesAffineBuf;
+    affine = (void *)titleScreen->wavesAffineBuf;
+    for (i = 0, line = 0; i < DISPLAY_HEIGHT; i++) {
+        s32 temp, qPA;
         if (titleScreen->wavesTopOffset <= i) {
-            r3 = titleScreen->wavesTransformX[i - titleScreen->wavesTopOffset];
-            *pointer++ = r3;
-            *pointer++ = 0;
+            qPA = titleScreen->wavesTransformPA[i - titleScreen->wavesTopOffset];
+            *affine++ = qPA; // PA, PB
+            *affine++ = 0; // PC, PD
 
-            // * DISPLAY_WIDTH
-            temp = (titleScreen->wavesTransformY[i - titleScreen->wavesTopOffset] * 0xF000) >> 8;
-            temp = (0xF000 - (temp)) >> 1;
-            temp = ((temp)*r3) >> 8;
+            // integer math
+            temp = titleScreen->wavesTransformY[i - titleScreen->wavesTopOffset];
+            temp = I(temp * Q(DISPLAY_WIDTH));
 
-            if (temp > 0x7FFFFFF) {
-                temp = 0x7FFFFFF;
+            // q math
+            temp = (Q(DISPLAY_WIDTH) - (temp)) >> 1;
+            temp = Q_MUL(temp, qPA);
+
+            if (temp >= Q(524288)) {
+                temp = Q(524288) - 1;
             }
-            *pointer++ = -temp;
-            // j * r3
-            if (((j << 8) * r3) >> 8 >= 0x1F80) {
-                j = 0;
-                // again possibly a macro
-                temp = titleScreen->unkF3A;
-                *pointer++ = temp;
+            *affine++ = -temp; // x
+            if (Q_MUL(QS(line), qPA) >= Q(31.5)) {
+                line = 0;
+                // using the same calculation for consitency, but in reality
+                // the calculation is optimised out since 0 * anything = 0
+                temp = Q_MUL(QS(line), qPA) + titleScreen->qWaveBgAffineYOffset;
+                *affine++ = temp; // y
             } else {
-                temp = (((j << 8) * r3) >> 8) + titleScreen->unkF3A;
-                *pointer++ = temp;
+                temp = Q_MUL(QS(line), qPA) + titleScreen->qWaveBgAffineYOffset;
+                *affine++ = temp; // y
             }
-            j++;
+            line++;
         } else {
-            *pointer++ = 0;
-            *pointer++ = 0;
-            *pointer++ = 0;
-            // Could be a macro
-            *pointer++ = (({ i + 0x200; }) - titleScreen->wavesTopOffset) << 8;
+            *affine++ = 0; // PA, PB
+            *affine++ = 0; // PC, PD
+            *affine++ = 0; // x
+            // has to be in brackets to match
+            *affine++ = Q(({ i + 512; }) - titleScreen->wavesTopOffset); // y
         }
     }
 }
