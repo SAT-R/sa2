@@ -3,7 +3,7 @@
 #include "platform/shared/audio/cgb_tables.h"
 
 static struct AudioCGB gb;
-static fixed16_16 soundChannelPos[4];
+static fixed8_24 soundChannelPos[4];
 static const fixed16_16 *PU1Table;
 static const fixed16_16 *PU2Table;
 static u32 apuFrame;
@@ -32,7 +32,7 @@ void cgb_audio_init(u32 rate)
         gb.DAC[ch] = 0;
         soundChannelPos[ch] = 0;
     }
-    soundChannelPos[1] = 1;
+    soundChannelPos[1] = u32_to_fp8_24(1);
     PU1Table = PU0;
     PU2Table = PU0;
     sampleRate = rate;
@@ -203,35 +203,34 @@ void cgb_audio_generate(u16 samplesPerFrame)
             }
         }
         // Sound generation loop
-        soundChannelPos[0] += freqTable[REG_SOUND1CNT_X & 0x7FF];
-        soundChannelPos[1] += freqTable[REG_SOUND2CNT_H & 0x7FF];
-        soundChannelPos[2] += freqTable[REG_SOUND3CNT_X & 0x7FF];
-        while (soundChannelPos[0] >= u32_to_fp16_16(32))
-            soundChannelPos[0] -= u32_to_fp16_16(32);
-        while (soundChannelPos[1] >= u32_to_fp16_16(32))
-            soundChannelPos[1] -= u32_to_fp16_16(32);
-        while (soundChannelPos[2] >= u32_to_fp16_16(32))
-            soundChannelPos[2] -= u32_to_fp16_16(32);
+        soundChannelPos[0] += freqTable[REG_SOUND1CNT_X & (ARRAY_COUNT(freqTable) - 1)];
+        soundChannelPos[1] += freqTable[REG_SOUND2CNT_H & (ARRAY_COUNT(freqTable) - 1)];
+        soundChannelPos[2] += freqTable[REG_SOUND3CNT_X & (ARRAY_COUNT(freqTable) - 1)];
+
+        soundChannelPos[0] &= (u32_to_fp8_24(32)) - 1;
+        soundChannelPos[1] &= (u32_to_fp8_24(32)) - 1;
+        soundChannelPos[2] &= (u32_to_fp8_24(32)) - 1;
+
         fixed16_16 outputL = 0;
         fixed16_16 outputR = 0;
         if (REG_NR52 & 0x80) {
             if ((gb.DAC[0]) && (REG_NR52 & 0x01)) {
                 if (REG_NR51 & 0x10)
-                    outputL += (gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])]);
+                    outputL += (gb.Vol[0] * PU1Table[fp8_24_to_u32(soundChannelPos[0])]);
                 if (REG_NR51 & 0x01)
-                    outputR += (gb.Vol[0] * PU1Table[fp16_16_to_u32(soundChannelPos[0])]);
+                    outputR += (gb.Vol[0] * PU1Table[fp8_24_to_u32(soundChannelPos[0])]);
             }
             if ((gb.DAC[1]) && (REG_NR52 & 0x02)) {
                 if (REG_NR51 & 0x20)
-                    outputL += (gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])]);
+                    outputL += (gb.Vol[1] * PU2Table[fp8_24_to_u32(soundChannelPos[1])]);
                 if (REG_NR51 & 0x02)
-                    outputR += (gb.Vol[1] * PU2Table[fp16_16_to_u32(soundChannelPos[1])]);
+                    outputR += (gb.Vol[1] * PU2Table[fp8_24_to_u32(soundChannelPos[1])]);
             }
             if ((REG_NR30 & 0x80) && (REG_NR52 & 0x04)) {
                 if (REG_NR51 & 0x40)
-                    outputL += (gb.Vol[2] * gb.WAVRAM[fp16_16_to_u32(soundChannelPos[2])] >> 2);
+                    outputL += (gb.Vol[2] * gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
                 if (REG_NR51 & 0x04)
-                    outputR += (gb.Vol[2] * gb.WAVRAM[fp16_16_to_u32(soundChannelPos[2])] >> 2);
+                    outputR += (gb.Vol[2] * gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
             }
             if ((gb.DAC[3]) && (REG_NR52 & 0x08)) {
                 bool32 lfsrMode = ((REG_NR43 & 0x08) == 8);

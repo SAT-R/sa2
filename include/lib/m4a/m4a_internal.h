@@ -120,6 +120,8 @@ typedef s32 fixed8_24;
 #define fp16_16_fractional_part(value) ((value)&0xFFFF)
 
 #define float_to_fp8_24(value) (fixed8_24)((value)*16777216.0)
+#define u32_to_fp8_24(value)   ((value) << 24)
+#define fp8_24_to_u32(value)   ((value) >> 24)
 
 #define fp8_24_to_float(value) (float)((value) / 16777216.0)
 

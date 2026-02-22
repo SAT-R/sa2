@@ -344,8 +344,8 @@ int main(int argc, char **argv)
     if (SDL_OpenAudio(&want, 0) < 0) {
         SDL_Log("Failed to open audio: %s", SDL_GetError());
     } else {
-        if (want.format != AUDIO_F32) /* we let this one thing change. */
-            SDL_Log("We didn't get Float32 audio format.");
+        if (want.format != AUDIO_S16) /* we let this one thing change. */
+            SDL_Log("We didn't get S16 audio format.");
         SDL_PauseAudio(0);
     }
 #endif
