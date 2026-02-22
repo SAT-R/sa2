@@ -264,9 +264,9 @@ void cgb_audio_generate(u16 samplesPerFrame)
                 if (avgDiv > 1)
                     sample /= avgDiv;
                 if (REG_NR51 & 0x80)
-                    outputL += (sample * volScale[gb.Vol[3]]) >> 16;
+                    outputL += ((s64)sample * volScale[gb.Vol[3]]) >> 16;
                 if (REG_NR51 & 0x08)
-                    outputR += (sample * volScale[gb.Vol[3]]) >> 16;
+                    outputR += ((s64)sample * volScale[gb.Vol[3]]) >> 16;
             }
         }
         outBuffer[0] = (outputL >> 2);
