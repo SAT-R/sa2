@@ -783,8 +783,8 @@ void RenderMetatileLayers(s32 x, s32 y)
 void CreateStageBg_Zone1(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
+    gDispCnt |= DISPCNT_BG0_ON;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
 #ifndef COLLECT_RINGS_ROM
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -795,8 +795,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->targetTilesX = 0x20;
-        background->targetTilesY = 0x20;
+        background->targetTilesX = 256 / TILE_WIDTH;
+        background->targetTilesY = 256 / TILE_WIDTH;
     } else
 #endif
     {
@@ -807,8 +807,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->targetTilesX = 0x20;
-        background->targetTilesY = 0x1E;
+        background->targetTilesX = 256 / TILE_WIDTH;
+        background->targetTilesY = 240 / TILE_WIDTH;
     }
 
     DrawBackground(background);
@@ -999,10 +999,8 @@ const u8 gUnknown_080D5B20[16][3] = {
     { 255, 5, 6 }, //
 };
 
-// TODO: This data is unused in this module
-//       But the place that references this is
-//       further down in code than the .rodata after this.
-const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-105
+// NOTE: Only values > 105 appear to be used.
+const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-94
                                                10, 10, 10, //
                                                10, 10, 10, //
                                                10, 10, 10, //
@@ -1034,13 +1032,11 @@ const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = { // 0-105
                                                10, 10, 10, //
                                                10, 10, 10, //
                                                10, 10, 10, //
-                                               10, 10, 8, //
-                                               8, 8, 8, //
-                                               7, 7, 7, //
-                                               7, 6, 6, //
-
-                                               // 106-159 | This data appears to be unused
-                                               6, 6, 6, //
+                                               10, 10, 8, 8, 8, 8, // 95-98
+                                               7, 7, 7, 7, // 99-102
+                                               6, 6, 6, // 103-104
+                                               /* 105-159 */
+                                               6, 6, //
                                                6, 6, 6, //
                                                5, 5, 5, //
                                                5, 5, 5, //
@@ -1070,8 +1066,8 @@ static s16 sUnknown_03000408;
 void CreateStageBg_Zone3(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
+    gDispCnt |= DISPCNT_BG0_ON;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
     *background = gStageCameraBgTemplates[3];
 
@@ -1189,7 +1185,7 @@ void CreateStageBg_Zone4(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     const Background *templates;
-    gBgCntRegs[0] = 0x1B0F;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(27) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
 
     *background = gStageCameraBgTemplates[CAMBG_BACK_B_LAYER];
 
@@ -1242,8 +1238,13 @@ void StageBgUpdate_Zone4Acts12(s32 cameraX, s32 cameraY)
         gBldRegs.bldAlpha = 0xc0c;
     }
 
+#ifdef BUG_FIX
+    UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
+    DrawBackground(&gStageBackgroundsRam.unk0);
+#else
     DrawBackground(&gStageBackgroundsRam.unk0);
     UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
+#endif
 
     if ((gStageTime % 16u) == 0) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
@@ -1469,7 +1470,7 @@ const u8 gUnknown_080D5C02[2][16][3] = {
 void CreateStageBg_Zone6_Acts(void)
 {
     gDispCnt |= DISPCNT_BG0_ON;
-    gBgCntRegs[0] = 0x1a0f;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
     INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
@@ -1490,7 +1491,7 @@ void CreateStageBg_Zone6_Boss(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= DISPCNT_BG0_ON;
-    gBgCntRegs[0] = 0x1a0f;
+    gBgCntRegs[0] = BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(3);
     INIT_BG_SPRITES_LAYER_32(0);
     DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
@@ -1615,7 +1616,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
     }
     // _0801D4A2
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < PALETTE_LEN_4BPP; i++) {
         s32 b, g, r;
         r = (p0 * gUnknown_080D5C02[1][i][0]) >> 4;
         r &= 0x1F;
@@ -1626,7 +1627,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
         b = (p0 * gUnknown_080D5C02[1][i][2]) >> 4;
         b &= 0x1F;
 
-        gBgPalette[15 * 16 + i] = ((b << 10) + (g << 5) + (r << 0));
+        SET_PALETTE_COLOR_BG(15, i, RGB16_REV(r, g, b));
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -1667,7 +1668,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
         r5 = 5;
     }
 
-    gBgPalette[0] = RGB_BLACK;
+    SET_PALETTE_COLOR_BG(0, 0, RGB_BLACK);
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     switch (r5) {
@@ -1726,7 +1727,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             gBgCntRegs[3] |= BGCNT_PRIORITY(2);
 
             for (i = 0; i < 16; i++) {
-                gBgPalette[(15 * 16) + i] = RGB_BLACK;
+                SET_PALETTE_COLOR_BG(15, i, RGB_BLACK);
             }
 
             // jumps to _0801D8EE for this
@@ -1759,7 +1760,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 5) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 5) & 0x1F;
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             // jumps to _0801D83C for this
@@ -1777,7 +1778,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = gUnknown_080D5C02[0][i][1];
                 u32 blue = gUnknown_080D5C02[0][i][2];
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             // _0801D83C
@@ -1803,7 +1804,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 4) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 4) & 0x1F;
 
-                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
+                SET_PALETTE_COLOR_BG(15, i, RGB16_REV(red, blue, green));
             }
 
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -1812,7 +1813,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
         case 7: {
             s8 i;
             for (i = 0; i < 16; i++) {
-                gBgPalette[(15 * 16) + i] = RGB_BLACK;
+                SET_PALETTE_COLOR_BG(15, i, RGB_BLACK);
             }
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
             gDispCnt &= ~(DISPCNT_BG0_ON);
@@ -2038,9 +2039,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
 #else
         { // Draw the "ceiling" movement
             for (lineY = 0; lineY < 8; lineY++) {
-                dst = gBgPalette;
-                dst += 209;
-                dst[lineY] = sPalette_Zone7BgCeiling[((x >> 4) & 0x7) + 1];
+                SET_PALETTE_COLOR_BG(13, lineY + 1, sPalette_Zone7BgCeiling[((x >> 4) & 0x7) + 1]);
             }
         }
 #endif
@@ -2140,7 +2139,7 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
     { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
 };
 
-const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
+const u16 gUnknown_080D5CC2[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void CreateStageBg_ZoneFinal_0(void)
 {
@@ -2191,7 +2190,7 @@ void CreateStageBg_ZoneFinal_0(void)
     gBgScrollRegs[3][1] = 0;
 
     for (i = 0; i < ARRAY_COUNT(gUnknown_080D5CC2); i++) {
-        gBgPalette[i] = gUnknown_080D5CC2[i];
+        SET_PALETTE_COLOR_BG(0, i, gUnknown_080D5CC2[i]);
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -2320,9 +2319,9 @@ void StageBgUpdate_Zone5ActBoss(UNUSED s32 a, UNUSED s32 b)
 
 void StageBgUpdate_Zone6ActBoss(UNUSED s32 a, UNUSED s32 b)
 {
-    gBgCntRegs[0] |= 0x3;
-    gBgCntRegs[3] &= ~0x3;
-    gBgCntRegs[3] |= 0x2;
+    gBgCntRegs[0] |= BGCNT_PRIORITY(3);
+    gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
+    gBgCntRegs[3] |= BGCNT_PRIORITY(2);
     gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 2) & 0xFF;
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] + 1) & 0xFF;
 }

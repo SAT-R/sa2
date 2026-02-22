@@ -92,6 +92,7 @@ extern uint8_t OAM[OAM_SIZE];
 #define OBJ_VRAM0         &VRAM[0x10000]
 #define OBJ_VRAM1         &VRAM[0x14000]
 
+#define OBJ_VRAM_TOTAL_SIZE    (VRAM_SIZE - BG_VRAM_SIZE)
 #else
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
@@ -128,7 +129,9 @@ extern uint8_t OAM[OAM_SIZE];
 #define OAM      0x7000000
 #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 
+#define OBJ_VRAM_TOTAL_SIZE    (VRAM_SIZE - BG_VRAM_SIZE)
 #endif
+
 
 #if WIDESCREEN_HACK
 #define WIN_REG_SIZE 4

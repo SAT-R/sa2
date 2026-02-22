@@ -11,6 +11,7 @@
 
 #if !PLATFORM_GBA && RENDERER != RENDERER_SOFTWARE_GPSP && RENDERER != RENDERER_SOFTWARE
 extern void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum);
+extern void Platform_TransformSprite(Sprite *sprite, SpriteTransform *transform);
 #endif
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
@@ -325,10 +326,11 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
         s32 paletteIndex = cmd->palId;
 
         if (gFlags & FLAGS_20000) {
-            CopyPalette(&gRefSpriteTables->palettes[paletteIndex * 16], s->palId * 16 + cmd->insertOffset, cmd->numColors);
+            CopyPalette(&gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], s->palId * PALETTE_LEN_4BPP + cmd->insertOffset,
+                        cmd->numColors);
         } else {
-            DmaCopy16(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gObjPalette[s->palId * 16 + cmd->insertOffset],
-                      cmd->numColors * 2);
+            DmaCopy16(3, &gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], &GET_PALETTE_COLOR_OBJ(s->palId, cmd->insertOffset),
+                      cmd->numColors * sizeof(u16));
 
             gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
         }
@@ -393,7 +395,10 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
     // sp24 = s
     UnkSpriteStruct big;
     const SpriteOffset *dimensions = s->dimensions;
-
+#if PORTABLE && (RENDERER != RENDERER_SOFTWARE)
+    Platform_TransformSprite(s, transform);
+    return;
+#endif
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
         s16 x16, y16;
@@ -1059,7 +1064,8 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
     if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gObjPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], &GET_PALETTE_COLOR_OBJ(s->palId, cmd->insertOffset),
+                  cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }

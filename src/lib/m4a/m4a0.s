@@ -25,7 +25,7 @@ SoundMain:
 	ldr r3, [r0, o_SoundInfo_ident]
 	cmp r2, r3
 	beq SoundMain_1
-	bx lr @ Exit the function if ident doesn't match ID_NUMBER.
+	bx lr @ Exit the function if ident does not match ID_NUMBER.
 SoundMain_1:
 	adds r3, 1
 	str r3, [r0, o_SoundInfo_ident]

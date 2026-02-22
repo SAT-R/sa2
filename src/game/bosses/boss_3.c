@@ -185,7 +185,7 @@ const u8 *const gUnknown_080D7ED4[] = {
 
 const s8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
 
-const s16 gUnknown_080D7F14[2][16] = {
+const s16 gUnknown_080D7F14[2][PALETTE_LEN_4BPP] = {
     INCBIN_U16("graphics/boss_3_a.gbapal"),
     INCBIN_U16("graphics/boss_3_b.gbapal"),
 };
@@ -1504,24 +1504,24 @@ void sub_8040F14(EggTotem *totem)
     u8 i;
 
     if (totem->unk35 != 0) {
-        for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i]);
         }
     } else {
-        for (i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F14[1][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7F14[1][i]);
         }
     }
 
     if (totem->unk36 > 0) {
         totem->unk36--;
 
-        for (i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(11, i, gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i]);
         }
     } else {
-        for (i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F14[1][i];
+        for (i = 0; i < PALETTE_LEN_4BPP; i++) {
+            SET_PALETTE_COLOR_OBJ(11, i, gUnknown_080D7F14[1][i]);
         }
     }
 

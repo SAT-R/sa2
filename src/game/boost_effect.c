@@ -173,7 +173,7 @@ static inline void sub_8015B64_inline(AnimId anim, u16 palId)
 #endif
         numColors = *pAnim % 256u;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[animPalId * 16], &gObjPalette[insertOffset], numColors * sizeof(u16));
+        DmaCopy32(3, &gRefSpriteTables->palettes[animPalId * 16], &GET_PALETTE_COLOR_OBJ(0, insertOffset), numColors * sizeof(u16));
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
