@@ -34,6 +34,10 @@ else ifeq ($(CPU_ARCH),i386)
     TOOLCHAIN := /usr/x86_64-w64-mingw32/
     PREFIX := x86_64-w64-mingw32-
   endif
+else ifeq ($(PLATFORM),psp)
+  PSPDEV    ?= $(HOME)/pspdev
+  export PATH := $(PSPDEV)/bin:$(PATH)
+  PREFIX    := psp-
 else ifneq ($(PLATFORM),sdl)
    $(error Unknown CPU architecture $(CPU_ARCH))
 endif # (PLATFORM == gba)

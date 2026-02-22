@@ -473,4 +473,4 @@ void *Platform_realloc(void *ptr, size_t numBytes)
 }
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
-void Platform_QueueAudio(const u8 *data, u32 numBytes) { }
+void Platform_QueueAudio(const float *s16, u32 numBytes) { }

@@ -1,10 +1,26 @@
 #include <stdio.h>
+#include <string.h>
 #include "global.h"
 #include "platform/shared/dma.h"
 
+// safe unaligned access for MIPS
+static inline void dma_copy32(void *dst, const void *src)
+{
+    u32 tmp;
+    memcpy(&tmp, src, 4);
+    memcpy(dst, &tmp, 4);
+}
+
+static inline void dma_copy16(void *dst, const void *src)
+{
+    u16 tmp;
+    memcpy(&tmp, src, 2);
+    memcpy(dst, &tmp, 2);
+}
+
 struct DMATransfer DMAList[DMA_COUNT] = { 0 };
 
-void RunDMAs(u32 type)
+void RunDMAs(DmaStartTypes type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
@@ -23,9 +39,9 @@ void RunDMAs(u32 type)
             // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dst, dma->control);
             for (int i = 0; i < dma->size; i++) {
                 if ((dma->control) & DMA_32BIT)
-                    *dma->dst32 = *dma->src32;
+                    dma_copy32(dma->dst, dma->src);
                 else
-                    *dma->dst16 = *dma->src16;
+                    dma_copy16(dma->dst, dma->src);
 
                 // process destination pointer changes
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_INC) {

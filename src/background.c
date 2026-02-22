@@ -653,7 +653,7 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-#if (RENDERER == RENDERER_SOFTWARE)
+#if (RENDERER != RENDERER_OPENGL)
     Tilemap *tilemap = gTilemapsRef[bg->tilemapId];
     if (tilemap->animFrameCount > 0) {
         if (tilemap->animDelay <= ++bg->animDelayCounter) {
@@ -875,7 +875,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
     return TRUE;
 #endif
 
-#if (RENDERER == RENDERER_SOFTWARE)
+#if (RENDERER != RENDERER_OPENGL)
     if (gBgSpritesCount != 0) {
         OamDataShort oam;
         s32 r5;
