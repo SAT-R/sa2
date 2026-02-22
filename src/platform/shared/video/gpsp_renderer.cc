@@ -156,13 +156,36 @@ static inline s32 signext28(u32 value)
     return ret >> 4;
 }
 
-void video_reload_counters()
+static u32 prev_affine[4] = { 0, 0, 0, 0 };
+
+static void video_reload_counters(bool vblank)
 {
-    /* This happens every Vblank */
-    affine_reference_x[0] = signext28(read_ioreg32(REG_ADDR_BG2X_L));
-    affine_reference_y[0] = signext28(read_ioreg32(REG_ADDR_BG2Y_L));
-    affine_reference_x[1] = signext28(read_ioreg32(REG_ADDR_BG3X_L));
-    affine_reference_y[1] = signext28(read_ioreg32(REG_ADDR_BG3Y_L));
+    /* This happens every Vblank, and every scanline */
+    u32 value;
+
+    value = read_ioreg32(REG_ADDR_BG2X_L);
+    if (vblank || prev_affine[0] != value) {
+        affine_reference_x[0] = signext28(value);
+        prev_affine[0] = value;
+    }
+
+    value = read_ioreg32(REG_ADDR_BG2Y_L);
+    if (vblank || prev_affine[1] != value) {
+        affine_reference_y[0] = signext28(value);
+        prev_affine[1] = value;
+    }
+
+    value = read_ioreg32(REG_ADDR_BG3X_L);
+    if (vblank || prev_affine[2] != value) {
+        affine_reference_x[1] = signext28(value);
+        prev_affine[2] = value;
+    }
+
+    value = read_ioreg32(REG_ADDR_BG3Y_L);
+    if (vblank || prev_affine[3] != value) {
+        affine_reference_y[1] = signext28(value);
+        prev_affine[3] = value;
+    }
 }
 
 // Renders non-affine tiled background layer.
@@ -2256,7 +2279,7 @@ void gpsp_draw_frame(u16 *framebuf)
             if (REG_DISPSTAT & DISPSTAT_VCOUNT_INTR)
                 gIntrTable[INTR_INDEX_VCOUNT]();
         }
-
+        video_reload_counters(false);
         update_scanline();
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
@@ -2270,7 +2293,7 @@ void gpsp_draw_frame(u16 *framebuf)
         REG_DISPSTAT &= ~INTR_FLAG_VCOUNT;
     }
 
-    video_reload_counters();
+    video_reload_counters(true);
 }
 
 #endif
