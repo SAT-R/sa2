@@ -4,14 +4,14 @@
 
 static struct AudioCGB gb;
 static fixed8_24 soundChannelPos[4];
-static const fixed16_16 *PU1Table;
-static const fixed16_16 *PU2Table;
+static const fixed8_24 *PU1Table;
+static const fixed8_24 *PU2Table;
 static u32 apuFrame;
 static u8 apuCycle;
 static u32 sampleRate;
 static u16 lfsrMax[2];
-fixed16_16 ch4Samples;
-fixed16_16 volScale[16];
+fixed8_24 ch4Samples;
+fixed8_24 volScale[16];
 
 void cgb_audio_init(u32 rate)
 {
@@ -42,7 +42,7 @@ void cgb_audio_init(u32 rate)
     lfsrMax[1] = 0x80;
     ch4Samples = 0;
     for (int i = 0; i < 16; i++)
-        volScale[i] = u32_to_fp16_16(i) / 15;
+        volScale[i] = u32_to_fp8_24(i) / 15;
 }
 
 void cgb_set_sweep(u8 sweep)
@@ -55,8 +55,8 @@ void cgb_set_sweep(u8 sweep)
 void cgb_set_wavram()
 {
     for (u8 wavi = 0; wavi < 0x10; wavi++) {
-        gb.WAVRAM[(wavi << 1)] = (u32_to_fp16_16(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0xF0) >> 4) * 2) / 15 - u32_to_fp16_16(1);
-        gb.WAVRAM[(wavi << 1) + 1] = (u32_to_fp16_16(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0x0F)) * 2) / 15 - u32_to_fp16_16(1);
+        gb.WAVRAM[(wavi << 1)] = (u32_to_fp8_24(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0xF0) >> 4) * 2) / 15 - u32_to_fp8_24(1);
+        gb.WAVRAM[(wavi << 1) + 1] = (u32_to_fp8_24(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0x0F)) * 2) / 15 - u32_to_fp8_24(1);
     }
 }
 
@@ -104,16 +104,9 @@ void cgb_trigger_note(u8 channel)
     }
 }
 
-// #include <stdio.h>
-// #include <time.h>
-
-double timeSpentAcc = 0;
-int calls = 0;
-
 void cgb_audio_generate(u16 samplesPerFrame)
 {
-    // clock_t begin = clock();
-    fixed16_16 *outBuffer = gb.outBuffer;
+    fixed8_24 *outBuffer = gb.outBuffer;
     switch (REG_NR11 & 0xC0) {
         case 0x00:
             PU1Table = PU0;
@@ -211,8 +204,8 @@ void cgb_audio_generate(u16 samplesPerFrame)
         soundChannelPos[1] &= (u32_to_fp8_24(32)) - 1;
         soundChannelPos[2] &= (u32_to_fp8_24(32)) - 1;
 
-        fixed16_16 outputL = 0;
-        fixed16_16 outputR = 0;
+        fixed8_24 outputL = 0;
+        fixed8_24 outputR = 0;
         if (REG_NR52 & 0x80) {
             if ((gb.DAC[0]) && (REG_NR52 & 0x01)) {
                 if (REG_NR51 & 0x10)
@@ -234,7 +227,7 @@ void cgb_audio_generate(u16 samplesPerFrame)
             }
             if ((gb.DAC[3]) && (REG_NR52 & 0x08)) {
                 bool32 lfsrMode = ((REG_NR43 & 0x08) == 8);
-                ch4Samples += freqTableNSE[REG_SOUND4CNT_H & 0xFF];
+                ch4Samples += freqTableNSE[REG_SOUND4CNT_H & (ARRAY_COUNT(freqTableNSE) - 1)];
                 int ch4Out = 0;
                 if (gb.ch4LFSR[lfsrMode] & 1) {
                     ch4Out++;
@@ -242,7 +235,7 @@ void cgb_audio_generate(u16 samplesPerFrame)
                     ch4Out--;
                 }
                 int avgDiv = 1;
-                while (ch4Samples >= u32_to_fp16_16(1)) {
+                while (ch4Samples >= u32_to_fp8_24(1)) {
                     avgDiv++;
                     bool8 lfsrCarry = 0;
                     if (gb.ch4LFSR[lfsrMode] & 2)
@@ -257,27 +250,22 @@ void cgb_audio_generate(u16 samplesPerFrame)
                     } else {
                         ch4Out--;
                     }
-                    ch4Samples -= u32_to_fp16_16(1);
+                    ch4Samples -= u32_to_fp8_24(1);
                 }
-                fixed16_16 sample = u32_to_fp16_16(ch4Out);
+                fixed8_24 sample = u32_to_fp8_24(ch4Out);
                 if (avgDiv > 1)
                     sample /= avgDiv;
+
+                // Muliply by the sample and then shift to make 8.24 again
                 if (REG_NR51 & 0x80)
-                    outputL += ((s64)sample * volScale[gb.Vol[3]]) >> 16;
+                    outputL += ((s64)sample * volScale[gb.Vol[3]]) >> 24;
                 if (REG_NR51 & 0x08)
-                    outputR += ((s64)sample * volScale[gb.Vol[3]]) >> 16;
+                    outputR += ((s64)sample * volScale[gb.Vol[3]]) >> 24;
             }
         }
         outBuffer[0] = (outputL >> 2);
         outBuffer[1] = (outputR >> 2);
     }
-    // clock_t end = clock();
-    // double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    // calls++;
-    // timeSpentAcc += time_spent;
-    // if ((calls % 60) == 0) {
-    //     printf("Time spent: %f, avg: %f\n", time_spent, timeSpentAcc / calls);
-    // }
 }
 
-fixed16_16 *cgb_get_buffer() { return gb.outBuffer; }
+fixed8_24 *cgb_get_buffer() { return gb.outBuffer; }

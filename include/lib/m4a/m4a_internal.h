@@ -106,34 +106,14 @@
 #define MAX_LINES         0
 #endif
 
-typedef s32 fixed16_16;
+#if !PLATFORM_GBA
 typedef s32 fixed8_24;
-
-#define float_to_fp16_16(value) (fixed16_16)((value)*65536.0f)
-
-#define fp16_16_to_float(value) (float)((value) / 65536.0f)
-
-#define u32_to_fp16_16(value) ((value) << 16)
-
-#define fp16_16_to_u32(value) ((value) >> 16)
-
-#define fp16_16_fractional_part(value) ((value)&0xFFFF)
-
-#define float_to_fp8_24(value) (fixed8_24)((value)*16777216.0)
-#define u32_to_fp8_24(value)   ((value) << 24)
-#define fp8_24_to_u32(value)   ((value) >> 24)
-
-#define fp8_24_to_float(value) (float)((value) / 16777216.0)
-
+#define float_to_fp8_24(value)        (fixed8_24)((value)*16777216.0f)
+#define u32_to_fp8_24(value)          ((value) << 24)
+#define fp8_24_to_u32(value)          ((value) >> 24)
+#define fp8_24_to_float(value)        (float)((value) / 16777216.0f)
 #define fp8_24_fractional_part(value) ((value)&0xFFFFFF)
-
-#define fixed_div(numerator, denominator, bits) (((numerator * (1 << bits)) + (denominator / 2)) / denominator)
-
-#define address8(base, offset) *((u8 *)((u8 *)base + (offset)))
-
-#define address16(base, offset) *((u16 *)((u8 *)base + (offset)))
-
-#define address32(base, offset) *((u32 *)((u8 *)base + (offset)))
+#endif
 
 struct MP2KTrack;
 struct MP2KPlayerState;
@@ -214,7 +194,7 @@ struct MixerSource {
             u8 padding5;
 
             u32 ct;
-            fixed16_16 fw;
+            fixed8_24 fw;
 
             u32 freq;
         } sound;
@@ -274,7 +254,7 @@ struct SoundMixerState {
 #else
     // TODO: let's not make this float, they are slow
     // on older systems
-    fixed16_16 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
+    fixed8_24 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
 #endif
 };
 
