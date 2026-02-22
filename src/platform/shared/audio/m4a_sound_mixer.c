@@ -900,6 +900,8 @@ void MP2K_event_mod(struct MP2KPlayerState *unused, struct MP2KTrack *track)
     }
 }
 
+#define MASTER_VOLUME_REDUCE 0.1
+
 void m4aSoundVSync(void)
 {
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
@@ -915,7 +917,7 @@ void m4aSoundVSync(void)
         }
 
         for (u32 i = 0; i < samplesPerFrame; i++) {
-            audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
+            audioBuffer[i] = (m4aBuffer[i] + cgbBuffer[i]) * MASTER_VOLUME_REDUCE;
             if (audioBuffer[i] != 0) {
                 shouldQueue = TRUE;
             }
