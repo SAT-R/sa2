@@ -797,7 +797,7 @@ static void render_scanline_affine(u32 layer, u32 start, u32 end, void *scanline
     u32 map_size = (bg_control >> 14) & 0x03;
 
     // Char block base pointer
-    u32 base_block = (bg_control & BGCNT_SCREENBASE_MASK) >> 8;
+    u32 base_block = (bg_control >> 8) & 0x1F;
     u8 *map_base = BG_SCREEN_ADDR(base_block);
     // The tilemap base is selected via bgcnt (16KiB chunks)
     u32 tilecntrl = (bg_control >> 2) & 0x03;
