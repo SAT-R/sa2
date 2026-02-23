@@ -243,8 +243,9 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
     }
     s32 samplesLeftInWav = chan->data.sound.ct;
     s8 *current = chan->current;
-    signed envR = chan->data.sound.envelopeVolR;
-    signed envL = chan->data.sound.envelopeVolL;
+
+    fixed8_24 envR = chan->data.sound.envelopeVolR << 9; // (* 32768)
+    fixed8_24 envL = chan->data.sound.envelopeVolL << 9;
 
     if (chan->type & TONEDATA_TYPE_CGB) {
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
@@ -253,8 +254,8 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
             // Creates a value between -32768 and 32768
             // So shift by 9 to make this between -1 and 1
             // in 8.24
-            pcmBuffer[1] += (c * envR) << 9;
-            pcmBuffer[0] += (c * envL) << 9;
+            pcmBuffer[1] += (c * envR);
+            pcmBuffer[0] += (c * envL);
             if (--samplesLeftInWav == 0) {
                 samplesLeftInWav = loopLen;
                 if (loopLen != 0) {
@@ -279,10 +280,10 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             // Use linear interpolation to calculate a value between the current sample in the wav
             // and the next sample. Also cancel out the 9.23 stuff
-            fixed8_24 sample = (((s64)finePos * m) + u32_to_fp8_24(b)) >> 15;
+            fixed8_24 sample = ((finePos * m) + u32_to_fp8_24(b));
 
-            pcmBuffer[1] += (sample * envR);
-            pcmBuffer[0] += (sample * envL);
+            pcmBuffer[1] += ((s64)sample * envR) >> 24;
+            pcmBuffer[0] += ((s64)sample * envL) >> 24;
 
             finePos += romSamplesPerOutputSample;
             u32 newCoarsePos = fp8_24_to_u32(finePos);

@@ -234,27 +234,31 @@ void cgb_audio_generate(u16 samplesPerFrame)
                 } else {
                     ch4Out--;
                 }
-                int avgDiv = 1;
-                while (ch4Samples >= u32_to_fp8_24(1)) {
-                    avgDiv++;
-                    bool8 lfsrCarry = 0;
-                    if (gb.ch4LFSR[lfsrMode] & 2)
-                        lfsrCarry ^= 1;
-                    gb.ch4LFSR[lfsrMode] >>= 1;
-                    if (gb.ch4LFSR[lfsrMode] & 2)
-                        lfsrCarry ^= 1;
-                    if (lfsrCarry)
-                        gb.ch4LFSR[lfsrMode] |= lfsrMax[lfsrMode];
-                    if (gb.ch4LFSR[lfsrMode] & 1) {
-                        ch4Out++;
-                    } else {
-                        ch4Out--;
-                    }
-                    ch4Samples -= u32_to_fp8_24(1);
+                int steps = fp8_24_to_u32(ch4Samples);
+                ch4Samples = fp8_24_fractional_part(ch4Samples);
+
+                u16 lfsr = gb.ch4LFSR[lfsrMode];
+                u16 lfsrMask = lfsrMax[lfsrMode];
+
+                for (int i = 0; i < steps; i++) {
+                    // Comments to show what the bit
+                    // manipulation here is representing
+
+                    // if (gb.ch4LFSR[lfsrMode] & 2)
+                    u16 lfsrCarry = (lfsr >> 1) & 1;
+                    lfsr >>= 1;
+                    // if (gb.ch4LFSR[lfsrMode] & 2)
+                    lfsrCarry ^= (lfsr >> 1) & 1;
+                    // if (lfsrCarry) gb.ch4LFSR[lfsrMode] |= lfsrMax[lfsrMode];
+                    lfsr |= -lfsrCarry & lfsrMask;
+                    // if (gb.ch4LFSR[lfsrMode] & 1)
+                    ch4Out += (lfsr & 1) ? 1 : -1;
                 }
+                gb.ch4LFSR[lfsrMode] = lfsr;
+
                 fixed8_24 sample = u32_to_fp8_24(ch4Out);
-                if (avgDiv > 1)
-                    sample /= avgDiv;
+                if (steps > 0)
+                    sample /= (steps + 1);
 
                 // Muliply by the sample and then shift to make 8.24 again
                 if (REG_NR51 & 0x80)
