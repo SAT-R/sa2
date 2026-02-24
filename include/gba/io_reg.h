@@ -8,6 +8,7 @@
 // these are not hardware registers on ports
 // so there is no need to make re-read them
 #if PORTABLE
+typedef uint8_t reg_u8;
 typedef uint16_t reg_u16;
 typedef uint32_t reg_u32;
 typedef int16_t reg_s16; 
@@ -15,6 +16,7 @@ typedef int32_t reg_s32;
 typedef uint64_t reg_u64; 
 typedef winreg_t reg_wint; 
 #else
+typedef volatile uint8_t reg_u8;
 typedef volatile uint16_t reg_u16;
 typedef volatile uint32_t reg_u32;
 typedef volatile int16_t reg_s16; 
@@ -435,42 +437,42 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_BLDY        (*(reg_u16 *)REG_ADDR_BLDY)
 
 #define REG_SOUND1CNT_L (*(reg_u16 *)REG_ADDR_SOUND1CNT_L)
-#define REG_NR10        (*(vu8  *)REG_ADDR_NR10)
+#define REG_NR10        (*(reg_u8  *)REG_ADDR_NR10)
 #define REG_SOUND1CNT_H (*(reg_u16 *)REG_ADDR_SOUND1CNT_H)
-#define REG_NR11        (*(vu8  *)REG_ADDR_NR11)
-#define REG_NR12        (*(vu8  *)REG_ADDR_NR12)
+#define REG_NR11        (*(reg_u8  *)REG_ADDR_NR11)
+#define REG_NR12        (*(reg_u8  *)REG_ADDR_NR12)
 #define REG_SOUND1CNT_X (*(reg_u16 *)REG_ADDR_SOUND1CNT_X)
-#define REG_NR13        (*(vu8  *)REG_ADDR_NR13)
-#define REG_NR14        (*(vu8  *)REG_ADDR_NR14)
+#define REG_NR13        (*(reg_u8  *)REG_ADDR_NR13)
+#define REG_NR14        (*(reg_u8  *)REG_ADDR_NR14)
 #define REG_SOUND2CNT_L (*(reg_u16 *)REG_ADDR_SOUND2CNT_L)
-#define REG_NR21        (*(vu8  *)REG_ADDR_NR21)
-#define REG_NR22        (*(vu8  *)REG_ADDR_NR22)
+#define REG_NR21        (*(reg_u8  *)REG_ADDR_NR21)
+#define REG_NR22        (*(reg_u8  *)REG_ADDR_NR22)
 #define REG_SOUND2CNT_H (*(reg_u16 *)REG_ADDR_SOUND2CNT_H)
-#define REG_NR23        (*(vu8  *)REG_ADDR_NR23)
-#define REG_NR24        (*(vu8  *)REG_ADDR_NR24)
+#define REG_NR23        (*(reg_u8  *)REG_ADDR_NR23)
+#define REG_NR24        (*(reg_u8  *)REG_ADDR_NR24)
 #define REG_SOUND3CNT_L (*(reg_u16 *)REG_ADDR_SOUND3CNT_L)
-#define REG_NR30        (*(vu8  *)REG_ADDR_NR30)
+#define REG_NR30        (*(reg_u8  *)REG_ADDR_NR30)
 #define REG_SOUND3CNT_H (*(reg_u16 *)REG_ADDR_SOUND3CNT_H)
-#define REG_NR31        (*(vu8  *)REG_ADDR_NR31)
-#define REG_NR32        (*(vu8  *)REG_ADDR_NR32)
+#define REG_NR31        (*(reg_u8  *)REG_ADDR_NR31)
+#define REG_NR32        (*(reg_u8  *)REG_ADDR_NR32)
 #define REG_SOUND3CNT_X (*(reg_u16 *)REG_ADDR_SOUND3CNT_X)
-#define REG_NR33        (*(vu8  *)REG_ADDR_NR33)
-#define REG_NR34        (*(vu8  *)REG_ADDR_NR34)
+#define REG_NR33        (*(reg_u8  *)REG_ADDR_NR33)
+#define REG_NR34        (*(reg_u8  *)REG_ADDR_NR34)
 #define REG_SOUND4CNT_L (*(reg_u16 *)REG_ADDR_SOUND4CNT_L)
-#define REG_NR41        (*(vu8  *)REG_ADDR_NR41)
-#define REG_NR42        (*(vu8  *)REG_ADDR_NR42)
+#define REG_NR41        (*(reg_u8  *)REG_ADDR_NR41)
+#define REG_NR42        (*(reg_u8  *)REG_ADDR_NR42)
 #define REG_SOUND4CNT_H (*(reg_u16 *)REG_ADDR_SOUND4CNT_H)
-#define REG_NR43        (*(vu8  *)REG_ADDR_NR43)
-#define REG_NR44        (*(vu8  *)REG_ADDR_NR44)
+#define REG_NR43        (*(reg_u8  *)REG_ADDR_NR43)
+#define REG_NR44        (*(reg_u8  *)REG_ADDR_NR44)
 #define REG_SOUNDCNT_L  (*(reg_u16 *)REG_ADDR_SOUNDCNT_L)
-#define REG_NR50        (*(vu8  *)REG_ADDR_NR50)
-#define REG_NR51        (*(vu8  *)REG_ADDR_NR51)
+#define REG_NR50        (*(reg_u8  *)REG_ADDR_NR50)
+#define REG_NR51        (*(reg_u8  *)REG_ADDR_NR51)
 #define REG_SOUNDCNT_H  (*(reg_u16 *)REG_ADDR_SOUNDCNT_H)
 #define REG_SOUNDCNT_X  (*(reg_u16 *)REG_ADDR_SOUNDCNT_X)
-#define REG_NR52        (*(vu8  *)REG_ADDR_NR52)
+#define REG_NR52        (*(reg_u8  *)REG_ADDR_NR52)
 #define REG_SOUNDBIAS   (*(reg_u16 *)REG_ADDR_SOUNDBIAS)
-#define REG_SOUNDBIAS_L (*(vu8  *)REG_ADDR_SOUNDBIAS_L)
-#define REG_SOUNDBIAS_H (*(vu8  *)REG_ADDR_SOUNDBIAS_H)
+#define REG_SOUNDBIAS_L (*(reg_u8  *)REG_ADDR_SOUNDBIAS_L)
+#define REG_SOUNDBIAS_H (*(reg_u8  *)REG_ADDR_SOUNDBIAS_H)
 #define REG_WAVE_RAM0   (*(reg_u32 *)REG_ADDR_WAVE_RAM0)
 #define REG_WAVE_RAM1   (*(reg_u32 *)REG_ADDR_WAVE_RAM1)
 #define REG_WAVE_RAM2   (*(reg_u32 *)REG_ADDR_WAVE_RAM2)

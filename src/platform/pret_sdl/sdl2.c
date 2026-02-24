@@ -12,7 +12,9 @@
 
 #ifdef __PSP__
 #include <pspkernel.h>
-extern int setupPspCallbacks(void);
+#include <pspdebug.h>
+#include <stdbool.h>
+#include <stdio.h>
 #endif
 
 #include <SDL.h>
@@ -98,7 +100,7 @@ bool paused = false;
 bool stepOneFrame = false;
 bool headless = false;
 
-#if defined(__PSP__) || defined(__PS2__)
+#ifdef __PSP__
 static SDL_Joystick *joystick = NULL;
 #endif
 
@@ -136,44 +138,41 @@ void *Platform_malloc(size_t numBytes) { return HeapAlloc(GetProcessHeap(), HEAP
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
-#ifdef __PS2__
-// TODO: clean these for what is needed
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#ifdef __PSP__
+PSP_MODULE_INFO("SonicAdvance2", 0, 1, 0);
+PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
+PSP_HEAP_SIZE_KB(-1024);
 
-#include <kernel.h>
-#include <delaythread.h>
-#include <sifrpc.h>
-#include <iopcontrol.h>
-#include <sbv_patches.h>
-#include <ps2_filesystem_driver.h>
+unsigned int sce_newlib_stack_size = 512 * 1024;
 
-void reset_IOP()
+extern bool isRunning;
+
+int exitCallback(int arg1, int arg2, void *common)
 {
-    SifInitRpc(0);
-    while (!SifIopReset(NULL, 0)) { } // Comment this line if you want to "debug" through ps2link
-    while (!SifIopSync()) { }
+    (void)arg1;
+    (void)arg2;
+    (void)common;
+    isRunning = false;
+    return 0;
 }
 
-static void prepare_IOP()
+int callbackThread(SceSize args, void *argp)
 {
-    reset_IOP();
-    SifInitRpc(0);
-    sbv_patch_enable_lmb();
-    sbv_patch_disable_prefix_check();
+    (void)args;
+    (void)argp;
+    int cbid = sceKernelCreateCallback("Exit Callback", exitCallback, NULL);
+    sceKernelRegisterExitCallback(cbid);
+    sceKernelSleepThreadCB();
+    return 0;
 }
 
-static void init_drivers()
+int setupPspCallbacks(void)
 {
-    init_only_boot_ps2_filesystem_driver();
-    init_memcard_driver(true);
-}
-
-static void deinit_drivers()
-{
-    deinit_memcard_driver(true);
-    deinit_only_boot_ps2_filesystem_driver();
+    int thid = sceKernelCreateThread("update_thread", callbackThread, 0x11, 0xFA0, 0, 0);
+    if (thid >= 0) {
+        sceKernelStartThread(thid, 0, 0);
+    }
+    return thid;
 }
 #endif
 
@@ -181,10 +180,6 @@ int main(int argc, char **argv)
 {
 #ifdef __PSP__
     setupPspCallbacks();
-#endif
-
-#ifdef __PS2__
-    prepare_IOP();
 #endif
 
     const char *headlessEnv = getenv("HEADLESS");
@@ -209,9 +204,7 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
-#ifndef __PS2__
     ReadSaveFile("sa2.sav");
-#endif
 
     // Prevent the multiplayer screen from being drawn ( see core.c:EngineInit() )
     REG_RCNT = 0x8000;
@@ -231,7 +224,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-#if defined(__PSP__) || defined(__PS2__)
+#ifdef __PSP__
     if (SDL_NumJoysticks() > 0) {
         joystick = SDL_JoystickOpen(0);
     }
@@ -245,8 +238,6 @@ int main(int argc, char **argv)
 
 #ifdef __PSP__
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 480, 272, SDL_WINDOW_SHOWN);
-#elif defined(__PS2__)
-    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 448, SDL_WINDOW_SHOWN);
 #else
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
                                  DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -278,8 +269,6 @@ int main(int argc, char **argv)
         sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
     if (sdlRenderer == NULL)
         sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
-#elif defined(__PS2__)
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 #else
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 #endif
@@ -323,12 +312,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
-#endif
-
-#ifdef __PS2__
-    SDL_SetTextureScaleMode(sdlTexture, SDL_ScaleModeLinear);
-    // For some reason we are WAY blown out on the PS2
-    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
 #endif
 
 #if ENABLE_AUDIO
@@ -382,13 +365,9 @@ void VBlankIntrWait(void)
 
     bool frameAvailable = TRUE;
     bool frameDrawn = false;
-#if defined(__PSP__) || defined(__PS2__)
-    static int frames_skipped = 0;
-#define MAX_FRAME_SKIP 2
-#endif
 
     while (isRunning) {
-#if !defined(__PS2__) && !defined(__PSP__)
+#ifndef __PSP__
         ProcessSDLEvents();
 #endif
 
@@ -418,18 +397,6 @@ void VBlankIntrWait(void)
             while (accumulator >= dt) {
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
                 if (frameAvailable) {
-#if defined(__PSP__) || defined(__PS2__)
-                    // frame skip: let game logic catch up when behind
-                    if (accumulator >= dt * 2.0 && frames_skipped < MAX_FRAME_SKIP) {
-                        frames_skipped++;
-                        frameAvailable = FALSE;
-                        HANDLE_VBLANK_INTRS();
-                        accumulator -= dt;
-                        newFrameRequested = TRUE;
-                        return;
-                    }
-                    frames_skipped = 0;
-#endif
                     VDraw(sdlTexture);
                     frameAvailable = FALSE;
                     frameDrawn = true;
@@ -451,18 +418,9 @@ void VBlankIntrWait(void)
         // present
 #ifdef __PSP__
         // manual blit since SDL_RenderSetLogicalSize doesn't work on psp
-        if (frameDrawn) {
-            SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, &pspDestRect);
-            SDL_RenderPresent(sdlRenderer);
-            frameDrawn = false;
-        } else {
-            SDL_Delay(1);
-        }
+        SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, &pspDestRect);
+        SDL_RenderPresent(sdlRenderer);
 #else
-#ifdef __PS2__
-        // Allow audio to play
-        DelayThread(800);
-#endif
         SDL_RenderClear(sdlRenderer);
         SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 
@@ -535,6 +493,8 @@ static void CloseSaveFile()
     }
 }
 
+static u16 keys;
+
 // Key mappings
 #define KEY_A_BUTTON      SDLK_c
 #define KEY_B_BUTTON      SDLK_x
@@ -557,24 +517,7 @@ static void CloseSaveFile()
         keys |= key;                                                                                                                       \
         break;
 
-static u16 keys;
-
-#if defined(__PSP__) || defined(__PS2__)
-
-#ifdef __PS2__
-#define BTN_TRIANGLE 12
-#define BTN_CIRCLE   13
-#define BTN_CROSS    14
-#define BTN_SQUARE   15
-#define BTN_LTRIGGER 10
-#define BTN_RTRIGGER 11
-#define BTN_DOWN     6
-#define BTN_LEFT     7
-#define BTN_UP       4
-#define BTN_RIGHT    5
-#define BTN_SELECT   0
-#define BTN_START    3
-#else
+#ifdef __PSP__
 #define BTN_TRIANGLE 0
 #define BTN_CIRCLE   1
 #define BTN_CROSS    2
@@ -587,41 +530,41 @@ static u16 keys;
 #define BTN_RIGHT    9
 #define BTN_SELECT   10
 #define BTN_START    11
-#endif
 
 static u16 PollJoystickButtons(void)
 {
-    u16 keys = 0;
+    u16 newKeys = 0;
     if (joystick == NULL)
-        return keys;
+        return newKeys;
 
     SDL_JoystickUpdate();
 
     if (SDL_JoystickGetButton(joystick, BTN_CROSS))
-        keys |= A_BUTTON;
+        newKeys |= A_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_CIRCLE))
-        keys |= B_BUTTON;
+        newKeys |= B_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_SQUARE))
-        keys |= B_BUTTON; // Square also B
+        newKeys |= B_BUTTON; // Square also B
     if (SDL_JoystickGetButton(joystick, BTN_START))
-        keys |= START_BUTTON;
+        newKeys |= START_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_SELECT))
-        keys |= SELECT_BUTTON;
+        newKeys |= SELECT_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_LTRIGGER))
-        keys |= L_BUTTON;
+        newKeys |= L_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_RTRIGGER))
-        keys |= R_BUTTON;
+        newKeys |= R_BUTTON;
     if (SDL_JoystickGetButton(joystick, BTN_UP))
-        keys |= DPAD_UP;
+        newKeys |= DPAD_UP;
     if (SDL_JoystickGetButton(joystick, BTN_DOWN))
-        keys |= DPAD_DOWN;
+        newKeys |= DPAD_DOWN;
     if (SDL_JoystickGetButton(joystick, BTN_LEFT))
-        keys |= DPAD_LEFT;
+        newKeys |= DPAD_LEFT;
     if (SDL_JoystickGetButton(joystick, BTN_RIGHT))
-        keys |= DPAD_RIGHT;
+        newKeys |= DPAD_RIGHT;
 
-    return keys;
+    return newKeys;
 }
+
 #endif
 
 u32 fullScreenFlags = 0;
@@ -764,7 +707,7 @@ u16 Platform_GetKeyInput(void)
     return (gamepadKeys != 0) ? gamepadKeys : keys;
 #endif
 
-#if defined(__PSP__) || defined(__PS2__)
+#ifdef __PSP__
     return keys | PollJoystickButtons();
 #endif
 

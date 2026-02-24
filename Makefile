@@ -58,8 +58,6 @@ else ifeq ($(PLATFORM),psp)
   PSPSDK    := $(PSPDEV)/psp/sdk
   export PATH := $(PSPDEV)/bin:$(PATH)
   PREFIX    := psp-
-else ifeq ($(PLATFORM),sdl_ps2)
-  PREFIX := mips64r5900el-ps2-elf-
 else ifeq ($(PLATFORM),ps2)
   PREFIX := mips64r5900el-ps2-elf-
 else
@@ -135,10 +133,6 @@ else ifeq ($(PLATFORM),psp)
 ROM      := EBOOT.PBP
 ELF      := $(BUILD_NAME).psp.elf
 MAP      := $(BUILD_NAME).psp.map
-else ifeq ($(PLATFORM),sdl_ps2)
-ROM      := $(BUILD_NAME).$(PLATFORM).iso
-ELF      := $(ROM:.iso=.elf)
-MAP      := $(ROM:.iso=.map)
 else ifeq ($(PLATFORM),ps2)
 ROM      := $(BUILD_NAME).$(PLATFORM).iso
 ELF      := $(ROM:.iso=.elf)
@@ -179,17 +173,15 @@ TILESETS_SUBDIR = graphics/tilesets/
 ifeq ($(PLATFORM),gba)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*" -not -path "*/platform/ps2/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),psp)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
-else ifeq ($(PLATFORM),sdl_ps2)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),ps2)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*" -not -path "*/platform/pret_sdl/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
 else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/psp/*" -not -path "*/platform/ps2/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/psp/*" -not -path "*/platform/ps2/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*")
 else
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
@@ -265,9 +257,6 @@ else
 	else ifeq ($(PLATFORM),psp)
 		CC1FLAGS += -G0
 		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D SDL_MAIN_HANDLED -I$(PSPDEV)/psp/include/SDL2 -I$(PSPDEV)/psp/include -I$(PSPSDK)/include -D_PSP_FW_VERSION=600
-	else ifeq ($(PLATFORM),sdl_ps2)
-		CC1FLAGS += -G0 -Wno-parentheses-equality -Wno-unused-value -ffast-math
-		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D SDL_MAIN_HANDLED -D_EE -D__PS2__ -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2SDK)/ports/include $(shell $(PS2SDK)/ports/bin/sdl2-config --cflags)
 	else ifeq ($(PLATFORM),ps2)
 		CC1FLAGS += -G0 -Wno-parentheses-equality -Wno-unused-value -ffast-math
 		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D_EE -D__PS2__ -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
@@ -293,8 +282,6 @@ ifeq ($(DEBUG),1)
 else
   ifeq ($(PLATFORM),psp)
     # -O3 for PSP (Allegrex MIPS, small D-cache)
-    CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
-  else ifeq ($(PLATFORM),sdl_ps2)
     CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
   else ifeq ($(PLATFORM),ps2)
     CC1FLAGS += -O3 -fomit-frame-pointer
@@ -339,8 +326,6 @@ else
     CPP := $(CC1) -E
   else ifeq ($(PLATFORM), psp)
     CPP := $(CC1) -E
-  else ifeq ($(PLATFORM), sdl_ps2)
-    ASFLAGS  += -msingle-float
   else ifeq ($(PLATFORM), ps2)
     ASFLAGS  += -msingle-float
   endif
@@ -364,8 +349,6 @@ else ifeq ($(PLATFORM),sdl)
 # PSP
 else ifeq ($(PLATFORM),psp)
     MAP_FLAG := -Xlinker -Map=
-else ifeq ($(PLATFORM),sdl_ps2)
-    MAP_FLAG := -Xlinker -Map=
 else ifeq ($(PLATFORM),ps2)
     MAP_FLAG := -Xlinker -Map=
 # Win32
@@ -380,8 +363,6 @@ else ifeq ($(PLATFORM),sdl)
     LIBS := $(shell sdl2-config --cflags --libs)
 else ifeq ($(PLATFORM),psp)
     LIBS := -L$(PSPDEV)/psp/lib -L$(PSPSDK)/lib -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower -lpspdebug -lpspnet -lpspnet_apctl -Wl,-zmax-page-size=128
-else ifeq ($(PLATFORM),sdl_ps2)
-    LIBS := -lSDL2 $(shell $(PS2SDK)/ports/bin/sdl2-config --libs) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),ps2)
     LIBS := -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -lgskit -ldmakit -lps2_drivers -lmc -lpatches -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),sdl_win32)
@@ -489,8 +470,6 @@ sdl: ; @$(MAKE) PLATFORM=sdl
 
 psp: ; @$(MAKE) PLATFORM=psp
 
-sdl_ps2: ; @$(MAKE) PLATFORM=sdl_ps2
-
 ps2: ; @$(MAKE) PLATFORM=ps2
 
 tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
@@ -559,6 +538,9 @@ ifeq ($(PLATFORM),gba)
 $(ROM): $(ELF) libagbsyscall
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
+else ifeq ($(PLATFORM),win32)
+$(ROM): $(ELF) libagbsyscall
+	$(OBJCOPY) -O pei-x86-64 $< $@
 else
 $(ROM): $(ELF)
 ifeq ($(PLATFORM),sdl)
@@ -569,11 +551,6 @@ else ifeq ($(PLATFORM),psp)
 	psp-strip $< -o $(BUILD_NAME).psp_strip.elf
 	pack-pbp $@ PARAM.SFO NULL NULL NULL NULL NULL $(BUILD_NAME).psp_strip.elf NULL
 	-rm -f $(BUILD_NAME).psp_strip.elf
-else ifeq ($(PLATFORM),sdl_ps2)
-	@echo Creating $(ROM) from $(ELF)
-	@cp -r ps2/ntsc $(OBJ_DIR)/iso
-	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
-	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
 else ifeq ($(PLATFORM),ps2)
 	@echo Creating $(ROM) from $(ELF)
 	@cp -r ps2/ntsc $(OBJ_DIR)/iso
