@@ -106,14 +106,12 @@
 #define MAX_LINES         0
 #endif
 
-#if !PLATFORM_GBA
 typedef s32 fixed8_24;
 #define float_to_fp8_24(value)        (fixed8_24)((value)*16777216.0f)
 #define u32_to_fp8_24(value)          ((value) << 24)
 #define fp8_24_to_u32(value)          ((value) >> 24)
 #define fp8_24_to_float(value)        (float)((value) / 16777216.0f)
 #define fp8_24_fractional_part(value) ((value)&0xFFFFFF)
-#endif
 
 struct MP2KTrack;
 struct MP2KPlayerState;

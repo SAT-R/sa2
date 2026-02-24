@@ -187,7 +187,7 @@ jobs:
       - name: Install tools (Linux)
         if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
-          sudo apt update && sudo apt install xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
 
       - name: Install Tools (Macos)
         if: ${{ matrix.os == 'macos-15' }}
@@ -223,7 +223,7 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
   
       - name: Install SDL for win32
         if: ${{ matrix.platform == 'sdl_win32' }}

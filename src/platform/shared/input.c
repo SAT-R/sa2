@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <windows.h>
 #include <xinput.h>
-#include "gba/io_reg.h"
 #include "gba/types.h"
+#include "gba/io_reg.h"
 #include "platform/shared/input.h"
 
 #define STICK_THRESHOLD 0.5f

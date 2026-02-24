@@ -14,7 +14,7 @@ Install WSL (Ubuntu). Once installed, open this project in the WSL terminal and 
 #### On Linux (including WSL)
 ```
 sudo apt update
-sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
 ```
 
 #### On MacOS

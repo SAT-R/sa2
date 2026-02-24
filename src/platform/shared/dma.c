@@ -140,7 +140,7 @@ void DmaStop(int dmaNum)
 
 void DmaWait(int dmaNum)
 {
-    vu32 *ctrlRegs = &REG_DMA0CNT;
+    vu32 *ctrlRegs = (vu32 *)&REG_DMA0CNT;
 #if !USE_NEW_DMA
     while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
         ;

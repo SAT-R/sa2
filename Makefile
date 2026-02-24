@@ -559,9 +559,6 @@ ifeq ($(PLATFORM),gba)
 $(ROM): $(ELF) libagbsyscall
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
-else ifeq ($(PLATFORM),win32)
-$(ROM): $(ELF) libagbsyscall
-	$(OBJCOPY) -O pei-x86-64 $< $@
 else
 $(ROM): $(ELF)
 ifeq ($(PLATFORM),sdl)
@@ -582,6 +579,8 @@ else ifeq ($(PLATFORM),ps2)
 	@cp -r ps2/ntsc $(OBJ_DIR)/iso
 	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
 	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
+else
+	$(OBJCOPY) -O pei-x86-64 $< $@
 endif
 endif
 
