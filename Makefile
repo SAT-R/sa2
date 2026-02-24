@@ -346,12 +346,7 @@ else ifeq ($(PLATFORM),sdl)
     else
         MAP_FLAG := -Xlinker -Map=
     endif
-# PSP
-else ifeq ($(PLATFORM),psp)
-    MAP_FLAG := -Xlinker -Map=
-else ifeq ($(PLATFORM),ps2)
-    MAP_FLAG := -Xlinker -Map=
-# Win32
+# Win32, PSP, PS2
 else
     MAP_FLAG := -Xlinker -Map=
 endif
