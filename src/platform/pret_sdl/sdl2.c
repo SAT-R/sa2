@@ -2024,7 +2024,8 @@ void VramDraw(SDL_Texture *texture)
 
 void VDraw(SDL_Texture *texture)
 {
-#if RENDERER == RENDERER_SOFTWARE_GPSP
+// TODO: always use this renderer
+#if TRUE
     {
         gpsp_draw_frame(gameImage);
     }

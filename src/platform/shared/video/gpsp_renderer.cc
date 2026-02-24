@@ -22,7 +22,7 @@ extern "C" {
 #include "config.h"
 }
 
-#if RENDERER == RENDERER_SOFTWARE_GPSP
+#if RENDERER == RENDERER_SOFTWARE
 
 #include <stdbool.h>
 #include <stdio.h>
