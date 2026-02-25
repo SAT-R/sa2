@@ -541,11 +541,12 @@ $(ROM): $(ELF)
 ifeq ($(PLATFORM),sdl)
 	cp $< $@
 else ifeq ($(PLATFORM),psp)
-	psp-fixup-imports $<
-	mksfoex 'Sonic Advance 2' PARAM.SFO
-	psp-strip $< -o $(BUILD_NAME).psp_strip.elf
-	pack-pbp $@ PARAM.SFO NULL NULL NULL NULL NULL $(BUILD_NAME).psp_strip.elf NULL
-	-rm -f $(BUILD_NAME).psp_strip.elf
+	@echo Creating $(ROM) from $(ELF)
+	@psp-fixup-imports $<
+	@mksfoex 'Sonic Advance 2' PARAM.SFO
+	@psp-strip $< -o $(BUILD_NAME).psp_strip.elf
+	@pack-pbp $@ PARAM.SFO NULL NULL NULL NULL NULL $(BUILD_NAME).psp_strip.elf NULL
+	@-rm -f $(BUILD_NAME).psp_strip.elf
 else ifeq ($(PLATFORM),ps2)
 	@echo Creating $(ROM) from $(ELF)
 	@cp -r ps2/ntsc $(OBJ_DIR)/iso

@@ -13,8 +13,7 @@
 #ifdef __PSP__
 #include <pspkernel.h>
 #include <pspdebug.h>
-#include <stdbool.h>
-#include <stdio.h>
+#include <pspgu.h>
 #endif
 
 #include <SDL.h>
@@ -102,11 +101,6 @@ bool headless = false;
 
 #ifdef __PSP__
 static SDL_Joystick *joystick = NULL;
-#endif
-
-#ifdef __PSP__
-#define PSP_SCREEN_W 480
-#define PSP_SCREEN_H 272
 static SDL_Rect pspDestRect;
 #endif
 
@@ -290,7 +284,7 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 #ifdef __PSP__
     // SDL_RenderSetLogicalSize is broken on PSP, stretch to fill manually
-    pspDestRect = (SDL_Rect) { 0, 0, PSP_SCREEN_W, PSP_SCREEN_H };
+    pspDestRect = (SDL_Rect) { 0, 0, GU_SCR_WIDTH, GU_SCR_HEIGHT };
 #else
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 #endif

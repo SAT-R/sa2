@@ -4,7 +4,7 @@
 
 struct DMATransfer DMAList[DMA_COUNT] = { 0 };
 
-void RunDMAs(u32 type)
+void RunDMAs(DmaStartTypes type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];

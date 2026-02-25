@@ -2,39 +2,39 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
   pull_request_target:
 
 jobs:
   format:
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
-      
+
       - name: Install tools
         run: |
           sudo apt update && sudo apt install clang-format-13
-      
+
       - name: Check formatting
         run: |
           make check_format
 
   build-gba:
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-22.04
     name: Build GBA (USA)
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -42,7 +42,7 @@ jobs:
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
-       
+
       - name: Checkout gh-pages
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
@@ -120,17 +120,17 @@ jobs:
           cwd: "./gh-pages"
           add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
-  
+
   build-gba-variants:
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-22.04
     name: Build GBA (${{ matrix.variant }})
     strategy:
-      matrix: 
+      matrix:
         variant: ["europe", "japan", "japan_vc", "usa_beta"]
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -138,7 +138,7 @@ jobs:
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
-       
+
       - name: Checkout gh-pages
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
@@ -167,15 +167,15 @@ jobs:
 
   ports:
     strategy:
-      matrix: 
-        platform: ["sdl", "sdl_win32", "win32"]
+      matrix:
+        platform: ["sdl", "sdl_win32", "win32", "ps2"]
         os: ["ubuntu-22.04", "macos-15"]
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ${{ matrix.os }}
     name: Build ${{ matrix.platform }} (${{ matrix.os }})
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -193,26 +193,39 @@ jobs:
         if: ${{ matrix.os == 'macos-15' }}
         run: |
           brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc
-  
+
       - name: Install SDL for win32
         if: ${{ matrix.platform == 'sdl_win32' }}
         run: |
           make SDL2.dll
-  
+
+      # TODO: Don't install latest SDK, use a stable version
+      - name: Install PS2DEV
+        if: ${{ matrix.platform == 'ps2' }}
+        run: |
+          echo "PS2DEV=$HOME/ps2dev" >> "$GITHUB_ENV"
+          mkdir -p $PS2DEV
+          echo "PS2SDK=$PS2DEV/ps2sdk" >> "$GITHUB_ENV"
+          echo "GSKIT=$PS2DEV/gsKit" >> "$GITHUB_ENV"
+          echo "$PS2DEV/bin" >> "$GITHUB_PATH"
+          echo "$PS2DEV/ee/bin" >> "$GITHUB_PATH"
+          curl -o ps2dev-latest.tar.gz -LC - https://github.com/ps2dev/ps2dev/releases/download/latest/ps2dev-$(if [[ "$OSTYPE" == "darwin"* ]]; then echo macos; else echo ubuntu; fi)-latest.tar.gz
+          tar -xf ps2dev-latest.tar.gz --strip-components 1 -C $PS2DEV
+
       - name: ${{ matrix.platform }}
         run: |
           make -j${nproc} ${{ matrix.platform }}
 
   test:
     strategy:
-      matrix: 
+      matrix:
         platform: ["sdl"]
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-22.04
     name: TAS Test ${{ matrix.platform }}
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -224,16 +237,16 @@ jobs:
       - name: Install tools
         run: |
           sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
-  
+
       - name: Install SDL for win32
         if: ${{ matrix.platform == 'sdl_win32' }}
         run: |
           make SDL2.dll
-  
+
       - name: Build ${{ matrix.platform }}
         run: |
           make -j${nproc} ${{ matrix.platform }} TAS_TESTING=1
-      
+
       - name: Run TAS
         timeout-minutes: 1
         env:
@@ -242,12 +255,12 @@ jobs:
           ./sa2.${{ matrix.platform }}
 
   level_editor:
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-22.04
     name: Level editor (BriBaSA)
     steps:
       - name: Checkout PR
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
         uses: actions/checkout@master
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -259,7 +272,7 @@ jobs:
       - name: Install deps
         run: |
           sudo apt update && sudo apt install xorg-dev libsdl2-dev
-  
+
       - name: Build
         run: |
           make -j${nproc} bribasa
