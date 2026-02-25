@@ -203,6 +203,7 @@ jobs:
       - name: Install PS2DEV
         if: ${{ matrix.platform == 'ps2' }}
         run: |
+          PS2DEV="$HOME/ps2dev"
           echo "PS2DEV=$HOME/ps2dev" >> "$GITHUB_ENV"
           mkdir -p $PS2DEV
           echo "PS2SDK=$PS2DEV/ps2sdk" >> "$GITHUB_ENV"
