@@ -187,12 +187,12 @@ jobs:
       - name: Install tools (Linux)
         if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
-          sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools mkisofs
 
       - name: Install Tools (Macos)
         if: ${{ matrix.os == 'macos-15' }}
         run: |
-          brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc
+          brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc cdrtools
 
       - name: Install SDL for win32
         if: ${{ matrix.platform == 'sdl_win32' }}
