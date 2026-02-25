@@ -392,7 +392,10 @@ void VBlankIntrWait(void)
         HANDLE_VBLANK_INTRS();
 
         if (use_hires) {
-            gsKit_hires_flip_ext(gsGlobal, GSFLIP_RATE_LIMIT_1);
+            gsKit_hires_sync(gsGlobal);
+            gsKit_hires_flip(gsGlobal);
+            // TODO: use once released on the SDK
+            // gsKit_hires_flip_ext(gsGlobal, GSFLIP_RATE_LIMIT_1);
         } else {
             gsKit_sync_flip(gsGlobal);
             gsKit_queue_exec(gsGlobal);
