@@ -184,9 +184,9 @@ static const HammertankFunc sBossStateHandlers[] = {
     [EGG_HAMMER_TANK_II_STATE_DRAG] = StateHandler_HammerDrag,   [EGG_HAMMER_TANK_II_STATE_RETRACT] = StateHandler_HammerRetract,
 };
 
-static const u16 gUnknown_080D7AD0[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D7AD0.gbapal"),
-    INCBIN_U16("graphics/80D7AF0.gbapal"),
+static const ColorRaw gUnknown_080D7AD0[][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/80D7AD0.pal"),
+    INCPAL("graphics/80D7AF0.pal"),
 };
 
 void CreateEggHammerTankII(void)

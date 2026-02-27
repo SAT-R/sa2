@@ -2,4 +2,4 @@
 #include "data/palettes.h"
 
 // TODO: move to data and include as asm
-const u16 gBgGradientPalette[] = INCBIN_U16("graphics/8C8796C.gbapal");
+const ColorRaw gBgGradientPalette[] = INCPAL("graphics/8C8796C.pal");
