@@ -2,7 +2,8 @@
 #define GUARD_GLOBAL_H
 
 #include "config.h"
-#include "gba/gba.h"
+#include "gba/gba.h" // TODO: Only actually include when compiling for GBA
+#include "color.h"
 
 #if PLATFORM_GBA
 #define ENABLE_AUDIO TRUE

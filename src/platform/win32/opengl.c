@@ -26,6 +26,7 @@ static GLuint sTempTextureHandles[3] = { 0 };
 #define NUM_RGB_CHANNELS     4
 // u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
 
+// TODO: Replace with global Color struct.
 typedef struct ColorRGBA {
     u8 r;
     u8 g;

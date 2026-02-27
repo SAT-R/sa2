@@ -43,7 +43,7 @@ void PrintAsmBytes(unsigned char *s, int length)
     }
 }
 
-void PreprocAsmFile(std::string filename)
+void PreprocAsmFile(std::string filename, bool fullRGBA)
 {
     std::stack<AsmFile> stack;
 
@@ -103,10 +103,10 @@ void PreprocAsmFile(std::string filename)
     }
 }
 
-void PreprocCFile(std::string filename)
+void PreprocCFile(std::string filename, bool fullRGBA)
 {
     CFile cFile(filename);
-    cFile.Preproc();
+    cFile.Preproc(fullRGBA);
 }
 
 char* GetFileExtension(char* filename)
@@ -132,13 +132,29 @@ char* GetFileExtension(char* filename)
 
 int main(int argc, char **argv)
 {
-    if (argc != 3 && argc != 2)
+    const int MIN_ARGC = 3;
+    const int MAX_ARGC = 4;
+    if (argc < MIN_ARGC || argc > MAX_ARGC)
     {
-        std::fprintf(stderr, "Usage: %s SRC_FILE CHARMAP_FILE", argv[0]);
+        std::fprintf(stderr, "Usage: %s SRC_FILE PLATFORM CHARMAP_FILE", argv[0]);
         return 1;
     }
 
-    g_charmap = new (std::nothrow) Charmap(argc == 3 ? argv[2] : "");
+    std::string platform = std::string(argv[2]);
+
+    bool fullRGBA = false;
+    if((!platform.compare("gba"))
+    || (!platform.compare("sdl"))
+    || (!platform.compare("sdl_win32")))
+    {
+        fullRGBA = false;
+    } else if(!platform.compare("win32")) {
+        fullRGBA = true;
+    } else {
+        FATAL_ERROR("Unknown platform '%s'", platform.c_str());
+    }
+
+    g_charmap = new (std::nothrow) Charmap(argc == MAX_ARGC ? argv[MAX_ARGC-1] : "");
     if (!g_charmap)
         FATAL_ERROR("Failed to allocate space for Charmap.\n");
 
@@ -148,9 +164,9 @@ int main(int argc, char **argv)
         FATAL_ERROR("\"%s\" has no file extension.\n", argv[1]);
 
     if ((extension[0] == 's') && extension[1] == 0)
-        PreprocAsmFile(argv[1]);
+        PreprocAsmFile(argv[1], fullRGBA);
     else if ((extension[0] == 'c' || extension[0] == 'i') && extension[1] == 0)
-        PreprocCFile(argv[1]);
+        PreprocCFile(argv[1], fullRGBA);
     else
         FATAL_ERROR("\"%s\" has an unknown file extension of \"%s\".\n", argv[1], extension);
 
