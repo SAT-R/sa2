@@ -149,7 +149,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         return 0;
 
     if (s->qAnimDelay > 0)
-        s->qAnimDelay -= s->animSpeed * 16;
+        s->qAnimDelay -= s->animSpeed * SPRITE_ANIM_SPEED(1.0);
     else {
         /* Call all commands for the new frame */
         s32 ret;

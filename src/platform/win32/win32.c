@@ -23,10 +23,7 @@ static RECT Win32_GetWindowDimension(HWND Window);
 static void Win32_InitOpenGL(HWND window);
 #endif
 
-static u16 ALIGNED(8) sImageBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {
-    RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN,
-    RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN,
-};
+static u16 ALIGNED(8) sImageBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {};
 static BITMAPINFO sBMInfo = { 0 };
 static bool32 sRunning = TRUE;
 static HWND sWindowHandle = 0;
