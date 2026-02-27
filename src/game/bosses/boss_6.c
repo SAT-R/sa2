@@ -168,9 +168,9 @@ static const u16 gUnknown_080D809E[][10] = {
     { 257, 257, 257, 257, 257, 256, 256, 256, 222, 222 },
 };
 
-static const u16 sPalettes[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D80C6.gbapal"), // hit palette
-    INCBIN_U16("graphics/80D80E6.gbapal"), // normal palette
+static const ColorRaw sPalettes[][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/80D80C6.pal"), // hit palette
+    INCPAL("graphics/80D80E6.pal"), // normal palette
 };
 
 void CreateEggGoRound(void)

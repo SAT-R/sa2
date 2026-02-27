@@ -152,9 +152,9 @@ static const u16 gUnknown_080D7B4E[][2] = {
 
 static const BossFunction sBossModeTasks[] = { HandleCannonBombTrigger, HandleCannonlessBombTrigger };
 
-static const u16 gUnknown_080D7B70[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D7B70.gbapal"),
-    INCBIN_U16("graphics/80D7B90.gbapal"),
+static const ColorRaw gUnknown_080D7B70[][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/80D7B70.pal"),
+    INCPAL("graphics/80D7B90.pal"),
 };
 
 void CreateEggBomberTank(void)

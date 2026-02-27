@@ -185,9 +185,9 @@ const u8 *const gUnknown_080D7ED4[] = {
 
 const s8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
 
-const s16 gUnknown_080D7F14[2][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/boss_3_a.gbapal"),
-    INCBIN_U16("graphics/boss_3_b.gbapal"),
+const u16 gUnknown_080D7F14[2][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/boss_3_a.pal"),
+    INCPAL("graphics/boss_3_b.pal"),
 };
 
 void CreateEggTotem(void)

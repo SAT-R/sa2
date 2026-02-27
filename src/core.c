@@ -57,7 +57,7 @@ bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
 int_vcount gBgOffsetsBuffer[2][DISPLAY_HEIGHT][4] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlankPrimary */
-u16 gObjPalette[] = {};
+ColorRaw gObjPalette[] = {};
 Tilemap **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
 winreg_t gWinRegs[6] ALIGNED(16) = {};
@@ -129,7 +129,7 @@ u16 gRgbMap[3][2 * 16] __attribute__((aligned(4))) = {};
 #endif // (ENGINE == ENGINE_3)
 
 u8 gBackgroundsCopyQueueIndex = 0;
-u16 gBgPalette[] ALIGNED(16) = {};
+ColorRaw gBgPalette[] ALIGNED(16) = {};
 
 u8 gHBlankCopySize ALIGNED(4) = 0;
 

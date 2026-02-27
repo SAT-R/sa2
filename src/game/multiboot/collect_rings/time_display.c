@@ -23,7 +23,7 @@ const u8 gUnknown_080E0234[] = {
     103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
 };
 
-const u16 gUnknown_080E0270[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/80E0270.gbapal");
+const ColorRaw gUnknown_080E0270[PALETTE_LEN_4BPP] = INCPAL("graphics/80E0270.pal");
 
 #ifndef COLLECT_RINGS_ROM
 #define NUM_TILES 9

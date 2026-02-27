@@ -149,9 +149,9 @@ static const TileInfo gUnknown_080D7FB0[] = {
     { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP, 0 },    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
 };
 
-static const u16 gUnknown_080D7FF0[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D7FF0.gbapal"),
-    INCBIN_U16("graphics/80D8010.gbapal"),
+static const ColorRaw gUnknown_080D7FF0[][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/80D7FF0.pal"),
+    INCPAL("graphics/80D8010.pal"),
 };
 
 void Task_EggSaucerIntro(void);

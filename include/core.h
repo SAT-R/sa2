@@ -273,8 +273,8 @@ extern u16 gDispCnt;
 extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
-extern u16 gObjPalette[16 * PALETTE_LEN_4BPP];
-extern u16 gBgPalette[16 * PALETTE_LEN_4BPP];
+extern ColorRaw gObjPalette[16 * PALETTE_LEN_4BPP];
+extern ColorRaw gBgPalette[16 * PALETTE_LEN_4BPP];
 
 extern u16 gBgCntRegs[4];
 

@@ -42,9 +42,9 @@
 
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
-static const u16 sPalAeroEggHit[2][PALETTE_LEN_4BPP] = {
-    [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
-    [PAL_BOSS_4_HIT] = INCBIN_U16("graphics/boss_4_b.gbapal"),
+static const ColorRaw sPalAeroEggHit[2][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_4_DEFAULT] = INCPAL("graphics/boss_4_a.pal"),
+    [PAL_BOSS_4_HIT] = INCPAL("graphics/boss_4_b.pal"),
 };
 
 typedef struct {

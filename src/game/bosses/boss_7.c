@@ -230,9 +230,9 @@ const u8 gUnknown_080D8788[][7] = {
     { 4, 3, 2, 1, 1, 0, 0 },
 };
 
-const u16 gUnknown_080D8796[][16] = {
-    INCBIN_U16("graphics/80D8796.gbapal"),
-    INCBIN_U16("graphics/80D87B6.gbapal"),
+const ColorRaw gUnknown_080D8796[][PALETTE_LEN_4BPP] = {
+    INCPAL("graphics/80D8796.pal"),
+    INCPAL("graphics/80D87B6.pal"),
 };
 
 void CreateEggFrog(void)
