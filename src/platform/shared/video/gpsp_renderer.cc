@@ -283,6 +283,10 @@ static inline void render_tile_Nbpp(u32 bg_comb, u32 px_comb, dtype *dest_ptr, u
     if (tile & 0x800)
         tile_ptr += vertical_pixel_flip;
 
+#if ENABLE_VRAM_VIEW
+    vram_pal_id_buffer[(tile & 0x3FF)] = (tile >> 12) & 0xF;
+#endif
+
     if (is8bpp) {
         for (u32 j = 0; j < 2; j++) {
             u32 tilepix = eswap32(((u32 *)tile_ptr)[hflip ? 1 - j : j]);
@@ -1059,7 +1063,7 @@ static inline void render_obj_part_tile_Nbpp(u32 px_comb, dsttype *dest_ptr, u32
 template <typename dsttype, rendtype rdtype, bool is8bpp, bool hflip>
 static inline void render_obj_tile_Nbpp(u32 px_comb, dsttype *dest_ptr, u32 tile_offset, u16 palette, const u16 *pal)
 {
-    const u8 *tile_ptr = &VRAM[0x10000 + (tile_offset & 0x7FFF)];
+    const u8 *tile_ptr = OBJ_VRAM0 + (tile_offset & (OBJ_VRAM0_SIZE - 1));
     u32 px_attr = px_comb | palette | 0x100; // Combine flags + high palette bit
 
     if (is8bpp) {
@@ -1086,6 +1090,9 @@ static inline void render_obj_tile_Nbpp(u32 px_comb, dsttype *dest_ptr, u32 tile
                 dest_ptr += 4;
         }
     } else {
+#if ENABLE_VRAM_VIEW
+        vram_pal_id_buffer[0x800 + (tile_offset >> 5)] = 16 + (palette >> 4);
+#endif
         u32 tilepix = eswap32(*(u32 *)tile_ptr);
         if (tilepix) { // Can skip all pixels if the row is just transparent
             for (u32 i = 0; i < 8; i++, dest_ptr++) {
@@ -1184,7 +1191,7 @@ static void render_object_mosaic(s32 delta_x, u32 cnt, stype *dst_ptr, u32 base_
         if (!(i % mosh)) {
             // Load tile pixel color.
             u32 tile_offset = base_tile_offset + (offx / 8) * tile_size_off;
-            const u8 *tile_ptr = &VRAM[0x10000 + (tile_offset & 0x7FFF)];
+            const u8 *tile_ptr = OBJ_VRAM0 + (tile_offset & (OBJ_VRAM0_SIZE - 1));
 
             // Lookup for each mode and flip value.
             if (is8bpp) {

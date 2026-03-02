@@ -1954,7 +1954,7 @@ void DrawVramView(Uint16 *buffer)
 void VramDraw(SDL_Texture *texture)
 {
     memset(vramBuffer, 0, sizeof(vramBuffer));
-    DrawVramView(vramBuffer);
+    gpsp_draw_vram_view(vramBuffer);
     SDL_UpdateTexture(texture, NULL, vramBuffer, VRAM_VIEW_WIDTH * sizeof(Uint16));
 }
 #endif
