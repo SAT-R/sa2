@@ -1,4 +1,4 @@
-/* gameplaySP - Modified to fit the SA2 codebase (FreshOllie - 2026)
+/* gameplaySP - Modified to fit the SA2 codebase (freshollie - 2026)
  *
  * Copyright (C) 2006 Exophase <exophase@gmail.com>
  * Copyright (C) 2023 David Guillen Fandos <david@davidgf.net>

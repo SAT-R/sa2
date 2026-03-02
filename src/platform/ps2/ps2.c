@@ -32,12 +32,6 @@
 static GSGLOBAL *gsGlobal;
 static GSTEXTURE screen;
 
-#ifndef TILE_WIDTH
-#define TILE_WIDTH 8
-#endif
-
-extern IntrFunc gIntrTable[16];
-
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * (DISPLAY_HEIGHT + 1)];
 
 struct VidMode {
