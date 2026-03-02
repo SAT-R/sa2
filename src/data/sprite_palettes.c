@@ -1,7 +1,7 @@
 #include "global.h"
+#include "core.h" // PALETTE_LEN_4BPP
 
-#if 0
-u16 gSpritePalettes[][16] = {
+const ColorRaw gSpritePalettes[][PALETTE_LEN_4BPP] = {
     INCPAL("graphics/obj_palettes/pal_000.pal"),
     INCPAL("graphics/obj_palettes/pal_001.pal"),
     INCPAL("graphics/obj_palettes/pal_002.pal"),
@@ -288,6 +288,17 @@ u16 gSpritePalettes[][16] = {
     INCPAL("graphics/obj_palettes/pal_283.pal"),
     INCPAL("graphics/obj_palettes/pal_284.pal"),
     INCPAL("graphics/obj_palettes/pal_285.pal"),
+#ifdef VIRTUAL_CONSOLE
+    INCPAL("graphics/obj_palettes/pal_286_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_287_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_288_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_289_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_290_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_291_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_292_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_293_vc.pal"),
+    INCPAL("graphics/obj_palettes/pal_294_vc.pal"),
+#else
     INCPAL("graphics/obj_palettes/pal_286.pal"),
     INCPAL("graphics/obj_palettes/pal_287.pal"),
     INCPAL("graphics/obj_palettes/pal_288.pal"),
@@ -297,6 +308,7 @@ u16 gSpritePalettes[][16] = {
     INCPAL("graphics/obj_palettes/pal_292.pal"),
     INCPAL("graphics/obj_palettes/pal_293.pal"),
     INCPAL("graphics/obj_palettes/pal_294.pal"),
+#endif
     INCPAL("graphics/obj_palettes/pal_295.pal"),
     INCPAL("graphics/obj_palettes/pal_296.pal"),
     INCPAL("graphics/obj_palettes/pal_297.pal"),
@@ -692,7 +704,11 @@ u16 gSpritePalettes[][16] = {
     INCPAL("graphics/obj_palettes/pal_687.pal"),
     INCPAL("graphics/obj_palettes/pal_688.pal"),
     INCPAL("graphics/obj_palettes/pal_689.pal"),
+#ifdef JAPAN
+    INCPAL("graphics/obj_palettes/pal_690_japan.pal"),
+#else
     INCPAL("graphics/obj_palettes/pal_690.pal"),
+#endif
     INCPAL("graphics/obj_palettes/pal_691.pal"),
     INCPAL("graphics/obj_palettes/pal_692.pal"),
     INCPAL("graphics/obj_palettes/pal_693.pal"),
@@ -737,5 +753,9 @@ u16 gSpritePalettes[][16] = {
     INCPAL("graphics/obj_palettes/pal_732.pal"),
     INCPAL("graphics/obj_palettes/pal_733.pal"),
     INCPAL("graphics/obj_palettes/pal_734.pal"),
-};
+#if ENABLE_DECOMP_CREDITS
+    INCPAL("graphics/obj_palettes/pal_logos_jace.pal"),
+    INCPAL("graphics/obj_palettes/pal_logos_ollie.pal"),
 #endif
+
+};

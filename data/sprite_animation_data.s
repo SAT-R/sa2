@@ -3,11 +3,6 @@
 
 mSectionRodata
 
-@ TODO: move these into C files in src/data?
-    .global C_DECL(gSpritePalettes) @ 0x0816ADC8
-C_DECL(gSpritePalettes):
-    .include "graphics/obj_palettes.inc"
-
     .global C_DECL(gObjTiles_4bpp) @ 0x081709A8
 C_DECL(gObjTiles_4bpp):
     .include "graphics/obj_tiles_4bpp.inc"
