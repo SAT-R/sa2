@@ -377,7 +377,7 @@ void CFile::TryConvertPalette(bool fullRGBA)
         
         m_pos++;
 
-        struct Palette palette = {0};
+        struct Palette palette = {{}, 0};
         ReadJascPalette((char*)path.c_str(), &palette);
 
         if(fullRGBA) {
