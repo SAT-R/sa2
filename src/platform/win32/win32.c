@@ -411,7 +411,7 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
             int imagePixelIndex = frameY * dims->width + frameX;
 
             if (bufferPixelIndex >= 0 && bufferPixelIndex < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-                u16 *pal = &PLTT[oamPaletteNum * 16 + (BG_PLTT_SIZE / 2)];
+                u16 *pal = &PLTT[oamPaletteNum * PALETTE_LEN_4BPP + (BG_PLTT_SIZE / 2)];
                 u16 tileNumX = (frameX >> 3);
                 u16 tileNumY = (frameY >> 3);
                 u16 tileNum = tileNumY * widthInTiles + tileNumX;
