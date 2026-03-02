@@ -185,7 +185,7 @@ const u8 *const gUnknown_080D7ED4[] = {
 
 const s8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
 
-const u16 gUnknown_080D7F14[2][PALETTE_LEN_4BPP] = {
+const ColorRaw gUnknown_080D7F14[2][PALETTE_LEN_4BPP] = {
     INCPAL("graphics/boss_3_a.pal"),
     INCPAL("graphics/boss_3_b.pal"),
 };

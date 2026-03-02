@@ -23,7 +23,12 @@ const u8 gUnknown_080E0234[] = {
     103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
 };
 
-const ColorRaw gUnknown_080E0270[PALETTE_LEN_4BPP] = INCPAL("graphics/80E0270.pal");
+// TODO: For some reason the palette cannot be found using INCPAL,
+//       unless the equivalent .4bpp file exists.
+//       It could be down to jasc_pal.c being a C "library" file in a C++ program (preproc).
+//       Because it is fopen that fails...
+//       `Failed to open JASC-PAL file "graphics/time_display_singlepak.pal" for reading.`
+const ColorRaw gUnknown_080E0270[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/time_display_singlepak.gbapal");
 
 #ifndef COLLECT_RINGS_ROM
 #define NUM_TILES 9

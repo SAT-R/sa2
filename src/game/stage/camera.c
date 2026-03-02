@@ -2020,7 +2020,8 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
 #if 001
         { // Draw the "ceiling" movement
             u32 new_r1 = (x >> 4) << 16;
-            const u16 *src;
+            const ColorRaw *src;
+            ColorRaw *dst;
             s32 r6 = 0x7;
             src = sPalette_Zone7BgCeiling;
             dst = gBgPalette;

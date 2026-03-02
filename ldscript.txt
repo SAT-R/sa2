@@ -498,6 +498,7 @@ SECTIONS
         src/data/animations/animation_table.o(.rodata);
         src/data/sprite_dimensions.o(.rodata);
         src/data/sprite_oam_data.o(.rodata);
+        src/data/sprite_palettes.o(.rodata);
         data/sprite_animation_data.o(.rodata);
 
         src/data/tileset_debug_ascii.o(.rodata);
