@@ -50,6 +50,10 @@ extern "C" {
 
 u16 *gba_screen_pixels = NULL;
 
+#if ENABLE_VRAM_VIEW
+uint8_t vram_pal_id_buffer[(VRAM_VIEW_WIDTH / TILE_WIDTH) * (VRAM_VIEW_HEIGHT / TILE_WIDTH)];
+#endif
+
 #define get_screen_pixels() gba_screen_pixels
 #define get_screen_pitch()  GBA_SCREEN_PITCH
 
@@ -363,13 +367,15 @@ static void render_scanline_text_fast(u32 layer, u32 start, u32 end, void *scanl
     second_ptr = map_ptr = map_base;
 
     if (map_size & 0x01) { // If background is 512 pixels wide
+        // HACK: for SA2 we need this logic disabled to enable >240 width
+        // background rendering, or some windowing stuff messes up
         if (hoffset >= 256) {
             // If we are rendering the right block, skip a whole charblock
-            hoffset -= 256;
-            map_ptr += ((map_width / 8) * 32);
+            // hoffset -= 256;
+            // map_ptr += ((map_width / 8) * 32);
         } else {
             // If we are rendering the left block, we might overrun into the right
-            second_ptr += ((map_width / 8) * 32);
+            // second_ptr += ((map_width / 8) * 32);
         }
     } else {
         hoffset %= 256; // Background is 256 pixels wide
@@ -439,15 +445,25 @@ static void render_scanline_text_fast(u32 layer, u32 start, u32 end, void *scanl
         map_ptr = second_ptr;
 
     todraw = end / 8;
-    for (u32 i = 0; i < todraw; i++, dest_ptr += 8) {
-        u16 tile = eswap16(*map_ptr++);
-        if (tile & 0x400) // Tile horizontal flip
-            render_tile_Nbpp<stype, rdtype, is8bpp, isbase, true>(bg_comb, px_comb, dest_ptr, tile, tile_base, vflip_off, paltbl);
-        else
-            render_tile_Nbpp<stype, rdtype, is8bpp, isbase, false>(bg_comb, px_comb, dest_ptr, tile, tile_base, vflip_off, paltbl);
-    }
-
     end -= todraw * 8;
+
+    while (todraw) {
+        // HACK: for sa2 if we are drawing more than 32 tiles then likely
+        // we need to wrap back to the start since this background probably
+        // isn't 512 wide
+        u8 section = MIN(todraw, 32);
+        for (u32 i = 0; i < section; i++, dest_ptr += 8) {
+            u16 tile = eswap16(*map_ptr++);
+            if (tile & 0x400) // Tile horizontal flip
+                render_tile_Nbpp<stype, rdtype, is8bpp, isbase, true>(bg_comb, px_comb, dest_ptr, tile, tile_base, vflip_off, paltbl);
+            else
+                render_tile_Nbpp<stype, rdtype, is8bpp, isbase, false>(bg_comb, px_comb, dest_ptr, tile, tile_base, vflip_off, paltbl);
+        }
+        todraw -= section;
+        if (todraw) {
+            map_ptr = second_ptr;
+        }
+    }
 
     // Finalize the tile rendering the left side of it (from 0 up to "end").
     if (end) {
@@ -492,11 +508,11 @@ static void render_scanline_text_mosaic(u32 layer, u32 start, u32 end, void *sca
     if (map_size & 0x01) { // If background is 512 pixels wide
         if (hoffset >= 256) {
             // If we are rendering the right block, skip a whole charblock
-            hoffset -= 256;
-            map_ptr += ((map_width / 8) * 32);
+            // hoffset -= 256;
+            // map_ptr += ((map_width / 8) * 32);
         } else {
             // If we are rendering the left block, we might overrun into the right
-            second_ptr += ((map_width / 8) * 32);
+            // second_ptr += ((map_width / 8) * 32);
         }
     } else {
         hoffset %= 256; // Background is 256 pixels wide
@@ -2294,6 +2310,35 @@ void gpsp_draw_frame(u16 *framebuf)
     }
 
     video_reload_counters(true);
+}
+
+void gpsp_draw_vram_view(u16 *buffer)
+{
+#if ENABLE_VRAM_VIEW
+    for (int y = 0; y < VRAM_VIEW_HEIGHT / TILE_WIDTH; y++) {
+        for (int x = 0; x < VRAM_VIEW_WIDTH / TILE_WIDTH; x++) {
+            u16 tileId = y * (VRAM_VIEW_WIDTH / TILE_WIDTH) + x;
+            u16 *tileBase = &buffer[(y * VRAM_VIEW_WIDTH + x) * 8];
+
+            for (int ty = 0; ty < TILE_WIDTH; ty++) {
+                for (int tx = 0; tx < TILE_WIDTH; tx += 2) {
+                    s32 tileIndex = ty * VRAM_VIEW_WIDTH + tx;
+                    u16 *dest = &tileBase[tileIndex];
+
+                    int i = (ty * TILE_WIDTH + tx) / 2;
+                    u8 *colorPtr = &((u8 *)VRAM)[tileId * 0x20 + i];
+                    u8 colorId = colorPtr[0];
+                    u8 colA = (colorId & 0xF0) >> 4;
+                    u8 colB = (colorId & 0x0F) >> 0;
+
+                    u8 paletteId = vram_pal_id_buffer[tileId];
+                    dest[0] = PLTT[paletteId * 16 + colB];
+                    dest[1] = PLTT[paletteId * 16 + colA];
+                }
+            }
+        }
+    }
+#endif
 }
 
 #endif

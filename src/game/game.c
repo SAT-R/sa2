@@ -106,6 +106,9 @@ void GameInit(void)
     // GameStageStart();
 
 #elif ENABLE_DECOMP_CREDITS
+    // gCurrentLevel = LEVEL_INDEX(ZONE_4, ACT_1);
+    // ApplyGameStageSettings();
+    // GameStageStart();
     CreateDecompCreditsScreen(hasProfile);
 #else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {

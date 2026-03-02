@@ -941,7 +941,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
 
         gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
         gHBlankCopyTarget = (void *)REG_ADDR_BG3HOFS;
-        gHBlankCopySize = 4;
+        gHBlankCopySize = sizeof(u16) * 2;
 
         cursor = gBgOffsetsHBlankPrimary;
         dt = gStageTime * 0x18;

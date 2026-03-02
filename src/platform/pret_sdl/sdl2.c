@@ -1961,14 +1961,7 @@ void VramDraw(SDL_Texture *texture)
 
 void VDraw(SDL_Texture *texture)
 {
-// TODO: always use this renderer
-#if TRUE
-    {
-        gpsp_draw_frame(gameImage);
-    }
-#else
-    DrawFrame(gameImage);
-#endif
+    gpsp_draw_frame(gameImage);
     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
     REG_VCOUNT = DISPLAY_HEIGHT + 1; // prep for being in VBlank period
 }
