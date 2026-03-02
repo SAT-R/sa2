@@ -5,25 +5,28 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> // getcwd
 
 #define ARRAY_COUNT(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 #ifdef _MSC_VER
 
-#define FATAL_ERROR(format, ...)          \
-do {                                      \
-    fprintf(stderr, format, __VA_ARGS__); \
-    exit(1);                              \
+#define FATAL_ERROR(format, ...)             \
+do {                                         \
+    fprintf(stderr, "CWD %s:\n", getcwd(NULL, 0)); \
+    fprintf(stderr, format, __VA_ARGS__);    \
+    exit(1);                                 \
 } while (0)
 
 #define UNUSED
 
 #else
 
-#define FATAL_ERROR(format, ...)            \
-do {                                        \
-    fprintf(stderr, format, ##__VA_ARGS__); \
-    exit(1);                                \
+#define FATAL_ERROR(format, ...)             \
+do {                                         \
+    fprintf(stderr, "CWD %s:\n", getcwd(NULL, 0)); \
+    fprintf(stderr, format, ##__VA_ARGS__);  \
+    exit(1);                                 \
 } while (0)
 
 #define UNUSED __attribute__((__unused__))
