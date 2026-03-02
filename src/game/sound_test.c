@@ -253,6 +253,9 @@ static const u32 sBackButtonText[NUM_LANGUAGES * 3 * 2] = {
     Text(LANG_SPANISH, 10, 1037, 1, 2), Text(LANG_ITALIAN, 8, 1038, 0, 2),  Text(LANG_ITALIAN, 12, 1038, 1, 2),
 };
 
+// NOTE: Not const, so it gets put into .data, not .rodata
+static ColorRaw sSoundTestBGPalette[] = INCPAL("graphics/sound_test_bg.pal");
+
 void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
 {
     struct Task *t
@@ -305,7 +308,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     bgPaletteEffect->bgPalId = 0;
 
     bgPaletteEffect->pattern = sBgGradient;
-    bgPaletteEffect->palette = gBgGradientPalette;
+    bgPaletteEffect->palette = sSoundTestBGPalette;
 
     bgPaletteEffect->offset = 0;
 
