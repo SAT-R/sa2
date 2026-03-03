@@ -240,7 +240,7 @@ mAlignWord
 mAlignWord
 	voice_directsound 60, 0, DirectSoundWaveData_30, 255, 216, 25, 0	@08ACFA98
 mAlignWord
-	voice_directsound 60, 0, DirectSoundWaveData_31, 37, 0, 255, 149	@08ACFAA4
+	voice_directsound 60, 0, spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r, 37, 0, 255, 149	@08ACFAA4
 mAlignWord
 	voice_directsound 60, 0, DirectSoundWaveData_32, 255, 0, 255, 0	@08ACFAB0
 mAlignWord
