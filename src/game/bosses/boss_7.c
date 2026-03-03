@@ -230,9 +230,12 @@ const u8 gUnknown_080D8788[][7] = {
     { 4, 3, 2, 1, 1, 0, 0 },
 };
 
+#define PAL_BOSS_7_HIT 0
+#define PAL_BOSS_7_DEF 1
+
 const ColorRaw gUnknown_080D8796[][PALETTE_LEN_4BPP] = {
-    INCPAL("graphics/80D8796.pal"),
-    INCPAL("graphics/80D87B6.pal"),
+    [PAL_BOSS_7_HIT] = INCPAL("graphics/boss_7_hit.pal"),
+    [PAL_BOSS_7_DEF] = INCPAL("graphics/boss_7_normal.pal"),
 };
 
 void CreateEggFrog(void)

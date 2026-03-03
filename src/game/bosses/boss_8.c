@@ -174,8 +174,8 @@ static const EggRoboFn sArmFuncs[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984, sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
 const ColorRaw sArmPalettes[2][PALETTE_LEN_4BPP] = {
-    INCPAL("graphics/boss_8_a.pal"),
-    INCPAL("graphics/boss_8_b.pal"),
+    INCPAL("graphics/boss_8_hit.pal"),
+    INCPAL("graphics/boss_8_normal.pal"),
 };
 
 #define SWITCH_ARM_VARIANT(boss, arm, vNum)                                                                                                \
