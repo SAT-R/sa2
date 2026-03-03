@@ -9,7 +9,7 @@ on:
 jobs:
   format:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
@@ -30,7 +30,7 @@ jobs:
 
   build-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Build GBA (USA)
     steps:
       - name: Checkout PR
@@ -123,7 +123,7 @@ jobs:
 
   build-gba-variants:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Build GBA (${{ matrix.variant }})
     strategy:
       matrix:
@@ -169,7 +169,7 @@ jobs:
     strategy:
       matrix:
         platform: ["sdl", "sdl_win32", "win32", "ps2", "psp"]
-        os: ["ubuntu-22.04", "macos-15"]
+        os: ["ubuntu-24.04", "macos-15"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ${{ matrix.os }}
     name: Build ${{ matrix.platform }} (${{ matrix.os }})
@@ -185,7 +185,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install tools (Linux)
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: ${{ matrix.os == 'ubuntu-24.04' }}
         run: |
           sudo apt update && sudo apt install xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools mkisofs
 
@@ -232,7 +232,7 @@ jobs:
       matrix:
         platform: ["sdl"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: TAS Test ${{ matrix.platform }}
     steps:
       - name: Checkout PR
@@ -267,7 +267,7 @@ jobs:
 
   level_editor:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Level editor (BriBaSA)
     steps:
       - name: Checkout PR
