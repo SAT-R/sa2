@@ -234,7 +234,7 @@ const u8 gUnknown_080D8788[][7] = {
 #define PAL_BOSS_7_DEF 0
 #define PAL_BOSS_7_HIT 1
 
-const ColorRaw gUnknown_080D8796[][PALETTE_LEN_4BPP] = {
+const ColorRaw sBoss7Palettes[][PALETTE_LEN_4BPP] = {
     [PAL_BOSS_7_DEF] = INCPAL("graphics/boss_7_normal.pal"),
     [PAL_BOSS_7_HIT] = INCPAL("graphics/boss_7_hit.pal"),
 };
@@ -1165,7 +1165,7 @@ static void sub_804931C(EggFrog *boss)
         u8 i;
 
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_BG(11, i, gUnknown_080D8796[(boss->unk16 & 2) >> 1][i]);
+            SET_PALETTE_COLOR_BG(11, i, sBoss7Palettes[(boss->unk16 & 2) >> 1][i]);
         }
     }
 
