@@ -221,9 +221,9 @@ void cgb_audio_generate(u16 samplesPerFrame)
             }
             if ((REG_NR30 & 0x80) && (REG_NR52 & 0x04)) {
                 if (REG_NR51 & 0x40)
-                    outputL += (gb.Vol[2] * gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
+                    outputL += gb.Vol[2] * (gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
                 if (REG_NR51 & 0x04)
-                    outputR += (gb.Vol[2] * gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
+                    outputR += gb.Vol[2] * (gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
             }
             if ((gb.DAC[3]) && (REG_NR52 & 0x08)) {
                 bool32 lfsrMode = ((REG_NR43 & 0x08) == 8);
