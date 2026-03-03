@@ -34,6 +34,11 @@ static u16 sInputKeys = 0;
 
 enum { DMA_NOW, DMA_VBLANK, DMA_HBLANK, DMA_SPECIAL };
 
+// Stuff like allocating a console shell and initializing OpenGL allocates tens of MB of RAM.
+// This should free it all...
+// via: https://twitter.com/vkrajacic/status/2028919788362441206
+static inline void ShredWindowsGarbage(void) { SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T)-1, (SIZE_T)-1); }
+
 typedef union {
     struct {
         u16 unused : 5;
@@ -108,6 +113,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
             timeBeginPeriod(1);
 
             Win32_ProcessPendingMessages(sWindowHandle);
+
+            ShredWindowsGarbage();
 
             // If this isn't set, gFlags gets set to FLAGS_200, leading to the MP menu being
             // loaded instead of the main loop
