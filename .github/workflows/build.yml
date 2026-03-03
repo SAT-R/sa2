@@ -168,7 +168,7 @@ jobs:
   ports:
     strategy:
       matrix:
-        platform: ["sdl", "sdl_win32", "win32", "ps2"]
+        platform: ["sdl", "sdl_win32", "win32", "ps2", "psp"]
         os: ["ubuntu-22.04", "macos-15"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ${{ matrix.os }}
@@ -211,7 +211,17 @@ jobs:
           echo "$PS2DEV/bin" >> "$GITHUB_PATH"
           echo "$PS2DEV/ee/bin" >> "$GITHUB_PATH"
           curl -o ps2dev-latest.tar.gz -LC - https://github.com/ps2dev/ps2dev/releases/download/latest/ps2dev-$(if [[ "$OSTYPE" == "darwin"* ]]; then echo macos; else echo ubuntu; fi)-latest.tar.gz
-          tar -xf ps2dev-latest.tar.gz --strip-components 1 -C $PS2DEV
+          tar -xf ps2dev-latest.tar.gz --strip-components 1 -C $PS2DEVs
+
+      - name: Install PSPDEV
+        if: ${{ matrix.platform == 'psp' }}
+        run: |
+          PSPDEV="$HOME/pspdev"
+          echo "PSPDEV=$HOME/pspdev" >> "$GITHUB_ENV"
+          mkdir -p $PSPDEV
+          echo "$PSPDEV/bin" >> "$GITHUB_PATH"
+          curl -o pspdev-latest.tar.gz -LC - https://github.com/pspdev/pspdev/releases/download/v20260301/pspdev-$(if [[ "$OSTYPE" == "darwin"* ]]; then echo macos; else echo ubuntu; fi)-latest-x86_64.tar.gz
+          tar -xf pspdev-latest.tar.gz --strip-components 1 -C $PSPDEV
 
       - name: ${{ matrix.platform }}
         run: |
