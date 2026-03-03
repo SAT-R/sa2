@@ -58,7 +58,7 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
+          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
           python3 -m pip install gitpython
 
       - name: Install agbcc
