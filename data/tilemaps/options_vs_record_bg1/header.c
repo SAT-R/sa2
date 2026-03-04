@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_options_vs_record_bg1[] = INCBIN_U16("data/tilemaps/options_vs_record_bg1/palette.gbapal");
+const ColorRaw Palette_options_vs_record_bg1[] = INCPAL("data/tilemaps/options_vs_record_bg1/palette.pal");
 const u8 Tiles_options_vs_record_bg1[] = INCBIN_U8("data/tilemaps/options_vs_record_bg1/tiles.4bpp");
 const u16 Tilemap_options_vs_record_bg1[] = INCBIN_U16("data/tilemaps/options_vs_record_bg1/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap options_vs_record_bg1 = {
     .tilesSize = sizeof(Tiles_options_vs_record_bg1),
     .palette = Palette_options_vs_record_bg1,
     .palOffset = 0,
-    .palLength = sizeof(Palette_options_vs_record_bg1) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_options_vs_record_bg1),
     .map = Tilemap_options_vs_record_bg1,
 };

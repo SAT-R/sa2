@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_zone_final_act_unused_fg[] = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/fg/palette.gbapal");
+const ColorRaw Palette_zone_final_act_unused_fg[] = INCPAL("data/maps/zone_final/act_unused/tilemaps/fg/palette.pal");
 const u8 Tileset_zone_final_act_unused_fg[] = { 0xFF, 0xFF, 0xFF, 0xFF };
 const s8 CollHeightMap_zone_final_act_unused_fg[] = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_final_act_unused_fg[] = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/tile_rot.coll");
@@ -25,7 +25,7 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg0 =
         .tilesSize = 0x2200, // GAME: HARDCODED // should be: sizeof(Tileset_zone_final_act_unused_fg)
         .palette = Palette_zone_final_act_unused_fg,// -> 0x0892F540
         .palOffset = 0,
-        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16), // 0x100
+        .palLength = ARRAY_COUNT(Palette_zone_final_act_unused_fg), // 0x100
         .map = Metatiles_zone_final_act_unused_fg,  // -> 0x08930118
     },
     .metatileMap = Map_zone_final_act_unused_fg0,   // -> 0x08933178
@@ -46,7 +46,7 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg1 =
         .tilesSize = 0x2200, // GAME: HARDCODED // should be: sizeof(Tileset_zone_final_act_unused_fg)
         .palette = Palette_zone_final_act_unused_fg,// -> 0x0892F540
         .palOffset = 0,
-        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16), // 0x100
+        .palLength = ARRAY_COUNT(Palette_zone_final_act_unused_fg), // 0x100
         .map = Metatiles_zone_final_act_unused_fg,  // -> 0x08930118
     },
     .metatileMap = Map_zone_final_act_unused_fg1,   // -> 0x08933358

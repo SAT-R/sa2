@@ -15,6 +15,6 @@ const Tilemap title_screen_bg = {
     .tilesSize = sizeof(Tiles_title_screen_bg),
     .palette = Palette_title_screen_bg,
     .palOffset = 0,
-    .palLength = sizeof(Palette_title_screen_bg) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_title_screen_bg),
     .map = Tilemap_title_screen_bg,
 };

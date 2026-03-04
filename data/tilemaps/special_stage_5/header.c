@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_special_stage_5[] = INCBIN_U16("data/tilemaps/special_stage_5/palette.gbapal");
+const ColorRaw Palette_special_stage_5[] = INCPAL("data/tilemaps/special_stage_5/palette.pal");
 const u8 Tiles_special_stage_5[] = INCBIN_U8("data/tilemaps/special_stage_5/tiles.4bpp");
 const u8 Tilemap_special_stage_5[] = INCBIN_U8("data/tilemaps/special_stage_5/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap special_stage_5 = {
     .tilesSize = sizeof(Tiles_special_stage_5),
     .palette = Palette_special_stage_5,
     .palOffset = 0,
-    .palLength = sizeof(Palette_special_stage_5) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_special_stage_5),
     .map = (const u16 *)Tilemap_special_stage_5,
 };

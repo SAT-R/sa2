@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_stage_select_bg_cream[] = INCBIN_U16("data/tilemaps/stage_select_bg_cream/palette.gbapal");
+const ColorRaw Palette_stage_select_bg_cream[] = INCPAL("data/tilemaps/stage_select_bg_cream/palette.pal");
 const u8 Tiles_stage_select_bg_cream[] = INCBIN_U8("data/tilemaps/stage_select_bg_cream/tiles.4bpp");
 const u16 Tilemap_stage_select_bg_cream[] = INCBIN_U16("data/tilemaps/stage_select_bg_cream/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap stage_select_bg_cream = {
     .tilesSize = sizeof(Tiles_stage_select_bg_cream),
     .palette = Palette_stage_select_bg_cream,
     .palOffset = 0,
-    .palLength = sizeof(Palette_stage_select_bg_cream) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_stage_select_bg_cream),
     .map = Tilemap_stage_select_bg_cream,
 };

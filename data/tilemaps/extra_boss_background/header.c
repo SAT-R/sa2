@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_extra_boss_background[] = INCBIN_U16("data/tilemaps/extra_boss_background/palette.gbapal");
+const ColorRaw Palette_extra_boss_background[] = INCPAL("data/tilemaps/extra_boss_background/palette.pal");
 const u8 Tiles_extra_boss_background[] = INCBIN_U8("data/tilemaps/extra_boss_background/tiles.4bpp");
 const u16 Tilemap_extra_boss_background[] = INCBIN_U16("data/tilemaps/extra_boss_background/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap extra_boss_background = {
     .tilesSize = sizeof(Tiles_extra_boss_background),
     .palette = Palette_extra_boss_background,
     .palOffset = 0,
-    .palLength = sizeof(Palette_extra_boss_background) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_extra_boss_background),
     .map = Tilemap_extra_boss_background,
 };

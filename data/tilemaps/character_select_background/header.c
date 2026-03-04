@@ -15,6 +15,6 @@ const Tilemap character_select_background = {
     .tilesSize = sizeof(Tiles_character_select_background),
     .palette = Palette_character_select_background,
     .palOffset = 0,
-    .palLength = sizeof(Palette_character_select_background) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_character_select_background),
     .map = Tilemap_character_select_background,
 };

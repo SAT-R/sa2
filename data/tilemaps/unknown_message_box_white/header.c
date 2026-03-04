@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unknown_message_box_white[] = INCBIN_U16("data/tilemaps/unknown_message_box_white/palette.gbapal");
+const ColorRaw Palette_unknown_message_box_white[] = INCPAL("data/tilemaps/unknown_message_box_white/palette.pal");
 const u8 Tiles_unknown_message_box_white[] = INCBIN_U8("data/tilemaps/unknown_message_box_white/tiles.4bpp");
 const u16 Tilemap_unknown_message_box_white[] = INCBIN_U16("data/tilemaps/unknown_message_box_white/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap unknown_message_box_white = {
     .tilesSize = sizeof(Tiles_unknown_message_box_white),
     .palette = Palette_unknown_message_box_white,
     .palOffset = 0,
-    .palLength = sizeof(Palette_unknown_message_box_white) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_unknown_message_box_white),
     .map = Tilemap_unknown_message_box_white,
 };

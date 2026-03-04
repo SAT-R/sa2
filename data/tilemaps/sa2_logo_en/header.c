@@ -15,6 +15,6 @@ const Tilemap sa2_logo_en = {
     .tilesSize = sizeof(Tiles_sa2_logo_en),
     .palette = Palette_sa2_logo_en,
     .palOffset = 0,
-    .palLength = sizeof(Palette_sa2_logo_en) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_sa2_logo_en),
     .map = (const u16 *)Tilemap_sa2_logo_en,
 };

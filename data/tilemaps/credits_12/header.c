@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_credits_12[] = INCBIN_U16("data/tilemaps/credits_12/palette.gbapal");
+const ColorRaw Palette_credits_12[] = INCPAL("data/tilemaps/credits_12/palette.pal");
 const u8 Tiles_credits_12[] = INCBIN_U8("data/tilemaps/credits_12/tiles.4bpp");
 const u16 Tilemap_credits_12[] = INCBIN_U16("data/tilemaps/credits_12/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap credits_12 = {
     .tilesSize = sizeof(Tiles_credits_12),
     .palette = Palette_credits_12,
     .palOffset = 0,
-    .palLength = sizeof(Palette_credits_12) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_credits_12),
     .map = Tilemap_credits_12,
 };

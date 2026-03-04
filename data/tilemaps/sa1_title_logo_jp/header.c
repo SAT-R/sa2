@@ -40,6 +40,6 @@ const Tilemap sa1_title_logo_jp = {
     .tilesSize = sizeof(Tiles_sa1_title_logo_jp),
     .palette = Palette_sa1_title_logo_jp,
     .palOffset = 0,
-    .palLength = sizeof(Palette_sa1_title_logo_jp) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_sa1_title_logo_jp),
     .map = Tilemap_sa1_title_logo_jp,
 };
