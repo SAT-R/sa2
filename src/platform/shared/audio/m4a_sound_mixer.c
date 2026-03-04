@@ -280,10 +280,10 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             // Use linear interpolation to calculate a value between the current sample in the wav
             // and the next sample. Also cancel out the 9.23 stuff
-            fixed8_24 sample = ((finePos * m) + u32_to_fp8_24(b));
+            s32 sample = fp8_24_to_u32((s64)finePos * m) + b;
 
-            pcmBuffer[1] += ((s64)sample * envR) >> 24;
-            pcmBuffer[0] += ((s64)sample * envL) >> 24;
+            pcmBuffer[1] += (sample * envR);
+            pcmBuffer[0] += (sample * envL);
 
             finePos += romSamplesPerOutputSample;
             u32 newCoarsePos = fp8_24_to_u32(finePos);
@@ -922,14 +922,10 @@ void m4aSoundVSync(void)
 
         for (u32 i = 0; i < samplesPerFrame; i++) {
             // Sample is fixed 8.24 with a value of -1 to 1
-            fixed8_24 sample = (m4aBuffer[i] + cgbBuffer[i]);
-            // Clamp
-            if (sample > u32_to_fp8_24(1)) {
-                sample = u32_to_fp8_24(1);
-            }
-            if (sample < -u32_to_fp8_24(1)) {
-                sample = -u32_to_fp8_24(1);
-            }
+            // but when we add we divide by 8 to add some headroom
+            // and make the mix a much more managable volume
+            fixed8_24 sample = (m4aBuffer[i] + cgbBuffer[i]) >> 3;
+
             // 1 in 8.24 format is 1 << 24
             // 32768 is size expected for s16 audio
             // 32768 = 1 << 15

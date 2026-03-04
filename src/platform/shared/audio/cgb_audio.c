@@ -12,6 +12,7 @@ static u32 sampleRate;
 static u16 lfsrMax[2];
 fixed8_24 ch4Samples;
 fixed8_24 volScale[16];
+fixed8_24 ch4StepsScale[12];
 
 void cgb_audio_init(u32 rate)
 {
@@ -43,6 +44,9 @@ void cgb_audio_init(u32 rate)
     ch4Samples = 0;
     for (int i = 0; i < 16; i++)
         volScale[i] = u32_to_fp8_24(i) / 15;
+
+    for (int i = 0; i < 12; i++)
+        ch4StepsScale[i] = u32_to_fp8_24(1) / (i + 1);
 }
 
 void cgb_set_sweep(u8 sweep)
@@ -228,19 +232,19 @@ void cgb_audio_generate(u16 samplesPerFrame)
             if ((gb.DAC[3]) && (REG_NR52 & 0x08)) {
                 bool32 lfsrMode = ((REG_NR43 & 0x08) == 8);
                 ch4Samples += freqTableNSE[REG_SOUND4CNT_H & (ARRAY_COUNT(freqTableNSE) - 1)];
-                int ch4Out = 0;
+                s8 ch4Out = 0;
                 if (gb.ch4LFSR[lfsrMode] & 1) {
                     ch4Out++;
                 } else {
                     ch4Out--;
                 }
-                int steps = fp8_24_to_u32(ch4Samples);
+                u8 steps = fp8_24_to_u32(ch4Samples);
                 ch4Samples = fp8_24_fractional_part(ch4Samples);
 
                 u16 lfsr = gb.ch4LFSR[lfsrMode];
                 u16 lfsrMask = lfsrMax[lfsrMode];
 
-                for (int i = 0; i < steps; i++) {
+                for (u8 i = 0; i < steps; i++) {
                     // Comments to show what the bit
                     // manipulation here is representing
 
@@ -256,9 +260,9 @@ void cgb_audio_generate(u16 samplesPerFrame)
                 }
                 gb.ch4LFSR[lfsrMode] = lfsr;
 
-                fixed8_24 sample = u32_to_fp8_24(ch4Out);
-                if (steps > 0)
-                    sample /= (steps + 1);
+                // NOTE: if we convert this to int before multiplying by volume
+                // the waves sound effect sounds better
+                fixed8_24 sample = ch4Out * ch4StepsScale[steps];
 
                 // Muliply by the sample and then shift to make 8.24 again
                 if (REG_NR51 & 0x80)
