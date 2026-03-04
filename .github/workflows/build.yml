@@ -170,7 +170,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ["sdl", "sdl_win32", "win32", "ps2", "psp"]
+        platform: ["sdl", "sdl_win32", "sdl_psp", "win32", "ps2"]
         os: ["ubuntu-24.04", "macos-15"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ${{ matrix.os }}
@@ -216,7 +216,7 @@ jobs:
           tar -xf ps2dev-latest.tar.gz --strip-components 1 -C $PS2DEV
 
       - name: Install PSPDEV
-        if: ${{ matrix.platform == 'psp' }}
+        if: ${{ matrix.platform == 'sdl_psp' }}
         run: |
           PSPDEV="$HOME/pspdev"
           echo "PSPDEV=$HOME/pspdev" >> "$GITHUB_ENV"
