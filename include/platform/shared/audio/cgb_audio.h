@@ -18,9 +18,9 @@ struct AudioCGB {
     u8 EnvCounterI[4];
     bool8 EnvDir[4];
     bool8 DAC[4];
-    float WAVRAM[32];
+    fixed8_24 WAVRAM[32];
     u16 ch4LFSR[2];
-    float outBuffer[PCM_DMA_BUF_SIZE * 2];
+    fixed8_24 outBuffer[PCM_DMA_BUF_SIZE * 2];
 };
 
 void cgb_audio_init(u32 rate);
@@ -31,6 +31,6 @@ void cgb_set_length(u8 channel, u8 length);
 void cgb_set_envelope(u8 channel, u8 envelope);
 void cgb_trigger_note(u8 channel);
 void cgb_audio_generate(u16 samplesPerFrame);
-float *cgb_get_buffer();
+fixed8_24 *cgb_get_buffer();
 
 #endif
