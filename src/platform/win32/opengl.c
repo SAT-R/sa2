@@ -39,7 +39,8 @@ typedef struct {
 } TextureBuffer;
 static TextureBuffer sDynTextureBuffer = { 0 };
 
-ColorRGBA tempRgbaPalette[16 * 32] = {};
+// TODO: This can be removed once full 32bit RGBA works
+Color tempRgbaPalette[32 * PALETTE_LEN_4BPP] = {};
 static Background *sActiveBackgrounds[4] = { 0 };
 
 void Debug_PrintMatrix(float *mtx)
@@ -55,35 +56,29 @@ void Debug_PrintMatrix(float *mtx)
 static void TempConvertPLTTToRGBA8(void)
 {
     // Convert PLTT from ABGR1555 -> RGBA8
-    for (int i = 0; i < ARRAY_COUNT(tempRgbaPalette); i++) {
-        u16 color = PLTT[i];
-        float r = (float)(color & 0x01F) / 31.0;
-        float g = (float)((color & 0x3E0) >> 5) / 31.0;
-        float b = (float)((color & 0x7C00) >> 10) / 31.0;
 
-        tempRgbaPalette[i].r = r * 255.0;
-        tempRgbaPalette[i].g = g * 255.0;
-        tempRgbaPalette[i].b = b * 255.0;
-        tempRgbaPalette[i].a = 1 * 255.0;
+    for (int i = 0; i < ARRAY_COUNT(tempRgbaPalette); i++) {
+        Color color = (Color)PLTT[i];
+
+        tempRgbaPalette[i].split.r = color.split.r;
+        tempRgbaPalette[i].split.g = color.split.g;
+        tempRgbaPalette[i].split.b = color.split.b;
+        tempRgbaPalette[i].split.a = 1 * 255.0;
     }
 }
 
-static ColorRGBA *TempConvertPLTTEntryToRGBA8(u8 paletteId)
+static Color *TempConvertPLTTEntryToRGBA8(u8 paletteId)
 {
     // Convert PLTT from ABGR1555 -> RGBA8
-    u16 *pal4BPP = &PLTT[(paletteId + 16) * 16];
+    Color *pal4BPP = (Color *)&PLTT[(paletteId + 16) * 16];
 
     for (int i = 0; i < 16; i++) {
-        u16 color = pal4BPP[i];
+        Color color = pal4BPP[i];
 
-        float r = (float)(color & 0x01F) / 31.0;
-        float g = (float)((color & 0x3E0) >> 5) / 31.0;
-        float b = (float)((color & 0x7C00) >> 10) / 31.0;
-
-        tempRgbaPalette[paletteId * 16 + i].r = r * 255.0;
-        tempRgbaPalette[paletteId * 16 + i].g = g * 255.0;
-        tempRgbaPalette[paletteId * 16 + i].b = b * 255.0;
-        tempRgbaPalette[paletteId * 16 + i].a = 1 * 255.0;
+        tempRgbaPalette[paletteId * 16 + i].split.r = color.split.r;
+        tempRgbaPalette[paletteId * 16 + i].split.g = color.split.g;
+        tempRgbaPalette[paletteId * 16 + i].split.b = color.split.b;
+        tempRgbaPalette[paletteId * 16 + i].split.a = 1 * 255.0;
     }
 
     return &tempRgbaPalette[paletteId * 16];
@@ -107,7 +102,7 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
         sDynTextureBuffer.height = height;
     }
 
-    ColorRGBA *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
+    Color *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
 
     u16 widthInTiles = width >> 3;
 
@@ -122,9 +117,9 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
             int textureColorId = bitmap4bpp[tileColorIndex >> 1] & (0xF << (doShift * 4));
             textureColorId >>= doShift * 4;
 
-            sDynTextureBuffer.data[targetColorIndex * 4 + 0] = texturePalette[textureColorId].r;
-            sDynTextureBuffer.data[targetColorIndex * 4 + 1] = texturePalette[textureColorId].g;
-            sDynTextureBuffer.data[targetColorIndex * 4 + 2] = texturePalette[textureColorId].b;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 0] = texturePalette[textureColorId].split.r;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 1] = texturePalette[textureColorId].split.g;
+            sDynTextureBuffer.data[targetColorIndex * 4 + 2] = texturePalette[textureColorId].split.b;
             sDynTextureBuffer.data[targetColorIndex * 4 + 3] = (textureColorId == 0) ? 0x00 : 0xFF;
         }
     }
@@ -224,7 +219,7 @@ void FindUniqueChunks(ChunkSet *set, Background *bg, u16 mapChunkX, u16 mapChunk
     }
 }
 
-void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
+void RenderTilemap(Color *dstBuffer, Background *bg, int chunkIndex)
 {
     const u8 *tileset = bg->graphics.src;
     int chunkTileCount = bg->xTiles * bg->yTiles;
@@ -240,7 +235,7 @@ void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
     for (int tileIdY = 0; tileIdY < bg->yTiles; tileIdY++) {
         for (int tileIdX = 0; tileIdX < bg->xTiles; tileIdX++) {
             // int tileId = tileIdY * bg->xTiles + tileIdX;
-            ColorRGBA *dstTileRGBA = &dstBuffer[tileIdY * 8 * (bg->xTiles * 8) + tileIdX * 8];
+            Color *dstTileRGBA = &dstBuffer[tileIdY * 8 * (bg->xTiles * 8) + tileIdX * 8];
 
             if (mapIs4BPP) {
                 int tileInChunkIndex = (chunkIndex * chunkTileCount) + tileIdY * bg->xTiles + tileIdX;
@@ -257,12 +252,12 @@ void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
                         int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
                         colorId >>= doShift * 4;
 
-                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[tile.pal * 16 + colorId]);
+                        Color *tilePalette = &tempRgbaPalette[tile.pal * 16 + colorId];
                         int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
-                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
-                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
-                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
-                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                        dstTileRGBA[dstTileIndex].split.r = tilePalette->split.r;
+                        dstTileRGBA[dstTileIndex].split.g = tilePalette->split.g;
+                        dstTileRGBA[dstTileIndex].split.b = tilePalette->split.b;
+                        dstTileRGBA[dstTileIndex].split.a = (colorId == 0) ? 0x00 : 0xFF;
                     }
                 }
             } else {
@@ -278,12 +273,12 @@ void RenderTilemap(ColorRGBA *dstBuffer, Background *bg, int chunkIndex)
                         int targetColorIndex = ((tileY * 8) + tileX);
                         int colorId = srcTile8BPP[targetColorIndex];
 
-                        ColorRGBA *tilePalette = (ColorRGBA *)(&tempRgbaPalette[colorId]);
+                        Color *tilePalette = &tempRgbaPalette[colorId];
                         int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
-                        dstTileRGBA[dstTileIndex].r = tilePalette->r;
-                        dstTileRGBA[dstTileIndex].g = tilePalette->g;
-                        dstTileRGBA[dstTileIndex].b = tilePalette->b;
-                        dstTileRGBA[dstTileIndex].a = (colorId == 0) ? 0x00 : 0xFF;
+                        dstTileRGBA[dstTileIndex].split.r = tilePalette->split.r;
+                        dstTileRGBA[dstTileIndex].split.g = tilePalette->split.g;
+                        dstTileRGBA[dstTileIndex].split.b = tilePalette->split.b;
+                        dstTileRGBA[dstTileIndex].split.a = (colorId == 0) ? 0x00 : 0xFF;
                     }
                 }
             }
@@ -300,7 +295,7 @@ void CacheUncachedUniqueChunks(Background *bg, ChunkSet *set, ChunkGfx *gfx)
             if (chunkIndex == 0)
                 continue;
 
-            ColorRGBA *chunkRGBA = (ColorRGBA *)(&gfx->rgbaChunks[chunkSetItemIndex * CHUNK_SIZE_RGBA]);
+            Color *chunkRGBA = (Color *)&gfx->rgbaChunks[chunkSetItemIndex * CHUNK_SIZE_RGBA];
             const u8 *tileset4BPP = &((const u8 *)bg->graphics.src)[0];
             RenderTilemap(chunkRGBA, bg, chunkIndex);
         }

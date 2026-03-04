@@ -1,3 +1,4 @@
+#include "global.h"
 #include "core.h"
 #include "lib/agb_flash/flash_internal.h"
 
@@ -5,7 +6,7 @@ ALIGNED(256) uint8_t EWRAM_START[EWRAM_SIZE] = { 0 };
 ALIGNED(256) uint8_t IWRAM_START[IWRAM_SIZE] = { 0 };
 // TODO: REG_BASE needs to be u8, because of the address macro definitions
 ALIGNED(256) uint8_t REG_BASE[IO_SIZE] = { 0 };
-ALIGNED(256) uint16_t PLTT[PLTT_SIZE / sizeof(uint16_t)] = { 0 };
+ALIGNED(256) ColorRaw PLTT[32 * PALETTE_LEN_4BPP] = { 0 };
 ALIGNED(256) uint8_t VRAM[VRAM_SIZE] = { 0 };
 ALIGNED(256) uint8_t OAM[OAM_SIZE] = { 0 };
 ALIGNED(256) uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK] = { 0 };

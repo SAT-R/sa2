@@ -389,53 +389,6 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
             }
         }
     }
-
-    s32 tempX = x;
-    s32 tempY = y;
-
-    u16 widthInTiles = dims->width >> 3;
-
-    for (int frameY = 0; frameY < dims->height; frameY++) {
-        s32 finalY = (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) ? (tempY + dims->height - 1 - frameY) : (tempY + frameY);
-
-        if (finalY < 0)
-            continue;
-
-        if (finalY >= DISPLAY_HEIGHT)
-            break;
-
-        for (int frameX = 0; frameX < dims->width; frameX++) {
-
-            s32 finalX = (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) ? (tempX + dims->width - 1 - frameX) : (tempX + frameX);
-
-            if (finalX < 0)
-                continue;
-
-            if (finalX >= DISPLAY_WIDTH)
-                break;
-
-            int bufferPixelIndex = finalY * DISPLAY_WIDTH + finalX;
-            int imagePixelIndex = frameY * dims->width + frameX;
-
-            if (bufferPixelIndex >= 0 && bufferPixelIndex < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-                u16 *pal = &PLTT[oamPaletteNum * PALETTE_LEN_4BPP + (BG_PLTT_SIZE / 2)];
-                u16 tileNumX = (frameX >> 3);
-                u16 tileNumY = (frameY >> 3);
-                u16 tileNum = tileNumY * widthInTiles + tileNumX;
-                u32 offset = tileNum * TILE_SIZE_4BPP;
-
-                u8 *tile = &((u8 *)sprite->graphics.src)[offset];
-
-                u8 colorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7));
-
-                bool8 doShift = (colorIndex & 1);
-                u8 colorId = tile[colorIndex >> 1] & (0xF << (doShift * 4));
-                colorId >>= doShift * 4;
-                if (colorId != 0)
-                    sImageBuffer[bufferPixelIndex] = RGB_SHIFT(pal[colorId]);
-            }
-        }
-    }
 }
 
 void VBlankIntrWait()
