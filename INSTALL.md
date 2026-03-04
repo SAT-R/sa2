@@ -12,16 +12,28 @@ Install WSL (Ubuntu). Once installed, open this project in the WSL terminal and 
 ### Install system requirements
  
 #### On Linux (including WSL)
-```
+```bash
 sudo apt update
-sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools mkisofs
-```
+sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev g++-mingw-w64 gcc-mingw-w64 libarchive-tools
 
+# Optional, if you want to compile for the PS2 you'll need
+sudo apt install mkisofs
+```
 #### On MacOS
 
+```bash
+brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc
+
+# Optional, if you want to compile for the PS2 you'll need
+brew install cdrtools
 ```
-brew install libpng sdl2 mingw-w64 arm-none-eabi-gcc cdrtools
-```
+
+#### PS2DEV and PSPDEV
+
+For compiling for the PSP or PS2, ensure that you install the required SDK
+
+- [PS2DEV](https://github.com/ps2dev/ps2dev)
+- [PSPDEV](https://github.com/pspdev/pspdev)
 
 ## Building
 
@@ -33,9 +45,9 @@ Run all commands in the same folder as this project. All outputs go into the sam
 
 **NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build. For example `make -j4` with 4 being the number of cores
 
-### PC port
+### Ports
 
-The PC port targets different platforms depending on where you are going to be playing it.
+The codebase targets different platforms depending on where you are going to be playing it.
 
 #### For Windows
 
@@ -53,6 +65,16 @@ Tip: On Linux and MacOS this can be opened with `wine sa2.sdl_win32.exe`
 1. Run `make sdl`
 1. `sa2.sdl` will be created
 1. Launch the game from the terminal with `./sa2.sdl`
+
+#### For PSP
+
+1. Run `make sdl_psp`
+1. `EBOOT.PBP` will be created
+
+#### For PS2
+
+1. Run `make ps2`
+1. `sa2.ps2.iso` will be created
 
 ### GBA rom
 
