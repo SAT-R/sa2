@@ -1,9 +1,5 @@
-#include "global.h"
-#include "core.h"
 
-#ifndef NON_MATCHING
-// This uses transparency, which gbagfx doesn't (yet) support
-const ColorRaw Palette_sa1_title_logo[] = {
+const unsigned short Palette_sa1_title_logo[] = {
     0x8340, 0,      0x9000, 0x2000, 0x421,  0x8c20, 0x2800, 0x1c20, 0x3000, 0xb000, 0xac20, 0x9c40, 0x8842, 0x3802, 0x3022, 0xac40,
     0xb820, 0xb802, 0xb440, 0x65,   0x3423, 0x3860, 0x2082, 0xb061, 0x1084, 0x3c60, 0x3844, 0xe1,   0x4460, 0x3046, 0xaca0, 0x4860,
     0xca6,  0xac83, 0x9ca3, 0xd060, 0x94a5, 0xbc81, 0xd460, 0xb865, 0x14,   0xd860, 0x2c88, 0xc0c0, 0xc8a1, 0x98c6, 0x5c80, 0x15,
@@ -21,23 +17,5 @@ const ColorRaw Palette_sa1_title_logo[] = {
     0x435f, 0x13bf, 0xff96, 0x3df,  0x6f7b, 0x477f, 0x83df, 0x7fb7, 0x579c, 0x3ff,  0x6f5f, 0x479f, 0x97df, 0x83ff, 0xffb8, 0x739c,
     0xcf9f, 0xffb9, 0x77bd, 0x7fda, 0x779f, 0x63df, 0xffdc, 0x7bde, 0xfbbf, 0x7ffd, 0xfbde, 0x7ffd, 0xebff, 0x7fff, 0xfffe, 0xffff,
 };
-#else
-const ColorRaw Palette_sa1_title_logo[] = INCPAL("data/tilemaps/sa1_title_logo/palette.pal");
-#endif
 
-const u8 Tiles_sa1_title_logo[] = INCBIN_U8("data/tilemaps/sa1_title_logo/tiles.4bpp");
-const u8 Tilemap_sa1_title_logo[] = INCBIN_U8("data/tilemaps/sa1_title_logo/tilemap.tilemap2");
-
-const Tilemap sa1_title_logo = {
-    .xTiles = 24,
-    .yTiles = 10,
-    .animTileSize = 0,
-    .animFrameCount = 0,
-    .animDelay = 0,
-    .tiles = Tiles_sa1_title_logo,
-    .tilesSize = sizeof(Tiles_sa1_title_logo),
-    .palette = Palette_sa1_title_logo,
-    .palOffset = 0,
-    .palLength = sizeof(Palette_sa1_title_logo) / sizeof(u16),
-    .map = (const u16 *)Tilemap_sa1_title_logo,
-};
+int main() { }

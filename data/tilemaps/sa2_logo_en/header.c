@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_sa2_logo_en[] = INCBIN_U16("data/tilemaps/sa2_logo_en/palette.gbapal");
+const ColorRaw Palette_sa2_logo_en[] = INCPAL("data/tilemaps/sa2_logo_en/palette.pal");
 const u8 Tiles_sa2_logo_en[] = INCBIN_U8("data/tilemaps/sa2_logo_en/tiles.4bpp");
 const u8 Tilemap_sa2_logo_en[] = INCBIN_U8("data/tilemaps/sa2_logo_en/tilemap.tilemap2");
 
