@@ -26,21 +26,13 @@ static GLuint sTempTextureHandles[3] = { 0 };
 #define NUM_RGB_CHANNELS     4
 // u8 tempRgbaFrame[DISPLAY_WIDTH * DISPLAY_HEIGHT][NUM_RGB_CHANNELS] = {};
 
-// TODO: Replace with global Color struct.
-typedef struct ColorRGBA {
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-} ColorRGBA;
 typedef struct {
-    u8 *data;
+    Color *data;
     int width, height;
 } TextureBuffer;
 static TextureBuffer sDynTextureBuffer = { 0 };
 
 // TODO: This can be removed once full 32bit RGBA works
-Color tempRgbaPalette[32 * PALETTE_LEN_4BPP] = {};
 static Background *sActiveBackgrounds[4] = { 0 };
 
 void Debug_PrintMatrix(float *mtx)
@@ -53,56 +45,25 @@ void Debug_PrintMatrix(float *mtx)
            mtx[15]);
 }
 
-static void TempConvertPLTTToRGBA8(void)
-{
-    // Convert PLTT from ABGR1555 -> RGBA8
-
-    for (int i = 0; i < ARRAY_COUNT(tempRgbaPalette); i++) {
-        Color color = (Color)PLTT[i];
-
-        tempRgbaPalette[i].split.r = color.split.r;
-        tempRgbaPalette[i].split.g = color.split.g;
-        tempRgbaPalette[i].split.b = color.split.b;
-        tempRgbaPalette[i].split.a = 1 * 255.0;
-    }
-}
-
-static Color *TempConvertPLTTEntryToRGBA8(u8 paletteId)
-{
-    // Convert PLTT from ABGR1555 -> RGBA8
-    Color *pal4BPP = (Color *)&PLTT[(paletteId + 16) * 16];
-
-    for (int i = 0; i < 16; i++) {
-        Color color = pal4BPP[i];
-
-        tempRgbaPalette[paletteId * 16 + i].split.r = color.split.r;
-        tempRgbaPalette[paletteId * 16 + i].split.g = color.split.g;
-        tempRgbaPalette[paletteId * 16 + i].split.b = color.split.b;
-        tempRgbaPalette[paletteId * 16 + i].split.a = 1 * 255.0;
-    }
-
-    return &tempRgbaPalette[paletteId * 16];
-}
-
 // TODO: This should be done offline.
 //       Just load all assets in RGB8 or RGBA8 on boot.
 static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int width, int height, u8 paletteId)
 {
     if (sDynTextureBuffer.width * sDynTextureBuffer.height < width * height) {
-        sDynTextureBuffer.data = realloc(sDynTextureBuffer.data, width * height * sizeof(u32));
+        sDynTextureBuffer.data = realloc(sDynTextureBuffer.data, width * height * sizeof(*sDynTextureBuffer.data));
 
         if (!sDynTextureBuffer.data) {
             printf("WARNING: realloc in %s failed!\n", __FUNCTION__);
             return;
         } else {
-            printf("realloc: w 0x%X, h 0x%X, full: 0x%X\n", width, height, (u32)(width * height * sizeof(u32)));
+            printf("realloc: w 0x%X, h 0x%X, full: 0x%X\n", width, height, (u32)(width * height * sizeof(*sDynTextureBuffer.data)));
         }
 
         sDynTextureBuffer.width = width;
         sDynTextureBuffer.height = height;
     }
 
-    Color *texturePalette = TempConvertPLTTEntryToRGBA8(paletteId);
+    Color *texturePalette = (Color *)&PLTT[(16 + paletteId) * PALETTE_LEN_4BPP];
 
     u16 widthInTiles = width >> 3;
 
@@ -117,10 +78,10 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
             int textureColorId = bitmap4bpp[tileColorIndex >> 1] & (0xF << (doShift * 4));
             textureColorId >>= doShift * 4;
 
-            sDynTextureBuffer.data[targetColorIndex * 4 + 0] = texturePalette[textureColorId].split.r;
-            sDynTextureBuffer.data[targetColorIndex * 4 + 1] = texturePalette[textureColorId].split.g;
-            sDynTextureBuffer.data[targetColorIndex * 4 + 2] = texturePalette[textureColorId].split.b;
-            sDynTextureBuffer.data[targetColorIndex * 4 + 3] = (textureColorId == 0) ? 0x00 : 0xFF;
+            sDynTextureBuffer.data[targetColorIndex].split.r = texturePalette[textureColorId].split.r;
+            sDynTextureBuffer.data[targetColorIndex].split.g = texturePalette[textureColorId].split.g;
+            sDynTextureBuffer.data[targetColorIndex].split.b = texturePalette[textureColorId].split.b;
+            sDynTextureBuffer.data[targetColorIndex].split.a = (textureColorId == 0) ? 0x00 : 0xFF;
         }
     }
 }
@@ -149,10 +110,10 @@ typedef struct ChunkSet {
 static ChunkSet sChunkSet = { 0 };
 
 // TODO: minY should be from upper-left corner, not bottom-left!
-void OpenGL_RenderRGBABuffer(u8 *buffer, u16 bufferWidth, u16 bufferHeight, float minX, float minY, float maxX, float maxY)
+void OpenGL_RenderRGBABuffer(Color *buffer, u16 bufferWidth, u16 bufferHeight, float minX, float minY, float maxX, float maxY)
 {
     glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[2]);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (u8 *)buffer);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -252,7 +213,7 @@ void RenderTilemap(Color *dstBuffer, Background *bg, int chunkIndex)
                         int colorId = srcTile4BPP[targetColorIndex >> 1] & (0xF << (doShift * 4));
                         colorId >>= doShift * 4;
 
-                        Color *tilePalette = &tempRgbaPalette[tile.pal * 16 + colorId];
+                        Color *tilePalette = (Color *)&PLTT[tile.pal * PALETTE_LEN_4BPP + colorId];
                         int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
                         dstTileRGBA[dstTileIndex].split.r = tilePalette->split.r;
                         dstTileRGBA[dstTileIndex].split.g = tilePalette->split.g;
@@ -273,7 +234,7 @@ void RenderTilemap(Color *dstBuffer, Background *bg, int chunkIndex)
                         int targetColorIndex = ((tileY * 8) + tileX);
                         int colorId = srcTile8BPP[targetColorIndex];
 
-                        Color *tilePalette = &tempRgbaPalette[colorId];
+                        Color *tilePalette = (Color *)&BG_PLTT[colorId];
                         int dstTileIndex = tileLoopY * (bg->xTiles * 8) + tileLoopX;
                         dstTileRGBA[dstTileIndex].split.r = tilePalette->split.r;
                         dstTileRGBA[dstTileIndex].split.g = tilePalette->split.g;
@@ -332,7 +293,7 @@ void RenderScreenChunks(ChunkSet *set, ChunkGfx *gfx, Background *bg, s16 mapChu
             int chunkStartIndex = chunkSetIndex * CHUNK_SIZE_RGBA;
             int chunkScreenX = (screenX + (chunkX * 96));
             int chunkScreenY = DISPLAY_HEIGHT - (screenY + (chunkY * 96));
-            OpenGL_RenderRGBABuffer(&gfx->rgbaChunks[chunkStartIndex], 96, 96, chunkScreenX, chunkScreenY, chunkScreenX + 96,
+            OpenGL_RenderRGBABuffer((Color *)&gfx->rgbaChunks[chunkStartIndex], 96, 96, chunkScreenX, chunkScreenY, chunkScreenX + 96,
                                     chunkScreenY + 96);
         }
     }
@@ -366,7 +327,6 @@ void UpdateChunkGfx(ChunkGfx *gfx, Background *bg)
     sChunkSet.count = 1; // initialize to 1, to skip zero-filled chunk (which always exists)
     FindUniqueChunks(&sChunkSet, bg, mapChunkX, mapChunkY, screenChunkWidth, screenChunkHeight);
 
-    TempConvertPLTTToRGBA8();
     CacheUncachedUniqueChunks(bg, &sChunkSet, &sChunkGfx);
 
     // Draw metatile RGBA graphics
@@ -448,9 +408,9 @@ loopBreak:
                     }
                     bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
                 }
-                TempConvertPLTTToRGBA8();
+
                 RenderTilemap(bg->graphics.dest, bg, 0);
-                OpenGL_RenderRGBABuffer(bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
+                OpenGL_RenderRGBABuffer((Color *)bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
                                         bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
             }
         }
@@ -618,31 +578,5 @@ void OpenGL_Render(void *tempBufferPixels, int viewportWidth, int viewportHeight
         -1, -1, 0, 1 //
     };
     glLoadMatrixf(projMtx);
-#endif
-
-    // TempConvertPLTTToRGBA8();
-
-#if 0
-    // Convert the "software-rendered" image from ABGR1555 -> RGBA8
-    for (int i = 0; i < ARRAY_COUNT(tempRgbaFrame); i++) {
-        u16 color = ((u16 *)tempBufferPixels)[i];
-        float r = (float)(color & 0x01F) / 31.0;
-        float g = (float)((color & 0x3E0) >> 5) / 31.0;
-        float b = (float)((color & 0x7C00) >> 10) / 31.0;
-
-        tempRgbaFrame[i][0] = b * 255.0;
-        tempRgbaFrame[i][1] = g * 255.0;
-        tempRgbaFrame[i][2] = r * 255.0;
-        tempRgbaFrame[i][3] = 1 * 255.0;
-    }
-
-    // Update palette
-    glBindTexture(GL_TEXTURE_2D, sTempTextureHandles[0]);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempRgbaPalette);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // downscale filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // upscale filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 #endif
 }

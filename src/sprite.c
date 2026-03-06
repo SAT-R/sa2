@@ -1067,7 +1067,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
         const s32 colorSize = sizeof(ColorRaw);
 
         DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], &GET_PALETTE_COLOR_OBJ(s->palId, cmd->insertOffset),
-            cmd->numColors * colorSize);
+                  cmd->numColors * colorSize);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
