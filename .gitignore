@@ -85,6 +85,12 @@ libagbsyscall/*.s
 *.exe
 *.dll
 *.sdl
+*.iso
+
+# PSP build outputs
+EBOOT.PBP
+PARAM.SFO
+sa2_debug.log
 
 # third party deps
 /ext

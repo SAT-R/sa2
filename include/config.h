@@ -42,11 +42,14 @@
 #define RENDERER_SOFTWARE 0
 #define RENDERER_OPENGL   1
 #define RENDERER_COUNT    2
+
+#ifndef RENDERER
 #if PLATFORM_WIN32 && !PLATFORM_SDL
 // TODO: Only win32 for now
 #define RENDERER RENDERER_OPENGL
 #else
 #define RENDERER RENDERER_SOFTWARE
+#endif
 #endif
 
 #endif // GUARD_SA2_CONFIG_H

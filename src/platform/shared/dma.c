@@ -4,7 +4,7 @@
 
 struct DMATransfer DMAList[DMA_COUNT] = { 0 };
 
-void RunDMAs(u32 type)
+void RunDMAs(DmaStartTypes type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
@@ -124,7 +124,7 @@ void DmaStop(int dmaNum)
 
 void DmaWait(int dmaNum)
 {
-    vu32 *ctrlRegs = &REG_DMA0CNT;
+    vu32 *ctrlRegs = (vu32 *)&REG_DMA0CNT;
 #if !USE_NEW_DMA
     while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
         ;

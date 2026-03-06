@@ -31,7 +31,7 @@ SourceFileType GetFileType(std::string& path)
 
     std::string extension = path.substr(pos + 1);
 
-    if (extension == "c")
+    if (extension == "c" || extension == "cc")
         return SourceFileType::Cpp;
     else if (extension == "s")
         return SourceFileType::Asm;

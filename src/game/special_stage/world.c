@@ -238,19 +238,10 @@ void sub_806EA04(void)
         temp5 = (i - stage->cameraHeight) * temp2 * 2;
 
         *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PA
-        // HACK: in SDL we don't handle these PB and PD values properly
-#if PLATFORM_SDL
-        *unk1884++ = 0;
-#else
         *unk1884++ = (Q_16_16_TO_INT(temp) * sin) >> 0x10; // BG2PB
-#endif
 
         *unk1884++ = (Q_16_16_TO_INT(temp) * -sin) >> 0x10; // BG2PC
-#if PLATFORM_SDL
-        *unk1884++ = 0;
-#else
         *unk1884++ = (Q_16_16_TO_INT(temp) * cos) >> 0x10; // BG2PD
-#endif
 
         x = (Q_16_16_TO_INT(temp5) * sin) + (Q_16_16_TO_INT(temp4) * cos) + stage->q16CameraX;
         y = (Q_16_16_TO_INT(temp4) * -sin) + (Q_16_16_TO_INT(temp5) * cos) + stage->q16CameraY;

@@ -10,6 +10,8 @@
 .macro mPtr value
 #if defined(__aarch64__) || defined(__x86_64__)
     .quad \value
+#elif defined(__mips__)
+    .4byte \value
 #else
     .int \value
 #endif
