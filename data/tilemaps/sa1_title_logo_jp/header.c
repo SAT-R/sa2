@@ -1,7 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_sa1_title_logo_jp[] = {
+#ifndef NON_MATCHING
+// This uses transparency, which gbagfx doesn't (yet) support
+const ColorRaw Palette_sa1_title_logo_jp[] = {
     0x8340u, 0u,      0x9000u, 0x2000u, 0x421u,  0x8c20u, 0x2800u, 0x1c20u, 0x3000u, 0xb000u, 0xac20u, 0x9c40u, 0x8842u, 0x3802u, 0x3022u,
     0xac40u, 0xb820u, 0xb802u, 0xb440u, 0x65u,   0x3423u, 0x3860u, 0x2082u, 0xb061u, 0x1084u, 0x3c60u, 0x3844u, 0xe1u,   0x4460u, 0x3046u,
     0xaca0u, 0x4860u, 0xca6u,  0xac83u, 0x9ca3u, 0xd060u, 0x94a5u, 0xbc81u, 0xd460u, 0xb865u, 0x14u,   0xd860u, 0x2c88u, 0xc0c0u, 0xc8a1u,
@@ -21,6 +23,9 @@ const u16 Palette_sa1_title_logo_jp[] = {
     0xcf9fu, 0xffb9u, 0x77bdu, 0x7fdau, 0x779fu, 0x63dfu, 0xffdcu, 0x7bdeu, 0xfbbfu, 0x7ffdu, 0xfbdeu, 0x7ffdu, 0xebffu, 0x7fffu, 0xfffeu,
     0xffffu,
 };
+#else
+const ColorRaw Palette_sa1_title_logo_jp[] = INCPAL("data/tilemaps/sa1_title_logo_jp/palette.pal");
+#endif
 
 const u8 Tiles_sa1_title_logo_jp[] = INCBIN_U8("data/tilemaps/sa1_title_logo_jp/tiles.8bpp");
 const u16 Tilemap_sa1_title_logo_jp[] = INCBIN_U16("data/tilemaps/sa1_title_logo_jp/tilemap.tilemap1");
@@ -35,6 +40,6 @@ const Tilemap sa1_title_logo_jp = {
     .tilesSize = sizeof(Tiles_sa1_title_logo_jp),
     .palette = Palette_sa1_title_logo_jp,
     .palOffset = 0,
-    .palLength = sizeof(Palette_sa1_title_logo_jp) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_sa1_title_logo_jp),
     .map = Tilemap_sa1_title_logo_jp,
 };

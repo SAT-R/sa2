@@ -1,8 +1,8 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_storyframe_cream_tails_vanilla_look_around[]
-    = INCBIN_U16("data/tilemaps/storyframe_cream_tails_vanilla_look_around/palette.gbapal");
+const ColorRaw Palette_storyframe_cream_tails_vanilla_look_around[]
+    = INCPAL("data/tilemaps/storyframe_cream_tails_vanilla_look_around/palette.pal");
 const u8 Tiles_storyframe_cream_tails_vanilla_look_around[]
     = INCBIN_U8("data/tilemaps/storyframe_cream_tails_vanilla_look_around/tiles.4bpp");
 const u16 Tilemap_storyframe_cream_tails_vanilla_look_around[]
@@ -18,6 +18,6 @@ const Tilemap storyframe_cream_tails_vanilla_look_around = {
     .tilesSize = sizeof(Tiles_storyframe_cream_tails_vanilla_look_around),
     .palette = Palette_storyframe_cream_tails_vanilla_look_around,
     .palOffset = 0,
-    .palLength = sizeof(Palette_storyframe_cream_tails_vanilla_look_around) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_storyframe_cream_tails_vanilla_look_around),
     .map = Tilemap_storyframe_cream_tails_vanilla_look_around,
 };

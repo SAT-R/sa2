@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_sa2_logo_jp[] = INCBIN_U16("data/tilemaps/sa2_logo_jp/palette.gbapal");
+const ColorRaw Palette_sa2_logo_jp[] = INCPAL("data/tilemaps/sa2_logo_jp/palette.pal");
 const u8 Tiles_sa2_logo_jp[] = INCBIN_U8("data/tilemaps/sa2_logo_jp/tiles.4bpp");
 const u8 Tilemap_sa2_logo_jp[] = INCBIN_U8("data/tilemaps/sa2_logo_jp/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap sa2_logo_jp = {
     .tilesSize = sizeof(Tiles_sa2_logo_jp),
     .palette = Palette_sa2_logo_jp,
     .palOffset = 0,
-    .palLength = sizeof(Palette_sa2_logo_jp) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_sa2_logo_jp),
     .map = (const u16 *)Tilemap_sa2_logo_jp,
 };

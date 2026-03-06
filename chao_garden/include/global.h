@@ -73,10 +73,6 @@
 // Converts a Q24.8 fixed-point format number to a regular integer
 #define Q_24_8_TO_INT(n) ((int)((n) >> 8))
 
-#define RED_VALUE(color)   ((color)&0x1F)
-#define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
-#define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
-
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))

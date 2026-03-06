@@ -498,6 +498,7 @@ SECTIONS
         src/data/animations/animation_table.o(.rodata);
         src/data/sprite_dimensions.o(.rodata);
         src/data/sprite_oam_data.o(.rodata);
+        src/data/sprite_palettes.o(.rodata);
         data/sprite_animation_data.o(.rodata);
 
         src/data/tileset_debug_ascii.o(.rodata);
@@ -780,7 +781,7 @@ SECTIONS
         src/game/sa1_sa2_shared/input_buffer.o(.data);
         data/special_stage_levels.o(.rodata);
         src/data/handlers_ia_pipe_horn_sequences.o(.rodata);
-        src/data/palettes.o(.rodata);
+        src/game/sound_test.o(.data);
         src/data/recordings.o(.rodata);
         data/multiboot_collect_rings.o(.rodata);
         data/multiboot_subgame_loader.o(.rodata);

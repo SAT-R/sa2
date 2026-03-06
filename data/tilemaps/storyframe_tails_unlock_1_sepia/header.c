@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_storyframe_tails_unlock_1_sepia[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_1_sepia/palette.gbapal");
+const ColorRaw Palette_storyframe_tails_unlock_1_sepia[] = INCPAL("data/tilemaps/storyframe_tails_unlock_1_sepia/palette.pal");
 const u8 Tiles_storyframe_tails_unlock_1_sepia[] = INCBIN_U8("data/tilemaps/storyframe_tails_unlock_1_sepia/tiles.4bpp");
 const u16 Tilemap_storyframe_tails_unlock_1_sepia[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_1_sepia/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap storyframe_tails_unlock_1_sepia = {
     .tilesSize = sizeof(Tiles_storyframe_tails_unlock_1_sepia),
     .palette = Palette_storyframe_tails_unlock_1_sepia,
     .palOffset = 0,
-    .palLength = sizeof(Palette_storyframe_tails_unlock_1_sepia) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_storyframe_tails_unlock_1_sepia),
     .map = Tilemap_storyframe_tails_unlock_1_sepia,
 };

@@ -27,8 +27,8 @@ typedef struct {
     u32 unk0;
     /* 0x004 */ s32 x;
     /* 0x008 */ s32 y;
-    /* 0x00C */ s16 speedX;
-    /* 0x00E */ s16 speedY;
+    /* 0x00C */ s16 qSpeedX;
+    /* 0x00E */ s16 qSpeedY;
     /* 0x010 */ s32 unk10;
     u8 unk14;
     u8 unk15;
@@ -55,8 +55,8 @@ typedef struct {
 typedef struct {
     s32 x;
     s32 y;
-    s16 speedX;
-    s16 speedY;
+    s16 qSpeedX;
+    s16 qSpeedY;
     u8 gravityInverted;
     u8 unkD;
     EggFrog *boss;
@@ -120,7 +120,7 @@ static const TileInfo gUnknown_080D8108[] = {
 
 static const s8 gUnknown_080D8148[] = { 13, 243 };
 
-const s8 gUnknown_080D814A[] = { 32, -32 };
+const s8 sBossSpeedDelta[] = { +Q(0.125), -Q(0.125) };
 
 const u16 gUnknown_080D814C[][12] = {
     { 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 0 },
@@ -230,10 +230,17 @@ const u8 gUnknown_080D8788[][7] = {
     { 4, 3, 2, 1, 1, 0, 0 },
 };
 
-const u16 gUnknown_080D8796[][16] = {
-    INCBIN_U16("graphics/80D8796.gbapal"),
-    INCBIN_U16("graphics/80D87B6.gbapal"),
+// NOTE: Bosses 7 and 8 have these positions swapped compared to the others for some reason.
+#define PAL_BOSS_7_DEF 0
+#define PAL_BOSS_7_HIT 1
+
+const ColorRaw sBoss7Palettes[][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_7_DEF] = INCPAL("graphics/boss_7_normal.pal"),
+    [PAL_BOSS_7_HIT] = INCPAL("graphics/boss_7_hit.pal"),
 };
+
+#define COCKPIT_OFFSET_X 32
+#define COCKPIT_OFFSET_Y 40
 
 void CreateEggFrog(void)
 {
@@ -243,8 +250,8 @@ void CreateEggFrog(void)
     EggFrog *boss;
     void *vram;
     s16 *unk28;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x5A0D;
+    gDispCnt |= DISPCNT_BG0_ON;
+    gBgCntRegs[0] = BGCNT_TXT512x256 | BGCNT_SCREENBASE(26) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(1);
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     INIT_BG_SPRITES_LAYER_64(0);
@@ -277,8 +284,8 @@ void CreateEggFrog(void)
         boss->unk10 = Q(830);
     }
 
-    boss->speedX = Q(5);
-    boss->speedY = 0;
+    boss->qSpeedX = Q(5);
+    boss->qSpeedY = 0;
     boss->unk15 = 0;
     boss->unk16 = 0;
     boss->unk1C[0][0] = 0;
@@ -317,9 +324,9 @@ void CreateEggFrog(void)
     boss->unk1E8 = VramMalloc(39);
 
     s = &boss->unk68;
-    s->x = 32;
-    s->y = 40;
-    s->graphics.dest = (void *)VRAM + 0xC000;
+    s->x = COCKPIT_OFFSET_X;
+    s->y = COCKPIT_OFFSET_Y;
+    s->graphics.dest = (void *)BG_CHAR_ADDR(3);
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_FROG_CABIN, 0, 31, 3, SPRITE_FLAG(18, 1));
 
     for (i = 0; i < ARRAY_COUNT(boss->unk98); i++) {
@@ -368,7 +375,7 @@ static void sub_8047E28(void)
         }
 
         Player_DisableInputAndBossTimer();
-        boss->speedX = Q(5);
+        boss->qSpeedX = Q(5);
         boss->unk18 = 0;
         boss->unk64 = 0;
         gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
@@ -440,12 +447,12 @@ static void Render(EggFrog *boss)
     u8 i, j;
     u8 temp;
 
-    s->x = 32;
-    s->y = 40;
+    s->x = COCKPIT_OFFSET_X;
+    s->y = COCKPIT_OFFSET_Y;
     UpdateSpriteAnimation(s);
     DisplaySprite_BG(s);
-    gBgScrollRegs[0][0] = 32 - (I(boss->x) - gCamera.x);
-    gBgScrollRegs[0][1] = 40 - (I(boss->y) - gCamera.y);
+    gBgScrollRegs[0][0] = COCKPIT_OFFSET_X - (I(boss->x) - gCamera.x);
+    gBgScrollRegs[0][1] = COCKPIT_OFFSET_Y - (I(boss->y) - gCamera.y);
 
     pos.x = I(boss->x) - gCamera.x;
     if (pos.x < -50 || pos.x > (DISPLAY_WIDTH + 60)) {
@@ -602,19 +609,19 @@ static void sub_8048654(EggFrog *boss)
     s32 x, y;
     s16 temp2;
     u8 i;
-    boss->speedY += gUnknown_080D814A[0];
-    if (boss->speedY > 0x2C0) {
-        boss->speedY = 0x2C0;
+    boss->qSpeedY += sBossSpeedDelta[0];
+    if (boss->qSpeedY > Q(2.75)) {
+        boss->qSpeedY = Q(2.75);
     }
 
-    boss->x += boss->speedX;
-    boss->y += boss->speedY;
+    boss->x += boss->qSpeedX;
+    boss->y += boss->qSpeedY;
 
     result = sub_801E4E4(I(boss->y) + 0x1E, I(boss->x), 1, 8, 0, sub_801EE64);
     if (result < 0) {
         boss->y += Q(result);
-        boss->speedY = Div(-(boss->speedY * 9), 10);
-        boss->speedX = Div((boss->speedX * 9), 10);
+        boss->qSpeedY = Div(-(boss->qSpeedY * 9), 10);
+        boss->qSpeedX = Div((boss->qSpeedX * 9), 10);
     }
 
     x = I(boss->x);
@@ -710,7 +717,7 @@ static void sub_804893C(EggFrog *boss)
             sub_80493F8(boss, boss->x, boss->y, 0);
             boss->unk17 = 0;
         }
-        boss->speedY = -Q(3.5);
+        boss->qSpeedY = -Q(3.5);
     }
 }
 
@@ -757,10 +764,10 @@ static void sub_8048A4C(EggFrog *boss)
             boss->unk18 = gUnknown_080D8710[12].unk2;
             boss->unk19 = gUnknown_080D8710[12].unk3;
         }
-        boss->speedX = 0x500;
+        boss->qSpeedX = 0x500;
 
     } else {
-        boss->speedX -= 0xC;
+        boss->qSpeedX -= 0xC;
     }
 }
 
@@ -782,7 +789,7 @@ static void sub_8048AD8(EggFrog *boss)
             sub_80493F8(boss, boss->x, boss->y, 1);
             boss->unk17 = 0;
         }
-        boss->speedY = 0x380;
+        boss->qSpeedY = 0x380;
     }
 }
 
@@ -829,10 +836,10 @@ static void sub_8048BF0(EggFrog *boss)
             boss->unk18 = gUnknown_080D8710[5].unk2;
             boss->unk19 = gUnknown_080D8710[5].unk3;
         }
-        boss->speedX = 0x500;
+        boss->qSpeedX = 0x500;
 
     } else {
-        boss->speedX -= 0xC;
+        boss->qSpeedX -= 0xC;
     }
 }
 
@@ -1024,10 +1031,10 @@ static void sub_8048FF4(EggFrog *boss)
         boss->unk60 = gUnknown_080D86D4[7];
         boss->unk18 = gUnknown_080D8710[7].unk2;
         boss->unk19 = gUnknown_080D8710[7].unk3;
-        boss->speedX = 0x500;
+        boss->qSpeedX = 0x500;
         boss->x = boss->unk10;
     } else {
-        boss->speedX += 0xF;
+        boss->qSpeedX += 0xF;
     }
 }
 
@@ -1077,10 +1084,10 @@ static void sub_804911C(EggFrog *boss)
         boss->unk60 = gUnknown_080D86D4[0];
         boss->unk18 = gUnknown_080D8710[0].unk2;
         boss->unk19 = gUnknown_080D8710[0].unk3;
-        boss->speedX = 0x500;
+        boss->qSpeedX = 0x500;
         boss->x = boss->unk10;
     } else {
-        boss->speedX += 0xF;
+        boss->qSpeedX += 0xF;
     }
 }
 
@@ -1143,15 +1150,15 @@ static void sub_804928C(EggFrog *boss)
 
 static void sub_80492B8(EggFrog *boss)
 {
-    boss->speedY += gUnknown_080D814A[boss->unk18];
+    boss->qSpeedY += sBossSpeedDelta[boss->unk18];
 
-    if (boss->unk18 == 0 && boss->speedY > 704) {
-        boss->speedY = 704;
-    } else if (boss->unk18 != 0 && boss->speedY < -704) {
-        boss->speedY = -704;
+    if (boss->unk18 == 0 && boss->qSpeedY > Q(2.75)) {
+        boss->qSpeedY = Q(2.75);
+    } else if (boss->unk18 != 0 && boss->qSpeedY < -Q(2.75)) {
+        boss->qSpeedY = -Q(2.75);
     }
-    boss->x += boss->speedX;
-    boss->y += boss->speedY;
+    boss->x += boss->qSpeedX;
+    boss->y += boss->qSpeedY;
     boss->unk10 += 0x500;
 }
 
@@ -1161,7 +1168,7 @@ static void sub_804931C(EggFrog *boss)
         u8 i;
 
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_BG(11, i, gUnknown_080D8796[(boss->unk16 & 2) >> 1][i]);
+            SET_PALETTE_COLOR_BG(11, i, sBoss7Palettes[(boss->unk16 & 2) >> 1][i]);
         }
     }
 
@@ -1189,8 +1196,8 @@ static void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 
     bomb->x = x - Q(gCamera.x) + 0x500;
     bomb->y = y - Q(gCamera.y);
-    bomb->speedX = 0x500;
-    bomb->speedY = 0;
+    bomb->qSpeedX = 0x500;
+    bomb->qSpeedY = 0;
     bomb->gravityInverted = gravityInverted;
     bomb->boss = boss;
 
@@ -1215,17 +1222,17 @@ static void sub_80494EC(void)
     u8 gravityInverted = bomb->gravityInverted;
 
     if (!gravityInverted) {
-        bomb->speedY += Q(0.125);
+        bomb->qSpeedY += Q(0.125);
     } else {
-        bomb->speedY -= Q(0.125);
+        bomb->qSpeedY -= Q(0.125);
     }
 
     if (!PLAYER_IS_ALIVE) {
-        bomb->x += bomb->speedX;
-        bomb->y += bomb->speedY;
+        bomb->x += bomb->qSpeedX;
+        bomb->y += bomb->qSpeedY;
     } else {
-        bomb->x += bomb->speedX + Q(gCamera.dx);
-        bomb->y += bomb->speedY + Q(gCamera.dy);
+        bomb->x += bomb->qSpeedX + Q(gCamera.dx);
+        bomb->y += bomb->qSpeedY + Q(gCamera.dy);
     }
 
     temp = -8;
@@ -1239,8 +1246,8 @@ static void sub_80494EC(void)
 
     // hit floor
     if (result < 0) {
-        bomb->x += bomb->speedX * 2;
-        bomb->speedY = 0;
+        bomb->x += bomb->qSpeedX * 2;
+        bomb->qSpeedY = 0;
         bomb->y += !gravityInverted ? Q(result) : -Q(result);
         bomb->unkD = 61;
         gCurTask->main = sub_8049658;
@@ -1269,11 +1276,11 @@ static void sub_8049658(void)
     u32 val;
 
     if (!PLAYER_IS_ALIVE) {
-        bomb->x += bomb->speedX;
-        bomb->y += bomb->speedY;
+        bomb->x += bomb->qSpeedX;
+        bomb->y += bomb->qSpeedY;
     } else {
-        bomb->x += bomb->speedX + Q(gCamera.dx);
-        bomb->y += bomb->speedY + Q(gCamera.dy);
+        bomb->x += bomb->qSpeedX + Q(gCamera.dx);
+        bomb->y += bomb->qSpeedY + Q(gCamera.dy);
     }
 
     val = bomb->unkD;
@@ -1299,8 +1306,8 @@ static void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
     EggFrogBomb *bombFlame = TASK_DATA(t);
     bombFlame->x = x - Q(gCamera.x);
     bombFlame->y = y - Q(gCamera.y);
-    bombFlame->speedX = 0;
-    bombFlame->speedY = 0;
+    bombFlame->qSpeedX = 0;
+    bombFlame->qSpeedY = 0;
     bombFlame->unkD = 46;
     bombFlame->boss = boss;
 
@@ -1324,11 +1331,11 @@ static void Task_80497E0(void)
 #endif
 
     if (!PLAYER_IS_ALIVE) {
-        bombFlame->x += bombFlame->speedX;
-        bombFlame->y += bombFlame->speedY;
+        bombFlame->x += bombFlame->qSpeedX;
+        bombFlame->y += bombFlame->qSpeedY;
     } else {
-        bombFlame->x += bombFlame->speedX + Q(gCamera.dx);
-        bombFlame->y += bombFlame->speedY + Q(gCamera.dy);
+        bombFlame->x += bombFlame->qSpeedX + Q(gCamera.dx);
+        bombFlame->y += bombFlame->qSpeedY + Q(gCamera.dy);
     }
 
     bombFlame->unkD--;

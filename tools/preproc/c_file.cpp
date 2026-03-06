@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+// NOTE(Jace): Added support for "INCPAL("some_jasc_palette.pal")
+
 #include <cstdio>
 #include <cstdarg>
 #include <stdexcept>
@@ -31,6 +33,14 @@
 #include "char_util.h"
 #include "utf8.h"
 #include "string_parser.h"
+#include "ext/gbagfx/gfx.h"
+#include "ext/gbagfx/jasc_pal.h"
+
+#define RGB888_TO_ABGR1555(r, g, b) (  \
+    (((r) / 8) << 0) |                 \
+    (((g) / 8) << 5) |                 \
+    (((b) / 8) << 10)                  \
+)
 
 CFile::CFile(std::string filename) : m_filename(filename)
 {
@@ -89,7 +99,7 @@ CFile::~CFile()
     delete[] m_buffer;
 }
 
-void CFile::Preproc()
+void CFile::Preproc(bool fullRGBA)
 {
     char stringChar = 0;
 
@@ -121,6 +131,7 @@ void CFile::Preproc()
         {
             TryConvertString();
             TryConvertIncbin();
+            TryConvertPalette(fullRGBA);
 
             if (m_pos >= m_size)
                 break;
@@ -304,6 +315,119 @@ int ExtractData(const std::unique_ptr<unsigned char[]>& buffer, int offset, int 
     default:
         FATAL_ERROR("Invalid size passed to ExtractData.\n");
     }
+}
+
+void CFile::TryConvertPalette(bool fullRGBA)
+{
+    std::string ident = "INCPAL";
+    if(!CheckIdentifier(ident))
+    {
+        return;
+    }
+    
+    long oldPos = m_pos;
+    long oldLineNum = m_lineNum;
+
+    m_pos += ident.length();
+
+    SkipWhitespace();
+
+    if (m_buffer[m_pos] != '(')
+    {
+        m_pos = oldPos;
+        m_lineNum = oldLineNum;
+        return;
+    }
+
+    m_pos++;
+
+    std::printf("{");
+
+    while (true)
+    {
+        SkipWhitespace();
+
+        if (m_buffer[m_pos] != '"')
+            RaiseError("expected double quote");
+        
+        m_pos++;
+
+        int startPos = m_pos;
+        
+        while (m_buffer[m_pos] != '"')
+        {
+            if (m_buffer[m_pos] == 0)
+            {
+                if (m_pos >= m_size)
+                    RaiseError("unexpected EOF in path string");
+                else
+                    RaiseError("unexpected null character in path string");
+            }
+
+            if (m_buffer[m_pos] == '\r' || m_buffer[m_pos] == '\n')
+                RaiseError("unexpected end of line character in path string");
+
+            if (m_buffer[m_pos] == '\\')
+                RaiseError("unexpected escape in path string");
+            
+            m_pos++;
+        }
+
+        std::string path(&m_buffer[startPos], m_pos - startPos);
+        
+        m_pos++;
+
+        struct Palette palette = {{}, 0};
+        ReadJascPalette((char*)path.c_str(), &palette);
+
+        if(fullRGBA) {
+            // output RGBA_8888 palette
+            for(int colorIndex = 0; colorIndex < palette.numColors; colorIndex++)
+            {
+                uint32_t color = (
+                    (palette.colors[colorIndex].red << 0) |
+                    (palette.colors[colorIndex].green << 8) |
+                    (palette.colors[colorIndex].blue << 16) |
+                    (0xFF << 24)
+                );
+                
+                std::printf("0x%08X", color);
+
+                if(colorIndex + 1 < palette.numColors) {
+                    std::printf(", ");
+                }
+            }
+        } else {
+            // output ABGR_1555 palette
+            for(int colorIndex = 0; colorIndex < palette.numColors; colorIndex++)
+            {
+                uint16_t color = RGB888_TO_ABGR1555(
+                    palette.colors[colorIndex].red,
+                    palette.colors[colorIndex].green,
+                    palette.colors[colorIndex].blue
+                );
+                std::printf("0x%04X", color);
+
+                if(colorIndex + 1 < palette.numColors) {
+                    std::printf(", ");
+                }
+            }
+        }
+        
+        SkipWhitespace();
+
+        if (m_buffer[m_pos] != ',')
+            break;
+
+        m_pos++;
+    }
+    
+    if (m_buffer[m_pos] != ')')
+        RaiseError("expected ')'");
+
+    m_pos++;
+
+    std::printf("}");
 }
 
 void CFile::TryConvertIncbin()

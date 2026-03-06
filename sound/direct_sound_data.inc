@@ -136,8 +136,8 @@ DirectSoundWaveData_30:
 	.incbin "sound/direct_sound_samples/unknown_8B0C95C.bin"
 
 	mAlignWord
-DirectSoundWaveData_31:
-	.incbin "sound/direct_sound_samples/unknown_8B0F724_sa1_final_boss_choir.bin"
+spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r:
+	.incbin "sound/direct_sound_samples/spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r.bin"
 
 	mAlignWord
 DirectSoundWaveData_32: @ 0x8B109B8

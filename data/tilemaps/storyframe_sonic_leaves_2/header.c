@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_storyframe_sonic_leaves_2[] = INCBIN_U16("data/tilemaps/storyframe_sonic_leaves_2/palette.gbapal");
+const ColorRaw Palette_storyframe_sonic_leaves_2[] = INCPAL("data/tilemaps/storyframe_sonic_leaves_2/palette.pal");
 const u8 Tiles_storyframe_sonic_leaves_2[] = INCBIN_U8("data/tilemaps/storyframe_sonic_leaves_2/tiles.4bpp");
 const u16 Tilemap_storyframe_sonic_leaves_2[] = INCBIN_U16("data/tilemaps/storyframe_sonic_leaves_2/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap storyframe_sonic_leaves_2 = {
     .tilesSize = sizeof(Tiles_storyframe_sonic_leaves_2),
     .palette = Palette_storyframe_sonic_leaves_2,
     .palOffset = 0,
-    .palLength = sizeof(Palette_storyframe_sonic_leaves_2) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_storyframe_sonic_leaves_2),
     .map = Tilemap_storyframe_sonic_leaves_2,
 };

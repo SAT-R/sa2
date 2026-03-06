@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_character_selected_knuckles_bg[] = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles_bg/palette.gbapal");
+const ColorRaw Palette_mp_character_selected_knuckles_bg[] = INCPAL("data/tilemaps/mp_character_selected_knuckles_bg/palette.pal");
 const u8 Tiles_mp_character_selected_knuckles_bg[] = INCBIN_U8("data/tilemaps/mp_character_selected_knuckles_bg/tiles.4bpp");
 const u16 Tilemap_mp_character_selected_knuckles_bg[] = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles_bg/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap mp_character_selected_knuckles_bg = {
     .tilesSize = sizeof(Tiles_mp_character_selected_knuckles_bg),
     .palette = Palette_mp_character_selected_knuckles_bg,
     .palOffset = 0,
-    .palLength = sizeof(Palette_mp_character_selected_knuckles_bg) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_mp_character_selected_knuckles_bg),
     .map = Tilemap_mp_character_selected_knuckles_bg,
 };

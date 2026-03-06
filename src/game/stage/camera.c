@@ -1838,7 +1838,7 @@ const s16 gUnknown_080D5C62[8][2] = {
     { -Q_8_8(0.75), -Q_8_8(0.125) }, //
 };
 
-static const u16 sPalette_Zone7BgCeiling[16] = INCBIN_U16("graphics/080D5C82.gbapal");
+static const ColorRaw sPalette_Zone7BgCeiling[] = INCPAL("graphics/zone_7_bg_ceiling.pal");
 
 void CreateStageBg_Zone7(void)
 {
@@ -2024,7 +2024,8 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void
 #if 001
         { // Draw the "ceiling" movement
             u32 new_r1 = (x >> 4) << 16;
-            const u16 *src;
+            const ColorRaw *src;
+            ColorRaw *dst;
             s32 r6 = 0x7;
             src = sPalette_Zone7BgCeiling;
             dst = gBgPalette;
@@ -2139,7 +2140,7 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
     { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
 };
 
-const u16 gUnknown_080D5CC2[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/080D5CC2.gbapal");
+const ColorRaw sExtraBossPalette[PALETTE_LEN_4BPP] = INCPAL("graphics/boss_9_normal.pal");
 
 void CreateStageBg_ZoneFinal_0(void)
 {
@@ -2189,8 +2190,8 @@ void CreateStageBg_ZoneFinal_0(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
-    for (i = 0; i < ARRAY_COUNT(gUnknown_080D5CC2); i++) {
-        SET_PALETTE_COLOR_BG(0, i, gUnknown_080D5CC2[i]);
+    for (i = 0; i < ARRAY_COUNT(sExtraBossPalette); i++) {
+        SET_PALETTE_COLOR_BG(0, i, sExtraBossPalette[i]);
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

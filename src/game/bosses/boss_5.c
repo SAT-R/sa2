@@ -149,9 +149,12 @@ static const TileInfo gUnknown_080D7FB0[] = {
     { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP, 0 },    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
 };
 
-static const u16 gUnknown_080D7FF0[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D7FF0.gbapal"),
-    INCBIN_U16("graphics/80D8010.gbapal"),
+#define PAL_BOSS_5_HIT 0
+#define PAL_BOSS_5_DEF 1
+
+static const ColorRaw sBoss5Palettes[][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_5_HIT] = INCPAL("graphics/boss_5_hit.pal"),
+    [PAL_BOSS_5_DEF] = INCPAL("graphics/boss_5_normal.pal"),
 };
 
 void Task_EggSaucerIntro(void);
@@ -1758,22 +1761,22 @@ void sub_8045898(EggSaucer *boss)
         val = (gStageTime & 2) >> 1;
         if (boss->unk13 != 0) {
             for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-                SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7FF0[val][i]);
+                SET_PALETTE_COLOR_OBJ(8, i, sBoss5Palettes[val][i]);
             }
         } else {
             for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-                SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7FF0[1][i]);
+                SET_PALETTE_COLOR_OBJ(8, i, sBoss5Palettes[1][i]);
             }
         }
 
         if (boss->unk1F != 0) {
             boss->unk1F--;
             for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-                SET_PALETTE_COLOR_OBJ(9, i, gUnknown_080D7FF0[val][i]);
+                SET_PALETTE_COLOR_OBJ(9, i, sBoss5Palettes[val][i]);
             }
         } else {
             for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-                SET_PALETTE_COLOR_OBJ(9, i, gUnknown_080D7FF0[1][i]);
+                SET_PALETTE_COLOR_OBJ(9, i, sBoss5Palettes[1][i]);
             }
         }
 

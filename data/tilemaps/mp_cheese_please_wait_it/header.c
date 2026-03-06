@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_cheese_please_wait_it[] = INCBIN_U16("data/tilemaps/mp_cheese_please_wait_it/palette.gbapal");
+const ColorRaw Palette_mp_cheese_please_wait_it[] = INCPAL("data/tilemaps/mp_cheese_please_wait_it/palette.pal");
 const u8 Tiles_mp_cheese_please_wait_it[] = INCBIN_U8("data/tilemaps/mp_cheese_please_wait_it/tiles.4bpp");
 const u16 Tilemap_mp_cheese_please_wait_it[] = INCBIN_U16("data/tilemaps/mp_cheese_please_wait_it/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap mp_cheese_please_wait_it = {
     .tilesSize = sizeof(Tiles_mp_cheese_please_wait_it),
     .palette = Palette_mp_cheese_please_wait_it,
     .palOffset = 0,
-    .palLength = sizeof(Palette_mp_cheese_please_wait_it) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_mp_cheese_please_wait_it),
     .map = Tilemap_mp_cheese_please_wait_it,
 };

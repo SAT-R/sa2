@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unlocked_sound_test_de[] = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/palette.gbapal");
+const ColorRaw Palette_unlocked_sound_test_de[] = INCPAL("data/tilemaps/unlocked_sound_test_de/palette.pal");
 const u8 Tiles_unlocked_sound_test_de[] = INCBIN_U8("data/tilemaps/unlocked_sound_test_de/tiles.4bpp");
 const u16 Tilemap_unlocked_sound_test_de[] = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap unlocked_sound_test_de = {
     .tilesSize = sizeof(Tiles_unlocked_sound_test_de),
     .palette = Palette_unlocked_sound_test_de,
     .palOffset = 0,
-    .palLength = sizeof(Palette_unlocked_sound_test_de) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_unlocked_sound_test_de),
     .map = Tilemap_unlocked_sound_test_de,
 };

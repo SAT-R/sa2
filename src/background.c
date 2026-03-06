@@ -34,7 +34,7 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
 void DrawBackground(Background *background)
 {
     struct MapHeader *mapHeader = (struct MapHeader *)gTilemapsRef[background->tilemapId];
-    const u16 *pal;
+    const ColorRaw *pal;
     u32 palSize;
     u16 gfxSize;
 

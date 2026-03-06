@@ -246,7 +246,7 @@ static const TileInfo sMenuTiles[] = {
     { 0x28, SA2_ANIM_SOME_JAPANESE_TXT, SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 },
 };
 
-static const u16 sWavesBrightnessPalette[] = INCBIN_U16("graphics/80E0EF4.gbapal");
+static const ColorRaw sWavesBrightnessPalette[] = INCPAL("graphics/title_screen__waves_brightness.pal");
 
 // Each value is scan line which the brightness should be increased
 // 0 being top 160 being bottom

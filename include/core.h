@@ -173,7 +173,7 @@ struct SpriteTables {
     /* 0x00 */ const ACmd **const *animations;
     /* 0x04 */ const SpriteOffset *const *dimensions;
     /* 0x08 */ const u16 **const oamData;
-    /* 0x0C */ const u16 *const palettes;
+    /* 0x0C */ const ColorRaw *const palettes;
     /* 0x10 */ const u8 *const tiles_4bpp;
     /* 0x14 */ const u8 *const tiles_8bpp;
 };
@@ -273,8 +273,8 @@ extern u16 gDispCnt;
 extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
-extern u16 gObjPalette[16 * PALETTE_LEN_4BPP];
-extern u16 gBgPalette[16 * PALETTE_LEN_4BPP];
+extern ColorRaw gObjPalette[16 * PALETTE_LEN_4BPP];
+extern ColorRaw gBgPalette[16 * PALETTE_LEN_4BPP];
 
 extern u16 gBgCntRegs[4];
 

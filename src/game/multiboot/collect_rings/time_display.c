@@ -6,6 +6,7 @@
 #include "game/multiboot/collect_rings/time_display.h"
 
 #include "constants/animations.h"
+#include "constants/zones.h"
 
 typedef struct {
     Sprite unk0;
@@ -23,7 +24,11 @@ const u8 gUnknown_080E0234[] = {
     103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
 };
 
-const u16 gUnknown_080E0270[PALETTE_LEN_4BPP] = INCBIN_U16("graphics/80E0270.gbapal");
+#ifndef COLLECT_RINGS_ROM
+const ColorRaw sTimeoutPalette[PALETTE_LEN_4BPP] = INCPAL("graphics/time_display_timeout.pal");
+#else
+const ColorRaw sTimeoutPalette[PALETTE_LEN_4BPP] = INCPAL("../../../graphics/time_display_timeout.pal");
+#endif
 
 #ifndef COLLECT_RINGS_ROM
 #define NUM_TILES 9
@@ -86,7 +91,7 @@ void CreateCollectRingsTimeDisplay(void)
     }
 
     for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-        SET_PALETTE_COLOR_OBJ(7, i, gUnknown_080E0270[i]);
+        SET_PALETTE_COLOR_OBJ(7, i, sTimeoutPalette[i]);
     }
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
@@ -126,8 +131,13 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     temp4 = Base10DigitsToHexNibbles(index);
 
     palId = 0;
-    if (gCourseTime < 3600) {
+    if (gCourseTime < ZONE_TIME_TO_INT(1, 0)) {
+#ifndef NON_MATCHING
         palId = (-(gStageTime & 0x10)) >> 0x1F;
+#else
+        // In decomp.me this line actually matches, but not here for some reason :(
+        palId = (gStageTime & 0x10) ? 1 : 0;
+#endif
     }
 
     x = 8;

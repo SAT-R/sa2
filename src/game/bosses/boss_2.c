@@ -152,9 +152,12 @@ static const u16 gUnknown_080D7B4E[][2] = {
 
 static const BossFunction sBossModeTasks[] = { HandleCannonBombTrigger, HandleCannonlessBombTrigger };
 
-static const u16 gUnknown_080D7B70[][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/80D7B70.gbapal"),
-    INCBIN_U16("graphics/80D7B90.gbapal"),
+#define PAL_BOSS_2_HIT 0
+#define PAL_BOSS_2_DEF 1
+
+static const ColorRaw sBoss2Palettes[][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_2_HIT] = INCPAL("graphics/boss_2_hit.pal"),
+    [PAL_BOSS_2_DEF] = INCPAL("graphics/boss_2_normal.pal"),
 };
 
 void CreateEggBomberTank(void)
@@ -576,22 +579,22 @@ static void UpdateBomberTankPalette(EggBomberTank *boss)
     u8 i;
     if (boss->bossHitTimer != 0) {
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7B70[(gStageTime & 2) >> 1][i]);
+            SET_PALETTE_COLOR_OBJ(8, i, sBoss2Palettes[(gStageTime & 2) >> 1][i]);
         }
     } else {
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(8, i, gUnknown_080D7B70[1][i]);
+            SET_PALETTE_COLOR_OBJ(8, i, sBoss2Palettes[1][i]);
         }
     }
 
     if (boss->cannonHitTimer != 0) {
         boss->cannonHitTimer--;
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(13, i, gUnknown_080D7B70[(gStageTime & 2) >> 1][i]);
+            SET_PALETTE_COLOR_OBJ(13, i, sBoss2Palettes[(gStageTime & 2) >> 1][i]);
         }
     } else {
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(13, i, gUnknown_080D7B70[1][i]);
+            SET_PALETTE_COLOR_OBJ(13, i, sBoss2Palettes[1][i]);
         }
     }
 

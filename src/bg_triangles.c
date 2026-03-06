@@ -664,18 +664,18 @@ void SA2_LABEL(sub_800724C)(u8 bg, TriParam1 *arg1)
     }
 }
 
-void SA2_LABEL(sub_80075D0)(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4, u16 param5)
+void SA2_LABEL(sub_80075D0)(u8 bg, int_vcount param1, int_vcount param2, s16 param3, s16 param4, u16 param5)
 {
     int_vcount *cursor;
     s16 r1;
-    u16 sb = (param5 * param5);
+    u16 sb = SQUARE(param5);
 
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
 
     if (bg >= 2) {
         gHBlankCopySize = sizeof(REG_WIN0H) * 2;
 
-        if (bg & 1) {
+        if (bg % 2u) {
             cursor = &((int_vcount *)gBgOffsetsHBlankPrimary)[2];
             gHBlankCopyTarget = (void *)&REG_WIN0H;
         } else {
@@ -709,7 +709,7 @@ void SA2_LABEL(sub_80075D0)(u8 bg, u8 param1, u8 param2, s16 param3, s16 param4,
         s16 num = param1 - param4;
         s16 sqrtRes;
 
-        num = num * num;
+        num = SQUARE(num);
         sqrtRes = Sqrt(sb - num);
 
         r1 = param3 + sqrtRes;

@@ -2,6 +2,7 @@
 #define GUARD_BACKGROUNDS_H
 
 #include "global.h"
+#include "core.h" // PALETTE_LEN_4BPP
 #include "sprite.h"
 
 typedef struct {
@@ -11,7 +12,7 @@ typedef struct {
 
     const u8 *pattern;
 
-    const u16 *palette;
+    const ColorRaw *palette;
 
     u8 unkC;
     u8 unkD;
@@ -24,7 +25,7 @@ typedef struct {
 
     u8 unk13;
 
-    u16 palBuffer[16];
+    ColorRaw palBuffer[PALETTE_LEN_4BPP];
 
     s16 offset;
     u8 unk36;

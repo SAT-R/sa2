@@ -23,10 +23,7 @@ static RECT Win32_GetWindowDimension(HWND Window);
 static void Win32_InitOpenGL(HWND window);
 #endif
 
-static u16 ALIGNED(8) sImageBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {
-    RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN,
-    RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN, RGB_GREEN,
-};
+static u16 ALIGNED(8) sImageBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {};
 static BITMAPINFO sBMInfo = { 0 };
 static bool32 sRunning = TRUE;
 static HWND sWindowHandle = 0;
@@ -36,6 +33,11 @@ static u16 sInputKeys = 0;
 #define ENABLE_RESIZE TRUE
 
 enum { DMA_NOW, DMA_VBLANK, DMA_HBLANK, DMA_SPECIAL };
+
+// Stuff like allocating a console shell and initializing OpenGL allocates tens of MB of RAM.
+// This should free it all...
+// via: https://twitter.com/vkrajacic/status/2028919788362441206
+static inline void ShredWindowsGarbage(void) { SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T)-1, (SIZE_T)-1); }
 
 typedef union {
     struct {
@@ -111,6 +113,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
             timeBeginPeriod(1);
 
             Win32_ProcessPendingMessages(sWindowHandle);
+
+            ShredWindowsGarbage();
 
             // If this isn't set, gFlags gets set to FLAGS_200, leading to the MP menu being
             // loaded instead of the main loop
@@ -382,53 +386,6 @@ void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum)
                 x -= sprWidth - dims->offsetX;
             } else {
                 x -= dims->offsetX;
-            }
-        }
-    }
-
-    s32 tempX = x;
-    s32 tempY = y;
-
-    u16 widthInTiles = dims->width >> 3;
-
-    for (int frameY = 0; frameY < dims->height; frameY++) {
-        s32 finalY = (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) ? (tempY + dims->height - 1 - frameY) : (tempY + frameY);
-
-        if (finalY < 0)
-            continue;
-
-        if (finalY >= DISPLAY_HEIGHT)
-            break;
-
-        for (int frameX = 0; frameX < dims->width; frameX++) {
-
-            s32 finalX = (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) ? (tempX + dims->width - 1 - frameX) : (tempX + frameX);
-
-            if (finalX < 0)
-                continue;
-
-            if (finalX >= DISPLAY_WIDTH)
-                break;
-
-            int bufferPixelIndex = finalY * DISPLAY_WIDTH + finalX;
-            int imagePixelIndex = frameY * dims->width + frameX;
-
-            if (bufferPixelIndex >= 0 && bufferPixelIndex < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-                u16 *pal = &PLTT[oamPaletteNum * 16 + (BG_PLTT_SIZE / 2)];
-                u16 tileNumX = (frameX >> 3);
-                u16 tileNumY = (frameY >> 3);
-                u16 tileNum = tileNumY * widthInTiles + tileNumX;
-                u32 offset = tileNum * TILE_SIZE_4BPP;
-
-                u8 *tile = &((u8 *)sprite->graphics.src)[offset];
-
-                u8 colorIndex = ((frameY & 0x7) * 8 + (frameX & 0x7));
-
-                bool8 doShift = (colorIndex & 1);
-                u8 colorId = tile[colorIndex >> 1] & (0xF << (doShift * 4));
-                colorId >>= doShift * 4;
-                if (colorId != 0)
-                    sImageBuffer[bufferPixelIndex] = RGB_SHIFT(pal[colorId]);
             }
         }
     }

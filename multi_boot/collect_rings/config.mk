@@ -1,6 +1,7 @@
 ### Build Configuration ###
 
 # Default variables
+PLATFORM      ?= gba
 GAME_REVISION ?= 0
 GAME_REGION   ?= USA
 DEBUG         ?= 0

@@ -3145,6 +3145,9 @@ void sub_80236C8(Player *p)
     s16 airX;
     s16 airX2;
 
+    // TODO: This doesn't seem right...
+    // TODO: Once fixed here, it should be fixed in sub_8023708() as well
+    // https://decomp.me/scratch/UjBCm
     if ((u16)p->qSpeedAirY < (u16)Q(189))
         return;
 

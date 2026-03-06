@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_characters_selected_es[] = INCBIN_U16("data/tilemaps/mp_characters_selected_es/palette.gbapal");
+const ColorRaw Palette_mp_characters_selected_es[] = INCPAL("data/tilemaps/mp_characters_selected_es/palette.pal");
 const u8 Tiles_mp_characters_selected_es[] = INCBIN_U8("data/tilemaps/mp_characters_selected_es/tiles.4bpp");
 const u16 Tilemap_mp_characters_selected_es[] = INCBIN_U16("data/tilemaps/mp_characters_selected_es/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap mp_characters_selected_es = {
     .tilesSize = sizeof(Tiles_mp_characters_selected_es),
     .palette = Palette_mp_characters_selected_es,
     .palOffset = 0,
-    .palLength = sizeof(Palette_mp_characters_selected_es) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_mp_characters_selected_es),
     .map = Tilemap_mp_characters_selected_es,
 };

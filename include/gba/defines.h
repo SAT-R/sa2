@@ -13,6 +13,7 @@
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
 #else
+#include "color.h"
 #define IWRAM_DATA 
 #define EWRAM_DATA
 #endif
@@ -78,9 +79,9 @@ extern void (*INTR_VECTOR)(void);
 
 extern uint8_t EWRAM_START[EWRAM_SIZE];
 extern uint8_t IWRAM_START[IWRAM_SIZE];
-extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
-#define BG_PLTT  ((u16*)&PLTT[0])
-#define OBJ_PLTT ((u16*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)])
+extern ColorRaw PLTT[PLTT_SIZE/sizeof(uint16_t)];
+#define BG_PLTT  ((ColorRaw*)&PLTT[0])
+#define OBJ_PLTT ((ColorRaw*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)])
 extern uint8_t OAM[OAM_SIZE];
 
 #define BG_VRAM           &VRAM[0]

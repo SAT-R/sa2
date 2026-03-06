@@ -2,7 +2,8 @@
 #define GUARD_GLOBAL_H
 
 #include "config.h"
-#include "gba/gba.h"
+#include "gba/gba.h" // TODO: Only actually include when compiling for GBA
+#include "color.h"
 
 #if PLATFORM_GBA
 #define ENABLE_AUDIO TRUE
@@ -162,10 +163,6 @@ typedef void (*VoidFn)(void);
 
 // Converts a Q24.8 fixed-point format number to a regular integer
 #define I(n) Q_24_8_TO_INT(n)
-
-#define RED_VALUE(color)   (((color) >> 0) & 0x1F)
-#define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
-#define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

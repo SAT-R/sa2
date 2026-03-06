@@ -28,9 +28,6 @@
 
 #define NUM_TAIL_SEGMENTS 3
 
-#define PAL_BOSS_4_DEFAULT 0
-#define PAL_BOSS_4_HIT     1
-
 // TODO: Probably these will be globally automated in the long run?
 #define AEROEGG_PILOT_OFFSET_X   (0)
 #define AEROEGG_PILOT_OFFSET_Y   (-14)
@@ -42,9 +39,12 @@
 
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
-static const u16 sPalAeroEggHit[2][PALETTE_LEN_4BPP] = {
-    [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
-    [PAL_BOSS_4_HIT] = INCBIN_U16("graphics/boss_4_b.gbapal"),
+#define PAL_BOSS_4_HIT 0
+#define PAL_BOSS_4_DEF 1
+
+static const ColorRaw sBoss4Palettes[2][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_4_HIT] = INCPAL("graphics/boss_4_hit.pal"),
+    [PAL_BOSS_4_DEF] = INCPAL("graphics/boss_4_normal.pal"),
 };
 
 typedef struct {
@@ -762,11 +762,11 @@ static void sub_8042560(AeroEgg *boss)
 
     if (boss->main.unk16 != 0) {
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(8, i, sPalAeroEggHit[((gStageTime & 0x2) >> 1)][i]);
+            SET_PALETTE_COLOR_OBJ(8, i, sBoss4Palettes[((gStageTime & 0x2) >> 1)][i]);
         }
     } else {
         for (i = 0; i < PALETTE_LEN_4BPP; i++) {
-            SET_PALETTE_COLOR_OBJ(8, i, sPalAeroEggHit[PAL_BOSS_4_HIT][i]);
+            SET_PALETTE_COLOR_OBJ(8, i, sBoss4Palettes[PAL_BOSS_4_DEF][i]);
         }
     }
 

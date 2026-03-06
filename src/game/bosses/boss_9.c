@@ -398,9 +398,12 @@ const u8 sRGB_080D8E20[4][PALETTE_LEN_4BPP][3] = {
 
 const u8 gUnknown_080D8EE0[16] = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3 };
 
-const u16 gUnknown_080D8EF0[2][16] = {
-    INCBIN_U16("graphics/boss_9_a.gbapal"),
-    INCBIN_U16("graphics/boss_9_b.gbapal"),
+#define PAL_BOSS_9_HIT 0
+#define PAL_BOSS_9_DEF 1
+
+const ColorRaw gUnknown_080D8EF0[2][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_9_HIT] = INCPAL("graphics/boss_9_hit.pal"),
+    [PAL_BOSS_9_DEF] = INCPAL("graphics/boss_9_normal.pal"),
 };
 
 // Used when Vanilla gets captured

@@ -34,7 +34,7 @@ public:
     CFile(CFile&& other);
     CFile(const CFile&) = delete;
     ~CFile();
-    void Preproc();
+    void Preproc(bool fullRGBA);
 
 private:
     char* m_buffer;
@@ -49,6 +49,7 @@ private:
     void TryConvertString();
     std::unique_ptr<unsigned char[]> ReadWholeFile(const std::string& path, int& size);
     bool CheckIdentifier(const std::string& ident);
+    void TryConvertPalette(bool fullRGBA);
     void TryConvertIncbin();
     void ReportDiagnostic(const char* type, const char* format, std::va_list args);
     void RaiseError(const char* format, ...);

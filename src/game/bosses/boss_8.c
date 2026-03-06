@@ -173,9 +173,13 @@ const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 static const EggRoboFn sArmFuncs[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984, sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
-const u16 sArmPalettes[2][PALETTE_LEN_4BPP] = {
-    INCBIN_U16("graphics/boss_8_a.gbapal"),
-    INCBIN_U16("graphics/boss_8_b.gbapal"),
+// NOTE: Bosses 7 and 8 have these positions swapped compared to the others for some reason.
+#define PAL_BOSS_8_DEF 0
+#define PAL_BOSS_8_HIT 1
+
+const ColorRaw sArmPalettes[2][PALETTE_LEN_4BPP] = {
+    [PAL_BOSS_8_DEF] = INCPAL("graphics/boss_8_normal.pal"),
+    [PAL_BOSS_8_HIT] = INCPAL("graphics/boss_8_hit.pal"),
 };
 
 #define SWITCH_ARM_VARIANT(boss, arm, vNum)                                                                                                \
@@ -1119,7 +1123,7 @@ void sub_804AE40(SuperEggRoboZ *boss)
                     s32 rand;
                     InitHBlankBgOffsets(0);
 
-                    sub_80075D0(0, 0, 160, r8, r6, ({
+                    sub_80075D0(0, 0, DISPLAY_HEIGHT, r8, r6, ({
                                     rand = PseudoRandom32();
                                     I(SIN(((boss->unk12 - 90) * 8) % 256u))
                                     +(rand % 8u);

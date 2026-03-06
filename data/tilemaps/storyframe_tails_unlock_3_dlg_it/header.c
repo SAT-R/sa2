@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_storyframe_tails_unlock_3_dlg_it[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_3_dlg_it/palette.gbapal");
+const ColorRaw Palette_storyframe_tails_unlock_3_dlg_it[] = INCPAL("data/tilemaps/storyframe_tails_unlock_3_dlg_it/palette.pal");
 const u8 Tiles_storyframe_tails_unlock_3_dlg_it[] = INCBIN_U8("data/tilemaps/storyframe_tails_unlock_3_dlg_it/tiles.4bpp");
 const u16 Tilemap_storyframe_tails_unlock_3_dlg_it[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_3_dlg_it/tilemap.tilemap2");
 
@@ -15,6 +15,6 @@ const Tilemap storyframe_tails_unlock_3_dlg_it = {
     .tilesSize = sizeof(Tiles_storyframe_tails_unlock_3_dlg_it),
     .palette = Palette_storyframe_tails_unlock_3_dlg_it,
     .palOffset = 0,
-    .palLength = sizeof(Palette_storyframe_tails_unlock_3_dlg_it) / sizeof(u16),
+    .palLength = ARRAY_COUNT(Palette_storyframe_tails_unlock_3_dlg_it),
     .map = Tilemap_storyframe_tails_unlock_3_dlg_it,
 };

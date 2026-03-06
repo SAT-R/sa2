@@ -9,7 +9,7 @@
 #include "animation_commands.h"
 #include "platform/platform.h"
 
-#if !PLATFORM_GBA && RENDERER != RENDERER_SOFTWARE
+#if !PLATFORM_GBA && (RENDERER != RENDERER_SOFTWARE)
 extern void Platform_DisplaySprite(Sprite *sprite, u8 oamPaletteNum);
 extern void Platform_TransformSprite(Sprite *sprite, SpriteTransform *transform);
 #endif
@@ -149,7 +149,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         return 0;
 
     if (s->qAnimDelay > 0)
-        s->qAnimDelay -= s->animSpeed * 16;
+        s->qAnimDelay -= s->animSpeed * SPRITE_ANIM_SPEED(1.0);
     else {
         /* Call all commands for the new frame */
         s32 ret;
@@ -330,7 +330,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
                         cmd->numColors);
         } else {
             DmaCopy16(3, &gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], &GET_PALETTE_COLOR_OBJ(s->palId, cmd->insertOffset),
-                      cmd->numColors * sizeof(u16));
+                      cmd->numColors * sizeof(ColorRaw));
 
             gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
         }
@@ -395,7 +395,7 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
     // sp24 = s
     UnkSpriteStruct big;
     const SpriteOffset *dimensions = s->dimensions;
-#if PORTABLE && RENDERER != RENDERER_SOFTWARE
+#if PORTABLE && (RENDERER != RENDERER_SOFTWARE)
     Platform_TransformSprite(s, transform);
     return;
 #endif
@@ -727,7 +727,7 @@ void DisplaySprite(Sprite *sprite)
                 oam->split.paletteNum += sprite->palId;
 #endif
 
-#if !PLATFORM_GBA && RENDERER != RENDERER_SOFTWARE
+#if !PLATFORM_GBA && (RENDERER != RENDERER_SOFTWARE)
                 // TEMP
                 // Quick hack for getting output in OpenGL test
                 // The whole function call should be replaced by this!
@@ -1063,9 +1063,11 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
 
     if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
+        // NOTE: This has to be split off to match using a sizeof()
+        const s32 colorSize = sizeof(ColorRaw);
 
         DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * PALETTE_LEN_4BPP], &GET_PALETTE_COLOR_OBJ(s->palId, cmd->insertOffset),
-                  cmd->numColors * 2);
+                  cmd->numColors * colorSize);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
