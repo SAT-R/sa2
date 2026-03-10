@@ -110,8 +110,10 @@ jobs:
             gh-pages
 
   publish-progress:
+    name: Publish progress
     runs-on: ubuntu-24.04
     needs: [build-gba]
+    # Only able to run from repo pull requests (by maintainers, or on the main branch via push)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     permissions:
       contents: write
@@ -126,7 +128,9 @@ jobs:
         with:
           path: |
             gh-pages
-      - run: ls -lah
+      - run: |
+          cd gh-pages
+          ls -lah
       - name: Publish reports
         if: ${{ github.event_name == 'push' }}
         uses: EndBug/add-and-commit@v7
