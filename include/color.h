@@ -1,7 +1,7 @@
 #ifndef GUARD_COLOR_H
 #define GUARD_COLOR_H
 
-#if PLATFORM_GBA || PLATFORM_SDL
+#if PLATFORM_GBA || (RENDERER == RENDERER_SOFTWARE)
 // ABGR_1555
 typedef uint16_t ColorRaw;
 typedef union Color {
