@@ -130,7 +130,7 @@ jobs:
             gh-pages
       - run: |
           cd gh-pages
-          ls -lah
+          git status
       - name: Publish reports
         if: ${{ github.event_name == 'push' }}
         uses: EndBug/add-and-commit@v7
