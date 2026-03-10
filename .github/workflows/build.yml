@@ -43,13 +43,6 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
 
-      - name: Checkout gh-pages
-        if: ${{ github.event_name == 'push' }}
-        uses: actions/checkout@master
-        with:
-          path: gh-pages
-          ref: gh-pages
-
       - name: Checkout agbcc
         uses: actions/checkout@master
         with:
@@ -112,7 +105,34 @@ jobs:
           python3 ../scripts/progress.py shield-json -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield.json
           python3 ../scripts/progress.py shield-json -m -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield-matching.json
 
-      - name: Update reports
+      - name: Upload progress
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v7
+        with:
+          path: |
+            reports
+            maps
+
+  publish-progress:
+    runs-on: ubuntu-24.02
+    needs: [build-gba]
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@master
+        with:
+          path: gh-pages
+          ref: gh-pages
+      - name: Download progress
+        uses: actions/download-artifact@v7
+        with:
+          path: |
+            reports
+            maps
+      - run: git status
+      - name: Publish reports
         if: ${{ github.event_name == 'push' }}
         uses: EndBug/add-and-commit@v7
         with:
