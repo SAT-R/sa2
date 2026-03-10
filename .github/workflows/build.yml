@@ -110,8 +110,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           path: |
-            reports
-            maps
+            gh-pages
 
   publish-progress:
     runs-on: ubuntu-24.04
@@ -129,8 +128,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: |
-            reports
-            maps
+            gh-pages
       - run: git status
       - name: Publish reports
         if: ${{ github.event_name == 'push' }}
