@@ -18,6 +18,9 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
+#define G_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
+#define T_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
+
 typedef struct {
     ScreenFade unk0;
     LostLifeCause lostLifeCause;
@@ -195,13 +198,13 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->framesUntilDone >= 61) {
+    if (screen->framesUntilDone > 60) {
         s16 temp = screen->framesUntilDone + 60;
         s->x = temp;
         sprite2->x = temp;
     } else {
-        s->x = (DISPLAY_WIDTH / 2);
-        sprite2->x = (DISPLAY_WIDTH / 2);
+        s->x = G_OVR_TXT_REST_X;
+        sprite2->x = G_OVR_TXT_REST_X;
     }
 
     UpdateScreenFade(&screen->unk0);
@@ -235,7 +238,7 @@ void sub_80369D8(void)
         screen->unk0.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
         memset(gBgPalette, RGB16(31, 7, 0), sizeof(gBgPalette));
-        gFlags |= 0x1;
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         gCurTask->main = sub_8036B30;
     }
 
@@ -338,14 +341,17 @@ void UpdateTimeOverScreenSprites(GameOverScreen *screen)
     Sprite *s = &screen->sprGameOrTime;
     Sprite *sprite2 = &screen->sprOver;
     if (screen->framesUntilDone > 140) {
+        // Move into screen middle
         s16 temp = (screen->framesUntilDone * 2) - 160;
         s->x = temp;
         sprite2->x = temp;
     } else if (screen->framesUntilDone > 40) {
-        s->x = (DISPLAY_WIDTH / 2);
-        sprite2->x = (DISPLAY_WIDTH / 2);
+        // Stay at screen middle
+        s->x = T_OVR_TXT_REST_X;
+        sprite2->x = T_OVR_TXT_REST_X;
     } else if (screen->framesUntilDone > 0) {
-        s16 temp = (DISPLAY_WIDTH / 2) - ((40 - screen->framesUntilDone) * 2);
+        // Move left during screen fade-out
+        s16 temp = T_OVR_TXT_REST_X - ((40 - screen->framesUntilDone) * 2);
         s->x = temp;
         sprite2->x = temp;
     } else {
