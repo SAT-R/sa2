@@ -22,24 +22,28 @@
 
 #define G_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
 #define T_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
+#define G_OVR_TXT_Y      (DISPLAY_HEIGHT / 2)
+#define T_OVR_TXT_Y      (DISPLAY_HEIGHT / 2)
 
 #define G_OVR_TXT_START_X (G_OVR_TXT_REST_X + 20)
 #define T_OVR_TXT_START_X (T_OVR_TXT_REST_X + 60)
-#define G_OVR_TXT_END_X   (G_OVR_TXT_REST_X - 120)
-#define T_OVR_TXT_END_X   (T_OVR_TXT_REST_X - 120)
 
 #define T_OVR_TXT_MOVE_DELTA (T_OVR_TXT_REST_X + 40)
 
 // TODO: Maybe these should represent X values, not time?
-#define T_OVR_POINT_PAUSE    (T_OVR_TXT_REST_X + 20)
-#define T_OVR_PAUSE_DURATION (T_OVR_TXT_REST_X - 20)
-#define T_OVR_POINT_RESUME   (T_OVR_POINT_PAUSE - T_OVR_PAUSE_DURATION)
+#define T_OVR_POINT_PAUSE      (T_OVR_TXT_REST_X + 20)
+#define T_OVR_PAUSE_DURATION   (ZONE_TIME_TO_INT(0, 1) + ZONE_TIME_TO_INT(0, 2. / 3.))
+#define T_OVR_FADEOUT_DURATION ZONE_TIME_TO_INT(0, 2)
+#define T_OVR_POINT_RESUME     (T_OVR_POINT_PAUSE - T_OVR_PAUSE_DURATION)
 
-#define G_OVR_TXT_FADE_1_X (G_OVR_TXT_REST_X - 60)
+#define G_OVR_TXT_FADE_1_X (G_OVR_TXT_REST_X - ZONE_TIME_TO_INT(0, 1))
 #define G_OVR_TXT_FADE_2_X (G_OVR_TXT_FADE_1_X - 10)
 
 #define T_OVR_TXT_FADE_1_X (G_OVR_TXT_REST_X + 30)
-#define T_OVR_TXT_FADE_2_X (G_OVR_TXT_REST_X - 90)
+#define T_OVR_TXT_FADE_2_X (T_OVR_POINT_RESUME - 10)
+
+#define G_OVR_TXT_END_X (G_OVR_TXT_REST_X - T_OVR_FADEOUT_DURATION)
+#define T_OVR_TXT_END_X (T_OVR_POINT_RESUME - 40)
 
 typedef struct {
     ScreenFade unk0;
@@ -131,7 +135,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     ScreenFade *fade;
 #if DEBUG
     Debug_CreateAsciiTask(0, 0);
-    lostLifeCause = OVER_CAUSE_ZERO_LIVES;
+    // lostLifeCause = OVER_CAUSE_ZERO_LIVES;
 #endif
 
     gWinRegs[WINREG_WININ] = WIN_RANGE(0, 0);
@@ -165,7 +169,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     TEMP_PrintX(screen);
 
     s = &screen->sprGameOrTime;
-    s->graphics.dest = VramMalloc(0x40);
+    s->graphics.dest = ALLOC_TILES_VARIANT(SA2_ANIM_GAME_OVER, GAME);
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
         s->graphics.anim = SA2_ANIM_GAME_OVER;
         s->variant = SA2_ANIM_VARIANT_GAME_OVER_GAME;
@@ -175,7 +179,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     }
     s->prevVariant = -1;
     s->x = 0;
-    s->y = DISPLAY_HEIGHT / 2;
+    s->y = G_OVR_TXT_Y;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->qAnimDelay = 0;
@@ -185,12 +189,12 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     UpdateSpriteAnimation(s);
 
     s = &screen->sprOver;
-    s->graphics.dest = VramMalloc(0x40);
+    s->graphics.dest = ALLOC_TILES_VARIANT(SA2_ANIM_GAME_OVER, OVER);
     s->graphics.anim = SA2_ANIM_GAME_OVER;
     s->variant = SA2_ANIM_VARIANT_GAME_OVER_OVER;
     s->prevVariant = -1;
     s->x = 0;
-    s->y = DISPLAY_HEIGHT / 2;
+    s->y = G_OVR_TXT_Y;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->qAnimDelay = 0;
@@ -214,9 +218,10 @@ void Task_GameOverScreenMain(void)
     Sprite *s = &screen->sprGameOrTime;
     Sprite *sprite2 = &screen->sprOver;
 
-    gBldRegs.bldCnt = 0x3FEF;
+    gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
     if (screen->framesUntilDone == G_OVR_TXT_FADE_1_X) {
+        // Lighten up text
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -226,6 +231,7 @@ void Task_GameOverScreenMain(void)
     }
 
     if (screen->framesUntilDone == G_OVR_TXT_FADE_2_X) {
+        // Normalize text color back
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
@@ -291,7 +297,7 @@ void Task_TimeOverScreenMain(void)
     Sprite *sprite2 = &screen->sprOver;
     TEMP_PrintX(screen);
 
-    gBldRegs.bldCnt = 0x3FEF;
+    gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
     if (screen->framesUntilDone == T_OVR_TXT_FADE_1_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
@@ -346,7 +352,7 @@ void Task_GameOverScreen3(void)
     TEMP_PrintX(screen);
 
     if (UpdateScreenFade(&screen->unk0) != SCREEN_FADE_RUNNING) {
-        screen->framesUntilDone = 140;
+        screen->framesUntilDone = T_OVR_POINT_PAUSE;
         UpdateScreenFade(&screen->unk0);
         gCurTask->main = Task_GameOverScreen4;
     }
@@ -357,7 +363,6 @@ void Task_GameOverScreen3(void)
 void Task_GameOverScreen4(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
-    TEMP_PrintX(screen);
 
     if (--screen->framesUntilDone == G_OVR_TXT_END_X) {
         TasksDestroyAll();
@@ -368,6 +373,8 @@ void Task_GameOverScreen4(void)
     } else {
         DisplayOverScreenTextSprites(screen);
     }
+
+    TEMP_PrintX(screen);
 }
 
 void DisplayOverScreenTextSprites(GameOverScreen *screen)
