@@ -2,7 +2,13 @@
 PLATFORM ?= gba
 CPU_ARCH ?= arm
 
-SHELL := /bin/bash -o pipefail
+SHELL    := /bin/bash -o pipefail
+OBJ_DIR  := build/$(PLATFORM)
+
+# a special command which ensures that stdout and stderr
+# get printed instead of output into the makefile
+infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+$(call infoshell, mkdir -p $(OBJ_DIR))
 
 ifeq ($(PLATFORM),gba)
   TOOLCHAIN := $(DEVKITARM)
@@ -34,6 +40,13 @@ else ifeq ($(CPU_ARCH),i386)
     TOOLCHAIN := /usr/x86_64-w64-mingw32/
     PREFIX := x86_64-w64-mingw32-
   endif
+else ifeq ($(PLATFORM),sdl_psp)
+  PSPDEV    ?= $(HOME)/pspdev
+  PSPSDK    := $(PSPDEV)/psp/sdk
+  export PATH := $(PSPDEV)/bin:$(PATH)
+  PREFIX    := psp-
+else ifeq ($(PLATFORM),ps2)
+  PREFIX := mips64r5900el-ps2-elf-
 else ifneq ($(PLATFORM),sdl)
    $(error Unknown CPU architecture $(CPU_ARCH))
 endif # (PLATFORM == gba)
@@ -83,9 +96,11 @@ ifneq ($(PLATFORM),gba)
         CPPFLAGS += -D CPU_ARCH_X86=0
     endif
 
+    ifeq ($(PLATFORM), sdl)
     ifeq ($(shell uname -s),Darwin)
         # -E: Pre-process only (needed for MacOS?)
         CPP := $(CC1) -E
+    endif
     endif
 endif # PLATFORM != gba
 
@@ -148,10 +163,9 @@ else
 SRCS := libagbsyscall.c
 endif
 
-ASMS := $(foreach syscall, $(SYSCALLS), $(syscall).s) # $(syscall).s should only exist after compiling non-GBA
-OBJS := $(foreach syscall, $(SYSCALLS), $(syscall).o)
+OBJS := $(foreach syscall, $(SYSCALLS), $(OBJ_DIR)/$(syscall).o)
 
-LIB := libagbsyscall.a
+LIB := $(OBJ_DIR)/libagbsyscall.a
 
 .PHONY: all clean
 
@@ -159,7 +173,7 @@ all: $(LIB)
 	@:
 
 clean:
-	rm -f $(LIB) $(OBJS) $(ASMS)
+	rm -rf build
 
 $(LIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
