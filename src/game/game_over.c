@@ -27,8 +27,8 @@
 
 // These are shared, no need to prefix.
 // TODO: Should we add global DISPLAY_CENTER_X|Y #defines and remove these?
-#define REST_X (DISPLAY_WIDTH / 2)
-#define REST_Y (DISPLAY_HEIGHT / 2)
+#define REST_X              (DISPLAY_WIDTH / 2)
+#define REST_Y              (DISPLAY_HEIGHT / 2)
 #define DURATION_TEXT_BLINK 10
 
 #define G_START_X (REST_X + 20)
