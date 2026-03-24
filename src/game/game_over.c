@@ -26,14 +26,16 @@
 // T_x = TIME OVER
 
 // These are shared, no need to prefix.
-// TODO: Should we add global DISPLAY_MIDDLE_X|Y #defines and remove these?
+// TODO: Should we add global DISPLAY_CENTER_X|Y #defines and remove these?
 #define REST_X (DISPLAY_WIDTH / 2)
 #define REST_Y (DISPLAY_HEIGHT / 2)
+#define DURATION_TEXT_BLINK 10
 
 #define G_START_X (REST_X + 20)
 #define T_START_X (REST_X + 60)
 
 #define T_PRE_PAUSE_DELTA (20)
+#define G_PRE_PAUSE_DELTA (60)
 
 // TODO: Maybe these should represent X values, not time?
 #define T_PAUSE_X          (REST_X + 20)
@@ -42,7 +44,7 @@
 #define T_POINT_RESUME     (T_PAUSE_X - T_DURATION_PAUSE)
 
 #define G_FADE_1_X (REST_X - ZONE_TIME_TO_INT(0, 1))
-#define G_FADE_2_X (G_FADE_1_X - 10)
+#define G_FADE_2_X (G_FADE_1_X - DURATION_TEXT_BLINK)
 
 #define T_FADE_1_X (REST_X + 30)
 #define T_FADE_2_X (T_POINT_RESUME - 10)
@@ -73,16 +75,6 @@ void Task_TimeOverScreenMain(void);
 void Task_GameOverScreen4(void);
 void UpdateTimeOverScreenSprites(GameOverScreen *screen);
 void Task_GameOverScreen3(void);
-
-#if DEBUG
-void TEMP_PrintX(GameOverScreen *screen)
-{
-    printf("%d\n", screen->framesUntilDone);
-    Debug_PrintIntegerAt(screen->framesUntilDone, 32, 24);
-}
-#else
-#define TEMP_PrintX(x)
-#endif
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
@@ -138,10 +130,6 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     GameOverScreen *screen;
     Sprite *s;
     ScreenFade *fade;
-#if DEBUG
-    Debug_CreateAsciiTask(0, 0);
-    // lostLifeCause = OVER_CAUSE_ZERO_LIVES;
-#endif
 
     gWinRegs[WINREG_WININ] = WIN_RANGE(0, 0);
     gWinRegs[WINREG_WINOUT] = WIN_RANGE(0, 0);
@@ -170,8 +158,6 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     } else {
         screen->framesUntilDone = T_START_X;
     }
-
-    TEMP_PrintX(screen);
 
     s = &screen->sprGameOrTime;
     s->graphics.dest = ALLOC_TILES_VARIANT(SA2_ANIM_GAME_OVER, GAME);
@@ -246,7 +232,7 @@ void Task_GameOverScreenMain(void)
     }
 
     if (screen->framesUntilDone > G_FADE_1_X) {
-        s16 temp = screen->framesUntilDone + G_FADE_1_X;
+        s16 temp = screen->framesUntilDone + G_PRE_PAUSE_DELTA;
         s->x = temp;
         sprite2->x = temp;
     } else {
@@ -268,7 +254,6 @@ void Task_GameOverScreenMain(void)
         screen->framesUntilDone = REST_X;
         gCurTask->main = Task_GameOverScreen2;
     }
-    TEMP_PrintX(screen);
 
     DisplayOverScreenTextSprites(screen);
 }
@@ -277,7 +262,6 @@ void Task_GameOverScreen2(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
     UpdateScreenFade(&screen->unk0);
-    TEMP_PrintX(screen);
 
     if (--screen->framesUntilDone == G_END_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
@@ -290,7 +274,6 @@ void Task_GameOverScreen2(void)
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         gCurTask->main = Task_GameOverScreen3;
     }
-    TEMP_PrintX(screen);
 
     DisplayOverScreenTextSprites(screen);
 }
@@ -300,7 +283,6 @@ void Task_TimeOverScreenMain(void)
     GameOverScreen *screen = TASK_DATA(gCurTask);
     Sprite *s = &screen->sprGameOrTime;
     Sprite *sprite2 = &screen->sprOver;
-    TEMP_PrintX(screen);
 
     gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
@@ -354,7 +336,6 @@ void Task_TimeOverScreenMain(void)
 void Task_GameOverScreen3(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
-    TEMP_PrintX(screen);
 
     if (UpdateScreenFade(&screen->unk0) != SCREEN_FADE_RUNNING) {
         screen->framesUntilDone = T_PAUSE_X;
@@ -378,8 +359,6 @@ void Task_GameOverScreen4(void)
     } else {
         DisplayOverScreenTextSprites(screen);
     }
-
-    TEMP_PrintX(screen);
 }
 
 void DisplayOverScreenTextSprites(GameOverScreen *screen)
@@ -394,7 +373,6 @@ void UpdateTimeOverScreenSprites(GameOverScreen *screen)
 {
     Sprite *s = &screen->sprGameOrTime;
     Sprite *sprite2 = &screen->sprOver;
-    TEMP_PrintX(screen);
 
     if (screen->framesUntilDone > T_PAUSE_X) {
         // Move into screen middle
