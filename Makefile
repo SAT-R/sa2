@@ -355,7 +355,7 @@ endif
 ifeq ($(PLATFORM),gba)
     LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 else ifeq ($(PLATFORM),sdl)
-    LIBS := $(shell sdl2-config --cflags --libs) $(LIBABGSYSCALL_LIBS)
+    LIBS := $(shell sdl2-config --cflags --libs) -lm $(LIBABGSYSCALL_LIBS)
 else ifeq ($(PLATFORM),sdl_psp)
     LIBS := -L$(PSPDEV)/psp/lib $(LIBABGSYSCALL_LIBS) -L$(PSPSDK)/lib -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower -lpspdebug -lpspnet -lpspnet_apctl -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),ps2)
