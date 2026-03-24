@@ -244,6 +244,8 @@ u16 Sqrt(u32 num) { return (u16)sqrt((double)num); }
 #endif
 
 #if L_ArcTan || L_ArcTan2
+// Source modified from mGBA
+// https://github.com/mgba-emu/mgba/blob/93fed7144836d20c9087ae88bc67dfdde834db9d/src/gba/bios.c#L291
 u16 ArcTan(s16 i)
 {
     s32 a = -((i * i) >> 14);
@@ -260,6 +262,8 @@ u16 ArcTan(s16 i)
 #endif
 
 #if L_ArcTan2
+// Source modified from mGBA
+// https://github.com/mgba-emu/mgba/blob/93fed7144836d20c9087ae88bc67dfdde834db9d/src/gba/bios.c#L319
 u16 ArcTan2(s16 x, s16 y)
 {
     if (!y) {
@@ -365,7 +369,8 @@ const s16 sineTable[256]
 #endif
 
 #if L_BgAffineSet
-
+// Source modified from gpSP
+// https://github.com/libretro/gpsp/blob/602512d7c687acb84cd56265cbcf2d7b7c75fb37/bios/source/softwareinterrupts.c#L470
 void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count)
 {
     for (s32 i = 0; i < count; i++) {
@@ -399,6 +404,8 @@ void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 
 #endif
 
 #if L_ObjAffineSet
+// Source modified from gpSP
+// https://github.com/libretro/gpsp/blob/602512d7c687acb84cd56265cbcf2d7b7c75fb37/bios/source/softwareinterrupts.c#L522
 static void CPUWriteHalfWord(void *dest, uint16_t val) { memcpy(dest, &val, sizeof(val)); }
 
 void ObjAffineSet(struct ObjAffineSrcData *src, void *dest, s32 count, s32 offset)
