@@ -800,11 +800,7 @@ void SetStageSpawnPos(u32 character, u32 level, u32 playerID, Player *p)
     }
 
     p->unk98 = 0;
-#if DEBUG
-    p->checkpointTime = ZONE_TIME_TO_INT(10, 0) - 3;
-#else
     p->checkpointTime = 0;
-#endif
     p->spriteInfoBody = &gPlayerBodyPSI;
     p->spriteInfoLimbs = &gPlayerLimbsPSI;
 }
