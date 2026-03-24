@@ -369,8 +369,8 @@ const s16 sineTable[256]
 #endif
 
 #if L_BgAffineSet
-// Source modified from gpSP
-// https://github.com/libretro/gpsp/blob/602512d7c687acb84cd56265cbcf2d7b7c75fb37/bios/source/softwareinterrupts.c#L470
+// Source modified from vba
+// https://github.com/visualboyadvance-m/visualboyadvance-m/blob/0ceab88df51ca8b0ceb3bd30d9c296553cfa583e/src/core/gba/internal/gbaBios.cpp#L196
 void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count)
 {
     for (s32 i = 0; i < count; i++) {
@@ -404,8 +404,8 @@ void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 
 #endif
 
 #if L_ObjAffineSet
-// Source modified from gpSP
-// https://github.com/libretro/gpsp/blob/602512d7c687acb84cd56265cbcf2d7b7c75fb37/bios/source/softwareinterrupts.c#L522
+// Source modified from vba
+// https://github.com/visualboyadvance-m/visualboyadvance-m/blob/0ceab88df51ca8b0ceb3bd30d9c296553cfa583e/src/core/gba/internal/gbaBios.cpp#L796
 static void CPUWriteHalfWord(void *dest, uint16_t val) { memcpy(dest, &val, sizeof(val)); }
 
 void ObjAffineSet(struct ObjAffineSrcData *src, void *dest, s32 count, s32 offset)
