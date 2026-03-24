@@ -20,30 +20,35 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
-#define G_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
-#define T_OVR_TXT_REST_X (DISPLAY_WIDTH / 2)
-#define G_OVR_TXT_Y      (DISPLAY_HEIGHT / 2)
-#define T_OVR_TXT_Y      (DISPLAY_HEIGHT / 2)
+// NOTE:
+// The prefixes indicate their relation to the specific "over" screen:
+// G_x = GAME OVER
+// T_x = TIME OVER
 
-#define G_OVR_TXT_START_X (G_OVR_TXT_REST_X + 20)
-#define T_OVR_TXT_START_X (T_OVR_TXT_REST_X + 60)
+// These are shared, no need to prefix.
+// TODO: Should we add global DISPLAY_MIDDLE_X|Y #defines and remove these?
+#define REST_X (DISPLAY_WIDTH / 2)
+#define REST_Y (DISPLAY_HEIGHT / 2)
 
-#define T_OVR_TXT_MOVE_DELTA (T_OVR_TXT_REST_X + 40)
+#define G_START_X (REST_X + 20)
+#define T_START_X (REST_X + 60)
+
+#define T_PRE_PAUSE_DELTA (20)
 
 // TODO: Maybe these should represent X values, not time?
-#define T_OVR_POINT_PAUSE      (T_OVR_TXT_REST_X + 20)
-#define T_OVR_PAUSE_DURATION   (ZONE_TIME_TO_INT(0, 1) + ZONE_TIME_TO_INT(0, 2. / 3.))
-#define T_OVR_FADEOUT_DURATION ZONE_TIME_TO_INT(0, 2)
-#define T_OVR_POINT_RESUME     (T_OVR_POINT_PAUSE - T_OVR_PAUSE_DURATION)
+#define T_PAUSE_X          (REST_X + 20)
+#define T_DURATION_PAUSE   (ZONE_TIME_TO_INT(0, 1) + ZONE_TIME_TO_INT(0, 2. / 3.))
+#define T_DURATION_FADEOUT ZONE_TIME_TO_INT(0, 2)
+#define T_POINT_RESUME     (T_PAUSE_X - T_DURATION_PAUSE)
 
-#define G_OVR_TXT_FADE_1_X (G_OVR_TXT_REST_X - ZONE_TIME_TO_INT(0, 1))
-#define G_OVR_TXT_FADE_2_X (G_OVR_TXT_FADE_1_X - 10)
+#define G_FADE_1_X (REST_X - ZONE_TIME_TO_INT(0, 1))
+#define G_FADE_2_X (G_FADE_1_X - 10)
 
-#define T_OVR_TXT_FADE_1_X (G_OVR_TXT_REST_X + 30)
-#define T_OVR_TXT_FADE_2_X (T_OVR_POINT_RESUME - 10)
+#define T_FADE_1_X (REST_X + 30)
+#define T_FADE_2_X (T_POINT_RESUME - 10)
 
-#define G_OVR_TXT_END_X (G_OVR_TXT_REST_X - T_OVR_FADEOUT_DURATION)
-#define T_OVR_TXT_END_X (T_OVR_POINT_RESUME - 40)
+#define G_END_X (REST_X - T_DURATION_FADEOUT)
+#define T_END_X (T_POINT_RESUME - 40)
 
 typedef struct {
     ScreenFade unk0;
@@ -161,9 +166,9 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     screen = TASK_DATA(t);
 
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
-        screen->framesUntilDone = G_OVR_TXT_START_X;
+        screen->framesUntilDone = G_START_X;
     } else {
-        screen->framesUntilDone = T_OVR_TXT_START_X;
+        screen->framesUntilDone = T_START_X;
     }
 
     TEMP_PrintX(screen);
@@ -179,7 +184,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     }
     s->prevVariant = -1;
     s->x = 0;
-    s->y = G_OVR_TXT_Y;
+    s->y = REST_Y;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->qAnimDelay = 0;
@@ -194,7 +199,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->variant = SA2_ANIM_VARIANT_GAME_OVER_OVER;
     s->prevVariant = -1;
     s->x = 0;
-    s->y = G_OVR_TXT_Y;
+    s->y = REST_Y;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->qAnimDelay = 0;
@@ -220,7 +225,7 @@ void Task_GameOverScreenMain(void)
 
     gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
-    if (screen->framesUntilDone == G_OVR_TXT_FADE_1_X) {
+    if (screen->framesUntilDone == G_FADE_1_X) {
         // Lighten up text
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
@@ -230,7 +235,7 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->framesUntilDone == G_OVR_TXT_FADE_2_X) {
+    if (screen->framesUntilDone == G_FADE_2_X) {
         // Normalize text color back
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
@@ -240,18 +245,18 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->framesUntilDone > G_OVR_TXT_FADE_1_X) {
-        s16 temp = screen->framesUntilDone + G_OVR_TXT_FADE_1_X;
+    if (screen->framesUntilDone > G_FADE_1_X) {
+        s16 temp = screen->framesUntilDone + G_FADE_1_X;
         s->x = temp;
         sprite2->x = temp;
     } else {
-        s->x = G_OVR_TXT_REST_X;
-        sprite2->x = G_OVR_TXT_REST_X;
+        s->x = REST_X;
+        sprite2->x = REST_X;
     }
 
     UpdateScreenFade(&screen->unk0);
 
-    if (--screen->framesUntilDone == G_OVR_TXT_END_X) {
+    if (--screen->framesUntilDone == G_END_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -260,7 +265,7 @@ void Task_GameOverScreenMain(void)
                                | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
 
-        screen->framesUntilDone = G_OVR_TXT_REST_X;
+        screen->framesUntilDone = REST_X;
         gCurTask->main = Task_GameOverScreen2;
     }
     TEMP_PrintX(screen);
@@ -274,7 +279,7 @@ void Task_GameOverScreen2(void)
     UpdateScreenFade(&screen->unk0);
     TEMP_PrintX(screen);
 
-    if (--screen->framesUntilDone == G_OVR_TXT_END_X) {
+    if (--screen->framesUntilDone == G_END_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_LIGHTEN);
@@ -299,7 +304,7 @@ void Task_TimeOverScreenMain(void)
 
     gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
-    if (screen->framesUntilDone == T_OVR_TXT_FADE_1_X) {
+    if (screen->framesUntilDone == T_FADE_1_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -308,7 +313,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->framesUntilDone == T_OVR_POINT_PAUSE) {
+    if (screen->framesUntilDone == T_PAUSE_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
@@ -317,7 +322,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->framesUntilDone == T_OVR_TXT_FADE_2_X) {
+    if (screen->framesUntilDone == T_FADE_2_X) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -328,7 +333,7 @@ void Task_TimeOverScreenMain(void)
 
     UpdateScreenFade(&screen->unk0);
 
-    if (--screen->framesUntilDone == T_OVR_TXT_END_X) {
+    if (--screen->framesUntilDone == T_END_X) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
         gBgSpritesCount = 0;
@@ -352,7 +357,7 @@ void Task_GameOverScreen3(void)
     TEMP_PrintX(screen);
 
     if (UpdateScreenFade(&screen->unk0) != SCREEN_FADE_RUNNING) {
-        screen->framesUntilDone = T_OVR_POINT_PAUSE;
+        screen->framesUntilDone = T_PAUSE_X;
         UpdateScreenFade(&screen->unk0);
         gCurTask->main = Task_GameOverScreen4;
     }
@@ -364,7 +369,7 @@ void Task_GameOverScreen4(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
 
-    if (--screen->framesUntilDone == G_OVR_TXT_END_X) {
+    if (--screen->framesUntilDone == G_END_X) {
         TasksDestroyAll();
         PAUSE_BACKGROUNDS_QUEUE();
         gBgSpritesCount = 0;
@@ -391,18 +396,18 @@ void UpdateTimeOverScreenSprites(GameOverScreen *screen)
     Sprite *sprite2 = &screen->sprOver;
     TEMP_PrintX(screen);
 
-    if (screen->framesUntilDone > T_OVR_POINT_PAUSE) {
+    if (screen->framesUntilDone > T_PAUSE_X) {
         // Move into screen middle
-        s16 temp = (screen->framesUntilDone * 2) - T_OVR_TXT_MOVE_DELTA;
+        s16 temp = (screen->framesUntilDone * 2) - (T_PAUSE_X + T_PRE_PAUSE_DELTA);
         s->x = temp;
         sprite2->x = temp;
-    } else if (screen->framesUntilDone > T_OVR_POINT_RESUME) {
+    } else if (screen->framesUntilDone > T_POINT_RESUME) {
         // Stay at screen middle
-        s->x = T_OVR_TXT_REST_X;
-        sprite2->x = T_OVR_TXT_REST_X;
-    } else if (screen->framesUntilDone > T_OVR_TXT_END_X) {
+        s->x = REST_X;
+        sprite2->x = REST_X;
+    } else if (screen->framesUntilDone > T_END_X) {
         // Move left during screen fade-out
-        s16 temp = T_OVR_TXT_REST_X - ((T_OVR_POINT_RESUME - screen->framesUntilDone) * 2);
+        s16 temp = REST_X - ((T_POINT_RESUME - screen->framesUntilDone) * 2);
         s->x = temp;
         sprite2->x = temp;
     } else {
