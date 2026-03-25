@@ -280,7 +280,7 @@ include songs.mk
 
 $(ELF): $(OBJS) $(LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -L../../../libagbsyscall -lagbsyscall -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -L../../../libagbsyscall/build/gba -lagbsyscall -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@

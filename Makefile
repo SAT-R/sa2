@@ -116,7 +116,7 @@ SDL_MINGW_LIB     := $(SDL_MINGW_PKG)/lib
 SDL_MINGW_FLAGS   := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
 SDL_MINGW_LIBS    := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
 
-LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/libagbsyscall -lagbsyscall
+LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/libagbsyscall/build/$(PLATFORM) -lagbsyscall
 
 ### FILES ###
 
@@ -355,13 +355,13 @@ endif
 ifeq ($(PLATFORM),gba)
     LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 else ifeq ($(PLATFORM),sdl)
-    LIBS := $(shell sdl2-config --cflags --libs)
+    LIBS := $(shell sdl2-config --cflags --libs) $(LIBABGSYSCALL_LIBS) -lm
 else ifeq ($(PLATFORM),sdl_psp)
-    LIBS := -L$(PSPDEV)/psp/lib -L$(PSPSDK)/lib -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower -lpspdebug -lpspnet -lpspnet_apctl -Wl,-zmax-page-size=128
+    LIBS := -L$(PSPDEV)/psp/lib $(LIBABGSYSCALL_LIBS) -L$(PSPSDK)/lib -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower -lpspdebug -lpspnet -lpspnet_apctl -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),ps2)
-    LIBS := -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -lgskit -ldmakit -lps2_drivers -lmc -lpatches -Wl,-zmax-page-size=128
+    LIBS := -T$(PS2SDK)/ee/startup/linkfile $(LIBABGSYSCALL_LIBS) -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -lgskit -ldmakit -lps2_drivers -lmc -lpatches -Wl,-zmax-page-size=128
 else ifeq ($(PLATFORM),sdl_win32)
-    LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(SDL_MINGW_LIBS)
+    LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(LIBABGSYSCALL_LIBS) $(SDL_MINGW_LIBS)
 else ifeq ($(PLATFORM), win32)
     LIBS := -mwin32 -lkernel32 -lwinmm -lgdi32 -lxinput -lopengl32 $(LIBABGSYSCALL_LIBS)
 endif
@@ -533,12 +533,11 @@ ifeq ($(PLATFORM),gba)
 $(ROM): $(ELF) libagbsyscall
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
-else ifeq ($(PLATFORM),win32)
-$(ROM): $(ELF) libagbsyscall
-	$(OBJCOPY) -O pei-x86-64 $< $@
 else
-$(ROM): $(ELF)
-ifeq ($(PLATFORM),sdl)
+$(ROM): $(ELF) libagbsyscall
+ifeq ($(PLATFORM),win32)
+	$(OBJCOPY) -O pei-x86-64 $< $@
+else ifeq ($(PLATFORM),sdl)
 	cp $< $@
 else ifeq ($(PLATFORM),sdl_psp)
 	@echo Creating $(ROM) from $(ELF)
