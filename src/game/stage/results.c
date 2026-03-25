@@ -103,23 +103,23 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         UpdateScreenFade(&outro->base.fade);
     }
 
-    if (courseTime < ZONE_TIME_TO_INT(0, 30)) {
+    if (courseTime < TIME(0, 30)) {
         outro->base.timeBonusScore = 80000;
-    } else if (courseTime < ZONE_TIME_TO_INT(0, 50)) {
+    } else if (courseTime < TIME(0, 50)) {
         outro->base.timeBonusScore = 50000;
-    } else if (courseTime < ZONE_TIME_TO_INT(1, 0)) {
+    } else if (courseTime < TIME(1, 0)) {
         outro->base.timeBonusScore = 10000;
-    } else if (courseTime < ZONE_TIME_TO_INT(1, 30)) {
+    } else if (courseTime < TIME(1, 30)) {
         outro->base.timeBonusScore = 5000;
-    } else if (courseTime < ZONE_TIME_TO_INT(2, 0)) {
+    } else if (courseTime < TIME(2, 0)) {
         outro->base.timeBonusScore = 4000;
-    } else if (courseTime < ZONE_TIME_TO_INT(3, 0)) {
+    } else if (courseTime < TIME(3, 0)) {
         outro->base.timeBonusScore = 3000;
-    } else if (courseTime < ZONE_TIME_TO_INT(4, 0)) {
+    } else if (courseTime < TIME(4, 0)) {
         outro->base.timeBonusScore = 2000;
-    } else if (courseTime < ZONE_TIME_TO_INT(5, 0)) {
+    } else if (courseTime < TIME(5, 0)) {
         outro->base.timeBonusScore = 1000;
-    } else if (courseTime < ZONE_TIME_TO_INT(6, 0)) {
+    } else if (courseTime < TIME(6, 0)) {
         outro->base.timeBonusScore = 500;
     } else {
         outro->base.timeBonusScore = 0;

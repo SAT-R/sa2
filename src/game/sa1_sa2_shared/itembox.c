@@ -24,8 +24,8 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
-#define ITEM_DURATION_INVINCIBILITY ZONE_TIME_TO_INT(0, 20)
-#define ITEM_DURATION_SPEED_UP      ZONE_TIME_TO_INT(0, 20)
+#define ITEM_DURATION_INVINCIBILITY TIME(0, 20)
+#define ITEM_DURATION_SPEED_UP      TIME(0, 20)
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

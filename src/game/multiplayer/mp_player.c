@@ -1948,7 +1948,7 @@ bool32 SA2_LABEL(sub_8018300)(void)
                 if (gMultiplayerCharacters[mpp->unk56] == 3) {
                     if (s->graphics.anim == SA1_ANIM_CHAR(AMY, BOOSTLESS_ATTACK) || s->graphics.anim == SA1_ANIM_CHAR(AMY, 56)) {
                         gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
-                        gPlayer.timerSpeedup = ZONE_TIME_TO_INT(0, 10);
+                        gPlayer.timerSpeedup = TIME(0, 10);
                         gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
                         CreateItemTask_Confusion(gPlayer.character);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, Q(0.5));

@@ -849,7 +849,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     if (Coll_Player_Boss_Attack(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
         if (boss->cannonHealth != 0) {
             Sprite *s = &boss->pilot;
-            boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
+            boss->unk73 = TIME(0, 0.5);
             if (boss->bossHitTimer == 0) {
 
                 s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
@@ -863,7 +863,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     } else {
         if (Coll_Player_Enemy(s, I(boss->qWorldX), I(boss->qWorldY), 0, player) == 1) {
             Sprite *s = &boss->pilot;
-            boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
+            boss->unk73 = TIME(0, 0.5);
             if (boss->bossHitTimer == 0) {
 
                 s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
@@ -1087,7 +1087,7 @@ static void TaskDestructor_EggBomberTankMain(struct Task *t)
 UNUSED static void sub_803E798(EggBomberTank *boss)
 {
     Sprite *s = &boss->pilot;
-    boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
+    boss->unk73 = TIME(0, 0.5);
     if (boss->bossHitTimer == 0) {
         s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
         s->variant = 1;
@@ -1155,7 +1155,7 @@ static void Task_EggBomberTankBombExplosion(void)
         if (Coll_Player_Enemy(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer) == 1) {
             if (bomb->boss->bossHitTimer == 0) {
                 Sprite *s = &bomb->boss->pilot;
-                bomb->boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
+                bomb->boss->unk73 = TIME(0, 0.5);
 
                 s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s->variant = 1;
@@ -1233,7 +1233,7 @@ static void Task_BombExplosionMain(void)
         if (Coll_Player_Enemy(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0, &gPlayer) == 1) {
             if (explosion->boss->bossHitTimer == 0) {
                 Sprite *s = &explosion->boss->pilot;
-                explosion->boss->unk73 = ZONE_TIME_TO_INT(0, 0.5);
+                explosion->boss->unk73 = TIME(0, 0.5);
                 s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s->variant = 1;
                 s->prevVariant = -1;

@@ -66,25 +66,17 @@ const u8 gMillisUnpackTable[60][2] = {
 };
 
 const s16 sZoneTimeSecondsTable[] = {
-    ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),  ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),
-    ZONE_TIME_TO_INT(0, 5),  ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),  ZONE_TIME_TO_INT(0, 9),
-    ZONE_TIME_TO_INT(0, 10), ZONE_TIME_TO_INT(0, 11), ZONE_TIME_TO_INT(0, 12), ZONE_TIME_TO_INT(0, 13), ZONE_TIME_TO_INT(0, 14),
-    ZONE_TIME_TO_INT(0, 15), ZONE_TIME_TO_INT(0, 16), ZONE_TIME_TO_INT(0, 17), ZONE_TIME_TO_INT(0, 18), ZONE_TIME_TO_INT(0, 19),
-    ZONE_TIME_TO_INT(0, 20), ZONE_TIME_TO_INT(0, 21), ZONE_TIME_TO_INT(0, 22), ZONE_TIME_TO_INT(0, 23), ZONE_TIME_TO_INT(0, 24),
-    ZONE_TIME_TO_INT(0, 25), ZONE_TIME_TO_INT(0, 26), ZONE_TIME_TO_INT(0, 27), ZONE_TIME_TO_INT(0, 28), ZONE_TIME_TO_INT(0, 29),
-    ZONE_TIME_TO_INT(0, 30), ZONE_TIME_TO_INT(0, 31), ZONE_TIME_TO_INT(0, 32), ZONE_TIME_TO_INT(0, 33), ZONE_TIME_TO_INT(0, 34),
-    ZONE_TIME_TO_INT(0, 35), ZONE_TIME_TO_INT(0, 36), ZONE_TIME_TO_INT(0, 37), ZONE_TIME_TO_INT(0, 38), ZONE_TIME_TO_INT(0, 39),
-    ZONE_TIME_TO_INT(0, 40), ZONE_TIME_TO_INT(0, 41), ZONE_TIME_TO_INT(0, 42), ZONE_TIME_TO_INT(0, 43), ZONE_TIME_TO_INT(0, 44),
-    ZONE_TIME_TO_INT(0, 45), ZONE_TIME_TO_INT(0, 46), ZONE_TIME_TO_INT(0, 47), ZONE_TIME_TO_INT(0, 48), ZONE_TIME_TO_INT(0, 49),
-    ZONE_TIME_TO_INT(0, 50), ZONE_TIME_TO_INT(0, 51), ZONE_TIME_TO_INT(0, 52), ZONE_TIME_TO_INT(0, 53), ZONE_TIME_TO_INT(0, 54),
-    ZONE_TIME_TO_INT(0, 55), ZONE_TIME_TO_INT(0, 56), ZONE_TIME_TO_INT(0, 57), ZONE_TIME_TO_INT(0, 58), ZONE_TIME_TO_INT(0, 59),
-    ZONE_TIME_TO_INT(1, 0),
+    TIME(0, 0),  TIME(0, 1),  TIME(0, 2),  TIME(0, 3),  TIME(0, 4),  TIME(0, 5),  TIME(0, 6),  TIME(0, 7),  TIME(0, 8),
+    TIME(0, 9),  TIME(0, 10), TIME(0, 11), TIME(0, 12), TIME(0, 13), TIME(0, 14), TIME(0, 15), TIME(0, 16), TIME(0, 17),
+    TIME(0, 18), TIME(0, 19), TIME(0, 20), TIME(0, 21), TIME(0, 22), TIME(0, 23), TIME(0, 24), TIME(0, 25), TIME(0, 26),
+    TIME(0, 27), TIME(0, 28), TIME(0, 29), TIME(0, 30), TIME(0, 31), TIME(0, 32), TIME(0, 33), TIME(0, 34), TIME(0, 35),
+    TIME(0, 36), TIME(0, 37), TIME(0, 38), TIME(0, 39), TIME(0, 40), TIME(0, 41), TIME(0, 42), TIME(0, 43), TIME(0, 44),
+    TIME(0, 45), TIME(0, 46), TIME(0, 47), TIME(0, 48), TIME(0, 49), TIME(0, 50), TIME(0, 51), TIME(0, 52), TIME(0, 53),
+    TIME(0, 54), TIME(0, 55), TIME(0, 56), TIME(0, 57), TIME(0, 58), TIME(0, 59), TIME(1, 0),
 };
 
 const u16 sZoneTimeMinutesTable[] = {
-    ZONE_TIME_TO_INT(0, 0), ZONE_TIME_TO_INT(1, 0), ZONE_TIME_TO_INT(2, 0),  ZONE_TIME_TO_INT(3, 0),
-    ZONE_TIME_TO_INT(4, 0), ZONE_TIME_TO_INT(5, 0), ZONE_TIME_TO_INT(6, 0),  ZONE_TIME_TO_INT(7, 0),
-    ZONE_TIME_TO_INT(8, 0), ZONE_TIME_TO_INT(9, 0), ZONE_TIME_TO_INT(10, 0),
+    TIME(0, 0), TIME(1, 0), TIME(2, 0), TIME(3, 0), TIME(4, 0), TIME(5, 0), TIME(6, 0), TIME(7, 0), TIME(8, 0), TIME(9, 0), TIME(10, 0),
 };
 
 typedef struct {
@@ -283,7 +275,7 @@ void Task_StageUIMain(void)
                 }
             }
 
-            if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= ZONE_TIME_TO_INT(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
+            if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= TIME(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
                 m4aSongNumStart(SE_TIMER);
             }
 
@@ -463,7 +455,7 @@ void Task_StageUIMain(void)
             r5 = r1 - sZoneTimeMinutesTable[minutes];
 
             tempTime = gCourseTime;
-            tempB = ZONE_TIME_TO_INT(9, 0);
+            tempB = TIME(9, 0);
             palId = 0;
             if (tempTime > tempB) {
                 palId = (-(gStageTime & 0x10)) >> 31;

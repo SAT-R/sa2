@@ -36,11 +36,11 @@
 
 // TODO: Maybe these should represent X values, not time?
 #define T_PAUSE_X          (DISPLAY_CENTER_X + 20)
-#define T_DURATION_PAUSE   (ZONE_TIME_TO_INT(0, 1) + ZONE_TIME_TO_INT(0, 2. / 3.))
-#define T_DURATION_FADEOUT ZONE_TIME_TO_INT(0, 2)
+#define T_DURATION_PAUSE   (TIME(0, 1) + TIME(0, 2. / 3.))
+#define T_DURATION_FADEOUT TIME(0, 2)
 #define T_POINT_RESUME     (T_PAUSE_X - T_DURATION_PAUSE)
 
-#define G_FADE_1_X (DISPLAY_CENTER_X - ZONE_TIME_TO_INT(0, 1))
+#define G_FADE_1_X (DISPLAY_CENTER_X - TIME(0, 1))
 #define G_FADE_2_X (G_FADE_1_X - DURATION_TEXT_BLINK)
 
 #define T_FADE_1_X (DISPLAY_CENTER_X + 30)

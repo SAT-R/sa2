@@ -22,11 +22,11 @@
 #if (GAME == GAME_SA1)
 #define DEMO_SPRITE_PRIO   1
 #define DEMO_OAM_ORDER     15
-#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 30)
+#define DEMO_PLAYBACK_TIME TIME(0, 30)
 #elif (GAME == GAME_SA2)
 #define DEMO_SPRITE_PRIO   0
 #define DEMO_OAM_ORDER     1
-#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 24.5)
+#define DEMO_PLAYBACK_TIME TIME(0, 24.5)
 #endif
 
 typedef struct {

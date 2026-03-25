@@ -864,7 +864,7 @@ void InitializePlayer(Player *p)
     p->stoodObj = NULL;
     p->itemEffect = PLAYER_ITEM_EFFECT__NONE;
     p->SA2_LABEL(unk2A) = 0;
-    p->SA2_LABEL(unk72) = ZONE_TIME_TO_INT(0, 6);
+    p->SA2_LABEL(unk72) = TIME(0, 6);
     p->SA2_LABEL(unk7E) = 0;
     p->SA2_LABEL(unk7C) = 0;
     p->SA2_LABEL(unk82) = Q(1);
@@ -3558,7 +3558,7 @@ void Task_PlayerDied(void)
 
     if (DeadPlayerLeftScreen(&gPlayer, &gCamera, gPlayer.qWorldY)) {
         player_0_Task *gt = TASK_DATA(gCurTask);
-        gt->unk4 = ZONE_TIME_TO_INT(0, 1);
+        gt->unk4 = TIME(0, 1);
         gPlayer.moveState |= MOVESTATE_100000;
         if (IS_MULTI_PLAYER) {
             sub_8024B10(p, psi1);
@@ -5816,7 +5816,7 @@ void Player_InitVictoryPoseTransition(Player *p)
 {
     Player_CameraShift_inline(p);
 
-    p->unk72 = ZONE_TIME_TO_INT(0, 1.5);
+    p->unk72 = TIME(0, 1.5);
 
     if (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         switch (gCurrentLevel & 0x3) {

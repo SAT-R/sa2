@@ -105,7 +105,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
-                    gPlayer.confusionTimer = ZONE_TIME_TO_INT(0, 10);
+                    gPlayer.confusionTimer = TIME(0, 10);
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);
                 }
@@ -130,7 +130,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                         gPlayer.layer = (mpp->unk54 >> 7) & 1;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
-                        gPlayer.timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
+                        gPlayer.timerInvulnerability = TIME(0, 2);
                         gCamera.x = (I(gPlayer.qWorldX) + gCamera.shiftX) - DISPLAY_CENTER_X;
                         gCamera.y = (I(gPlayer.qWorldY) + gCamera.shiftY) - DISPLAY_CENTER_Y;
                         m4aSongNumStart(SE_218);
@@ -145,7 +145,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
 
-                    gPlayer.timerSpeedup = ZONE_TIME_TO_INT(0, 10);
+                    gPlayer.timerSpeedup = TIME(0, 10);
                     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);
