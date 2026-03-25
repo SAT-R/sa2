@@ -67,14 +67,14 @@ typedef struct {
 
 void Task_FadeoutToOverScreen(void);
 void DisplayOverScreenTextSprites(GameOverScreen *screen);
-void Task_GameOverScreen2(void);
+void Task_OverScreenFadeBgUpdate(void);
 static void InitOverScreen(LostLifeCause lostLifeCause);
 void Task_GameOverScreenMain(void);
 void TaskDestructor_GameOverTimeOverScreen(struct Task *);
 void Task_TimeOverScreenMain(void);
-void Task_GameOverScreen4(void);
+void Task_OverScreenWaitMusicEnd(void);
 void UpdateTimeOverScreenSprites(GameOverScreen *screen);
-void Task_GameOverScreen3(void);
+void Task_OverScreenFadeTextUpdate(void);
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
@@ -232,10 +232,12 @@ void Task_GameOverScreenMain(void)
     }
 
     if (screen->framesUntilDone > G_FADE_1_X) {
+        // Move "GAME OVER" text into screen middle
         s16 temp = screen->framesUntilDone + G_PRE_PAUSE_DELTA;
         s->x = temp;
         sprite2->x = temp;
     } else {
+        // "GAME OVER" text is at screen middle
         s->x = REST_X;
         sprite2->x = REST_X;
     }
@@ -252,13 +254,13 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
 
         screen->framesUntilDone = REST_X;
-        gCurTask->main = Task_GameOverScreen2;
+        gCurTask->main = Task_OverScreenFadeBgUpdate;
     }
 
     DisplayOverScreenTextSprites(screen);
 }
 
-void Task_GameOverScreen2(void)
+void Task_OverScreenFadeBgUpdate(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
     UpdateScreenFade(&screen->unk0);
@@ -272,7 +274,7 @@ void Task_GameOverScreen2(void)
         screen->unk0.bldAlpha = 0;
         memset(gBgPalette, RGB16(31, 7, 0), sizeof(gBgPalette));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
-        gCurTask->main = Task_GameOverScreen3;
+        gCurTask->main = Task_OverScreenFadeTextUpdate;
     }
 
     DisplayOverScreenTextSprites(screen);
@@ -287,6 +289,7 @@ void Task_TimeOverScreenMain(void)
     gBldRegs.bldCnt = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | (BLDCNT_TGT1_ALL & ~BLDCNT_TGT1_OBJ);
 
     if (screen->framesUntilDone == T_FADE_1_X) {
+        // Lighten up text
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -296,6 +299,7 @@ void Task_TimeOverScreenMain(void)
     }
 
     if (screen->framesUntilDone == T_PAUSE_X) {
+        // Normalize text color back
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
@@ -305,6 +309,7 @@ void Task_TimeOverScreenMain(void)
     }
 
     if (screen->framesUntilDone == T_FADE_2_X) {
+        // Init screen fadeout
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -333,20 +338,20 @@ void Task_TimeOverScreenMain(void)
     UpdateTimeOverScreenSprites(screen);
 }
 
-void Task_GameOverScreen3(void)
+void Task_OverScreenFadeTextUpdate(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
 
     if (UpdateScreenFade(&screen->unk0) != SCREEN_FADE_RUNNING) {
         screen->framesUntilDone = T_PAUSE_X;
         UpdateScreenFade(&screen->unk0);
-        gCurTask->main = Task_GameOverScreen4;
+        gCurTask->main = Task_OverScreenWaitMusicEnd;
     }
 
     DisplayOverScreenTextSprites(screen);
 }
 
-void Task_GameOverScreen4(void)
+void Task_OverScreenWaitMusicEnd(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
 
