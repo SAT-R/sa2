@@ -352,9 +352,9 @@ static void SoundTestScreenCreateUI(struct Task *t)
     sub_806A568(backControlName, RENDER_TARGET_SCREEN, sBackButtonText[TextOffset(langOffset, 0, 1, 2)],
                 sBackButtonText[TextOffset(langOffset, 1, 1, 2)], 0x1000, 90, DISPLAY_HEIGHT - 26, 5,
                 sBackButtonText[TextOffset(langOffset, 2, 1, 2)], 0);
-    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, (DISPLAY_WIDTH / 4) + 30, (DISPLAY_HEIGHT / 2) + 10, 5, 2, 0);
+    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, (DISPLAY_WIDTH / 4) + 30, DISPLAY_CENTER_Y + 10, 5, 2, 0);
 
-    for (i = 0, xPos = (DISPLAY_WIDTH / 4) + 20, yPos = (DISPLAY_HEIGHT / 2) + 16; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
+    for (i = 0, xPos = (DISPLAY_WIDTH / 4) + 20, yPos = DISPLAY_CENTER_Y + 16; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
         if (i == 0) {
             sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000, xPos, yPos, 5, 0x11, 0);
         } else {
@@ -363,8 +363,8 @@ static void SoundTestScreenCreateUI(struct Task *t)
     }
 
     for (i = 0; i < 4; i++) {
-        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, (DISPLAY_WIDTH / 4) + 16, (DISPLAY_HEIGHT / 2) + 10, 6,
-                    0, 0);
+        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, (DISPLAY_WIDTH / 4) + 16, DISPLAY_CENTER_Y + 10, 6, 0,
+                    0);
     }
 
     // Transforms static circle
@@ -373,7 +373,7 @@ static void SoundTestScreenCreateUI(struct Task *t)
         transforms[i].qScaleX = Q(1);
         transforms[i].qScaleY = Q(1);
         transforms[i].x = (DISPLAY_WIDTH / 4) + 16;
-        transforms[i].y = (DISPLAY_HEIGHT / 2) + 10;
+        transforms[i].y = DISPLAY_CENTER_Y + 10;
     }
 
     transforms[1].x--;
@@ -381,10 +381,10 @@ static void SoundTestScreenCreateUI(struct Task *t)
     transforms[2].x--;
     transforms[3].y--;
 
-    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 60, 6, 0, 4);
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 36, 5, 0, 0);
+    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, (DISPLAY_WIDTH / 4) * 3, DISPLAY_CENTER_Y + 60, 6, 0, 4);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, (DISPLAY_WIDTH / 4) * 3, DISPLAY_CENTER_Y + 36, 5, 0, 0);
     animatedCream++;
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, (DISPLAY_WIDTH / 4) * 3, (DISPLAY_HEIGHT / 2) + 36, 5, 0, 0);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, (DISPLAY_WIDTH / 4) * 3, DISPLAY_CENTER_Y + 36, 5, 0, 0);
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         sub_806A568(&soundTestScreen->nameDisplay[i], RENDER_TARGET_SCREEN, 2, 0x45F, 0x1000, 0, 0, 5,
@@ -569,16 +569,16 @@ static void SoundTestScreenRenderUI(void)
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     for (i = 0; i < 2; i++, numberDisplayDigit++) {
-        numberDisplayDigit->y = (DISPLAY_HEIGHT / 2) + 16;
+        numberDisplayDigit->y = DISPLAY_CENTER_Y + 16;
 
         if (soundTestScreen->soundNumAnimSteps[i] != 0) {
             if (soundTestScreen->soundNumAnimSteps[i] > 0) {
-                numberDisplayDigit->y = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + (DISPLAY_HEIGHT / 2) + 16;
+                numberDisplayDigit->y = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + DISPLAY_CENTER_Y + 16;
                 soundTestScreen->soundNumAnimSteps[i]--;
             }
 
             if (soundTestScreen->soundNumAnimSteps[i] < 0) {
-                numberDisplayDigit->y = (DISPLAY_HEIGHT / 2) + 16 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                numberDisplayDigit->y = DISPLAY_CENTER_Y + 16 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
                 soundTestScreen->soundNumAnimSteps[i]++;
             }
         }

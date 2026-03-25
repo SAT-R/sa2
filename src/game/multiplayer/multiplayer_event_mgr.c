@@ -131,8 +131,8 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
-                        gCamera.x = (I(gPlayer.qWorldX) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
-                        gCamera.y = (I(gPlayer.qWorldY) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
+                        gCamera.x = (I(gPlayer.qWorldX) + gCamera.shiftX) - DISPLAY_CENTER_X;
+                        gCamera.y = (I(gPlayer.qWorldY) + gCamera.shiftY) - DISPLAY_CENTER_Y;
                         m4aSongNumStart(SE_218);
                     }
                 }

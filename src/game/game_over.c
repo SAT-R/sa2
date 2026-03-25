@@ -25,31 +25,28 @@
 // G_x = GAME OVER
 // T_x = TIME OVER
 
-// These are shared, no need to prefix.
-// TODO: Should we add global DISPLAY_CENTER_X|Y #defines and remove these?
-#define REST_X              (DISPLAY_WIDTH / 2)
-#define REST_Y              (DISPLAY_HEIGHT / 2)
+// Shared, no need to prefix.
 #define DURATION_TEXT_BLINK 10
 
-#define G_START_X (REST_X + 20)
-#define T_START_X (REST_X + 60)
+#define G_START_X (DISPLAY_CENTER_X + 20)
+#define T_START_X (DISPLAY_CENTER_X + 60)
 
 #define T_PRE_PAUSE_DELTA (20)
 #define G_PRE_PAUSE_DELTA (60)
 
 // TODO: Maybe these should represent X values, not time?
-#define T_PAUSE_X          (REST_X + 20)
+#define T_PAUSE_X          (DISPLAY_CENTER_X + 20)
 #define T_DURATION_PAUSE   (ZONE_TIME_TO_INT(0, 1) + ZONE_TIME_TO_INT(0, 2. / 3.))
 #define T_DURATION_FADEOUT ZONE_TIME_TO_INT(0, 2)
 #define T_POINT_RESUME     (T_PAUSE_X - T_DURATION_PAUSE)
 
-#define G_FADE_1_X (REST_X - ZONE_TIME_TO_INT(0, 1))
+#define G_FADE_1_X (DISPLAY_CENTER_X - ZONE_TIME_TO_INT(0, 1))
 #define G_FADE_2_X (G_FADE_1_X - DURATION_TEXT_BLINK)
 
-#define T_FADE_1_X (REST_X + 30)
+#define T_FADE_1_X (DISPLAY_CENTER_X + 30)
 #define T_FADE_2_X (T_POINT_RESUME - 10)
 
-#define G_END_X (REST_X - T_DURATION_FADEOUT)
+#define G_END_X (DISPLAY_CENTER_X - T_DURATION_FADEOUT)
 #define T_END_X (T_POINT_RESUME - 40)
 
 typedef struct {
@@ -170,7 +167,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     }
     s->prevVariant = -1;
     s->x = 0;
-    s->y = REST_Y;
+    s->y = DISPLAY_CENTER_Y;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->qAnimDelay = 0;
@@ -185,7 +182,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->variant = SA2_ANIM_VARIANT_GAME_OVER_OVER;
     s->prevVariant = -1;
     s->x = 0;
-    s->y = REST_Y;
+    s->y = DISPLAY_CENTER_Y;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->qAnimDelay = 0;
@@ -238,8 +235,8 @@ void Task_GameOverScreenMain(void)
         sprite2->x = temp;
     } else {
         // "GAME OVER" text is at screen middle
-        s->x = REST_X;
-        sprite2->x = REST_X;
+        s->x = DISPLAY_CENTER_X;
+        sprite2->x = DISPLAY_CENTER_X;
     }
 
     UpdateScreenFade(&screen->unk0);
@@ -253,7 +250,7 @@ void Task_GameOverScreenMain(void)
                                | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
 
-        screen->framesUntilDone = REST_X;
+        screen->framesUntilDone = DISPLAY_CENTER_X;
         gCurTask->main = Task_OverScreenFadeBgUpdate;
     }
 
@@ -386,11 +383,11 @@ void UpdateTimeOverScreenSprites(GameOverScreen *screen)
         sprite2->x = temp;
     } else if (screen->framesUntilDone > T_POINT_RESUME) {
         // Stay at screen middle
-        s->x = REST_X;
-        sprite2->x = REST_X;
+        s->x = DISPLAY_CENTER_X;
+        sprite2->x = DISPLAY_CENTER_X;
     } else if (screen->framesUntilDone > T_END_X) {
         // Move left during screen fade-out
-        s16 temp = REST_X - ((T_POINT_RESUME - screen->framesUntilDone) * 2);
+        s16 temp = DISPLAY_CENTER_X - ((T_POINT_RESUME - screen->framesUntilDone) * 2);
         s->x = temp;
         sprite2->x = temp;
     } else {

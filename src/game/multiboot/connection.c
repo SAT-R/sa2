@@ -335,7 +335,7 @@ void StartSinglePakConnect(void)
     UpdateSpriteAnimation(s);
 
     s = &connectScreen->unk3C;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT - 38);
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -352,7 +352,7 @@ void StartSinglePakConnect(void)
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
     s = &connectScreen->unk6C;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;

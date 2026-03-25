@@ -131,7 +131,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     UpdateSpriteAnimation(s);
 #elif (GAME == GAME_SA2)
     s = &outcomeScreen->spr100;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = DISPLAY_HEIGHT - 20;
     s->graphics.dest = (void *)OBJ_VRAM0;
     s->oamFlags = SPRITE_OAM_ORDER(15);
@@ -164,7 +164,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     UpdateSpriteAnimation(s);
 #elif (GAME == GAME_SA2)
     s = &outcomeScreen->sprD0;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = 36;
     s->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
     s->oamFlags = SPRITE_OAM_ORDER(15);
@@ -197,7 +197,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     UpdateSpriteAnimation(s);
 #elif (GAME == GAME_SA2)
     s = &outcomeScreen->sprA0;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = DISPLAY_HEIGHT - 40;
     s->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
     s->oamFlags = SPRITE_OAM_ORDER(15);

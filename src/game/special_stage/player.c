@@ -108,8 +108,8 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         s->graphics.anim = SA2_ANIM_SP_STAGE_ARROW;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1)
             | SPRITE_FLAG(ROT_SCALE, 30);
-        s->x = (DISPLAY_WIDTH / 2);
-        s->y = (DISPLAY_HEIGHT / 2);
+        s->x = DISPLAY_CENTER_X;
+        s->y = DISPLAY_CENTER_Y;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->qAnimDelay = 0;
         s->prevAnim = -1;
@@ -310,7 +310,7 @@ void sub_806D548(Sprite *s, void *vram, s16 y, u8 b, const struct UNK_80DF670 *c
     s->graphics.size = 0;
     s->graphics.anim = c4->anim;
     s->frameFlags = frameFlags;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = y;
     s->oamFlags = SPRITE_OAM_ORDER(b);
     s->qAnimDelay = 0;

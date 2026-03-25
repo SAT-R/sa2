@@ -407,7 +407,7 @@ static void sub_805CC34(void)
     sub_805D644(teamPlayScreen);
 
     s = &teamPlayScreen->unkC0[0];
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = 28;
     DisplaySprite(s);
 
@@ -432,7 +432,7 @@ static void sub_805CC34(void)
     DisplaySprite(s);
 
     s = &teamPlayScreen->unkC0[4];
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = 52;
     DisplaySprite(s);
 
@@ -497,7 +497,7 @@ static void sub_805D1F8(void)
     MultiPakHeartbeat();
 
     s = &teamPlayScreen->unkC0[1];
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = 28;
     DisplaySprite(s);
 

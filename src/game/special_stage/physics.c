@@ -84,7 +84,7 @@ static void Task_PhysicsMain(void)
         screenX = sin * 20;
         screenY = cos * 20;
 
-        screenX = Q_16_16_TO_INT(screenX) + (DISPLAY_WIDTH / 2) - 8;
+        screenX = Q_16_16_TO_INT(screenX) + DISPLAY_CENTER_X - 8;
         screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120; // Same Y as player
 
         player->roboArrow.x = screenX;

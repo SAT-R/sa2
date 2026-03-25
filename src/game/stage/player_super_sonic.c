@@ -797,7 +797,7 @@ static void sub_802C8A0(struct SuperSonic *sonic)
     sonic->flags &= ~SUPER_FLAG__4;
 
     x = Q(gCamera.x + (DISPLAY_WIDTH + 76));
-    y = Q(gCamera.y + (DISPLAY_HEIGHT / 2));
+    y = Q(gCamera.y + DISPLAY_CENTER_Y);
 
     sonic->worldX += Div((x - sonic->worldX), 100);
     sonic->worldY += Div((y - sonic->worldY), 100);

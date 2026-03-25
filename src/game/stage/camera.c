@@ -504,7 +504,7 @@ void InitCamera(u32 level)
             gBossCameraClampYLower = gBossCameraYClamps[ZONE_FINAL + 1][0];
             gBossCameraClampYUpper = gBossCameraYClamps[ZONE_FINAL + 1][1];
             camera->x = 600;
-            camera->unk10 = (DISPLAY_WIDTH / 2);
+            camera->unk10 = DISPLAY_CENTER_X;
             camera->unk14 = 0;
             camera->y = 0;
             camera->unk64 = -4;
@@ -514,15 +514,15 @@ void InitCamera(u32 level)
             // for now we use the original GBA values as otherwise the boss
             // goes off the screen (not sure why yet)
             camera->unk10 = I(player->qWorldX) - (2 * 240);
-            camera->y = I(player->qWorldY) - ((DISPLAY_HEIGHT / 2) + 4);
+            camera->y = I(player->qWorldY) - (DISPLAY_CENTER_Y + 4);
             camera->unk14 = camera->y;
             camera->unk64 = player->spriteOffsetY - 4;
         }
     } else
 #endif
     {
-        camera->x = I(player->qWorldX) - (DISPLAY_WIDTH / 2);
-        camera->y = I(player->qWorldY) - ((DISPLAY_HEIGHT / 2) + 4);
+        camera->x = I(player->qWorldX) - DISPLAY_CENTER_X;
+        camera->y = I(player->qWorldY) - (DISPLAY_CENTER_Y + 4);
 
         if (camera->x < 0) {
             camera->x = 0;
@@ -565,7 +565,7 @@ void InitCamera(u32 level)
 
 // Only need to use the original value for these zones
 #define DISPLAY_WIDTH_FOR_BOSS_TAS                                                                                                         \
-    ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_2 || LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) ? (240 / 2) : (DISPLAY_WIDTH / 2))
+    ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_2 || LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) ? (240 / 2) : DISPLAY_CENTER_X)
 
 void UpdateCamera(void)
 {
@@ -605,18 +605,18 @@ void UpdateCamera(void)
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
         if (newX + (DISPLAY_WIDTH_FOR_BOSS_TAS + 1) < I(player->qWorldX)) {
 #else
-        if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->qWorldX)) {
+        if (newX + (DISPLAY_CENTER_X + 1) < I(player->qWorldX)) {
 #endif
-            if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
+            if ((camera->unk10 + DISPLAY_CENTER_Y) > newX) {
                 s32 playerScreenX = I(player->qWorldX);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
                 playerScreenX -= DISPLAY_WIDTH_FOR_BOSS_TAS;
 #else
-                playerScreenX -= DISPLAY_WIDTH / 2;
+                playerScreenX -= DISPLAY_CENTER_X;
 #endif
                 camera->shiftX = playerScreenX - newX;
             } else {
-                newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
+                newX = (camera->unk10 + DISPLAY_CENTER_Y);
                 camera->shiftX = 0;
             }
         } else {
@@ -666,7 +666,7 @@ void UpdateCamera(void)
         } else {
             if (!(camera->unk50 & 1)) {
                 s16 airSpeedX = player->qSpeedAirX;
-                camera->unk10 = I(player->qWorldX) + camera->shiftX - (DISPLAY_WIDTH / 2);
+                camera->unk10 = I(player->qWorldX) + camera->shiftX - DISPLAY_CENTER_X;
                 camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);
             }
@@ -692,7 +692,7 @@ void UpdateCamera(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14 = I(player->qWorldY) + camera->shiftY - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
+                camera->unk14 = I(player->qWorldY) + camera->shiftY - DISPLAY_CENTER_Y + camera->unk4C + unk64;
             }
         }
 

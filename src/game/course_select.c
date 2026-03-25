@@ -978,7 +978,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
             } else {
                 s = &coursesScreen->chaosEmeralds[0];
             }
-            s->x = (((i * 3)) * 8) + ((DISPLAY_WIDTH / 2) - 84);
+            s->x = (((i * 3)) * 8) + (DISPLAY_CENTER_X - 84);
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }

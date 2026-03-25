@@ -441,7 +441,7 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) - 21, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                UI_OAM_SET(oam, DISPLAY_CENTER_X - 21, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
                            (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
@@ -451,7 +451,7 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) + 3, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                UI_OAM_SET(oam, DISPLAY_CENTER_X + 3, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
                            (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
@@ -471,35 +471,35 @@ void Task_StageUIMain(void)
 
             // Milliseconds-L
             sd = &digits[gMillisUnpackTable[r5][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
+            sd->x = (DISPLAY_CENTER_X + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
+            sd->x = (DISPLAY_CENTER_X + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
+            sd->x = (DISPLAY_CENTER_X - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
+            sd->x = (DISPLAY_CENTER_X - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
-            sd->x = (DISPLAY_WIDTH / 2) - 24;
+            sd->x = DISPLAY_CENTER_X - 24;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);

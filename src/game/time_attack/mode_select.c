@@ -181,7 +181,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
     s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
     s->prevVariant = -1;
-    s->x = DISPLAY_WIDTH / 2 - 112;
+    s->x = DISPLAY_CENTER_X - 112;
     s->y = DISPLAY_HEIGHT - 57;
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;

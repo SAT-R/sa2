@@ -86,21 +86,21 @@
         }                                                                                                                                  \
                                                                                                                                            \
         if (rot == 0) {                                                                                                                    \
-            tfy = (DISPLAY_HEIGHT / 2);                                                                                                    \
+            tfy = DISPLAY_CENTER_Y;                                                                                                        \
             tfx = DISPLAY_WIDTH;                                                                                                           \
         } else if (rot == 256) {                                                                                                           \
             tfy = DISPLAY_HEIGHT;                                                                                                          \
-            tfx = (DISPLAY_WIDTH / 2);                                                                                                     \
+            tfx = DISPLAY_CENTER_X;                                                                                                        \
         } else if (rot == 512) {                                                                                                           \
-            tfy = (DISPLAY_HEIGHT / 2);                                                                                                    \
+            tfy = DISPLAY_CENTER_Y;                                                                                                        \
             tfx = 0;                                                                                                                       \
         } else if (rot == 768) {                                                                                                           \
             tfy = 0;                                                                                                                       \
-            tfx = (DISPLAY_WIDTH / 2);                                                                                                     \
+            tfx = DISPLAY_CENTER_X;                                                                                                        \
         } else {                                                                                                                           \
             if ((targetX) > 0) {                                                                                                           \
                 s16 divRes = Div(SIN_24_8(rot) * 256, COS_24_8(rot));                                                                      \
-                tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT / 2);                                                                         \
+                tfy = ((divRes * 15) >> 5) + DISPLAY_CENTER_Y;                                                                             \
                                                                                                                                            \
                 if ((targetY) > 0) {                                                                                                       \
                     if (tfy >= DISPLAY_HEIGHT) {                                                                                           \
@@ -108,7 +108,7 @@
                         tfy = DISPLAY_HEIGHT;                                                                                              \
                         sinVal = (256 - rot) & ONE_CYCLE;                                                                                  \
                         divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
-                        tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);                                                                   \
+                        tfx = ((divRes * 5) >> 4) + DISPLAY_CENTER_X;                                                                      \
                     } else {                                                                                                               \
                         tfx = DISPLAY_WIDTH;                                                                                               \
                     }                                                                                                                      \
@@ -118,7 +118,7 @@
                         tfy = 0;                                                                                                           \
                         sinVal = (256 - rot) & ONE_CYCLE;                                                                                  \
                         divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
-                        tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);                                                                   \
+                        tfx = DISPLAY_CENTER_X - ((divRes * 5) >> 4);                                                                      \
                     } else {                                                                                                               \
                         tfx = DISPLAY_WIDTH;                                                                                               \
                     }                                                                                                                      \
@@ -127,14 +127,14 @@
             } else {                                                                                                                       \
                 s16 divRes                                                                                                                 \
                     = Div((SIN_24_8((rot - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100, (COS_24_8((rot - (SIN_PERIOD / 2)) & ONE_CYCLE)));     \
-                tfy = (DISPLAY_HEIGHT / 2) - ((divRes * 15) >> 5);                                                                         \
+                tfy = DISPLAY_CENTER_Y - ((divRes * 15) >> 5);                                                                             \
                 if ((targetY) > 0) {                                                                                                       \
                     if (tfy >= DISPLAY_HEIGHT) {                                                                                           \
                         s32 sinVal;                                                                                                        \
                         tfy = DISPLAY_HEIGHT;                                                                                              \
                         sinVal = (768 - rot) & ONE_CYCLE;                                                                                  \
                         divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
-                        tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);                                                                   \
+                        tfx = ((divRes * 5) >> 4) + DISPLAY_CENTER_X;                                                                      \
                     } else {                                                                                                               \
                         tfx = 0;                                                                                                           \
                     }                                                                                                                      \
@@ -145,7 +145,7 @@
                                                                                                                                            \
                         sinVal = (768 - rot) & ONE_CYCLE;                                                                                  \
                         divRes = Div(SIN_24_8(sinVal) * 256, COS_24_8(sinVal));                                                            \
-                        tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);                                                                   \
+                        tfx = DISPLAY_CENTER_X - ((divRes * 5) >> 4);                                                                      \
                     } else {                                                                                                               \
                         tfx = 0;                                                                                                           \
                     }                                                                                                                      \
@@ -259,8 +259,8 @@ static void Task_801951C(void)
 
     RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, gCamera.x, gCamera.y);
 
-    opponentX2 = (unsigned)(mpp->pos.x - (DISPLAY_WIDTH / 2) - gCamera.x);
-    opponentY2 = (unsigned)(mpp->pos.y - (DISPLAY_HEIGHT / 2) - gCamera.y);
+    opponentX2 = (unsigned)(mpp->pos.x - DISPLAY_CENTER_X - gCamera.x);
+    opponentY2 = (unsigned)(mpp->pos.y - DISPLAY_CENTER_Y - gCamera.y);
 
     UPDATE_INDICATOR(opponentX2, opponentY2, spr, transform);
 }
@@ -280,8 +280,8 @@ static void Task_8019898(void)
     RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, gCamera.x, gCamera.y);
     // _08019576
 
-    opponentX = (unsigned)(mpp->pos.x - (DISPLAY_WIDTH / 2) - gCamera.x);
-    opponentY = (unsigned)(mpp->pos.y - (DISPLAY_HEIGHT / 2) - gCamera.y);
+    opponentX = (unsigned)(mpp->pos.x - DISPLAY_CENTER_X - gCamera.x);
+    opponentY = (unsigned)(mpp->pos.y - DISPLAY_CENTER_Y - gCamera.y);
 
     // Only addition is from here
     if (gCamera.x >= 961) {
@@ -294,8 +294,8 @@ static void Task_8019898(void)
 
     RETURN_IF_PLAYER_ONSCREEN(mpp->pos.x, mpp->pos.y, normalizedCamX, normalizedCamY);
 
-    normalizedCamX = ({ mpp->pos.x - (DISPLAY_WIDTH / 2); }) - normalizedCamX;
-    normalizedCamY = ({ mpp->pos.y - (DISPLAY_HEIGHT / 2); }) - normalizedCamY;
+    normalizedCamX = ({ mpp->pos.x - DISPLAY_CENTER_X; }) - normalizedCamX;
+    normalizedCamY = ({ mpp->pos.y - DISPLAY_CENTER_Y; }) - normalizedCamY;
 
     if (MAX(ABS(opponentX), ABS(opponentY)) > MAX(ABS(normalizedCamX), ABS(normalizedCamY))) {
         opponentX = normalizedCamX;

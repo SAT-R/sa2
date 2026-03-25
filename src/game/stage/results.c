@@ -25,9 +25,9 @@ typedef struct {
     /* 0x170 */ bool8 isCountingDone;
 } StageResults; /* size: 0x174 */
 
-#define OUTRO_TIME_BONUS_Y_POS    (DISPLAY_HEIGHT / 2) + 10
-#define OUTRO_RING_BONUS_Y_POS    (DISPLAY_HEIGHT / 2) + 30
-#define OUTRO_SP_RING_BONUS_Y_POS (DISPLAY_HEIGHT / 2) + 50
+#define OUTRO_TIME_BONUS_Y_POS    DISPLAY_CENTER_Y + 10
+#define OUTRO_RING_BONUS_Y_POS    DISPLAY_CENTER_Y + 30
+#define OUTRO_SP_RING_BONUS_Y_POS DISPLAY_CENTER_Y + 50
 
 static void Task_UpdateStageResults(void);
 static void TaskDestructor_StageResults(struct Task *);
@@ -149,7 +149,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     s = &outro->base.separator;
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2);
+    s->y = DISPLAY_CENTER_Y;
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
@@ -166,7 +166,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     s = &outro->base.title[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2) - 39;
+    s->y = DISPLAY_CENTER_Y - 39;
     s->graphics.dest = VramMalloc(gAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = gAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = gAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -188,7 +188,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->base.title[1];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = (DISPLAY_HEIGHT / 2) - 31;
+        s->y = DISPLAY_CENTER_Y - 31;
         s->graphics.dest = VramMalloc(gStageResultsHeadlineTexts[isBossAct][0]);
         s->graphics.anim = gStageResultsHeadlineTexts[isBossAct][1];
         s->variant = gStageResultsHeadlineTexts[isBossAct][2];
@@ -219,7 +219,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->base.title[2];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = (DISPLAY_HEIGHT / 2) - 31;
+        s->y = DISPLAY_CENTER_Y - 31;
         s->graphics.dest = VramMalloc(gAnimsGotThroughZoneAndActNames[level][0]);
         s->graphics.anim = gAnimsGotThroughZoneAndActNames[level][1];
         s->variant = gAnimsGotThroughZoneAndActNames[level][2];
@@ -247,7 +247,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     for (i = 0; i < ARRAY_COUNT(outro->base.sprScores); i++) {
         s = &outro->base.sprScores[i];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = ((DISPLAY_HEIGHT / 2) - 6) + i * 20;
+        s->y = (DISPLAY_CENTER_Y - 6) + i * 20;
         s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
         s->graphics.anim = sStageScoreBonusesTexts[i][1];
         s->variant = sStageScoreBonusesTexts[i][2];
@@ -502,9 +502,9 @@ void StageResults_AnimateSeparator(void)
 
     if (counter <= 15) {
         s->x = (16 - counter) * 15;
-        s->y = (DISPLAY_HEIGHT / 2) + 20;
+        s->y = DISPLAY_CENTER_Y + 20;
     } else if (counter <= 23) {
-        s->y = (DISPLAY_HEIGHT / 2) + 20;
+        s->y = DISPLAY_CENTER_Y + 20;
     } else if (counter <= 28) {
         s->y -= 7;
     }
@@ -558,7 +558,7 @@ static void AnimateResults(u16 frame)
             u16 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
             r4 = innerX;
         } else {
-            r4 = (DISPLAY_WIDTH / 2) - 72;
+            r4 = DISPLAY_CENTER_X - 72;
         }
         s->x = r4 - frame;
         DisplaySprite(s);
@@ -577,7 +577,7 @@ static void AnimateResults(u16 frame)
             u16 innerX = DISPLAY_WIDTH - ((counter - 49) * 12);
             r4 = innerX;
         } else {
-            r4 = (DISPLAY_WIDTH / 2) - 72;
+            r4 = DISPLAY_CENTER_X - 72;
         }
         s->x = r4 - frame;
         DisplaySprite(s);
@@ -596,7 +596,7 @@ static void AnimateResults(u16 frame)
             u16 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
             r4 = innerX;
         } else {
-            r4 = (DISPLAY_WIDTH / 2) - 72;
+            r4 = DISPLAY_CENTER_X - 72;
         }
 
         s->x = r4 - frame;
@@ -621,7 +621,7 @@ void StageResults_AnimateTitle(void)
         if (counter < 45) {
             x = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
-            x = (DISPLAY_WIDTH / 2) - 117;
+            x = DISPLAY_CENTER_X - 117;
         }
 
         {

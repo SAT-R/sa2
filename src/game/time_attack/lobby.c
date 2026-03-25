@@ -96,7 +96,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             s->graphics.anim = gUnknown_080E04D4[lang * 5 + i].anim;
             s->variant = gUnknown_080E04D4[lang * 5 + i].variant;
             s->prevVariant = -1;
-            s->x = (DISPLAY_WIDTH / 2);
+            s->x = DISPLAY_CENTER_X;
             s->y = i * 16 + 24;
             if (i > 2) {
                 s->y -= 16;
@@ -135,7 +135,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->graphics.anim = gUnknown_080E0474[gSelectedCharacter].anim;
     s->variant = gUnknown_080E0474[gSelectedCharacter].variant;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT * (13. / 16.));
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;

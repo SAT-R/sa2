@@ -854,7 +854,7 @@ static void Task_IntroColorAnimation(void)
         if (innerCount < INTROFRAME_NAME_AND_BANNER) {
             /* Bottom left */
             mask1->angle = -(innerCount * (DISPLAY_WIDTH / INTROFRAME_NAME_AND_BANNER)) + (DISPLAY_WIDTH + DEG_TO_SIN(5.625));
-            mask1->y = (DISPLAY_HEIGHT / 2) + 8;
+            mask1->y = DISPLAY_CENTER_Y + 8;
 
             if (innerCount >= INTROFRAME_BANNER_APPEARS) {
                 /* Top Banner */
@@ -1021,17 +1021,17 @@ static void Task_IntroZoneNameAndIconAnimations(void)
 
     if (counter <= 12) {
         s->x = 254 - (((counter * 75) << 6) >> 8);
-        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((counter * 123) << 3) >> 8);
+        s->y = (DISPLAY_CENTER_Y + 41) - (((counter * 123) << 3) >> 8);
 
     } else if (counter <= 100) {
         // _08030078
         s->x = 254 - (((13 * 75) << 6) >> 8) + 13;
-        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((13 * 123) << 3) >> 8) + 2;
+        s->y = (DISPLAY_CENTER_Y + 41) - (((13 * 123) << 3) >> 8) + 2;
     } else {
         // _08030086
         u32 innerCount = counter - (100 - 12);
         s->x = 254 - (((innerCount * 75) << 6) >> 8);
-        s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((innerCount * 123) << 3) >> 8);
+        s->y = (DISPLAY_CENTER_Y + 41) - (((innerCount * 123) << 3) >> 8);
     }
 
     // _080300AE
@@ -1040,13 +1040,13 @@ static void Task_IntroZoneNameAndIconAnimations(void)
 
         if (counter <= 12) {
             s->x = 284 - (((counter * 75) << 6) >> 8);
-            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((counter * 123) << 3) >> 8);
+            s->y = (DISPLAY_CENTER_Y + 47) - (((counter * 123) << 3) >> 8);
         } else if (counter <= 100) {
             s->x = 284 - (((13 * 75) << 6) >> 8) + 13;
-            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((13 * 123) << 3) >> 8) + 2;
+            s->y = (DISPLAY_CENTER_Y + 47) - (((13 * 123) << 3) >> 8) + 2;
         } else {
             s->x = 284 - ((((counter - (100 - 12)) * 75) << 6) >> 8);
-            s->y = ((DISPLAY_HEIGHT / 2) + 47) - ((((counter - (100 - 12)) * 123) << 3) >> 8);
+            s->y = (DISPLAY_CENTER_Y + 47) - ((((counter - (100 - 12)) * 123) << 3) >> 8);
         }
         // _0803012A
 

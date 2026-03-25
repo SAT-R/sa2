@@ -230,8 +230,8 @@ void CreateFinalEndingFallCutScene(void)
         s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
-        s->y = (DISPLAY_HEIGHT / 2);
+        s->x = DISPLAY_CENTER_X;
+        s->y = DISPLAY_CENTER_Y;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
