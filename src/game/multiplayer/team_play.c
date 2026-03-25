@@ -250,7 +250,7 @@ static void sub_805CB34(void)
 {
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     teamPlayScreen = TASK_DATA(gCurTask);
     gWinRegs[5] = 0x3F;
@@ -279,7 +279,7 @@ static void sub_805CC34(void)
     union MultiSioData *msd;
     gDispCnt |= 0x400;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     teamPlayScreen = TASK_DATA(gCurTask);
 
@@ -301,7 +301,7 @@ static void sub_805CC34(void)
 
     count = 1;
     for (i = 0; i < 4; i++) {
-        if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
+        if (i != SIO_MULTI_CNT->id && CONNECTION_REGISTERED(i)) {
             count++;
             if (i == 0) {
                 msd = gMultiSioRecv;
@@ -319,7 +319,7 @@ static void sub_805CC34(void)
             m4aSongNumStart(SE_SELECT);
         } else if (teamPlayScreen->unk317 != 0) {
             for (j = 1, i = 0; i < count; i++) {
-                if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
+                if (i != SIO_MULTI_CNT->id && CONNECTION_REGISTERED(i)) {
                     msd = &gMultiSioRecv[i];
                     if (msd->pat0.unk0 > 1)
                         j++;
@@ -494,14 +494,14 @@ static void sub_805D1F8(void)
         }
     }
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     s = &teamPlayScreen->unkC0[1];
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 28;
     DisplaySprite(s);
 
-    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+    for (i = 0; i < 4 && CONNECTION_REGISTERED(i); i++) {
         packet = &gMultiSioRecv[i];
 
         if (i == 0) {
@@ -522,10 +522,10 @@ static void sub_805D1F8(void)
 
                 if (packet->pat0.unk2 == 0) {
                     s->frameFlags &= ~0x400;
-                    gMultiplayerConnections &= ~(0x10 << (i));
+                    MPC_FLAG_CLEAR(i, B_TEAM);
                 } else {
                     s->frameFlags |= 0x400;
-                    gMultiplayerConnections |= (0x10 << (i));
+                    MPC_FLAG_SET(i, B_TEAM);
                 }
                 DisplaySprite(s);
                 someVar = FALSE;
@@ -579,7 +579,7 @@ static void sub_805D1F8(void)
         packet->pat0.unk2 = teamPlayScreen->unk31E;
     }
 
-    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+    for (i = 0; i < 4 && CONNECTION_REGISTERED(i); i++) {
         if (SIO_MULTI_CNT->id != i) {
             packet = &gMultiSioRecv[i];
             if (packet->pat0.unk0 > 0x4041) {
@@ -616,7 +616,7 @@ static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
     Sprite *s;
 
     for (i = 0; i < 4; i++) {
-        if (GetBit(gMultiplayerConnections, i)) {
+        if CONNECTION_REGISTERED (i) {
             s = &teamPlayScreen->unk0[i];
             s->x = gUnknown_080D92B8[i & 1];
             s->y = i * 0x18 + 0x40;

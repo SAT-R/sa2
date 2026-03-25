@@ -964,14 +964,9 @@ void SA2_LABEL(sub_8016D20)(void)
 
 #if (GAME == GAME_SA1)
     // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5)
-         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
-        || (gGameMode != 3 && gGameMode != 5))
+    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY
-        || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (!SA2_LABEL(sub_8018300)()) {
@@ -1146,14 +1141,9 @@ void SA2_LABEL(sub_801707C)(void)
 
 #if (GAME == GAME_SA1)
     // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5)
-         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
-        || (gGameMode != 3 && gGameMode != 5))
+    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY
-        || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (SA2_LABEL(sub_8018300)() == 0) {
@@ -1402,14 +1392,9 @@ void SA2_LABEL(sub_8017670)(void)
 
 #if (GAME == GAME_SA1)
     // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5)
-         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
-        || (gGameMode != 3 && gGameMode != 5))
+    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY
-        || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (!SA2_LABEL(sub_8018300)()) {
@@ -1628,14 +1613,9 @@ void SA2_LABEL(sub_8017C28)(void)
 
 #if (GAME == GAME_SA1)
     // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5)
-         && ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
-        || (gGameMode != 3 && gGameMode != 5))
+    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY
-        || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
+    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (!SA2_LABEL(sub_8018300)()) {

@@ -753,7 +753,7 @@ static void Task_802F9F8(void)
             u8 sid;
 
             for (sid = 0; sid < MULTI_SIO_PLAYERS_MAX; sid++) {
-                if (GetBit(gMultiplayerConnections, sid)) {
+                if (CONNECTION_REGISTERED(sid)) {
                     for (i = 0; i < PALETTE_LEN_4BPP; i++) {
                         r = gUnknown_080D6FF5[(gMultiplayerCharacters)[sid]][i][0];
                         r = (r * frameCounter) / 16u;

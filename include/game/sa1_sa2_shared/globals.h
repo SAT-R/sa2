@@ -220,6 +220,44 @@ extern struct InputCounters gNewInputCounters[32];
 
 extern u8 gFrameInputsBufIndex;
 
+#define MPC_FLAG_SHIFT_REGISTERED 0
+#define MPC_FLAG_SHIFT_B_TEAM     4
+
+#define MPC_FLAG_SET(pid, flag)   (gMultiplayerConnections |= ((1 << MPC_FLAG_SHIFT_##flag) << (pid)))
+#define MPC_FLAG_CLEAR(pid, flag) (gMultiplayerConnections &= ~((1 << MPC_FLAG_SHIFT_##flag) << (pid)))
+
+#define MPC_FLAG_GET(pid, flag)   (gMultiplayerConnections & ((1 << MPC_FLAG_SHIFT_##flag) << (pid)))
+#define MPC_FLAG_CHECK(pid, flag) ((gMultiplayerConnections & ((1 << MPC_FLAG_SHIFT_##flag) << (pid))) >> ((pid) + MPC_FLAG_SHIFT_##flag))
+
+#define CONNECTION_REGISTERED(pid) MPC_FLAG_GET(pid, REGISTERED)
+#define IS_SAME_TEAM(pid1, pid2)   (MPC_FLAG_CHECK(pid1, B_TEAM) == MPC_FLAG_CHECK(pid2, B_TEAM))
+
+#define EXTRACT_REGISTERED_CONNECTIONS(statusFlags) ((statusFlags & MULTI_SIO_ALL_CONNECTED) >> 8)
+
+// I wonder if this was stubbed and you had to provide your own implementation
+void LinkCommunicationError(void);
+
+#define LINK_HEARTBEAT()                                                                                                                   \
+    ({                                                                                                                                     \
+        if (IS_MULTI_PLAYER) {                                                                                                             \
+            u32 i;                                                                                                                         \
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX && CONNECTION_REGISTERED(i); i++) {                                                      \
+                if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {                                                                      \
+                    if (gMultiplayerMissingHeartbeats[i]++ > 180) {                                                                        \
+                        TasksDestroyAll();                                                                                                 \
+                        PAUSE_BACKGROUNDS_QUEUE();                                                                                         \
+                        gBgSpritesCount = 0;                                                                                               \
+                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;                                                             \
+                        LinkCommunicationError();                                                                                          \
+                        return;                                                                                                            \
+                    }                                                                                                                      \
+                } else {                                                                                                                   \
+                    gMultiplayerMissingHeartbeats[i] = 0;                                                                                  \
+                }                                                                                                                          \
+            }                                                                                                                              \
+        }                                                                                                                                  \
+    })
+
 #if (GAME == GAME_SA1) && !defined(BUG_FIX)
 #define LIVES_BOUND_CHECK_A(lives)            (lives)
 #define LIVES_BOUND_CHECK_B(lives)            (lives)

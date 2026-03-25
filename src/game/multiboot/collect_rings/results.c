@@ -186,8 +186,8 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     Sprite *s;
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
     gDispCnt |= 0x1800;
-    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
-    MultiPakHeartbeat();
+    gMultiplayerConnections = EXTRACT_REGISTERED_CONNECTIONS(gMultiSioStatusFlags);
+    LINK_HEARTBEAT();
 
     gMultiSioSend.pat0.unk0 = 0x4010;
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
@@ -349,7 +349,7 @@ void sub_80823FC(void)
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     union MultiSioData *packet;
 
-    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    gMultiplayerConnections = EXTRACT_REGISTERED_CONNECTIONS(gMultiSioStatusFlags);
     packet = &gMultiSioRecv[0];
     if (packet->pat0.unk0 == 0x4012) {
 #if COLLECT_RINGS_ROM
@@ -414,7 +414,7 @@ void sub_80823FC(void)
         }
 #endif
 
-        for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+        for (i = 0; i < 4 && CONNECTION_REGISTERED(i); i++) {
             if (!(MULTI_SIO_RECV_ID(i) & gMultiSioStatusFlags)) {
                 val = TRUE;
             } else {
@@ -492,7 +492,7 @@ void SA2_LABEL(sub_808267C)(void)
     if ((gMultiSioStatusFlags & MULTI_SIO_TYPE) == MULTI_SIO_PARENT) {
         u8 i;
         for (i = 0; i < 4; i++) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 packet = &gMultiSioRecv[i];
                 if (packet->pat0.unk0 != COMM_DATA(0x51)) {
                     return;
@@ -512,7 +512,7 @@ void sub_8082788(void)
     Sprite *s;
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
     resultsScreen = TASK_DATA(gCurTask);
 
     for (i = 0; i < 4; i++) {

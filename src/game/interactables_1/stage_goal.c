@@ -228,10 +228,7 @@ static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
     gPlayer.confusionTimer = 0;
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {
-        // TODO: make this a macro? What does it even mean
-        if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
-                != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
-            && gMultiplayerRanks[j] == 0) {
+        if (!IS_SAME_TEAM(j, SIO_MULTI_CNT->id) && gMultiplayerRanks[j] == 0) {
             thing = 1;
             break;
         }
@@ -239,8 +236,7 @@ static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL; j++) {
         if (gMultiplayerRanks[j] == -1) {
-            if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
-                == (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)) {
+            if (IS_SAME_TEAM(j, SIO_MULTI_CNT->id)) {
                 CreateMultiplayerFinishResult(j, thing);
             } else {
                 CreateMultiplayerFinishResult(j, thing ^ 1);

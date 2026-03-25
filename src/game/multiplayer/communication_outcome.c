@@ -106,7 +106,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     outcomeScreen->unk1FC = 0;
 
     for (i = 0, count = 0; i < 4; i++) {
-        if (GetBit(gMultiplayerConnections, i)) {
+        if CONNECTION_REGISTERED (i) {
             count++;
         }
     }

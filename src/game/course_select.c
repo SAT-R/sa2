@@ -650,7 +650,7 @@ static void Task_CourseSelectMain(void)
     Sprite *zoneName = &coursesScreen->zoneName;
     ScreenFade *fade = &coursesScreen->fade;
     union MultiSioData *recv, *send;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     if (IS_MULTI_PLAYER) {
         recv = &gMultiSioRecv[0];
@@ -762,7 +762,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     ScrollInZoneName(zoneName, 16);
 
@@ -800,7 +800,7 @@ static void Task_ScrollToNextLevelAnim(void)
     union MultiSioData *send;
 
     if (IS_MULTI_PLAYER) {
-        MultiPakHeartbeat();
+        LINK_HEARTBEAT();
     }
 
     ScrollInZoneName(zoneName, 16);

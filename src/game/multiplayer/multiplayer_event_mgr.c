@@ -41,7 +41,7 @@ void Task_MultiplayerEventMgr_Send(void)
 
     u8 i;
 
-    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+    for (i = 0; i < 4 && CONNECTION_REGISTERED(i); i++) {
         struct MultiSioData_0_0 *recv;
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
             return;
@@ -74,7 +74,7 @@ void Task_MultiplayerEventMgr_Receive(void)
         if (i == id) {
             continue;
         }
-        if (!GetBit(gMultiplayerConnections, i)) {
+        if (!CONNECTION_REGISTERED(i)) {
             break;
         }
 
@@ -101,9 +101,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
         switch (recv->pat0.unkF) {
 #ifndef COLLECT_RINGS_ROM
             case 0: {
-                if (gGameMode != GAME_MODE_TEAM_PLAY
-                    || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
+                if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(i, SIO_MULTI_CNT->id)) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
                     gPlayer.confusionTimer = ZONE_TIME_TO_INT(0, 10);
                     CreateItemTask_Confusion(gPlayer.character);
@@ -140,9 +138,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
             }
             case 2: {
                 if (!(gPlayer.moveState & MOVESTATE_IN_SCRIPTED)
-                    && (gGameMode != GAME_MODE_TEAM_PLAY
-                        || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
+                    && (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(i, SIO_MULTI_CNT->id))) {
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__MP_SLOW_DOWN;
 
                     gPlayer.timerSpeedup = ZONE_TIME_TO_INT(0, 10);
@@ -154,9 +150,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
                 break;
             }
             case 3: {
-                if (gGameMode != GAME_MODE_TEAM_PLAY
-                    || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
+                if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(i, SIO_MULTI_CNT->id)) {
                     gShouldSpawnMPAttackEffect = TRUE;
                     m4aSongNumStart(SE_219);
                 }
@@ -164,9 +158,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
             }
 #endif
             case 4: {
-                if (gGameMode != GAME_MODE_TEAM_PLAY
-                    || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
+                if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(i, SIO_MULTI_CNT->id)) {
                     gShouldSpawnMPAttack2Effect = TRUE;
                     m4aSongNumStart(SE_216);
                 }
@@ -203,9 +195,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
                 count3++;
             }
         } else {
-            if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
-                    != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
-                && (s8)gMultiplayerRanks[j] == 0) {
+            if (!IS_SAME_TEAM(j, SIO_MULTI_CNT->id) && gMultiplayerRanks[j] == 0) {
                 count2 = 1;
             }
         }
@@ -219,8 +209,7 @@ void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
 
     if (gGameMode == GAME_MODE_TEAM_PLAY) {
         for (j = 0; j < 4 && gMultiplayerPlayerTasks[j] != NULL; j++) {
-            if (j != i && gMultiplayerRanks[j] == -1
-                && (gMultiplayerConnections & (0x10 << (j))) >> ((j + 4)) == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
+            if (j != i && gMultiplayerRanks[j] == -1 && IS_SAME_TEAM(j, i)) {
                 CreateMultiplayerFinishResult(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
                     Player_TransitionCancelFlyingAndBoost(&gPlayer);

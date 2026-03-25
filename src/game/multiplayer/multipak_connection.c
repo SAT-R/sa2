@@ -309,7 +309,7 @@ static void sub_805ADAC(void)
         gMultiplayerPseudoRandom = recv->unk10;
         gMultiplayerConnections = recv->unk2;
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 if (i == 0) {
                     gMultiplayerIds[0] = recv->unk4;
                     gMultiplayerNames[0][0] = recv->unk8[0];
@@ -464,12 +464,12 @@ static void sub_805B4C0(void)
     u8 recv2;
     s32 count = 0;
     struct MultiPakConnectScreen *connectScreen = TASK_DATA(gCurTask);
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
     recv = &gMultiSioRecv[0].pat0;
     recv2 = recv->unk2;
 
     if (recv->unk0 == 0x4012) {
-        if (!GetBit(recv2, SIO_MULTI_CNT->id)) {
+        if (!(recv2 & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {
             gMultiSioEnabled = FALSE;
             MultiSioStop();
             MultiSioInit(0);
@@ -486,7 +486,7 @@ static void sub_805B4C0(void)
 
         gGameMode = GAME_MODE_MULTI_PLAYER;
         for (i = 3; i >= 0; i--) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 if (i == 0) {
                     if (gMultiplayerIds[i] == recv->unk4) {
                         gMultiplayerNames[i][3] = recv->unk8[0];
@@ -584,7 +584,7 @@ static void sub_805B4C0(void)
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                 bool8 someBool = FALSE;
 
-                if (!GetBit(gMultiplayerConnections, i)) {
+                if (!CONNECTION_REGISTERED(i)) {
                     if (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i)) {
                         someBool = TRUE;
                     } else {

@@ -175,7 +175,7 @@ static const u8 sCharacterSilhouettes[] = {
     ({                                                                                                                                     \
         (characterScreen)->multiplayerSelections = 0;                                                                                      \
         for ((i) = 0; (i) < MULTI_SIO_PLAYERS_MAX; (i)++) {                                                                                \
-            if ((i) != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, (i))) {                                                        \
+            if ((i) != SIO_MULTI_CNT->id && CONNECTION_REGISTERED(i)) {                                                                    \
                 (packet) = &gMultiSioRecv[(i)];                                                                                            \
                 if ((packet)->pat0.unk0 > 0x4020) {                                                                                        \
                     (characterScreen)->multiplayerSelections |= CHARACTER_BIT(packet->pat0.unk2);                                          \
@@ -604,7 +604,7 @@ static void Task_CharacterSelectMain(void)
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     characterScreen->cursorAnimFrame = (characterScreen->cursorAnimFrame & 0x3F) + 1;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     if (IS_MULTI_PLAYER) {
         ReadMultiplayerSelections(characterScreen, i, packet);
@@ -800,7 +800,7 @@ static void Task_HandleCarouselScrollUp(void)
     u32 animFrame;
     struct CharacterSelectionScreen *characterScreen;
     Sprite *s;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     characterScreen = TASK_DATA(gCurTask);
 
@@ -856,7 +856,7 @@ static void Task_HandleCarouselScrollDown(void)
     u32 animFrame;
     struct CharacterSelectionScreen *characterScreen;
     Sprite *s;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     characterScreen = TASK_DATA(gCurTask);
 
@@ -957,7 +957,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
     Sprite *s;
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     ScreenFade *unk0 = &characterScreen->fade;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     if (IS_MULTI_PLAYER) {
         ReadMultiplayerSelections(characterScreen, i, packet);
@@ -1601,7 +1601,7 @@ static void Task_MultiplayerWaitForSelections(void)
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     BackgroundAnim();
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     if (IS_MULTI_PLAYER) {
         ReadMultiplayerSelections(characterScreen, i, recv);
@@ -1634,7 +1634,7 @@ static void Task_MultiplayerWaitForSelections(void)
     recv = &gMultiSioRecv[0];
     if (recv->pat0.unk0 == 0x4022) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 recv = &gMultiSioRecv[i];
                 gMultiplayerCharacters[i] = recv->pat0.unk2;
             }
@@ -1652,7 +1652,7 @@ static void Task_MultiplayerWaitForSelections(void)
     }
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gMultiplayerConnections, i) && i != SIO_MULTI_CNT->id) {
+        if (CONNECTION_REGISTERED(i) && i != SIO_MULTI_CNT->id) {
             recv = &gMultiSioRecv[i];
             // Conflict
             if (recv->pat0.unk0 == 0x4021 && recv->pat0.unk2 == characterScreen->selectedCharacter && i < SIO_MULTI_CNT->id) {
@@ -1687,7 +1687,7 @@ static void Task_MultiplayerWaitForSelections(void)
         send->pat0.unk2 = characterScreen->selectedCharacter;
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 recv = &gMultiSioRecv[i];
                 if (recv->pat0.unk0 != 0x4021) {
                     send->pat0.unk0 = 0x4021;
@@ -1716,11 +1716,11 @@ static void Task_MultiplayerVerifySelections(void)
     union MultiSioData *send;
     union MultiSioData *recv;
     register struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     for (i = 0, someoneNotConfirmed = FALSE; i < MULTI_SIO_PLAYERS_MAX; i++) {
         recv = &gMultiSioRecv[i];
-        if (GetBit(gMultiplayerConnections, i) && recv->pat0.unk0 < 0x4022) {
+        if (CONNECTION_REGISTERED(i) && recv->pat0.unk0 < 0x4022) {
             someoneNotConfirmed = TRUE;
             // Why not break here...
         }
@@ -1746,7 +1746,7 @@ static void Task_MultiplayerVerifySelections(void)
     recv = &gMultiSioRecv[0];
     if (recv->pat0.unk0 == 0x4023) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 recv = &gMultiSioRecv[i];
                 if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
                     gMultiplayerCharacters[i] = recv->pat0.unk2;
@@ -1777,7 +1777,7 @@ static void Task_MultiplayerVerifySelections(void)
         }
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gMultiplayerConnections, i) && i != 0) {
+            if (CONNECTION_REGISTERED(i) && i != 0) {
                 recv = &gMultiSioRecv[i];
                 gMultiplayerCharacters[i] = recv->pat0.unk2;
                 if (recv->pat0.unk0 != 0x4022) {

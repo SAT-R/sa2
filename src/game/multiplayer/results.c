@@ -154,7 +154,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     resultsScreen->animStep = 0;
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gMultiplayerConnections, i)) {
+        if (!CONNECTION_REGISTERED(i)) {
             break;
         }
     }
@@ -193,7 +193,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         s32 temp2 = (i + 4) * 0x800;
-        if (GetBit(gMultiplayerConnections, i)) {
+        if CONNECTION_REGISTERED (i) {
             s32 temp;
             s = &resultsScreen->resultRows[i];
             s->x = 200;
@@ -252,7 +252,7 @@ static void sub_805C0F0(void)
     u16 *unk1884 = gBgOffsetsHBlankPrimary;
     gDispCnt |= 0x1800;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     selectionResultsScreen = TASK_DATA(gCurTask);
 
@@ -275,7 +275,7 @@ static void sub_805C0F0(void)
         }
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (!GetBit(gMultiplayerConnections, i)) {
+            if (!CONNECTION_REGISTERED(i)) {
                 for (j = 0; j < 0x20; j++) {
                     *unk1884++ = 0;
                     *unk1884++ = 0xC0 - x;
@@ -351,7 +351,7 @@ static void sub_805C3D0(void)
             if (gGameMode == GAME_MODE_MULTI_PLAYER) {
                 u8 i;
                 for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                    if (!GetBit(gMultiplayerConnections, i)) {
+                    if (!CONNECTION_REGISTERED(i)) {
                         break;
                     }
                 }
@@ -387,7 +387,7 @@ static void sub_805C504(void)
 
     struct MultiplayerResultsScreen *selectionResultsScreen;
     u16 *unk1884 = gBgOffsetsHBlankPrimary;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     selectionResultsScreen = TASK_DATA(gCurTask);
     gFlags |= FLAGS_EXECUTE_HBLANK_COPY;
@@ -399,7 +399,7 @@ static void sub_805C504(void)
     }
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gMultiplayerConnections, i)) {
+        if (!CONNECTION_REGISTERED(i)) {
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = 0xC0 - x;
             }
@@ -428,12 +428,12 @@ static void sub_805C69C(void)
     struct MultiplayerResultsScreen *resultsScreen;
     Sprite *item;
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     resultsScreen = TASK_DATA(gCurTask);
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gMultiplayerConnections, i)) {
+        if CONNECTION_REGISTERED (i) {
             item = &resultsScreen->characterRows[i];
             DisplaySprite(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {

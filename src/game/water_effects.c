@@ -96,7 +96,7 @@ void InitWaterPalettes(void)
     if (IS_MULTI_PLAYER) {
         u8 i = 0, j = 0;
         for (; j < 4; j++) {
-            if ((gMultiplayerConnections >> j) & 0x1) {
+            if (CONNECTION_REGISTERED(j)) {
                 i++;
             }
         }

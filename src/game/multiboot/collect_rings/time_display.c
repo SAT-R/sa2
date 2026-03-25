@@ -199,7 +199,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
     s16 x, y;
     u32 temp;
 
-    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+    for (i = 0; i < 4 && CONNECTION_REGISTERED(i); i++) {
         s = &timeDisplay->unk0;
         s->x = i * 26;
         s->y = 0;

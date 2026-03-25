@@ -271,7 +271,7 @@ void CreateGameStage(void)
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             gMultiplayerCharRings[i] = 0;
 
-            if (GetBit(gMultiplayerConnections, i)) {
+            if CONNECTION_REGISTERED (i) {
                 CreateMultiplayerPlayer(i);
                 if (i != SIO_MULTI_CNT->id) {
                     CreateOpponentPositionIndicator(i);
@@ -387,7 +387,7 @@ void Task_GameStage(void)
         }
 
         // If player is not connected, switch back to our player
-        if (!GetBit(gMultiplayerConnections, gCamera.spectatorTarget)) {
+        if (!CONNECTION_REGISTERED(gCamera.spectatorTarget)) {
             gCamera.spectatorTarget = sioId;
         }
 

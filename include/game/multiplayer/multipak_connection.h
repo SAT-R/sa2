@@ -5,10 +5,6 @@
 #include "core.h"
 #include "multi_sio.h"
 
-extern u8 gMultiplayerUnlockedCharacters;
-extern u8 gMultiplayerConnections;
-extern u8 gMultiplayerUnlockedLevels;
-
 void StartMultiPakConnect(void);
 void LinkCommunicationError(void);
 
@@ -17,7 +13,7 @@ void LinkCommunicationError(void);
     ({                                                                                                                                     \
         if (IS_MULTI_PLAYER) {                                                                                                             \
             u32 i;                                                                                                                         \
-            for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gMultiplayerConnections, i); i++) {                                            \
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX && CONNECTION_REGISTERED(i); i++) {                                                      \
                 if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {                                                                      \
                     if (gMultiplayerMissingHeartbeats[i]++ > 0xB4) {                                                                       \
                         TasksDestroyAll();                                                                                                 \

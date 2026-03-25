@@ -8,7 +8,7 @@
 #include "constants/songs.h"
 #include "game/save.h"
 #include "malloc_vram.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/multiboot/connection.h"
 #include "game/title_screen.h"
 #include "game/character_select.h"
 
@@ -206,7 +206,7 @@ static void Task_FadeInOrHandleExit(void)
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     union MultiSioData *send;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     if (lobbyScreen->fadeInComplete && gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         send = &gMultiSioSend;
@@ -272,7 +272,7 @@ static void ScreenMain(void)
     union MultiSioData *recv, *send;
 #endif
     Sprite *chao = &lobbyScreen->chao;
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     recv = &gMultiSioRecv[0];
     if (CatchInvalidPacket(recv)) {
@@ -375,10 +375,10 @@ static void Task_NotifyExit(void)
 #else
     union MultiSioData *send;
 #endif
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     for (i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gMultiplayerConnections, i)) {
+        if CONNECTION_REGISTERED (i) {
             if (CatchInvalidPacket(&gMultiSioRecv[i])) {
                 return;
             }
@@ -424,7 +424,7 @@ static void Task_ListenForExit(void)
     union MultiSioData *recv, *send;
 #endif
 
-    MultiPakHeartbeat();
+    LINK_HEARTBEAT();
 
     recv = &gMultiSioRecv[0];
     if (CatchInvalidPacket(recv)) {
