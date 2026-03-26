@@ -74,8 +74,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     if (finishTime < MAX_COURSE_TIME) {
         s16 millisIndex = finishTime % 60;
         resultsCutScene->base.timeBonusScore = finishTime - millisIndex;
-        millis = gMillisUnpackTable[millisIndex][0] * 10;
-        millis += gMillisUnpackTable[millisIndex][1];
+        millis = gMillisRenderLUT[millisIndex][0] * 10;
+        millis += gMillisRenderLUT[millisIndex][1];
         seconds = resultsCutScene->base.timeBonusScore / 60;
         minutes = seconds / 60;
         seconds += minutes * -60;

@@ -49,7 +49,7 @@ const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
 };
 
-const u8 gSecondsTable[60][2] = {
+const u8 gSecondsRenderLUT[60][2] = {
     { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 }, { 0, 4 }, { 0, 5 }, { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 1, 0 }, { 1, 1 },
     { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 }, { 1, 6 }, { 1, 7 }, { 1, 8 }, { 1, 9 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 },
     { 2, 4 }, { 2, 5 }, { 2, 6 }, { 2, 7 }, { 2, 8 }, { 2, 9 }, { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 3, 4 }, { 3, 5 },
@@ -57,7 +57,7 @@ const u8 gSecondsTable[60][2] = {
     { 4, 8 }, { 4, 9 }, { 5, 0 }, { 5, 1 }, { 5, 2 }, { 5, 3 }, { 5, 4 }, { 5, 5 }, { 5, 6 }, { 5, 7 }, { 5, 8 }, { 5, 9 },
 };
 
-const u8 gMillisUnpackTable[60][2] = {
+const u8 gMillisRenderLUT[60][2] = {
     { 0, 0 }, { 0, 2 }, { 0, 3 }, { 0, 5 }, { 0, 7 }, { 0, 8 }, { 1, 0 }, { 1, 2 }, { 1, 3 }, { 1, 5 }, { 1, 7 }, { 1, 8 },
     { 2, 0 }, { 2, 2 }, { 2, 3 }, { 2, 5 }, { 2, 7 }, { 2, 8 }, { 3, 0 }, { 3, 2 }, { 3, 3 }, { 3, 5 }, { 3, 7 }, { 3, 8 },
     { 4, 0 }, { 4, 2 }, { 4, 3 }, { 4, 5 }, { 4, 7 }, { 4, 8 }, { 5, 0 }, { 5, 2 }, { 5, 3 }, { 5, 5 }, { 5, 7 }, { 5, 8 },
@@ -65,7 +65,7 @@ const u8 gMillisUnpackTable[60][2] = {
     { 8, 0 }, { 8, 2 }, { 8, 3 }, { 8, 5 }, { 8, 7 }, { 8, 8 }, { 9, 0 }, { 9, 2 }, { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
 
-const s16 sZoneTimeSecondsTable[] = {
+static const s16 sSecondsLUT[] = {
     TIME(0, 0),  TIME(0, 1),  TIME(0, 2),  TIME(0, 3),  TIME(0, 4),  TIME(0, 5),  TIME(0, 6),  TIME(0, 7),  TIME(0, 8),
     TIME(0, 9),  TIME(0, 10), TIME(0, 11), TIME(0, 12), TIME(0, 13), TIME(0, 14), TIME(0, 15), TIME(0, 16), TIME(0, 17),
     TIME(0, 18), TIME(0, 19), TIME(0, 20), TIME(0, 21), TIME(0, 22), TIME(0, 23), TIME(0, 24), TIME(0, 25), TIME(0, 26),
@@ -75,7 +75,7 @@ const s16 sZoneTimeSecondsTable[] = {
     TIME(0, 54), TIME(0, 55), TIME(0, 56), TIME(0, 57), TIME(0, 58), TIME(0, 59), TIME(1, 0),
 };
 
-const u16 sZoneTimeMinutesTable[] = {
+static const u16 sMinutesLUT[] = {
     TIME(0, 0), TIME(1, 0), TIME(2, 0), TIME(3, 0), TIME(4, 0), TIME(5, 0), TIME(6, 0), TIME(7, 0), TIME(8, 0), TIME(9, 0), TIME(10, 0),
 };
 
@@ -450,9 +450,9 @@ void Task_StageUIMain(void)
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
             minutes = Div(seconds, 60);
 
-            seconds -= sZoneTimeSecondsTable[minutes];
-            r1 = time - sZoneTimeSecondsTable[seconds];
-            r5 = r1 - sZoneTimeMinutesTable[minutes];
+            seconds -= sSecondsLUT[minutes];
+            r1 = time - sSecondsLUT[seconds];
+            r5 = r1 - sMinutesLUT[minutes];
 
             tempTime = gCourseTime;
             tempB = TIME(9, 0);
@@ -462,28 +462,28 @@ void Task_StageUIMain(void)
             }
 
             // Milliseconds-L
-            sd = &digits[gMillisUnpackTable[r5][0]];
+            sd = &digits[gMillisRenderLUT[r5][0]];
             sd->x = (DISPLAY_CENTER_X + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Milliseconds-R
-            sd = &digits[gMillisUnpackTable[r5][1]];
+            sd = &digits[gMillisRenderLUT[r5][1]];
             sd->x = (DISPLAY_CENTER_X + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-L
-            sd = &digits[gSecondsTable[seconds][0]];
+            sd = &digits[gSecondsRenderLUT[seconds][0]];
             sd->x = (DISPLAY_CENTER_X - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-R
-            sd = &digits[gSecondsTable[seconds][1]];
+            sd = &digits[gSecondsRenderLUT[seconds][1]];
             sd->x = (DISPLAY_CENTER_X - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
