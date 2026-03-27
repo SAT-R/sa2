@@ -131,7 +131,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     temp4 = Base10DigitsToHexNibbles(index);
 
     palId = 0;
-    if (gCourseTime < ZONE_TIME_TO_INT(1, 0)) {
+    if (gCourseTime < TIME(1, 0)) {
 #ifndef NON_MATCHING
         palId = (-(gStageTime & 0x10)) >> 0x1F;
 #else

@@ -164,7 +164,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     s->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
     s->variant = 3;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT)-50;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
@@ -181,7 +181,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
         s->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = (DISPLAY_HEIGHT / 4) - 4;
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;

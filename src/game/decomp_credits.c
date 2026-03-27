@@ -77,7 +77,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
 
     s = &cred->sprSonic;
     s->x = -508;
-    s->y = (DISPLAY_HEIGHT / 2) - 16;
+    s->y = DISPLAY_CENTER_Y - 16;
     SPRITE_INIT_FLAGS(s, 64, SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC), 4, 18, 2, SPRITE_FLAG_MASK_X_FLIP);
     s->animSpeed = SPRITE_ANIM_SPEED(4);
     cred->qSonicScreenX = Q(s->x);
@@ -91,8 +91,8 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
     cred->qTailsScreenX = Q(s->x);
 
     s = &cred->sprLogoOllie;
-    s->x = (DISPLAY_WIDTH / 2) + 24;
-    s->y = (DISPLAY_HEIGHT / 2) - (LOGO_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X + 24;
+    s->y = DISPLAY_CENTER_Y - (LOGO_WIDTH / 2);
     SPRITE_INIT_FLAGS(s, 64, 1133, 1, 18, 2, SPRITE_FLAG_MASK_X_FLIP);
     s->palId = 2;
     cred->qLogoOllieScreenX = Q(s->x);
@@ -164,7 +164,7 @@ void Task_DecompCreditsFirst()
     UpdateSprites(cred);
 
     // Check Tails' position
-    if (cred->sprLogoJace.x <= ((DISPLAY_WIDTH / 2) + 24)) {
+    if (cred->sprLogoJace.x <= (DISPLAY_CENTER_X + 24)) {
         cred->sprTails.graphics.anim = SA2_ANIM_CHAR(33, CHARACTER_TAILS);
         cred->sprTails.variant = 0;
         cred->qSpeedTails = 0;
@@ -199,7 +199,7 @@ void Task_DecompCreditsFirst()
         }
     }
 
-    if ((cred->qSpeedSonic <= 0) && cred->sprSonic.x < (DISPLAY_WIDTH / 2) + 16) {
+    if ((cred->qSpeedSonic <= 0) && cred->sprSonic.x < DISPLAY_CENTER_X + 16) {
         cred->qSpeedSonic = Q(0);
 
         cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_34, CHARACTER_SONIC);
@@ -224,7 +224,7 @@ void Task_SonicArrived(void)
     UpdateSprites(cred);
 
     // Check Tails' position
-    if (cred->sprLogoJace.x <= ((DISPLAY_WIDTH / 2) + 24)) {
+    if (cred->sprLogoJace.x <= (DISPLAY_CENTER_X + 24)) {
         cred->sprTails.graphics.anim = SA2_ANIM_CHAR(33, CHARACTER_TAILS);
         cred->sprTails.variant = 0;
         cred->qSpeedTails = 0;
@@ -300,7 +300,7 @@ void customHBlank(void)
     if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         // "PRESS START to continue"
         ((u16 *)BG_PLTT)[0] = RGB_WHITE;
-    } else if ((vcount >= (DISPLAY_HEIGHT / 2) - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
+    } else if ((vcount >= DISPLAY_CENTER_Y - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         // Logo background (JaceCear)
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * PALETTE_LEN_4BPP];
     } else {

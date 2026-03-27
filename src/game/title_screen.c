@@ -568,8 +568,8 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.anim = gPressStartTiles[language].anim;
     s->variant = gPressStartTiles[language].variant;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2) + 30;
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y + 30;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->qAnimDelay = 0;
@@ -587,19 +587,19 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
         s->graphics.anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
         s->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
 
         // Generate menu item y positions
         // position * lineHeight + topPadding
         if (menuItemId < SinglePlayerMenuItem(0)) {
             // PlayModeMenu positions
-            s->y = (PlayModeMenuIndex(menuItemId) * 18) + (DISPLAY_HEIGHT / 2) + 16;
+            s->y = (PlayModeMenuIndex(menuItemId) * 18) + DISPLAY_CENTER_Y + 16;
         } else if (gLoadedSaveGame->chaoGardenUnlocked) {
             // SinglePlayerMenu positions if we have the chao garden available
-            s->y = (SinglePlayerMenuIndex(menuItemId) * 16) + (DISPLAY_HEIGHT / 2) + 16;
+            s->y = (SinglePlayerMenuIndex(menuItemId) * 16) + DISPLAY_CENTER_Y + 16;
         } else {
             // SinglePlayerMenu positions if we don't have the chao garden
-            s->y = (SinglePlayerMenuIndex(menuItemId) * 18) + (DISPLAY_HEIGHT / 2) + 20;
+            s->y = (SinglePlayerMenuIndex(menuItemId) * 18) + DISPLAY_CENTER_Y + 20;
         }
 
         s->graphics.size = 0;
@@ -616,8 +616,8 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.anim = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].anim;
     s->variant = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].variant;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2);
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(30);
     s->qAnimDelay = 0;
@@ -1080,7 +1080,7 @@ static void Task_PlayModeMenuMain(void)
         m4aSongNumStart(SE_SELECT);
 
         if (titleScreen->menuCursor == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
-            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = (DISPLAY_WIDTH / 2);
+            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = DISPLAY_CENTER_X;
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER], TRANSITION_OUT);
 
             titleScreen->animFrame = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
@@ -1904,7 +1904,7 @@ static void Task_StartTitleScreenDemo(void)
 static void ShowGameLogo(TitleScreen *_)
 {
     // angle, width, height, right, bottom, left, top
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, (DISPLAY_WIDTH / 2) - 100, 8, gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, DISPLAY_CENTER_X - 100, 8, gBgAffineRegs);
 }
 
 static void BirdAnimEnd(void)

@@ -123,7 +123,7 @@ bool16 SpecialStageCalcEntityScreenPosition(struct UNK_806CB84 *a, struct Specia
         }
         a->unkA = val;
         a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->qPerspectiveTable[val]);
-        a->unk8 = ((DISPLAY_WIDTH / 2) - ((r9 * ((DISPLAY_WIDTH / 2) + 15)) / r8));
+        a->unk8 = (DISPLAY_CENTER_X - ((r9 * (DISPLAY_CENTER_X + 15)) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
             a->unk6 = (((unk874->unk8 * 8) / world->qPerspectiveTable[val]) * 9) >> 2;

@@ -146,7 +146,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
             s->y = 90;
         }
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;

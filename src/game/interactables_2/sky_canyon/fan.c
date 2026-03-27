@@ -36,10 +36,10 @@ typedef struct {
 
 // Durations for each of the "stages" of the propellers with periodic fan speed
 
-#define PERIOD_END__OFF             (ZONE_TIME_TO_INT(0, 1)) /* 1s */
-#define PERIOD_END__ACCEL           (PERIOD_END__OFF + ZONE_TIME_TO_INT(0, 1)) /* 1s */
-#define PERIOD_END__MAX_SPEED       (PERIOD_END__ACCEL + ZONE_TIME_TO_INT(0, 4)) /* 4s */
-#define PERIOD_END__DECEL           (PERIOD_END__MAX_SPEED + ZONE_TIME_TO_INT(0, 1)) /* 1s */
+#define PERIOD_END__OFF             (TIME(0, 1)) /* 1s */
+#define PERIOD_END__ACCEL           (PERIOD_END__OFF + TIME(0, 1)) /* 1s */
+#define PERIOD_END__MAX_SPEED       (PERIOD_END__ACCEL + TIME(0, 4)) /* 4s */
+#define PERIOD_END__DECEL           (PERIOD_END__MAX_SPEED + TIME(0, 1)) /* 1s */
 #define PERIODIC_PROP_FULL_DURATION (PERIOD_END__DECEL) /* 7s */
 
 // Used to clamp the player's max speed

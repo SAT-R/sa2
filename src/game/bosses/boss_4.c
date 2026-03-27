@@ -34,8 +34,8 @@
 #define AEROEGG_TAILTIP_OFFSET_X (0)
 #define AEROEGG_TAILTIP_OFFSET_Y (20)
 
-#define AEROEGG_COOLDOWN_NORMAL ZONE_TIME_TO_INT(0, 2. + (1. / 3.))
-#define AEROEGG_COOLDOWN_PINCH  ZONE_TIME_TO_INT(0, 1. + (1. / 3.))
+#define AEROEGG_COOLDOWN_NORMAL TIME(0, 2. + (1. / 3.))
+#define AEROEGG_COOLDOWN_PINCH  TIME(0, 1. + (1. / 3.))
 
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
@@ -209,7 +209,7 @@ void CreateAeroEgg(void)
     boss->main.unk15 = 0;
     boss->main.unk16 = 0;
     boss->main.timerBombDrop = 0;
-    boss->main.unk0 = ZONE_TIME_TO_INT(0, 2);
+    boss->main.unk0 = TIME(0, 2);
     boss->main.timerUnk = 0;
     boss->main.unk17 = 0;
 
@@ -362,7 +362,7 @@ static void sub_8041A08(AeroEgg *boss)
             }
         }
 
-        if (++boss->main.timerUnk > ZONE_TIME_TO_INT(0, 5)) {
+        if (++boss->main.timerUnk > TIME(0, 5)) {
             r7 = TRUE;
         }
 
@@ -370,7 +370,7 @@ static void sub_8041A08(AeroEgg *boss)
             s->graphics.anim = SA2_ANIM_AERO_EGG_PLATFORM;
             s->variant = 2;
             s->prevVariant = -1;
-            boss->main.timerUnk = ZONE_TIME_TO_INT(0, 5);
+            boss->main.timerUnk = TIME(0, 5);
             boss->main.unk17 = TRUE;
         }
     } else {
@@ -806,7 +806,7 @@ static void Task_AeroEggMain(void)
 
     boss->main.unk0--;
     if (boss->main.unk0 == 0) {
-        boss->main.timerBombDrop = ZONE_TIME_TO_INT(0, 3);
+        boss->main.timerBombDrop = TIME(0, 3);
 
         gCurTask->main = Task_80426C4;
     }

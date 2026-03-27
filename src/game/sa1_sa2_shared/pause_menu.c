@@ -81,8 +81,8 @@ void CreatePauseMenu(void)
             s->animSpeed = 0x10;
             s->palId = 0;
 
-            s->x = (DISPLAY_WIDTH / 2);
-            s->y = (DISPLAY_HEIGHT / 2);
+            s->x = DISPLAY_CENTER_X;
+            s->y = DISPLAY_CENTER_Y;
 
             s->frameFlags = 0;
 

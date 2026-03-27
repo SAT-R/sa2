@@ -74,8 +74,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     if (finishTime < MAX_COURSE_TIME) {
         s16 millisIndex = finishTime % 60;
         resultsCutScene->base.timeBonusScore = finishTime - millisIndex;
-        millis = gMillisUnpackTable[millisIndex][0] * 10;
-        millis += gMillisUnpackTable[millisIndex][1];
+        millis = gMillisRenderLUT[millisIndex][0] * 10;
+        millis += gMillisRenderLUT[millisIndex][1];
         seconds = resultsCutScene->base.timeBonusScore / 60;
         minutes = seconds / 60;
         seconds += minutes * -60;
@@ -93,8 +93,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     for (i = 0; i < 7; i++) {
         s = &resultsCutScene->digits[i];
-        s->x = i * 14 + ((DISPLAY_WIDTH / 2) - 48);
-        s->y = (DISPLAY_HEIGHT / 2) + 8;
+        s->x = i * 14 + (DISPLAY_CENTER_X - 48);
+        s->y = DISPLAY_CENTER_Y + 8;
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
         s->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
@@ -125,7 +125,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->base.separator;
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2);
+    s->y = DISPLAY_CENTER_Y;
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
@@ -142,7 +142,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->base.title[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2) - 39;
+    s->y = DISPLAY_CENTER_Y - 39;
     s->graphics.dest = VramMalloc(gAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = gAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = gAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -161,7 +161,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->base.title[1];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2) - 31;
+    s->y = DISPLAY_CENTER_Y - 31;
     s->graphics.dest = VramMalloc(gStageResultsHeadlineTexts[isBossLevel][0]);
     s->graphics.anim = gStageResultsHeadlineTexts[isBossLevel][1];
     s->variant = gStageResultsHeadlineTexts[isBossLevel][2];
@@ -184,7 +184,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     }
     s = &resultsCutScene->base.title[2];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = (DISPLAY_HEIGHT / 2) - 31;
+    s->y = DISPLAY_CENTER_Y - 31;
     s->graphics.dest = VramMalloc(gAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = gAnimsGotThroughZoneAndActNames[level][1];
     s->variant = gAnimsGotThroughZoneAndActNames[level][2];
@@ -200,8 +200,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->base.sprScores[0];
-    s->x = (DISPLAY_WIDTH / 2) - 80;
-    s->y = (DISPLAY_HEIGHT / 2) + 10;
+    s->x = DISPLAY_CENTER_X - 80;
+    s->y = DISPLAY_CENTER_Y + 10;
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = SA2_ANIM_VARIANT_TA_TIME;
@@ -217,8 +217,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->base.sprScores[1];
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2) + 40;
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y + 40;
     s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
     if (resultsCutScene->rank != 0) {
@@ -239,13 +239,13 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     resultsCutScene->transform.qScaleX = 0;
     resultsCutScene->transform.qScaleY = +Q(1);
-    resultsCutScene->transform.x = (DISPLAY_WIDTH / 2);
-    resultsCutScene->transform.y = (DISPLAY_HEIGHT / 2) + 40;
+    resultsCutScene->transform.x = DISPLAY_CENTER_X;
+    resultsCutScene->transform.y = DISPLAY_CENTER_Y + 40;
     resultsCutScene->transform.rotation = 0;
 
     s = &resultsCutScene->base.sprScores[2];
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2) + 68;
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y + 68;
     s->graphics.dest = VramMalloc(22);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = 0;
@@ -316,7 +316,7 @@ static void AnimateResults(void)
         // TIME text
         s = &resultsCutScene->base.sprScores[0];
         if ((frame - 90) <= 10) {
-            s->x = (100 - frame) * 16 + ((DISPLAY_WIDTH / 2) - 80);
+            s->x = (100 - frame) * 16 + (DISPLAY_CENTER_X - 80);
         }
         DisplaySprite(s);
     }

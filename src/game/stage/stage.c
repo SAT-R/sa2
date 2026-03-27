@@ -171,12 +171,12 @@ void GameStageStart(void)
         gMPStageStartFrameCount = gFrameCount;
     }
 
-    gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
+    gCheckpointTime = TIME(0, 0);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gCourseTime = ZONE_TIME_TO_INT(0, 0);
+        gCourseTime = TIME(0, 0);
     } else {
-        gCourseTime = ZONE_TIME_TO_INT(3, 0);
+        gCourseTime = TIME(3, 0);
     }
 
     CreateGameStage();
@@ -509,9 +509,9 @@ void GameStageStart(void)
 
     gMPStageStartFrameCount = gFrameCount;
 
-    gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
+    gCheckpointTime = TIME(0, 0);
 
-    gCourseTime = ZONE_TIME_TO_INT(3, 0);
+    gCourseTime = TIME(3, 0);
 
     CreateGameStage();
 }

@@ -6,6 +6,7 @@
 /* Collection of animation indices for Sonic Advance 2.
  * - By JaceCear
  */
+#include "constants/anim_sizes.h"
 
 // "x_PROJ" means "projectile belonging to x"
 

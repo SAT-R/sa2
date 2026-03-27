@@ -20,13 +20,13 @@
 #define ALIGN_DIGITS_VERTICALLY   !TRUE
 
 #if !PLATFORM_GBA && ALIGN_DIGITS_HORIZONTALLY
-#define DIGITS_X (DISPLAY_WIDTH / 2)
+#define DIGITS_X DISPLAY_CENTER_X
 #else
 #define DIGITS_X ((I(gPlayer.qWorldX) - gCamera.x) + 24)
 #endif
 
 #if !PLATFORM_GBA && ALIGN_DIGITS_VERTICALLY
-#define DIGITS_Y (DISPLAY_HEIGHT / 2)
+#define DIGITS_Y DISPLAY_CENTER_Y
 #else
 #define DIGITS_Y ((I(gPlayer.qWorldY) - gCamera.y) - 24)
 #endif
@@ -249,7 +249,7 @@ void Task_RaceStartMessageMain(void)
     s = &startMessage->sLeft;
     transform = &startMessage->transformLeft;
 
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT / 4);
     s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;
@@ -271,7 +271,7 @@ void Task_RaceStartMessageMain(void)
     s = &startMessage->sRight;
     transform = &startMessage->transformRight;
 
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT / 4);
     s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
     transform->rotation = 0;

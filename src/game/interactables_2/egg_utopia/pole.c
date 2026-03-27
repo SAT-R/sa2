@@ -72,7 +72,7 @@ static void Task_807EA8C(void)
         sub_807ED68(pole);
         return;
     }
-    if (gPlayer.timerInvulnerability == ZONE_TIME_TO_INT(0, 2)) {
+    if (gPlayer.timerInvulnerability == TIME(0, 2)) {
         sub_807ED88(pole);
         return;
     }

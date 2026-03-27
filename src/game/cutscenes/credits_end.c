@@ -169,7 +169,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.anim = gUnknown_080E12D0[0].anim;
             s->variant = gUnknown_080E12D0[0].variant;
             s->prevVariant = -1;
-            s->x = (DISPLAY_WIDTH / 2);
+            s->x = DISPLAY_CENTER_X;
             s->y = -20;
             s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
@@ -190,7 +190,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.anim = gUnknown_080E12D0[1].anim;
             s->variant = gUnknown_080E12D0[1].variant;
             s->prevVariant = -1;
-            s->x = (DISPLAY_WIDTH / 2);
+            s->x = DISPLAY_CENTER_X;
             s->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
@@ -211,7 +211,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.anim = gUnknown_080E12D0[2].anim;
             s->variant = gUnknown_080E12D0[2].variant;
             s->prevVariant = -1;
-            s->x = (DISPLAY_WIDTH / 2);
+            s->x = DISPLAY_CENTER_X;
             s->y = DISPLAY_HEIGHT + 96;
             s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;

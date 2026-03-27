@@ -122,7 +122,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;
 
-    stage->cameraOriginX = DISPLAY_WIDTH / 2;
+    stage->cameraOriginX = DISPLAY_CENTER_X;
     stage->cameraHeight = 140;
     stage->worldScale = 64; // scale
 
@@ -132,7 +132,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
     // This value is 49 on the GBA
     // - (horizonHeight / 2) - 1 is just a guess
-    viewDistance = (DISPLAY_HEIGHT / 2) - (60 / 2) - 1;
+    viewDistance = DISPLAY_CENTER_Y - (60 / 2) - 1;
     stage->viewDistance = viewDistance;
 
     // Round up to the nearest power of 2
@@ -733,7 +733,7 @@ static void Task_ShowIntroScreen(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
     SetupIntroScreenRegisters();
-    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, (DISPLAY_WIDTH / 2), (DISPLAY_HEIGHT / 2), 0, 0, 0);
+    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, DISPLAY_CENTER_X, DISPLAY_CENTER_Y, 0, 0, 0);
 
     stage->state = 1;
     m4aSongNumStart(MUS_SPECIAL_STAGE_INTRO);

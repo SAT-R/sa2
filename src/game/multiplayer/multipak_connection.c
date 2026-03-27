@@ -128,7 +128,7 @@ void StartMultiPakConnect(void)
     s->graphics.anim = gPressStartTiles[gLoadedSaveGame->language].anim;
     s->variant = gPressStartTiles[gLoadedSaveGame->language].variant;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = 122;
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -144,7 +144,7 @@ void StartMultiPakConnect(void)
     s->graphics.anim = SA2_ANIM_MP_MSG;
     s->variant = SA2_ANIM_VARIANT_MP_MSG_2;
     s->prevVariant = -1;
-    s->x = (DISPLAY_WIDTH / 2);
+    s->x = DISPLAY_CENTER_X;
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;

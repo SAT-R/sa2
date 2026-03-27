@@ -49,7 +49,7 @@ const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
 };
 
-const u8 gSecondsTable[60][2] = {
+const u8 gSecondsRenderLUT[60][2] = {
     { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 }, { 0, 4 }, { 0, 5 }, { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 1, 0 }, { 1, 1 },
     { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 }, { 1, 6 }, { 1, 7 }, { 1, 8 }, { 1, 9 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 },
     { 2, 4 }, { 2, 5 }, { 2, 6 }, { 2, 7 }, { 2, 8 }, { 2, 9 }, { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 3, 4 }, { 3, 5 },
@@ -57,7 +57,7 @@ const u8 gSecondsTable[60][2] = {
     { 4, 8 }, { 4, 9 }, { 5, 0 }, { 5, 1 }, { 5, 2 }, { 5, 3 }, { 5, 4 }, { 5, 5 }, { 5, 6 }, { 5, 7 }, { 5, 8 }, { 5, 9 },
 };
 
-const u8 gMillisUnpackTable[60][2] = {
+const u8 gMillisRenderLUT[60][2] = {
     { 0, 0 }, { 0, 2 }, { 0, 3 }, { 0, 5 }, { 0, 7 }, { 0, 8 }, { 1, 0 }, { 1, 2 }, { 1, 3 }, { 1, 5 }, { 1, 7 }, { 1, 8 },
     { 2, 0 }, { 2, 2 }, { 2, 3 }, { 2, 5 }, { 2, 7 }, { 2, 8 }, { 3, 0 }, { 3, 2 }, { 3, 3 }, { 3, 5 }, { 3, 7 }, { 3, 8 },
     { 4, 0 }, { 4, 2 }, { 4, 3 }, { 4, 5 }, { 4, 7 }, { 4, 8 }, { 5, 0 }, { 5, 2 }, { 5, 3 }, { 5, 5 }, { 5, 7 }, { 5, 8 },
@@ -65,26 +65,18 @@ const u8 gMillisUnpackTable[60][2] = {
     { 8, 0 }, { 8, 2 }, { 8, 3 }, { 8, 5 }, { 8, 7 }, { 8, 8 }, { 9, 0 }, { 9, 2 }, { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
 
-const s16 sZoneTimeSecondsTable[] = {
-    ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),  ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),
-    ZONE_TIME_TO_INT(0, 5),  ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),  ZONE_TIME_TO_INT(0, 9),
-    ZONE_TIME_TO_INT(0, 10), ZONE_TIME_TO_INT(0, 11), ZONE_TIME_TO_INT(0, 12), ZONE_TIME_TO_INT(0, 13), ZONE_TIME_TO_INT(0, 14),
-    ZONE_TIME_TO_INT(0, 15), ZONE_TIME_TO_INT(0, 16), ZONE_TIME_TO_INT(0, 17), ZONE_TIME_TO_INT(0, 18), ZONE_TIME_TO_INT(0, 19),
-    ZONE_TIME_TO_INT(0, 20), ZONE_TIME_TO_INT(0, 21), ZONE_TIME_TO_INT(0, 22), ZONE_TIME_TO_INT(0, 23), ZONE_TIME_TO_INT(0, 24),
-    ZONE_TIME_TO_INT(0, 25), ZONE_TIME_TO_INT(0, 26), ZONE_TIME_TO_INT(0, 27), ZONE_TIME_TO_INT(0, 28), ZONE_TIME_TO_INT(0, 29),
-    ZONE_TIME_TO_INT(0, 30), ZONE_TIME_TO_INT(0, 31), ZONE_TIME_TO_INT(0, 32), ZONE_TIME_TO_INT(0, 33), ZONE_TIME_TO_INT(0, 34),
-    ZONE_TIME_TO_INT(0, 35), ZONE_TIME_TO_INT(0, 36), ZONE_TIME_TO_INT(0, 37), ZONE_TIME_TO_INT(0, 38), ZONE_TIME_TO_INT(0, 39),
-    ZONE_TIME_TO_INT(0, 40), ZONE_TIME_TO_INT(0, 41), ZONE_TIME_TO_INT(0, 42), ZONE_TIME_TO_INT(0, 43), ZONE_TIME_TO_INT(0, 44),
-    ZONE_TIME_TO_INT(0, 45), ZONE_TIME_TO_INT(0, 46), ZONE_TIME_TO_INT(0, 47), ZONE_TIME_TO_INT(0, 48), ZONE_TIME_TO_INT(0, 49),
-    ZONE_TIME_TO_INT(0, 50), ZONE_TIME_TO_INT(0, 51), ZONE_TIME_TO_INT(0, 52), ZONE_TIME_TO_INT(0, 53), ZONE_TIME_TO_INT(0, 54),
-    ZONE_TIME_TO_INT(0, 55), ZONE_TIME_TO_INT(0, 56), ZONE_TIME_TO_INT(0, 57), ZONE_TIME_TO_INT(0, 58), ZONE_TIME_TO_INT(0, 59),
-    ZONE_TIME_TO_INT(1, 0),
+static const s16 sSecondsLUT[] = {
+    TIME(0, 0),  TIME(0, 1),  TIME(0, 2),  TIME(0, 3),  TIME(0, 4),  TIME(0, 5),  TIME(0, 6),  TIME(0, 7),  TIME(0, 8),
+    TIME(0, 9),  TIME(0, 10), TIME(0, 11), TIME(0, 12), TIME(0, 13), TIME(0, 14), TIME(0, 15), TIME(0, 16), TIME(0, 17),
+    TIME(0, 18), TIME(0, 19), TIME(0, 20), TIME(0, 21), TIME(0, 22), TIME(0, 23), TIME(0, 24), TIME(0, 25), TIME(0, 26),
+    TIME(0, 27), TIME(0, 28), TIME(0, 29), TIME(0, 30), TIME(0, 31), TIME(0, 32), TIME(0, 33), TIME(0, 34), TIME(0, 35),
+    TIME(0, 36), TIME(0, 37), TIME(0, 38), TIME(0, 39), TIME(0, 40), TIME(0, 41), TIME(0, 42), TIME(0, 43), TIME(0, 44),
+    TIME(0, 45), TIME(0, 46), TIME(0, 47), TIME(0, 48), TIME(0, 49), TIME(0, 50), TIME(0, 51), TIME(0, 52), TIME(0, 53),
+    TIME(0, 54), TIME(0, 55), TIME(0, 56), TIME(0, 57), TIME(0, 58), TIME(0, 59), TIME(1, 0),
 };
 
-const u16 sZoneTimeMinutesTable[] = {
-    ZONE_TIME_TO_INT(0, 0), ZONE_TIME_TO_INT(1, 0), ZONE_TIME_TO_INT(2, 0),  ZONE_TIME_TO_INT(3, 0),
-    ZONE_TIME_TO_INT(4, 0), ZONE_TIME_TO_INT(5, 0), ZONE_TIME_TO_INT(6, 0),  ZONE_TIME_TO_INT(7, 0),
-    ZONE_TIME_TO_INT(8, 0), ZONE_TIME_TO_INT(9, 0), ZONE_TIME_TO_INT(10, 0),
+static const u16 sMinutesLUT[] = {
+    TIME(0, 0), TIME(1, 0), TIME(2, 0), TIME(3, 0), TIME(4, 0), TIME(5, 0), TIME(6, 0), TIME(7, 0), TIME(8, 0), TIME(9, 0), TIME(10, 0),
 };
 
 typedef struct {
@@ -283,7 +275,7 @@ void Task_StageUIMain(void)
                 }
             }
 
-            if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= ZONE_TIME_TO_INT(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
+            if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= TIME(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
                 m4aSongNumStart(SE_TIMER);
             }
 
@@ -441,7 +433,7 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) - 21, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                UI_OAM_SET(oam, DISPLAY_CENTER_X - 21, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
                            (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
@@ -451,55 +443,55 @@ void Task_StageUIMain(void)
             if (oam != (OamData *)iwram_end)
 #endif
             {
-                UI_OAM_SET(oam, (DISPLAY_WIDTH / 2) + 3, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
+                UI_OAM_SET(oam, DISPLAY_CENTER_X + 3, 0, SPRITE_SHAPE(8x16), SPRITE_SIZE(8x16),
                            (ui->digitsTileData[UI_ASCII_COLON] | palId));
             }
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
             minutes = Div(seconds, 60);
 
-            seconds -= sZoneTimeSecondsTable[minutes];
-            r1 = time - sZoneTimeSecondsTable[seconds];
-            r5 = r1 - sZoneTimeMinutesTable[minutes];
+            seconds -= sSecondsLUT[minutes];
+            r1 = time - sSecondsLUT[seconds];
+            r5 = r1 - sMinutesLUT[minutes];
 
             tempTime = gCourseTime;
-            tempB = ZONE_TIME_TO_INT(9, 0);
+            tempB = TIME(9, 0);
             palId = 0;
             if (tempTime > tempB) {
                 palId = (-(gStageTime & 0x10)) >> 31;
             }
 
             // Milliseconds-L
-            sd = &digits[gMillisUnpackTable[r5][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
+            sd = &digits[gMillisRenderLUT[r5][0]];
+            sd->x = (DISPLAY_CENTER_X + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Milliseconds-R
-            sd = &digits[gMillisUnpackTable[r5][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
+            sd = &digits[gMillisRenderLUT[r5][1]];
+            sd->x = (DISPLAY_CENTER_X + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-L
-            sd = &digits[gSecondsTable[seconds][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
+            sd = &digits[gSecondsRenderLUT[seconds][0]];
+            sd->x = (DISPLAY_CENTER_X - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Seconds-R
-            sd = &digits[gSecondsTable[seconds][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
+            sd = &digits[gSecondsRenderLUT[seconds][1]];
+            sd->x = (DISPLAY_CENTER_X - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
-            sd->x = (DISPLAY_WIDTH / 2) - 24;
+            sd->x = DISPLAY_CENTER_X - 24;
             sd->y = 16;
             sd->palId = palId;
             DisplaySprite(sd);

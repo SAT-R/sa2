@@ -87,9 +87,9 @@ static void HandleLap(Sprite_LapTrigger *trigger)
                 // __0808043C
                 timeDiff = gCheckpointTime - trigger->prevTime;
 
-                if (timeDiff > ZONE_TIME_TO_INT(0, 30)) {
+                if (timeDiff > TIME(0, 30)) {
                     ringBonus = 5;
-                } else if (timeDiff > ZONE_TIME_TO_INT(0, 20)) {
+                } else if (timeDiff > TIME(0, 20)) {
                     ringBonus = 10;
                 } else {
                     ringBonus = 15;
@@ -195,7 +195,7 @@ static void CreateSprite_Notif_RingBonus(void)
     Sprite_Notif_RingBonus *notif = TASK_DATA(t);
     Sprite *s = &notif->s;
 
-    notif->framesVisible = ZONE_TIME_TO_INT(0, 2);
+    notif->framesVisible = TIME(0, 2);
 
     SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 1, 1, 0);
 

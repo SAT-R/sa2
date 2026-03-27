@@ -226,7 +226,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->graphics.dest = (void *)scene->unk618;
             scene->unk618 += 0x120;
             s->prevVariant = -1;
-            s->x = (DISPLAY_WIDTH / 2) - 10;
+            s->x = DISPLAY_CENTER_X - 10;
             s->y = -20;
             s->oamFlags = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
@@ -268,7 +268,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.anim = gUnknown_080E17A4[gSelectedCharacter].anim;
         s->variant = gUnknown_080E17A4[gSelectedCharacter].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = -20;
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
@@ -382,7 +382,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.anim = gUnknown_080E17A4[40].anim;
         s->variant = gUnknown_080E17A4[40].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = -20;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
@@ -403,7 +403,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.anim = gUnknown_080E17A4[41].anim;
         s->variant = gUnknown_080E17A4[41].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = DISPLAY_HEIGHT + 96;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
@@ -424,7 +424,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.anim = gUnknown_080E17A4[42].anim;
         s->variant = gUnknown_080E17A4[42].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = DISPLAY_HEIGHT + 96;
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
@@ -445,7 +445,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.anim = gUnknown_080E17A4[gSelectedCharacter + 0x19].anim;
         s->variant = gUnknown_080E17A4[gSelectedCharacter + 0x19].variant;
         s->prevVariant = -1;
-        s->x = (DISPLAY_WIDTH / 2);
+        s->x = DISPLAY_CENTER_X;
         s->y = 0;
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;

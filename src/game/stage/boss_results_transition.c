@@ -181,7 +181,7 @@ void Task_802F06C(void)
     ScreenFade *ts = &sri->ts;
     UpdateScreenFade(ts);
 
-    if (++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {
+    if (++sri->unk10 > TIME(0, 2)) {
         ts->speed = 60;
         gCurTask->main = Task_802ED98;
     }

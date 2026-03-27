@@ -22,11 +22,11 @@
 #if (GAME == GAME_SA1)
 #define DEMO_SPRITE_PRIO   1
 #define DEMO_OAM_ORDER     15
-#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 30)
+#define DEMO_PLAYBACK_TIME TIME(0, 30)
 #elif (GAME == GAME_SA2)
 #define DEMO_SPRITE_PRIO   0
 #define DEMO_OAM_ORDER     1
-#define DEMO_PLAYBACK_TIME ZONE_TIME_TO_INT(0, 24.5)
+#define DEMO_PLAYBACK_TIME TIME(0, 24.5)
 #endif
 
 typedef struct {
@@ -75,8 +75,8 @@ void CreateDemoManager(void)
     gStageFlags |= STAGE_FLAG__DEMO_RUNNING;
 
     s = &dm->textPressStart;
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2) + 33;
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y + 33;
 
 #if (GAME == GAME_SA1)
     s->graphics.dest = ALLOC_TILES(SA1_ANIM_PRESS_START_MSG_JP);
@@ -104,8 +104,8 @@ void CreateDemoManager(void)
     UpdateSpriteAnimation(s);
 
     s = &dm->textDemoPlay;
-    s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT / 2);
+    s->x = DISPLAY_CENTER_X;
+    s->y = DISPLAY_CENTER_Y;
 
 #if (GAME == GAME_SA1)
     s->graphics.dest = ALLOC_TILES(SA1_ANIM_DEMO_PLAY);

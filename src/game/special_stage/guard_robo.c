@@ -45,7 +45,7 @@ static void GuardRoboInit(struct SpecialStageGuardRobo *guardRobo)
     guardRobo->vram = gSpecialStageVramPointer;
     gSpecialStageVramPointer += maxSize * TILE_SIZE_4BPP;
 
-    sub_8071380(&guardRobo->sprite, vramOld, DISPLAY_WIDTH / 2, (DISPLAY_HEIGHT / 2) - 20, 7, sprites);
+    sub_8071380(&guardRobo->sprite, vramOld, DISPLAY_CENTER_X, DISPLAY_CENTER_Y - 20, 7, sprites);
     guardRobo->sprites = sprites;
     guardRobo->state = 1;
 

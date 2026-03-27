@@ -4208,8 +4208,8 @@ static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen *timeRecords
         if (timeValue < MAX_COURSE_TIME) {
             s16 temp = timeValue % 60;
             u16 temp2 = timeValue - temp;
-            millis = gMillisUnpackTable[temp][0] * 10;
-            millis += gMillisUnpackTable[temp][1];
+            millis = gMillisRenderLUT[temp][0] * 10;
+            millis += gMillisRenderLUT[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -4269,7 +4269,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
             u16 temp2 = timeValue - temp;
             // This logic is the same as the above function but required to be
             // inline instead of split, but required to be split in the other function
-            millis = gMillisUnpackTable[temp][0] * 10 + gMillisUnpackTable[temp][1];
+            millis = gMillisRenderLUT[temp][0] * 10 + gMillisRenderLUT[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
