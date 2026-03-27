@@ -585,8 +585,7 @@ END_NONMATCH
 
 #elif (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
-// around 70%: https://decomp.me/scratch/KNjEN
-NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer(void))
+void Task_CreateMultiplayerPlayer(void)
 #else
 NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
          void Task_CreateMultiplayerPlayer(void))
@@ -595,150 +594,132 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
     SpriteTransform *transform = &mpp->transform;
-    s32 id = mpp->unk56;
-    union MultiSioData *recv = &gMultiSioRecv[id];
+    union MultiSioData *recv = &gMultiSioRecv[mpp->unk56];
 
     u32 i;
 
-    if ((gMultiSioStatusFlags & MULTI_SIO_RECV_ID(id))) {
+    if ((gMultiSioStatusFlags & MULTI_SIO_RECV_ID(mpp->unk56))
+        && (mpp->unk61 = 0, (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(mpp->unk56) && recv->pat0.unk0 == 0x5000))) {
+        s32 x, y;
+        u16 anim;
+        u8 temp, val;
         mpp->unk61 = 0;
-        if (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(id) && recv->pat0.unk0 == 0x5000) {
-            s32 x;
-            mpp->unk61 = 0;
-            if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                mpp->unk44 = recv->pat4.x - mpp->pos.x;
-                mpp->unk48 = recv->pat4.y - mpp->pos.y;
-                mpp->pos.x = recv->pat4.x;
-                mpp->pos.y = recv->pat4.y;
+        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            mpp->unk44 = recv->pat4.x - mpp->pos.x;
+            mpp->unk48 = recv->pat4.y - mpp->pos.y;
 
-            } else {
-                mpp->unk44 = recv->pat4.x - mpp->pos.x;
-                mpp->unk48 = recv->pat4.y - mpp->pos.y;
-                x = ABS(mpp->unk44);
-
-                if (x > 15) {
-                    x = ABS(mpp->unk48);
-                    if (mpp->unk44 > 0 && mpp->unk48 > 0) {
-                        mpp->unk44 = recv->pat4.x - mpp->pos.x - 1440;
-                        mpp->unk48 = recv->pat4.y - mpp->pos.y - 864;
-                    } else {
-                        if (mpp->unk44 < 0 && mpp->unk48 < 0) {
-                            mpp->unk44 = recv->pat4.x - mpp->pos.x - 1440;
-                            mpp->unk48 = recv->pat4.y - mpp->pos.y - 864;
-                        }
-                    }
-                }
-                mpp->pos.x = recv->pat4.x;
-                mpp->pos.y = recv->pat4.y;
-            }
-            if (ABS(mpp->unk44) < 0x41) {
-                if (ABS(mpp->unk48) >= 0x40) {
-                    mpp->unk66 = Q(mpp->unk44);
-                    mpp->unk68 = Q(mpp->unk48);
+            if (ABS(mpp->unk44) > 15 && ABS(mpp->unk48) > 15) {
+                if (mpp->unk44 > 0 && mpp->unk48 > 0) {
+                    mpp->unk44 = recv->pat4.x - (1440 + mpp->pos.x);
+                    // Required to be like this for match, doesn't make sense
+                    mpp->unk48 = mpp->pos.y - ({ recv->pat4.y - 864; });
                 } else {
-                    mpp->unk66 = 0;
-                    mpp->unk68 = 0;
-                }
-            } else {
-                mpp->unk66 = 0;
-                mpp->unk68 = 0;
-            }
-            {
-                u8 val = recv->pat4.unk10 & ~mpp->unk57;
-                if (SIO_MULTI_CNT->id == mpp->unk56) {
-                    if (val & 2 && !(mpp->unk57 & 2)) {
-                        CreateItemTask_Invincibility(mpp->unk56);
-                    }
-                    if (val & 0x50 && !(mpp->unk57 & 2)) {
-                        CreateItemTask_Confusion(mpp->unk56);
+                    if (mpp->unk44 < 0 && mpp->unk48 < 0) {
+                        mpp->unk44 = recv->pat4.x - ({ mpp->pos.x - 1440; });
+                        mpp->unk48 = mpp->pos.y - (864 + recv->pat4.y);
                     }
                 }
             }
-            mpp->unk57 = recv->pat4.unk10;
-            // TODO: not pat4
-            mpp->unk54 = recv->pat4.unk8;
+            mpp->pos.x = recv->pat4.x;
+            mpp->pos.y = recv->pat4.y;
 
-            if (SIO_MULTI_CNT->id != mpp->unk56) {
-                mpp->unk64 = ((recv->pat4.unk8) & 0x600) >> 9;
-            } else {
-                if (SIO_MULTI_CNT->id != mpp->unk64) {
-                    MultiplayerPlayer *mpp2 = TASK_DATA(gMultiplayerPlayerTasks[mpp->unk64]);
-                    if (SIO_MULTI_CNT->id == mpp2->unk64) {
-                        mpp2->unk64 = SIO_MULTI_CNT->id;
-                        gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
-                        gPlayer.moveState &= ~MOVESTATE_20;
-                        gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
-                        gPlayer.moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
-                        gPlayer.moveState |= MOVESTATE_IN_AIR;
-                        gPlayer.moveState &= ~MOVESTATE_400;
-                        gPlayer.moveState &= ~MOVESTATE_100;
-                        PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
-                        gPlayer.SA2_LABEL(unk61) = 0;
-                        gPlayer.SA2_LABEL(unk62) = 0;
-
-                        gPlayer.charState = CHARSTATE_WALK_A;
-                        gPlayer.moveState |= MOVESTATE_800000;
-                        gPlayer.callback = Player_TouchGround;
-                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
-                        mpp->unk5C &= ~4;
-                        if (mpp2->unk5C & 4) {
-                            gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
-                            mpp2->unk5C &= ~4;
-                        }
-                    }
-                }
-            }
-
-            {
-                u32 anim;
-                if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                    gMultiplayerCharRings[mpp->unk56] = I(recv->pat4.unk6);
-                    mpp->unk6A = recv->pat4.unk6;
-                    anim = gPlayerCharacterIdleAnims[mpp->unk6A];
-                } else {
-                    anim = recv->pat4.unk6;
-                }
-
-                if (s->graphics.anim != anim || s->variant != (recv->pat4.unkB % 16)) {
-                    s->hitboxes[0].index = -1;
-                    s->hitboxes[1].index = -1;
-                }
-
-                if (mpp->unk54 & 4) {
-                    if (mpp->unk5C & 4) {
-                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
-                        mpp->unk5C &= ~4;
-                    }
-
-                    if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
-                        gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
-                        gPlayer.moveState |= MOVESTATE_IN_AIR;
-                    }
-                }
-
-                s->graphics.anim = anim;
-                s->variant = recv->pat4.unk6;
-                mpp->unk58[0] = recv->pat4.unkB >> 4;
-                s->animSpeed = recv->pat4.unkC;
-                transform->rotation = recv->pat4.unkD << 2;
-            }
         } else {
-            goto thing;
-            // mpp->pos.x += I(mpp->unk66);
-            // mpp->pos.y += I(mpp->unk68);
-
-            // if (mpp->unk61++ > 30) {
-            //     // TODO: macro this
-            //     TasksDestroyAll();
-            //     PAUSE_BACKGROUNDS_QUEUE();
-            //     gBgSpritesCount = 0;
-            //     PAUSE_GRAPHICS_QUEUE();
-            //     LinkCommunicationError();
-            //     return;
-            // }
+            mpp->unk44 = recv->pat4.x - mpp->pos.x;
+            mpp->unk48 = recv->pat4.y - mpp->pos.y;
+            mpp->pos.x = recv->pat4.x;
+            mpp->pos.y = recv->pat4.y;
         }
+
+        if (ABS(mpp->unk44) >= 0x41 || ABS(mpp->unk48) > 0x40) {
+            mpp->unk66 = 0;
+            mpp->unk68 = 0;
+        } else {
+            mpp->unk66 = Q(mpp->unk44);
+            mpp->unk68 = Q(mpp->unk48);
+        }
+
+        {
+            val = recv->pat4.unkA & ~mpp->unk57;
+            if (SIO_MULTI_CNT->id == mpp->unk56) {
+                if (val & 2 && !(mpp->unk57 & 2)) {
+                    CreateItemTask_Invincibility(mpp->unk56);
+                }
+                if (val & 0x50 && !(mpp->unk57 & 0x50)) {
+                    CreateItemTask_Confusion(mpp->unk56);
+                }
+            }
+        }
+        mpp->unk57 = recv->pat4.unkA;
+        // TODO: not pat4
+        mpp->unk54 = recv->pat4.unk8;
+
+        if (SIO_MULTI_CNT->id != mpp->unk56) {
+            mpp->unk64 = ((mpp->unk54) & 0x600) >> 9;
+        } else {
+            if (SIO_MULTI_CNT->id != mpp->unk64) {
+                MultiplayerPlayer *mpp2 = TASK_DATA(gMultiplayerPlayerTasks[mpp->unk64]);
+                if (SIO_MULTI_CNT->id == mpp2->unk64) {
+                    mpp->unk64 = SIO_MULTI_CNT->id;
+                    gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                    gPlayer.moveState &= ~MOVESTATE_20;
+                    gPlayer.moveState &= ~MOVESTATE_SPIN_ATTACK;
+                    gPlayer.moveState &= ~MOVESTATE_FLIP_WITH_MOVE_DIR;
+                    gPlayer.moveState |= MOVESTATE_IN_AIR;
+                    gPlayer.moveState &= ~MOVESTATE_400;
+                    gPlayer.moveState &= ~MOVESTATE_100;
+                    PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
+                    gPlayer.SA2_LABEL(unk61) = 0;
+                    gPlayer.SA2_LABEL(unk62) = 0;
+
+                    gPlayer.charState = CHARSTATE_WALK_A;
+                    gPlayer.timerInvulnerability = 60;
+                    gPlayer.callback = Player_TouchGround;
+                    gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
+                    mpp->unk5C &= ~4;
+                    if (mpp2->unk5C & 4) {
+                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
+                        mpp2->unk5C &= ~4;
+                    }
+                }
+            }
+        }
+
+        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            // TODO: make a new pat
+            anim = (u8)recv->pat4.unk6;
+            gMultiplayerCharRings[mpp->unk56] = I(recv->pat4.unk6);
+            mpp->unk6A = anim;
+            anim += gPlayerCharacterIdleAnims[mpp->unk56];
+        } else {
+            anim = recv->pat4.unk6;
+        }
+
+        temp = (recv->pat4.unkB & 0xF);
+        if (s->graphics.anim != anim || s->variant != temp) {
+            s->hitboxes[0].index = -1;
+            s->hitboxes[1].index = -1;
+        }
+
+        if (mpp->unk54 & 4) {
+            if (mpp->unk5C & 4) {
+                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
+                mpp->unk5C &= ~4;
+            }
+
+            if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
+                gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                gPlayer.moveState |= MOVESTATE_IN_AIR;
+            }
+        }
+
+        s->graphics.anim = anim;
+        s->variant = temp;
+        mpp->unk58[0] = recv->pat4.unkB >> 4;
+        s->animSpeed = recv->pat4.unkC;
+        transform->rotation = recv->pat4.unkD << 2;
+
     } else {
-    thing:
+        // Warning: type changed on the struct
         mpp->pos.x += I(mpp->unk66);
         mpp->pos.y += I(mpp->unk68);
 
@@ -748,34 +729,39 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             PAUSE_BACKGROUNDS_QUEUE();
             gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
+#ifndef NON_MATCHING
+            // NOTE: LinkCommunicationError() does NOT take any arguments
+            *(volatile u8 *)&gGameMode;
+#endif
             LinkCommunicationError();
             return;
         }
     }
 
+    // Lol this doesn't do anything
     {
         s8 i;
         for (i = 3; i >= 0; i--) {
-            if (s->graphics.anim >= gPlayerCharacterIdleAnims[i]) {
+            if ((s16)gPlayerCharacterIdleAnims[i] <= s->graphics.anim) {
                 break;
             }
         }
-
-        s->x = mpp->pos.x - gCamera.x;
-        s->y = mpp->pos.y - gCamera.y;
-        transform->x = mpp->pos.x - gCamera.x;
-        transform->y = mpp->pos.y - gCamera.y;
-
-        if (mpp->unk54 & 0x800) {
-            s->prevVariant = -1;
-            s->hitboxes[0].index = -1;
-            s->hitboxes[1].index = -1;
-        }
-        UpdateSpriteAnimation(s);
     }
 
+    s->x = mpp->pos.x - gCamera.x;
+    s->y = mpp->pos.y - gCamera.y;
+    transform->x = mpp->pos.x - gCamera.x;
+    transform->y = mpp->pos.y - gCamera.y;
+
+    if (mpp->unk54 & 0x800) {
+        s->prevVariant = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
+    }
+    UpdateSpriteAnimation(s);
+
     if (gGameMode == GAME_MODE_TEAM_PLAY && gMultiplayerRanks[SIO_MULTI_CNT->id] == -1) {
-        u32 someBool = TRUE;
+        u8 someBool = TRUE;
         for (i = 0; i < 4; i++) {
             if (gMultiplayerPlayerTasks[i] == NULL) {
                 break;
@@ -783,12 +769,9 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
             {
                 MultiplayerPlayer *mpp2 = TASK_DATA(gMultiplayerPlayerTasks[i]);
-                if ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
-                    && !(mpp2->unk54 & 0x100)) {
+                if (IS_SAME_TEAM(i, SIO_MULTI_CNT->id) && !(mpp2->unk54 & 0x100)) {
 
                     someBool = FALSE;
-                    break;
                 }
             }
         }
@@ -798,75 +781,74 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     }
 
-    if (!(gStageFlags & 1) && !(mpp->unk54 & 0x80000004)) {
-        if (!(gPlayer.itemEffect & 0x80)) {
-            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0)
-                && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
-                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                    if (mpp->unk56 != SIO_MULTI_CNT->id) {
-                        switch (gMultiplayerCharacters[mpp->unk56]) {
-
-                            case CHARACTER_SONIC:
-                            case CHARACTER_CREAM:
-                                SA2_LABEL(sub_8016D20)();
-                                break;
-                            case CHARACTER_TAILS:
-                                SA2_LABEL(sub_801707C)();
-                                break;
-                            case CHARACTER_KNUCKLES:
-                                SA2_LABEL(sub_8017670)();
-                                break;
-                            case CHARACTER_AMY:
-                                SA2_LABEL(sub_8017C28)();
-                                break;
-                        }
-                    }
-                } else {
-                    if (mpp->unk56 != SIO_MULTI_CNT->id) {
-                        SA2_LABEL(sub_8018120)();
-                    }
+    if (!(gStageFlags & 1) && !(mpp->unk54 & 0x4) && !(mpp->unk57 & 0x80) && !(gPlayer.itemEffect & 0x80) && !(mpp->unk5C & 1)
+        && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            if (mpp->unk56 != SIO_MULTI_CNT->id) {
+                switch (gMultiplayerCharacters[mpp->unk56]) {
+                    case CHARACTER_TAILS:
+                        sub_801707C();
+                        break;
+                    case CHARACTER_KNUCKLES:
+                        sub_8017670();
+                        break;
+                    case CHARACTER_SONIC:
+                    case CHARACTER_CREAM:
+                        sub_8016D20();
+                        break;
+                    case CHARACTER_AMY:
+                        sub_8017C28();
+                        break;
                 }
             }
+        } else {
+            if (mpp->unk56 != SIO_MULTI_CNT->id) {
+                sub_8018120();
+            }
         }
-    } else {
-        if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT) || (mpp->unk57 & 0x80) || gPlayer.timerInvincibility == 0
-            || !PLAYER_IS_ALIVE || gMultiplayerRanks[mpp->unk56] != -1) {
-            if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if (mpp->unk56 == SIO_MULTI_CNT->id && gMultiplayerCharacters[mpp->unk56] == CHARACTER_TAILS
-                    && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES && mpp->unk5C & 4) {
-                    mpp->unk5C &= ~0x6;
-                    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
-                        gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
-                    }
-                    {
-                        RoomEvent_Unknown *roomEvent = CreateRoomEvent();
-                        roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
-                        roomEvent->unk1 = mpp->unk56;
-                        roomEvent->unk2 = 0;
-                    }
+    } else if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT) || (mpp->unk57 & 0x80) || gPlayer.timerInvulnerability != 0
+               || !PLAYER_IS_ALIVE || gMultiplayerRanks[mpp->unk56] != -1) {
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            if (mpp->unk56 != SIO_MULTI_CNT->id) {
+                switch (gMultiplayerCharacters[mpp->unk56]) {
+                    case CHARACTER_KNUCKLES:
+                    case CHARACTER_TAILS:
+                        if (mpp->unk5C & 4) {
+                            RoomEvent_Unknown *roomEvent;
+                            mpp->unk5C &= ~0x4;
+
+                            if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
+                                gPlayer.moveState &= ~MOVESTATE_IA_OVERRIDE;
+                            }
+
+                            roomEvent = CreateRoomEvent();
+                            roomEvent->type = ROOMEVENT_TYPE_UNKNOWN;
+                            roomEvent->unk1 = mpp->unk56;
+                            roomEvent->unk2 = 0;
+                        }
                 }
-                if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
-                    gPlayer.moveState &= ~(MOVESTATE_STOOD_ON_OBJ | MOVESTATE_FACING_LEFT);
-                    gPlayer.moveState |= MOVESTATE_IN_AIR;
-                    mpp->unk60 = 30;
-                }
-            } else {
-                if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
-                    gPlayer.moveState &= ~(MOVESTATE_FLIP_WITH_MOVE_DIR | MOVESTATE_IN_AIR);
-                    gPlayer.moveState |= MOVESTATE_IN_AIR;
-                    mpp->unk60 = 30;
-                }
+            }
+            if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
+                gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                gPlayer.moveState |= MOVESTATE_IN_AIR;
+                mpp->unk60 = 30;
+            }
+        } else {
+            if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
+                gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
+                gPlayer.moveState |= MOVESTATE_IN_AIR;
+                mpp->unk60 = 30;
             }
         }
     }
 
     if (mpp->unk54 & 1) {
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-        s->frameFlags = gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE;
+        s->frameFlags |= gOamMatrixIndex++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         if (mpp->unk54 & 2) {
-            transform->qScaleX = -256;
+            transform->qScaleX = -Q(1);
         } else {
-            transform->qScaleX = +256;
+            transform->qScaleX = Q(1);
         }
 
         if (mpp->unk54 & 8) {
@@ -874,7 +856,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
         TransformSprite(s, transform);
     } else {
-        s->frameFlags &= ~0x30;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         if (mpp->unk54 & 2) {
             s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         } else {
@@ -893,38 +875,32 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     if (!(mpp->unk54 & 0x40)
         && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1 || gMultiplayerRanks[mpp->unk56] != -1)
             || (mpp->unk60 == 0 && !(mpp->unk54 & 4) && !(mpp->unk5C & 2)))) {
-        s->oamFlags = SPRITE_OAM_ORDER(16);
-        if (mpp->unk54 & 0x80) {
-            s->oamFlags |= 0x40;
-        }
+
+        s->oamFlags = SPRITE_OAM_ORDER(16) | (mpp->unk54 & 0x80 ? 0x40 : 0);
 
         s->frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
-        if (mpp->unk57 & 0x20
-            && (gGameMode != GAME_MODE_TEAM_PLAY
-                || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-                    != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
-            && mpp->unk60 == 0 && mpp->unk56 != SIO_MULTI_CNT->id) {
+        if (mpp->unk57 & 0x20 && (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) && mpp->unk60 == 0
+            && mpp->unk56 != SIO_MULTI_CNT->id) {
             s->frameFlags |= SPRITE_FLAG(OBJ_MODE, 2);
             gDispCnt |= DISPCNT_OBJWIN_ON;
-            gWinRegs[WINREG_WINOUT] = (WINOUT_WINOBJ_BG3 | WINOUT_WIN01_ALL);
+            gWinRegs[5] = (WINOUT_WINOBJ_BG3 | WINOUT_WIN01_ALL);
         }
-
-        if ((u16)(s->x + 63) < (DISPLAY_WIDTH + 127) && (s->y > -64 && s->y < DISPLAY_HEIGHT + 64)) {
+        if (s->x > -64 && s->x < DISPLAY_WIDTH + 64 && s->y > -64 && s->y < DISPLAY_HEIGHT + 64) {
             DisplaySprite(s);
-        } else if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            if ((gCamera.x + s->x) < 0x3C1) {
-                s->x += 0x5A0;
-                transform->x += 0x5A0;
-                s->y += 0x360;
-                transform->y += 0x360;
+        } else if (gGameMode == 5) {
+            if ((gCamera.x + s->x) > 960) {
+                s->x -= 1440;
+                transform->x -= 1440;
+                s->y -= 864;
+                transform->y -= 864;
             } else {
-                s->x -= 0x5A0;
-                transform->x -= 0x5A0;
-                s->y -= 0x360;
-                transform->y -= 0x360;
+                s->x += 1440;
+                transform->x += 1440;
+                s->y += 864;
+                transform->y += 864;
             }
 
-            if ((u16)(s->x + 63) < (DISPLAY_WIDTH + 127) && (s->y > -64 && s->y < DISPLAY_HEIGHT + 64)) {
+            if (s->x > -64 && s->x < DISPLAY_WIDTH + 64 && s->y > -64 && s->y < DISPLAY_HEIGHT + 64) {
                 if (mpp->unk54 & 1) {
                     TransformSprite(s, transform);
                 }
@@ -933,17 +909,19 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     }
 
-    if (gShouldSpawnMPAttackEffect != FALSE) {
+    if (gShouldSpawnMPAttackEffect != 0) {
         CreateMPAttackEffect();
-        gShouldSpawnMPAttackEffect = FALSE;
+        gShouldSpawnMPAttackEffect = 0;
     }
 
-    if (gShouldSpawnMPAttack2Effect != FALSE) {
+    if (gShouldSpawnMPAttack2Effect != 0) {
         CreateMPAttack2Effect();
-        gShouldSpawnMPAttack2Effect = FALSE;
+        gShouldSpawnMPAttack2Effect = 0;
     }
 }
+#ifdef COLLECT_RINGS_ROM
 END_NONMATCH
+#endif
 #endif // (GAME == GAME_SA1)
 
 #ifndef COLLECT_RINGS_ROM
