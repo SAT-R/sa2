@@ -192,13 +192,13 @@ jobs:
           path: |
             gh-pages
       - run: |
-          cd gh-pages
           cat gh-pages/reports/progress-sa2-nonmatching-latest.csv >> gh-pages/reports/progress-sa2-nonmatching.csv
           cat gh-pages/reports/progress-sa2-matching-latest.csv >> gh-pages/reports/progress-sa2-matching.csv
           cat gh-pages/reports/progress-collect_rings-nonmatching-latest.csv >> gh-pages/reports/progress-collect_rings-nonmatching.csv
           cat gh-pages/reports/progress-collect_rings-matching-latest.csv >> gh-pages/reports/progress-collect_rings-matching.csv
           cat gh-pages/reports/progress-mb_chao_garden-nonmatching-latest.csv >> gh-pages/reports/progress-mb_chao_garden-nonmatching.csv
           cat gh-pages/reports/progress-mb_chao_garden-matching-latest.csv >> gh-pages/reports/progress-mb_chao_garden-matching.csv
+          cd gh-pages
           git status
       - name: Publish reports
         if: ${{ github.event_name == 'push' }}
