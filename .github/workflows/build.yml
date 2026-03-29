@@ -79,8 +79,8 @@ jobs:
         run: |
           mkdir -p gh-pages/reports
           mkdir -p gh-pages/maps
-          python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
-          python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
+          python3 scripts/progress.py csv > gh-pages/reports/progress-sa2-nonmatching-latest.csv
+          python3 scripts/progress.py csv -m > gh-pages/reports/progress-sa2-matching-latest.csv
           python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
           python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa2-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
@@ -89,16 +89,16 @@ jobs:
       - name: Generate reports (Collect Rings)
         run: |
           cd multi_boot/roms/collect_rings
-          python3 ../../../scripts/progress.py csv -f collect_rings.map >> ../../../gh-pages/reports/progress-collect_rings-nonmatching.csv
-          python3 ../../../scripts/progress.py csv -m -f collect_rings.map >> ../../../gh-pages/reports/progress-collect_rings-matching.csv
+          python3 ../../../scripts/progress.py csv -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-nonmatching-latest.csv
+          python3 ../../../scripts/progress.py csv -m -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-matching-latest.csv
           python3 ../../../scripts/progress.py shield-json -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-shield.json
           python3 ../../../scripts/progress.py shield-json -m -f collect_rings.map > ../../../gh-pages/reports/progress-collect_rings-shield-matching.json
 
       - name: Generate reports (Chao Garden)
         run: |
           cd chao_garden
-          python3 ../scripts/progress.py csv -f mb_chao_garden.map >> ../gh-pages/reports/progress-mb_chao_garden-nonmatching.csv
-          python3 ../scripts/progress.py csv -m -f mb_chao_garden.map >> ../gh-pages/reports/progress-mb_chao_garden-matching.csv
+          python3 ../scripts/progress.py csv -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-nonmatching-latest.csv
+          python3 ../scripts/progress.py csv -m -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-matching-latest.csv
           python3 ../scripts/progress.py shield-json -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield.json
           python3 ../scripts/progress.py shield-json -m -f mb_chao_garden.map > ../gh-pages/reports/progress-mb_chao_garden-shield-matching.json
 
@@ -193,6 +193,12 @@ jobs:
             gh-pages
       - run: |
           cd gh-pages
+          cat gh-pages/reports/progress-sa2-nonmatching-latest.csv >> gh-pages/reports/progress-sa2-nonmatching.csv
+          cat gh-pages/reports/progress-sa2-matching-latest.csv >> gh-pages/reports/progress-sa2-matching.csv
+          cat gh-pages/reports/progress-collect_rings-nonmatching-latest.csv >> gh-pages/reports/progress-collect_rings-nonmatching.csv
+          cat gh-pages/reports/progress-collect_rings-matching-latest.csv >> gh-pages/reports/progress-collect_rings-matching.csv
+          cat gh-pages/reports/progress-mb_chao_garden-nonmatching-latest.csv >> gh-pages/reports/progress-mb_chao_garden-nonmatching.csv
+          cat gh-pages/reports/progress-mb_chao_garden-matching-latest.csv >> gh-pages/reports/progress-mb_chao_garden-matching.csv
           git status
       - name: Publish reports
         if: ${{ github.event_name == 'push' }}
