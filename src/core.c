@@ -610,11 +610,9 @@ void EngineMainLoop(void)
 #endif
 
         // NOTE: If other platforms do V-Sync asynchronously, we may need to incorporate this wait.
-#if PLATFORM_GBA
         // Wait for vblank to finish
-        while (REG_DISPSTAT & DISPSTAT_VBLANK)
+        while (PLATFORM_GBA && (REG_DISPSTAT & DISPSTAT_VBLANK))
             ;
-#endif
     };
 }
 
