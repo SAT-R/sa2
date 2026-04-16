@@ -610,7 +610,8 @@ void EngineMainLoop(void)
 #endif
 
         // NOTE: If other platforms do V-Sync asynchronously, we may need to incorporate this wait.
-        // Wait for vblank to finish
+        //
+        // Wait for vblank to finish, we only compute the frame once the new frame started.
         while (PLATFORM_GBA && (REG_DISPSTAT & DISPSTAT_VBLANK))
             ;
     };
