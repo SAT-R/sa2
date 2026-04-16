@@ -141,54 +141,42 @@ void Task_Poll(void)
 }
 
 #if (GAME == GAME_SA1)
-// (95.38%) https://decomp.me/scratch/JguNX
-NONMATCH("asm/non_matching/game/shared/stage/unused_lvl_select__Task_CreateMultiplayer.inc", void Task_CreateMultiplayer(void))
+void Task_CreateMultiplayer(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
+    union MultiSioData *send, *send_recv;
+    bool32 parent;
     u32 i;
 
-    if (IS_MULTI_PLAYER) {
-        for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
-            if (!(gMultiSioStatusFlags & (1 << i))) {
-                if (++gMultiplayerMissingHeartbeats[i] > 180) {
-                    TasksDestroyAll();
+    LINK_HEARTBEAT();
 
-                    PAUSE_BACKGROUNDS_QUEUE();
-                    gBgSpritesCount = 0;
-                    PAUSE_GRAPHICS_QUEUE();
-
-                    LinkCommunicationError();
-                    return;
-                }
-            } else {
-                gMultiplayerMissingHeartbeats[i] = 0;
-            }
-        }
-    }
-    // _0800E2CE
-
-    if (gMultiSioRecv->pat0.unk0 == 82) {
-        levelSelect->levelId = gMultiSioRecv->pat0.unk2;
+    send_recv = gMultiSioRecv;
+    if (send_recv->pat0.unk0 == 82) {
+        levelSelect->levelId = send_recv->pat0.unk2;
         gCurTask->main = Task_CreateSelectedTask;
         return;
     }
 
-    gMultiSioSend.pat0.unk0 = 81;
-    gMultiSioSend.pat0.unk2 = levelSelect->levelId;
+    send_recv = &gMultiSioSend;
+    send_recv->pat0.unk0 = 81;
+    send_recv->pat0.unk2 = levelSelect->levelId;
 
-    if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+    parent = gMultiSioStatusFlags & MULTI_SIO_PARENT;
+    send = &gMultiSioSend;
+    if (parent) {
         u8 j;
+
         for (j = 0; j < 4; j++) {
-            if (GetBit(gMultiplayerConnections, j)) {
-                if (gMultiSioRecv[j].pat0.unk0 != 81) {
+            if (CONNECTION_REGISTERED(j)) {
+                send_recv = &gMultiSioRecv[j];
+                if (send_recv->pat0.unk0 != 81) {
                     return;
                 }
             }
         }
-        gMultiSioSend.pat0.unk0 = 82;
+        send->pat0.unk0 = 82;
     }
 }
-END_NONMATCH
 
 void Task_CreateSelectedTask(void)
 {
