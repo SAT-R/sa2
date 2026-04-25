@@ -394,7 +394,7 @@
 
 #define SE_SPEED_BOOSTER         155
 #define SE_WATERFALL_SURFACE_HIT 156
-#define SE_157                   157
+#define SE_DROWNED               157
 #define SE_AIR_BUBBLE            158
 
 #ifndef COLLECT_RINGS_ROM

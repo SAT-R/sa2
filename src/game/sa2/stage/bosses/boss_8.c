@@ -225,9 +225,9 @@ void CreateBossRunManager(u8 bossIndex)
         gCamera.x += x - 120;
         gCamera.y += y - 120;
 
-        gCamera.unk20 += x - 120;
-        gCamera.unk24 += y - 120;
-        gCamera.unk10 += x - 120;
+        gCamera.SA2_LABEL(unk20) += x - 120;
+        gCamera.SA2_LABEL(unk24) += y - 120;
+        gCamera.SA2_LABEL(unk10) += x - 120;
         gCamera.unk14 += y - 120;
 
         cheese = gCheese;
@@ -269,13 +269,13 @@ static void Task_BossRunManagerMain(void)
                 gPlayer.rotation = 0;
                 if (I(gPlayer.qWorldX) - 120 != gCamera.x) {
                     if (I(gPlayer.qWorldX) - 120 > gCamera.x) {
-                        gCamera.unk20++;
+                        gCamera.SA2_LABEL(unk20)++;
                         gCamera.x++;
-                        gCamera.unk10++;
+                        gCamera.SA2_LABEL(unk10)++;
                     } else {
-                        gCamera.unk20--;
+                        gCamera.SA2_LABEL(unk20)--;
                         gCamera.x--;
-                        gCamera.unk10--;
+                        gCamera.SA2_LABEL(unk10)--;
                     }
                 }
             } else if (gPlayer.qWorldX < Q(42700) && gPlayer.qWorldX > Q(gUnknown_080D8808[6][0] + 20)) {
@@ -305,8 +305,8 @@ static void Task_BossRunManagerMain(void)
                             sub_8039F50(r6, manager->bossIndex);
                             gBossRingsShallRespawn = 1;
                             gCamera.x += r4;
-                            gCamera.unk20 += r4;
-                            gCamera.unk10 += r4;
+                            gCamera.SA2_LABEL(unk20) += r4;
+                            gCamera.SA2_LABEL(unk10) += r4;
                             if (gCheese != NULL) {
                                 gCheese->posX += r6;
                             }
@@ -315,7 +315,7 @@ static void Task_BossRunManagerMain(void)
                 }
             }
         } else if (manager->bossIndex <= 5) {
-            if (gCamera.unk10 > sBossRunCameraYTriggers[manager->bossIndex]) {
+            if (gCamera.SA2_LABEL(unk10) > sBossRunCameraYTriggers[manager->bossIndex]) {
                 gBossRingsShallRespawn = 1;
                 gBossRingsRespawnCount = 10;
                 gPlayer.checkpointTime = gCourseTime;
@@ -332,8 +332,8 @@ static void Task_BossRunManagerMain(void)
                 sub_8039F50(r5, manager->bossIndex);
                 gBossRingsShallRespawn = 1;
                 gCamera.x += r4;
-                gCamera.unk20 += r4;
-                gCamera.unk10 += r4;
+                gCamera.SA2_LABEL(unk20) += r4;
+                gCamera.SA2_LABEL(unk10) += r4;
                 if (gCheese != NULL) {
                     gCheese->posX += r5;
                 }
@@ -341,11 +341,11 @@ static void Task_BossRunManagerMain(void)
         }
     }
 
-    if (manager->unk5 < 7 && gCamera.unk10 > sBossRunCameraYTriggers[manager->unk5] - 600) {
+    if (manager->unk5 < 7 && gCamera.SA2_LABEL(unk10) > sBossRunCameraYTriggers[manager->unk5] - 600) {
         if (manager->unk5 == 6) {
             if (manager->unk6 == 0) {
                 gCamera.unkC = 1;
-                gCamera.unk8 = 1280;
+                gCamera.SA2_LABEL(unk8) = 1280;
             }
             gFinalBossActive = TRUE;
         } else {

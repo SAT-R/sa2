@@ -149,10 +149,10 @@ void sub_803596C(CamCoord worldX, CamCoord worldY)
     }
 
     if (boss->unk87 == 0) {
-        collPlayer = Coll_Player_Boss(s, worldX, worldY, &gPlayer);
+        collPlayer = Coll_Player_Enemy(s, worldX, worldY, &gPlayer);
         collPartner = HIT_NONE;
         if (gNumSingleplayerCharacters == NUM_SINGLEPLAYER_CHARS_MAX) {
-            collPartner = Coll_Player_Boss(s, worldX, worldY, &gPartner);
+            collPartner = Coll_Player_Enemy(s, worldX, worldY, &gPartner);
         }
         s2 = &boss->s2;
         if ((collPlayer == HIT_ENEMY) || (collPartner == HIT_ENEMY)) {

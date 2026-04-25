@@ -266,6 +266,14 @@ SA2_C_FILES := \
 	src/game/shared/stage/mp_event_mgr.c \
 	src/game/shared/stage/mp_player.c \
 	src/game/shared/stage/rings_scatter.c \
+	src/game/shared/stage/player.c \
+	src/game/shared/collect_rings/results.c \
+	src/game/shared/menus/unused_level_select.c \
+	src/game/shared/stage/collision_1.c \
+	src/game/shared/stage/collision_2.c \
+	src/game/shared/stage/collision_3.c \
+	src/game/shared/stage/water_effects.c \
+	src/game/shared/stage/spot_light_beam_task.c \
 	src/game/sa1/ui/game_2_0.c \
 	src/game/sa1/ui/game_2_1.c \
 	src/game/sa1/ui/stage_results.c \

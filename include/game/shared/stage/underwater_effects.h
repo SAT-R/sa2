@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/shared/stage/player.h"
 
-extern void sub_804C40C(void);
+extern void InitWaterPalettes(void);
 
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown);
 struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3);

@@ -360,13 +360,13 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", void sub_802BCCC(
     }
     // _0802BD0E
 
-    ssx2 = Q(gUnknown_080D650C[gCurrentLevel].x);
+    ssx2 = Q(gUnknown_080D650C[gCurrentLevel][0]);
     id = &sonic->unk128;
 
     if (ssx >= ssx2) {
         s32 someX, someY;
-        someX = (gUnknown_080D661C[gCurrentLevel].x);
-        someY = (gUnknown_080D661C[gCurrentLevel].y);
+        someX = (gUnknown_080D661C[gCurrentLevel][0]);
+        someY = (gUnknown_080D661C[gCurrentLevel][1]);
 
         ssx += Q(someX);
         TrueArea53BossMove(Q(someX), Q(someY));
@@ -378,19 +378,19 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", void sub_802BCCC(
 
         gBossRingsShallRespawn = TRUE;
         gCamera.x += someX;
-        gCamera.unk20 += someX;
-        gCamera.unk10 += someX;
+        gCamera.SA2_LABEL(unk20) += someX;
+        gCamera.SA2_LABEL(unk10) += someX;
         gCamera.y += someY;
-        gCamera.unk24 += someY;
+        gCamera.SA2_LABEL(unk24) += someY;
         gCamera.unk14 += someY;
     }
     // _0802BDAA
 
     if (sonic->func24 != sub_802C8A0) {
-        if (ssx < (Q(gCamera.unk10) + Q(8))) {
-            ssx = Q(gCamera.unk10) + Q(8);
-        } else if (ssx > (Q(gCamera.unk10) + Q(312))) {
-            ssx = Q(gCamera.unk10) + Q(312);
+        if (ssx < (Q(gCamera.SA2_LABEL(unk10)) + Q(8))) {
+            ssx = Q(gCamera.SA2_LABEL(unk10)) + Q(8);
+        } else if (ssx > (Q(gCamera.SA2_LABEL(unk10)) + Q(312))) {
+            ssx = Q(gCamera.SA2_LABEL(unk10)) + Q(312);
         }
     }
     sonic->worldX = ssx;

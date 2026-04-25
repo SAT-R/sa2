@@ -68,7 +68,8 @@ void Task_HalfPipeStart(void)
                 if ((qSpeed >= Q(0) && qSpeed < Q(4.5) - 1) || (p->frameInput & gPlayerControls.jump)) {
                     p->moveState &= ~MOVESTATE_8000;
 
-                    if (p->charState == CHARSTATE_24 || p->charState == CHARSTATE_25 || p->charState == CHARSTATE_26) {
+                    if (p->charState == CHARSTATE_WALLRUN_INIT || p->charState == CHARSTATE_WALLRUN_TO_WALL
+                        || p->charState == CHARSTATE_WALLRUN_ON_WALL) {
                         p->charState = CHARSTATE_WALK_A;
                     }
 
@@ -125,7 +126,8 @@ void Task_HalfPipeEnd(void)
                 if ((qSpeed >= Q(0) && qSpeed < Q(4.5) - 1) || (p->frameInput & gPlayerControls.jump)) {
                     p->moveState &= ~MOVESTATE_8000;
 
-                    if (p->charState == CHARSTATE_24 || p->charState == CHARSTATE_25 || p->charState == CHARSTATE_26) {
+                    if (p->charState == CHARSTATE_WALLRUN_INIT || p->charState == CHARSTATE_WALLRUN_TO_WALL
+                        || p->charState == CHARSTATE_WALLRUN_ON_WALL) {
                         p->charState = CHARSTATE_WALK_A;
                     }
 
@@ -199,15 +201,16 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/half_pipe__sub_804D4A0.i
         // __0804D55A
         if (p->SA2_LABEL(unk62) == 0) {
             if (p->charState == CHARSTATE_WALK_A
-                || (p->charState == CHARSTATE_24 || p->charState == CHARSTATE_25 || p->charState == CHARSTATE_26)) {
+                || (p->charState == CHARSTATE_WALLRUN_INIT || p->charState == CHARSTATE_WALLRUN_TO_WALL
+                    || p->charState == CHARSTATE_WALLRUN_ON_WALL)) {
                 if (r6 < Q(8)) {
                     p->charState = CHARSTATE_WALK_A;
                 } else if (r6 < Q(24)) {
-                    p->charState = CHARSTATE_24;
+                    p->charState = CHARSTATE_WALLRUN_INIT;
                 } else if (r6 < Q(48)) {
-                    p->charState = CHARSTATE_25;
+                    p->charState = CHARSTATE_WALLRUN_TO_WALL;
                 } else {
-                    p->charState = CHARSTATE_26;
+                    p->charState = CHARSTATE_WALLRUN_ON_WALL;
                 }
             }
         }

@@ -58,7 +58,7 @@ EHit sub_800C2B8(Sprite *s, s16 sx, s16 sy, Player *p);
 bool32 sub_800C934(Sprite *s, s32 x, s32 y, Rect8 *rectPlayer, u32 UNUSED param4, Player *p, u32 *moveState);
 bool32 sub_800CBBC(Sprite *s, s32 x, s32 y, Rect8 *rectPlayer, u32 UNUSED param4, Player *p, u32 *param6);
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
-EHit Coll_Player_Boss(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
+EHit Coll_Player_Enemy(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit Coll_Player_Boss_1(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit Coll_Player_Bosses_2_6(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit sub_800BF10(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
@@ -78,7 +78,6 @@ u32 Coll_Player_Platform(Sprite *, CamCoord x, CamCoord y, Player *);
 bool32 Coll_AmyHammer_Spring(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 #endif
 
-u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, Rect8 *param3, Player *p);
 bool32 SA2_LABEL(sub_800DD54)(Player *p);
 bool32 SA2_LABEL(sub_800DE44)(Player *p);
 u32 SA2_LABEL(sub_800D0A0)(Sprite *s, s16 worldX, s16 worldY, s16 qSpeedX, s16 qSpeedY, u8 layer, u32 arg6);

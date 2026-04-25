@@ -180,11 +180,11 @@ static void UpdatePlayerPosition(Sprite_LapTrigger *trigger)
         yValue = I(yValue);
 
         gCamera.x += xValue;
-        gCamera.unk20 += xValue;
-        gCamera.unk10 += xValue;
+        gCamera.SA2_LABEL(unk20) += xValue;
+        gCamera.SA2_LABEL(unk10) += xValue;
 
         gCamera.y += yValue;
-        gCamera.unk24 += yValue;
+        gCamera.SA2_LABEL(unk24) += yValue;
         gCamera.unk14 += yValue;
     }
 }

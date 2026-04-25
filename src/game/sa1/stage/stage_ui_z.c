@@ -537,7 +537,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_8055458.inc", void Task
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_1) || gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
             LoadPalette423Anim();
-            sub_804C40C();
+            InitWaterPalettes();
         }
 
         TaskDestroy(strcMain->task20);
@@ -559,7 +559,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_8055458.inc", void Task
         }
     } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_1) || gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
         //_08055708
-        sub_804C40C();
+        InitWaterPalettes();
     }
 }
 END_NONMATCH

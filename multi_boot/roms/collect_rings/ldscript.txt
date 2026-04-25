@@ -46,7 +46,9 @@ SECTIONS {
         build/collect_rings/src/sa2/game/shared/stage/mp_event_recv_mgr.o(.text);
         build/collect_rings/src/sa2/game/shared/collect_rings/results.o(.text);
         build/collect_rings/src/sa2/game/shared/stage/entities_manager.o(.text);
-        build/collect_rings/src/sa2/game/shared/stage/collision.o(.text);
+        build/collect_rings/src/sa2/game/shared/stage/collision_3.o(.text);
+        build/collect_rings/src/sa2/game/shared/stage/collision_1.o(.text);
+        build/collect_rings/src/sa2/game/shared/stage/collision_2.o(.text);
         build/collect_rings/src/sa2/game/sa2/stage/mystery_itembox.o(.text);
         build/collect_rings/src/sa2/game/shared/stage/rings_manager.o(.text);
         build/collect_rings/src/sa2/game/sa2/collect_rings/time_display.o(.text);

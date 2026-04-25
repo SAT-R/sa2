@@ -29,7 +29,7 @@ struct Task *Player_Knuckles_InitGfx_FloatSplash(Player *p);
 
 extern const u8 gCharStatesKnucklesGlideTurn[];
 
-void Player_Knuckles_GlideInit(Player *p)
+void Player_Knuckles_InitGlide(Player *p)
 {
     p->moveState &= ~MOVESTATE_SPIN_ATTACK;
     PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 6);

@@ -121,7 +121,9 @@ SA2_C_FILES := \
 	sa2/game/shared/stage/mp_event_recv_mgr.c \
 	sa2/game/shared/collect_rings/results.c \
 	sa2/game/shared/stage/entities_manager.c \
-	sa2/game/shared/stage/collision.c \
+	sa2/game/shared/stage/collision_1.c \
+	sa2/game/shared/stage/collision_2.c \
+	sa2/game/shared/stage/collision_3.c \
 	sa2/game/sa2/stage/mystery_itembox.c \
 	sa2/game/shared/stage/rings_manager.c \
 	sa2/game/sa2/collect_rings/time_display.c \

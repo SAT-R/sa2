@@ -108,9 +108,9 @@ void Task_802EE78(void)
 
             gCamera.x += x;
             gCamera.y += y;
-            gCamera.unk20 += x;
-            gCamera.unk24 += y;
-            gCamera.unk10 += x;
+            gCamera.SA2_LABEL(unk20) += x;
+            gCamera.SA2_LABEL(unk24) += y;
+            gCamera.SA2_LABEL(unk10) += x;
             gCamera.unk14 += y;
 
             if (gCheese != NULL) {

@@ -65,7 +65,7 @@ static void sub_8077F7C(void)
     funnelSphere->unk10 -= 0x40;
     r6 = (funnelSphere->unk10 >> 2);
     if (funnelSphere->keyFrame == 0 && (r6 < 0x40)) {
-        gCamera.unk50 |= 1;
+        gCamera.SA2_LABEL(unk50) |= 1;
         funnelSphere->keyFrame = 1;
     }
 
@@ -208,7 +208,7 @@ static void sub_80782FC(Sprite_FunnelSphere *funnelSphere)
             gPlayer.spriteInfoBody->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             gPlayer.spriteInfoBody->s.frameFlags |= SPRITE_FLAG(PRIORITY, funnelSphere->unk12);
     }
-    gCamera.unk50 &= ~1;
+    gCamera.SA2_LABEL(unk50) &= ~1;
     gCurTask->main = sub_8078414;
 }
 
@@ -282,7 +282,7 @@ static void sub_80784F4(Sprite_FunnelSphere *funnelSphere)
     }
 
     gPlayer.qSpeedAirX = 0;
-    gCamera.unk50 &= ~1;
+    gCamera.SA2_LABEL(unk50) &= ~1;
     m4aSongNumStop(SE_293);
     gCurTask->main = sub_8078634;
 }

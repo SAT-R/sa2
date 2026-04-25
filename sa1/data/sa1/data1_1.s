@@ -19,16 +19,16 @@ C_DECL(gUnknown_087CA2F8):
 C_DECL(gUnknown_087D22F8):
     .incbin "baserom_sa1.gba", 0x007D22F8, 0x5B88
 
-    .global C_DECL(gUnknown_087D7E80)
-C_DECL(gUnknown_087D7E80):
+    .global C_DECL(gCollectRingsBgStageTileset)
+C_DECL(gCollectRingsBgStageTileset):
     .incbin "baserom_sa1.gba", 0x007D7E80, 0x8000
 
     .global C_DECL(gUnknown_087DFE80)
 C_DECL(gUnknown_087DFE80):
     .incbin "baserom_sa1.gba", 0x007DFE80, 0x3790
 
-    .global C_DECL(gUnknown_087E3610)
-C_DECL(gUnknown_087E3610):
+    .global C_DECL(gCollectRingsTilemaps)
+C_DECL(gCollectRingsTilemaps):
     .incbin "baserom_sa1.gba", 0x007E3610, 0x8000
 
     .global C_DECL(gUnknown_087EB610)

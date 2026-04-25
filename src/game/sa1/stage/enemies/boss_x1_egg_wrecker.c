@@ -150,11 +150,11 @@ void sub_80342A0(s16 worldX, s16 worldY)
     }
 
     if (boss->unk87 == 0) {
-        collPlayer = Coll_Player_Boss(s, worldX, worldY, &gPlayer);
+        collPlayer = Coll_Player_Enemy(s, worldX, worldY, &gPlayer);
 
         collPartner = 0;
         if (gNumSingleplayerCharacters == 2) {
-            collPartner = Coll_Player_Boss(s, worldX, worldY, &gPartner);
+            collPartner = Coll_Player_Enemy(s, worldX, worldY, &gPartner);
         }
 
         s2 = &boss->s2;

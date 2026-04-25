@@ -9,12 +9,12 @@ C_DECL(gUnknown_080BB3F8):
     mPtr C_DECL(gMultiboot_087C22F8)
     mPtr C_DECL(gUnknown_087CA2F8)
     mPtr C_DECL(gUnknown_087D22F8)
-    mPtr C_DECL(gUnknown_087E3610)
+    mPtr C_DECL(gCollectRingsTilemaps)
     mPtr C_DECL(gUnknown_087EB610)
     mPtr C_DECL(gUnknown_087F2128)
     mPtr C_DECL(gUnknown_087F88F0)
     mPtr C_DECL(gUnknown_087DFE80)
-    mPtr C_DECL(gUnknown_087D7E80)
+    mPtr C_DECL(gCollectRingsBgStageTileset)
 
     .global C_DECL(gUnknown_080BB41C)
 C_DECL(gUnknown_080BB41C):

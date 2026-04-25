@@ -122,11 +122,11 @@ void sub_80308A4(CamCoord worldX, CamCoord worldY)
     }
 
     if (boss->unk87 == 0) {
-        collPlayer = Coll_Player_Boss(s, worldX, worldY, &gPlayer);
+        collPlayer = Coll_Player_Enemy(s, worldX, worldY, &gPlayer);
         collPartner = 0;
 
         if (gNumSingleplayerCharacters == 2) {
-            collPartner = Coll_Player_Boss(s, worldX, worldY, &gPartner);
+            collPartner = Coll_Player_Enemy(s, worldX, worldY, &gPartner);
         }
 
         s2 = &boss->s2;
@@ -185,7 +185,7 @@ void CreateEntity_EggSpider(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     }
 
     t = TaskCreate(Task_EggSpiderInit, sizeof(EggSpider), 0x2000U, 0U, TaskDestructor_8031CB4);
-    TaskCreate(sub_804C40C, 0U, 0xFFFDU, 0U, NULL);
+    TaskCreate(InitWaterPalettes, 0U, 0xFFFDU, 0U, NULL);
 
     boss = TASK_DATA(t);
     s = &boss->s;

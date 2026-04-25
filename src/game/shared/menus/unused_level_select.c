@@ -5,23 +5,40 @@
 #include "task.h"
 
 #include "game/globals.h"
-#include "game/sa2/ui/character_select.h"
-
 #include "game/shared/stage/stage.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 
-#if (GAME == GAME_SA2)
+#if (GAME == GAME_SA1)
+#include "game/sa1/menus/title_screen.h"
+#include "game/sa1/ui/character_select.h"
+#include "game/sa1/stage/mp_results.h"
+#include "game/sa1/special_stage/main.h"
+
+#include "constants/sa1/songs.h"
+#include "data/sa1/tileset_debug_ascii.h"
+#include "data/sa1/credits.h"
+#include "game/sa1/stage/extra_stage.h"
+#elif (GAME == GAME_SA2)
 #include "game/sa2/stage/bosses/common.h"
-#include "game/sa2/title_screen.h"
-#endif
+#include "game/sa2/ui/character_select.h"
 
 #if PORTABLE
 #include "game/sa2/special_stage/main.h"
 #endif
 
-#include "animation_commands_bg.h"
-#include "data/sa2/tileset_debug_ascii.h"
-
 #include "constants/sa2/songs.h"
+#include "data/sa2/tileset_debug_ascii.h"
+#endif
+
+#include "animation_commands_bg.h"
+
+#if (GAME == GAME_SA1)
+#define LEFT_INPUT(value)  (value)++
+#define RIGHT_INPUT(value) (value)--
+#else
+#define LEFT_INPUT(value)  (value)--
+#define RIGHT_INPUT(value) (value)++
+#endif
 
 typedef struct {
     void *vram;
@@ -83,16 +100,14 @@ void CreateUnusedLevelSelect(void)
 
 static void Task_Poll(void)
 {
-    LevelSelect *levelSelect = TASK_DATA(gCurTask);
-
     u8 digits[5];
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
     if (gPressedKeys & (START_BUTTON | A_BUTTON)) {
         m4aSongNumStart(SE_SELECT);
 
 #if (GAME == GAME_SA1)
         m4aSongNumStop(MUS_CHARACTER_SELECTION);
-
         gBgSprites_Unknown1[0] = 0;
         gBgSprites_Unknown2[0][0] = 0;
         gBgSprites_Unknown2[0][1] = 0;
@@ -126,23 +141,91 @@ static void Task_Poll(void)
 #endif
     } else {
         if (gRepeatedKeys & DPAD_LEFT) {
-#if (GAME == GAME_SA1)
-            levelSelect->levelId++;
-#elif (GAME == GAME_SA2)
-            levelSelect->levelId--;
-#endif
+            LEFT_INPUT(levelSelect->levelId);
         } else if (gRepeatedKeys & DPAD_RIGHT) {
-#if (GAME == GAME_SA1)
-            levelSelect->levelId--;
-#elif (GAME == GAME_SA2)
-            levelSelect->levelId++;
-#endif
+            RIGHT_INPUT(levelSelect->levelId);
         }
 
         numToASCII(digits, levelSelect->levelId);
         RenderText(levelSelect->vram, Tileset_DebugAscii, 12, 14, 0, (char *)digits, 0);
     }
 }
+
+#if (GAME == GAME_SA1)
+void Task_CreateMultiplayer(void)
+{
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
+    union MultiSioData *send, *send_recv;
+    bool32 parent;
+    u32 i;
+
+    LINK_HEARTBEAT();
+
+    send_recv = gMultiSioRecv;
+    if (send_recv->pat0.unk0 == 82) {
+        levelSelect->levelId = send_recv->pat0.unk2;
+        gCurTask->main = Task_CreateSelectedTask;
+        return;
+    }
+
+    send_recv = &gMultiSioSend;
+    send_recv->pat0.unk0 = 81;
+    send_recv->pat0.unk2 = levelSelect->levelId;
+
+    parent = gMultiSioStatusFlags & MULTI_SIO_PARENT;
+    send = &gMultiSioSend;
+    if (parent) {
+        u8 j;
+
+        for (j = 0; j < 4; j++) {
+            if (CONNECTION_REGISTERED(j)) {
+                send_recv = &gMultiSioRecv[j];
+                if (send_recv->pat0.unk0 != 81) {
+                    return;
+                }
+            }
+        }
+        send->pat0.unk0 = 82;
+    }
+}
+
+void Task_CreateSelectedTask(void)
+{
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
+    u8 levelId = levelSelect->levelId;
+
+    TaskDestroy(gCurTask);
+
+    if (levelId == LEVEL_INDEX(ZONE_1, ACT_1)) {
+        gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
+        ApplyGameStageSettings();
+    } else if (levelId == 0xFF) {
+        CreateStaffCredits();
+    } else if (levelId == 0xFE) {
+        CreateCongratulationsAnimation();
+    } else if (levelId == 0xFD) {
+        CreateExtraStageResults();
+    } else if (levelId == 0xFC) {
+        CreateMultiplayerResultsScreen(0);
+    } else if (levelId == 0xFB) {
+        CreateMultiplayerResultsScreen(1);
+    } else if (levelId == 0xFA) {
+        CreateMultiplayerResultsScreen(2);
+    } else if (levelId == 0xF9) {
+        CreateMultipackOutcomeScreen(0);
+    } else if (levelId == 0xF8) {
+        CreateMultipackOutcomeScreen(1);
+    } else if (levelId < NUM_LEVEL_IDS + 1) {
+        gCurrentLevel = levelId - 1;
+
+        if (!(gInput & R_BUTTON)) {
+            ApplyGameStageSettings();
+        } else {
+            CreateSpecialStage();
+        }
+    }
+}
+#endif // (GAME == GAME_SA1)
 
 static void Task_UnusedLevelSelectInit(void)
 {
@@ -156,6 +239,7 @@ static void Task_UnusedLevelSelectInit(void)
     gCurTask->main();
 }
 
+#if (GAME == GAME_SA2)
 static void Task_LoadStage(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
@@ -187,7 +271,6 @@ static void Task_LoadStage(void)
     }
 }
 
-#if (GAME == GAME_SA2)
 static void nullsub_8009910(void) { }
 static void nullsub_8009914(void) { }
 #endif

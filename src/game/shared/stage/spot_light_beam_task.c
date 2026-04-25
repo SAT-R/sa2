@@ -8,14 +8,12 @@
 #include "gba/syscall.h"
 #include "game/shared/stage/spot_light_beam_task.h"
 
-void Task_SpotlightBeamTask(void);
-void TaskDestructor_SpotlightBeamTask(struct Task *);
-
-/* This task is related to spot lights in Ice Paradise. */
+void Task_SpotlightBeam(void);
+void TaskDestructor_SpotlightBeam(struct Task *);
 
 struct Task *CreateSpotlightBeamTask(void)
 {
-    struct Task *t = TaskCreate(Task_SpotlightBeamTask, sizeof(SpotlightBeam), 0x2000, 0, TaskDestructor_SpotlightBeamTask);
+    struct Task *t = TaskCreate(Task_SpotlightBeam, sizeof(SpotlightBeam), 0x2000, 0, TaskDestructor_SpotlightBeam);
     SpotlightBeam *beam = TASK_DATA(t);
 
     beam->unk6 = 120;
@@ -35,11 +33,17 @@ typedef struct {
 
 } Struct_SP10;
 
+#if (GAME == GAME_SA1)
+NONMATCH("asm/non_matching/game/shared/stage/sa1_Task_SpotlightBeam.inc", void Task_SpotlightBeam(void))
+#elif (GAME == GAME_SA2)
 // (68.53%) https://decomp.me/scratch/NchTb
 // (66.79%) https://decomp.me/scratch/PmbTP
 // (52.07%) https://decomp.me/scratch/I1Kkn (M2C generated)
-NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void Task_SpotlightBeamTask(void))
+NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void Task_SpotlightBeam(void))
+#endif
 {
+    // NOTE: This was decompiled from the SA2 code
+    // It may not be the SA1 code, since the asm is difference
     TriParam1 sp8;
     Struct_SP10 sp10;
     Struct_SP10 sp14;
@@ -176,7 +180,7 @@ NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void T
             } else {
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
             }
-            sub_8006228(beam->bg, sp8.unk4, sp8.unk5, sp8.unk6, sp8.unk7, 0);
+            SA2_LABEL(sub_8006228)(beam->bg, sp8.unk4, sp8.unk5, sp8.unk6, sp8.unk7, 0);
             return;
         }
         if (1 & beam->bg) {
@@ -184,7 +188,7 @@ NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void T
         } else {
             gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk5, DISPLAY_HEIGHT);
         }
-        sub_800724C(beam->bg, &sp8);
+        SA2_LABEL(sub_800724C)(beam->bg, &sp8);
         return;
     }
 
@@ -196,7 +200,7 @@ NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void T
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             }
 
-            sub_80064A8(beam->bg, sp8.unk0, sp8.unk1, sp8.unk2, (s32)sp8.unk3, 0);
+            SA2_LABEL(sub_80064A8)(beam->bg, sp8.unk0, sp8.unk1, sp8.unk2, (s32)sp8.unk3, 0);
         } else {
             if (beam->bg & 0x1) {
                 gWinRegs[WINREG_WIN1V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
@@ -204,10 +208,10 @@ NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void T
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(sp8.unk1, DISPLAY_HEIGHT);
             }
 
-            sub_800724C(beam->bg, &sp8);
+            SA2_LABEL(sub_800724C)(beam->bg, &sp8);
         }
     }
 }
 END_NONMATCH
 
-void TaskDestructor_SpotlightBeamTask(struct Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }
+void TaskDestructor_SpotlightBeam(struct Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }

@@ -32,11 +32,11 @@ typedef struct {
 #define Q_RECT_WIDTH(hb)      QS(RECT_WIDTH(hb))
 #define Q_RECT_HEIGHT(hb)     QS(RECT_HEIGHT(hb))
 #define Q_RECT_LEFT(x, hb)    ((x) + Q((hb)->left))
-#define Q_RECT_LEFT2(x, hb)   QS((hb)->left + (x))
+#define Q_RECT_LEFT2(x, hb)   (QS(x) + QS((hb)->left))
 #define Q_RECT_RIGHT(x, hb)   (Q_RECT_LEFT(x, hb) + Q_RECT_WIDTH(hb))
 #define Q_RECT_RIGHT2(x, hb)  (Q_RECT_LEFT2(x, hb) + Q_RECT_WIDTH(hb))
 #define Q_RECT_TOP(y, hb)     (((y) + Q((hb)->top)))
-#define Q_RECT_TOP2(y, hb)    QS(((hb)->top) + (y))
+#define Q_RECT_TOP2(y, hb)    (QS(y) + QS((hb)->top))
 #define Q_RECT_BOTTOM(y, hb)  (Q_RECT_TOP(y, hb) + Q_RECT_HEIGHT(hb))
 #define Q_RECT_BOTTOM2(y, hb) (Q_RECT_TOP2(y, hb) + Q_RECT_HEIGHT(hb))
 

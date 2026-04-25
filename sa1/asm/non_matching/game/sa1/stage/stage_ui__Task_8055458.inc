@@ -269,7 +269,7 @@ _08055622:
 	cmp r0, #1
 	bhi _08055672
 	bl LoadPalette423Anim
-	bl sub_804C40C
+	bl InitWaterPalettes
 _08055672:
 	ldr r0, [r4, #0x20]
 	bl TaskDestroy
@@ -332,7 +332,7 @@ _08055708:
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bhi _0805571A
-	bl sub_804C40C
+	bl InitWaterPalettes
 _0805571A:
 	add sp, #4
 	pop {r3, r4, r5}

@@ -110,7 +110,7 @@ const Vec2_32 gCheckpointPositions[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = { 0, 0 },
 };
 
-const Vec2_32 gUnknown_080D650C[] = {
+const s32 gUnknown_080D650C[][2] = {
     // Zone 1
     [LEVEL_INDEX(ZONE_1, ACT_1)] = { 19488, -1 },
     [LEVEL_INDEX(ZONE_1, ACT_2)] = { 18816, -1 },
@@ -164,7 +164,7 @@ const Vec2_32 gUnknown_080D650C[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = { 0, 0 },
 };
 
-const Vec2_32 gUnknown_080D661C[] = {
+const s32 gUnknown_080D661C[][2] = {
     // Zone 1
     [LEVEL_INDEX(ZONE_1, ACT_1)] = { -960, 0 },
     [LEVEL_INDEX(ZONE_1, ACT_2)] = { -960, 0 },

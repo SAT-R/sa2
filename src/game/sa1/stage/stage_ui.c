@@ -17,7 +17,7 @@
 #include "constants/sa1/vram_hardcoded.h"
 #include "constants/sa1/zones.h"
 
-extern void sub_804C40C(void); // TODO: Move to correct Header!
+extern void InitWaterPalettes(void); // TODO: Move to correct Header!
 
 void StageUI_DrawTimer(u32 courseTime);
 void sub_8053BAC(void);

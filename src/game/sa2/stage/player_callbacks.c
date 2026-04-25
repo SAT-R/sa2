@@ -1701,18 +1701,17 @@ void sub_801394C(Player *p)
     }
 }
 
-// (76.32%) https://decomp.me/scratch/8fUWD
-// (97.64%) https://decomp.me/scratch/Bd3kQ
-// (98.61%) https://decomp.me/scratch/0zv3B
-NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_UpdateSpeed(Player *player))
+// 100% (fake match): https://decomp.me/scratch/63L6J
+void Knuckles_Glide_UpdateSpeed(Player *player)
 {
     s32 speedGrnd = ABS(player->qSpeedGround);
     s8 shift = player->w.kf.shift;
+    s32 cos;
 
     if (speedGrnd < Q_24_8(3.0)) {
         speedGrnd += Q_24_8(6.0 / 256.0);
     } else if (speedGrnd < Q_24_8(15.0)) {
-        if ((player->w.kf.shift & 0x7F) == 0)
+        if ((player->w.kf.shift & 127) == 0)
             speedGrnd += Q_24_8(3.0 / 256.0);
     }
     // _080139E4
@@ -1723,53 +1722,61 @@ NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_Up
         }
     }
 
-    {
-        s8 shift = player->w.kf.shift + Q_24_8(0.25);
-        if (shift <= 0) {
-            player->qSpeedGround = -speedGrnd;
-        } else {
-            player->qSpeedGround = +speedGrnd;
-        }
+    if ((s8)(player->w.kf.shift + Q_24_8(0.25)) <= 0) {
+        player->qSpeedGround = -speedGrnd;
+    } else {
+        player->qSpeedGround = +speedGrnd;
     }
 
-    {
-        if (player->heldInput & DPAD_LEFT) {
-            if ((u8)shift != 128) {
-                if (shift < 0)
-                    shift = -shift;
-                shift += 2;
-            }
-            player->w.kf.shift = shift;
-        } else if (player->heldInput & DPAD_RIGHT) {
-            if (shift != 0) {
-                if (shift > 0)
-                    shift = -shift;
-                shift += 2;
-            }
-            player->w.kf.shift = shift;
-        } else {
-            if (shift & 0x7F) {
-                shift += 2;
-            }
-            player->w.kf.shift = shift;
+    if (player->heldInput & DPAD_LEFT) {
+        if ((u8)shift != 128) {
+            if (shift < 0)
+                shift = -shift;
+            shift += 2;
         }
-
-        player->qSpeedAirX = I(COS_24_8(shift << 2) * speedGrnd);
-
-        if (player->qSpeedAirY < Q_24_8(0.5)) {
-            player->qSpeedAirY += Q_24_8(0.09375);
-        } else {
-            player->qSpeedAirY -= Q_24_8(0.09375);
+        player->w.kf.shift = shift;
+    } else if (player->heldInput & DPAD_RIGHT) {
+        if (shift != 0) {
+            if (shift > 0)
+                shift = -shift;
+            shift += 2;
         }
-
-        if (gCamera.unk4C > 0) {
-            gCamera.unk4C -= 2;
-        } else if (gCamera.unk4C < 0) {
-            gCamera.unk4C += 4;
+        player->w.kf.shift = shift;
+    } else {
+        if (shift & 127) {
+            shift += 2;
         }
+        player->w.kf.shift = shift;
+    }
+
+#ifndef NON_MATCHING
+    cos = Q_2_14_TO_Q_24_8(({
+        s32 offset;
+        const u16 *sineTable = gSineTable;
+        asm("lsl %0, %1, #0x18\n\t"
+            "lsr %0, %0, #0x15"
+            : "=r"(offset)
+            : "r"(shift));
+        offset += 0x200;
+        ((s16) * (u16 *)((void *)sineTable + offset));
+    }));
+#else
+    cos = COS_24_8((u8)shift * 4);
+#endif
+    player->qSpeedAirX = Q_24_8_TO_INT(cos * speedGrnd);
+
+    if (player->qSpeedAirY < Q_24_8(0.5)) {
+        player->qSpeedAirY += Q_24_8(0.09375);
+    } else {
+        player->qSpeedAirY -= Q_24_8(0.09375);
+    }
+
+    if (gCamera.unk4C > 0) {
+        gCamera.unk4C -= 2;
+    } else if (gCamera.unk4C < 0) {
+        gCamera.unk4C += 4;
     }
 }
-END_NONMATCH
 
 void Player_Knuckles_InitGlide(Player *p)
 {

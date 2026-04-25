@@ -272,14 +272,14 @@ void sub_8036E20(s16 worldX, s16 worldY)
         strc7C = TASK_DATA(boss->task9C);
 
         if (!(4 & strc7C->unk7A)) {
-            collPlayer = Coll_Player_Boss(s, worldX, worldY, &gPlayer);
+            collPlayer = Coll_Player_Enemy(s, worldX, worldY, &gPlayer);
         }
         if (collPlayer == HIT_NONE) {
             collPlayer = sub_800BFEC(s, worldX, worldY, &gPlayer);
         }
         if (gNumSingleplayerCharacters == NUM_SINGLEPLAYER_CHARS_MAX) {
             if (!(4 & strc7C->unk7A)) {
-                collPartner = Coll_Player_Boss(s, worldX, worldY, &gPartner);
+                collPartner = Coll_Player_Enemy(s, worldX, worldY, &gPartner);
             }
             if (collPartner == HIT_NONE) {
                 collPartner = sub_800BFEC(s, worldX, worldY, &gPartner);

@@ -209,7 +209,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
         roomEvent->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
 
         gCurTask->main = StageGoalToggle_PlayerReachedGoal;
-        gCamera.unk50 |= CAM_MODE_SPECTATOR;
+        gCamera.SA2_LABEL(unk50) |= CAM_MODE_SPECTATOR;
     }
 }
 
@@ -248,7 +248,7 @@ static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
     roomEvent = CreateRoomEvent();
     roomEvent->type = ROOMEVENT_TYPE_REACHED_STAGE_GOAL;
     gCurTask->main = StageGoalToggle_PlayerReachedGoal;
-    gCamera.unk50 |= CAM_MODE_SPECTATOR;
+    gCamera.SA2_LABEL(unk50) |= CAM_MODE_SPECTATOR;
 }
 
 static void StageGoalToggle_PlayerReachedGoal(void)
