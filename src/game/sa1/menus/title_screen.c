@@ -162,7 +162,7 @@ void Task_SegaLogoScrollOut(void)
     logo = TASK_DATA(gCurTask);
     logo->unk0++;
     SA2_LABEL(Bg2_SetWindowRegion)(2U, 0U, (160 - logo->unk0), gBgScrollRegs[2][0], gBgScrollRegs[2][1]);
-    SA2_LABEL(Bg2_SetWindowRegionEx)
+    SA2_LABEL(Bg2_SetWindowRegionExtended)
     (2U, (160 - logo->unk0), 160, gBgScrollRegs[2][0], (gBgScrollRegs[2][1] + 160) - logo->unk0);
 
     if (logo->unk0 == 160) {
