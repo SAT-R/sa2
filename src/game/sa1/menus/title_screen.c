@@ -155,14 +155,14 @@ void Task_SegaLogoInit(void)
     }
 }
 
-void Task_800D11C(void)
+void Task_SegaLogoScrollOut(void)
 {
     SegaLogo *logo;
 
     logo = TASK_DATA(gCurTask);
     logo->unk0++;
-    SA2_LABEL(sub_80078D4)(2U, 0U, (160 - logo->unk0), gBgScrollRegs[2][0], gBgScrollRegs[2][1]);
-    SA2_LABEL(sub_8007858)
+    SA2_LABEL(Bg2_SetWindowRegion)(2U, 0U, (160 - logo->unk0), gBgScrollRegs[2][0], gBgScrollRegs[2][1]);
+    SA2_LABEL(Bg2_SetWindowRegionExtended)
     (2U, (160 - logo->unk0), 160, gBgScrollRegs[2][0], (gBgScrollRegs[2][1] + 160) - logo->unk0);
 
     if (logo->unk0 == 160) {
