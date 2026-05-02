@@ -1,6 +1,0 @@
-#ifndef GUARD_TCG_PROGRAM_PARAMS_H
-#define GUARD_TCG_PROGRAM_PARAMS_H
-
-#define TinyChaoGardenConfig ((u32 *)(EWRAM_START + 0x8))
-
-#endif // GUARD_TCG_PROGRAM_PARAMS_H

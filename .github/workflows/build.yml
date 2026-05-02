@@ -145,7 +145,7 @@ jobs:
         working-directory: agbcc
 
       - name: Fetch assets
-        run: curl -o sa1/baserom_sa1.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_BASE_URL }}/sa1/baserom.gba
+        run: curl -o baserom_sa1.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_BASE_URL }}/sa1/baserom.gba
 
       - name: Compare
         run: make sa1 -j${nproc}

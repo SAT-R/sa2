@@ -437,7 +437,7 @@ tool_libs:
 clean: tidy clean-tools
 	@$(MAKE) clean -C tools/BriBaSA_ex
 	@$(MAKE) clean -C chao_garden
-	@$(MAKE) clean -C sa1
+	@$(MAKE) clean -f sa1_Makefile
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 	@$(MAKE) clean -C multi_boot/collect_rings
