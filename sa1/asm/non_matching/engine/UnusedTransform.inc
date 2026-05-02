@@ -29,7 +29,7 @@ _08003A48:
 	subs r2, #0x18
 	str r2, [sp, #0x28]
 	ldrh r0, [r7]
-	ldr r3, _08003CCC @ =sa2__gUnknown_03001944
+	ldr r3, _08003CCC @ =gSpriteTransformRotation
 	ldrh r1, [r3]
 	adds r0, r0, r1
 	ldr r2, _08003CD0 @ =0x000003FF
@@ -49,7 +49,7 @@ _08003A48:
 	add r3, sp
 	mov r8, r3
 	ldrh r0, [r7]
-	ldr r5, _08003CCC @ =sa2__gUnknown_03001944
+	ldr r5, _08003CCC @ =gSpriteTransformRotation
 	ldrh r1, [r5]
 	adds r0, r0, r1
 	ands r0, r2
@@ -62,7 +62,7 @@ _08003A48:
 	add r6, sp, #0xc
 	movs r0, #2
 	ldrsh r1, [r7, r0]
-	ldr r2, _08003CD8 @ =sa2__gUnknown_030017F0
+	ldr r2, _08003CD8 @ =gSpriteTransformScaleX
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -72,7 +72,7 @@ _08003A48:
 	mov sl, r3
 	movs r5, #4
 	ldrsh r1, [r7, r5]
-	ldr r2, _08003CDC @ =sa2__gUnknown_03005394
+	ldr r2, _08003CDC @ =gSpriteTransformScaleY
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -146,7 +146,7 @@ _08003A48:
 	movs r2, #2
 	ldrsh r0, [r7, r2]
 	rsbs r0, r0, #0
-	ldr r3, _08003CD8 @ =sa2__gUnknown_030017F0
+	ldr r3, _08003CD8 @ =gSpriteTransformScaleX
 	ldrh r1, [r3]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -154,7 +154,7 @@ _08003A48:
 _08003B60:
 	movs r4, #4
 	ldrsh r0, [r7, r4]
-	ldr r5, _08003CDC @ =sa2__gUnknown_03005394
+	ldr r5, _08003CDC @ =gSpriteTransformScaleY
 	ldrh r3, [r5]
 	ldrh r2, [r7, #4]
 	mov r1, sp
@@ -168,7 +168,7 @@ _08003B60:
 	asrs r0, r0, #8
 	mov r5, sl
 	strh r0, [r5]
-	ldr r0, _08003CDC @ =sa2__gUnknown_03005394
+	ldr r0, _08003CDC @ =gSpriteTransformScaleY
 	ldrh r3, [r0]
 _08003B84:
 	mov r2, sp
@@ -224,7 +224,7 @@ _08003B84:
 	asrs r0, r0, #8
 	strh r0, [r6]
 	add r5, sp, #0x18
-	ldr r1, _08003CCC @ =sa2__gUnknown_03001944
+	ldr r1, _08003CCC @ =gSpriteTransformRotation
 	ldrh r0, [r1]
 	movs r2, #0x80
 	lsls r2, r2, #1
@@ -235,14 +235,14 @@ _08003B84:
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r6, _08003CD8 @ =sa2__gUnknown_030017F0
+	ldr r6, _08003CD8 @ =gSpriteTransformScaleX
 	ldrh r1, [r6]
 	muls r0, r1, r0
 	asrs r0, r0, #8
 	strh r0, [r5]
 	mov r2, sp
 	adds r2, #0x1a
-	ldr r1, _08003CCC @ =sa2__gUnknown_03001944
+	ldr r1, _08003CCC @ =gSpriteTransformRotation
 	ldrh r0, [r1]
 	lsls r0, r0, #1
 	adds r0, r0, r4
@@ -255,7 +255,7 @@ _08003B84:
 	asrs r0, r0, #8
 	strh r0, [r2]
 	add r4, sp, #0x1c
-	ldr r6, _08003CCC @ =sa2__gUnknown_03001944
+	ldr r6, _08003CCC @ =gSpriteTransformRotation
 	ldrh r0, [r6]
 	lsls r0, r0, #1
 	ldr r1, _08003CD4 @ =gSineTable
@@ -277,7 +277,7 @@ _08003B84:
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r6, _08003CDC @ =sa2__gUnknown_03005394
+	ldr r6, _08003CDC @ =gSpriteTransformScaleY
 	ldrh r1, [r6]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -334,11 +334,11 @@ _08003B84:
 	b _08003CF6
 	.align 2, 0
 _08003CC8: .4byte gOamBuffer+0x6
-_08003CCC: .4byte sa2__gUnknown_03001944
+_08003CCC: .4byte gSpriteTransformRotation
 _08003CD0: .4byte 0x000003FF
 _08003CD4: .4byte gSineTable
-_08003CD8: .4byte sa2__gUnknown_030017F0
-_08003CDC: .4byte sa2__gUnknown_03005394
+_08003CD8: .4byte gSpriteTransformScaleX
+_08003CDC: .4byte gSpriteTransformScaleY
 _08003CE0: .4byte sa2__gUnknown_0300194C
 _08003CE4: .4byte sa2__gUnknown_03002820
 _08003CE8:

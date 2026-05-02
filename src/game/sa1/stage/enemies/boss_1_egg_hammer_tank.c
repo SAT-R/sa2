@@ -512,17 +512,17 @@ void Task_802611C(void)
     }
 
     if (s->frameFlags & 0x400) {
-        SA2_LABEL(gUnknown_03001944) = 0x3FF & tank->unk94;
-        SA2_LABEL(gUnknown_030017F0) = 0x100;
-        SA2_LABEL(gUnknown_03005394) = 0x100;
+        gSpriteTransformRotation = 0x3FF & tank->unk94;
+        gSpriteTransformScaleX = 0x100;
+        gSpriteTransformScaleY = 0x100;
         SA2_LABEL(gUnknown_03002A8C) = 0;
         SA2_LABEL(gUnknown_03004D58) = 0;
         SA2_LABEL(gUnknown_0300194C) = tank->s.x;
         SA2_LABEL(gUnknown_03002820) = tank->s.y - 0x24;
     } else {
-        SA2_LABEL(gUnknown_03001944) = 0x3FF & tank->unk94;
-        SA2_LABEL(gUnknown_030017F0) = 0x100;
-        SA2_LABEL(gUnknown_03005394) = 0x100;
+        gSpriteTransformRotation = 0x3FF & tank->unk94;
+        gSpriteTransformScaleX = 0x100;
+        gSpriteTransformScaleY = 0x100;
         SA2_LABEL(gUnknown_03002A8C) = 0;
         SA2_LABEL(gUnknown_03004D58) = 0;
         SA2_LABEL(gUnknown_0300194C) = tank->s.x;
@@ -768,17 +768,17 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_1__Task_80264C8.inc", voi
     }
 
     if (s->frameFlags & 0x400) {
-        SA2_LABEL(gUnknown_03001944) = tank->unk94 & 0x3FF;
-        SA2_LABEL(gUnknown_030017F0) = 0x100;
-        SA2_LABEL(gUnknown_03005394) = 0x100;
+        gSpriteTransformRotation = tank->unk94 & 0x3FF;
+        gSpriteTransformScaleX = 0x100;
+        gSpriteTransformScaleY = 0x100;
         SA2_LABEL(gUnknown_03002A8C) = 0;
         SA2_LABEL(gUnknown_03004D58) = 0;
         SA2_LABEL(gUnknown_0300194C) = tank->s.x;
         SA2_LABEL(gUnknown_03002820) = tank->s.y - 0x24;
     } else {
-        SA2_LABEL(gUnknown_03001944) = tank->unk94 & 0x3FF;
-        SA2_LABEL(gUnknown_030017F0) = 0x100;
-        SA2_LABEL(gUnknown_03005394) = 0x100;
+        gSpriteTransformRotation = tank->unk94 & 0x3FF;
+        gSpriteTransformScaleX = 0x100;
+        gSpriteTransformScaleY = 0x100;
         SA2_LABEL(gUnknown_03002A8C) = 0;
         SA2_LABEL(gUnknown_03004D58) = 0;
         SA2_LABEL(gUnknown_0300194C) = tank->s.x;
@@ -999,8 +999,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_1__Task_80271E4.inc", voi
     tf = &arm->transform;
     tf->rotation = 0;
 
-    arm->unk3C = ((COS(SA2_LABEL(gUnknown_03001944)) * 0x10 * arm->unk50) >> 0xE) + (gCamera.x + SA2_LABEL(gUnknown_0300194C));
-    arm->unk3E = ((SIN(SA2_LABEL(gUnknown_03001944)) * 0x10 * arm->unk50) >> 0xE) + (gCamera.y + SA2_LABEL(gUnknown_03002820));
+    arm->unk3C = ((COS(gSpriteTransformRotation) * 0x10 * arm->unk50) >> 0xE) + (gCamera.x + SA2_LABEL(gUnknown_0300194C));
+    arm->unk3E = ((SIN(gSpriteTransformRotation) * 0x10 * arm->unk50) >> 0xE) + (gCamera.y + SA2_LABEL(gUnknown_03002820));
 
     if (arm->unk50) {
         arm->qUnk4C = +Q(2);
@@ -1145,8 +1145,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_1__Task_EHTHammer.inc", v
         s32 x32;
         s32 y32;
 #endif
-        x32 = COS(SA2_LABEL(gUnknown_03001944)) * 3;
-        y32 = SIN(SA2_LABEL(gUnknown_03001944)) * 3;
+        x32 = COS(gSpriteTransformRotation) * 3;
+        y32 = SIN(gSpriteTransformRotation) * 3;
         x = SA2_LABEL(gUnknown_0300194C) + gCamera.x + (x32 >> 9);
         y = SA2_LABEL(gUnknown_03002820) + gCamera.y + (y32 >> 9);
     }
@@ -1201,14 +1201,14 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_1__Task_8027600.inc", voi
         }
     } else if (tank->unk94 > 0) {
         tf->rotation = -tank->unk94;
-        tf->rotation += SA2_LABEL(gUnknown_03001944);
+        tf->rotation += gSpriteTransformRotation;
     }
 
     {
         s32 x32;
         s32 y32;
-        x32 = COS(SA2_LABEL(gUnknown_03001944)) * 3;
-        y32 = SIN(SA2_LABEL(gUnknown_03001944)) * 3;
+        x32 = COS(gSpriteTransformRotation) * 3;
+        y32 = SIN(gSpriteTransformRotation) * 3;
         x = SA2_LABEL(gUnknown_0300194C) + gCamera.x + (x32 >> 9);
         y = SA2_LABEL(gUnknown_03002820) + gCamera.y + (y32 >> 9);
         hammer->unk3C = x;
