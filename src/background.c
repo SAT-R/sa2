@@ -75,7 +75,11 @@ void DrawBackground(Background *background)
 // (85.37%) https://decomp.me/scratch/617Jb
 // (87.46%) https://decomp.me/scratch/1CFim
 // TODO: ProcessBackgroundsCopyQueue might be a good name for this function?
+#if (GAME == GAME_SA1)
+NONMATCH("asm/non_matching/engine/sa2__sub_8002B20_sa1.inc", bool32 SA2_LABEL(sub_8002B20)(void))
+#else
 NONMATCH("asm/non_matching/engine/sa2__sub_8002B20.inc", bool32 SA2_LABEL(sub_8002B20)(void))
+#endif
 {
     u16 sp00;
     s32 sp04 = 0;

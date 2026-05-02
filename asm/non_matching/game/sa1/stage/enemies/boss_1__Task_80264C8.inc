@@ -848,11 +848,11 @@ _08026B82:
 	strh r1, [r0]
 	ldr r0, _08026BD4 @ =sa2__gUnknown_03004D58
 	strh r1, [r0]
-	ldr r1, _08026BD8 @ =sa2__gUnknown_0300194C
+	ldr r1, _08026BD8 @ =gSpriteTransformX
 	mov r3, r8
 	ldrh r0, [r3, #0x22]
 	strh r0, [r1]
-	ldr r1, _08026BDC @ =sa2__gUnknown_03002820
+	ldr r1, _08026BDC @ =gSpriteTransformY
 	ldrh r0, [r3, #0x24]
 	b _08026C0E
 	.align 2, 0
@@ -862,8 +862,8 @@ _08026BC8: .4byte gSpriteTransformScaleX
 _08026BCC: .4byte gSpriteTransformScaleY
 _08026BD0: .4byte sa2__gUnknown_03002A8C
 _08026BD4: .4byte sa2__gUnknown_03004D58
-_08026BD8: .4byte sa2__gUnknown_0300194C
-_08026BDC: .4byte sa2__gUnknown_03002820
+_08026BD8: .4byte gSpriteTransformX
+_08026BDC: .4byte gSpriteTransformY
 _08026BE0:
 	ldr r2, _08026C24 @ =gSpriteTransformRotation
 	ldr r4, [sp, #0x10]
@@ -882,11 +882,11 @@ _08026BE0:
 	strh r3, [r0]
 	ldr r0, _08026C38 @ =sa2__gUnknown_03004D58
 	strh r3, [r0]
-	ldr r1, _08026C3C @ =sa2__gUnknown_0300194C
+	ldr r1, _08026C3C @ =gSpriteTransformX
 	mov r6, r8
 	ldrh r0, [r6, #0x22]
 	strh r0, [r1]
-	ldr r1, _08026C40 @ =sa2__gUnknown_03002820
+	ldr r1, _08026C40 @ =gSpriteTransformY
 	ldrh r0, [r6, #0x24]
 _08026C0E:
 	subs r0, #0x24
@@ -907,7 +907,7 @@ _08026C2C: .4byte gSpriteTransformScaleX
 _08026C30: .4byte gSpriteTransformScaleY
 _08026C34: .4byte sa2__gUnknown_03002A8C
 _08026C38: .4byte sa2__gUnknown_03004D58
-_08026C3C: .4byte sa2__gUnknown_0300194C
-_08026C40: .4byte sa2__gUnknown_03002820
+_08026C3C: .4byte gSpriteTransformX
+_08026C40: .4byte gSpriteTransformY
 
 .syntax divided

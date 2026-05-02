@@ -89,8 +89,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/ice_block__Task_IceBlock
         CreateDustCloud(worldX, worldY);
         m4aSongNumStart(SE_ITEM_BOX);
 
-        SA2_LABEL(gUnknown_0300194C) = s->x;
-        SA2_LABEL(gUnknown_03002820) = s->y;
+        gSpriteTransformX = s->x;
+        gSpriteTransformY = s->y;
 
         CreateIceBlockShards(worldX - s->x, worldY - 16 - s->y);
 
@@ -139,8 +139,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/ice_block__Task_IceBlock
                     CreateDustCloud(worldX, worldY);
                     m4aSongNumStart(SE_ITEM_BOX);
 
-                    SA2_LABEL(gUnknown_0300194C) = s->x;
-                    SA2_LABEL(gUnknown_03002820) = s->y;
+                    gSpriteTransformX = s->x;
+                    gSpriteTransformY = s->y;
 
                     CreateIceBlockShards(worldX - s->x, worldY - 16 - s->y);
 

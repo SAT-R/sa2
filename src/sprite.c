@@ -557,16 +557,16 @@ NONMATCH("asm/non_matching/engine/sa2__sub_8004E14.inc", void SA2_LABEL(sub_8004
         // { +cos(a), -sin(a) }
         // { +sin(a), +cos(a) }
         us.unk18[0][0] = I((Q(+COS_24_8(gSpriteTransformRotation)) * gSpriteTransformScaleX) >> 16)
-            * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398) >> 16));
+            * (Q(us.unkC[0] * gSpriteTransformScaleUnknown >> 16));
         us.unk18[0][1] = I((Q(-SIN_24_8(gSpriteTransformRotation)) * gSpriteTransformScaleX) >> 16)
-            * (Q(us.unkC[0] * SA2_LABEL(gUnknown_03005398) >> 16));
+            * (Q(us.unkC[0] * gSpriteTransformScaleUnknown >> 16));
         us.unk18[1][0] = I((Q(+SIN_24_8(gSpriteTransformRotation)) * gSpriteTransformScaleY) >> 16)
-            * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398) >> 16));
+            * (Q(us.unkC[1] * gSpriteTransformScaleUnknown >> 16));
         us.unk18[1][1] = I((Q(+COS_24_8(gSpriteTransformRotation)) * gSpriteTransformScaleY) >> 16)
-            * (Q(us.unkC[1] * SA2_LABEL(gUnknown_03005398) >> 16));
+            * (Q(us.unkC[1] * gSpriteTransformScaleUnknown >> 16));
 
-        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(SA2_LABEL(gUnknown_0300194C)));
-        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(SA2_LABEL(gUnknown_03002820)));
+        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(gSpriteTransformX));
+        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(gSpriteTransformY));
 
         {
             u16 width, height;

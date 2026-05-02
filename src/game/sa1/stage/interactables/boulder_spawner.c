@@ -159,11 +159,10 @@ void Task_BoulderMain(void)
                 if (boulder->unkB1 != 0) {
                     boulder->unkB1--;
                 } else {
-                    SA2_LABEL(gUnknown_0300194C) = s->x;
-                    SA2_LABEL(gUnknown_03002820) = s->y;
+                    gSpriteTransformX = s->x;
+                    gSpriteTransformY = s->y;
 
-                    CreateBoulderDebris(unkB2 + I(boulder->qUnkA8) - SA2_LABEL(gUnknown_0300194C),
-                                        unkB4 + I(boulder->qUnkAC) - SA2_LABEL(gUnknown_03002820));
+                    CreateBoulderDebris(unkB2 + I(boulder->qUnkA8) - gSpriteTransformX, unkB4 + I(boulder->qUnkAC) - gSpriteTransformY);
 
                     if (!IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
                         m4aSongNumStart(SE_EXPLOSION);

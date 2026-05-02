@@ -265,8 +265,8 @@ void Task_SkatingStone2(void)
 
                 m4aSongNumStop(SE_198);
 
-                SA2_LABEL(gUnknown_0300194C) = s->x;
-                SA2_LABEL(gUnknown_03002820) = s->y;
+                gSpriteTransformX = s->x;
+                gSpriteTransformY = s->y;
 
                 CreateSkatingStoneDebris(worldX + I(stone->qUnkA8) - s->x, worldY + I(stone->qUnkAC) - 20 - s->y);
 
@@ -340,8 +340,8 @@ void Task_SkatingStone2(void)
 
             m4aSongNumStop(SE_198);
 
-            SA2_LABEL(gUnknown_0300194C) = s->x;
-            SA2_LABEL(gUnknown_03002820) = s->y;
+            gSpriteTransformX = s->x;
+            gSpriteTransformY = s->y;
 
             CreateSkatingStoneDebris(worldX + I(stone->qUnkA8) - s->x, worldY + I(stone->qUnkAC) - 20 - s->y);
 

@@ -1,5 +1,6 @@
 .syntax unified
 .text
+@ VERY similar to sub_8004860 and sub_8004E14
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -12,9 +13,9 @@
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	bne _08003A48
-	b _08003D74
-_08003A48:
+	bne _sa2_08004AD8
+	b _sa2_08004E04
+_sa2_08004AD8:
 	mov sb, r1
 	add r2, sp, #0x20
 	ldr r1, [sp, #0x24]
@@ -24,21 +25,21 @@ _08003A48:
 	strh r0, [r2]
 	ldrh r4, [r2]
 	lsls r4, r4, #5
-	ldr r0, _08003CC8 @ =gOamBuffer+0x6
+	ldr r0, _sa2_08004D58 @ =gOamBuffer + 0x6
 	adds r4, r4, r0
 	subs r2, #0x18
 	str r2, [sp, #0x28]
 	ldrh r0, [r7]
-	ldr r3, _08003CCC @ =gSpriteTransformRotation
+	ldr r3, _sa2_08004D5C @ =gSpriteTransformRotation
 	ldrh r1, [r3]
 	adds r0, r0, r1
-	ldr r2, _08003CD0 @ =0x000003FF
+	ldr r2, _sa2_08004D60 @ =0x000003FF
 	ands r0, r2
 	movs r5, #0x80
 	lsls r5, r5, #1
 	adds r0, r0, r5
 	lsls r0, r0, #1
-	ldr r6, _08003CD4 @ =gSineTable
+	ldr r6, _sa2_08004D64 @ =gSineTable
 	adds r0, r0, r6
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -49,7 +50,7 @@ _08003A48:
 	add r3, sp
 	mov r8, r3
 	ldrh r0, [r7]
-	ldr r5, _08003CCC @ =gSpriteTransformRotation
+	ldr r5, _sa2_08004D5C @ =gSpriteTransformRotation
 	ldrh r1, [r5]
 	adds r0, r0, r1
 	ands r0, r2
@@ -62,7 +63,7 @@ _08003A48:
 	add r6, sp, #0xc
 	movs r0, #2
 	ldrsh r1, [r7, r0]
-	ldr r2, _08003CD8 @ =gSpriteTransformScaleX
+	ldr r2, _sa2_08004D68 @ =gSpriteTransformScaleX
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -72,7 +73,7 @@ _08003A48:
 	mov sl, r3
 	movs r5, #4
 	ldrsh r1, [r7, r5]
-	ldr r2, _08003CDC @ =gSpriteTransformScaleY
+	ldr r2, _sa2_08004D6C @ =gSpriteTransformScaleY
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -142,25 +143,25 @@ _08003A48:
 	ldrsh r0, [r7, r1]
 	str r0, [sp, #0x2c]
 	cmp r0, #0
-	bge _08003B60
+	bge _sa2_08004BF0
 	movs r2, #2
 	ldrsh r0, [r7, r2]
 	rsbs r0, r0, #0
-	ldr r3, _08003CD8 @ =gSpriteTransformScaleX
+	ldr r3, _sa2_08004D68 @ =gSpriteTransformScaleX
 	ldrh r1, [r3]
 	muls r0, r1, r0
 	asrs r0, r0, #8
 	strh r0, [r6]
-_08003B60:
+_sa2_08004BF0:
 	movs r4, #4
 	ldrsh r0, [r7, r4]
-	ldr r5, _08003CDC @ =gSpriteTransformScaleY
+	ldr r5, _sa2_08004D6C @ =gSpriteTransformScaleY
 	ldrh r3, [r5]
 	ldrh r2, [r7, #4]
 	mov r1, sp
 	strh r2, [r1, #0x34]
 	cmp r0, #0
-	bge _08003B84
+	bge _sa2_08004C14
 	movs r4, #4
 	ldrsh r0, [r7, r4]
 	rsbs r0, r0, #0
@@ -168,9 +169,9 @@ _08003B60:
 	asrs r0, r0, #8
 	mov r5, sl
 	strh r0, [r5]
-	ldr r0, _08003CDC @ =gSpriteTransformScaleY
+	ldr r0, _sa2_08004D6C @ =gSpriteTransformScaleY
 	ldrh r3, [r0]
-_08003B84:
+_sa2_08004C14:
 	mov r2, sp
 	ldr r4, [sp, #0x28]
 	ldrh r1, [r4]
@@ -224,25 +225,25 @@ _08003B84:
 	asrs r0, r0, #8
 	strh r0, [r6]
 	add r5, sp, #0x18
-	ldr r1, _08003CCC @ =gSpriteTransformRotation
+	ldr r1, _sa2_08004D5C @ =gSpriteTransformRotation
 	ldrh r0, [r1]
 	movs r2, #0x80
 	lsls r2, r2, #1
 	adds r0, r0, r2
 	lsls r0, r0, #1
-	ldr r4, _08003CD4 @ =gSineTable
+	ldr r4, _sa2_08004D64 @ =gSineTable
 	adds r0, r0, r4
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r6, _08003CD8 @ =gSpriteTransformScaleX
+	ldr r6, _sa2_08004D68 @ =gSpriteTransformScaleX
 	ldrh r1, [r6]
 	muls r0, r1, r0
 	asrs r0, r0, #8
 	strh r0, [r5]
 	mov r2, sp
 	adds r2, #0x1a
-	ldr r1, _08003CCC @ =gSpriteTransformRotation
+	ldr r1, _sa2_08004D5C @ =gSpriteTransformRotation
 	ldrh r0, [r1]
 	lsls r0, r0, #1
 	adds r0, r0, r4
@@ -255,10 +256,10 @@ _08003B84:
 	asrs r0, r0, #8
 	strh r0, [r2]
 	add r4, sp, #0x1c
-	ldr r6, _08003CCC @ =gSpriteTransformRotation
+	ldr r6, _sa2_08004D5C @ =gSpriteTransformRotation
 	ldrh r0, [r6]
 	lsls r0, r0, #1
-	ldr r1, _08003CD4 @ =gSineTable
+	ldr r1, _sa2_08004D64 @ =gSineTable
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -277,7 +278,7 @@ _08003B84:
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r6, _08003CDC @ =gSpriteTransformScaleY
+	ldr r6, _sa2_08004D6C @ =gSpriteTransformScaleY
 	ldrh r1, [r6]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -295,7 +296,7 @@ _08003B84:
 	ldrsh r2, [r7, r6]
 	muls r0, r2, r0
 	adds r1, r1, r0
-	ldr r0, _08003CE0 @ =sa2__gUnknown_0300194C
+	ldr r0, _sa2_08004D70 @ =gSpriteTransformX
 	movs r2, #0
 	ldrsh r0, [r0, r2]
 	lsls r0, r0, #8
@@ -315,7 +316,7 @@ _08003B84:
 	ldrsh r2, [r7, r5]
 	muls r0, r2, r0
 	adds r1, r1, r0
-	ldr r0, _08003CE4 @ =sa2__gUnknown_03002820
+	ldr r0, _sa2_08004D74 @ =gSpriteTransformY
 	movs r6, #0
 	ldrsh r0, [r0, r6]
 	lsls r0, r0, #8
@@ -327,21 +328,21 @@ _08003B84:
 	ldr r6, [sp, #0x38]
 	ldr r0, [sp, #0x2c]
 	cmp r0, #0
-	ble _08003CE8
+	ble _sa2_08004D78
 	mov r1, sb
 	ldrh r4, [r1, #8]
 	ldrh r2, [r1, #4]
-	b _08003CF6
+	b _sa2_08004D86
 	.align 2, 0
-_08003CC8: .4byte gOamBuffer+0x6
-_08003CCC: .4byte gSpriteTransformRotation
-_08003CD0: .4byte 0x000003FF
-_08003CD4: .4byte gSineTable
-_08003CD8: .4byte gSpriteTransformScaleX
-_08003CDC: .4byte gSpriteTransformScaleY
-_08003CE0: .4byte sa2__gUnknown_0300194C
-_08003CE4: .4byte sa2__gUnknown_03002820
-_08003CE8:
+_sa2_08004D58: .4byte gOamBuffer + 0x6
+_sa2_08004D5C: .4byte gSpriteTransformRotation
+_sa2_08004D60: .4byte 0x000003FF
+_sa2_08004D64: .4byte gSineTable
+_sa2_08004D68: .4byte gSpriteTransformScaleX
+_sa2_08004D6C: .4byte gSpriteTransformScaleY
+_sa2_08004D70: .4byte gSpriteTransformX
+_sa2_08004D74: .4byte gSpriteTransformY
+_sa2_08004D78:
 	mov r2, sb
 	ldrh r1, [r2, #4]
 	ldrh r0, [r2, #8]
@@ -349,17 +350,17 @@ _08003CE8:
 	lsls r0, r0, #0x10
 	lsrs r4, r0, #0x10
 	adds r2, r1, #0
-_08003CF6:
+_sa2_08004D86:
 	mov r3, sp
 	ldrh r3, [r3, #0x34]
 	lsls r0, r3, #0x10
 	cmp r0, #0
-	ble _08003D08
+	ble _sa2_08004D98
 	mov r5, sb
 	ldrh r3, [r5, #0xa]
 	ldrh r5, [r5, #6]
-	b _08003D16
-_08003D08:
+	b _sa2_08004DA6
+_sa2_08004D98:
 	mov r0, sb
 	ldrh r1, [r0, #6]
 	ldrh r0, [r0, #0xa]
@@ -367,7 +368,7 @@ _08003D08:
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10
 	adds r5, r1, #0
-_08003D16:
+_sa2_08004DA6:
 	mov r0, sp
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -415,7 +416,7 @@ _08003D16:
 	strh r0, [r2, #0x16]
 	ldr r0, [sp, #0x14]
 	strh r0, [r2, #0x18]
-_08003D74:
+_sa2_08004E04:
 	add sp, #0x3c
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -424,5 +425,6 @@ _08003D74:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+	.align 2, 0
 
 .syntax divided

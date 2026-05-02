@@ -12,9 +12,9 @@
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	bne _08004E30
-	b _080051D8
-_08004E30:
+	bne _sa2_08004E30
+	b _sa2_080051D8
+_sa2_08004E30:
 	mov sb, r1              @ sb = sprDims
 	add r2, sp, #0x20
 	ldr r1, [sp, #0x24]
@@ -24,21 +24,21 @@ _08004E30:
 	strh r0, [r2]           @ us->affineIndex = s->unk10 & SPRITE_FLAG_MASK_ROT_SCALE;
 	ldrh r4, [r2]
 	lsls r4, r4, #5
-	ldr r0, _08005128 @ =gOamBuffer + 0x6
+	ldr r0, _sa2_08005128 @ =gOamBuffer + 0x6
 	adds r4, r4, r0         @ r4 = u16 *affine = &gOamBuffer[us->affineIndex * 4 + 3];
 	subs r2, #0x18
 	str r2, [sp, #0x28]     @ sp28 = &us->qDirX
 	ldrh r0, [r6]
-	ldr r3, _0800512C @ =gSpriteTransformRotation
+	ldr r3, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r1, [r3]
 	adds r0, r0, r1
-	ldr r2, _08005130 @ =0x000003FF
+	ldr r2, _sa2_08005130 @ =0x000003FF
 	ands r0, r2
 	movs r5, #0x80
 	lsls r5, r5, #1
 	adds r0, r0, r5
 	lsls r0, r0, #1
-	ldr r7, _08005134 @ =gSineTable
+	ldr r7, _sa2_08005134 @ =gSineTable
 	adds r0, r0, r7
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -49,7 +49,7 @@ _08004E30:
 	add r3, sp
 	mov r8, r3              @ r8 = r3 = &us.qDirY
 	ldrh r0, [r6]           @ r0 = transform->rotation
-	ldr r5, _0800512C @ =gSpriteTransformRotation
+	ldr r5, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r1, [r5]
 	adds r0, r0, r1
 	ands r0, r2
@@ -62,7 +62,7 @@ _08004E30:
 	add r7, sp, #0xc        @ r7 = us->unkC[0]
 	movs r0, #2
 	ldrsh r1, [r6, r0]      @ r1 = transform->width
-	ldr r2, _08005138 @ =gSpriteTransformScaleX
+	ldr r2, _sa2_08005138 @ =gSpriteTransformScaleX
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -72,7 +72,7 @@ _08004E30:
 	mov sl, r3
 	movs r5, #4
 	ldrsh r1, [r6, r5]      @ r1 = transform->height
-	ldr r2, _0800513C @ =gSpriteTransformScaleY
+	ldr r2, _sa2_0800513C @ =gSpriteTransformScaleY
 	ldrh r0, [r2]
 	muls r0, r1, r0
 	asrs r0, r0, #8
@@ -142,25 +142,25 @@ _08004E30:
 	ldrsh r0, [r6, r1]      @ r0 = transform->width
 	str r0, [sp, #0x2c]
 	cmp r0, #0
-	bge _08004F48
+	bge _sa2_08004F48
 	movs r2, #2
 	ldrsh r0, [r6, r2]
 	rsbs r0, r0, #0
-	ldr r3, _08005138 @ =gSpriteTransformScaleX
+	ldr r3, _sa2_08005138 @ =gSpriteTransformScaleX
 	ldrh r1, [r3]
 	muls r0, r1, r0
 	asrs r0, r0, #8
 	strh r0, [r7]           @ us->unkC[0] = I(-transform->width * gSpriteTransformScaleX);
-_08004F48:
+_sa2_08004F48:
 	movs r4, #4
 	ldrsh r0, [r6, r4]
-	ldr r5, _0800513C @ =gSpriteTransformScaleY
+	ldr r5, _sa2_0800513C @ =gSpriteTransformScaleY
 	ldrh r4, [r5]
 	ldrh r2, [r6, #4]
 	mov r1, sp
 	strh r2, [r1, #0x3c]    @ sp3C = (u16)transform->height
 	cmp r0, #0
-	bge _08004F6A
+	bge _sa2_08004F6A
 	movs r3, #4
 	ldrsh r0, [r6, r3]
 	rsbs r0, r0, #0
@@ -169,7 +169,7 @@ _08004F48:
 	mov r4, sl              @ r4 = sl = &us->unkC[1]
 	strh r0, [r4]
 	ldrh r4, [r5]           @ r4 = gSpriteTransformScaleY
-_08004F6A:
+_sa2_08004F6A:
 	mov r2, sp              @ r2 = &us
 	ldr r5, [sp, #0x28]
 	ldrh r1, [r5]           @ r1 = us->qDirX
@@ -224,18 +224,18 @@ _08004F6A:
 	strh r0, [r3]           @ us.unk0[3] = I(+us.qDirX * us.unkC[1]);
 	add r0, sp, #0x18
 	mov r8, r0              @ r8 = &us.unk18[0][0]
-	ldr r1, _0800512C @ =gSpriteTransformRotation
+	ldr r1, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r0, [r1]
 	movs r2, #0x80
 	lsls r2, r2, #1
 	adds r0, r0, r2
 	lsls r0, r0, #1
-	ldr r3, _08005134 @ =gSineTable
+	ldr r3, _sa2_08005134 @ =gSineTable
 	adds r0, r0, r3
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r5, _08005138 @ =gSpriteTransformScaleX
+	ldr r5, _sa2_08005138 @ =gSpriteTransformScaleX
 	ldrh r1, [r5]
 	adds r2, r0, #0
 	muls r2, r1, r2
@@ -244,29 +244,29 @@ _08004F6A:
 	ldrh r0, [r7]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	ldr r3, _08005140 @ =gUnknown_03005398
+	ldr r3, _sa2_08005140 @ =gSpriteTransformScaleUnknown
 	movs r5, #0
 	ldrsh r1, [r3, r5]
 	muls r0, r1, r0
-	lsls r0, r0, #8         @ r0 = Q(us.unkC[0] * gUnknown_03005398)
-	asrs r0, r0, #0x10      @ r0 = (Q(us.unkC[0] * gUnknown_03005398) >> 16)
+	lsls r0, r0, #8         @ r0 = Q(us.unkC[0] * gSpriteTransformScaleUnknown)
+	asrs r0, r0, #0x10      @ r0 = (Q(us.unkC[0] * gSpriteTransformScaleUnknown) >> 16)
 	muls r0, r2, r0
-	asrs r0, r0, #8         @ r0 = I((COS_24_8(gSpriteTransformRotation) * gSpriteTransformScaleX) * (Q(us.unkC[0] * gUnknown_03005398) >> 16))
+	asrs r0, r0, #8         @ r0 = I((COS_24_8(gSpriteTransformRotation) * gSpriteTransformScaleX) * (Q(us.unkC[0] * gSpriteTransformScaleUnknown) >> 16))
 	mov r1, r8
 	strh r0, [r1]           @ us.unk18[0][0] = I(r2 * r0)
 	movs r2, #0x1a
 	add r2, sp
 	mov ip, r2              @ ip = us.unk18[0][1]
-	ldr r5, _0800512C @ =gSpriteTransformRotation
+	ldr r5, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r0, [r5]
 	lsls r0, r0, #1
-	ldr r1, _08005134 @ =gSineTable
+	ldr r1, _sa2_08005134 @ =gSineTable
 	adds r0, r0, r1
 	movs r2, #0
 	ldrsh r0, [r0, r2]
 	rsbs r0, r0, #0
 	asrs r0, r0, #6         @ r0 = (SIN(-gSpriteTransformRotation) >> 6)
-	ldr r5, _08005138 @ =gSpriteTransformScaleX
+	ldr r5, _sa2_08005138 @ =gSpriteTransformScaleX
 	ldrh r1, [r5]
 	adds r2, r0, #0
 	muls r2, r1, r2
@@ -285,10 +285,10 @@ _08004F6A:
 	mov r1, ip
 	strh r0, [r1]           @ us.unk18[0][1] =
 	add r5, sp, #0x1c
-	ldr r2, _0800512C @ =gSpriteTransformRotation
+	ldr r2, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r0, [r2]
 	lsls r0, r0, #1
-	ldr r7, _08005134 @ =gSineTable
+	ldr r7, _sa2_08005134 @ =gSineTable
 	adds r0, r0, r7
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -311,18 +311,18 @@ _08004F6A:
 	strh r0, [r5]           @ us.unk18[1][0] =
 	mov r4, sp
 	adds r4, #0x1e
-	ldr r7, _0800512C @ =gSpriteTransformRotation
+	ldr r7, _sa2_0800512C @ =gSpriteTransformRotation
 	ldrh r0, [r7]
 	movs r1, #0x80
 	lsls r1, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #1
-	ldr r2, _08005134 @ =gSineTable
+	ldr r2, _sa2_08005134 @ =gSineTable
 	adds r0, r0, r2
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
-	ldr r7, _0800513C @ =gSpriteTransformScaleY
+	ldr r7, _sa2_0800513C @ =gSpriteTransformScaleY
 	ldrh r1, [r7]
 	adds r2, r0, #0
 	muls r2, r1, r2
@@ -355,13 +355,13 @@ _08004F6A:
 	ldrsh r2, [r6, r7]      @ r2 = transform.y
 	muls r0, r2, r0         @ r0 = transform.y * us.unk18[0][1]
 	adds r1, r1, r0         @ r1 = r1 + r0
-	ldr r0, _08005144 @ =gUnknown_0300194C
+	ldr r0, _sa2_08005144 @ =gSpriteTransformX
 	movs r2, #0
 	ldrsh r0, [r0, r2]
 	lsls r0, r0, #8
-	adds r1, r1, r0         @ r1 += Q(gUnknown_0300194C)
+	adds r1, r1, r0         @ r1 += Q(gSpriteTransformX)
 	asrs r1, r1, #8         @ r1 = I(r1)
-	str r1, [sp, #0x10]     @ us.posX = I(transform.x * us.unk18[0][0] + transform.y * us.unk18[0][1] + Q(gUnknown_0300194C))
+	str r1, [sp, #0x10]     @ us.posX = I(transform.x * us.unk18[0][0] + transform.y * us.unk18[0][1] + Q(gSpriteTransformX))
 	ldrh r0, [r5]           @ r0 = us.unk18[1][0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
@@ -375,35 +375,35 @@ _08004F6A:
 	ldrsh r2, [r6, r4]      @ r2 = transform.y
 	muls r0, r2, r0         @ r0 = transform.y * us.unk18[1][1]
 	adds r1, r1, r0         @ r1 = r1 + r0
-	ldr r0, _08005148 @ =gUnknown_03002820
+	ldr r0, _sa2_08005148 @ =gSpriteTransformY
 	movs r5, #0
 	ldrsh r0, [r0, r5]
 	lsls r0, r0, #8
 	adds r1, r1, r0
 	asrs r1, r1, #8
-	str r1, [sp, #0x14]     @ us.posY = I(transform.x * us.unk18[1][0] + transform.y * us.unk18[1][1] + Q(gUnknown_0300194C));
+	str r1, [sp, #0x14]     @ us.posY = I(transform.x * us.unk18[1][0] + transform.y * us.unk18[1][1] + Q(gSpriteTransformX));
 	ldr r6, [sp, #0x30]     @ r6 = &us.unk0[1]
 	ldr r7, [sp, #0x34]     @ r7 = &us.unk0[2]
 	ldr r0, [sp, #0x38]     @ r0 = &us.unk0[3]
 	mov r8, r0              @ r8 = r0
 	ldr r1, [sp, #0x2c]      @ r1 = transform->width
 	cmp r1, #0
-	ble _0800514C
+	ble _sa2_0800514C
 	mov r2, sb              @ r2 = sb = sprDims
 	ldrh r4, [r2, #8]       @ r4 = offsetX
 	ldrh r2, [r2, #4]       @ r2 = width
-	b _0800515A
+	b _sa2_0800515A
 	.align 2, 0
-_08005128: .4byte gOamBuffer + 0x6
-_0800512C: .4byte gSpriteTransformRotation
-_08005130: .4byte 0x000003FF
-_08005134: .4byte gSineTable
-_08005138: .4byte gSpriteTransformScaleX
-_0800513C: .4byte gSpriteTransformScaleY
-_08005140: .4byte gUnknown_03005398
-_08005144: .4byte gUnknown_0300194C
-_08005148: .4byte gUnknown_03002820
-_0800514C:
+_sa2_08005128: .4byte gOamBuffer + 0x6
+_sa2_0800512C: .4byte gSpriteTransformRotation
+_sa2_08005130: .4byte 0x000003FF
+_sa2_08005134: .4byte gSineTable
+_sa2_08005138: .4byte gSpriteTransformScaleX
+_sa2_0800513C: .4byte gSpriteTransformScaleY
+_sa2_08005140: .4byte gSpriteTransformScaleUnknown
+_sa2_08005144: .4byte gSpriteTransformX
+_sa2_08005148: .4byte gSpriteTransformY
+_sa2_0800514C:
 	mov r3, sb              @ r3 = sb = sprDims
 	ldrh r1, [r3, #4]
 	ldrh r0, [r3, #8]
@@ -411,17 +411,17 @@ _0800514C:
 	lsls r0, r0, #0x10
 	lsrs r4, r0, #0x10      @ r4 = offsetX
 	adds r2, r1, #0         @ r2 = width
-_0800515A:
+_sa2_0800515A:
 	mov r5, sp
 	ldrh r5, [r5, #0x3c]    @ r5 = (u16)transform->height
 	lsls r0, r5, #0x10
 	cmp r0, #0
-	ble _0800516C
+	ble _sa2_0800516C
 	mov r0, sb              @ r0 = sb = sprDims
 	ldrh r3, [r0, #0xa]     @ r3 = offsetY = sprDims->offsetY
 	ldrh r5, [r0, #6]         @ r5 = height = sprDims->height
-	b _0800517A
-_0800516C:
+	b _sa2_0800517A
+_sa2_0800516C:
 	mov r3, sb              @ r3 = sb = sprDims
 	ldrh r1, [r3, #6]
 	ldrh r0, [r3, #0xa]
@@ -429,7 +429,7 @@ _0800516C:
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10      @ r3 = offsetY = sprDims->height - sprDims->offsetY
 	adds r5, r1, #0         @ r5 = height = sprDims->height
-_0800517A:
+_sa2_0800517A:
 	mov r0, sp              @ r0 = sp = us
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -477,7 +477,7 @@ _0800517A:
 	strh r0, [r5, #0x16]    @ sprite.x = us.posX
 	ldr r0, [sp, #0x14]
 	strh r0, [r5, #0x18]    @ sprite.y = us.posY
-_080051D8:
+_sa2_080051D8:
 	add sp, #0x40
 	pop {r3, r4, r5}
 	mov r8, r3

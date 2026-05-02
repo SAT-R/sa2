@@ -96,8 +96,8 @@ void Task_DecorationMain(void)
         CreateDustCloud(worldX, worldY);
         m4aSongNumStart(SE_ITEM_BOX);
 
-        SA2_LABEL(gUnknown_0300194C) = s->x;
-        SA2_LABEL(gUnknown_03002820) = s->y;
+        gSpriteTransformX = s->x;
+        gSpriteTransformY = s->y;
 
         CreateDecorationDebris(worldX - s->x, worldY - s->y - 16);
 
@@ -128,8 +128,8 @@ void Task_DecorationMain(void)
 
             m4aSongNumStart(SE_ITEM_BOX);
 
-            SA2_LABEL(gUnknown_0300194C) = s->x;
-            SA2_LABEL(gUnknown_03002820) = s->y;
+            gSpriteTransformX = s->x;
+            gSpriteTransformY = s->y;
 
             CreateDecorationDebris(worldX - s->x, worldY - s->y - 16);
 

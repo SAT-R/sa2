@@ -67,7 +67,7 @@ _08027658:
 	ldrsh r0, [r2, r3]
 	lsls r2, r0, #1
 	adds r2, r2, r0
-	ldr r3, _080276C8 @ =sa2__gUnknown_0300194C
+	ldr r3, _080276C8 @ =gSpriteTransformX
 	ldr r4, _080276CC @ =gCamera
 	ldrh r0, [r4]
 	ldrh r3, [r3]
@@ -76,7 +76,7 @@ _08027658:
 	adds r1, r1, r0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
-	ldr r3, _080276D0 @ =sa2__gUnknown_03002820
+	ldr r3, _080276D0 @ =gSpriteTransformY
 	ldrh r0, [r4, #2]
 	ldrh r3, [r3]
 	adds r0, r0, r3
@@ -100,9 +100,9 @@ _08027658:
 	.align 2, 0
 _080276C0: .4byte gSpriteTransformRotation
 _080276C4: .4byte gSineTable
-_080276C8: .4byte sa2__gUnknown_0300194C
+_080276C8: .4byte gSpriteTransformX
 _080276CC: .4byte gCamera
-_080276D0: .4byte sa2__gUnknown_03002820
+_080276D0: .4byte gSpriteTransformY
 _080276D4:
 	mov r1, ip
 	adds r1, #0x4c

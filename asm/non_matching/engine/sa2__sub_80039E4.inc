@@ -10,30 +10,30 @@
 	sub sp, #0x44
 	movs r0, #5
 	str r0, [sp, #0x28]
-	ldr r0, _08003A04 @ =REG_DISPSTAT
+	ldr r0, _sa2_08003A04 @ =REG_DISPSTAT
 	ldrh r1, [r0]
 	movs r0, #1       @ DISPSTAT_VBLANK
 	ands r0, r1
 	cmp r0, #0
-	bne _08003A08
+	bne _sa2_08003A08
 	movs r0, #0
 	b sub_80039E4_return
 	.align 2, 0
-_08003A04: .4byte REG_DISPSTAT
-_08003A08:
-	ldr r0, _08003BA4 @ =gBgSpritesCount
+_sa2_08003A04: .4byte REG_DISPSTAT
+_sa2_08003A08:
+	ldr r0, _sa2_08003BA4 @ =gBgSpritesCount
 	ldrb r1, [r0]
 	cmp r1, #0
-	bne _08003A12
+	bne _sa2_08003A12
 	b sub_80039E4_return_1
-_08003A12:
+_sa2_08003A12:
 	movs r5, #0         @ r5 = r5 = 0
 	cmp r5, r1          @ for(; r5 < gBgSpritesCount; r5++)
-	blo _08003A1A
-	b _08003EC2
-_08003A1A:
+	blo _sa2_08003A1A
+	b _sa2_08003EC2
+_sa2_08003A1A:
 	lsls r0, r5, #2
-	ldr r1, _08003BA8 @ =gBgSprites
+	ldr r1, _sa2_08003BA8 @ =gBgSprites
 	adds r0, r0, r1
 	ldr r0, [r0]
 	str r0, [sp, #0xc]  @ sp0C = s
@@ -43,9 +43,9 @@ _08003A1A:
 	adds r2, r5, #1
 	str r2, [sp, #0x3c]
 	cmp r1, r0
-	bne _08003A34
-	b _08003EB2
-_08003A34:
+	bne _sa2_08003A34
+	b _sa2_08003EB2
+_sa2_08003A34:
 	mov sl, r1          @ sl = dims
 	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	ldr r0, [r3, #0x10]
@@ -54,7 +54,7 @@ _08003A34:
 	ands r0, r1
 	lsrs r3, r0, #0xf
 	lsls r0, r3, #1
-	ldr r4, _08003BAC @ =gBgCntRegs
+	ldr r4, _sa2_08003BAC @ =gBgCntRegs
 	adds r0, r0, r4
 	ldrh r2, [r0]
 	movs r0, #0xc
@@ -73,29 +73,29 @@ _08003A34:
 	movs r0, #0x80
 	ands r0, r2
 	cmp r0, #0
-	beq _08003A70
+	beq _sa2_08003A70
 	movs r6, #6
 	str r6, [sp, #0x28]
-_08003A70:
+_sa2_08003A70:
 	cmp r3, #1
-	bhi _08003A76
-	b _08003C2C
-_08003A76:
-	ldr r7, _08003BB0 @ =gDispCnt
+	bhi _sa2_08003A76
+	b _sa2_08003C2C
+_sa2_08003A76:
+	ldr r7, _sa2_08003BB0 @ =gDispCnt
 	ldrh r1, [r7]
 	movs r0, #3
 	ands r0, r1
 	cmp r0, #0
-	bne _08003A84
-	b _08003C2C
-_08003A84:
+	bne _sa2_08003A84
+	b _sa2_08003C2C
+_sa2_08003A84:
 	lsrs r1, r2, #0xe
 	movs r0, #0x80
 	lsls r0, r0, #0xd
 	lsls r0, r1
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x10]     @ sp10 = bg_affine_pixelcount
-	ldr r0, _08003BB4 @ =gRefSpriteTables
+	ldr r0, _sa2_08003BB4 @ =gRefSpriteTables
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldrh r0, [r2, #0xa]
@@ -116,21 +116,21 @@ _08003A84:
 	str r5, [sp, #8]
 	ldrh r6, [r3, #2]
 	cmp r5, r6
-	blo _08003ABE
-	b _08003EB2
-_08003ABE:
+	blo _sa2_08003ABE
+	b _sa2_08003EB2
+_sa2_08003ABE:
 	mov sb, sp      @ sb = sp = oam
 	ldr r7, [sp, #0x10]
 	lsls r0, r7, #0x18
 	lsrs r0, r0, #0x18
 	str r0, [sp, #0x30]
-_08003AC8:
+_sa2_08003AC8:
 	ldr r0, [sp, #0x1c]
-	ldr r1, _08003BB8 @ =0x040000D4
+	ldr r1, _sa2_08003BB8 @ =0x040000D4
 	str r0, [r1]
 	mov r2, sp
 	str r2, [r1, #4]
-	ldr r0, _08003BBC @ =0x80000003
+	ldr r0, _sa2_08003BBC @ =0x80000003
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
 	ldr r3, [sp, #0x1c]
@@ -149,12 +149,12 @@ _08003AC8:
 	lsrs r0, r0, #0xe
 	orrs r1, r0
 	lsls r1, r1, #1
-	ldr r5, _08003BC0 @ =gOamShapesSizes
+	ldr r5, _sa2_08003BC0 @ =gOamShapesSizes
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
 	str r0, [sp, #0x20]     @ sp20 = tilesX
-	ldr r6, _08003BC4 @ =gOamShapesSizes+1
+	ldr r6, _sa2_08003BC4 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
@@ -193,7 +193,7 @@ _08003AC8:
 	lsrs r1, r0             @ r1 = tileId = ((size_t)(s->graphics.dest - bgVram)) >> sp28
 	mov r3, sb              @ r3 = oam
 	ldrh r2, [r3, #4]
-	ldr r0, _08003BC8 @ =0x000003FF
+	ldr r0, _sa2_08003BC8 @ =0x000003FF
 	ands r0, r2
 	adds r5, r1, r0
 	movs r6, #0xff
@@ -205,17 +205,17 @@ _08003AC8:
 	ldr r0, [sp, #8]
 	adds r0, #1
 	str r0, [sp, #0x40]
-__08003B68:
+__sa2_08003B68:
 	cmp r4, #0
-	beq _08003C18
+	beq _sa2_08003C18
 	ldr r1, [sp, #0x30]
 	lsls r0, r1, #0x18
 	asrs r0, r0, #0x18
 	str r0, [sp, #0x34]
-_08003B74:
+_sa2_08003B74:
 	mov r2, sb              @ r2 = sb = oam
 	ldrh r0, [r2, #2]
-	ldr r1, _08003BCC @ =0x000001FF
+	ldr r1, _sa2_08003BCC @ =0x000001FF
 	ands r1, r0             @ r1 = oam->tileNum
 	add r1, r8
 	asrs r1, r1, #3
@@ -228,28 +228,28 @@ _08003B74:
 	subs r6, #1
 	ldr r4, [sp, #0x20]
 	cmp r4, #0
-	beq _08003BF2
+	beq _sa2_08003BF2
 	movs r4, #1
-_08003B96:
+_sa2_08003B96:
 	adds r0, r2, #0
 	ands r0, r4
 	cmp r0, #0
-	bne _08003BD0
+	bne _sa2_08003BD0
 	str r5, [sp, #0x24]
-	b _08003BDE
+	b _sa2_08003BDE
 	.align 2, 0
-_08003BA4: .4byte gBgSpritesCount
-_08003BA8: .4byte gBgSprites
-_08003BAC: .4byte gBgCntRegs
-_08003BB0: .4byte gDispCnt
-_08003BB4: .4byte gRefSpriteTables
-_08003BB8: .4byte 0x040000D4
-_08003BBC: .4byte 0x80000003
-_08003BC0: .4byte gOamShapesSizes
-_08003BC4: .4byte gOamShapesSizes+1
-_08003BC8: .4byte 0x000003FF
-_08003BCC: .4byte 0x000001FF
-_08003BD0:
+_sa2_08003BA4: .4byte gBgSpritesCount
+_sa2_08003BA8: .4byte gBgSprites
+_sa2_08003BAC: .4byte gBgCntRegs
+_sa2_08003BB0: .4byte gDispCnt
+_sa2_08003BB4: .4byte gRefSpriteTables
+_sa2_08003BB8: .4byte 0x040000D4
+_sa2_08003BBC: .4byte 0x80000003
+_sa2_08003BC0: .4byte gOamShapesSizes
+_sa2_08003BC4: .4byte gOamShapesSizes+1
+_sa2_08003BC8: .4byte 0x000003FF
+_sa2_08003BCC: .4byte 0x000001FF
+_sa2_08003BD0:
 	lsls r0, r5, #8
 	ldr r1, [sp, #0x24]
 	orrs r1, r0
@@ -257,7 +257,7 @@ _08003BD0:
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x24]
 	strh r0, [r2]
-_08003BDE:
+_sa2_08003BDE:
 	adds r0, r5, #1
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
@@ -267,12 +267,12 @@ _08003BDE:
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
 	cmp r1, #0
-	bne _08003B96
-_08003BF2:
+	bne _sa2_08003B96
+_sa2_08003BF2:
 	movs r0, #1
 	ands r0, r2
 	cmp r0, #0
-	beq _08003C08
+	beq _sa2_08003C08
 	ldrh r1, [r2]
 	movs r0, #0xff
 	lsls r0, r0, #8
@@ -280,7 +280,7 @@ _08003BF2:
 	ldr r1, [sp, #0x24]
 	orrs r0, r1
 	strh r0, [r2]
-_08003C08:
+_sa2_08003C08:
 	ldr r2, [sp, #0x34]
 	adds r7, r7, r2
 	mov r1, ip
@@ -288,8 +288,8 @@ _08003C08:
 	lsrs r0, r0, #0x18
 	mov ip, r0
 	cmp r1, #0
-	bne _08003B74
-_08003C18:
+	bne _sa2_08003B74
+_sa2_08003C18:
 	ldr r3, [sp, #0x40]
 	lsls r0, r3, #0x18
 	lsrs r0, r0, #0x18
@@ -297,11 +297,11 @@ _08003C18:
 	mov r4, sl
 	ldrh r4, [r4, #2]
 	cmp r0, r4
-	bhs _08003C2A
-	b _08003AC8 @ -> for (sp08 = 0; sp08 < dims->numSubframes; sp08++)
-_08003C2A:
-	b _08003EB2
-_08003C2C:
+	bhs _sa2_08003C2A
+	b _sa2_08003AC8 @ -> for (sp08 = 0; sp08 < dims->numSubframes; sp08++)
+_sa2_08003C2A:
+	b _sa2_08003EB2
+_sa2_08003C2C:
 	movs r6, #0x20
 	str r6, [sp, #0x10]
 	lsls r0, r3, #1     @ r3 = bgId
@@ -312,11 +312,11 @@ _08003C2C:
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
-	bhi _08003C46
+	bhi _sa2_08003C46
 	movs r7, #0x40
 	str r7, [sp, #0x10]
-_08003C46:
-	ldr r0, _08003D14 @ =gRefSpriteTables
+_sa2_08003C46:
+	ldr r0, _sa2_08003D14 @ =gRefSpriteTables
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldrh r0, [r2, #0xa]
@@ -339,17 +339,17 @@ _08003C46:
 	str r5, [sp, #0x3c]
 	ldrh r7, [r3, #2]
 	cmp r6, r7
-	blo _08003C78
-	b _08003EB2
-_08003C78:
+	blo _sa2_08003C78
+	b _sa2_08003EB2
+_sa2_08003C78:
 	mov sb, sp  @ sb = sp = oam
-_08003C7A:
+_sa2_08003C7A:
 	ldr r0, [sp, #0x1c]
-	ldr r1, _08003D18 @ =0x040000D4
+	ldr r1, _sa2_08003D18 @ =0x040000D4
 	str r0, [r1]
 	mov r2, sp
 	str r2, [r1, #4]
-	ldr r0, _08003D1C @ =0x80000003
+	ldr r0, _sa2_08003D1C @ =0x80000003
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
 	ldr r3, [sp, #0x1c]
@@ -368,17 +368,17 @@ _08003C7A:
 	lsrs r0, r0, #0xe   @ r0 = oam.size
 	orrs r1, r0         @ r1 = shapeAndSize
 	lsls r1, r1, #1
-	ldr r5, _08003D20 @ =gOamShapesSizes
+	ldr r5, _sa2_08003D20 @ =gOamShapesSizes
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
 	str r0, [sp, #0x20] @ sp20 = tilesX
-	ldr r6, _08003D24 @ =gOamShapesSizes+1
+	ldr r6, _sa2_08003D24 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
 	mov ip, r0          @ ip = tilesY
-	ldr r4, _08003D28 @ =0x000001FF
+	ldr r4, _sa2_08003D28 @ =0x000001FF
 	ands r4, r3
 	movs r6, #0xff
 	ands r6, r2         @ r6 = oamX
@@ -391,7 +391,7 @@ _08003C7A:
 	adds r0, r0, r7
 	mov r1, sb
 	strh r0, [r1, #4]
-__08003CD8:
+__sa2_08003CD8:
 	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldr r1, [r2, #0x10]
 	lsrs r1, r1, #0xb
@@ -402,8 +402,8 @@ __08003CD8:
 	movs r7, #1
 	ands r0, r7
 	cmp r0, #0
-	beq _08003D4A
-___08003CEE:
+	beq _sa2_08003D4A
+___sa2_08003CEE:
 	movs r1, #0x80
 	lsls r1, r1, #6
 	adds r0, r1, #0
@@ -414,23 +414,23 @@ ___08003CEE:
 	movs r0, #1
 	ands r0, r1
 	cmp r0, #0
-	beq _08003D2C
-__08003D04:
+	beq _sa2_08003D2C
+__sa2_08003D04:
 	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
 	mov r7, sl      @ r7 = sl = dims
 	movs r2, #0xa
 	ldrsh r1, [r7, r2]
-	b _08003D3C
+	b _sa2_08003D3C
 	.align 2, 0
-_08003D14: .4byte gRefSpriteTables
-_08003D18: .4byte 0x040000D4
-_08003D1C: .4byte 0x80000003
-_08003D20: .4byte gOamShapesSizes
-_08003D24: .4byte gOamShapesSizes+1
-_08003D28: .4byte 0x000001FF
-_08003D2C:
+_sa2_08003D14: .4byte gRefSpriteTables
+_sa2_08003D18: .4byte 0x040000D4
+_sa2_08003D1C: .4byte 0x80000003
+_sa2_08003D20: .4byte gOamShapesSizes
+_sa2_08003D24: .4byte gOamShapesSizes+1
+_sa2_08003D28: .4byte 0x000001FF
+_sa2_08003D2C:
 	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
@@ -439,15 +439,15 @@ _08003D2C:
 	movs r3, #0xa
 	ldrsh r2, [r7, r3]
 	subs r1, r1, r2
-_08003D3C:
+_sa2_08003D3C:
 	adds r0, r0, r1
 	adds r5, r0, #0
 	subs r5, #8         @ r5 = someOffsetY
 	lsls r0, r6, #0x10
 	rsbs r0, r0, #0
 	lsrs r6, r0, #0x10
-	b _08003D58
-_08003D4A:
+	b _sa2_08003D58
+_sa2_08003D4A:
 	ldr r5, [sp, #0xc]  @ r5 = sp0C = s
 	movs r7, #0x18
 	ldrsh r1, [r5, r7]
@@ -455,7 +455,7 @@ _08003D4A:
 	movs r3, #0xa
 	ldrsh r0, [r2, r3]
 	subs r5, r1, r0     @ r5 = someOffsetY
-_08003D58:
+_sa2_08003D58:
 	ldr r7, [sp, #0xc]  @ r7 = sp0C = s
 	ldr r0, [r7, #0x10]
 	lsrs r0, r0, #0xa
@@ -466,8 +466,8 @@ _08003D58:
 	adds r1, r3, #0
 	ands r1, r2
 	cmp r0, r1
-	beq _08003DB4
-__08003D6E:
+	beq _sa2_08003DB4
+__sa2_08003D6E:
 	mov r2, sb          @ r2 = sb = oam
 	ldrh r0, [r2, #2]
 	movs r7, #0x80
@@ -480,15 +480,15 @@ __08003D6E:
 	adds r0, r3, #0
 	ands r0, r1
 	cmp r0, #0
-	beq _08003D96
+	beq _sa2_08003D96
 	ldr r1, [sp, #0xc]  @ r1 = sp0C = s
 	movs r2, #0x16
 	ldrsh r0, [r1, r2]
 	mov r3, sl
 	movs r7, #8
 	ldrsh r1, [r3, r7]
-	b _08003DA6
-_08003D96:
+	b _sa2_08003DA6
+_sa2_08003D96:
 	ldr r1, [sp, #0xc]  @ r1 = sp0C = s
 	movs r2, #0x16
 	ldrsh r0, [r1, r2]
@@ -497,15 +497,15 @@ _08003D96:
 	movs r7, #8
 	ldrsh r2, [r3, r7]
 	subs r1, r1, r2
-_08003DA6:
+_sa2_08003DA6:
 	adds r0, r0, r1
 	subs r0, #8
 	mov r8, r0
 	lsls r0, r4, #0x10
 	rsbs r0, r0, #0
 	lsrs r4, r0, #0x10
-	b _08003DC4
-_08003DB4:
+	b _sa2_08003DC4
+_sa2_08003DB4:
 	ldr r0, [sp, #0xc]  @ r0 = sp0C = s
 	movs r2, #0x16
 	ldrsh r1, [r0, r2]
@@ -514,7 +514,7 @@ _08003DB4:
 	ldrsh r0, [r3, r7]
 	subs r1, r1, r0
 	mov r8, r1
-_08003DC4:
+_sa2_08003DC4:
 	movs r0, #0x10
 	rsbs r0, r0, #0
 	mov r1, r8
@@ -530,23 +530,23 @@ _08003DC4:
 	movs r3, #2
 	str r3, [sp, #0x2c]
 	cmp r0, #0
-	beq _08003DE8
+	beq _sa2_08003DE8
 	movs r7, #0xfe
 	str r7, [sp, #0x2c]
-_08003DE8:
+_sa2_08003DE8:
 	movs r0, #0x80
 	lsls r0, r0, #6
 	ands r0, r1
 	cmp r0, #0
-	beq _08003DFA
+	beq _sa2_08003DFA
 	ldr r1, [sp, #0x10]
 	lsls r0, r1, #0x19
 	rsbs r0, r0, #0
-	b _08003DFE
-_08003DFA:
+	b _sa2_08003DFE
+_sa2_08003DFA:
 	ldr r2, [sp, #0x10]
 	lsls r0, r2, #0x19
-_08003DFE:
+_sa2_08003DFE:
 	lsrs r0, r0, #0x18
 	str r0, [sp, #0x30]
 	lsls r0, r6, #0x10
@@ -565,7 +565,7 @@ _08003DFE:
 	lsrs r1, r2
 	mov r3, sb
 	ldrh r2, [r3, #4]
-	ldr r0, _08003EDC @ =0x0000F3FF
+	ldr r0, _sa2_08003EDC @ =0x0000F3FF
 	ands r0, r2
 	adds r1, r1, r0
 	ldrh r2, [r3, #2]
@@ -585,7 +585,7 @@ _08003DFE:
 	adds r6, #1
 	str r6, [sp, #0x40]
 	cmp r1, #0
-	beq _08003EA0
+	beq _sa2_08003EA0
 	lsls r0, r4, #0x10
 	asrs r0, r0, #0x10
 	add r0, r8
@@ -595,7 +595,7 @@ _08003DFE:
 	lsls r0, r1, #0x18
 	asrs r0, r0, #0x18
 	mov r8, r0
-_08003E5E:
+_sa2_08003E5E:
 	ldr r3, [sp, #0x38]
 	adds r2, r7, r3
 	ldr r0, [sp, #0x20]
@@ -606,11 +606,11 @@ _08003E5E:
 	subs r6, #1
 	ldr r4, [sp, #0x20]
 	cmp r4, #0
-	beq _08003E92
+	beq _sa2_08003E92
 	ldr r1, [sp, #0x2c]
 	lsls r0, r1, #0x18
 	asrs r4, r0, #0x18
-_08003E7A:
+_sa2_08003E7A:
 	adds r1, r5, #0
 	adds r0, r1, #1
 	lsls r0, r0, #0x10
@@ -622,16 +622,16 @@ _08003E7A:
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
 	cmp r1, #0
-	bne _08003E7A
-_08003E92:
+	bne _sa2_08003E7A
+_sa2_08003E92:
 	add r7, r8
 	mov r1, ip
 	lsls r0, r6, #0x18
 	lsrs r0, r0, #0x18
 	mov ip, r0
 	cmp r1, #0
-	bne _08003E5E
-_08003EA0:
+	bne _sa2_08003E5E
+_sa2_08003EA0:
 	ldr r2, [sp, #0x40]
 	lsls r0, r2, #0x18
 	lsrs r0, r0, #0x18
@@ -639,20 +639,20 @@ _08003EA0:
 	mov r3, sl          @ r3 = sl = dims
 	ldrh r3, [r3, #2]
 	cmp r0, r3
-	bhs _08003EB2
-	b _08003C7A
-_08003EB2:
+	bhs _sa2_08003EB2
+	b _sa2_08003C7A
+_sa2_08003EB2:
 	ldr r4, [sp, #0x3c]
 	lsls r0, r4, #0x18
 	lsrs r5, r0, #0x18
-	ldr r6, _08003EE0 @ =gBgSpritesCount
+	ldr r6, _sa2_08003EE0 @ =gBgSpritesCount
 	ldrb r6, [r6]
 	cmp r5, r6
-	bhs _08003EC2
-	b _08003A1A
-_08003EC2:
+	bhs _sa2_08003EC2
+	b _sa2_08003A1A
+_sa2_08003EC2:
 	movs r0, #0
-	ldr r7, _08003EE0 @ =gBgSpritesCount
+	ldr r7, _sa2_08003EE0 @ =gBgSpritesCount
 	strb r0, [r7]
 sub_80039E4_return_1:
 	movs r0, #1
@@ -666,7 +666,7 @@ sub_80039E4_return:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08003EDC: .4byte 0x0000F3FF
-_08003EE0: .4byte gBgSpritesCount
+_sa2_08003EDC: .4byte 0x0000F3FF
+_sa2_08003EE0: .4byte gBgSpritesCount
 
 .syntax divided

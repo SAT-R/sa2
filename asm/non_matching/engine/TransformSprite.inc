@@ -12,9 +12,9 @@
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0          @ if (dimensions != (SpriteOffset *)-1)
-	bne _0800487C
-	b _08004AAA
-_0800487C:
+	bne _sa2_0800487C
+	b _sa2_08004AAA
+_sa2_0800487C:
 	mov r8, r1          @ r8 = dimensions
 	add r2, sp, #0x20   @ r2 = sp20 = &big.affineIndex
 	ldr r1, [sp, #0x24] @ r1 = s
@@ -24,13 +24,13 @@ _0800487C:
 	strh r0, [r2]       @ big.affineIndex = (frameFlags & SPRITE_FLAG_MASK_ROT_SCALE);
 	ldrh r4, [r2]       @ r2 = big.affineIndex
     lsls r4, r4, #5
-	ldr r0, _08004A14   @ =gOamBuffer + 0x6
+	ldr r0, _sa2_08004A14   @ =gOamBuffer + 0x6
 	adds r4, r4, r0     @ r4 = affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 	subs r2, #0x18
 	str r2, [sp, #0x28] @; sp28 = sp08 = &big.qDirX
-	ldr r2, _08004A18   @ =gSineTable
+	ldr r2, _sa2_08004A18   @ =gSineTable
 	ldrh r0, [r6]       @ r0 = transform.rotation
-	ldr r1, _08004A1C @ =0x000003FF
+	ldr r1, _sa2_08004A1C @ =0x000003FF
 	ands r1, r0         @ r1 = (transform->rotation & ONE_CYCLE)
 	movs r3, #0x80
 	lsls r3, r3, #1     @ r3 = 0x100
@@ -130,21 +130,21 @@ __post_Divs:
 	movs r3, #2
 	ldrsh r5, [r6, r3]  @ r5 = transform.width
 	cmp r5, #0
-	bge _08004966       @ if (transform->width < 0)
+	bge _sa2_08004966       @ if (transform->width < 0)
 	rsbs r0, r0, #0
 	strh r0, [r7]       @ big.unkC[0] = -transform->width;
-_08004966:
+_sa2_08004966:
 	movs r1, #4
 	ldrsh r0, [r6, r1]
 	ldrh r2, [r6, #4]
 	mov ip, r2          @ ip = transform.height
 	cmp r0, #0
-	bge _0800497A       @ if (transform->height < 0)
+	bge _sa2_0800497A       @ if (transform->height < 0)
 	mov r3, ip
 	rsbs r0, r3, #0
 	mov r1, sb
 	strh r0, [r1]       @ big.unkC[1] = -transform->height;
-_0800497A:
+_sa2_0800497A:
 	mov r2, sp          @ r2 = sp00 = &big
 	ldr r3, [sp, #0x28] @ r3 = sp28 = &big.qDirX
 	ldrh r1, [r3]
@@ -157,7 +157,7 @@ _0800497A:
 	asrs r0, r0, #8
 	strh r0, [r2]       @ big.unk0[0] = big.qDirX * big.unkC[0]
 
-__08004990:
+__sa2_08004990:
 	mov r4, sp
 	adds r4, #2         @ r4 = &big.unk0[1]
 	mov r0, sl          @ r0 = sl = &big.qDirY
@@ -172,7 +172,7 @@ __08004990:
 	asrs r0, r0, #8
 	strh r0, [r4]       @ big.unk0[1] =
 
-__080049AA:
+__sa2_080049AA:
 	add r3, sp, #4  
 	mov r2, sl          @ r2 = sl = &big.qDirY
 	ldrh r1, [r2]
@@ -186,7 +186,7 @@ __080049AA:
 	asrs r0, r0, #8
 	strh r0, [r3]       @ big.unk0[2] = (big.qDirY * big.unkC[1]) >> 8
 
-__080049C2:
+__sa2_080049C2:
 	mov r2, sp
 	adds r2, #6
 	ldr r0, [sp, #0x28] @ r0 = sp28 = &big.qDirX
@@ -228,19 +228,19 @@ __080049C2:
 	adds r6, r4, #0     @ r6 = &big.unk0[1]
 	adds r7, r3, #0     @ r7 = r3 = &big.unk0[2]
 	mov sb, r2          @ sb = r2 = &big.unk0[3]
-__08004A04:
+__sa2_08004A04:
 	cmp r5, #0          @ if (transform->width > 0)
-	ble _08004A20
-__08004A08:
+	ble _sa2_08004A20
+__sa2_08004A08:
 	mov r0, r8      @ r0 = r8 = dimensions
 	ldrh r4, [r0, #8]
 	ldrh r2, [r0, #4]
-	b _08004A2E
+	b _sa2_08004A2E
 	.align 2, 0
-_08004A14: .4byte gOamBuffer + 0x6
-_08004A18: .4byte gSineTable
-_08004A1C: .4byte 0x000003FF
-_08004A20:
+_sa2_08004A14: .4byte gOamBuffer + 0x6
+_sa2_08004A18: .4byte gSineTable
+_sa2_08004A1C: .4byte 0x000003FF
+_sa2_08004A20:
 	mov r2, r8      @ r2 = r8 = dimensions
 	ldrh r1, [r2, #4]
 	ldrh r0, [r2, #8]
@@ -248,16 +248,16 @@ _08004A20:
 	lsls r0, r0, #0x10
 	lsrs r4, r0, #0x10
 	adds r2, r1, #0
-_08004A2E:
+_sa2_08004A2E:
 	mov r3, ip      @ r3 = ip = 
 	lsls r0, r3, #0x10
 	cmp r0, #0
-	ble _08004A3E
+	ble _sa2_08004A3E
 	mov r0, r8      @ r0 = r8 = dimensions
 	ldrh r3, [r0, #0xa]
 	ldrh r5, [r0, #6]
-	b _08004A4C
-_08004A3E:
+	b _sa2_08004A4C
+_sa2_08004A3E:
 	mov r3, r8      @ r3 = r8 = dimensions
 	ldrh r1, [r3, #6]
 	ldrh r0, [r3, #0xa]
@@ -265,7 +265,7 @@ _08004A3E:
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10
 	adds r5, r1, #0
-_08004A4C:
+_sa2_08004A4C:
 	mov r0, sp          @ r0 = big.unk0[0]
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -292,7 +292,7 @@ _08004A4C:
 	subs r0, r0, r1
 	str r0, [sp, #0x10]
 
-__080004A7E:
+__sa2_080004A7E:
 	ldrh r0, [r7]       @ r0 = big.unk0[2]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
@@ -315,7 +315,7 @@ __080004A7E:
 	strh r0, [r1, #0x16]
 	ldr r0, [sp, #0x14]
 	strh r0, [r1, #0x18]
-_08004AAA:
+_sa2_08004AAA:
 	add sp, #0x2c
 	pop {r3, r4, r5}
 	mov r8, r3

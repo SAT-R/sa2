@@ -47,7 +47,7 @@ BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(16) = {};
 void *gVramHeapStartAddr = NULL;
 u16 gSpriteTransformRotation ALIGNED(4) = 0;
 u8 gNumVBlankIntrs ALIGNED(4) = 0;
-s16 SA2_LABEL(gUnknown_0300194C) ALIGNED(4) = 0;
+s16 gSpriteTransformX ALIGNED(4) = 0;
 
 #if (ENGINE >= ENGINE_3)
 u8 gUnknown_03002C60 ALIGNED(4) = 0;
@@ -114,7 +114,7 @@ struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 #if (ENGINE == ENGINE_3)
 VoidFn gUnknown_03003C08 = NULL;
 #endif
-s16 SA2_LABEL(gUnknown_03002820) = 0;
+s16 gSpriteTransformY = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
 u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
@@ -162,7 +162,7 @@ OamData gOamBuffer[] ALIGNED(16) = {};
 u16 gVramHeapState[] = {};
 u8 gBgSpritesCount ALIGNED(4) = 0;
 u16 gSpriteTransformScaleY ALIGNED(4) = 0;
-u16 SA2_LABEL(gUnknown_03005398) ALIGNED(4) = 0;
+u16 gSpriteTransformScaleUnknown ALIGNED(4) = 0;
 IntrFunc gVBlankIntrs[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
@@ -393,9 +393,9 @@ void EngineInit(void)
     gSpriteTransformScaleY = 0x100;
     SA2_LABEL(gUnknown_03002A8C) = 0;
     SA2_LABEL(gUnknown_03004D58) = 0;
-    SA2_LABEL(gUnknown_0300194C) = 0;
-    SA2_LABEL(gUnknown_03002820) = 0;
-    SA2_LABEL(gUnknown_03005398) = 0x100;
+    gSpriteTransformX = 0;
+    gSpriteTransformY = 0;
+    gSpriteTransformScaleUnknown = 0x100;
 
     gWinRegs[WINREG_WIN0H] = 0;
     gWinRegs[WINREG_WIN1H] = 0;

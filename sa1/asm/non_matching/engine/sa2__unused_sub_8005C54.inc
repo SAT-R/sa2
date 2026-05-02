@@ -47,22 +47,22 @@
 	lsrs r5, r0, #0x10
 	asrs r2, r0, #0x10
 	cmp r2, #0
-	beq _08004BFE
+	beq _sa2_08005CB6
 	movs r0, #0x80
 	lsls r0, r0, #1
 	cmp r2, r0
-	bne _08004C10
-_08004BFE:
-	ldr r0, _08004C0C @ =gFlags
+	bne _sa2_08005CC8
+_sa2_08005CB6:
+	ldr r0, _sa2_08005CC4 @ =gFlags
 	ldr r1, [r0]
 	movs r2, #5
 	rsbs r2, r2, #0
 	ands r1, r2
 	str r1, [r0]
-	b _08004EE6
+	b _sa2_08005F9E
 	.align 2, 0
-_08004C0C: .4byte gFlags
-_08004C10:
+_sa2_08005CC4: .4byte gFlags
+_sa2_08005CC8:
 	ldr r3, [sp, #0xc]
 	mov r4, ip
 	subs r0, r3, r4
@@ -73,7 +73,7 @@ _08004C10:
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10
 	cmp r2, #0
-	bge _08004C50
+	bge _sa2_08005D08
 	movs r0, #0xff
 	str r0, [sp, #0x14]
 	rsbs r0, r2, #0
@@ -95,7 +95,7 @@ _08004C10:
 	lsls r0, r3, #0x10
 	eors r0, r1
 	lsrs r1, r0, #0x10
-_08004C50:
+_sa2_08005D08:
 	lsls r0, r1, #0x10
 	asrs r4, r0, #0x10
 	lsls r1, r5, #0x10
@@ -118,7 +118,7 @@ _08004C50:
 	lsls r5, r5, #0x18
 	str r5, [sp, #0x24]
 	cmp r0, r2
-	bge _08004CC4
+	bge _sa2_08005D7C
 	mov r3, sl
 	lsls r0, r7, #8
 	muls r0, r4, r0
@@ -129,17 +129,17 @@ _08004C50:
 	lsrs r0, r0, #0x18
 	mov sl, r0
 	lsls r1, r3, #2
-	ldr r7, _08004D70 @ =gBgOffsetsHBlankPrimary
+	ldr r7, _sa2_08005E28 @ =gBgOffsetsHBlankPrimary
 	ldr r0, [r7]
 	adds r4, r0, r1
 	mov r0, ip
 	subs r5, r0, r3
-	ldr r1, _08004D74 @ =0x000001FF
+	ldr r1, _sa2_08005E2C @ =0x000001FF
 	adds r0, r1, #0
 	ands r5, r0
 	cmp r3, sl
-	bhs _08004CC4
-_08004CA6:
+	bhs _sa2_08005D7C
+_sa2_08005D5E:
 	mov r2, sp
 	ldrh r2, [r2, #0x10]
 	strh r2, [r4]
@@ -154,8 +154,8 @@ _08004CA6:
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
 	cmp r3, sl
-	blo _08004CA6
-_08004CC4:
+	blo _sa2_08005D5E
+_sa2_08005D7C:
 	mov r3, r8
 	asrs r2, r3, #0x10
 	ldr r4, [sp, #0x20]
@@ -171,7 +171,7 @@ _08004CC4:
 	mov sb, r7
 	ldr r3, [sp, #0x28]
 	cmp r0, r3
-	bge _08004D2C
+	bge _sa2_08005DE4
 	ldr r7, [sp, #8]
 	lsls r0, r1, #8
 	muls r0, r2, r0
@@ -183,17 +183,17 @@ _08004CC4:
 	str r0, [sp, #8]
 	adds r3, r0, #0
 	lsls r1, r0, #2
-	ldr r4, _08004D70 @ =gBgOffsetsHBlankPrimary
+	ldr r4, _sa2_08005E28 @ =gBgOffsetsHBlankPrimary
 	ldr r0, [r4]
 	adds r4, r0, r1
 	ldr r0, [sp, #4]
 	subs r5, r0, r3
-	ldr r1, _08004D74 @ =0x000001FF
+	ldr r1, _sa2_08005E2C @ =0x000001FF
 	adds r0, r1, #0
 	ands r5, r0
 	cmp r3, r7
-	bhs _08004D2C
-_08004D0E:
+	bhs _sa2_08005DE4
+_sa2_08005DC6:
 	mov r2, sp
 	ldrh r2, [r2, #0x10]
 	strh r2, [r4]
@@ -208,21 +208,21 @@ _08004D0E:
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
 	cmp r3, r7
-	blo _08004D0E
-_08004D2C:
-	ldr r3, _08004D78 @ =gFlags
+	blo _sa2_08005DC6
+_sa2_08005DE4:
+	ldr r3, _sa2_08005E30 @ =gFlags
 	ldr r0, [r3]
 	movs r1, #4
 	orrs r0, r1
 	str r0, [r3]
 	ldr r4, [sp, #0x1c]
-	ldr r5, _08004D7C @ =0x04000010
+	ldr r5, _sa2_08005E34 @ =0x04000010
 	adds r0, r4, r5
-	ldr r7, _08004D80 @ =gHBlankCopyTarget
+	ldr r7, _sa2_08005E38 @ =gHBlankCopyTarget
 	str r0, [r7]
-	ldr r0, _08004D84 @ =gHBlankCopySize
+	ldr r0, _sa2_08005E3C @ =gHBlankCopySize
 	strb r1, [r0]
-	ldr r1, _08004D70 @ =gBgOffsetsHBlankPrimary
+	ldr r1, _sa2_08005E28 @ =gBgOffsetsHBlankPrimary
 	ldr r0, [r1]
 	mov r2, sb
 	adds r4, r0, r2
@@ -238,24 +238,24 @@ _08004D2C:
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	beq _08004D88
+	beq _sa2_08005E40
 	ldr r1, [sp, #0xc]
 	subs r0, r1, r2
-	b _08004D8C
+	b _sa2_08005E44
 	.align 2, 0
-_08004D70: .4byte gBgOffsetsHBlankPrimary
-_08004D74: .4byte 0x000001FF
-_08004D78: .4byte gFlags
-_08004D7C: .4byte 0x04000010
-_08004D80: .4byte gHBlankCopyTarget
-_08004D84: .4byte gHBlankCopySize
-_08004D88:
+_sa2_08005E28: .4byte gBgOffsetsHBlankPrimary
+_sa2_08005E2C: .4byte 0x000001FF
+_sa2_08005E30: .4byte gFlags
+_sa2_08005E34: .4byte 0x04000010
+_sa2_08005E38: .4byte gHBlankCopyTarget
+_sa2_08005E3C: .4byte gHBlankCopySize
+_sa2_08005E40:
 	ldr r1, [sp, #0xc]
 	adds r0, r1, r2
-_08004D8C:
+_sa2_08005E44:
 	mov r3, sl
 	subs r5, r0, r3
-	ldr r7, _08004E34 @ =0x000001FF
+	ldr r7, _sa2_08005EEC @ =0x000001FF
 	adds r0, r7, #0
 	ands r5, r0
 	ldr r0, [sp, #0x20]
@@ -267,7 +267,7 @@ _08004D8C:
 	lsrs r6, r0, #0x10
 	asrs r1, r0, #0x10
 	cmp r1, #0
-	beq _08004DBA
+	beq _sa2_08005E72
 	ldr r2, [sp, #0x24]
 	asrs r0, r2, #0x18
 	subs r0, r5, r0
@@ -276,24 +276,24 @@ _08004D8C:
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
 	lsrs r6, r0, #0x10
-_08004DBA:
+_sa2_08005E72:
 	movs r3, #0x80
 	lsls r3, r3, #1
 	mov r8, r3
 	cmp r7, r8
-	ble _08004E38
+	ble _sa2_08005EF0
 	mov r3, sl
 	ldr r0, [sp, #8]
 	cmp r3, r0
-	blo _08004DCE
-	b _08004EE6
-_08004DCE:
+	blo _sa2_08005E86
+	b _sa2_08005F9E
+_sa2_08005E86:
 	ldr r1, [sp, #0x20]
 	mov sl, r1
 	mov sb, r7
-	ldr r2, _08004E34 @ =0x000001FF
+	ldr r2, _sa2_08005EEC @ =0x000001FF
 	mov ip, r2
-_08004DD8:
+_sa2_08005E90:
 	mov r7, sp
 	ldrh r7, [r7, #0x10]
 	strh r7, [r4]
@@ -316,10 +316,10 @@ _08004DD8:
 	adds r3, #1
 	mov r8, r3
 	cmp r0, sb
-	ble _08004E22
+	ble _sa2_08005EDA
 	ldr r0, [sp, #0x24]
 	asrs r3, r0, #0x18
-_08004E0A:
+_sa2_08005EC2:
 	adds r0, r5, r3
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
@@ -331,8 +331,8 @@ _08004E0A:
 	lsls r2, r6, #0x10
 	asrs r0, r2, #0x10
 	cmp r0, r1
-	bgt _08004E0A
-_08004E22:
+	bgt _sa2_08005EC2
+_sa2_08005EDA:
 	mov r1, ip
 	ands r5, r1
 	mov r2, r8
@@ -340,11 +340,11 @@ _08004E22:
 	lsrs r3, r0, #0x18
 	ldr r7, [sp, #8]
 	cmp r3, r7
-	blo _08004DD8
-	b _08004EE6
+	blo _sa2_08005E90
+	b _sa2_08005F9E
 	.align 2, 0
-_08004E34: .4byte 0x000001FF
-_08004E38:
+_sa2_08005EEC: .4byte 0x000001FF
+_sa2_08005EF0:
 	movs r0, #0x80
 	lsls r0, r0, #9
 	adds r1, r7, #0
@@ -367,7 +367,7 @@ _08004E38:
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	bne _08004E78
+	bne _sa2_08005F30
 	mov r1, sb
 	lsls r0, r1, #0x10
 	movs r3, #0x80
@@ -376,18 +376,18 @@ _08004E38:
 	rsbs r0, r0, #0
 	lsrs r0, r0, #0x10
 	mov sb, r0
-_08004E78:
+_sa2_08005F30:
 	mov r3, sl
 	ldr r0, [sp, #8]
 	cmp r3, r0
-	bhs _08004EE6
+	bhs _sa2_08005F9E
 	lsls r0, r2, #0x10
 	asrs r0, r0, #0x10
 	str r0, [sp, #0x18]
 	ldr r1, [sp, #0x20]
 	mov ip, r1
 	mov sl, r7
-_08004E8C:
+_sa2_08005F44:
 	mov r2, sp
 	ldrh r2, [r2, #0x10]
 	strh r2, [r4]
@@ -410,10 +410,10 @@ _08004E8C:
 	adds r3, #1
 	mov r8, r3
 	cmp r0, sl
-	ble _08004ED6
+	ble _sa2_08005F8E
 	ldr r0, [sp, #0x24]
 	asrs r3, r0, #0x18
-_08004EBE:
+_sa2_08005F76:
 	adds r0, r5, r3
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
@@ -425,17 +425,17 @@ _08004EBE:
 	lsls r2, r6, #0x10
 	asrs r0, r2, #0x10
 	cmp r0, r1
-	bgt _08004EBE
-_08004ED6:
-	ldr r1, _08004EF8 @ =0x000001FF
+	bgt _sa2_08005F76
+_sa2_08005F8E:
+	ldr r1, _sa2_08005FB0 @ =0x000001FF
 	ands r5, r1
 	mov r2, r8
 	lsls r0, r2, #0x18
 	lsrs r3, r0, #0x18
 	ldr r7, [sp, #8]
 	cmp r3, r7
-	blo _08004E8C
-_08004EE6:
+	blo _sa2_08005F44
+_sa2_08005F9E:
 	add sp, #0x2c
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -445,6 +445,8 @@ _08004EE6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08004EF8: .4byte 0x000001FF
+_sa2_08005FB0: .4byte 0x000001FF
+
+    @ Unused
 	
 .syntax divided

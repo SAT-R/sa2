@@ -41,14 +41,14 @@
 	lsls r0, r0, #4
 	adds r2, r4, #0
 	muls r2, r0, r2
-	ldr r1, _0802727C @ =sa2__gUnknown_0300194C
+	ldr r1, _0802727C @ =gSpriteTransformX
 	ldr r4, _08027280 @ =gCamera
 	ldrh r0, [r4]
 	ldrh r1, [r1]
 	adds r0, r0, r1
 	asrs r3, r3, #0xe
 	adds r3, r3, r0
-	ldr r1, _08027284 @ =sa2__gUnknown_03002820
+	ldr r1, _08027284 @ =gSpriteTransformY
 	ldrh r0, [r4, #2]
 	ldrh r1, [r1]
 	adds r0, r0, r1
@@ -74,9 +74,9 @@ _0802726C: .4byte 0x03000030
 _08027270: .4byte 0x03000050
 _08027274: .4byte gSineTable
 _08027278: .4byte gSpriteTransformRotation
-_0802727C: .4byte sa2__gUnknown_0300194C
+_0802727C: .4byte gSpriteTransformX
 _08027280: .4byte gCamera
-_08027284: .4byte sa2__gUnknown_03002820
+_08027284: .4byte gSpriteTransformY
 _08027288: .4byte 0x0300004C
 _0802728C:
 	ldr r2, _080272C8 @ =0x0300004C

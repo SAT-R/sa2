@@ -416,9 +416,9 @@ void CreateGameStage(void)
     gSpriteTransformScaleY = 0x100;
     SA2_LABEL(gUnknown_03002A8C) = 0x78;
     SA2_LABEL(gUnknown_03004D58) = 0x50;
-    SA2_LABEL(gUnknown_0300194C) = 0x78;
-    SA2_LABEL(gUnknown_03002820) = 0x50;
-    SA2_LABEL(gUnknown_03005398) = 0x80;
+    gSpriteTransformX = 0x78;
+    gSpriteTransformY = 0x50;
+    gSpriteTransformScaleUnknown = 0x80;
 
     if (IS_MULTI_PLAYER) {
         CreateMultiplayerReceiveEventMgr();

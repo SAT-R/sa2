@@ -70,7 +70,7 @@ _0802750C:
 	ldrsh r0, [r2, r3]
 	lsls r2, r0, #1
 	adds r2, r2, r0
-	ldr r3, _080275A4 @ =sa2__gUnknown_0300194C
+	ldr r3, _080275A4 @ =gSpriteTransformX
 	ldr r4, _080275A8 @ =gCamera
 	ldrh r0, [r4]
 	ldrh r3, [r3]
@@ -79,7 +79,7 @@ _0802750C:
 	adds r1, r1, r0
 	lsls r1, r1, #0x10
 	lsrs r3, r1, #0x10
-	ldr r1, _080275AC @ =sa2__gUnknown_03002820
+	ldr r1, _080275AC @ =gSpriteTransformY
 	ldrh r0, [r4, #2]
 	ldrh r1, [r1]
 	adds r0, r0, r1
@@ -120,9 +120,9 @@ _0802750C:
 	.align 2, 0
 _0802759C: .4byte gSineTable
 _080275A0: .4byte gSpriteTransformRotation
-_080275A4: .4byte sa2__gUnknown_0300194C
+_080275A4: .4byte gSpriteTransformX
 _080275A8: .4byte gCamera
-_080275AC: .4byte sa2__gUnknown_03002820
+_080275AC: .4byte gSpriteTransformY
 _080275B0: .4byte gPlayer
 _080275B4: .4byte gNumSingleplayerCharacters
 _080275B8: .4byte gPartner
