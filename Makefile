@@ -666,7 +666,7 @@ bribasa:
 	@$(MAKE) -C tools/BriBaSA_ex
 
 sa1:
-	@$(MAKE) -C sa1
+	@$(MAKE) -f sa1_Makefile
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@

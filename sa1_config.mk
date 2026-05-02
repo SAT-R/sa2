@@ -22,7 +22,7 @@ else
     $(error unknown arch: $(CPU_ARCH))
 endif
 
-LDSCRIPT := ldscript
+LDSCRIPT := sa1_ldscript
 
 NON_MATCHING ?= 0
 ifeq ($(PLATFORM),gba)

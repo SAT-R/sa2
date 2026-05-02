@@ -1,7 +1,7 @@
 #
 # NOTE: Overrideable default flags are set in config.mk
 #
-include config.mk
+include sa1_config.mk
 
 MAKEFLAGS += --no-print-directory
 
@@ -70,8 +70,8 @@ SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
 ifeq ($(PLATFORM),gba)
-CC1       := ../tools/agbcc/bin/agbcc$(EXE)
-CC1_OLD   := ../tools/agbcc/bin/old_agbcc$(EXE)
+CC1       := tools/agbcc/bin/agbcc$(EXE)
+CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
 else
 CC1       := $(PREFIX)gcc$(EXE)
 CC1_OLD   := $(CC1)
@@ -85,18 +85,18 @@ AS 		  := $(PREFIX)as
 FORMAT    := clang-format-13
 
 ### TOOLS ###
-GFX 	  := ../tools/gbagfx/gbagfx$(EXE)
-ENT_POS   := ../tools/entity_positions/entity_positions$(EXE)
-AIF		  := ../tools/aif2pcm/aif2pcm$(EXE)
-MID2AGB   := ../tools/mid2agb/mid2agb$(EXE)
-SCANINC   := ../tools/scaninc/scaninc$(EXE)
-PREPROC	  := ../tools/preproc/preproc$(EXE)
-RAMSCRGEN := ../tools/ramscrgen/ramscrgen$(EXE)
-FIX 	  := ../tools/gbafix/gbafix$(EXE)
+GFX 	  := tools/gbagfx/gbagfx$(EXE)
+ENT_POS   := tools/entity_positions/entity_positions$(EXE)
+AIF		  := tools/aif2pcm/aif2pcm$(EXE)
+MID2AGB   := tools/mid2agb/mid2agb$(EXE)
+SCANINC   := tools/scaninc/scaninc$(EXE)
+PREPROC	  := tools/preproc/preproc$(EXE)
+RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
+FIX 	  := tools/gbafix/gbafix$(EXE)
 
-TOOLDIRS := $(filter-out ../tools/agbcc/ ../tools/BriBaSA_ex/, $(dir $(wildcard ../tools/*/Makefile)))
+TOOLDIRS := $(filter-out tools/agbcc/ tools/BriBaSA_ex/, $(dir $(wildcard tools/*/Makefile)))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
-TOOLS = $(foreach tool,$(TOOLBASE),../tools/$(tool)/$(tool)$(EXE))
+TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
 ### DEPS ###
 
@@ -107,7 +107,7 @@ SDL_MINGW_LIB     := $(SDL_MINGW_PKG)/lib
 SDL_MINGW_FLAGS   := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
 SDL_MINGW_LIBS    := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
 
-LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/../libagbsyscall/build/gba -lagbsyscall
+LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/libagbsyscall/build/gba -lagbsyscall
 
 ### FILES ###
 
@@ -130,7 +130,7 @@ INCLUDE_DIRS = include
 INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
-SA2_INCLUDE_DIRS = ../include
+SA2_INCLUDE_DIRS = include
 SA2_INCLUDE_CPP_ARGS := $(SA2_INCLUDE_DIRS:%=-iquote %)
 SA2_INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
@@ -158,17 +158,23 @@ OBJ_TILES_4BPP_SUBDIR = graphics/sa1/obj_tiles/4bpp
 TILESETS_SUBDIR = graphics/sa1/tilesets/
 
 ifeq ($(PLATFORM),gba)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+else ifeq ($(PLATFORM),sdl_psp)
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+else ifeq ($(PLATFORM),ps2)
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
 else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),win32)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*")
 else
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa2/*")
 endif
+C_SRCS := $(foreach src,$(C_SRCS_IN),$(if $(findstring .inc.c,$(src)),,$(src)))
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
 
 # Platform not included as we only need the headers for decomp scratches
 C_HEADERS := $(shell find $(INCLUDE_DIRS) -name "*.h" -not -path "*/platform/*")
@@ -177,241 +183,13 @@ ifeq ($(PLATFORM),gba)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 
-ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
-ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 endif
 
 # TEMP SOLUTION UNTIL MAKEFILES ARE COMBINED
 # Moves any relevant sa2 c files to the build dir
-SA2_C_FILES := \
-	src/lib/m4a/m4a.c \
-	src/lib/m4a/m4a_tables.c \
-	src/lib/agb_flash/agb_flash.c \
-	src/lib/agb_flash/agb_flash_at_512k.c \
-	src/lib/agb_flash/agb_flash_le_512k.c \
-	src/lib/agb_flash/agb_flash_mx_512k.c \
-	src/multi_sio.c \
-	src/sio32_multi_load.c \
-	src/multi_boot.c \
-	src/core.c \
-	src/main.c \
-	src/task.c \
-	src/sprite.c \
-	src/trig.c \
-	src/malloc_vram.c \
-	src/malloc_ewram.c \
-	src/bg_triangles.c \
-	src/input_recorder.c \
-	src/background.c \
-	src/game/globals.c \
-	src/game/dummy_task.c \
-	src/game/game.c \
-	src/game/sa1/ui/time_attack_record.c \
-	src/game/sa1/ui/multiplayer_continue_screen.c \
-	src/game/sa1/ui/vs_record.c \
-	src/game/sa1/ui/edit_language_screen.c \
-	src/game/sa1/ui/sound_test.c \
-	src/game/sa1/ui/time_attack_records.c \
-	src/game/sa1/ui/time_over.c \
-	src/game/sa1/ui/game_2_3.c \
-	src/game/sa1/ui/time_attack_results.c \
-	src/game/sa1/ui/time_attack_lobby.c \
-	src/game/sa1/ui/special_stage_intro.c \
-	src/game/sa1/ui/player_name_input_menu.c \
-	src/game/sa1/ui/course_select.c \
-	src/game/sa1/ui/staff_credits.c \
-	src/game/sa1/ui/collect_chaos_emeralds_msg.c \
-	src/game/sa1/ui/game_over.c \
-	src/game/sa1/ui/character_select.c \
-	src/game/sa1/ui/extra_stage_results.c \
-	src/game/sa1/menus/time_attack.c \
-	src/game/sa1/menus/mp_mode_select.c \
-	src/game/sa1/menus/player_data.c \
-	src/game/sa1/menus/options.c \
-	src/game/sa1/stage/mp_unk_1.c \
-	src/game/sa1/stage/mp_results.c \
-	src/game/sa1/stage/player_controls.c \
-	src/game/sa1/stage/to_be_continued_screen.c \
-	src/game/sa1/stage/mp_results_b.c \
-	src/game/sa1/stage/mp_hud.c \
-	src/game/sa1/stage/ui_rendering.c \
-	src/game/sa1/stage/mp_unk_0.c \
-	src/game/sa1/stage/nuts_and_bolts_task.c \
-	src/game/sa1/stage/some_task_manager.c \
-	src/game/sa1/save.c \
-	src/game/sa1/multiplayer/chao_message.c \
-	src/game/shared/stage/palette_loader.c \
-	src/game/shared/stage/terrain_collision.c \
-	src/game/shared/stage/screen_shake.c \
-	src/game/shared/stage/dust_effect_braking.c \
-	src/game/shared/stage/dust_cloud.c \
-	src/game/shared/stage/collect_ring_effect.c \
-	src/game/shared/stage/unused_flash_task.c \
-	src/game/shared/stage/magnetic_ring.c \
-	src/game/shared/multiplayer/communication_outcome.c \
-	src/game/shared/stage/pause_menu.c \
-	src/game/shared/stage/item_tasks.c \
-	src/game/shared/stage/demo_manager.c \
-	src/game/shared/stage/enemy_defeat_score.c \
-	src/game/shared/stage/mp_finish.c \
-	src/game/shared/stage/music_manager.c \
-	src/game/shared/stage/mp_sprite_task.c \
-	src/game/shared/stage/dust_effect_spindash.c \
-	src/game/shared/stage/amy_attack_heart_effect.c \
-	src/game/shared/stage/mp_indicators.c \
-	src/game/shared/stage/underwater_effects.c \
-	src/game/shared/stage/grind_effect_1.c \
-	src/game/shared/stage/mp_event_recv_mgr.c \
-	src/game/shared/stage/spot_lights_manager.c \
-	src/game/shared/stage/mp_event_mgr.c \
-	src/game/shared/stage/mp_player.c \
-	src/game/shared/stage/rings_scatter.c \
-	src/game/shared/stage/player.c \
-	src/game/shared/collect_rings/results.c \
-	src/game/shared/menus/unused_level_select.c \
-	src/game/shared/stage/collision_1.c \
-	src/game/shared/stage/collision_2.c \
-	src/game/shared/stage/collision_3.c \
-	src/game/shared/stage/water_effects.c \
-	src/game/shared/stage/spot_light_beam_task.c \
-	src/game/shared/stage/camera.c \
-	src/game/shared/stage/stage.c \
-	src/game/shared/stage/rings_manager.c \
-	src/game/shared/stage/entities_manager.c \
-	src/game/sa1/ui/game_2_0.c \
-	src/game/sa1/ui/game_2_1.c \
-	src/game/sa1/ui/stage_results.c \
-	src/game/sa1/menus/mp_mode_select_2.c \
-	src/game/sa1/special_stage/main.c \
-	src/game/sa1/stage/egg_rocket_transitions.c \
-	src/game/sa1/stage/temporary_sound_play_task.c \
-	src/game/sa1/stage/itembox.c \
-	src/game/sa1/menus/title_screen.c \
-	src/game/sa1/stage/interactables/special_spring.c \
-	src/game/sa1/stage/interactables/toggle_gravity.c \
-	src/game/sa1/stage/interactables/half_pipe.c \
-	src/game/sa1/stage/interactables/conveyor_belt_movement.c \
-	src/game/sa1/stage/interactables/track.c \
-	src/game/sa1/stage/interactables/water_bridge_splash.c \
-	src/game/sa1/stage/interactables/updraft.c \
-	src/game/sa1/stage/interactables/bounce_block.c \
-	src/game/sa1/stage/interactables/pipe.c \
-	src/game/sa1/stage/interactables/wall_bumper.c \
-	src/game/sa1/stage/interactables/flippers.c \
-	src/game/sa1/stage/interactables/ferris_wheel.c \
-	src/game/sa1/stage/interactables/platform_square.c \
-	src/game/sa1/stage/interactables/booster.c \
-	src/game/sa1/stage/interactables/ship_swing.c \
-	src/game/sa1/stage/interactables/maze_air_corner.c \
-	src/game/sa1/stage/interactables/113.c \
-	src/game/sa1/stage/interactables/toggle_player_visibility.c \
-	src/game/sa1/stage/interactables/flipper_small_blue.c \
-	src/game/sa1/stage/interactables/air_bubbles.c \
-	src/game/sa1/stage/interactables/spring.c \
-	src/game/sa1/stage/interactables/spikes.c \
-	src/game/sa1/stage/interactables/decoration.c \
-	src/game/sa1/stage/interactables/hook_rail.c \
-	src/game/sa1/stage/interactables/platforms_085_089.c \
-	src/game/sa1/stage/interactables/107.c \
-	src/game/sa1/stage/interactables/mini_loop.c \
-	src/game/sa1/stage/interactables/boulder_spawner.c \
-	src/game/sa1/stage/interactables/lava.c \
-	src/game/sa1/stage/interactables/fadein_to_be_continued.c \
-	src/game/sa1/stage/interactables/039.c \
-	src/game/sa1/stage/interactables/checkpoint.c \
-	src/game/sa1/stage/interactables/marble_track.c \
-	src/game/sa1/stage/interactables/moving_spring.c \
-	src/game/sa1/stage/interactables/platform_crumbling.c \
-	src/game/sa1/stage/interactables/hang_bar.c \
-	src/game/sa1/stage/interactables/shrubbery.c \
-	src/game/sa1/stage/interactables/steam_exhaust.c \
-	src/game/sa1/stage/interactables/propeller.c \
-	src/game/sa1/stage/interactables/spiked_barrel.c \
-	src/game/sa1/stage/interactables/stage_goal.c \
-	src/game/sa1/stage/interactables/platform_spiked.c \
-	src/game/sa1/stage/interactables/conveyor_belt_object.c \
-	src/game/sa1/stage/interactables/toggle_player_float.c \
-	src/game/sa1/stage/interactables/grind_rail.c \
-	src/game/sa1/stage/interactables/party_balloon.c \
-	src/game/sa1/stage/interactables/skating_stone.c \
-	src/game/sa1/stage/interactables/teleport_orb.c \
-	src/game/sa1/stage/interactables/breakable_wall.c \
-	src/game/sa1/stage/interactables/trampoline.c \
-	src/game/sa1/stage/interactables/waterfall.c \
-	src/game/sa1/stage/interactables/spring_hiding.c \
-	src/game/sa1/stage/interactables/forced_slide.c \
-	src/game/sa1/stage/interactables/platform_thin.c \
-	src/game/sa1/stage/interactables/small_fall_block.c \
-	src/game/sa1/stage/interactables/crane_claw_and_lift.c \
-	src/game/sa1/stage/interactables/incline_ramp.c \
-	src/game/sa1/stage/interactables/security_gate.c \
-	src/game/sa1/stage/interactables/toggle_player_layer.c \
-	src/game/sa1/stage/interactables/bowl.c \
-	src/game/sa1/stage/interactables/iron_ball.c \
-	src/game/sa1/stage/interactables/034.c \
-	src/game/sa1/stage/interactables/run_wheel.c \
-	src/game/sa1/stage/interactables/ice_block.c \
-	src/game/sa1/stage/interactables/torch.c \
-	src/game/sa1/stage/interactables/swinging_hook.c \
-	src/game/sa1/stage/interactables/red_flag_and_pole.c \
-	src/game/sa1/stage/interactables/underwater_lava_platform.c \
-	src/game/sa1/stage/interactables/mini_loop_boost.c \
-	src/game/sa1/stage/interactables/sega_sonic_letters.c \
-	src/game/sa1/stage/interactables/water_bridge.c \
-	src/game/sa1/stage/interactables/096.c \
-	src/game/sa1/stage/interactables/panel_gate.c \
-	src/game/sa1/stage/interactables/carousel.c \
-	src/game/sa1/stage/interactables/swing_rope.c \
-	src/game/sa1/stage/interactables/bumpers.c \
-	src/game/sa1/stage/enemies/wamu.c \
-	src/game/sa1/stage/enemies/bosses_egg_mobile.c \
-	src/game/sa1/stage/enemies/tentou.c \
-	src/game/sa1/stage/enemies/boss_1_egg_hammer_tank.c \
-	src/game/sa1/stage/enemies/gamigami.c \
-	src/game/sa1/stage/enemies/boss_4_egg_spider.c \
-	src/game/sa1/stage/enemies/kerokero.c \
-	src/game/sa1/stage/enemies/boss_3_egg_ball.c \
-	src/game/sa1/stage/enemies/pen_mk1.c \
-	src/game/sa1/stage/enemies/bosses_misc.c \
-	src/game/sa1/stage/enemies/drisame.c \
-	src/game/sa1/stage/enemies/leon.c \
-	src/game/sa1/stage/enemies/slot.c \
-	src/game/sa1/stage/enemies/buzzer.c \
-	src/game/sa1/stage/enemies/boss_xtra_super_egg_robot.c \
-	src/game/sa1/stage/enemies/oct.c \
-	src/game/sa1/stage/enemies/boss_x1_egg_wrecker.c \
-	src/game/sa1/stage/enemies/fireball.c \
-	src/game/sa1/stage/enemies/pierrot.c \
-	src/game/sa1/stage/enemies/kiki.c \
-	src/game/sa1/stage/enemies/boss_2_egg_press.c \
-	src/game/sa1/stage/enemies/boss_x3_egg_x.c \
-	src/game/sa1/stage/enemies/mole.c \
-	src/game/sa1/stage/enemies/boss_x2_egg_drillster.c \
-	src/game/sa1/stage/enemies/senbon.c \
-	src/game/sa1/stage/enemies/rhinotank.c \
-	src/game/sa1/stage/enemies/mirror.c \
-	src/game/sa1/stage/enemies/kuraa.c \
-	src/game/sa1/stage/enemies/boss_5_mecha_knuckles.c \
-	src/game/sa1/stage/enemies/boss_6_egg_snake.c \
-	src/game/sa1/stage/enemies/yukimaru.c \
-	src/game/sa1/stage/enemies/hanabii.c \
-	src/game/sa1/stage/player_sonic.c \
-	src/game/sa1/stage/player_amy.c \
-	src/game/sa1/stage/player_knuckles.c \
-	src/game/sa1/stage/player_tails.c \
-  	src/game/sa1/stage/player_super_sonic.c \
-	src/game/sa1/stage/mp_chao.c \
-	src/game/sa1/stage/trapped_animals.c \
-	src/game/sa1/stage/stage_ui_z.c \
-	src/game/sa1/stage/stage_ui.c \
-	src/game/sa1/stage/mystery_itembox.c \
-	src/game/sa1/ui/intro_animation.c \
+SA2_C_FILES := 
 
-SA2_C_ASM_FILES := \
-	src/rom_header.s \
-	src/lib/m4a/m4a0.s \
-	src/crt0.s \
-	src/multi_sio_asm.s
+SA2_C_ASM_FILES :=
 
 SA2_C_SRCS = $(patsubst %.c,$(OBJ_DIR)/sa2/%.c,$(SA2_C_FILES))
 SA2_C_OBJS = $(patsubst %.c,%.o,$(SA2_C_SRCS))
@@ -431,7 +209,7 @@ MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(MID_OBJS)
+OBJS := $(C_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(SA2_C_OBJS) $(SA2_C_ASM_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
@@ -453,8 +231,8 @@ endif
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
 ifeq ($(PLATFORM),gba)
-	INCLUDE_SCANINC_ARGS += -I ../tools/agbcc/include
-	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I ../tools/agbcc/include
+	INCLUDE_SCANINC_ARGS += -I tools/agbcc/include
+	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
 	CC1FLAGS += -fhex-asm
 
 ifeq ($(BUILD_NAME), sa1)
@@ -546,7 +324,7 @@ endif
 
 # Libs
 ifeq ($(PLATFORM),gba)
-    LIBS := $(ROOT_DIR)/../tools/agbcc/lib/libgcc.a $(ROOT_DIR)/../tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
+    LIBS := $(ROOT_DIR)/tools/agbcc/lib/libgcc.a $(ROOT_DIR)/tools/agbcc/lib/libc.a $(LIBABGSYSCALL_LIBS)
 else ifeq ($(PLATFORM),sdl)
     LIBS := $(shell sdl2-config --cflags --libs)
 else ifeq ($(PLATFORM),sdl_win32)
@@ -597,11 +375,11 @@ endif
 ifeq ($(PLATFORM),gba)
 # Use the old compiler for m4a, as it was prebuilt and statically linked to the original codebase
 # PROLOGUE_FIX has to be set to nothing, since -fprologue-bugfix does not work with oldagbcc
-$(OBJ_DIR)/sa2/src/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
-$(OBJ_DIR)/sa2/src/lib/m4a/m4a.o: PROLOGUE_FIX :=
+$(OBJ_DIR)/src/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
+$(OBJ_DIR)/src/lib/m4a/m4a.o: PROLOGUE_FIX :=
 # Use `-O1` for agb_flash libs, as these were also prebuilt
-$(OBJ_DIR)/sa2/src/lib/agb_flash/agb_flash.o:  CC1FLAGS := -O1 -mthumb-interwork -Werror
-$(OBJ_DIR)/sa2/src/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(OBJ_DIR)/src/lib/agb_flash/agb_flash.o:  CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(OBJ_DIR)/src/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
 #### Main Targets ####
@@ -620,15 +398,15 @@ rom: $(ROM)
 tools: $(TOOLDIRS)
 
 tool_libs:
-	@$(MAKE) -C ../tools/_shared
+	@$(MAKE) -C tools/_shared
 
 clean: tidy clean-tools
-	@$(MAKE) clean -C ../tools/BriBaSA_ex
+	@$(MAKE) clean -C tools/BriBaSA_ex
 #	@$(MAKE) clean -C chao_garden
 #	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 #	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 #	@$(MAKE) clean -C multi_boot/collect_rings
-	@$(MAKE) clean -C ../libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
+	@$(MAKE) clean -C libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/*/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -654,8 +432,8 @@ win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### RECIPES ####
 
-include songs.mk
-include ../graphics.mk
+include sa1_songs.mk
+include graphics.mk
 
 %.png: ;
 %.pal: ;
@@ -673,13 +451,13 @@ data/sa1/mb_chao_garden_japan.gba.lz: data/sa1/mb_chao_garden_japan.gba
 	$(GFX) $< $@ -search 1
 
 %interactables.bin: %interactables.csv
-	$(ENT_POS) $< $@ -entities INTERACTABLES -header "../include/constants/sa1/interactables.h"
+	$(ENT_POS) $< $@ -entities INTERACTABLES -header "include/constants/sa1/interactables.h"
 
 %itemboxes.bin: %itemboxes.csv
-	$(ENT_POS) $< $@ -entities ITEMS -header "../include/constants/sa1/items.h"
+	$(ENT_POS) $< $@ -entities ITEMS -header "include/constants/sa1/items.h"
 
 %enemies.bin: %enemies.csv
-	$(ENT_POS) $< $@ -entities ENEMIES -header "../include/constants/sa1/enemies.h"
+	$(ENT_POS) $< $@ -entities ENEMIES -header "include/constants/sa1/enemies.h"
 
 %rings.bin: %rings.csv
 	$(ENT_POS) $< $@ -entities RINGS
@@ -716,11 +494,11 @@ else
 endif
 
 # Copy files from SA2
-$(OBJ_DIR)/sa2/%.c: ../%.c
+$(OBJ_DIR)/sa2/%.c: %.c
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
-$(OBJ_DIR)/sa2/%.s: ../%.s
+$(OBJ_DIR)/sa2/%.s: %.s
 	$(shell mkdir -p $(shell dirname '$@'))
 	cp $< $@
 
@@ -747,7 +525,7 @@ $(OBJ_DIR)/sa2/%.o: $(OBJ_DIR)/sa2/%.s
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(shell mkdir -p $(shell dirname '$(C_BUILDDIR)/$*.i'))
-	@$(CPP) $(CPPFLAGS) $(INCLUDE_CPP_ARGS) $(SA2_INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/$*.i
+	@$(CPP) $(CPPFLAGS) $(INCLUDE_CPP_ARGS) $< -o $(C_BUILDDIR)/$*.i
 	@$(PREPROC) $(C_BUILDDIR)/$*.i $(PLATFORM) "" | $(CC1) $(PROLOGUE_FIX) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s -
 ifeq ($(PLATFORM), gba)
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
@@ -832,7 +610,7 @@ collect_rings: tools
 	@$(MAKE) -C multi_boot/collect_rings DEBUG=0
 
 libagbsyscall:
-	@$(MAKE) -C ../libagbsyscall MODERN=0 PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
+	@$(MAKE) -C libagbsyscall MODERN=0 PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
 
 bribasa:
 	@$(MAKE) -C tools/BriBaSA_ex

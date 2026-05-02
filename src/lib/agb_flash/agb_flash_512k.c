@@ -1,6 +1,7 @@
 #include "global.h"
 #include "lib/agb_flash/flash_internal.h"
 
+#ifndef AGBFLASH_USE_V126
 static const char AgbLibFlash512KVersion[] = "FLASH512_V130";
 const struct FlashSetupInfo *const gSetup512KInfos[] = {
     &LE39FW512,
@@ -73,3 +74,4 @@ u16 WaitForFlashWrite512K_Common(u8 phase, u8 *addr, u8 lastData)
 
     return result;
 }
+#endif

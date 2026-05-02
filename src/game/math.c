@@ -3,6 +3,8 @@
 
 #include "trig.h"
 
+// This module was only introduced in sa2+
+#if (GAME != GAME_SA1)
 // TODO: This is just UNK_8085F1C_1
 typedef struct {
     s16 unk0;
@@ -1085,3 +1087,4 @@ UNUSED void sub_8085F84(void)
 {
     // unused
 }
+#endif
