@@ -51,7 +51,7 @@ void Task_ScreenShake(void)
             } break;
         }
 
-        if (!(shake->flags & 0x20) || ((gStageTime % 2u) == 0)) {
+        if (!(shake->flags & 0x20) || ((gStageTime & 0x1) == 0)) {
             if (shake->flags & SCREENSHAKE_HORIZONTAL) {
                 cam->shakeOffsetX = r2;
             }
