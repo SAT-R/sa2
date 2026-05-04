@@ -1,1 +1,3 @@
+game.c NONMATCH("asm/non_matching/sub_02000fd4.inc", void sub_02000fd4())
+game.c END_NONMATCH
 {"schemaVersion": 1, "label": "progress", "message": "23.8%", "color": "yellow"}

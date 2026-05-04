@@ -1,1 +1,109 @@
-{"schemaVersion": 1, "label": "matching", "message": "91.8%", "color": "yellow"}
+sprite.c NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Sprite *s, SpriteTransform *transform))
+sprite.c END_NONMATCH
+sprite.c NONMATCH("asm/non_matching/engine/UnusedTransform.inc", void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
+sprite.c END_NONMATCH
+sprite.c NONMATCH("asm/non_matching/engine/sa2__sub_8004E14.inc", void SA2_LABEL(sub_8004E14)(Sprite *sprite, SpriteTransform *transform))
+sprite.c END_NONMATCH
+sprite.c NONMATCH("asm/non_matching/engine/sub_80C07E0.inc", void sub_80C07E0(Sprite *sprite)) { }
+sprite.c END_NONMATCH
+background.c NONMATCH("asm/non_matching/engine/sa2__sub_8002B20.inc", bool32 SA2_LABEL(sub_8002B20)(void))
+background.c END_NONMATCH
+background.c NONMATCH("asm/non_matching/engine/sa2__sub_80039E4.inc", bool32 SA2_LABEL(sub_80039E4)(void))
+background.c END_NONMATCH
+background.c NONMATCH("asm/non_matching/engine/sa2__sub_8004010.inc", u32 SA2_LABEL(sub_8004010)(void))
+background.c END_NONMATCH
+task.c #ifndef NONMATCHING
+core.c NONMATCH("asm/non_matching/engine/EngineInit_sa3.inc", void EngineInit(void))
+core.c END_NONMATCH
+bg_triangles.c NONMATCH("asm/non_matching/engine/sa2__unused_sub_8005C54.inc", void sub_8005C54()) { }
+bg_triangles.c END_NONMATCH
+bg_triangles.c NONMATCH("asm/non_matching/engine/sa2__unused_sub_8005FB4.inc", void sub_8005FB4()) { }
+bg_triangles.c END_NONMATCH
+bg_triangles.c NONMATCH("asm/non_matching/engine/sa2__unused_sub_800672C.inc", void sub_800672C()) { }
+bg_triangles.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_80832FC.inc", void sub_80832FC()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_808343C.inc", void sub_808343C()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8083B88.inc",
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8083E44.inc", void sub_8083E44()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8084090.inc", void sub_8084090()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_80842E4.inc", void sub_80842E4()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_808442C.inc", void sub_808442C()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_808458C.inc", void sub_808458C()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_808477C.inc", void sub_808477C()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8084C70.inc", void sub_8084C70()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8084EE0.inc", void sub_8084EE0()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_80851E0.inc", void sub_80851E0()) { }
+math.c END_NONMATCH
+math.c NONMATCH("asm/non_matching/game/math/unused_sub_8085314.inc", void sub_8085314(struct UNK_8085F1C_1 *p1, struct UNK_8085F1C_1 *p2))
+math.c END_NONMATCH
+player_super_sonic.c NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", void sub_802BCCC(struct SuperSonic *sonic))
+player_super_sonic.c END_NONMATCH
+boss_5.c NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
+boss_5.c END_NONMATCH
+boss_7.c NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_7__sub_8048C7C.inc", bool8 sub_8048C7C(EggFrog *boss))
+boss_7.c END_NONMATCH
+boss_4.c NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
+boss_4.c END_NONMATCH
+grind_rail.c NONMATCH("asm/non_matching/game/sa2/stage/interactables/Task_GrindRail_CollectRings.inc", void Task_GrindRail(void))
+grind_rail.c END_NONMATCH
+rotating_handle.c NONMATCH("asm/non_matching/game/sa2/stage/interactables/leaf_forest/Task_Rotating.inc", void Task_Rotating())
+rotating_handle.c END_NONMATCH
+cannon.c NONMATCH("asm/non_matching/game/sa2/stage/interactables/egg_utopia/cannon__IsPlayerTouching.inc",
+cannon.c END_NONMATCH
+zone_3.inc.c NONMATCH("asm/non_matching/game/sa2/stage/background/StageBgUpdate_Zone3Acts12.inc",
+zone_3.inc.c END_NONMATCH
+zone_7_init.inc.c NONMATCH("asm/non_matching/game/sa2/stage/background/Zone7BgUpdate_Inside.inc", void Zone7BgUpdate_Inside(s32 x, s32 y))
+zone_7_init.inc.c END_NONMATCH
+zone_2.inc.c NONMATCH("asm/non_matching/game/sa2/stage/background/StageBgUpdate_Zone2Acts12.inc",
+zone_2.inc.c END_NONMATCH
+zone_6.inc.c NONMATCH("asm/non_matching/game/sa2/stage/background/sub_801D24C.inc", void sub_801D24C(u8 p0, s16 p1, u8 p2))
+zone_6.inc.c END_NONMATCH
+zone_6.inc.c NONMATCH("asm/non_matching/game/sa2/stage/background/StageBgUpdate_Zone6Acts12.inc", void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y))
+zone_6.inc.c END_NONMATCH
+save.c NONMATCH("asm/non_matching/game/save__WriteSaveGame.inc", u16 WriteSaveGame(void))
+save.c END_NONMATCH
+mp_player.c END_NONMATCH
+mp_player.c NONMATCH("asm/non_matching/game/shared/stage/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
+mp_player.c END_NONMATCH
+mp_player.c END_NONMATCH
+spot_light_beam_task.c NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void Task_SpotlightBeam(void))
+spot_light_beam_task.c END_NONMATCH
+collision_3.c NONMATCH("asm/non_matching/game/shared/stage/collision__Coll_Player_Itembox.inc",
+collision_3.c END_NONMATCH
+collision_3.c NONMATCH("asm/non_matching/game/shared/stage/collision__sub_800C1E8.inc",
+collision_3.c END_NONMATCH
+collision_2.c NONMATCH("asm/non_matching/game/shared/stage/collision__sub_800C934.inc",
+collision_2.c END_NONMATCH
+collision_2.c NONMATCH("asm/non_matching/game/shared/stage/collision__sub_800CBBC.inc",
+collision_2.c END_NONMATCH
+rings_scatter.c END_NONMATCH
+rings_scatter.c END_NONMATCH
+rings_scatter.c NONMATCH("asm/non_matching/game/shared/stage/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
+rings_scatter.c END_NONMATCH
+rings_scatter.c NONMATCH("asm/non_matching/game/shared/stage/rings_scatter/RingsScatterMultipak_NormalGravity.inc",
+rings_scatter.c END_NONMATCH
+rings_scatter.c NONMATCH("asm/non_matching/game/shared/stage/rings_scatter/RingsScatterSinglepakMain.inc", void RingsScatterSinglepakMain(void))
+rings_scatter.c NONMATCH("asm/non_matching/game/shared/stage/rings_scatter/RingsScatterSinglepakMain_CollectRings.inc",
+rings_scatter.c END_NONMATCH
+player.c END_NONMATCH
+player.c END_NONMATCH
+player.c END_NONMATCH
+player.c END_NONMATCH
+mp_event_mgr.c NONMATCH("asm/non_matching/game/shared/stage/evt_mgr__ReceiveRoomEvent_ReachedStageGoal.inc",
+mp_event_mgr.c END_NONMATCH
+collision_1.c NONMATCH("asm/non_matching/game/shared/stage/collision__sa2__sub_800D0A0.inc",
+collision_1.c END_NONMATCH
+collision_1.c NONMATCH(
+collision_1.c END_NONMATCH
+{"schemaVersion": 1, "label": "matching", "message": "94.9%", "color": "yellow"}
