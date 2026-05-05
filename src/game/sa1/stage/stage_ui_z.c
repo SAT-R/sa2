@@ -757,7 +757,7 @@ void Task_8055B18()
 {
     // TODO: Inline the mem calls!
     // const u8 arr0[16] = { /* data here */ };
-    const u8 arr0[22 + 5];
+    u8 arr0[22 + 5];
     memcpy((void *)arr0, &gUnknown_086883CC[0], sizeof(arr0) - 5);
     memset((void *)(arr0 + 22), 0, 5);
 

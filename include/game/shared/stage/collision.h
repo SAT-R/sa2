@@ -63,7 +63,7 @@ EHit Coll_Player_Boss_1(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit Coll_Player_Bosses_2_6(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit sub_800BF10(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 EHit sub_800BFEC(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
-u32 sub_800C0E0(Sprite *s, CamCoord screenX, CamCoord screenY, Player *p);
+EHit sub_800C0E0(Sprite *s, CamCoord screenX, CamCoord screenY, Player *p);
 #endif
 
 u32 Coll_Player_Entity_Intersection(Sprite *s, CamCoord x, CamCoord y, Player *p);

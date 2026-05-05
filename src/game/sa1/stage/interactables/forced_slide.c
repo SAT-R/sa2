@@ -2,6 +2,8 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
+
+#include "game/globals.h"
 #include "game/shared/stage/entity.h"
 #include "game/sa1/stage/player_controls.h"
 #include "game/shared/stage/player.h"
@@ -195,6 +197,12 @@ void Task_ForcedSlide(void)
     if (IS_OUT_OF_CAM_RANGE(x, y)) {
         s32 i = 0;
         do {
+#ifdef BUG_FIX
+            // This isn't really needed but it makes the compiler happy on some platforms
+            if (i > NUM_SINGLEPLAYER_CHARS_MAX - 1) {
+                break;
+            }
+#endif
             if (slide->unk3D[i] != 0) {
                 m4aSongNumStop(SE_201);
 

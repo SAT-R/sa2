@@ -125,6 +125,12 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_StageUIMain.inc", void 
     remainder = gLevelScore;
 
     for (i = 8; i >= 0; i--) {
+#ifdef BUG_FIX
+        // How did this even happen?
+        if (i >= ARRAY_COUNT(ui->digitsRings)) {
+            continue;
+        }
+#endif
         remainder0 = Div(remainder, 10);
 
         ui->digitsRings[i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
@@ -441,7 +447,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
     } else {
         // _08053DF0
         remainder = gSpecialStageCollectedRings;
-        for (i = 0; i < (s32)ARRAY_COUNT(ui->digitsRings); i++) {
+        for (i = 0; i < 3; i++) {
             remainder0 = Div(remainder, 10);
 
             ui->digitsRings[2 - i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));

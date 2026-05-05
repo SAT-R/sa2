@@ -193,7 +193,7 @@ bool32 sub_804FC78(MechaKnuckles *boss, Player *p);
 bool32 sub_804FCA4(MechaKnuckles *boss, Player *p);
 bool32 sub_804FCEC(MechaKnuckles *boss, Player *p);
 bool32 sub_804FD54(MechaKnuckles *boss, Player *p);
-bool32 sub_804ED80(MechaKnuckles *boss, Player *p);
+MechaKnucklesStates sub_804ED80(MechaKnuckles *boss, Player *p);
 
 typedef struct ProcDataBoss5 {
     MechaKnuxPlayerFn knuxPlayerFn;
