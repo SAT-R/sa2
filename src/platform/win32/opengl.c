@@ -104,7 +104,7 @@ static ChunkGfx sChunkGfx = { 0 };
 
 // Set of chunks that have to be drawn this frame
 typedef struct ChunkSet {
-    u16 *items;
+    MetatileIndexType *items;
     u16 count, capacity;
 } ChunkSet;
 static ChunkSet sChunkSet = { 0 };
@@ -154,8 +154,8 @@ void FindUniqueChunks(ChunkSet *set, Background *bg, u16 mapChunkX, u16 mapChunk
     for (int y = 0; y < screenChunkHeight; y++) {
         for (int x = 0; x < screenChunkWidth; x++) {
             u32 screenChunkIndex = (mapChunkY + y) * bg->mapWidth + (mapChunkX + x);
-            const u16 *chunk = &bg->metatileMap[screenChunkIndex];
-            const u16 chunkId = *chunk;
+            const MetatileIndexType *chunk = &bg->metatileMap[screenChunkIndex];
+            const MetatileIndexType chunkId = *chunk;
             bool8 isInSet = FALSE;
 
             // Find chunk ID in set

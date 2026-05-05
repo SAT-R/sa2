@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_connection_error[] = INCBIN_U16("graphics/sa1/tilemaps/mp_connection_error/palette.gbapal");
+const ColorRaw Palette_mp_connection_error[] = INCPAL("graphics/sa1/tilemaps/mp_connection_error/palette.pal");
 const u8 Tiles_mp_connection_error[] = INCBIN_U8("graphics/sa1/tilemaps/mp_connection_error/tiles.4bpp");
 const u8 Tilemap_mp_connection_error[] = INCBIN_U8("graphics/sa1/tilemaps/mp_connection_error/tilemap.tilemap2");
 

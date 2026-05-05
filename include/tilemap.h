@@ -27,11 +27,7 @@ typedef struct {
     /* 0x07 */ u8 animDelay;
     /* 0x08 */ const u8 *tiles;
     /* 0x0C */ u32 tilesSize;
-#if (GAME == GAME_SA1)
-    /* 0x10 */ const u16 *palette;
-#else
     /* 0x10 */ const ColorRaw *palette;
-#endif
     /* 0x14 */ u16 palOffset;
     /* 0x16 */ u16 palLength;
 

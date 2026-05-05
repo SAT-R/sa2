@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-extern const u16 Palette_zone_chao_hunt_act_vs_zone_a_fg[];
+extern const ColorRaw Palette_zone_chao_hunt_act_vs_zone_a_fg[];
 const u8 Tiles_zone_chao_hunt_act_vs_zone_a_bg[] = INCBIN_U8("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/bg/tiles.4bpp");
 const u8 Tilemap_zone_chao_hunt_act_vs_zone_a_bg[] = INCBIN_U8("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/bg/tilemap.tilemap2");
 

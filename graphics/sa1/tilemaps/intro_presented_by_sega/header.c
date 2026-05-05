@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_intro_presented_by_sega[] = INCBIN_U16("graphics/sa1/tilemaps/intro_presented_by_sega/palette.gbapal");
+const ColorRaw Palette_intro_presented_by_sega[] = INCPAL("graphics/sa1/tilemaps/intro_presented_by_sega/palette.pal");
 const u8 Tiles_intro_presented_by_sega[] = INCBIN_U8("graphics/sa1/tilemaps/intro_presented_by_sega/tiles.4bpp");
 const u8 Tilemap_intro_presented_by_sega[] = INCBIN_U8("graphics/sa1/tilemaps/intro_presented_by_sega/tilemap.tilemap2");
 

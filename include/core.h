@@ -297,8 +297,8 @@ extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
 #if (GAME == GAME_SA1)
-extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
-extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
+extern ColorRaw gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
+extern ColorRaw gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 #else
 extern ColorRaw gObjPalette[16 * PALETTE_LEN_4BPP];
 extern ColorRaw gBgPalette[16 * PALETTE_LEN_4BPP];
