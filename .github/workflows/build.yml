@@ -274,6 +274,8 @@ jobs:
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
+      - name: Fetch assets
+        run: curl -o baserom_${{ matrix.game }}.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_BASE_URL }}/${{ matrix.game }}/baserom.gba
 
       - name: Install tools (Linux)
         if: ${{ matrix.os == 'ubuntu-24.04' }}
