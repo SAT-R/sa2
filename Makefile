@@ -153,38 +153,45 @@ ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 
-DATA_ASM_SUBDIR = data/sa2
+DATA_ASM_SUBDIR = data/$(GAME_NAME)
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 
-SONG_SUBDIR = sound/sa2/songs
+SONG_SUBDIR = sound/$(GAME_NAME)/songs
 SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 
 SOUND_ASM_SUBDIR = sound
 SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
 
-MID_SUBDIR = sound/sa2/songs/midi
+MID_SUBDIR = sound/$(GAME_NAME)/songs/midi
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
-SAMPLE_SUBDIR = sound/sa2/direct_sound_samples
+SAMPLE_SUBDIR = sound/$(GAME_NAME)/direct_sound_samples
 
-OBJ_TILES_4BPP_SUBDIR = graphics/sa2/obj_tiles/4bpp
-TILESETS_SUBDIR = graphics/sa2/tilesets/
+OBJ_TILES_4BPP_SUBDIR = graphics/$(GAME_NAME)/obj_tiles/4bpp
+TILESETS_SUBDIR = graphics/$(GAME_NAME)/tilesets/
+
+ifeq ($(GAME), GAME_SA1)
+C_SRC_IGNORE_PATHS := -not -path "*/sa2/*"
+else ifeq ($(GAME), GAME_SA2)
+C_SRC_IGNORE_PATHS := -not -path "*/sa1/*"
+endif
 
 ifeq ($(PLATFORM),gba)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),sdl_psp)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),ps2)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
 else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),win32)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*")
 else
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/sa1/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS))
 endif
+
 C_SRCS := $(foreach src,$(C_SRCS_IN),$(if $(findstring .inc.c,$(src)),,$(src)))
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
@@ -245,7 +252,7 @@ ifeq ($(PLATFORM),gba)
 	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
 	CC1FLAGS += -fhex-asm
 
-ifeq ($(BUILD_NAME), sa1)
+ifeq ($(GAME_NAME), sa1)
     # It seems this bug was introduced to GCC after SA1 released.
     PROLOGUE_FIX := -fprologue-bugfix
 endif # BUILD_NAME == sa1
@@ -437,7 +444,6 @@ tool_libs:
 clean: tidy clean-tools
 	@$(MAKE) clean -C tools/BriBaSA_ex
 	@$(MAKE) clean -C chao_garden
-	@$(MAKE) clean -f sa1_Makefile
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 	@$(MAKE) clean -C multi_boot/collect_rings
@@ -445,6 +451,10 @@ clean: tidy clean-tools
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/*/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+
+ifneq ($(GAME_NAME),sa1)
+	@$(MAKE) clean GAME_NAME=sa1
+endif
 
 clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
@@ -478,7 +488,7 @@ win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 #### RECIPES ####
 
-include songs.mk
+include $(GAME_NAME)_songs.mk
 include graphics.mk
 
 %.s: ;
@@ -494,17 +504,17 @@ include graphics.mk
 chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
     
-data/sa2/mb_chao_garden_japan.gba.lz: data/sa2/mb_chao_garden_japan.gba
+data/$(GAME_NAME)/mb_chao_garden_japan.gba.lz: data/$(GAME_NAME)/mb_chao_garden_japan.gba
 	$(GFX) $< $@ -search 1
 
 %interactables.bin: %interactables.csv
-	$(ENT_POS) $< $@ -entities INTERACTABLES -header "./include/constants/sa2/interactables.h"
+	$(ENT_POS) $< $@ -entities INTERACTABLES -header "./include/constants/$(GAME_NAME)/interactables.h"
 
 %itemboxes.bin: %itemboxes.csv
-	$(ENT_POS) $< $@ -entities ITEMS -header "./include/constants/sa2/items.h"
+	$(ENT_POS) $< $@ -entities ITEMS -header "./include/constants/$(GAME_NAME)/items.h"
 
 %enemies.bin: %enemies.csv
-	$(ENT_POS) $< $@ -entities ENEMIES -header "./include/constants/sa2/enemies.h"
+	$(ENT_POS) $< $@ -entities ENEMIES -header "./include/constants/$(GAME_NAME)/enemies.h"
 
 %rings.bin: %rings.csv
 	$(ENT_POS) $< $@ -entities RINGS
@@ -666,7 +676,7 @@ bribasa:
 	@$(MAKE) -C tools/BriBaSA_ex
 
 sa1:
-	@$(MAKE) -f sa1_Makefile
+	@$(MAKE) GAME_NAME=sa1
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@

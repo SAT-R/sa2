@@ -9,16 +9,19 @@ import re
 def collect_non_matching_funcs():
     result = []
     for root, dirs, files in os.walk('src'):
+        if "/sa1/" in root:
+            continue
         for file in files:
-            if "/sa1/" in file:
-                continue
             if file.endswith('.c'):
                 with open(os.path.join(root, file), 'r') as f:
                     data = f.read()
                     lines = data.split("\n")
                     for i in range(len(lines)):
                         line = lines[i]
+                        if "sa1" in line:
+                            continue
                         if "NONMATCH" in line:
+                            print(file, line)
                             # if "unused_"  in line.lower():
                             #     continue
                             matcher = r'(NONMATCH|ASM_FUNC)\(".*",\W*\w*\W*(\w*).*\)'

@@ -22,7 +22,13 @@ else
     $(error unknown arch: $(CPU_ARCH))
 endif
 
-LDSCRIPT := ldscript
+# Default game variables
+GAME_REVISION ?= 0
+GAME_VARIANT  ?= DEFAULT
+GAME_NAME     ?= sa2
+DEBUG         ?= 0
+
+LDSCRIPT := $(GAME_NAME)_ldscript
 
 NON_MATCHING ?= 0
 ifeq ($(PLATFORM),gba)
@@ -50,22 +56,35 @@ else
     LDSCRIPT := $(LDSCRIPT).txt
 endif
 
-# Default game variables
-GAME_REVISION ?= 0
-GAME_REGION   ?= USA
-GAME_VARIANT  ?= DEFAULT
-GAME          ?= GAME_SA2
-DEBUG         ?= 0
 
-# For gbafix
-MAKER_CODE := 78
+BUILD_NAME := $(GAME_NAME)
 
-# Version
-BUILD_NAME := sa2
-TITLE      := SONICADVANC2
-GAME_CODE  := A2N
+ifeq ($(GAME_NAME), sa1)
+  # For gbafix
+  MAKER_CODE := 6W
 
-PS2_GAME_CODE := SLUS_054.02
+  # Version
+  TITLE       := SONIC ADVANC
+  GAME_CODE   := ASO
+  GAME        := GAME_SA1
+  GAME_REGION := EUROPE
+
+  PS2_GAME_CODE := SLUS_054.02
+
+  # TODO: enable decomp credits
+  ENABLE_DECOMP_CREDITS := 0
+else ifeq ($(GAME_NAME), sa2)
+  # For gbafix
+  MAKER_CODE := 78
+
+  # Version
+  TITLE       := SONICADVANC2
+  GAME_CODE   := A2N
+  GAME        := GAME_SA2
+  GAME_REGION := USA
+
+  PS2_GAME_CODE := SLUS_054.02
+endif
 
 # Revision
 ifeq ($(GAME_REVISION), 0)
@@ -89,10 +108,12 @@ ifeq ($(GAME_REGION), JAPAN)
   MAKER_CODE := 8P
 else
 ifeq ($(GAME_REGION), EUROPE)
-  BUILD_NAME := $(BUILD_NAME)_europe
   GAME_CODE  := $(GAME_CODE)P
-  MAKER_CODE := 8P
-  TITLE      := SONIC ADVANC
+  ifeq ($(GAME_NAME), sa2)
+    BUILD_NAME := $(BUILD_NAME)_europe
+    MAKER_CODE := 8P
+    TITLE      := SONIC ADVANC
+  endif
 else
   $(error unknown region $(GAME_REGION))
 endif
