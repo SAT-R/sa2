@@ -116,8 +116,8 @@ void InitWaterPalettes(void)
     Water *water = &gWater;
     WaterData *wd = TASK_DATA(water->t);
 #if (GAME == GAME_SA1)
-    MaskPaletteWithUnderwaterColor_inline((u32 *)&sPaletteBuffer[0], (u32 *)&gObjPalette[0], water->mask, 16 * 16);
-    MaskPaletteWithUnderwaterColor_inline((u32 *)&sPaletteBuffer[16 * 16], (u32 *)&gBgPalette[0], water->mask, 16 * 16);
+    MaskPaletteWithUnderwaterColor_inline((u32 *)&sPaletteBuffer[0], (u32 *)&gObjPalette[0], water->blendColors, 16 * 16);
+    MaskPaletteWithUnderwaterColor_inline((u32 *)&sPaletteBuffer[16 * 16], (u32 *)&gBgPalette[0], water->blendColors, 16 * 16);
 #elif (GAME == GAME_SA2)
     if (IS_MULTI_PLAYER) {
         u8 i = 0, j = 0;
