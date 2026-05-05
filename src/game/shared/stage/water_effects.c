@@ -75,7 +75,7 @@ static const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_KNUCKLES, SA2_ANIM_UNDERWATER_1UP_AMY,
 };
 
-static void inline CopyPalette(u32 *dst, u32 *src, s32 length)
+static inline void CopyPalette(u32 *dst, u32 *src, s32 length)
 {
     u32 r2 = length >> 4;
 
@@ -161,7 +161,7 @@ void InitWaterPalettes(void)
     pal = (animation[0]->pal.palId + 4);
     CopyPalette((u32 *)wd->pal[4], (u32 *)gSpritePalettes[pal], 12 * PALETTE_LEN_4BPP);
 
-    MaskPaletteWithUnderwaterColor_inline((u32 *)wd->pal[16], (u32 *)gBgPalette, water->mask, 16 * 16);
+    MaskPaletteWithUnderwaterColor_inline((u32 *)wd->pal[16], (u32 *)gBgPalette, water->blendColors, 16 * 16);
 #endif
 }
 
@@ -190,8 +190,8 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
     gWater.targetWaterLevel = waterLevel;
     gWater.SA2_LABEL(unk2) = 0xFF;
     gWater.SA2_LABEL(unk1) = -1;
-    gWater.unk8 = mask & 0x100;
-    gWater.mask = p1;
+    gWater.flags = mask & 0x100;
+    gWater.blendColors = p1;
 
     if (waterLevel >= 0) {
         Sprite *s = &gWater.s;
@@ -425,7 +425,7 @@ static void SA2_LABEL(sub_8011A4C)(void)
         WaterData *wd = TASK_DATA(water->t);
         u32 unk2 = water->SA2_LABEL(unk2);
         water->SA2_LABEL(unk1) = unk2;
-        water->unk8 &= ~0x1;
+        water->flags &= ~0x1;
 
         // TODO: This surely can be matched differently!
         unk2 <<= 24;
