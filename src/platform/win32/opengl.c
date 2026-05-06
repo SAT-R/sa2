@@ -396,22 +396,24 @@ loopBreak:
         s16 bgScrollY = gBgScrollRegs[bgId][1];
 
         if (gDispCnt & (DISPCNT_BG0_ON << bgId)) {
-            if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
-                UpdateChunkGfx(&sChunkGfx, bg);
-            } else {
-                // TEMP!!!
-                // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
-                // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
-                if (needsUpdate[bgId]) {
-                    if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
-                        free(bg->graphics.dest);
+            if (bg) {
+                if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+                    UpdateChunkGfx(&sChunkGfx, bg);
+                } else {
+                    // TEMP!!!
+                    // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
+                    // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
+                    if (needsUpdate[bgId]) {
+                        if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
+                            free(bg->graphics.dest);
+                        }
+                        bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
                     }
-                    bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
-                }
 
-                RenderTilemap(bg->graphics.dest, bg, 0);
-                OpenGL_RenderRGBABuffer((Color *)bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
-                                        bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
+                    RenderTilemap(bg->graphics.dest, bg, 0);
+                    OpenGL_RenderRGBABuffer((Color *)bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
+                                            bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
+                }
             }
         }
     }
