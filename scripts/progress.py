@@ -21,7 +21,6 @@ def collect_non_matching_funcs():
                         if "sa1" in line:
                             continue
                         if "NONMATCH" in line:
-                            print(file, line)
                             # if "unused_"  in line.lower():
                             #     continue
                             matcher = r'(NONMATCH|ASM_FUNC)\(".*",\W*\w*\W*(\w*).*\)'
