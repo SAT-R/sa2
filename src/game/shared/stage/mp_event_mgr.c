@@ -249,7 +249,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 #ifndef COLLECT_RINGS_ROM
 #if (GAME == GAME_SA1)
 // (96.15%) https://decomp.me/scratch/LMpNt
-NONMATCH("asm/non_matching/game/shared/stage/evt_mgr__ReceiveRoomEvent_ReachedStageGoal.inc",
+NONMATCH("asm/non_matching/game/shared/stage/evt_mgr__ReceiveRoomEvent_ReachedStageGoal_sa1.inc",
          void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i))
 #else
 void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i)
