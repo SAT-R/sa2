@@ -92,17 +92,7 @@ Our policy is based off [Zig's](https://ziglang.org/code-of-conduct/)
 │   │   └── m4a
 │   ├── platform # port related code
 │   └── . # src root contains Dimps "engine" C files
-└── tools
-    ├── BriBaSA_ex
-    ├── _shared
-    ├── agbcc
-    ├── aif2pcm
-    ├── entity_positions
-    ├── gbafix
-    ├── gbagfx
-    ├── mid2agb
-    ├── preproc
-    └── scaninc
+└── tools # tools used for compilation or extraction
 ```
 
 ### Notable info
