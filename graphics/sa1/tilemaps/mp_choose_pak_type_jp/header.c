@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_choose_pak_type_jp[] = INCBIN_U16("graphics/sa1/tilemaps/mp_choose_pak_type_jp/palette.gbapal");
+const ColorRaw Palette_mp_choose_pak_type_jp[] = INCPAL("graphics/sa1/tilemaps/mp_choose_pak_type_jp/palette.pal");
 const u8 Tiles_mp_choose_pak_type_jp[] = INCBIN_U8("graphics/sa1/tilemaps/mp_choose_pak_type_jp/tiles.4bpp");
 const u8 Tilemap_mp_choose_pak_type_jp[] = INCBIN_U8("graphics/sa1/tilemaps/mp_choose_pak_type_jp/tilemap.tilemap2");
 

@@ -541,13 +541,11 @@ else
 endif
 
 
-ifeq ($(PLATFORM),gba)
 $(ROM): $(ELF) libagbsyscall
+ifeq ($(PLATFORM),gba)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
-else
-$(ROM): $(ELF) libagbsyscall
-ifeq ($(PLATFORM),win32)
+else ifeq ($(PLATFORM),win32)
 	$(OBJCOPY) -O pei-x86-64 $< $@
 else ifeq ($(PLATFORM),sdl)
 	cp $< $@
@@ -560,12 +558,12 @@ else ifeq ($(PLATFORM),sdl_psp)
 	@-rm -f $(BUILD_NAME).psp_strip.elf
 else ifeq ($(PLATFORM),ps2)
 	@echo Creating $(ROM) from $(ELF)
-	@cp -r ps2/$(BUILD_NAME)/ntsc $(OBJ_DIR)/iso
+	@mkdir -p $(OBJ_DIR)/iso
+	@printf "BOOT2 = cdrom0:\\$(PS2_GAME_CODE);1\nVER = 1.00\nVMODE = NTSC" > $(OBJ_DIR)/iso/SYSTEM.CNF
 	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
 	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
 else
 	$(OBJCOPY) -O pei-x86-64 $< $@
-endif
 endif
 
 # Build c sources, and ensure alignment
@@ -677,6 +675,9 @@ bribasa:
 
 sa1:
 	@$(MAKE) GAME_NAME=sa1
+
+sa2:
+	@$(MAKE) GAME_NAME=sa2
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_tilemap_unused_mp_player_bar[] = INCBIN_U16("graphics/sa1/tilemaps/tilemap_unused_mp_player_bar/palette.gbapal");
+const ColorRaw Palette_tilemap_unused_mp_player_bar[] = INCPAL("graphics/sa1/tilemaps/tilemap_unused_mp_player_bar/palette.pal");
 const u8 Tiles_tilemap_unused_mp_player_bar[] = INCBIN_U8("graphics/sa1/tilemaps/tilemap_unused_mp_player_bar/tiles.4bpp");
 const u8 Tilemap_tilemap_unused_mp_player_bar[] = INCBIN_U8("graphics/sa1/tilemaps/tilemap_unused_mp_player_bar/tilemap.tilemap2");
 

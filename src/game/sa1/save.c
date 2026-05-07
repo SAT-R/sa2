@@ -83,8 +83,7 @@ bool32 SaveGameExists(void)
     return res;
 }
 
-// (97.63%) https://decomp.me/scratch/Sq2Ec
-NONMATCH("asm/non_matching/game/save__WriteSaveGame.inc", u16 WriteSaveGame(void))
+u16 WriteSaveGame(void)
 {
     s32 i;
     s8 sectorID;
@@ -101,10 +100,8 @@ NONMATCH("asm/non_matching/game/save__WriteSaveGame.inc", u16 WriteSaveGame(void
 
         sectorIsUpToDate = TRUE;
         for (i = 0; i < sizeof(struct SaveSectorData); i++) {
-            u8 *dataBuffer = sectorBuffer + i;
-            u8 *dataIWRAM = (u8 *)LOADED_SAVE + i;
-
-            if (*dataBuffer != *dataIWRAM) {
+            bool32 neq = sectorBuffer[i] != ((u8 *)LOADED_SAVE)[i];
+            if (neq) {
                 sectorIsUpToDate = FALSE;
                 break;
             }
@@ -133,12 +130,11 @@ NONMATCH("asm/non_matching/game/save__WriteSaveGame.inc", u16 WriteSaveGame(void
         LOADED_SAVE->security = SECTOR_SECURITY_NUM;
         LOADED_SAVE->checksum = CalculateChecksum(LOADED_SAVE);
         gUsedSaveSectorID = sectorID;
-
-        result = ProgramFlashSectorAndVerifyNBytes(gUsedSaveSectorID, LOADED_SAVE, sizeof(LOADED_SAVE->security));
+        result = ProgramFlashSectorAndVerifyNBytes(gUsedSaveSectorID, LOADED_SAVE, sizeof(*LOADED_SAVE));
     }
+
     return result;
 }
-END_NONMATCH
 
 // (100.0%) https://decomp.me/scratch/9fyQQ
 bool32 RegisterTimeRecord(TimeRecord newRecord)

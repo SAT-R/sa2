@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_zone_chao_hunt_act_vs_zone_a_fg[] = INCBIN_U16("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/fg/palette.gbapal");
+const ColorRaw Palette_zone_chao_hunt_act_vs_zone_a_fg[] = INCPAL("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/fg/palette.pal");
 const u8 Tileset_zone_chao_hunt_act_vs_zone_a_fg[] = INCBIN_U8("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/fg/tileset.4bpp");
 const s8 CollHeightMap_zone_chao_hunt_act_vs_zone_a_fg[] = INCBIN_S8("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_chao_hunt_act_vs_zone_a_fg[] = INCBIN_U8("data/sa1/maps/chao_hunt/vs_zone_a/tilemaps/fg/tile_rot.coll");

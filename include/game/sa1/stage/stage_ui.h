@@ -40,8 +40,7 @@ typedef struct {
 } StageUI_20;
 
 typedef struct {
-    /* 0x00 */ u8 digitsRings[3];
-    /* 0x03 */ u8 filler3[0x5];
+    /* 0x00 */ u8 digitsRings[8];
     /* 0x08 */ s16 unk8;
     /* 0x0A */ s16 unkA;
     /* 0x0C */ s16 unkC;

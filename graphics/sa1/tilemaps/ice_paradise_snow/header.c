@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_ice_paradise_snow[] = INCBIN_U16("graphics/sa1/tilemaps/ice_paradise_snow/palette.gbapal");
+const ColorRaw Palette_ice_paradise_snow[] = INCPAL("graphics/sa1/tilemaps/ice_paradise_snow/palette.pal");
 const u8 Tiles_ice_paradise_snow[] = INCBIN_U8("graphics/sa1/tilemaps/ice_paradise_snow/tiles.4bpp");
 const u8 Tilemap_ice_paradise_snow[] = INCBIN_U8("graphics/sa1/tilemaps/ice_paradise_snow/tilemap.tilemap2");
 

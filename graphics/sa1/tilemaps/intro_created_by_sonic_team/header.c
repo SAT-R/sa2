@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_intro_created_by_sonic_team[] = INCBIN_U16("graphics/sa1/tilemaps/intro_created_by_sonic_team/palette.gbapal");
+const ColorRaw Palette_intro_created_by_sonic_team[] = INCPAL("graphics/sa1/tilemaps/intro_created_by_sonic_team/palette.pal");
 const u8 Tiles_intro_created_by_sonic_team[] = INCBIN_U8("graphics/sa1/tilemaps/intro_created_by_sonic_team/tiles.4bpp");
 const u8 Tilemap_intro_created_by_sonic_team[] = INCBIN_U8("graphics/sa1/tilemaps/intro_created_by_sonic_team/tilemap.tilemap2");
 

@@ -104,7 +104,7 @@ static ChunkGfx sChunkGfx = { 0 };
 
 // Set of chunks that have to be drawn this frame
 typedef struct ChunkSet {
-    u16 *items;
+    MetatileIndexType *items;
     u16 count, capacity;
 } ChunkSet;
 static ChunkSet sChunkSet = { 0 };
@@ -154,8 +154,8 @@ void FindUniqueChunks(ChunkSet *set, Background *bg, u16 mapChunkX, u16 mapChunk
     for (int y = 0; y < screenChunkHeight; y++) {
         for (int x = 0; x < screenChunkWidth; x++) {
             u32 screenChunkIndex = (mapChunkY + y) * bg->mapWidth + (mapChunkX + x);
-            const u16 *chunk = &bg->metatileMap[screenChunkIndex];
-            const u16 chunkId = *chunk;
+            const MetatileIndexType *chunk = &bg->metatileMap[screenChunkIndex];
+            const MetatileIndexType chunkId = *chunk;
             bool8 isInSet = FALSE;
 
             // Find chunk ID in set
@@ -396,22 +396,24 @@ loopBreak:
         s16 bgScrollY = gBgScrollRegs[bgId][1];
 
         if (gDispCnt & (DISPCNT_BG0_ON << bgId)) {
-            if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
-                UpdateChunkGfx(&sChunkGfx, bg);
-            } else {
-                // TEMP!!!
-                // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
-                // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
-                if (needsUpdate[bgId]) {
-                    if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
-                        free(bg->graphics.dest);
+            if (bg) {
+                if (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+                    UpdateChunkGfx(&sChunkGfx, bg);
+                } else {
+                    // TEMP!!!
+                    // DON'T MALLOC AND FREE TILEMAPS ALL THE TIME!!!
+                    // (Also currently it's possible to get corrupted Background pointers, leading to crashes)
+                    if (needsUpdate[bgId]) {
+                        if (bg->graphics.dest && !IN_VRAM(bg->graphics.dest)) {
+                            free(bg->graphics.dest);
+                        }
+                        bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
                     }
-                    bg->graphics.dest = malloc((bg->xTiles * 8) * (bg->yTiles * 8) * TILE_SIZE_RGBA);
-                }
 
-                RenderTilemap(bg->graphics.dest, bg, 0);
-                OpenGL_RenderRGBABuffer((Color *)bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
-                                        bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
+                    RenderTilemap(bg->graphics.dest, bg, 0);
+                    OpenGL_RenderRGBABuffer((Color *)bg->graphics.dest, bg->xTiles * 8, bg->yTiles * 8, bgScrollX, bgScrollY,
+                                            bgScrollX + bg->targetTilesX * 8, bgScrollY + bg->targetTilesY * 8);
+                }
             }
         }
     }

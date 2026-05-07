@@ -100,7 +100,7 @@ void sub_80528AC(Strc_80528AC *param0)
 }
 
 // (86.06%) https://decomp.me/scratch/3jubn
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052AA4.inc", void sub_8052AA4(void))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_8052AA4.inc", void sub_8052AA4(void))
 {
     struct Strc_30063F0 *list = &gUnknown_030063C0;
     struct Strc_30063F0 *curr;
@@ -140,7 +140,9 @@ NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052AA4.inc", void sub_8052AA
 }
 END_NONMATCH
 
-NONMATCH("asm/non_matching/game/gTask_3006240__unused_8052B84.inc", void unused_8052B84(s32 param0, u16 param1, u16 param2, u8 param3)) { }
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__unused_8052B84.inc", void unused_8052B84(s32 param0, u16 param1, u16 param2, u8 param3))
+{
+}
 END_NONMATCH
 
 void sub_8052C84(const char *param0, Strc_8052C84 *param1)
@@ -194,7 +196,7 @@ void sub_8052C84(const char *param0, Strc_8052C84 *param1)
 }
 
 // (97.98%) https://decomp.me/scratch/z75P3
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052D64.inc", void sub_8052D64(u8 *param0, Strc_8052C84 *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_8052D64.inc", void sub_8052D64(u8 *param0, Strc_8052C84 *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -283,7 +285,7 @@ void sub_8052E40(u8 *param0, Strc_8052C84 *param1)
 
 // Unused?
 // (88.18%) https://decomp.me/scratch/i72oQ
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052EF0.inc", void sub_8052EF0(s32 param0, Strc_8052C84 *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_8052EF0.inc", void sub_8052EF0(s32 param0, Strc_8052C84 *param1))
 {
     s32 byteCount = 0;
     char sp00[10];
@@ -310,7 +312,7 @@ NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052EF0.inc", void sub_8052EF
 END_NONMATCH
 
 // (97.64%) https://decomp.me/scratch/8KTZ5
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052F78.inc", void sub_8052F78(const char *param0, GameOverB *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_8052F78.inc", void sub_8052F78(const char *param0, GameOverB *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -376,7 +378,7 @@ NONMATCH("asm/non_matching/game/gTask_3006240__sub_8052F78.inc", void sub_8052F7
 END_NONMATCH
 
 // (97.61%) https://decomp.me/scratch/qWdSy
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_80530CC.inc", void sub_80530CC(const char *param0, GameOverB *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_80530CC.inc", void sub_80530CC(const char *param0, GameOverB *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -442,7 +444,7 @@ NONMATCH("asm/non_matching/game/gTask_3006240__sub_80530CC.inc", void sub_80530C
 END_NONMATCH
 
 // (97.91%) https://decomp.me/scratch/3w39X
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_805321C.inc", void sub_805321C(u8 *param0, GameOverB *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_805321C.inc", void sub_805321C(u8 *param0, GameOverB *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -510,7 +512,7 @@ END_NONMATCH
 // TODO: The 2nd parameter's type is just a guess!
 //
 // (94.91%) https://decomp.me/scratch/B60WP
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_8053370.inc", void sub_8053370(u8 *param0, GameOverB *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_8053370.inc", void sub_8053370(u8 *param0, GameOverB *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -568,7 +570,7 @@ END_NONMATCH
 // TODO: The 2nd parameter's type is just a guess!
 //
 // (97.74%) https://decomp.me/scratch/fMp61
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_805345C.inc", void sub_805345C(u8 *param0, GameOverB *param1))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_805345C.inc", void sub_805345C(u8 *param0, GameOverB *param1))
 {
     Strc0 *strc0;
     u32 u8;
@@ -663,7 +665,7 @@ void sub_80535C8(struct Strc0 *inTask, u8 param1)
 }
 
 // (94.42%) https://decomp.me/scratch/QDnYo
-NONMATCH("asm/non_matching/game/gTask_3006240__sub_80535FC.inc", void sub_80535FC(void))
+NONMATCH("asm/non_matching/game/sa1/gTask_3006240__sub_80535FC.inc", void sub_80535FC(void))
 {
     if (gTask_03006240 == NULL) {
         struct Strc_3006250 *zeroth = &gUnknown_03006250[0];

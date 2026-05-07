@@ -51,7 +51,7 @@ void CreateEggRocketStageSeparation(CamCoord worldY)
 }
 
 // (91.87%) https://decomp.me/scratch/pMtZY
-NONMATCH("asm/non_matching/game/egg_rocket_trans__Task_8028CE4.inc", void Task_8028CE4(void))
+NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Task_8028CE4(void))
 {
     EggRocketScreenShake *shake = TASK_DATA(gCurTask);
     u32 i;
@@ -189,7 +189,7 @@ void Task_8029070(void)
 }
 
 // (97.47%) https://decomp.me/scratch/CWQ2v
-NONMATCH("asm/non_matching/game/egg_rocket_trans__Task_8029194.inc", void Task_8029194(void))
+NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8029194.inc", void Task_8029194(void))
 {
     EggRocketScreenShake *shake = TASK_DATA(gCurTask);
     s16 ip;
@@ -282,7 +282,7 @@ END_NONMATCH
 
 // Similar to Task_8029194
 // (97.55%) https://decomp.me/scratch/o2r28
-NONMATCH("asm/non_matching/game/egg_rocket_trans__Task_80294A8.inc", void Task_80294A8(void))
+NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_80294A8.inc", void Task_80294A8(void))
 {
     EggRocketScreenShake *shake = TASK_DATA(gCurTask);
     u32 i;

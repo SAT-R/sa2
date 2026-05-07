@@ -258,11 +258,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        game: ["sa1", "sa2"]
         platform: ["sdl", "sdl_win32", "sdl_psp", "win32", "ps2"]
         os: ["ubuntu-24.04", "macos-15"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ${{ matrix.os }}
-    name: Build ${{ matrix.platform }} (${{ matrix.os }})
+    name: Build ${{ matrix.game }} ${{ matrix.platform }} (${{ matrix.os }})
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
@@ -273,6 +274,8 @@ jobs:
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
+      - name: Fetch assets
+        run: curl -o baserom_${{ matrix.game }}.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_BASE_URL }}/${{ matrix.game }}/baserom.gba
 
       - name: Install tools (Linux)
         if: ${{ matrix.os == 'ubuntu-24.04' }}
@@ -315,7 +318,7 @@ jobs:
 
       - name: ${{ matrix.platform }}
         run: |
-          make -j${nproc} ${{ matrix.platform }}
+          make -j${nproc} ${{ matrix.platform }} GAME_NAME=${{ matrix.game }}
 
   test:
     strategy:

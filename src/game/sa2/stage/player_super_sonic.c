@@ -343,7 +343,7 @@ static void Task_802BC10(void)
 }
 
 // (99.25%) https://decomp.me/scratch/2dbbE
-NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", void sub_802BCCC(struct SuperSonic *sonic))
+NONMATCH("asm/non_matching/game/sa2/super_sonic__sub_802BCCC.inc", void sub_802BCCC(struct SuperSonic *sonic))
 {
     s32 ssx, ssx2;
     u8 i;

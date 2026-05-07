@@ -110,7 +110,8 @@ const u8 gUnknown_08688578[4] = { 3, 0, 2, 1 };
 extern void sub_805321C(u8 *param0, GameOverB *param1);
 
 // (99.35%) https://decomp.me/scratch/Gn2Mk
-NONMATCH("asm/non_matching/game/char_select__CreateCharacterSelectionScreen.inc", void CreateCharacterSelectionScreen(u8 selectedCharacter))
+NONMATCH("asm/non_matching/game/sa1/char_select__CreateCharacterSelectionScreen.inc",
+         void CreateCharacterSelectionScreen(u8 selectedCharacter))
 {
     Strc_80528AC gfx;
     s32 sp38;
@@ -443,7 +444,7 @@ void Task_8059F9C(void)
 }
 
 // (99.88%) https://decomp.me/scratch/WGT0R
-NONMATCH("asm/non_matching/game/char_select__Task_805A060.inc", void Task_805A060())
+NONMATCH("asm/non_matching/game/sa1/char_select__Task_805A060.inc", void Task_805A060())
 {
     CharSelect_20 *sp0;
     CharSelect_44 *sp4;
@@ -634,7 +635,7 @@ NONMATCH("asm/non_matching/game/char_select__Task_805A060.inc", void Task_805A06
 END_NONMATCH
 
 // (89.07%) https://decomp.me/scratch/IYC6j
-NONMATCH("asm/non_matching/game/char_select__Task_805A54C.inc", void Task_805A54C())
+NONMATCH("asm/non_matching/game/sa1/char_select__Task_805A54C.inc", void Task_805A54C())
 {
     s32 temp_r0_2;
     u32 i;
@@ -720,7 +721,7 @@ NONMATCH("asm/non_matching/game/char_select__Task_805A54C.inc", void Task_805A54
 END_NONMATCH
 
 // (87.54%) https://decomp.me/scratch/MOYRn
-NONMATCH("asm/non_matching/game/char_select__Task_805A798.inc", void Task_805A798())
+NONMATCH("asm/non_matching/game/sa1/char_select__Task_805A798.inc", void Task_805A798())
 {
     s32 temp_r0_2;
     u32 i;
@@ -1240,7 +1241,7 @@ asm("gUnknown_08688602:");
 #endif
 
 // (94.92%) https://decomp.me/scratch/I8ghH
-NONMATCH("asm/non_matching/game/char_select__sub_805B324.inc", void sub_805B324())
+NONMATCH("asm/non_matching/game/sa1/char_select__sub_805B324.inc", void sub_805B324())
 {
     Sprite *temp_r4;
     Sprite *temp_r4_2;

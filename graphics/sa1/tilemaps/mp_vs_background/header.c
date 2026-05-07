@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_vs_background[] = INCBIN_U16("graphics/sa1/tilemaps/mp_vs_background/palette.gbapal");
+const ColorRaw Palette_mp_vs_background[] = INCPAL("graphics/sa1/tilemaps/mp_vs_background/palette.pal");
 const u8 Tiles_mp_vs_background[] = INCBIN_U8("graphics/sa1/tilemaps/mp_vs_background/tiles.4bpp");
 const u8 Tilemap_mp_vs_background[] = INCBIN_U8("graphics/sa1/tilemaps/mp_vs_background/tilemap.tilemap2");
 

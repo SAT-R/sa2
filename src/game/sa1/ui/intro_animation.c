@@ -577,7 +577,7 @@ static inline u32 maskRedColor(u32 c)
 }
 
 // (99.14%) https://decomp.me/scratch/gBBjz
-NONMATCH("asm/non_matching/game/intro_anim__Task_80640C8.inc", void Task_80640C8())
+NONMATCH("asm/non_matching/game/sa1/intro_anim__Task_80640C8.inc", void Task_80640C8())
 {
     s16 *temp_r2;
     s16 temp_r0;

@@ -493,14 +493,15 @@ void Task_GameStage(void)
 #ifndef COLLECT_RINGS_ROM
     if (IS_SINGLE_PLAYER) {
 #if DEBUG
-#include "game/sa2/ui/character_select.h"
         if (gInput & SELECT_BUTTON) {
             const u32 initialCharacter = CHARACTER_TAILS;
             const bool32 allUnlocked = TRUE;
             TasksDestroyAll();
 #if (GAME == GAME_SA1)
+#include "game/sa1/ui/character_select.h"
             CreateCharacterSelectionScreen(initialCharacter);
 #elif (GAME == GAME_SA2)
+#include "game/sa2/ui/character_select.h"
             CreateCharacterSelectionScreen(initialCharacter, allUnlocked);
 #endif
             return;
