@@ -158,10 +158,10 @@ jobs:
         run: |
           mkdir -p gh-pages/reports
           mkdir -p gh-pages/maps/sa1
-          python3 sa1/scripts/progress.py csv >> gh-pages/reports/progress-sa1-nonmatching.csv
-          python3 sa1/scripts/progress.py csv -m >> gh-pages/reports/progress-sa1-matching.csv
-          python3 sa1/scripts/progress.py shield-json > gh-pages/reports/progress-sa1-shield.json
-          python3 sa1/scripts/progress.py shield-json -m > gh-pages/reports/progress-sa1-shield-matching.json
+          python3 scripts/progress.py csv >> gh-pages/reports/progress-sa1-nonmatching.csv
+          python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa1-matching.csv
+          python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa1-shield.json
+          python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa1-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
           cp sa1.map gh-pages/maps/sa1/${GITHUB_SHA}.map
 
