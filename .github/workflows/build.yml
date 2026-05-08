@@ -194,7 +194,8 @@ jobs:
           path: |
             gh-pages
           merge-multiple: true
-      # - run: |
+      - run: |
+          ls -lah gh-pages/reports
       #     cp -rl gh-pages-sa1 gh-pages
       #     cp -rl gh-pages-sa2 gh-pages
       - run: |
