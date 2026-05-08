@@ -108,6 +108,7 @@ jobs:
         with:
           path: |
             gh-pages-sa2
+          name: sa2
 
   build-sa1-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
@@ -170,7 +171,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           path: |
-            gh-pages-sa1
+            gh-pages
+          name: sa1
 
   publish-progress:
     name: Publish progress
@@ -188,10 +190,6 @@ jobs:
           ref: gh-pages
       - name: Download progress
         uses: actions/download-artifact@v7
-        with:
-          path: |
-            gh-pages-sa1
-            gh-pages-sa2
       - run: |
           cp -rl gh-pages-sa1 gh-pages
           cp -rl gh-pages-sa2 gh-pages
