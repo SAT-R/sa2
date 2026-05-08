@@ -193,9 +193,6 @@ jobs:
         with:
           path: |
             gh-pages
-          name: |
-            sa1
-            sa2
           merge-multiple: true
       # - run: |
       #     cp -rl gh-pages-sa1 gh-pages
