@@ -195,10 +195,6 @@ jobs:
             gh-pages
           merge-multiple: true
       - run: |
-          ls -lah gh-pages/reports
-      #     cp -rl gh-pages-sa1 gh-pages
-      #     cp -rl gh-pages-sa2 gh-pages
-      - run: |
           cat gh-pages/reports/progress-sa1-nonmatching-latest.csv >> gh-pages/reports/progress-sa1-nonmatching.csv
           cat gh-pages/reports/progress-sa1-matching-latest.csv >> gh-pages/reports/progress-sa1-matching.csv
           cat gh-pages/reports/progress-sa2-nonmatching-latest.csv >> gh-pages/reports/progress-sa2-nonmatching.csv
