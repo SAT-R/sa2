@@ -107,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           path: |
-            gh-pages-sa2
+            gh-pages
           name: sa2
 
   build-sa1-gba:
