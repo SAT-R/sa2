@@ -3,15 +3,15 @@
   <img height="240" src=".github/media/titlescreen.png" alt="Sonic Advance 2 title screen">
 </p>
 <div align="center">
-  <a href="https://github.com/SAT-R/sa2/actions/workflows/build.yml"><img src="https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg" alt="CI status"></a>
-  <a href="https://github.com/SAT-R/sa2/graphs/contributors"><img src="https://img.shields.io/github/contributors/SAT-R/sa2" alt="Contributors"></a>
-  <a href="https://discord.gg/vZTvVH3gA9"><img src="https://img.shields.io/discord/1052347299457671200" alt="Discord"></a>
-  
+
   |     |     |
   | --- | --- |
   | SA1 | ![Decompilation Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa1-shield.json) ![Decompilation Matching Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa1-shield-matching.json) |
   | SA2 | ![Decompilation Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json) ![Decompilation Matching Progress](https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield-matching.json)  |
 
+  <a href="https://github.com/SAT-R/sa2/actions/workflows/build.yml"><img src="https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg" alt="CI status"></a>
+  <a href="https://github.com/SAT-R/sa2/graphs/contributors"><img src="https://img.shields.io/github/contributors/SAT-R/sa2" alt="Contributors"></a>
+  <a href="https://discord.gg/vZTvVH3gA9"><img src="https://img.shields.io/discord/1052347299457671200" alt="Discord"></a>
 </div>
 
 > :warning: **This project is not completed and still under active development**
