@@ -190,9 +190,16 @@ jobs:
           ref: gh-pages
       - name: Download progress
         uses: actions/download-artifact@v7
-      - run: |
-          cp -rl gh-pages-sa1 gh-pages
-          cp -rl gh-pages-sa2 gh-pages
+        with:
+          path: |
+            gh-pages
+          name: |
+            sa1
+            sa2
+          merge-multiple: true
+      # - run: |
+      #     cp -rl gh-pages-sa1 gh-pages
+      #     cp -rl gh-pages-sa2 gh-pages
       - run: |
           cat gh-pages/reports/progress-sa1-nonmatching-latest.csv >> gh-pages/reports/progress-sa1-nonmatching.csv
           cat gh-pages/reports/progress-sa1-matching-latest.csv >> gh-pages/reports/progress-sa1-matching.csv
