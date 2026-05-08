@@ -1,4 +1,3 @@
-2,1774553339,18b9de4bbb0c088cea333d772545a383d51bf2e2,491100,629264,2417330,7469020
 src/core.c ['EngineInit']
 src/task.c ['r5']
 src/background.c ['sub_8002B20', 'sub_8002B20', 'sub_80039E4', 'sub_8004010']
