@@ -6,7 +6,7 @@ import git
 import os
 import re
 
-def read_non_matching_funcs(filepath):
+def read_non_matching_funcs(filepath, game):
     result = []
     with open(filepath, 'r') as f:
         data = f.read()
@@ -14,9 +14,15 @@ def read_non_matching_funcs(filepath):
         for i in range(len(lines)):
             line = lines[i]
             if "NONMATCH" in line:
+                if game == "sa1" and "sa2." in line:
+                    continue
+
+                if game == "sa2" and "sa1." in line:
+                    continue
+
                 # if "unused_"  in line.lower():
                 #     continue
-                matcher = r'(?:SA2_LABEL\(\w+\))?(NONMATCH|ASM_FUNC)\(".*",\W*\w*\W*(\w*).*\)'
+                matcher = r'(NONMATCH|ASM_FUNC)\(".*?",\s*\w+\s+(?:SA2_LABEL\()?(\w+).*\)'
                 match = re.findall(matcher, line)
                 if match:
                     result.append(match[0][1])
@@ -26,6 +32,8 @@ def read_non_matching_funcs(filepath):
                         match = re.findall(r'\W*\w*\W*(\w*).*\)', line)
                         if match:
                             result.append(match[0])
+    if result:
+        print(filepath, result)
     return result
 
 
@@ -34,6 +42,7 @@ def parse_map(matching, map_file):
     asm = 0
     src_data = 0
     data = 0
+    game = map_file.replace(".map", "")
     non_matching = 0
     non_matching_funcs = []
 
@@ -59,7 +68,7 @@ def parse_map(matching, map_file):
                     if matching:
                         c_path = filepath.replace(".o", ".c")
                         if os.path.exists(c_path):
-                            non_matching_funcs += read_non_matching_funcs(c_path)
+                            non_matching_funcs += read_non_matching_funcs(c_path, game)
                 if filepath.startswith('build'):
                     # build/*/(asm|data|sound|src|...)/*/
                     #  ^    ^   ^

@@ -107,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           path: |
-            gh-pages
+            gh-pages-sa2
 
   build-sa1-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
@@ -170,7 +170,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           path: |
-            gh-pages
+            gh-pages-sa1
 
   publish-progress:
     name: Publish progress
@@ -190,7 +190,11 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: |
-            gh-pages
+            gh-pages-sa1
+            gh-pages-sa2
+      - run: |
+          cp -rl gh-pages-sa1 gh-pages
+          cp -rl gh-pages-sa2 gh-pages
       - run: |
           cat gh-pages/reports/progress-sa1-nonmatching-latest.csv >> gh-pages/reports/progress-sa1-nonmatching.csv
           cat gh-pages/reports/progress-sa1-matching-latest.csv >> gh-pages/reports/progress-sa1-matching.csv
