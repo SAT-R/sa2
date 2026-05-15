@@ -359,7 +359,7 @@ _080181DA:
 	ldr r1, [sp, #8]
 	cmp r1, #0
 	bne _080181E4
-	bl CreateMultiplayerFinishHandler
+	bl CreateMultiplayerFinishTransition
 _080181E4:
 	add sp, #0x14
 	pop {r3, r4, r5}

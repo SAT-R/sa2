@@ -620,7 +620,7 @@ void Task_GameStage(void)
 #endif
         else {
             gStageFlags |= STAGE_FLAG__ACT_START;
-            CreateMultiplayerFinishHandler();
+            CreateMultiplayerFinishTransition();
         }
     }
 #ifndef COLLECT_RINGS_ROM
@@ -648,7 +648,7 @@ void Task_GameStage(void)
             m4aSongNumStart(SE_TIME_UP);
         } else {
             gStageFlags |= STAGE_FLAG__ACT_START;
-            CreateMultiplayerFinishHandler();
+            CreateMultiplayerFinishTransition();
         }
     }
 #endif

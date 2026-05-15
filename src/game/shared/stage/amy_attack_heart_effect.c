@@ -22,27 +22,27 @@ typedef struct {
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u16 unkA;
     /* 0x0C */ u8 count;
-} AmyHeartParams; /* size: 0x10 */
+} HeartsAnimFrame; /* size: 0x10 */
 
 typedef struct {
     /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_SPRITE_COUNT];
-    /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_SPRITE_COUNT];
+    /* 0x0C0 */ HeartsAnimFrame animFrames[AMY_ATTACK_HEART_SPRITE_COUNT];
 #if (GAME == GAME_SA1)
-    /* 0x100 */ s8 unk100;
+    /* 0x100 */ s8 initialCharState;
     /* 0x101 */ s8 kind;
 #elif (GAME == GAME_SA2)
-    /* 0x100 */ u16 unk100;
-    /* 0x102 */ u16 unk102;
+    /* 0x100 */ AnimId initialPlayerAnim;
+    /* 0x102 */ u16 initialPlayerVarient;
     /* 0x104 */ u16 kind;
 #endif
-    /* 0x106 */ u16 unk106;
-    /* 0x108 */ u16 unk108;
+    /* 0x106 */ u16 cumulativeAnimSpeed;
+    /* 0x108 */ u16 frame;
     /* 0x10A */ u16 unk10A;
 } AmyAtkHearts; /* size: 0x10C */
 
-void Task_AmyAttackHeartEffect(void);
-void SA2_LABEL(sub_8015E28)(u16);
-void TaskDestructor_AmyAttackHeartEffect(struct Task *);
+static void Task_AmyAttackHeartEffect(void);
+static void HandleAnimFrame(u16);
+static void TaskDestructor_AmyAttackHeartEffect(struct Task *);
 
 ALIGNED(4)
 const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
@@ -114,31 +114,31 @@ extern void CreateAmyAttackHeartEffect(u16 kind)
 
         // TODO: Remove magic nums!
 #if (GAME == GAME_SA1)
-        hearts->unk100 = gPlayer.charState;
+        hearts->initialCharState = gPlayer.charState;
         hearts->kind = gPlayer.charState - 87;
 #elif (GAME == GAME_SA2)
-        hearts->unk100 = sCharStateAnimInfo[gPlayer.charState][0];
-        hearts->unk102 = sCharStateAnimInfo[gPlayer.charState][1];
+        hearts->initialPlayerAnim = sCharStateAnimInfo[gPlayer.charState][0];
+        hearts->initialPlayerVarient = sCharStateAnimInfo[gPlayer.charState][1];
 
-        if (gPlayer.charState < 80) {
-            hearts->unk100 += gPlayerCharacterIdleAnims[gPlayer.character];
+        if (gPlayer.charState < CHARSTATE_SHARED_COUNT) {
+            hearts->initialPlayerAnim += gPlayerCharacterIdleAnims[gPlayer.character];
         }
 
         hearts->kind = kind;
 #endif
-        hearts->unk106 = 0;
-        hearts->unk108 = 0;
+        hearts->cumulativeAnimSpeed = 0;
+        hearts->frame = 0;
         hearts->unk10A = 0;
 
-        for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
-            hearts->params[i].count = 0;
+        for (i = 0; i < ARRAY_COUNT(hearts->animFrames); i++) {
+            hearts->animFrames[i].count = 0;
         }
     }
 }
 
 // NOTE: Fakematch
 // (99.97%) https://decomp.me/scratch/Z3oDP
-void Task_AmyAttackHeartEffect(void)
+static void Task_AmyAttackHeartEffect(void)
 {
 #ifndef NON_MATCHING
     register struct Task *t asm("r2") = gCurTask;
@@ -147,118 +147,113 @@ void Task_AmyAttackHeartEffect(void)
 #endif
     AmyAtkHearts *hearts = TASK_DATA(t);
     u8 i;
+    u16 cumlativeSpeedThreshold;
 
-    // TODO: Fix horrible cast!
 #if (GAME == GAME_SA1)
-    if (hearts->unk100 != gPlayer.charState)
+    if (hearts->initialCharState != gPlayer.charState)
 #else
-    if ((!PLAYER_IS_ALIVE) || ((*(u32 *)&hearts->unk100 != *(u32 *)&gPlayer.anim) && (*(u32 *)&gPlayer.anim != 0x0001019F)))
+    if ((!PLAYER_IS_ALIVE)
+        || ((hearts->initialPlayerAnim != gPlayer.anim || hearts->initialPlayerVarient != gPlayer.variant)
+            && (gPlayer.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_AMY) || gPlayer.variant != 1)))
 #endif
     {
         TaskDestroy(t);
         return;
-    } else {
-        for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
-            if (hearts->params[i].count != 0) {
+    }
+
+    for (i = 0; i < ARRAY_COUNT(hearts->animFrames); i++) {
+        if (hearts->animFrames[i].count != 0) {
 #ifndef NON_MATCHING
-                register s32 sIndex asm("r0") = i * sizeof(Sprite);
-                register Sprite *s asm("r4") = ((void *)&hearts->sprHearts) + sIndex;
+            register s32 sIndex asm("r0") = i * sizeof(Sprite);
+            register Sprite *s asm("r4") = ((void *)&hearts->sprHearts) + sIndex;
 #else
-                Sprite *s = &hearts->sprHearts[i];
+            Sprite *s = &hearts->sprHearts[i];
 #endif
 
-                if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-                    hearts->params[i].count = 0;
-                    VramFree(s->graphics.dest);
-                }
+            if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+                hearts->animFrames[i].count = 0;
+                VramFree(s->graphics.dest);
             }
         }
+    }
 
-        { // _08015D56+0xA
-            u16 r2 = sHeartOffsets[hearts->kind][hearts->unk108][0];
-            r2 *= 16;
+    cumlativeSpeedThreshold = sHeartOffsets[hearts->kind][hearts->frame][0];
+    cumlativeSpeedThreshold *= 16;
 
-            if (r2 != (u16)-1) {
-                u16 old106 = hearts->unk106;
-                hearts->unk106 += gPlayer.spriteInfoBody->s.animSpeed;
+    if (cumlativeSpeedThreshold != (u16)-1) {
+        u16 cumulativeSpeed = hearts->cumulativeAnimSpeed;
+        hearts->cumulativeAnimSpeed += gPlayer.spriteInfoBody->s.animSpeed;
 
-                if (old106 >= r2) {
-                    u32 v;
-                    SA2_LABEL(sub_8015E28)(hearts->unk108);
+        if (cumulativeSpeed >= cumlativeSpeedThreshold) {
+            HandleAnimFrame(hearts->frame);
 
-                    hearts->unk108 = ((++hearts->unk108) & 0x7);
+            hearts->frame = ((++hearts->frame) & 0x7);
 
-                    if (hearts->unk108 == 0) {
-                        hearts->unk106 = 0;
-                    }
-                }
+            if (hearts->frame == 0) {
+                hearts->cumulativeAnimSpeed = 0;
             }
+        }
+    }
 
-            for (i = 0; i < ARRAY_COUNT(hearts->sprHearts); i++) {
-                struct Camera *cam = &gCamera;
+    for (i = 0; i < ARRAY_COUNT(hearts->sprHearts); i++) {
+        struct Camera *cam = &gCamera;
 
-                if (hearts->params[i].count != 0) {
-                    Sprite *s;
-                    s32 x, y;
-#if (GAME == GAME_SA1)
-                    u16 camX, camY;
-#elif (GAME == GAME_SA2)
-                    s32 camX, camY;
-#endif
+        if (hearts->animFrames[i].count != 0) {
+            Sprite *s;
+            s32 x, y;
+            CamCoord camX, camY;
 #ifndef NON_MATCHING
-                    register s32 index asm("r0") = i;
-                    index *= sizeof(Sprite);
-                    s = ((void *)&hearts->sprHearts) + index;
+            register s32 index asm("r0") = i;
+            index *= sizeof(Sprite);
+            s = ((void *)&hearts->sprHearts) + index;
 #else
-                    s = &hearts->sprHearts[i];
+            s = &hearts->sprHearts[i];
 #endif
-                    x = Q(hearts->params[i].x);
-                    y = Q(hearts->params[i].y);
+            x = Q(hearts->animFrames[i].x);
+            y = Q(hearts->animFrames[i].y);
 
-                    camX = gCamera.x;
-                    s->x = (x >> 16) - camX;
-                    camY = gCamera.y;
-                    s->y = (y >> 16) - camY;
+            camX = gCamera.x;
+            s->x = (I(x) >> 8) - (unsigned)camX;
+            camY = gCamera.y;
+            s->y = (I(y) >> 8) - (unsigned)camY;
 
-                    UpdateSpriteAnimation(s);
-                    DisplaySprite(s);
-                }
-            }
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
 
-void SA2_LABEL(sub_8015E28)(u16 p0)
+void HandleAnimFrame(u16 frame)
 {
     AmyAtkHearts *hearts = TASK_DATA(gCurTask);
     u8 i = 0;
 
-    while (hearts->params[i].count != 0) {
-        if (++i >= ARRAY_COUNT(hearts->params)) {
+    while (hearts->animFrames[i].count > 0) {
+        if (++i >= ARRAY_COUNT(hearts->animFrames)) {
             return;
         }
     }
 
-    if (i < ARRAY_COUNT(hearts->params)) {
+    if (i < ARRAY_COUNT(hearts->animFrames)) {
         Sprite *s = &hearts->sprHearts[i];
-        hearts->params[i].count = 0xFF;
-        hearts->params[i].x = gPlayer.qWorldX;
-        hearts->params[i].y = gPlayer.qWorldY;
+        hearts->animFrames[i].count = -1;
+        hearts->animFrames[i].x = gPlayer.qWorldX;
+        hearts->animFrames[i].y = gPlayer.qWorldY;
 
         if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-            hearts->params[i].x -= sHeartOffsets[hearts->kind][p0][1] << 8;
+            hearts->animFrames[i].x -= Q(sHeartOffsets[hearts->kind][frame][1]);
         } else {
-            hearts->params[i].x += sHeartOffsets[hearts->kind][p0][1] << 8;
+            hearts->animFrames[i].x += Q(sHeartOffsets[hearts->kind][frame][1]);
         }
 
         if (GRAVITY_IS_INVERTED) {
-            hearts->params[i].y -= sHeartOffsets[hearts->kind][p0][2] << 8;
+            hearts->animFrames[i].y -= Q(sHeartOffsets[hearts->kind][frame][2]);
         } else {
-            hearts->params[i].y += sHeartOffsets[hearts->kind][p0][2] << 8;
+            hearts->animFrames[i].y += Q(sHeartOffsets[hearts->kind][frame][2]);
         }
 
-        hearts->params[i].unk8 = 0;
-        hearts->params[i].unkA = 0;
+        hearts->animFrames[i].unk8 = 0;
+        hearts->animFrames[i].unkA = 0;
 
         s->graphics.dest = VramMalloc(4);
         s->oamFlags = SPRITE_OAM_ORDER(16);
@@ -287,13 +282,13 @@ void SA2_LABEL(sub_8015E28)(u16 p0)
     }
 }
 
-void TaskDestructor_AmyAttackHeartEffect(struct Task *t)
+static void TaskDestructor_AmyAttackHeartEffect(struct Task *t)
 {
     AmyAtkHearts *hearts = TASK_DATA(t);
 
     u8 i;
-    for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
-        if (hearts->params[i].count != 0) {
+    for (i = 0; i < ARRAY_COUNT(hearts->animFrames); i++) {
+        if (hearts->animFrames[i].count != 0) {
             Sprite *s = &hearts->sprHearts[i];
             VramFree(s->graphics.dest);
         }

@@ -551,7 +551,7 @@ void Task_StageGoal4(void)
 
                 goal->unk3C = 0;
                 gCurTask->main = Task_StageGoal6;
-                CreateMultiplayerFinishHandler();
+                CreateMultiplayerFinishTransition();
             } else {
                 gCurTask->main = Task_StageGoal5;
             }

@@ -4,36 +4,36 @@ ProgrammableWaveData_1:
 
 	mAlignWord
 ProgrammableWaveData_2:
-	.incbin "sound/sa2/programmable_wave_samples/02.pcm"
+	.incbin "sound/shared/programmable_wave_samples/02.pcm"
 
 	mAlignWord
 ProgrammableWaveData_3:
-	.incbin "sound/sa2/programmable_wave_samples/03.pcm"
+	.incbin "sound/shared/programmable_wave_samples/03.pcm"
 
 	mAlignWord
 ProgrammableWaveData_4:
-	.incbin "sound/sa2/programmable_wave_samples/04.pcm"
+	.incbin "sound/shared/programmable_wave_samples/04.pcm"
 
 	mAlignWord
 ProgrammableWaveData_5:
-	.incbin "sound/sa2/programmable_wave_samples/05.pcm"
+	.incbin "sound/shared/programmable_wave_samples/05.pcm"
 
 	mAlignWord
 ProgrammableWaveData_6:
-	.incbin "sound/sa2/programmable_wave_samples/06.pcm"
+	.incbin "sound/shared/programmable_wave_samples/06.pcm"
 
 	mAlignWord
 ProgrammableWaveData_7:
-	.incbin "sound/sa2/programmable_wave_samples/07.pcm"
+	.incbin "sound/shared/programmable_wave_samples/07.pcm"
 
 	mAlignWord
 ProgrammableWaveData_8:
-	.incbin "sound/sa2/programmable_wave_samples/08.pcm"
+	.incbin "sound/shared/programmable_wave_samples/08.pcm"
 
 	mAlignWord
 ProgrammableWaveData_9:
-	.incbin "sound/sa2/programmable_wave_samples/09.pcm"
+	.incbin "sound/shared/programmable_wave_samples/09.pcm"
 
 	mAlignWord
 ProgrammableWaveData_10:
-	.incbin "sound/sa2/programmable_wave_samples/10.pcm"
+	.incbin "sound/shared/programmable_wave_samples/10.pcm"

@@ -282,7 +282,7 @@ static void StageGoalToggle_PlayerReachedGoal(void)
                 }
             }
 
-            CreateMultiplayerFinishHandler();
+            CreateMultiplayerFinishTransition();
             TaskDestroy(gCurTask);
         }
     }

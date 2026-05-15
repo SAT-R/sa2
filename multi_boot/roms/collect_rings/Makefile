@@ -91,7 +91,7 @@ SOUND_ASM_SUBDIR = sound
 SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
 
 SAMPLE_SUBDIR = sound/direct_sound_samples
-WAVE_SAMPLES_SUBDIR = sound/sa2/programmable_wave_samples
+WAVE_SAMPLES_SUBDIR = sound/shared/programmable_wave_samples
 
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)

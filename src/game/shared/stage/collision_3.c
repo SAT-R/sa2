@@ -142,7 +142,7 @@ u32 Coll_Player_Spring_Sideways(Sprite *s, CamCoord worldX, CamCoord worldY, Pla
 }
 
 // (99.92%) https://decomp.me/scratch/GFpFd
-NONMATCH("asm/non_matching/game/shared/stage/collision__Coll_Player_Itembox.inc",
+NONMATCH("asm/non_matching/game/shared/stage/collision__Coll_Player_Itembox_sa1.inc",
          u32 Coll_Player_Itembox(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p))
 {
     s8 rectDataPlayerA[4] = { -(p->spriteOffsetX + 5), (1 - p->spriteOffsetY), (p->spriteOffsetX + 5), (p->spriteOffsetY - 1) };
@@ -861,7 +861,7 @@ EHit sub_800C0E0(Sprite *s, CamCoord screenX, CamCoord screenY, Player *p)
 }
 
 // (97.67%) https://decomp.me/scratch/e4jLp
-NONMATCH("asm/non_matching/game/shared/stage/collision__sub_800C1E8.inc",
+NONMATCH("asm/non_matching/game/shared/stage/collision__sub_800C1E8_sa1.inc",
          u32 sub_800C1E8(Sprite *inSprite, Rect8 rectB, s16 sx, s16 sy, Player *p))
 {
 #ifndef NON_MATCHING

@@ -1,263 +1,263 @@
 	mAlignWord
     .global DirectSoundWaveData_1
 DirectSoundWaveData_1:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__organ_3_charselect_1.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__organ_3_charselect_1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_2
 DirectSoundWaveData_2:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__organ_3_charselect_2.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__organ_3_charselect_2.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_3
 DirectSoundWaveData_3:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__1.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_4
 DirectSoundWaveData_4:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__2.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__2.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_5
 DirectSoundWaveData_5:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__stereo_brass_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__stereo_brass_1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_6
 DirectSoundWaveData_6:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__synth_brass2_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__synth_brass2_1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_7
 DirectSoundWaveData_7:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__3.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__3.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_8
 DirectSoundWaveData_8:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8ade918.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8ade918.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_9
 DirectSoundWaveData_9:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__stereo_brass_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__stereo_brass_2.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_10
 DirectSoundWaveData_10:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__synth_brass2_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__synth_brass2_2.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_11
 DirectSoundWaveData_11:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__4.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_12
 DirectSoundWaveData_12:
-	 .incbin "sound/sa2/direct_sound_samples/roland_sr_jv80_02__bassoon_1.bin"
+	 .incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__bassoon_1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_13
 DirectSoundWaveData_13:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8ae9bb4.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8ae9bb4.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_14
 DirectSoundWaveData_14:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8aea788.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8aea788.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_15
 DirectSoundWaveData_15:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__30303_mega_bass_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__30303_mega_bass_1.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_16
 DirectSoundWaveData_16:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__30303_mega_bass_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__30303_mega_bass_2.bin"
 
 	mAlignWord
     .global DirectSoundWaveData_17
 DirectSoundWaveData_17:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__5.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__5.bin"
 
 	mAlignWord
 DirectSoundWaveData_18:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__alto_sax.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__alto_sax.bin"
 
 	mAlignWord
 DirectSoundWaveData_19:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__timpani.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__timpani.bin"
 
 	mAlignWord
 DirectSoundWaveData_20:
-	.incbin "sound/sa2/direct_sound_samples/roland_sr_jv80_02__186_harp_1.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__186_harp_1.bin"
 
 	mAlignWord
 DirectSoundWaveData_21:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__6.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__6.bin"
 
 	mAlignWord
 DirectSoundWaveData_22:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__piano_2.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__piano_2.bin"
 
 	mAlignWord
 DirectSoundWaveData_23:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__music_box_sw1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__music_box_sw1.bin"
 
 	mAlignWord
 DirectSoundWaveData_24:
-	.incbin "sound/sa2/direct_sound_samples/roland_sr_jv80_02__french_horn_sc_x4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__french_horn_sc_x4.bin"
 
 	mAlignWord
 DirectSoundWaveData_25:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__orchestra_hit.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__orchestra_hit.bin"
 
 	mAlignWord
 DirectSoundWaveData_26:
-	.incbin "sound/sa2/direct_sound_samples/roland_sr_jv80_02__vi_sect_mono.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__vi_sect_mono.bin"
 
 	mAlignWord
 DirectSoundWaveData_27:
-	.incbin "sound/sa2/direct_sound_samples/korg_01_w__16_piano.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__16_piano.bin"
 
 	mAlignWord
 DirectSoundWaveData_28:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B04840.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B04840.bin"
 
 	mAlignWord
 DirectSoundWaveData_29:
-	.incbin "sound/sa2/direct_sound_samples/korg_01_w__vs_bells_1_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__vs_bells_1_1.bin"
 
 	mAlignWord
 DirectSoundWaveData_30:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B0C95C.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B0C95C.bin"
 
 	mAlignWord
 spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r:
-	.incbin "sound/sa2/direct_sound_samples/spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r.bin"
+	.incbin "sound/shared/direct_sound_samples/spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r.bin"
 
 	mAlignWord
 DirectSoundWaveData_32: @ 0x8B109B8
-	.incbin "sound/sa2/direct_sound_samples/sfx/sa1_intro_wind.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_intro_wind.bin"
 
 	mAlignWord
 DirectSoundWaveData_33: @ 0x8B18DD0
-	.incbin "sound/sa2/direct_sound_samples/sfx/sa1_intro_emerald.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_intro_emerald.bin"
 
 	mAlignWord
 DirectSoundWaveData_34: @ 0x8B1E9F0
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__dads_jazz_guitar.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__dads_jazz_guitar.bin"
 
 	mAlignWord
 DirectSoundWaveData_35: @ 0x8B20204
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B20204.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B20204.bin"
 
 	mAlignWord
 DirectSoundWaveData_36: @ 0x8B21DC8
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__standard_kit_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_1.bin"
 
 	mAlignWord
 DirectSoundWaveData_37: @ 0x8B22678
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__standard_kit_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_2.bin"
 
 	mAlignWord
 DirectSoundWaveData_38: @ 0x8B232F0
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__standard_kit_3.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_3.bin"
 
 	mAlignWord
 DirectSoundWaveData_39: @ 0x8B24488
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__standard_kit_4.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_4.bin"
 
 	mAlignWord
 DirectSoundWaveData_40:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__standard_kit_5.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_5.bin"
 
 	mAlignWord
 DirectSoundWaveData_41:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B257FC__maybe_roland_jv2080_jazz_drum_set1.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B257FC__maybe_roland_jv2080_jazz_drum_set1.bin"
 
 	mAlignWord
 DirectSoundWaveData_42:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__jazz_drum_set1__1.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__jazz_drum_set1__1.bin"
 
 	mAlignWord
 DirectSoundWaveData_43:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080__jazz_drum_set1__2.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__jazz_drum_set1__2.bin"
 
 	mAlignWord
 DirectSoundWaveData_44:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__mega_mix_kit_1.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__mega_mix_kit_1.bin"
 
 	mAlignWord
 DirectSoundWaveData_45:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__mega_mix_kit_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__mega_mix_kit_2.bin"
 
 	mAlignWord
 DirectSoundWaveData_46:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B2EEB8.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B2EEB8.bin"
 
 	mAlignWord
 DirectSoundWaveData_47:
-	.incbin "sound/sa2/direct_sound_samples/roland_jv2080_power_drum_set.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080_power_drum_set.bin"
 
 	mAlignWord
 DirectSoundWaveData_48:
-	.incbin "sound/sa2/direct_sound_samples/sfx/spin_attack.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/spin_attack.bin"
 
 	mAlignWord
 DirectSoundWaveData_49:
-	.incbin "sound/sa2/direct_sound_samples/sfx/score_count_complete.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/score_count_complete.bin"
 
 	mAlignWord
 DirectSoundWaveData_50:
-	.incbin "sound/sa2/direct_sound_samples/sfx/ring.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/ring.bin"
 
 	mAlignWord
 DirectSoundWaveData_51:
-	.incbin "sound/sa2/direct_sound_samples/sfx/rings_lost.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/rings_lost.bin"
 
 	mAlignWord
 DirectSoundWaveData_52:
-	.incbin "sound/sa2/direct_sound_samples/sfx/sa1_goal.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_goal.bin"
 
 	mAlignWord
 DirectSoundWaveData_53:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/wheewopog.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/wheewopog.bin"
 
 	mAlignWord
 DirectSoundWaveData_54:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/baa.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/baa.bin"
 
 	mAlignWord
 DirectSoundWaveData_55:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/ooooh.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/ooooh.bin"
 
 	mAlignWord
 DirectSoundWaveData_56:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/attack.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/attack.bin"
 
 	mAlignWord
 DirectSoundWaveData_57:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/hmm_huh.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/hmm_huh.bin"
 
 	mAlignWord
 DirectSoundWaveData_58:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/huh.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/huh.bin"
 
 	mAlignWord
 DirectSoundWaveData_59:
-	.incbin "sound/sa2/direct_sound_samples/voices/cheese/hihihi.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/hihihi.bin"
 
 	mAlignWord
 DirectSoundWaveData_60:
-	.incbin "sound/sa2/direct_sound_samples/korg_trinity__jazz_brush_kits.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__jazz_brush_kits.bin"
 
 	mAlignWord
 DirectSoundWaveData_61:
-	.incbin "sound/sa2/direct_sound_samples/sfx/8B51EBC.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/8B51EBC.bin"
 
 	mAlignWord
 DirectSoundWaveData_voice__announcer__sonic_advance_2:
@@ -338,67 +338,67 @@ DirectSoundWaveData_77: @ 0x8B7E428
 
 	mAlignWord
 DirectSoundWaveData_78:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B80688.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B80688.bin"
 
 	mAlignWord
 DirectSoundWaveData_79:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B84450.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B84450.bin"
 
 	mAlignWord
 DirectSoundWaveData_80:
-	.incbin "sound/sa2/direct_sound_samples/korg_01_w__vs_bells_1_2.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__vs_bells_1_2.bin"
 
 	mAlignWord
 DirectSoundWaveData_81:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B91D70.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B91D70.bin"
 
 	mAlignWord
 DirectSoundWaveData_82:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B940F0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B940F0.bin"
 
 	mAlignWord
 DirectSoundWaveData_83:
-	.incbin "sound/sa2/direct_sound_samples/korg_01_w__expecting.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__expecting.bin"
 
 	mAlignWord
 DirectSoundWaveData_84:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9A988.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9A988.bin"
 
 	mAlignWord
 DirectSoundWaveData_85:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9AD68.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9AD68.bin"
 
 	mAlignWord
 DirectSoundWaveData_86:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9B1C0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9B1C0.bin"
 
 	mAlignWord
 DirectSoundWaveData_87:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9BB3C.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9BB3C.bin"
 
 	mAlignWord
 DirectSoundWaveData_88:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9BF9C.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9BF9C.bin"
 
 	mAlignWord
 DirectSoundWaveData_89:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9C408.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9C408.bin"
 
 	mAlignWord
 DirectSoundWaveData_90:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9C894.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9C894.bin"
 
 	mAlignWord
 DirectSoundWaveData_91:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9D1C0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9D1C0.bin"
 
 	mAlignWord
 DirectSoundWaveData_92:
-	.incbin "sound/sa2/direct_sound_samples/unknown_8B9D718.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9D718.bin"
 
 	mAlignWord
 DirectSoundWaveData_93:
-	.incbin "sound/sa2/direct_sound_samples/korg_01_w__spectrum.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__spectrum.bin"
 
 	mAlignWord
 DirectSoundWaveData_94:

@@ -28,10 +28,10 @@ jobs:
         run: |
           make check_format
 
-  build-gba:
+  build-sa2-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-24.04
-    name: Build GBA (USA)
+    name: Build SA2 GBA (USA)
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}}
@@ -78,13 +78,13 @@ jobs:
       - name: Generate reports
         run: |
           mkdir -p gh-pages/reports
-          mkdir -p gh-pages/maps
+          mkdir -p gh-pages/maps/sa2
           python3 scripts/progress.py csv > gh-pages/reports/progress-sa2-nonmatching-latest.csv
           python3 scripts/progress.py csv -m > gh-pages/reports/progress-sa2-matching-latest.csv
           python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
           python3 scripts/progress.py shield-json -m > gh-pages/reports/progress-sa2-shield-matching.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
-          cp sa2.map gh-pages/maps/${GITHUB_SHA}.map
+          cp sa2.map gh-pages/maps/sa2/${GITHUB_SHA}.map
 
       - name: Generate reports (Collect Rings)
         run: |
@@ -108,6 +108,7 @@ jobs:
         with:
           path: |
             gh-pages
+          name: sa2
 
   build-sa1-gba:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}}
@@ -150,32 +151,33 @@ jobs:
       - name: Compare
         run: make sa1 -j${nproc}
 
-      # - name: Progress
-      #   run: |
-      #     python3 scripts/progress.py text
+      - name: Progress
+        run: |
+          python3 scripts/progress.py -f sa1.map text
 
-      # - name: Generate reports
-      #   run: |
-      #     mkdir -p gh-pages/reports
-      #     mkdir -p gh-pages/maps
-      #     python3 sa1/scripts/progress.py csv >> gh-pages/reports/progress-sa1-nonmatching.csv
-      #     python3 sa1/scripts/progress.py csv -m >> gh-pages/reports/progress-sa1-matching.csv
-      #     python3 sa1/scripts/progress.py shield-json > gh-pages/reports/progress-sa1-shield.json
-      #     python3 sa1/scripts/progress.py shield-json -m > gh-pages/reports/progress-sa1-shield-matching.json
-      #     echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
-      #     cp sa1.map gh-pages/maps/${GITHUB_SHA}.map
+      - name: Generate reports
+        run: |
+          mkdir -p gh-pages/reports
+          mkdir -p gh-pages/maps/sa1
+          python3 scripts/progress.py -f sa1.map csv >> gh-pages/reports/progress-sa1-nonmatching-latest.csv
+          python3 scripts/progress.py -f sa1.map csv -m >> gh-pages/reports/progress-sa1-matching-latest.csv
+          python3 scripts/progress.py -f sa1.map shield-json > gh-pages/reports/progress-sa1-shield.json
+          python3 scripts/progress.py -f sa1.map shield-json -m > gh-pages/reports/progress-sa1-shield-matching.json
+          echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+          cp sa1.map gh-pages/maps/sa1/${GITHUB_SHA}.map
 
-      # - name: Upload progress
-      #   if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-      #   uses: actions/upload-artifact@v7
-      #   with:
-      #     path: |
-      #       gh-pages
+      - name: Upload progress
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v7
+        with:
+          path: |
+            gh-pages
+          name: sa1
 
   publish-progress:
     name: Publish progress
     runs-on: ubuntu-24.04
-    needs: [build-gba]
+    needs: [build-sa2-gba, build-sa1-gba]
     # Only able to run from repo pull requests (by maintainers, or on the main branch via push)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     permissions:
@@ -191,7 +193,10 @@ jobs:
         with:
           path: |
             gh-pages
+          merge-multiple: true
       - run: |
+          cat gh-pages/reports/progress-sa1-nonmatching-latest.csv >> gh-pages/reports/progress-sa1-nonmatching.csv
+          cat gh-pages/reports/progress-sa1-matching-latest.csv >> gh-pages/reports/progress-sa1-matching.csv
           cat gh-pages/reports/progress-sa2-nonmatching-latest.csv >> gh-pages/reports/progress-sa2-nonmatching.csv
           cat gh-pages/reports/progress-sa2-matching-latest.csv >> gh-pages/reports/progress-sa2-matching.csv
           cat gh-pages/reports/progress-collect_rings-nonmatching-latest.csv >> gh-pages/reports/progress-collect_rings-nonmatching.csv

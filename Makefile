@@ -166,6 +166,7 @@ MID_SUBDIR = sound/$(GAME_NAME)/songs/midi
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
 SAMPLE_SUBDIR = sound/$(GAME_NAME)/direct_sound_samples
+SHARED_SAMPLE_SUBDIR = sound/shared/direct_sound_samples
 
 OBJ_TILES_4BPP_SUBDIR = graphics/$(GAME_NAME)/obj_tiles/4bpp
 TILESETS_SUBDIR = graphics/$(GAME_NAME)/tilesets/
@@ -449,10 +450,10 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/collect_rings
 	@$(MAKE) clean -C libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
 
-	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
+ifneq ($(GAME_NAME),sa1)
+	find sound \( -iname '*.bin' \) -exec $(RM) {} +
 	find . \( -iwholename './data/*/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
-ifneq ($(GAME_NAME),sa1)
 	@$(MAKE) clean GAME_NAME=sa1
 endif
 
@@ -678,6 +679,8 @@ sa1:
 
 sa2:
 	@$(MAKE) GAME_NAME=sa2
+
+trilogy: sa1 sa2
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@

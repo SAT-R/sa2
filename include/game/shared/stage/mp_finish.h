@@ -4,6 +4,6 @@
 #include "global.h"
 
 void CreateMultiplayerFinishResult(u8 sioId, u8 count);
-void CreateMultiplayerFinishHandler(void);
+void CreateMultiplayerFinishTransition(void);
 
 #endif // GUARD_MULTIPLAYER_FINISH_H

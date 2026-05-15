@@ -1,137 +1,137 @@
     mAlignWord
 	.global gUnknown_086DE134
 gUnknown_086DE134:
-	.incbin "sound/sa1/direct_sound_samples/086DE134.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__organ_3_charselect_1.bin"
 
 	mAlignWord
 	.global gUnknown_086DF608
 gUnknown_086DF608:
-	.incbin "sound/sa1/direct_sound_samples/086DF608.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__organ_3_charselect_2.bin"
 
 	mAlignWord
 	.global gUnknown_086E0A1C
 gUnknown_086E0A1C:
-	.incbin "sound/sa1/direct_sound_samples/086E0A1C.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__1.bin"
 
 	mAlignWord
 	.global gUnknown_086E134C
 gUnknown_086E134C:
-	.incbin "sound/sa1/direct_sound_samples/086E134C.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__2.bin"
 
 	mAlignWord
 	.global gUnknown_086E1ABC
 gUnknown_086E1ABC:
-	.incbin "sound/sa1/direct_sound_samples/086E1ABC.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__stereo_brass_1.bin"
 
 	mAlignWord
 	.global gUnknown_086E33B0
 gUnknown_086E33B0:
-	.incbin "sound/sa1/direct_sound_samples/086E33B0.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__synth_brass2_1.bin"
 
 	mAlignWord
 	.global gUnknown_086E64DC
 gUnknown_086E64DC:
-	.incbin "sound/sa1/direct_sound_samples/086E64DC.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__3.bin"
 
 	mAlignWord
 	.global gUnknown_086E6B24
 gUnknown_086E6B24:
-	.incbin "sound/sa1/direct_sound_samples/086E6B24.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8ade918.bin"
 
 	mAlignWord
 	.global gUnknown_086EA218
 gUnknown_086EA218:
-	.incbin "sound/sa1/direct_sound_samples/086EA218.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__stereo_brass_2.bin"
 
 	mAlignWord
 	.global gUnknown_086ED1F4
 gUnknown_086ED1F4:
-	.incbin "sound/sa1/direct_sound_samples/086ED1F4.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__synth_brass2_2.bin"
 
 	mAlignWord
 	.global gUnknown_086F0138
 gUnknown_086F0138:
-	.incbin "sound/sa1/direct_sound_samples/086F0138.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__4.bin"
 
 	mAlignWord
 	.global gUnknown_086F1AC0
 gUnknown_086F1AC0:
-	.incbin "sound/sa1/direct_sound_samples/086F1AC0.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__bassoon_1.bin"
 
 	mAlignWord
 	.global gUnknown_086F1DC0
 gUnknown_086F1DC0:
-	.incbin "sound/sa1/direct_sound_samples/086F1DC0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8ae9bb4.bin"
 
 	mAlignWord
 	.global gUnknown_086F2994
 gUnknown_086F2994:
-	.incbin "sound/sa1/direct_sound_samples/086F2994.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8aea788.bin"
 
 	mAlignWord
 	.global gUnknown_086F5578
 gUnknown_086F5578:
-	.incbin "sound/sa1/direct_sound_samples/086F5578.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__30303_mega_bass_1.bin"
 
 	mAlignWord
 	.global gUnknown_086F836C
 gUnknown_086F836C:
-	.incbin "sound/sa1/direct_sound_samples/086F836C.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__30303_mega_bass_2.bin"
 
 	mAlignWord
 	.global gUnknown_086FA790
 gUnknown_086FA790:
-	.incbin "sound/sa1/direct_sound_samples/086FA790.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__5.bin"
 
 	mAlignWord
 	.global gUnknown_086FAEA4
 gUnknown_086FAEA4:
-	.incbin "sound/sa1/direct_sound_samples/086FAEA4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__alto_sax.bin"
 
 	mAlignWord
 	.global gUnknown_086FBBD4
 gUnknown_086FBBD4:
-	.incbin "sound/sa1/direct_sound_samples/086FBBD4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__timpani.bin"
 
 	mAlignWord
 	.global gUnknown_086FE150
 gUnknown_086FE150:
-	.incbin "sound/sa1/direct_sound_samples/086FE150.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__186_harp_1.bin"
 
 	mAlignWord
 	.global gUnknown_086FE7E4
 gUnknown_086FE7E4:
-	.incbin "sound/sa1/direct_sound_samples/086FE7E4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__6.bin"
 
 	mAlignWord
 	.global gUnknown_086FF18C
 gUnknown_086FF18C:
-	.incbin "sound/sa1/direct_sound_samples/086FF18C.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__piano_2.bin"
 
 	mAlignWord
 	.global gUnknown_0870224C
 gUnknown_0870224C:
-	.incbin "sound/sa1/direct_sound_samples/0870224C.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__music_box_sw1.bin"
 
 	mAlignWord
 	.global gUnknown_08702F60
 gUnknown_08702F60:
-	.incbin "sound/sa1/direct_sound_samples/08702F60.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__french_horn_sc_x4.bin"
 
 	mAlignWord
 	.global gUnknown_0870613C
 gUnknown_0870613C:
-	.incbin "sound/sa1/direct_sound_samples/0870613C.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__orchestra_hit.bin"
 
 	mAlignWord
 	.global gUnknown_08708210
 gUnknown_08708210:
-	.incbin "sound/sa1/direct_sound_samples/08708210.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_sr_jv80_02__vi_sect_mono.bin"
 
 	mAlignWord
 	.global gUnknown_0870A724
 gUnknown_0870A724:
-	.incbin "sound/sa1/direct_sound_samples/0870A724.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__16_piano.bin"
 
 	mAlignWord
 	.global gUnknown_0870CA4C
@@ -171,142 +171,142 @@ gUnknown_0870F254:
 	mAlignWord
 	.global gUnknown_0870FBC0
 gUnknown_0870FBC0:
-	.incbin "sound/sa1/direct_sound_samples/0870FBC0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9A988.bin"
 
 	mAlignWord
 	.global gUnknown_0870FFA0
 gUnknown_0870FFA0:
-	.incbin "sound/sa1/direct_sound_samples/0870FFA0.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9AD68.bin"
 
 	mAlignWord
 	.global gUnknown_087103F8
 gUnknown_087103F8:
-	.incbin "sound/sa1/direct_sound_samples/087103F8.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9B1C0.bin"
 
 	mAlignWord
 	.global gUnknown_08710D74
 gUnknown_08710D74:
-	.incbin "sound/sa1/direct_sound_samples/08710D74.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9BB3C.bin"
 
 	mAlignWord
 	.global gUnknown_087111D4
 gUnknown_087111D4:
-	.incbin "sound/sa1/direct_sound_samples/087111D4.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9BF9C.bin"
 
 	mAlignWord
 	.global gUnknown_08711640
 gUnknown_08711640:
-	.incbin "sound/sa1/direct_sound_samples/08711640.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9C408.bin"
 
 	mAlignWord
 	.global gUnknown_08711ACC
 gUnknown_08711ACC:
-	.incbin "sound/sa1/direct_sound_samples/08711ACC.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9C894.bin"
 
 	mAlignWord
 	.global gUnknown_087123F8
 gUnknown_087123F8:
-	.incbin "sound/sa1/direct_sound_samples/087123F8.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9D1C0.bin"
 
 	mAlignWord
 	.global gUnknown_08712950
 gUnknown_08712950:
-	.incbin "sound/sa1/direct_sound_samples/08712950.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B9D718.bin"
 
 	mAlignWord
 	.global gUnknown_08712DB8
 gUnknown_08712DB8:
-	.incbin "sound/sa1/direct_sound_samples/08712DB8.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B04840.bin"
 
 	mAlignWord
 	.global gUnknown_0871375C
 gUnknown_0871375C:
-	.incbin "sound/sa1/direct_sound_samples/0871375C.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__vs_bells_1_1.bin"
 
 	mAlignWord
 	.global gUnknown_0871AED4
 gUnknown_0871AED4:
-	.incbin "sound/sa1/direct_sound_samples/0871AED4.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B0C95C.bin"
 
 	mAlignWord
 	.global spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r
 spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r:
-	.incbin "sound/sa1/direct_sound_samples/spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r.bin"
+	.incbin "sound/shared/direct_sound_samples/spectrasonics__symphony_of_voices__partition_d__big_chord__big_min__c4_r.bin"
 
 	mAlignWord
 	.global gUnknown_0871EF30
 gUnknown_0871EF30:
-	.incbin "sound/sa1/direct_sound_samples/0871EF30.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_intro_wind.bin"
 
 	mAlignWord
 	.global gUnknown_08727348
 gUnknown_08727348:
-	.incbin "sound/sa1/direct_sound_samples/08727348.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_intro_emerald.bin"
 
 	mAlignWord
 	.global gUnknown_0872CF68
 gUnknown_0872CF68:
-	.incbin "sound/sa1/direct_sound_samples/0872CF68.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__dads_jazz_guitar.bin"
 
 	mAlignWord
 	.global gUnknown_0872E77C
 gUnknown_0872E77C:
-	.incbin "sound/sa1/direct_sound_samples/0872E77C.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B20204.bin"
 
 	mAlignWord
 	.global gUnknown_08730340
 gUnknown_08730340:
-	.incbin "sound/sa1/direct_sound_samples/08730340.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_1.bin"
 
 	mAlignWord
 	.global gUnknown_08730BF0
 gUnknown_08730BF0:
-	.incbin "sound/sa1/direct_sound_samples/08730BF0.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_2.bin"
 
 	mAlignWord
 	.global gUnknown_08731868
 gUnknown_08731868:
-	.incbin "sound/sa1/direct_sound_samples/08731868.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_3.bin"
 
 	mAlignWord
 	.global gUnknown_08732A00
 gUnknown_08732A00:
-	.incbin "sound/sa1/direct_sound_samples/08732A00.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_4.bin"
 
 	mAlignWord
 	.global gUnknown_08733304
 gUnknown_08733304:
-	.incbin "sound/sa1/direct_sound_samples/08733304.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__standard_kit_5.bin"
 
 	mAlignWord
 	.global gUnknown_08733D74
 gUnknown_08733D74:
-	.incbin "sound/sa1/direct_sound_samples/08733D74.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B257FC__maybe_roland_jv2080_jazz_drum_set1.bin"
 
 	mAlignWord
 	.global gUnknown_08737EB4
 gUnknown_08737EB4:
-	.incbin "sound/sa1/direct_sound_samples/08737EB4.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__jazz_drum_set1__1.bin"
 
 	mAlignWord
 	.global gUnknown_0873BCBC
 gUnknown_0873BCBC:
-	.incbin "sound/sa1/direct_sound_samples/0873BCBC.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080__jazz_drum_set1__2.bin"
 
 	mAlignWord
 	.global gUnknown_0873C470
 gUnknown_0873C470:
-	.incbin "sound/sa1/direct_sound_samples/0873C470.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__mega_mix_kit_1.bin"
 
 	mAlignWord
 	.global gUnknown_0873CC80
 gUnknown_0873CC80:
-	.incbin "sound/sa1/direct_sound_samples/0873CC80.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__mega_mix_kit_2.bin"
 
 	mAlignWord
 	.global gUnknown_0873D430
 gUnknown_0873D430:
-	.incbin "sound/sa1/direct_sound_samples/0873D430.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B2EEB8.bin"
 
 	mAlignWord
 	.global gUnknown_0873DF74
@@ -416,7 +416,7 @@ gUnknown_087444B4:
 	mAlignWord
 	.global gUnknown_087449BC
 gUnknown_087449BC:
-	.incbin "sound/sa1/direct_sound_samples/087449BC.bin"
+	.incbin "sound/shared/direct_sound_samples/roland_jv2080_power_drum_set.bin"
 
 	mAlignWord
 	.global gUnknown_0874621C
@@ -506,27 +506,27 @@ gUnknown_0874E228:
 	mAlignWord
 	.global gUnknown_0874E6D0
 gUnknown_0874E6D0:
-	.incbin "sound/sa1/direct_sound_samples/0874E6D0.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/spin_attack.bin"
 
 	mAlignWord
 	.global gUnknown_08753AEC
 gUnknown_08753AEC:
-	.incbin "sound/sa1/direct_sound_samples/08753AEC.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/score_count_complete.bin"
 
 	mAlignWord
 	.global gUnknown_08758BB4
 gUnknown_08758BB4:
-	.incbin "sound/sa1/direct_sound_samples/08758BB4.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/ring.bin"
 
 	mAlignWord
 	.global gUnknown_0875A76C
 gUnknown_0875A76C:
-	.incbin "sound/sa1/direct_sound_samples/0875A76C.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/rings_lost.bin"
 
 	mAlignWord
 	.global gUnknown_0875E854
 gUnknown_0875E854:
-	.incbin "sound/sa1/direct_sound_samples/0875E854.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/sa1_goal.bin"
 
 	mAlignWord
 	.global gUnknown_087634B0
@@ -676,79 +676,79 @@ gUnknown_0876F47C:
 	mAlignWord
 	.global gUnknown_0876FB20
 gUnknown_0876FB20:
-	.incbin "sound/sa1/direct_sound_samples/0876FB20.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/wheewopog.bin"
 
 	mAlignWord
 	.global gUnknown_08771CC4
 gUnknown_08771CC4:
-	.incbin "sound/sa1/direct_sound_samples/08771CC4.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/baa.bin"
 
 	mAlignWord
 	.global gUnknown_08773848
 gUnknown_08773848:
-	.incbin "sound/sa1/direct_sound_samples/08773848.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/ooooh.bin"
 
 	mAlignWord
 	.global gUnknown_08775640
 gUnknown_08775640:
-	.incbin "sound/sa1/direct_sound_samples/08775640.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/attack.bin"
 
 	mAlignWord
 	.global gUnknown_08775E7C
 gUnknown_08775E7C:
-	.incbin "sound/sa1/direct_sound_samples/08775E7C.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/hmm_huh.bin"
 
 	mAlignWord
 	.global gUnknown_08778D48
 gUnknown_08778D48:
-	.incbin "sound/sa1/direct_sound_samples/08778D48.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/huh.bin"
 
 	mAlignWord
 	.global gUnknown_08779EDC
 gUnknown_08779EDC:
-	.incbin "sound/sa1/direct_sound_samples/08779EDC.bin"
+	.incbin "sound/shared/direct_sound_samples/voices/cheese/hihihi.bin"
 
 	mAlignWord
 	.global gUnknown_0877AD00
 gUnknown_0877AD00:
-	.incbin "sound/sa1/direct_sound_samples/0877AD00.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_trinity__jazz_brush_kits.bin"
 
 	mAlignWord
 	.global gUnknown_0877B9A0
 gUnknown_0877B9A0:
-	.incbin "sound/sa1/direct_sound_samples/0877B9A0.bin"
+	.incbin "sound/shared/direct_sound_samples/sfx/8B51EBC.bin"
 
 	mAlignWord
 	.global gUnknown_0877CF24
 gUnknown_0877CF24:
-	.incbin "sound/sa1/direct_sound_samples/0877CF24.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B91D70.bin"
 
 	mAlignWord
 	.global gUnknown_0877F2A4
 gUnknown_0877F2A4:
-	.incbin "sound/sa1/direct_sound_samples/0877F2A4.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B80688.bin"
 
 	mAlignWord
 	.global gUnknown_0878306C
 gUnknown_0878306C:
-	.incbin "sound/sa1/direct_sound_samples/0878306C.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B84450.bin"
 
 	mAlignWord
 	.global gUnknown_08789214
 gUnknown_08789214:
-	.incbin "sound/sa1/direct_sound_samples/08789214.bin"
+	.incbin "sound/shared/direct_sound_samples/unknown_8B940F0.bin"
 
 	mAlignWord
 	.global gUnknown_0878D964
 gUnknown_0878D964:
-	.incbin "sound/sa1/direct_sound_samples/0878D964.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__expecting.bin"
 
 	mAlignWord
 	.global gUnknown_0878FAAC
 gUnknown_0878FAAC:
-	.incbin "sound/sa1/direct_sound_samples/0878FAAC.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__vs_bells_1_2.bin"
 
 	mAlignWord
 	.global gUnknown_08797224
 gUnknown_08797224:
-	.incbin "sound/sa1/direct_sound_samples/08797224.bin"
+	.incbin "sound/shared/direct_sound_samples/korg_01_w__spectrum.bin"

@@ -28,36 +28,21 @@
 #include "constants/sa2/text.h"
 #endif
 
-#if (GAME == GAME_SA1) && !(defined NON_MATCHING)
-// Once CreateMultiplayerFinishHandler matches in SA1,
-// this can go away.
-asm(".section .rodata");
-asm(".align 2, 0");
-asm(".global gUnknown_080BB490");
-asm("gUnknown_080BB490:");
-// NOTE:
-// As long as gUnknown_080BB490 is above data with this layout, this works out:
-// asm(".byte 0, 1, 2, 3:");
-// But once CreateMultiplayerFinishHandler matches,
-// the label won't be necessary. It's only here because
-// the asm file out of asm/non_matching/ references it.
-#endif
-
 typedef struct {
     Sprite s;
-    u8 unk30;
-    u8 unk31;
-} MpFinish1; /* size: 0x34 */
+    u8 sioId;
+    u8 rank;
+} FinishResult; /* size: 0x34 */
 
 typedef struct {
-    u16 unk0;
-} Finish2; /* size: 4 */
+    u16 frame;
+} FinishTransition; /* size: 4 */
 
-void SA2_LABEL(Task_801A04C)(void);
-void Task_TransitionToResultsScreen(void);
+static void Task_TransitionWaitForResults(void);
+static void Task_TransitionToResultsScreen(void);
 
-void SA2_LABEL(Task_8019E70)(void);
-void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *);
+static void Task_DisplayResult(void);
+static void TaskDestructor_MultiplayerFinishResult(struct Task *);
 
 #ifndef COLLECT_RINGS_ROM
 
@@ -100,7 +85,7 @@ const TileInfo sMPFinishTileInfo[2][7] = { {
     })
 #endif
 
-void CreateMultiplayerFinishResult(u8 sioId, u8 count)
+void CreateMultiplayerFinishResult(u8 sioId, u8 rank)
 {
     u32 i = 0;
 
@@ -108,8 +93,8 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
     if (gMultiplayerRanks[sioId] == -1)
 #endif
     {
-        struct Task *t = TaskCreate(SA2_LABEL(Task_8019E70), sizeof(MpFinish1), 0x2010, 0, SA2_LABEL(TaskDestructor_8019EF4));
-        MpFinish1 *finish = TASK_DATA(t);
+        struct Task *t = TaskCreate(Task_DisplayResult, sizeof(FinishResult), 0x2010, 0, TaskDestructor_MultiplayerFinishResult);
+        FinishResult *finish = TASK_DATA(t);
         struct Task **mpt = &gMultiplayerPlayerTasks[0];
         Sprite *s;
 
@@ -120,15 +105,15 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
                 mpt++;
         }
 
-        if (count < 6) {
-            gMultiplayerRanks[sioId] = count;
+        if (rank < 6) {
+            gMultiplayerRanks[sioId] = rank;
         } else {
             // BUG(?): Value underflows if i is 0
             gMultiplayerRanks[sioId] = i - 1;
         }
 
-        finish->unk30 = sioId;
-        finish->unk31 = count;
+        finish->sioId = sioId;
+        finish->rank = rank;
 
         s = &finish->s;
         s->graphics.size = 0;
@@ -136,34 +121,34 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
 #if (GAME == GAME_SA1)
         s->graphics.anim = 904;
 
-        if (count == 5) {
+        if (rank == 5) {
             s->variant = 1;
             s->graphics.dest = VramMalloc(12);
-        } else if (count == 4) {
+        } else if (rank == 4) {
             s->variant = 2;
             s->graphics.dest = VramMalloc(12);
         } else if ((i == 2) || (gGameMode == GAME_MODE_CHAO_HUNT) || (gGameMode == GAME_MODE_MULTI_PLAYER)
                    || (gGameMode == GAME_MODE_TEAM_PLAY)) {
-            s->variant = count;
+            s->variant = rank;
             s->graphics.dest = VramMalloc(12);
         } else {
-            s->variant = count + 3;
+            s->variant = rank + 3;
             s->graphics.dest = VramMalloc(8);
         }
 #elif (GAME == GAME_SA2)
         s->graphics.dest = VramMalloc(12);
-        if (count == 5) {
+        if (rank == 5) {
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(1)->anim;
             s->variant = GET_MP_FINISH_RESULT_TILE_INFO(1)->variant;
-        } else if (count == 4) {
+        } else if (rank == 4) {
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(2)->anim;
             s->variant = GET_MP_FINISH_RESULT_TILE_INFO(2)->variant;
         } else if ((i == 2) || gGameMode == GAME_MODE_TEAM_PLAY) {
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(0)->anim;
-            s->variant = count + GET_MP_FINISH_RESULT_TILE_INFO(0)->variant;
+            s->variant = rank + GET_MP_FINISH_RESULT_TILE_INFO(0)->variant;
         } else {
             s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(3)->anim;
-            s->variant = count + GET_MP_FINISH_RESULT_TILE_INFO(3)->variant;
+            s->variant = rank + GET_MP_FINISH_RESULT_TILE_INFO(3)->variant;
         }
 #endif
 
@@ -177,11 +162,11 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 count)
     }
 }
 
-void SA2_LABEL(Task_8019E70)(void)
+void Task_DisplayResult(void)
 {
-    MpFinish1 *finish = TASK_DATA(gCurTask);
+    FinishResult *finish = TASK_DATA(gCurTask);
     Sprite *s = &finish->s;
-    MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->unk30]);
+    MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->sioId]);
 
     s->x = mpp->pos.x - gCamera.x;
 
@@ -194,14 +179,14 @@ void SA2_LABEL(Task_8019E70)(void)
     DisplaySprite(s);
 }
 
-void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *t)
+void TaskDestructor_MultiplayerFinishResult(struct Task *t)
 {
-    MpFinish1 *finish = TASK_DATA(t);
+    FinishResult *finish = TASK_DATA(t);
     Sprite *s = &finish->s;
     VramFree(s->graphics.dest);
 }
 
-void CreateMultiplayerFinishHandler(void)
+void CreateMultiplayerFinishTransition(void)
 {
     u32 i;
     u32 r2;
@@ -213,10 +198,10 @@ void CreateMultiplayerFinishHandler(void)
 #endif
     {
         struct Task *mpt;
-        struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
-        Finish2 *f2 = TASK_DATA(t);
+        struct Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
+        FinishTransition *finishTransition = TASK_DATA(t);
 
-        f2->unk0 = 0;
+        finishTransition->frame = 0;
 
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
 #if (GAME == GAME_SA1)
@@ -396,17 +381,17 @@ void CreateMultiplayerFinishHandler(void)
 
 #endif // COLLECT_RINGS_ROM
 
-void SA2_LABEL(Task_801A04C)(void)
+static void Task_TransitionWaitForResults(void)
 {
     u32 x = 0;
-    Finish2 *f2 = TASK_DATA(gCurTask);
+    FinishTransition *finishTransition = TASK_DATA(gCurTask);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         x = DISPLAY_WIDTH;
     }
 
     if (gRoomEventQueueWritePos == gRoomEventQueueSendPos) {
-        if (f2->unk0++ > x) {
+        if (finishTransition->frame++ > x) {
             gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
             gBldRegs.bldY = 0;
 
@@ -415,43 +400,42 @@ void SA2_LABEL(Task_801A04C)(void)
             m4aMPlayFadeOut(&gMPlayInfo_SE2, 4);
             m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
 
-            f2->unk0 = 0;
+            finishTransition->frame = 0;
             gCurTask->main = Task_TransitionToResultsScreen;
         }
     }
 }
 
-#if 01
-void Task_TransitionToResultsScreen(void)
+static void Task_TransitionToResultsScreen(void)
 {
     u32 i; // r7
 
-    Finish2 *f2 = TASK_DATA(gCurTask);
-    f2->unk0 += Q(0.25);
+    FinishTransition *finishTransition = TASK_DATA(gCurTask);
+    finishTransition->frame += Q(0.25);
 
-    gBldRegs.bldY = I(f2->unk0);
+    gBldRegs.bldY = I(finishTransition->frame);
 
-    if (f2->unk0 >= 0x1000) {
+    if (finishTransition->frame >= 0x1000) {
         // _0801A110
         gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         gBldRegs.bldY = 0;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            u8 sp00[4] = { 0, 1, 2, 3 };
-            u8 sp04[4] = { 0 };
+            u8 rankToPid[4] = { 0, 1, 2, 3 };
+            u8 charRings[4] = { 0 };
 
 #if (GAME == GAME_SA2)
             m4aMPlayAllStop();
 #endif
-            *((u32 *)sp04) = *((u32 *)gMultiplayerCharRings);
+            *((u32 *)charRings) = *((u32 *)gMultiplayerCharRings);
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                 s32 m;
 
                 for (m = 0; m < (3 - i); m++) {
-                    if (sp04[m] < sp04[m + 1]) {
-                        XOR_SWAP(sp04[m], sp04[m + 1]);
-                        XOR_SWAP(sp00[m], sp00[m + 1]);
+                    if (charRings[m] < charRings[m + 1]) {
+                        XOR_SWAP(charRings[m], charRings[m + 1]);
+                        XOR_SWAP(rankToPid[m], rankToPid[m + 1]);
                     }
                 }
             }
@@ -459,30 +443,30 @@ void Task_TransitionToResultsScreen(void)
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
 
                 if (i != 0) {
-                    if (sp04[i] != sp04[0]) {
-                        gMultiplayerRanks[sp00[i]] = i;
-                        gMultiplayerCharacters[sp00[i]] = 1;
+                    if (charRings[i] != charRings[0]) {
+                        gMultiplayerRanks[rankToPid[i]] = i;
+                        gMultiplayerCharacters[rankToPid[i]] = 1;
                     } else {
 #ifndef NON_MATCHING
                         // TODO: Match without goto
                         goto else_block;
 #else
-                        gMultiplayerRanks[sp00[i]] = i;
-                        gMultiplayerCharacters[sp00[i]] = 2;
+                        gMultiplayerRanks[rankToPid[i]] = i;
+                        gMultiplayerCharacters[rankToPid[i]] = 2;
 #endif
                     }
                 } else {
                     // _0801A1F4
-                    if (sp04[0] == sp04[1]) {
+                    if (charRings[0] == charRings[1]) {
 #ifndef NON_MATCHING
                     else_block:
 #endif
-                        gMultiplayerRanks[sp00[i]] = i;
-                        gMultiplayerCharacters[sp00[i]] = 2;
+                        gMultiplayerRanks[rankToPid[i]] = i;
+                        gMultiplayerCharacters[rankToPid[i]] = 2;
                     } else {
-                        gMultiplayerRanks[sp00[0]] = i;
-                        gMPRingCollectWins[sp00[0]]++;
-                        gMultiplayerCharacters[sp00[0]] = i;
+                        gMultiplayerRanks[rankToPid[0]] = i;
+                        gMPRingCollectWins[rankToPid[0]]++;
+                        gMultiplayerCharacters[rankToPid[0]] = i;
                     }
                 }
             }
@@ -523,7 +507,7 @@ void Task_TransitionToResultsScreen(void)
             s16 ownResult = 0;
             for (pid = 0; pid < MULTI_SIO_PLAYERS_MAX; pid++) {
 
-                if (!((gMultiplayerConnections >> pid) & 0x1))
+                if (!CONNECTION_REGISTERED(pid))
                     continue;
 
                 if (pid == SIO_MULTI_CNT->id)
@@ -576,17 +560,16 @@ void Task_TransitionToResultsScreen(void)
         return;
     }
 }
-#endif
 
 #if COLLECT_RINGS_ROM
-void CreateMultiplayerFinishHandler(void)
+void CreateMultiplayerFinishTransition(void)
 {
     u32 i;
     u32 r2;
     u8 r6;
     struct Task *mpt;
-    struct Task *t = TaskCreate(SA2_LABEL(Task_801A04C), sizeof(Finish2), 0x2000, 0, NULL);
-    Finish2 *f2 = TASK_DATA(t);
-    f2->unk0 = 0;
+    struct Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
+    FinishTransition *finishTransition = TASK_DATA(t);
+    finishTransition->frame = 0;
 }
 #endif
