@@ -49,7 +49,7 @@ GetEntityTextureById(AppState *state, EntityType etype, unsigned char id)
 }
 
 static inline void
-LoadCharacterTextures(GameId game, char *gameRoot, CharacterList *chars)
+LoadCharacterTextures(Game game, char *gameRoot, CharacterList *chars)
 {
     for(int c = 0; c < chars->count; c++) {
         Character *character = &chars->elements[c];
@@ -61,7 +61,7 @@ LoadCharacterTextures(GameId game, char *gameRoot, CharacterList *chars)
 }
 
 static inline void
-LoadEntityTextures(GameId game, char *gameRoot, EntityMetaList *ents)
+LoadEntityTextures(Game game, char *gameRoot, EntityMetaList *ents)
 {
     for(int c = 0; c < ents->count; c++) {
         EntityMeta *ent = &ents->elements[c];
@@ -73,7 +73,7 @@ LoadEntityTextures(GameId game, char *gameRoot, EntityMetaList *ents)
 }
 
 static inline void
-LoadInteractableTextures(GameId game, char *gameRoot, InteractableMetaList *ias)
+LoadInteractableTextures(Game game, char *gameRoot, InteractableMetaList *ias)
 {
     for(int c = 0; c < ias->count; c++) {
         InteractableMeta *ia = &ias->elements[c];
@@ -85,7 +85,7 @@ LoadInteractableTextures(GameId game, char *gameRoot, InteractableMetaList *ias)
 }
 
 static inline void
-LoadRingTexture(GameId game, char *gameRoot, EntityMeta *ring)
+LoadRingTexture(Game game, char *gameRoot, EntityMeta *ring)
 {
     int frame = 0;
     const char *animPath = TextFormat("%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png",
@@ -95,7 +95,7 @@ LoadRingTexture(GameId game, char *gameRoot, EntityMeta *ring)
 }
 
 static inline void
-LoadItemTextures(GameId game, char *gameRoot, ItemMetaList *items, short numCharacters)
+LoadItemTextures(Game game, char *gameRoot, ItemMetaList *items, short numCharacters)
 {
     const char *pathFormat = "%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png";
 
@@ -129,7 +129,7 @@ LoadItemTextures(GameId game, char *gameRoot, ItemMetaList *items, short numChar
 }
 
 void
-LoadAllEntityTextures(GameId game, char *gamePath, FileInfo *paths)
+LoadAllEntityTextures(Game game, char *gamePath, FileInfo *paths)
 {
     LoadCharacterTextures(game, gamePath, &paths->characters);
     LoadInteractableTextures(game, gamePath, &paths->interactables);

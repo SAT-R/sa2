@@ -595,7 +595,7 @@ GetMousePositionInRec(Rectangle rec) {
 }
 
 inline int
-GetMetatileIndex(GameId game, StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, int y)
+GetMetatileIndex(Game game, StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, int y)
 {
     ///assert(layer < LAYER_COUNT);
 
