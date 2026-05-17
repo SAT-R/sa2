@@ -14,7 +14,7 @@
 
 #include "constants/sa1/animations.h"
 
-typedef struct Game_2_0_Sub {
+typedef struct {
     union {
         // TODO: This union might actually be their shared global type?
         GameOverB overB;
@@ -24,7 +24,7 @@ typedef struct Game_2_0_Sub {
     u16 unk1A;
 } Game_2_0_Sub;
 
-typedef struct Game_2_0 {
+typedef struct {
     s16 unk0;
     s16 unk2;
     s16 unk4;

@@ -25,7 +25,7 @@
     DisplaySprite(s);
 #endif
 
-typedef struct SoundTestState {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC; // SoundTest114
     struct Task *task10; // SoundTest114
@@ -41,7 +41,7 @@ typedef struct SoundTestState {
     u8 unk2C;
 } SoundTestState; /* 0x30 */
 
-typedef struct SoundTest114 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     Sprite s2;

@@ -36,7 +36,7 @@ void Task_UpdateFireworkAnimation(void)
 {
     CasinoParadiseFirework *firework = TASK_DATA(gCurTask);
     Sprite *s = &firework->s;
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         TaskDestroy(gCurTask);
@@ -66,7 +66,7 @@ void Task_UpdateFireworkAnimation(void)
 
 void StageBgUpdate_Zone3Acts12(s32 x, s32 y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     const Collision *collision;
     s32 xSub, ySub;
     s32 scanline;

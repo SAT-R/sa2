@@ -195,7 +195,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sub_8048230.inc", void sub_804
                         worldX = (I(p->qWorldX) + 1);
                         worldX += p->spriteOffsetX;
 
-                        if (SA2_LABEL(sub_801E4E4)(worldY, worldX, p->layer, +8, NULL, sa2__sub_801EE64) < 0) {
+                        if (SA2_LABEL(sub_801E4E4)(worldY, worldX, p->layer, +8, NULL, SA2_LABEL(sub_801EE64)) < 0) {
                             goto _08048450;
                         }
                     }
@@ -929,7 +929,7 @@ void sub_8048E34(Player *p)
         }
 
         sub_8048980(p);
-        sa2__sub_80232D0(p);
+        SA2_LABEL(sub_80232D0)(p);
         Player_UpdatePosition(p);
 
         switch (p->SA2_LABEL(unk61)) {

@@ -74,7 +74,7 @@ void Task_DrowningCountdown(void)
 
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     struct Task *t = CreateMultiplayerSpriteTask(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s;
@@ -207,7 +207,7 @@ static void Task_SpawnAirBubbles(void)
 
     r1 += SIN((unk10 & 0xFF) * 4) >> 4;
     {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
         transform->x = I(r1) - cam->x;
         transform->y = I(r4) - cam->y;
     }

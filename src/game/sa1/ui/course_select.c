@@ -15,7 +15,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct CourseSelectState {
+typedef struct {
     StrcUi_805423C strc0;
     u8 fillerC[4];
     struct Task *task10;
@@ -33,7 +33,7 @@ typedef struct CourseSelectState {
     u8 unk59;
 } CourseSelectState;
 
-typedef struct CourseSelect_54 {
+typedef struct {
     Sprite s;
     u8 filler30[0x18];
     u32 unk48;
@@ -44,7 +44,7 @@ typedef struct CourseSelect_54 {
     u8 unk51;
 } CourseSelect_54;
 
-typedef struct CourseSelect_2DC {
+typedef struct {
     Sprite sprites[15];
     u32 unk2D0;
     u16 unk2D4;
@@ -64,7 +64,7 @@ extern u8 gUnknown_086A3DB4[];
 
 extern u8 gUnknown_03005140;
 
-typedef struct StaticTileInfo {
+typedef struct {
     void *vram;
     u32 anim;
     u32 variant;

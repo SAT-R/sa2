@@ -12,7 +12,7 @@
 
 #include "constants/sa1/animations.h"
 
-typedef struct Game2_5 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ GameOverB strc60;

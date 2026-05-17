@@ -20,7 +20,7 @@
 #include "constants/sa1/songs.h"
 #include "game/shared/stage/underwater_effects.h"
 
-typedef struct EggSpider {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
@@ -38,7 +38,7 @@ typedef struct EggSpider {
     /* 0x8A */ u8 unk8C;
 } EggSpider; /* 0x90 */
 
-typedef struct IciclePlatform {
+typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x30 */ u8 filler30[0x14];
     /* 0x44 */ CamCoord worldX;
@@ -568,7 +568,7 @@ void Task_8031480(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk6C);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk70);
 
-    res = sa2__sub_801F100(worldY + 0x38, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 0x38, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
     if (boss->unk84 > 120)
         if (res < 0) {

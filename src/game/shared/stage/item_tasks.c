@@ -178,7 +178,7 @@ void Task_Item_Shield_Normal(void)
     s32 pid2;
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Player *p;
     u32 itemEffect;
 #if (GAME == GAME_SA1) && !defined(NON_MATCHING)
@@ -310,7 +310,7 @@ void Task_Item_Shield_Magnetic(void)
     s32 pid2;
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Player *p;
     u32 itemEffect;
 #ifndef NON_MATCHING
@@ -383,9 +383,9 @@ UNUSED void Task_802ABC8(void)
     // I'm not sure why tese were swapped :(
 #if (GAME == GAME_SA1)
     Sprite *s = &item->s;
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 #else
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Sprite *s = &item->s;
 #endif
     s16 screenX, screenY;
@@ -441,7 +441,7 @@ void Task_Item_Invincibility(void)
     s32 pid = ITEMTASK_GET_PLAYER_NUM();
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s16 screenX, screenY;
     u32 priority;
     bool32 b;
@@ -540,7 +540,7 @@ void Task_Item_Confusion(void)
     Sprite *s = &item->s;
     u32 b;
 
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
         MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[param]);

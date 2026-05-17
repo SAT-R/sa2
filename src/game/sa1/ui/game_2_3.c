@@ -12,7 +12,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct Game_2_3_54 {
+typedef struct {
     u8 filler0[0x48];
     s32 unk48;
     s16 unk4C;
@@ -22,7 +22,7 @@ typedef struct Game_2_3_54 {
     u8 unk51;
 } Game_2_3_54;
 
-typedef struct Game_2_3_5C {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC; // -> Game_2_3_54
     struct Task *task10; // -> Game_2_3_2DC
@@ -38,7 +38,7 @@ typedef struct Game_2_3_5C {
     u8 unk58;
 } Game_2_3_5C;
 
-typedef struct Game_2_3_2DC {
+typedef struct {
     Sprite sprites[5];
     u8 fillerF0[0x1E0];
     s32 unk2D0;
@@ -66,7 +66,7 @@ extern u8 gUnknown_086A4FB4[];
 extern u16 gUnknown_086A4DB4[256];
 extern u8 gUnknown_086A5834[];
 
-typedef struct TileInfo32 {
+typedef struct {
     void *vram;
     u32 anim;
     u32 variant;

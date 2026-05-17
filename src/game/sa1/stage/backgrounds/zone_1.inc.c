@@ -6,7 +6,7 @@
 
 void StageBgUpdate_Zone1Acts12(s32 x, s32 UNUSED y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Background *bg;
     u16 *offsets;
     s32 i;

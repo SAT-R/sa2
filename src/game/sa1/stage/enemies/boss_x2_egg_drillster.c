@@ -17,7 +17,7 @@
 
 #define NUM_WHEELS 4
 
-typedef struct EggDrillster {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
@@ -39,7 +39,7 @@ typedef struct EggDrillster {
     /* 0x8D */ char filler8E[2];
 } EggDrillster; /* size = 0x90 */
 
-typedef struct Component {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ s16 unk32;
@@ -498,7 +498,7 @@ void Task_803623C()
     switch (boss->unk8D) {
         case 0:
             boss->unk84--;
-            res = sa2__sub_801F100(worldY + 20, worldX, 1, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(worldY + 20, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 boss->unk70 += Q(res);
                 boss->unk78 = 0;
@@ -684,7 +684,7 @@ void Task_8036810()
         component->unk38 += component->qUnk3E;
         worldX = component->worldX + I(component->unk34);
         worldY = component->worldY + I(component->unk38);
-        res = sa2__sub_801F100(worldY + 30, worldX, 1, 8, sa2__sub_801EC3C);
+        res = SA2_LABEL(sub_801F100)(worldY + 30, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
 
         if (res < 0) {
             component->unk38 += Q(res);

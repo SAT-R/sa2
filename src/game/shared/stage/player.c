@@ -4826,7 +4826,7 @@ void Task_PlayerHandleDeath(void)
     }
 }
 
-static inline bool32 DeadPlayerLeftScreen(Player *p, struct Camera *cam, s32 playerY)
+static inline bool32 DeadPlayerLeftScreen(Player *p, Camera *cam, s32 playerY)
 {
     if (p->moveState & MOVESTATE_80000000) {
         return FALSE;
@@ -4948,7 +4948,7 @@ void Task_PlayerMain(void)
 #endif
 
     if (p->moveState & MOVESTATE_DEAD) {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
         gCurTask->main = Task_PlayerDied;
         p->charState = CHARSTATE_DEAD;
         p->qSpeedAirX = 0;
@@ -6045,7 +6045,7 @@ void SA2_LABEL(sub_8024B10)(Player *p, PlayerSpriteInfo *inPsi)
     Sprite *s = &inPsi->s;
     PlayerSpriteInfo *psi = inPsi;
 
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s16 camX = cam->x;
     s16 camY = cam->y;
 
@@ -6497,7 +6497,7 @@ void SA2_LABEL(sub_8024F74)(Player *p, PlayerSpriteInfo *inPsi)
     Sprite *s = &inPsi->s;
     PlayerSpriteInfo *psi = inPsi;
 
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s16 camX = cam->x;
     s16 camY = cam->y;
 
@@ -9579,7 +9579,7 @@ void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED
 
 bool32 SA2_LABEL(sub_8029DE8)(Player *p)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s32 playerY = p->qWorldY;
 
 #ifndef COLLECT_RINGS_ROM
@@ -9615,7 +9615,7 @@ bool32 SA2_LABEL(sub_8029DE8)(Player *p)
 // Might've been an inline func, but doesn't match with it.
 UNUSED bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s32 playerY = p->qWorldY;
 
 #ifndef COLLECT_RINGS_ROM

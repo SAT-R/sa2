@@ -117,14 +117,14 @@ void Task_UpdateMpSpriteTaskSprite(void)
             }
 
             {
-                struct Camera *cam = &gCamera;
+                Camera *cam = &gCamera;
                 s->x = ts->x - cam->x;
                 s->y = ts->y - cam->y;
             }
         } break;
 
         case 1: {
-            struct Camera *cam = &gCamera;
+            Camera *cam = &gCamera;
 #if (GAME == GAME_SA1)
             s->x = ts->x - cam->SA2_LABEL(unk52);
             s->y = ts->y - cam->SA2_LABEL(unk54);

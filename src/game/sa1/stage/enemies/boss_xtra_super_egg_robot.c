@@ -261,11 +261,11 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8050194.inc", s
     var_r3 = I(temp_r8->unk0.qUnk54);
     sinV = (SIN_24_8(temp_r1_2) << 0xC);
     temp_r6 = var_r3 + ((((COS_24_8(temp_r1_2) * Q(9)) - (sinV)) >> 0x10) + 6);
-    temp_sb = sa2__sub_801F100(temp_r6, var_r7 + 0x10, 1, 8, sa2__sub_801EC3C);
+    temp_sb = SA2_LABEL(sub_801F100)(temp_r6, var_r7 + 0x10, 1, 8, SA2_LABEL(sub_801EC3C));
     temp_r4 = I(temp_r8->unk0.qUnk54);
     temp_r2 = sp8 >> 6;
     temp_r4 = (temp_r4 + (((((SIN_24_8(temp_r2)) * Q(21)) + (COS_24_8(temp_r2) << 0xB)) >> 0x10))) + 6;
-    var_sl = sa2__sub_801F100(temp_r4, var_r7 + 21, 1, 8, sa2__sub_801EC3C);
+    var_sl = SA2_LABEL(sub_801F100)(temp_r4, var_r7 + 21, 1, 8, SA2_LABEL(sub_801EC3C));
     if (var_sl > temp_sb) {
         var_sl = temp_sb;
     }
@@ -293,10 +293,10 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8050194.inc", s
     var_r3 = I(temp_r8_2->unk0.qUnk54);
     sinV = ((SIN_24_8(temp_r5_2 >> 6)) << 0xC);
     temp_r5_3 = var_r3 + (((((COS_24_8(temp_r5_2 >> 6)) * Q(9)) - sinV) >> 0x10) + 6);
-    temp_sb_2 = sa2__sub_801F100(temp_r5_3, var_r7_2 + 16, 1, 8, sa2__sub_801EC3C);
+    temp_sb_2 = SA2_LABEL(sub_801F100)(temp_r5_3, var_r7_2 + 16, 1, 8, SA2_LABEL(sub_801EC3C));
     temp_r4_2 = I(temp_r8_2->unk0.qUnk54);
     temp_r4_2 += ((((SIN_24_8(spC >> 6)) * Q(21)) + ((COS_24_8(spC >> 6)) << 0xB)) >> 0x10) + 6;
-    var_r6 = sa2__sub_801F100(temp_r4_2, var_r7_2 + 21, 1, 8, sa2__sub_801EC3C);
+    var_r6 = SA2_LABEL(sub_801F100)(temp_r4_2, var_r7_2 + 21, 1, 8, SA2_LABEL(sub_801EC3C));
     if (var_r6 > temp_sb_2) {
         var_r6 = temp_sb_2;
     }
@@ -322,7 +322,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8050194.inc", s
         var_r4 = Mod(var_r4 - 72, 0xA80) + 72;
     }
 
-    var_r0 = sa2__sub_801F100(temp_r7, var_r4, 1, 8, sa2__sub_801EC3C);
+    var_r0 = SA2_LABEL(sub_801F100)(temp_r7, var_r4, 1, 8, SA2_LABEL(sub_801EC3C));
     var_r1 = var_r6;
     if (var_r1 > var_sl) {
         var_r1 = var_sl;
@@ -537,7 +537,7 @@ void sub_8050888()
     s->frameFlags = (s->frameFlags & 0xFFFE7FFF) | 0x10000;
     UpdateSpriteAnimation_BG(s);
     DisplaySprite_BG(s);
-    sa2__sub_8003EE4((strc->unk70 >> 6), 0x100, 0x100, 0x7C, 0x80, screenX, screenY, gBgAffineRegs);
+    SA2_LABEL(sub_8003EE4)((strc->unk70 >> 6), 0x100, 0x100, 0x7C, 0x80, screenX, screenY, gBgAffineRegs);
 
     switch (boss->unk6E) {
         case 4:

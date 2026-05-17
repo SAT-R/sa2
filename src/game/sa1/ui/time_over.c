@@ -10,14 +10,14 @@
 #include "constants/sa1/animations.h"
 #include "constants/sa1/zones.h"
 
-typedef struct TimeOverState {
+typedef struct {
     StrcUi_805423C strc0;
     Sprite s;
     Sprite s2;
     s32 timer;
 } TimeOverState;
 
-typedef struct TimeOverTimer {
+typedef struct {
     struct Task *t; // -> TimeOverState
     s16 timer;
 } TimeOverTimer;

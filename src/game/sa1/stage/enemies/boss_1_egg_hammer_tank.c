@@ -16,7 +16,7 @@
 #include "constants/sa1/anim_sizes.h"
 #include "constants/sa1/songs.h"
 
-typedef struct EHTArm {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s16 unk3C;
@@ -29,7 +29,7 @@ typedef struct EHTArm {
     /* 0x50 */ u8 unk50;
 } EHTArm; /* 0x54 */
 
-typedef struct EHTHammer {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s16 unk3C;
@@ -43,7 +43,7 @@ typedef struct EHTHammer {
     /* 0x50 */ u8 unk50;
 } EHTHammer; /* 0x54 */
 
-typedef struct EggHammerTank {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -1041,7 +1041,7 @@ void Task_80272D0(void)
     arm->qUnk48 += arm->qUnk4E;
 
     if (arm->qUnk4E > 0) {
-        s32 res = sa2__sub_801F100(arm->unk3E + I(arm->qUnk48), arm->unk3C + I(arm->qUnk44), 1, 8, sa2__sub_801EC3C);
+        s32 res = SA2_LABEL(sub_801F100)(arm->unk3E + I(arm->qUnk48), arm->unk3C + I(arm->qUnk44), 1, 8, SA2_LABEL(sub_801EC3C));
         if (res < 0) {
             arm->qUnk48 = arm->qUnk48 + Q(res);
             arm->qUnk4E = (arm->qUnk4E >> 2) - arm->qUnk4E;
@@ -1256,7 +1256,8 @@ void Task_8027714(void)
     hammer->qUnk48 += hammer->qUnk4E;
 
     if (hammer->qUnk4E > 0) {
-        s32 res = sa2__sub_801F100(hammer->unk3E + I(hammer->qUnk48), hammer->unk3C + I(hammer->qUnk44), 1, 8, sa2__sub_801EC3C);
+        s32 res
+            = SA2_LABEL(sub_801F100)(hammer->unk3E + I(hammer->qUnk48), hammer->unk3C + I(hammer->qUnk44), 1, 8, SA2_LABEL(sub_801EC3C));
         if (res < 0) {
             hammer->qUnk48 = hammer->qUnk48 + Q(res);
             hammer->qUnk4E = (hammer->qUnk4E >> 2) - hammer->qUnk4E;

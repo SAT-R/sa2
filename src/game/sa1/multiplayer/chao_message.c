@@ -18,7 +18,7 @@
 
 #define CM_BACKGROUND_COLOR RGB16_REV(0, 27, 30)
 
-typedef struct ChaoMessage {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ u8 unk40[2][4];
     /* 0x48 */ s16 unk48[4];
@@ -29,14 +29,14 @@ typedef struct ChaoMessage {
     /* 0x56 */ u8 unk56;
 } ChaoMessage; /* 0x58 */
 
-typedef struct ChaoMsgSprite {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s16 unk30;
     /* 0x32 */ s16 unk32;
     /* 0x34 */ u8 unk34;
 } ChaoMsgSprite; /* 0x38 */
 
-typedef struct ChaoMsg68 {
+typedef struct {
     GameOverB overBs[4];
     s16 unk60;
     s16 unk62;

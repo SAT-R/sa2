@@ -12,7 +12,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct TimeAttackLobby {
+typedef struct {
     /* 0x000 */ Sprite sprites[4];
     /* 0x0C0 */ Sprite s2;
     /* 0x0F0 */ Sprite s3;

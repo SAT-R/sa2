@@ -39,7 +39,7 @@ typedef struct {
     /* 0x8D */ u8 unk8E;
 } EggWrecker; /* 0x90 */
 
-typedef struct EggWrecker_44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x30 */ s16 unk32;

@@ -19,12 +19,12 @@
 #include "constants/sa1/tilemaps.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct SpriteStrc {
+typedef struct {
     Sprite s;
     u8 filler30[0x8];
 } SpriteStrc;
 
-typedef struct MPStrc1 {
+typedef struct {
     /*  0x00 */ Background bg0;
     /*  0x40 */ u8 filler40[0x40];
     /*  0x80 */ SpriteStrc sprites[4];
@@ -37,7 +37,7 @@ typedef struct MPStrc1 {
     /* 0x432 */ s16 unk432;
 } MPStrc1; /* 0x434 */
 
-typedef struct MPStrc2 {
+typedef struct {
     /* 0x00 */ GameOverB overBs[4];
     /* 0x60 */ u16 unk60;
     /* 0x60 */ u16 unk62;

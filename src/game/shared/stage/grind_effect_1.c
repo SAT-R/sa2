@@ -62,7 +62,7 @@ void Task_GrindEffect(void)
 #endif
         GrindEffect *spark = TASK_DATA(gCurTask);
         Sprite *s = &spark->s;
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
         s->x = I(p->qWorldX) - cam->x;
         s->y = (I(p->qWorldY) + p->spriteOffsetY) - cam->y;
 

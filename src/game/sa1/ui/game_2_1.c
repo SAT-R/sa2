@@ -15,7 +15,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct Game_2_1_2C {
+typedef struct {
     u8 filler0[0xC];
     struct Task *taskC;
     struct Task *task10;
@@ -28,7 +28,7 @@ typedef struct Game_2_1_2C {
     u16 unk2A;
 } Game_2_1_2C;
 
-typedef struct Game_2_1_34 {
+typedef struct {
     union {
         // TODO: This union might actually be their shared global type?
         GameOverB overB;

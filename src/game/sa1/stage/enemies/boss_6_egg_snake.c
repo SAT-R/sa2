@@ -17,7 +17,7 @@
 
 #define NUM_SEGMENTS 9
 
-typedef struct EggSnakeSegment {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
@@ -31,7 +31,7 @@ typedef struct EggSnakeSegment {
     /* 0x52 */ u8 unk52;
 } EggSnakeSegment;
 
-typedef struct EggSnakeSegmentManager {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ struct Task *tasks[NUM_SEGMENTS];
     /* 0x54 */ u8 unk54;
@@ -45,7 +45,7 @@ typedef struct EggSnakeSegmentManager {
     s16 unk5E;
 } EggSnakeSegmentManager; /* 0x60 */
 
-typedef struct EggSnakeProjectile {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ u16 unk60;
@@ -58,7 +58,7 @@ typedef struct EggSnakeProjectile {
     /* 0x72 */ CamCoord originY;
 } EggSnakeProjectile; /* 0x74 */
 
-typedef struct EggSnake {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -88,7 +88,7 @@ typedef struct EggSnake {
 } EggSnake; /* 0xAC */
 
 // static memory at 0x03005860
-typedef struct PlayerSpeedState {
+typedef struct {
     /* 0x00 */ s32 qWorldX;
     /* 0x04 */ s32 qWorldY;
     /* 0x08 */ s16 qSpeedAirX;
@@ -681,7 +681,7 @@ void Task_8032AF8(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk78);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk7C);
 
-    res = sa2__sub_801F100(worldY, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
     if (res < 0) {
         boss->unk98 = 60;
@@ -1106,7 +1106,7 @@ void CreateProjectile()
     newProj->unk68 = Q(boss->unk92);
     temp_r3 = I(gPlayer.qWorldX) - (newProj->originX + I(newProj->unk64));
     temp_r1 = I(gPlayer.qWorldY) - (newProj->originY + I(newProj->unk68));
-    angle = sa2__sub_8004418(temp_r1 / 2, temp_r3 / 2);
+    angle = SA2_LABEL(sub_8004418)(temp_r1 / 2, temp_r3 / 2);
     newProj->unk6C = COS_24_8(angle);
     newProj->unk6E = SIN_24_8(angle);
     newProj->s.x = 0;

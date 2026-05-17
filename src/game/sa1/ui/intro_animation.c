@@ -18,7 +18,7 @@
 
 #define EMERALD_START_X DISPLAY_CENTER_X
 #define EMERALD_START_Y -36
-typedef struct IntroSprite {
+typedef struct {
     Sprite s;
     u16 unk30;
     u8 unk32;
@@ -28,14 +28,14 @@ typedef struct IntroSprite {
     s32 qUnk40;
 } IntroSprite; /* 0x44 */
 
-typedef struct Intro_C8 {
+typedef struct {
     Sprite sprites[3];
     u8 filler60[0x24];
     u16 unkB4;
     u8 fillerB6[0x12];
 } Intro_C8; /* 0xC8 */
 
-typedef struct Intro_54 {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC;
     struct Task *beamTasks[INTRO_SPOTLIGHT_COUNT]; // -> SpotlightBeam
@@ -110,7 +110,7 @@ const s16 gUnknown_0868B280[2] = { 0x5C, 0x5A };
 const s16 gUnknown_0868B284[2] = { 0x58, 0x70 };
 const s16 gUnknown_0868B288[2] = { 0x1C, 0x5A };
 // TODO: This struct already appeared somewhere else. Merge them!
-typedef struct LocalTileInfo {
+typedef struct {
     u32 anim;
     u32 variant;
     void *vram;

@@ -10,7 +10,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct MPResults {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ Sprite s;
     /* 0x70 */ Sprite s2;

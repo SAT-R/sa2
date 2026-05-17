@@ -6,7 +6,7 @@
 #include "game/sa1/save.h"
 #include "game/sa1/stage/stage_ui.h"
 
-typedef struct VsRecord_10 {
+typedef struct {
     s32 unk0;
     u8 unk4[8];
     s8 unkC;
@@ -15,7 +15,7 @@ typedef struct VsRecord_10 {
     u8 unkF;
 } VsRecord_10;
 
-typedef struct VsRecord_48 {
+typedef struct {
     /* 0x00 */ StrcUi_805423C strc;
     /* 0x0C */ Sprite s;
     /* 0x3C */ struct Task *task3C;
@@ -23,7 +23,7 @@ typedef struct VsRecord_48 {
     /* 0x44 */ s32 unk44;
 } VsRecord_48;
 
-typedef struct VsRecord_F0 {
+typedef struct {
     /* 0x00 */ VsRecord_10 records[10];
     /* 0xA0 */ GameOverB unkA0;
     /* 0xB8 */ Sprite s;

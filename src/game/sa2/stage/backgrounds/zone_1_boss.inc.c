@@ -4,7 +4,7 @@
 
 void StageBgUpdate_Zone1ActBoss(UNUSED s32 x, UNUSED s32 y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     if (!PLAYER_IS_ALIVE) {
         gStageTime--;
     }

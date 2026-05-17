@@ -17,14 +17,14 @@
 
 /* These are the records appearing after selecting / before starting to play a stage */
 
-typedef struct CharacterCard {
+typedef struct {
     const u8 *tiles;
     s32 tilesSize;
     const u16 *palette;
     const u8 *layout;
 } CharacterCard;
 
-typedef struct TimeAttackRecords {
+typedef struct {
     /* 0x00 */ Sprite sprites[3];
     /* 0x90 */ Sprite s3;
     /* 0xC0 */ GameOverB overB;

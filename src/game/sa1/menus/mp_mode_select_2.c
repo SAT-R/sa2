@@ -36,7 +36,7 @@ typedef enum PakModes {
     PM_COUNT
 } PakModes;
 
-typedef struct ModeSelect {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ Sprite s[3];
     /* 0xD0 */ Sprite s4;
@@ -60,7 +60,7 @@ typedef struct ModeSelect {
     /* 0x219 */ u8 unk219;
 } ModeSelect; /* 0x21C */
 
-typedef struct SioMultiplayerScore {
+typedef struct {
     u16 unk0;
     u8 unk2;
     u8 unk3;
@@ -81,7 +81,7 @@ void Task_800F058(void);
 
 extern const VoidFn gUnknown_080BB3F8[9];
 
-void sa2__sub_80818B8(void)
+void SA2_LABEL(sub_80818B8)(void)
 {
     u32 var_r1;
     u8 temp_r4_3;

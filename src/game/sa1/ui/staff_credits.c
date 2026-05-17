@@ -25,7 +25,7 @@ const ALIGNED(4) u16 gUnknown_086886A0[12] = {
     322, 0, //
 };
 
-typedef struct StaffCredits {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ u8 unk60[8];
@@ -41,7 +41,7 @@ typedef struct StaffCredits {
     /* 0x7C */ u32 unk7C;
 } StaffCredits;
 
-typedef struct Credits_18 {
+typedef struct {
     /* 0x00 */ StrcUi_805423C strc;
     /* 0x0C */ struct Task *task1; // -> (StaffCredits *)
     /* 0x10 */ struct Task *task2; // -> (StaffCredits *)

@@ -17,7 +17,7 @@
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
 
-typedef struct EggBall {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
@@ -40,7 +40,7 @@ typedef struct EggBall {
     /* 0x98 */ void *vram98;
 } EggBall;
 
-typedef struct EggBall_44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 qUnk30;
     /* 0x34 */ s32 qUnk34;
@@ -50,7 +50,7 @@ typedef struct EggBall_44 {
     /* 0x42 */ u8 unk42;
 } EggBall_44;
 
-typedef struct EggBall_Pipe {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     s16 unk3C;
@@ -621,7 +621,7 @@ void Task_802FC14(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk70);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk74);
 
-    res = sa2__sub_801F100(worldY + 0x18, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 0x18, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
     if (res < 0) {
         boss->qUnk74 += Q(res);
         boss->qUnk90 = (boss->qUnk90 >> 2) - boss->qUnk90;
@@ -862,7 +862,7 @@ void Task_8030414(void)
     s->y = worldY - gCamera.y;
 
     if (boss_44->qUnk3C > 0) {
-        s32 res = sa2__sub_801F100(worldY + 0x18, worldX, 1, 8, &sa2__sub_801EC3C);
+        s32 res = SA2_LABEL(sub_801F100)(worldY + 0x18, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
         if (res < 0) {
             boss_44->qUnk34 += Q(res);

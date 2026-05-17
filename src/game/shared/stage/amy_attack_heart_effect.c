@@ -196,7 +196,7 @@ static void Task_AmyAttackHeartEffect(void)
     }
 
     for (i = 0; i < ARRAY_COUNT(hearts->sprHearts); i++) {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
 
         if (hearts->animFrames[i].count != 0) {
             Sprite *s;

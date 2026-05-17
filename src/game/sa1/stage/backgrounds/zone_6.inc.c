@@ -222,7 +222,7 @@ void StageBgUpdate_Zone6Act1(s32 x, s32 y)
 
 void StageBgUpdate_Zone6Act2(s32 x, s32 y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     const Collision *coll;
 #ifndef NON_MATCHING
     register s32 xSub asm("r9");

@@ -15,7 +15,7 @@
 #define FRAME_RELAY_A 90
 #define FRAME_RELAY_B 150
 
-typedef struct SpecialStageIntro44 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -25,7 +25,7 @@ typedef struct SpecialStageIntro44 {
 } SpecialStageIntro44;
 
 // TODO: Integrate SpecialStageIntro44 into this?
-typedef struct SpecialStageIntroC4 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -37,7 +37,7 @@ typedef struct SpecialStageIntroC4 {
 } SpecialStageIntroC4; /* 0xC4 */
 
 // TODO: Integrate SpecialStageIntro44 into this?
-typedef struct SpecialStageIntro64 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -47,7 +47,7 @@ typedef struct SpecialStageIntro64 {
     s32 unk44[8];
 } SpecialStageIntro64; /* 0xC4 */
 
-typedef struct SpecialStageIntro20 {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC; // SpecialStageIntro64
     struct Task *task10; // SpecialStageIntro64
@@ -58,7 +58,7 @@ typedef struct SpecialStageIntro20 {
     s16 unk1E;
 } SpecialStageIntro20;
 
-typedef struct SpecialStageIntro28 {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC; // SpecialStageIntro44
     struct Task *task10; // SpecialStageIntro44

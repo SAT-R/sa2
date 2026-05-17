@@ -28,7 +28,7 @@ typedef enum PakModes {
     PM_COUNT
 } PakModes;
 
-typedef struct ModeSelect {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ Sprite s[3];
     /* 0xD0 */ Sprite s4;

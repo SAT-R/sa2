@@ -15,7 +15,7 @@
 
 /* TODO: Maybe inline this file into bosses_misc.c ? */
 
-typedef struct PostBossEggMobile {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ CamCoord worldX;

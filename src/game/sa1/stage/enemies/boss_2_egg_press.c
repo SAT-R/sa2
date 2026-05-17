@@ -17,7 +17,7 @@
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
 
-typedef struct EggPress {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved[2];
@@ -723,7 +723,7 @@ void Task_802EA8C(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk94);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk98);
 
-    res = sa2__sub_801F100(worldY + 0x10, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 0x10, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
     if (res < 0) {
         boss->qUnk98 += Q(res);
         boss->qUnkB2 = (boss->qUnkB2 >> 2) - boss->qUnkB2;

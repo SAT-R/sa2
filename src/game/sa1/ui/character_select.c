@@ -23,20 +23,20 @@
 #define CIDX_BLOCK  3 // appears when a character was chosen already in MP
 #define CIDX_COUNT  4
 
-typedef struct CharSelect_20 {
+typedef struct {
     GameOverB overB;
     s32 unk18;
     u16 unk1C;
     s16 unk1E;
 } CharSelect_20;
 
-typedef struct CharSelect_34 {
+typedef struct {
     Sprite s;
     u16 unk30;
     u16 unk32;
 } CharSelect_34;
 
-typedef struct CharSelect_3C {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC; // -> CharSelect_Chars
     struct Task *task10; // -> CharSelect_20
@@ -56,7 +56,7 @@ typedef struct CharSelect_3C {
     u8 unk39;
 } CharSelect_3C;
 
-typedef struct CharSelect_44 {
+typedef struct {
     GameOverB overB;
     GameOverB overB2;
     u32 unk30;
@@ -66,7 +66,7 @@ typedef struct CharSelect_44 {
     s16 unk40;
 } CharSelect_44;
 
-typedef struct CharSelect_Chars {
+typedef struct {
     Sprite sprites[CIDX_COUNT];
     u32 unkC0;
     s16 unkC4;

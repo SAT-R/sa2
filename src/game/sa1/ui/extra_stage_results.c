@@ -15,7 +15,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct CongratulationsAnim_48 {
+typedef struct {
     StrcUi_805423C strc0;
     struct Task *taskC;
     struct Task *task10;
@@ -33,7 +33,7 @@ typedef struct CongratulationsAnim_48 {
     s16 unk46;
 } CongratulationsAnim_48;
 
-typedef struct ExtraStageResults_64 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u32 unk3C;
@@ -45,7 +45,7 @@ typedef struct ExtraStageResults_64 {
 
 // TODO:
 // This might just have been struct ExtraStageResults_164 all along?
-typedef struct ExtraStageResults_64_2 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u16 unk3C;
@@ -55,7 +55,7 @@ typedef struct ExtraStageResults_64_2 {
     s32 qUnk54[4];
 } ExtraStageResults_64_2;
 
-typedef struct ExtraStageResults_164 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u16 unk3C;
@@ -73,7 +73,7 @@ typedef struct ExtraStageResults_164 {
     u8 filler15E[0x7];
 } ExtraStageResults_164;
 
-typedef struct ExtraStageResultsState {
+typedef struct {
     StrcUi_805423C strc0; // -> ExtraStageResults_64
     struct Task *taskC; // -> ExtraStageResults_64
     struct Task *task10; // -> ExtraStageResults_64

@@ -31,7 +31,7 @@ void Task_ScreenShake(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
 
         if (shake->flags & SCREENSHAKE_RANDOM_VALUE) {
             factor = ((u32)(PseudoRandom32() << 15) >> 23) - 0xFF;
@@ -89,7 +89,7 @@ static void TaskDestructor_ScreenShake(struct Task *t)
 {
     ScreenShake *shake = TASK_DATA(t);
 
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 
     if (shake->flags & SCREENSHAKE_HORIZONTAL) {
         cam->shakeOffsetX = 0;

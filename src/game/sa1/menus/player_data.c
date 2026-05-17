@@ -21,7 +21,7 @@ typedef enum EPDM_Options {
     PDM_OPTION_COUNT
 } EPDM_Options;
 
-typedef struct PlayerDataMenu {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2[PDM_OPTION_COUNT + 1];
     /* 0xF0 */ StrcUi_805423C strcF0;

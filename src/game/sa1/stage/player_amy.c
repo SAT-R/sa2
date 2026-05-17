@@ -187,7 +187,7 @@ void Player_Amy_80495F0(Player *p)
 {
     Player_804726C(p);
     Player_8047280(p);
-    sa2__sub_80232D0(p);
+    SA2_LABEL(sub_80232D0)(p);
     Player_UpdatePosition(p);
     PlayerFn_Cmd_UpdateAirFallSpeed(p);
     Player_8047224(p);

@@ -13,7 +13,7 @@
 
 /*   Used by Chao Hunt and Collect Rings as HUD task   */
 
-typedef struct ChaoHuntHUD {
+typedef struct {
     Sprite s0;
     Sprite spritesA[11];
     Sprite spritesB[11];

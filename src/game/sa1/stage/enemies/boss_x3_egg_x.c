@@ -24,7 +24,7 @@
 
 /* X-Zone Final Boss */
 
-typedef struct EggX_10 {
+typedef struct {
     u16 unk0;
     u16 unk2;
     u16 unk4;
@@ -36,7 +36,7 @@ typedef struct EggX_10 {
     u16 unkE;
 } EggX_10;
 
-typedef struct EggX_48 {
+typedef struct {
     Sprite s;
     u16 unk30;
     u8 filler32[0x2];
@@ -50,7 +50,7 @@ typedef struct EggX_48 {
     u8 filler46[0x2];
 } EggX_48;
 
-typedef struct EggX_Sparkle {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ u16 unk3C;
@@ -72,7 +72,7 @@ typedef struct EggX_Sparkle {
     /* 0x62 */ u8 unk62;
 } EggX_Sparkle;
 
-typedef struct EggX_7C {
+typedef struct {
     Sprite s;
     Sprite s2;
     s16 unk60;
@@ -89,7 +89,7 @@ typedef struct EggX_7C {
     u8 unk7B;
 } EggX_7C;
 
-typedef struct EggX {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -1083,7 +1083,7 @@ void Task_8038154()
     switch (boss->unk99) {
         case 0:
             boss->unk92--;
-            res = sa2__sub_801F100(worldY + 20, worldX, 1, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(worldY + 20, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 boss->qUnk78 += Q(res);
                 boss->qUnk80 = (boss->qUnk80 >> 2) - boss->qUnk80;
@@ -1971,7 +1971,7 @@ void Task_80397A8(void)
     strc48->qUnk38 += strc48->qUnk3E;
     worldX = I(strc48->qUnk34) + strc48->unk40;
     worldY = I(strc48->qUnk38) + strc48->unk42;
-    res = sa2__sub_801F100(worldY + 8, worldX, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
     if (res < 0) {
         s32 v16;
         s32 v;
@@ -2152,7 +2152,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_x3__Task_8039A64.inc", vo
 
             worldX = ABS(worldX);
 
-            worldX = (u16)sa2__sub_8004418(worldY, worldX);
+            worldX = (u16)SA2_LABEL(sub_8004418)(worldY, worldX);
             if ((u32)((u32)((worldX - 225) + 0xFF1F0000) >> 0x10) < 0x11F) {
                 worldX = 224;
             }
@@ -2487,7 +2487,7 @@ void Task_803A46C()
     worldX = I(sparkle->unk54);
     worldY = I(sparkle->unk58);
 
-    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
 
     if (res < 0) {
         sparkle->unk58 += Q(res);
@@ -2587,7 +2587,7 @@ void sub_803A650(CamCoord worldX, CamCoord worldY)
 }
 
 // Belongs to sub_803A6EC, might be able to be removed once matched...
-typedef struct Test {
+typedef struct {
     Sprite *s;
 } Test;
 

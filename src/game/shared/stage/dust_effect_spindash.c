@@ -49,7 +49,7 @@ struct Task *CreateSpindashDustEffect()
 
 void Task_SpindashDustEffect(void)
 {
-    struct Camera *cam;
+    Camera *cam;
     Player *p = &gPlayer;
     s32 offY;
 
@@ -110,7 +110,7 @@ void Task_SpindashDustEffect(void)
 
 void Task_SpindashDustEffectBig(void)
 {
-    struct Camera *cam;
+    Camera *cam;
     Player *p = &gPlayer;
     s32 offY;
 

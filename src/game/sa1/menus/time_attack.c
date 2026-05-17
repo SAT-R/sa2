@@ -11,7 +11,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct TimeAttackMenu {
+typedef struct {
     StrcUi_805423C unk0;
     Sprite s;
     Sprite s2;

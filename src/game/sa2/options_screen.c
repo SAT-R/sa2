@@ -1250,7 +1250,7 @@ void CreateNewProfileScreen(void)
     struct Task *t;
     struct LanguageScreen *languageScreen;
 
-    ShuffleRngSeed();
+    SHUFFLE_RNG_SEED();
 
     t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, TASK_x0004, NULL);
     languageScreen = TASK_DATA(t);
@@ -3420,7 +3420,7 @@ static void Task_ProfileNameScreenMain(void)
 
     ProfileNameScreenRenderUI();
 
-    ShuffleRngSeed();
+    SHUFFLE_RNG_SEED();
 
     // Don't bother continuing if we take input
     // from any other functions
@@ -5812,7 +5812,7 @@ static void Task_LanguageScreenFadeOutAndExit(void)
     TaskDestroy(gCurTask);
 }
 
-static void ReseedRng(void) { ShuffleRngSeed(); }
+static void ReseedRng(void) { SHUFFLE_RNG_SEED(); }
 
 static void LanguageScreenRenderUI(void)
 {

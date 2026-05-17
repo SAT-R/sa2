@@ -70,18 +70,18 @@ const u8 gUnknown_080BB327[] = { 0, 1, 3, 2, 0 };
 const VoidFn sMainMenuSecondaryItems[NUM_MAIN_MENU_ITEMS - 1]
     = { CreateMultiplayerModeSelectScreen, CreateTimeAttackMenu, CreateOptionsMenu, LoadTinyChaoGarden };
 
-typedef struct SegaLogo {
+typedef struct {
     u16 unk0;
     Background bg;
 } SegaLogo; /* 0x44 */
 
-typedef struct SonicTeamLogo {
+typedef struct {
     u16 unk0;
     Background bg;
     s16 qFade;
 } SonicTeamLogo; /* 0x48 */
 
-typedef struct MainMenu {
+typedef struct {
     /* 0x000 */ Sprite s;
     /* 0x030 */ Sprite items[NUM_MAIN_MENU_ITEMS];
     /* 0x120 */ Background bg120;
@@ -324,7 +324,7 @@ void Task_800D4B0(void)
     CreateTitleScreen(1);
 }
 
-typedef struct TitleScreen {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ Background bg;
@@ -514,7 +514,7 @@ void CreateMainMenu(u32 param0)
     s8 *temp_r0;
 
     struct Task *t;
-    struct MainMenu *menu;
+    MainMenu *menu;
     Sprite *s;
     Background *bg;
 

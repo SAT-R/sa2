@@ -16,7 +16,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h" // for UILANG_COUNT
 
-typedef struct OptionsMenu {
+typedef struct {
     /* 0x000 */ Sprite s0;
     /* 0x030 */ Sprite sprites30[8];
     /* 0x1B0 */ Sprite s1B0;

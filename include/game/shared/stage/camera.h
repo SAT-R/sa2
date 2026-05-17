@@ -30,83 +30,52 @@ typedef void (*BgUpdate)(s32, s32);
 
 // NOTE: This was copy-pasted from SA2.
 //       There are type differences for members
-typedef struct Camera {
+typedef struct {
     /* 0x00|0x04 */ CamCoord x; // TODO: might this be unsigned actually?
     /* 0x02|0x04 */ CamCoord y; // TODO: might this be unsigned actually?
-#if (GAME == GAME_SA1)
-    /* 0x04 */ s16 SA2_LABEL(unk8);
-    /* 0x06 */ s16 SA2_LABEL(unkC);
+    /* 0x04 */ CamCoord SA2_LABEL(unk8);
+    /* 0x06 */ CamCoord SA2_LABEL(unkC);
     /* 0x08 */ CamCoord SA2_LABEL(unk10);
     /* 0x0A */ CamCoord SA2_LABEL(unk14);
-    /* 0x0C */ s16 shiftX;
-    /* 0x0E */ s16 shiftY;
-    /* 0x10 */ s16 SA2_LABEL(unk20);
-    /* 0x12 */ s16 SA2_LABEL(unk24);
-
+    /* 0x18 */ CamCoord shiftX;
+    /* 0x1C */ CamCoord shiftY;
+    /* 0x20 */ CamCoord SA2_LABEL(unk20);
+    /* 0x12 */ CamCoord SA2_LABEL(unk24);
     // TODO: Why are X/Y swapped?
     //       Did they make this a matrix or sth.?
     //       (Used to calc min/max cam pos in UpdateCamera())
-    /* 0x14 */ s16 minY;
-    /* 0x16 */ s16 maxY;
-    /* 0x18 */ s16 minX;
-    /* 0x1A */ s16 maxX;
+    /* 0x28 */ CamCoord minY;
+    /* 0x2c */ CamCoord maxY;
+    /* 0x30 */ CamCoord minX;
+    /* 0x34 */ CamCoord maxX;
+#if (GAME == GAME_SA2)
+    /* 0x38 */ CamCoord dx;
+    /* 0x3c */ CamCoord dy;
+#endif
     /* 0x1C */ s16 SA2_LABEL(unk40);
-    /* 0x1E */ s16 SA2_LABEL(unk44);
-    /* 0x20 */ s16 SA2_LABEL(unk48);
-    /* 0x22 */ s16 SA2_LABEL(unk4C);
+    /* 0x1E */ CamCoord SA2_LABEL(unk44);
+    /* 0x20 */ CamCoord SA2_LABEL(unk48);
+    /* 0x22 */ CamCoord SA2_LABEL(unk4C);
+#if (GAME == GAME_SA1)
     /* 0x24 */ u16 unk24;
+#endif
+    // 0x4 = spectator
+    // mode
     /* 0x26 */ u16 SA2_LABEL(unk50);
     /* 0x28 */ u16 SA2_LABEL(unk52);
     /* 0x2A */ u16 SA2_LABEL(unk54);
+#if (GAME == GAME_SA2)
+    /* 0x56 */ s16 unk56;
+#endif
     /* 0x2C */ BgUpdate fnBgUpdate;
     /* 0x30 */ struct Task *movementTask;
     /* 0x34 */ s16 shakeOffsetX;
     /* 0x36 */ s16 shakeOffsetY;
     /* 0x38 */ s16 SA2_LABEL(unk64);
     /* 0x3A */ u8 spectatorTarget;
-    /* 0x3B */ u8 filler3B[0x2];
-#elif (GAME == GAME_SA2)
-    /* 0x08 */ s32 unk8;
-    /* 0x0C */ s32 unkC;
-    /* 0x10 */ s32 unk10;
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ s32 shiftX;
-    /* 0x1C */ s32 shiftY;
-    /* 0x20 */ s32 unk20;
-    /* 0x24 */ s32 unk24;
-
-    // TODO: Why are X/Y swapped?
-    //       Did they make this a matrix or sth.?
-    //       (Used to calc min/max cam pos in UpdateCamera())
-    /* 0x28 */ s32 minY;
-    /* 0x2c */ s32 maxY;
-    /* 0x30 */ s32 minX;
-    /* 0x34 */ s32 maxX;
-
-    /* 0x38 */ s32 dx;
-    /* 0x3c */ s32 dy;
-    /* 0x40 */ s16 unk40;
-    /* 0x44 */ s32 unk44;
-    /* 0x48 */ s32 unk48;
-    /* 0x4c */ s32 unk4C;
-
-    // 0x4 = spectator
-    // mode
-    /* 0x50 */ u16 unk50;
-
-    /* 0x52 */ u16 SA2_LABEL(unk52);
-    /* 0x54 */ u16 SA2_LABEL(unk54);
-    /* 0x56 */ s16 SA2_LABEL(unk56);
-    /* 0x58 */ BgUpdate fnBgUpdate;
-    /* 0x5C */ struct Task *movementTask;
-    /* 0x60 */ s16 shakeOffsetX;
-    /* 0x62 */ s16 shakeOffsetY;
-    /* 0x64 */ s16 unk64;
-    /* 0x66 */ u8 spectatorTarget;
-#endif
 } Camera; /* size 0x80(in SA2) */
 
-extern struct Camera gCamera;
+extern Camera gCamera;
 
 // TODO: Merge all these into one!
 #define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                                                                          \
@@ -157,12 +126,12 @@ extern struct Camera gCamera;
 #define CAM_SCREENBASE_MAP_BACK  56
 #endif
 
-struct Backgrounds {
+typedef struct {
     Background unk0;
     Background unk40;
     Background unk80;
     Background unkC0;
-};
+} StageBackgrounds;
 
 extern const Background gStageCameraBgTemplates[4];
 
@@ -180,12 +149,7 @@ void HBlankCB_BgUpdateZone5ActBoss(int_vcount vcount);
 void HBlankCB_BgUpdateZoneFinalActXX(int_vcount vcount);
 #endif
 
-#if (GAME == GAME_SA1)
-// TODO: should be included from terrain_collision.h
-extern const Collision *gRefCollision;
-#endif
-
 extern const u16 gBossCameraYClamps[][2];
-extern struct Backgrounds gStageBackgroundsRam;
+extern StageBackgrounds gStageBackgroundsRam;
 
 #endif // GUARD_GAME_STAGE_CAMERA_H

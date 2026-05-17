@@ -373,7 +373,7 @@ block_23:
         if (sp40 == 0) {
             temp_r3_9 = sp3C + ((((worldY + (&sp10[0])[1]) - (&sp8[0])[3]) << 8) - (gPlayer.qWorldY & 0xFFFFFF00));
             sp3C = temp_r3_9;
-            res = sa2__sub_801F100((temp_r3_9 >> 8) - gPlayer.spriteOffsetY, temp_r0_7, layer, -8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)((temp_r3_9 >> 8) - gPlayer.spriteOffsetY, temp_r0_7, layer, -8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 temp_r1_17 = gPlayer.moveState & ~4;
                 gPlayer.moveState = temp_r1_17;
@@ -402,7 +402,7 @@ block_23:
             gPlayer.qWorldY = sp3C;
         } else {
             sp3C += (Q(worldY + sp10[3] - sp8[3]) - (gPlayer.qWorldY & 0xFFFFFF00));
-            res = sa2__sub_801F100((sp3C >> 8) + gPlayer.spriteOffsetY, temp_r0_7, layer, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)((sp3C >> 8) + gPlayer.spriteOffsetY, temp_r0_7, layer, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 temp_r1_15 = gPlayer.moveState & ~4;
                 gPlayer.moveState = temp_r1_15;
@@ -450,7 +450,7 @@ block_23:
         }
     block_80:
         if (sp40 == 0) {
-            res = sa2__sub_801F100(gPlayer.spriteOffsetY + I(gPlayer.qWorldY), temp_r0_7, layer, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(gPlayer.spriteOffsetY + I(gPlayer.qWorldY), temp_r0_7, layer, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 gPlayer.moveState &= ~4;
                 ;
@@ -467,7 +467,7 @@ block_23:
             }
             var_r1 = gPlayer.qSpeedAirY - qSpeedY;
         } else {
-            res = sa2__sub_801F100(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, temp_r0_7, layer, -8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(I(gPlayer.qWorldY) - gPlayer.spriteOffsetY, temp_r0_7, layer, -8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 temp_r1_5 = gPlayer.moveState & ~4;
                 gPlayer.moveState = temp_r1_5;
@@ -526,7 +526,8 @@ block_23:
                                         asm("");
                                     }
                                 } else if (p->qSpeedAirX != 0) {
-                                    res = sa2__sub_801F100(I(sp38), I(gPlayer.qWorldY) + p->spriteOffsetX, layer, -8, sa2__sub_801EB44);
+                                    res = SA2_LABEL(sub_801F100)(I(sp38), I(gPlayer.qWorldY) + p->spriteOffsetX, layer, -8,
+                                                                 SA2_LABEL(sub_801EB44));
                                     if (res < 0) {
                                         p->moveState &= ~4;
                                         temp_r0_16 = &p->character;
@@ -618,7 +619,8 @@ block_23:
                                         p->qSpeedAirY = -Q(3.0);
                                     }
                                 } else if (p->qSpeedAirX != 0) {
-                                    res = sa2__sub_801F100(sp38 >> 8, p->spriteOffsetX + I(gPlayer.qWorldY), layer, +8, sa2__sub_801EB44);
+                                    res = SA2_LABEL(sub_801F100)(sp38 >> 8, p->spriteOffsetX + I(gPlayer.qWorldY), layer, +8,
+                                                                 SA2_LABEL(sub_801EB44));
                                     if (res < 0) {
                                         temp_r1_10 = p->moveState & ~4;
                                         p->moveState = temp_r1_10;
@@ -690,7 +692,7 @@ block_23:
 
     if (sp34 == 0) {
     block_70:
-        sa2__sub_8021BE0(&gPlayer);
+        SA2_LABEL(sub_8021BE0)(&gPlayer);
         gPlayer.qSpeedGround = (u16)gPlayer.qSpeedAirX;
         gPlayer.rotation = 0;
     }

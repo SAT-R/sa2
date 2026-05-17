@@ -19,7 +19,7 @@
 #include "constants/sa1/vram_hardcoded.h"
 #include "constants/sa1/zones.h"
 
-typedef struct BossCapsule {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ SpriteTransform transform;
@@ -31,7 +31,7 @@ typedef struct BossCapsule {
     /* 0x74 */ u16 unk76;
 } BossCapsule;
 
-typedef struct Strc_sub_801749C {
+typedef struct {
     /* 0x00 */ s16 unk0;
     /* 0x02 */ s16 unk2;
     /* 0x04 */ s16 unk4;
@@ -40,7 +40,7 @@ typedef struct Strc_sub_801749C {
     /* 0x0A */ u16 unkA;
 } Strc_sub_801749C;
 
-typedef struct Strc_sub_8016D80 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 qUnk30;
     /* 0x30 */ s32 qUnk34;
@@ -51,7 +51,7 @@ typedef struct Strc_sub_8016D80 {
     /* 0x38 */ s16 qUnk40;
 } Strc_sub_8016D80;
 
-typedef struct Strc_sub_8016F44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s32 unk3C;
@@ -66,14 +66,14 @@ typedef struct Strc_sub_8016F44 {
     /* 0x40 */ s16 unk52;
 } Strc_sub_8016F44; /* 0x54 */
 
-typedef struct CameraPanning {
+typedef struct {
     /* 0x00 */ CamCoord unk0;
     /* 0x02 */ CamCoord unk2;
     /* 0x04 */ CamCoord unk4;
     /* 0x06 */ CamCoord unk6;
 } CameraPanning;
 
-typedef struct Strc_sub_801766C {
+typedef struct {
     /* 0x00 */ s16 unk0;
     /* 0x02 */ s16 unk2;
     /* 0x04 */ Player *p;
@@ -215,7 +215,7 @@ void Task_801623C()
         return;
     }
 
-    res = sa2__sub_801F100(gCamera.y + s->y + 8, gCamera.x + s->x, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(gCamera.y + s->y + 8, gCamera.x + s->x, 1, 8, SA2_LABEL(sub_801EC3C));
     if (res > 0) {
         return;
     }
@@ -641,7 +641,7 @@ void sub_8016E54()
     strc->qUnk30 += strc->qUnk3E;
 
     if ((strc->qUnk3C > 0)
-        && (sa2__sub_801F100(strc->unk3A + I(strc->qUnk34), strc->unk38 + I(strc->qUnk30), 1, 8, sa2__sub_801EC3C) < 0)) {
+        && (SA2_LABEL(sub_801F100)(strc->unk3A + I(strc->qUnk34), strc->unk38 + I(strc->qUnk30), 1, 8, SA2_LABEL(sub_801EC3C)) < 0)) {
         strc->qUnk3C = strc->qUnk40;
 
         if ((I(strc->qUnk30) < -32) && (strc->qUnk3E < 0)) {
@@ -909,7 +909,7 @@ void Task_8017400(void)
     }
 }
 
-struct Task *sub_801749C(s16 worldX, s16 worldY)
+struct Task *sub_801749C(CamCoord worldX, CamCoord worldY)
 {
     struct Task *t;
     Strc_sub_801749C *strc;

@@ -63,7 +63,7 @@ extern void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask);
 extern struct Task *CreateMultiplayerChao(u8, u8);
 extern struct Task *sub_80550F8(void);
 // stage_ui_z.c
-typedef struct Struct_sub_80550F8 {
+typedef struct {
     u8 filler0[0x27];
     bool8 screenBlank;
 } Struct_sub_80550F8; /* size: 0x28 */

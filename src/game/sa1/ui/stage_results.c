@@ -17,12 +17,12 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct VramPtrs {
+typedef struct {
     /* 0x00 */ void *vram0;
     /* 0x04 */ void *vram4;
 } VramPtrs;
 
-typedef struct StrcStgResults_34 {
+typedef struct {
     /* 0x00 */ GameOverB unk0;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ u16 unk1C;
@@ -31,7 +31,7 @@ typedef struct StrcStgResults_34 {
     /* 0x30 */ s32 unk30;
 } StrcStgResults_34; /* 0x34 */
 
-typedef struct StrcStgResults_38 {
+typedef struct {
     /* 0x00 */ u16 unk0;
     /* 0x02 */ u16 unk2;
     /* 0x04 */ u16 unk4;

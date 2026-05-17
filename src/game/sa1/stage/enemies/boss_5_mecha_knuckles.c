@@ -61,7 +61,7 @@ typedef enum {
     /* 25 */ MKSTATE_COUNT
 } MechaKnucklesStates;
 
-typedef struct MechaKnuckles {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -86,7 +86,7 @@ typedef struct MechaKnuckles {
     /* 0x9B */ s8 state2;
 } MechaKnuckles; /* 0x9C */
 
-typedef struct MechaKnucklesRocket {
+typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x00 */ s32 unk4;
     /* 0x00 */ s16 unk8;
@@ -99,7 +99,7 @@ typedef struct MechaKnucklesRocket {
     /* 0x44 */ SpriteTransform transform;
 } MechaKnucklesRocket; /* 0x50 */
 
-typedef struct MechaKnucklesParts {
+typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x04 */ s32 unk4;
     /* 0x08 */ s16 unk8;
@@ -116,7 +116,7 @@ typedef struct MechaKnucklesParts {
 typedef bool32 (*MechaKnuxPlayerFn)(MechaKnuckles *boss, Player *p);
 typedef void (*MechaKnuxFn)(MechaKnuckles *boss, Player *p);
 
-typedef struct Unk {
+typedef struct {
     s16 anim;
     u8 variant;
     u8 unk3;
@@ -195,7 +195,7 @@ bool32 sub_804FCEC(MechaKnuckles *boss, Player *p);
 bool32 sub_804FD54(MechaKnuckles *boss, Player *p);
 MechaKnucklesStates sub_804ED80(MechaKnuckles *boss, Player *p);
 
-typedef struct ProcDataBoss5 {
+typedef struct {
     MechaKnuxPlayerFn knuxPlayerFn;
     MechaKnuxFn changeState;
     s16 unk8;
@@ -810,7 +810,7 @@ void sub_804EB90(MechaKnuckles *boss)
 
     boss->flags88 &= ~1;
 
-    res = sa2__sub_801E4E4(temp_r6 + boss->unk99, temp_r7, 1, 8, NULL, sa2__sub_801EE64);
+    res = SA2_LABEL(sub_801E4E4)(temp_r6 + boss->unk99, temp_r7, 1, 8, NULL, SA2_LABEL(sub_801EE64));
     if (boss->flags88 & 0x10) {
         if (res < 0) {
             boss->qUnk78 += res << 8;
@@ -824,7 +824,7 @@ void sub_804EB90(MechaKnuckles *boss)
     boss->flags88 &= ~2;
 
     if (boss->unk7E < 0) {
-        res = sa2__sub_801E4E4(temp_r6 - boss->unk99, temp_r7, 1, -8, NULL, sa2__sub_801EE64);
+        res = SA2_LABEL(sub_801E4E4)(temp_r6 - boss->unk99, temp_r7, 1, -8, NULL, SA2_LABEL(sub_801EE64));
 
         if (res < 0) {
             boss->qUnk78 -= Q(res);

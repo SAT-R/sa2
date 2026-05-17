@@ -12,7 +12,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct MPResultsB {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ Background bg2;
     /* 0x80 */ Sprite s;
@@ -690,8 +690,8 @@ block_18:
         return;
     }
 block_39:
-    sa2__sub_80064A8(0U, 0x74U, 0U, 0x7CU, 8U, 0xF0U);
-    sa2__sub_80064A8(0U, 0x7CU, 8U, 0x74U, 0x10U, 0xF0U);
+    SA2_LABEL(sub_80064A8)(0U, 0x74U, 0U, 0x7CU, 8U, 0xF0U);
+    SA2_LABEL(sub_80064A8)(0U, 0x7CU, 8U, 0x74U, 0x10U, 0xF0U);
 
     // TOOD
 #ifndef NON_MATCHING

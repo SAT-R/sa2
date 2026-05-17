@@ -66,13 +66,13 @@
 #endif
 
 // Probably a array (as it's aligned 16)
-struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
+StageBackgrounds ALIGNED(16) gStageBackgroundsRam = {};
 
 #ifndef COLLECT_RINGS_ROM
 UNUSED u32 unused_3005950[3] = {};
 #endif
 
-struct Camera ALIGNED(8) gCamera = {};
+Camera ALIGNED(8) gCamera = {};
 
 static void RenderMetatileLayers(s32, s32);
 void Task_CallUpdateCamera(void);
@@ -489,10 +489,10 @@ void InitCamera(u32 level)
 {
     u32 txtSize;
 
-    struct Backgrounds *bgs;
+    StageBackgrounds *bgs;
     const Background *bgTemplates;
     Player *player = &gPlayer;
-    struct Camera *camera = &gCamera;
+    Camera *camera = &gCamera;
     const s8 *bgDim = sStageBgDimensions[level];
 
     gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
@@ -697,7 +697,7 @@ void InitCamera(u32 level)
 void UpdateCamera(void)
 {
     Player *player = &gPlayer;
-    struct Camera *camera = &gCamera;
+    Camera *camera = &gCamera;
     s32 newX, newY;
 
 #if DEBUG
@@ -1131,7 +1131,7 @@ void HBlankCallback_803F92C(int_vcount line)
 
 UNUSED void SA2_LABEL(sub_801E3F0)(void)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 
     if (gStageTime & 0x1) {
         cam->shiftY = ((u32)(PseudoRandom32() & 0x70000) >> 16) - 8;

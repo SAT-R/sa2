@@ -11,7 +11,7 @@
 
 #include "constants/sa1/text.h"
 
-typedef struct ContinueScreen {
+typedef struct {
     Background bg;
     Sprite sprites[3];
     Sprite sprD0;

@@ -11,7 +11,7 @@ extern void VBlankCallback_803F920(void);
 
 void StageBgUpdate_Zone7Act2(s32 x, s32 y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Background *bg = &gStageBackgroundsRam.unkC0;
     const Collision *collision;
     u32 *offsets;

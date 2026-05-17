@@ -218,7 +218,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
 static void Task_StageWaterTask(void)
 {
     Water *water = &gWater;
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     bool32 active;
     Sprite *s;
 

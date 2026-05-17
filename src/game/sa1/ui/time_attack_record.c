@@ -11,7 +11,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct TimeAttackRecord_58 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ GameOverB overB;
     /* 0x48 */ s32 unk48;
@@ -23,7 +23,7 @@ typedef struct TimeAttackRecord_58 {
     /* 0x54 */ u8 unk54;
 } TimeAttackRecord_58;
 
-typedef struct TimeAttackRecord_E4 {
+typedef struct {
     StrcUi_805423C strc0;
     Sprite s;
     Sprite s2;
