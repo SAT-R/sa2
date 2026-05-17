@@ -11,8 +11,8 @@
 #include "game/sa1/save.h"
 #include "game/sa1/ui/time_attack_lobby.h"
 
-#include "constants/sa2/animations.h"
-#include "constants/sa2/songs.h"
+#include "constants/sa1/animations.h"
+#include "constants/sa1/songs.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/save.h"
 #include "game/sa2/ui/time_attack_lobby.h"
