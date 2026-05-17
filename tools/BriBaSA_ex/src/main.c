@@ -99,7 +99,7 @@ int main(void)
     }
 #endif
 
-    state.game = GAME_SA1; // TODO: Load from settings.txt if it exists
+    state.game = GAME_SA2; // TODO: Load from settings.txt if it exists
 
 
     // NOTE: We could just use "../../" for the check,
@@ -545,7 +545,7 @@ SetNewMetatiles(AppState *state, int x, int y)
     StageMap *map = &state->map;
     short targetIndex = y * map->width + x;
 
-    if(targetIndex < (state->paths.map.tilemap.dataSize / (state->game == GAME_SA1) ? sizeof(unsigned char) : sizeof(short))) {
+    if(targetIndex < (state->paths.map.tilemap.dataSize / ((state->game == GAME_SA1) ? sizeof(unsigned char) : sizeof(short)) )) {
         if(map->flags & MAP_FLAG_SHOW_BACK_LAYER) {
             if(state->game == GAME_SA1) {
                 unsigned char *layoutBack  = state->paths.map.layers[LAYER_BACK].data;
