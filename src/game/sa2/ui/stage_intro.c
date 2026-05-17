@@ -329,16 +329,16 @@ static void Task_IntroColorAnimation(void);
 static void Task_IntroZoneNameAndIconAnimations(void);
 static void Task_IntroActLettersAnimations(void);
 static void Task_UpdateStageLoadingScreen(void);
-static void TaskDestructor_IntroController(struct Task *);
-static void TaskDestructor_Dummy(struct Task *);
-static void TaskDestructor_803045C(struct Task *);
-static void TaskDestructor_8030474(struct Task *);
+static void TaskDestructor_IntroController(Task *);
+static void TaskDestructor_Dummy(Task *);
+static void TaskDestructor_803045C(Task *);
+static void TaskDestructor_8030474(Task *);
 
-struct Task *SetupStageIntro(void)
+Task *SetupStageIntro(void)
 {
-    struct Task *t; // sp04
+    Task *t; // sp04
     IntroController *introController; // sp08
-    struct Task *t2;
+    Task *t2;
     ScreenFade *fade;
     IntroBackgrounds *introBackgrounds;
     // SITaskC *sit_c;
@@ -1218,7 +1218,7 @@ void Task_IntroActLettersAnimations(void)
     }
 }
 
-static void TaskDestructor_IntroController(struct Task *t)
+static void TaskDestructor_IntroController(Task *t)
 {
     if (gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) {
         InitWaterPalettes();
@@ -1244,15 +1244,15 @@ static void Task_UpdateStageLoadingScreen(void)
     }
 }
 
-static void TaskDestructor_Dummy(struct Task *t) { }
+static void TaskDestructor_Dummy(Task *t) { }
 
-static void TaskDestructor_803045C(struct Task *t)
+static void TaskDestructor_803045C(Task *t)
 {
     IntroUI *introUI = TASK_DATA(t);
     VramFree(introUI->sprCharacterLogo.graphics.dest);
 }
 
-static void TaskDestructor_8030474(struct Task *t)
+static void TaskDestructor_8030474(Task *t)
 {
     IntroActLetters *introActLetters = TASK_DATA(t);
     VramFree(introActLetters->sprZoneNames[0].graphics.dest);

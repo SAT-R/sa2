@@ -93,7 +93,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 {
     u8 i;
     u8 count;
-    struct Task *t;
+    Task *t;
     struct CommunicationOutcomeScreen *outcomeScreen;
     Sprite *s;
     Background *background;

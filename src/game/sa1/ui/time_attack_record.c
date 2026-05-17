@@ -11,7 +11,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct TimeAttackRecord_58 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ GameOverB overB;
     /* 0x48 */ s32 unk48;
@@ -23,14 +23,14 @@ typedef struct TimeAttackRecord_58 {
     /* 0x54 */ u8 unk54;
 } TimeAttackRecord_58;
 
-typedef struct TimeAttackRecord_E4 {
+typedef struct {
     StrcUi_805423C strc0;
     Sprite s;
     Sprite s2;
     Sprite s3;
     Sprite s4;
-    struct Task *taskCC; // -> TimeAttackRecord_58
-    struct Task *taskD0; // -> TimeAttackRecord_58
+    Task *taskCC; // -> TimeAttackRecord_58
+    Task *taskD0; // -> TimeAttackRecord_58
     s32 unkD4;
     s32 unkD8;
     u8 unkDC;
@@ -45,7 +45,7 @@ void sub_8061144(void);
 void sub_8061480(void);
 void Task_8061830(void);
 void sub_80613D0(void);
-void TaskDestructor_806182C(struct Task *t);
+void TaskDestructor_806182C(Task *t);
 
 extern u16 gUnknown_0868B0D4[][2];
 extern u16 gUnknown_0868B0EC[][2];
@@ -136,7 +136,7 @@ void sub_8060C88(void)
 void CreateTimeAttackRecord(u8 arg0)
 {
     s32 temp_r0_2;
-    struct Task *t;
+    Task *t;
     s32 temp_r0_4;
     Sprite *s;
     TimeAttackRecord_E4 *strcE4;
@@ -603,7 +603,7 @@ NONMATCH("asm/non_matching/game/sa1/ui/time_attack_record__sub_8061480.inc", voi
 }
 END_NONMATCH
 
-void TaskDestructor_806182C(struct Task *t) { }
+void TaskDestructor_806182C(Task *t) { }
 
 void Task_8061830()
 {

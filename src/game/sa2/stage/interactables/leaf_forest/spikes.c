@@ -29,7 +29,7 @@ typedef struct {
 } Sprite_Spikes; /* size: 0x44 */
 
 static void Task_SpikesUpMain(void);
-static void TaskDestructor_Spikes(struct Task *);
+static void TaskDestructor_Spikes(Task *);
 static u32 HandleSpikePlayerCollision(Sprite *, s32 x, s32 y, Player *);
 static bool32 HandleSpikeMovementUp(Sprite *, MapEntity *, Sprite_Spikes *, Player *);
 
@@ -53,7 +53,7 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 
 void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SpikesUpMain, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_SpikesUpMain, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
     Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
@@ -96,7 +96,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #ifndef COLLECT_RINGS_ROM
 void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SpikesDownMain, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_SpikesDownMain, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
     Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
@@ -221,7 +221,7 @@ static void Task_SpikesDownMain(void)
 
 void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SpikesLeftRightMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_SpikesLeftRightMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
@@ -396,7 +396,7 @@ static void Task_SpikesLeftRightMain(void)
 
 void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SpikesHidingUpMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_SpikesHidingUpMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
@@ -461,7 +461,7 @@ static void Task_SpikesHidingUpMain(void)
 
 void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SpikesHidingDownMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_SpikesHidingDownMain, sizeof(Sprite_Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
@@ -982,7 +982,7 @@ static bool32 HandleSpikeMovementHidingDown(Sprite *s, MapEntity *me, Sprite_Spi
 
 #endif
 
-static void TaskDestructor_Spikes(struct Task *t)
+static void TaskDestructor_Spikes(Task *t)
 {
     Sprite_Spikes *spikes = TASK_DATA(t);
     VramFree(spikes->s.graphics.dest);

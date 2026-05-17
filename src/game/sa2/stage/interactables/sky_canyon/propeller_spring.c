@@ -32,7 +32,7 @@ static bool32 sub_807C598(Sprite_IA85 *);
 static void sub_807C5E0(Sprite_IA85 *);
 static void sub_807C614(void);
 static void sub_807C558(Sprite_IA85 *);
-static void TaskDestructor_Interactable085(struct Task *);
+static void TaskDestructor_Interactable085(Task *);
 
 static void Task_Interactable085(void)
 {
@@ -224,7 +224,7 @@ static void sub_807C614(void)
 
 void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable085, sizeof(Sprite_IA85), 0x2010, 0, TaskDestructor_Interactable085);
+    Task *t = TaskCreate(Task_Interactable085, sizeof(Sprite_IA85), 0x2010, 0, TaskDestructor_Interactable085);
     Sprite_IA85 *ia85 = TASK_DATA(t);
     ia85->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
     ia85->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
@@ -256,7 +256,7 @@ static void sub_807C6E4(void)
     sub_807C558(ia85);
 }
 
-static void TaskDestructor_Interactable085(struct Task *t)
+static void TaskDestructor_Interactable085(Task *t)
 {
     // unused
 }

@@ -21,7 +21,7 @@ typedef struct {
 } Sprite_IA78;
 
 static void Task_Interactable078(void);
-static void TaskDestructor_Interactable078(struct Task *);
+static void TaskDestructor_Interactable078(Task *);
 static void sub_807ACF4(Sprite_IA78 *, u32);
 static bool32 sub_807B028(Sprite_IA78 *);
 static void sub_807B004(Sprite_IA78 *);
@@ -43,7 +43,7 @@ static const u16 gUnknown_080E00FC[][2] = {
 void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0, TaskDestructor_Interactable078);
+    Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0, TaskDestructor_Interactable078);
     Sprite_IA78 *ia78 = TASK_DATA(t);
 
     ia78->base.me = me;
@@ -241,7 +241,7 @@ static void Task_Interactable078(void)
     }
 }
 
-static void TaskDestructor_Interactable078(struct Task *t)
+static void TaskDestructor_Interactable078(Task *t)
 {
     Sprite_IA78 *ia78 = TASK_DATA(t);
     VramFree(ia78->s.graphics.dest);

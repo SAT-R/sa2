@@ -40,7 +40,7 @@ static void sub_802C988(struct SuperSonic *sonic);
 #define RESERVED_SUPER_SONIC_TILES_VRAM (void *)(OBJ_VRAM0)
 #define EXTRA_BOSS__INITIAL_RING_COUNT  50
 
-struct Task *sSuperSonicTask = NULL;
+Task *sSuperSonicTask = NULL;
 
 const TileInfo gAnims_SuperSonic_080D69C8[23] = {
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 1 },
@@ -129,7 +129,7 @@ static void SuperSonicInitPlayer(void)
 
 void SuperSonicInit()
 {
-    struct Task *t;
+    Task *t;
     struct SuperSonic *sonic;
     Sprite *spr;
 

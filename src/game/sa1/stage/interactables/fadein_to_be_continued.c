@@ -74,7 +74,7 @@ void Task_DestroyActiveTasks(void)
 
 void CreateEntity_ToBeContinuedText(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_ToBeContinuedText, sizeof(TextTBC), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_ToBeContinuedText, sizeof(TextTBC), 0x2000, 0, NULL);
     TextTBC *tbc = TASK_DATA(t);
 
     tbc->regionX = regionX;

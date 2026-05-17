@@ -20,7 +20,7 @@
 #include "constants/sa1/songs.h"
 #include "game/shared/stage/underwater_effects.h"
 
-typedef struct EggSpider {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
@@ -38,7 +38,7 @@ typedef struct EggSpider {
     /* 0x8A */ u8 unk8C;
 } EggSpider; /* 0x90 */
 
-typedef struct IciclePlatform {
+typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x30 */ u8 filler30[0x14];
     /* 0x44 */ CamCoord worldX;
@@ -60,7 +60,7 @@ void Task_8031480(void);
 void sub_803170C(void);
 void CreateIciclePlatform(EggSpider *boss);
 void sub_8031AB4(void);
-void TaskDestructor_8031CB4(struct Task *t);
+void TaskDestructor_8031CB4(Task *t);
 
 extern s16 gUnknown_084ACEB4[];
 extern s16 gUnknown_084ACED8[];
@@ -177,7 +177,7 @@ void CreateEntity_EggSpider(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     u8 *temp_r0;
     u8 *temp_r0_2;
     u8 *temp_r1_3;
-    struct Task *t;
+    Task *t;
 
     if (IS_MULTI_PLAYER) {
         SET_MAP_ENTITY_INITIALIZED(me);
@@ -471,7 +471,7 @@ void sub_80311D4(void)
     Sprite *s = &boss->s;
     Sprite *s2 = &boss->s2;
     MapEntity *me = boss->base.me;
-    struct Task *t;
+    Task *t;
 
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk6C);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk70);
@@ -568,7 +568,7 @@ void Task_8031480(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk6C);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk70);
 
-    res = sa2__sub_801F100(worldY + 0x38, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 0x38, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
     if (boss->unk84 > 120)
         if (res < 0) {
@@ -587,7 +587,7 @@ void Task_8031480(void)
 
     boss->unk84++;
     if ((boss->unk84 & 0x7) == 0) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -649,7 +649,7 @@ void sub_803170C(void)
     }
 
     if ((boss->unk84 & 7) == 0) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -693,7 +693,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_4__CreateIciclePlatform.i
     s32 rnd1;
     s32 rnd;
     IciclePlatform *icicle;
-    struct Task *t;
+    Task *t;
     MapEntity *me;
     Sprite *s;
     s32 v0;
@@ -835,7 +835,7 @@ void sub_8031AB4(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_8031CB4(struct Task *t)
+void TaskDestructor_8031CB4(Task *t)
 {
     EggSpider *boss = TASK_DATA(t);
 

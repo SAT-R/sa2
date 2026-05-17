@@ -86,7 +86,7 @@ static const s8 sShakeAnimPositions[] = {
 };
 
 static void Task_FadeInOrHandleExit(void);
-static void MultiplayerLobbyScreenOnDestroy(struct Task *);
+static void MultiplayerLobbyScreenOnDestroy(Task *);
 static void CreateUI(struct MultiplayerLobbyScreen *);
 static void ScreenMain(void);
 static void RenderUI(struct MultiplayerLobbyScreen *);
@@ -98,7 +98,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *);
 
 void CreateMultiplayerLobbyScreen(void)
 {
-    struct Task *t = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen), 0x1000, 0, MultiplayerLobbyScreenOnDestroy);
+    Task *t = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen), 0x1000, 0, MultiplayerLobbyScreenOnDestroy);
     struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->fadeInComplete = FALSE;
@@ -514,7 +514,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
     }
 }
 
-static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
+static void MultiplayerLobbyScreenOnDestroy(Task *t)
 {
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);

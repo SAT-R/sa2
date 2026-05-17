@@ -76,7 +76,7 @@ struct CharacterSelectionScreen {
     /* 0x3DC */ u32 multiplayerSelections;
 }; /* size 0x3E0 */
 
-static void CharacterSelectScreenOnDestroy(struct Task *);
+static void CharacterSelectScreenOnDestroy(Task *);
 static void Task_CharacterSelectMain(void);
 
 static void Task_FadeInAndStartRollInAnim(void);
@@ -186,7 +186,7 @@ static const u8 sCharacterSilhouettes[] = {
 
 void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
 {
-    struct Task *t;
+    Task *t;
 
     Sprite *s = NULL;
     ScreenFade *fade = NULL;
@@ -1808,7 +1808,7 @@ static void Task_MultiplayerVerifySelections(void)
     BackgroundAnim();
 }
 
-static void CharacterSelectScreenOnDestroy(struct Task *t)
+static void CharacterSelectScreenOnDestroy(Task *t)
 {
     u8 i;
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(t);

@@ -5,6 +5,6 @@
 #include "task.h"
 #include "sprite.h"
 
-struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant, TaskDestructor dtor);
+Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant, TaskDestructor dtor);
 
 #endif

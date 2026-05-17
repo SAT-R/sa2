@@ -22,11 +22,11 @@ typedef struct {
 
 static void Task_Hammerhead(void);
 static void sub_8056EDC(Enemy_Hammerhead *hammerhead);
-static void TaskDestructor_Hammerhead(struct Task *);
+static void TaskDestructor_Hammerhead(Task *);
 
 void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Hammerhead, sizeof(Enemy_Hammerhead), 0x4040, 0, TaskDestructor_Hammerhead);
+    Task *t = TaskCreate(Task_Hammerhead, sizeof(Enemy_Hammerhead), 0x4040, 0, TaskDestructor_Hammerhead);
     Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;
     hammerhead->base.regionX = spriteRegionX;
@@ -123,7 +123,7 @@ static void sub_8056EDC(Enemy_Hammerhead *hammerhead)
     hammerhead->unk50[0] = hammerhead->unk48;
 }
 
-static void TaskDestructor_Hammerhead(struct Task *t)
+static void TaskDestructor_Hammerhead(Task *t)
 {
     Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;

@@ -56,7 +56,7 @@ const TileInfo sBoosterAnimationData[2][6] = {
 
 void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster), 0x2000, 0, TaskDestructor_EntityShared);
     Sprite_Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
     u32 value;

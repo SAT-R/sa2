@@ -28,7 +28,7 @@ typedef struct {
 void Task_Bowl(void);
 void Task_BowlRotating(void);
 void Task_Bowl3(void);
-void TaskDestructor_Bowl(struct Task *t);
+void TaskDestructor_Bowl(Task *t);
 
 ALIGNED(4)
 const AnimId sBowlAnimations[NUM_LEVEL_IDS] = {
@@ -45,7 +45,7 @@ const AnimId sBowlAnimations[NUM_LEVEL_IDS] = {
 
 void CreateEntity_Bowl(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Bowl, sizeof(Bowl), 0x2000, 0, TaskDestructor_Bowl);
+    Task *t = TaskCreate(Task_Bowl, sizeof(Bowl), 0x2000, 0, TaskDestructor_Bowl);
     Bowl *bowl = TASK_DATA(t);
     Sprite *s = &bowl->s;
 
@@ -369,7 +369,7 @@ void Task_Bowl3(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Bowl(struct Task *t)
+void TaskDestructor_Bowl(Task *t)
 {
     Bowl *bowl = TASK_DATA(t);
     VramFree(bowl->s.graphics.dest);

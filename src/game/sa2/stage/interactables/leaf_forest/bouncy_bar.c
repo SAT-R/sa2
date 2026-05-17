@@ -32,7 +32,7 @@ static const s16 sBaseLaunchSpeed[] = { -Q(1.5), -Q(1.5), -Q(1.5) };
 void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_BouncyBarIdle, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_BouncyBarIdle, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_EntityShared);
     BouncyBar *bar = TASK_DATA(t);
 
     s = &bar->s;

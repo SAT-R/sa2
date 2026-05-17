@@ -59,7 +59,7 @@ typedef struct {
 #define IS_FAN_PERIODIC(kind) (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)) || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)))
 
 static void Task_IA_Fan_UpdateRegular(void);
-static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *);
+static void TaskDestructor_IA_Fan_UpdateRegular(Task *);
 
 static void SetTaskMain_807D978(Sprite_Fan *unused);
 static void sub_807D468(Sprite_Fan *);
@@ -75,7 +75,7 @@ void DestroyTask_Interactable087(Sprite_Fan *);
 
 static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
-    struct Task *t = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan), 0x2010, 0, TaskDestructor_IA_Fan_UpdateRegular);
+    Task *t = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan), 0x2010, 0, TaskDestructor_IA_Fan_UpdateRegular);
     Sprite_Fan *prop = TASK_DATA(t);
     Sprite *s;
 
@@ -292,7 +292,7 @@ static void Task_IA_Fan_UpdateRegular(void)
     }
 }
 
-static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *t)
+static void TaskDestructor_IA_Fan_UpdateRegular(Task *t)
 {
     Sprite_Fan *prop = TASK_DATA(t);
     VramFree(prop->s.graphics.dest);

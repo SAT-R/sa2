@@ -23,11 +23,11 @@ void Task_Flipper_Horizontal(void);
 void Task_Flipper_Horizontal_2(void);
 void Task_Flipper_Vertical(void);
 void Task_Flipper_Vertical_2(void);
-void TaskDestructor_Flipper(struct Task *t);
+void TaskDestructor_Flipper(Task *t);
 
 void CreateEntity_Flipper(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Flipper_Horizontal, sizeof(Flipper), 0x2000, 0, TaskDestructor_Flipper);
+    Task *t = TaskCreate(Task_Flipper_Horizontal, sizeof(Flipper), 0x2000, 0, TaskDestructor_Flipper);
     Flipper *flipper = TASK_DATA(t);
     Sprite *s = &flipper->s;
 
@@ -305,7 +305,7 @@ void Task_Flipper_Horizontal_2(void)
 
 void CreateEntity_Flipper_Vertical(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Flipper_Vertical, sizeof(Flipper), 0x2000, 0, TaskDestructor_Flipper);
+    Task *t = TaskCreate(Task_Flipper_Vertical, sizeof(Flipper), 0x2000, 0, TaskDestructor_Flipper);
     Flipper *flipper = TASK_DATA(t);
     Sprite *s = &flipper->s;
 
@@ -465,7 +465,7 @@ void Task_Flipper_Vertical_2(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Flipper(struct Task *t)
+void TaskDestructor_Flipper(Task *t)
 {
     Flipper *flipper = TASK_DATA(t);
     VramFree(flipper->s.graphics.dest);

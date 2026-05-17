@@ -7,7 +7,7 @@
 
 void StageBgUpdate_Zone4Acts12(s32 x, s32 y)
 {
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Background *bg;
     u16 *offsets;
     const Collision *coll;

@@ -34,11 +34,11 @@ void Task_EditLanguageScreenInit(void);
 void Task_806ABD4(void);
 void sub_806AD44(void);
 void Task_806AF04(void);
-void TaskDestructor_EditLanguageScreen(struct Task *t);
+void TaskDestructor_EditLanguageScreen(Task *t);
 
 void CreateEditLanguageScreen(u8 param0)
 {
-    struct Task *t;
+    Task *t;
     EditLanguageScreen *screen;
     StrcUi_805423C *unk280;
     Background *bg;
@@ -344,7 +344,7 @@ void Task_806AF04(void)
     }
 }
 
-void TaskDestructor_EditLanguageScreen(struct Task *t)
+void TaskDestructor_EditLanguageScreen(Task *t)
 {
     EditLanguageScreen *screen = TASK_DATA(t);
     Sprite *s;

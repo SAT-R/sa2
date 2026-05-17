@@ -18,7 +18,7 @@
 
 #define CM_BACKGROUND_COLOR RGB16_REV(0, 27, 30)
 
-typedef struct ChaoMessage {
+typedef struct {
     /* 0x00 */ Background bg;
     /* 0x40 */ u8 unk40[2][4];
     /* 0x48 */ s16 unk48[4];
@@ -29,14 +29,14 @@ typedef struct ChaoMessage {
     /* 0x56 */ u8 unk56;
 } ChaoMessage; /* 0x58 */
 
-typedef struct ChaoMsgSprite {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s16 unk30;
     /* 0x32 */ s16 unk32;
     /* 0x34 */ u8 unk34;
 } ChaoMsgSprite; /* 0x38 */
 
-typedef struct ChaoMsg68 {
+typedef struct {
     GameOverB overBs[4];
     s16 unk60;
     s16 unk62;
@@ -59,8 +59,8 @@ void sub_803BC64(void);
 void sub_803BE0C(void);
 void sub_803BEB8(void);
 void sub_803BFE8(void);
-void TaskDestructor_803C184(struct Task *t);
-void TaskDestructor_803C198(struct Task *t);
+void TaskDestructor_803C184(Task *t);
+void TaskDestructor_803C198(Task *t);
 
 extern void sub_8018538(void);
 extern void CreateMultiplayerContinueScreen(void);
@@ -908,13 +908,13 @@ void Task_803C130(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_803C184(struct Task *t)
+void TaskDestructor_803C184(Task *t)
 {
     ChaoMsgSprite *msgSprite = TASK_DATA(t);
     VramFree(msgSprite->s.graphics.dest);
 }
 
-void TaskDestructor_803C198(struct Task *t)
+void TaskDestructor_803C198(Task *t)
 {
     ChaoMsg68 *strc68 = TASK_DATA(t);
     VramFree(strc68->vram64);

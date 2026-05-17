@@ -20,11 +20,11 @@ typedef struct {
 } IronBall;
 
 void Task_IronBallMain(void);
-void TaskDestructor_IronBall(struct Task *);
+void TaskDestructor_IronBall(Task *);
 
 void CreateEntity_IronBall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_IronBallMain, sizeof(IronBall), 0x2000, 0, TaskDestructor_IronBall);
+    Task *t = TaskCreate(Task_IronBallMain, sizeof(IronBall), 0x2000, 0, TaskDestructor_IronBall);
     IronBall *ball = TASK_DATA(t);
     Sprite *s = &ball->s;
 
@@ -128,7 +128,7 @@ void Task_IronBallMain(void)
     }
 }
 
-void TaskDestructor_IronBall(struct Task *t)
+void TaskDestructor_IronBall(Task *t)
 {
     IronBall *ball = TASK_DATA(t);
     VramFree(ball->s.graphics.dest);

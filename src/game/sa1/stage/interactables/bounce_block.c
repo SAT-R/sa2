@@ -22,13 +22,13 @@ typedef struct {
 void Task_BounceBlock(void);
 void Task_80752A4(void);
 bool32 sub_80753D0(Sprite *s, s32 worldX, s32 worldY);
-void TaskDestructor_BounceBlock(struct Task *t);
+void TaskDestructor_BounceBlock(Task *t);
 
 extern const AnimId sBounceBlockAnims[NUM_LEVEL_IDS];
 
 void CreateEntity_BounceBlock(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BounceBlock, sizeof(BounceBlock), 0x2000, 0, TaskDestructor_BounceBlock);
+    Task *t = TaskCreate(Task_BounceBlock, sizeof(BounceBlock), 0x2000, 0, TaskDestructor_BounceBlock);
     BounceBlock *block = TASK_DATA(t);
     Sprite *s = &block->s;
 
@@ -175,7 +175,7 @@ bool32 sub_80753D0(Sprite *s, s32 worldX, s32 worldY)
     return result;
 }
 
-void TaskDestructor_BounceBlock(struct Task *t)
+void TaskDestructor_BounceBlock(Task *t)
 {
     BounceBlock *block = TASK_DATA(t);
     VramFree(block->s.graphics.dest);

@@ -27,7 +27,7 @@ void Task_TeleportOrb(void);
 
 void CreateEntity_TeleportOrb(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_TeleportOrb, sizeof(TeleportOrb), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_TeleportOrb, sizeof(TeleportOrb), 0x2000, 0, NULL);
     TeleportOrb *orb = TASK_DATA(t);
 
     orb->base.regionX = regionX;

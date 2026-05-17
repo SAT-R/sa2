@@ -27,7 +27,7 @@ void Task_806D2B8(void);
 
 void CreateEntity_KeroKero(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_KeroKeroInit, sizeof(KeroKero), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_KeroKeroInit, sizeof(KeroKero), 0x2000, 0, TaskDestructor_EntityShared);
     KeroKero *kerokero = TASK_DATA(t);
     Sprite *s = &kerokero->shared.s;
 

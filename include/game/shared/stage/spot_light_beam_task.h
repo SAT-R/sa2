@@ -12,6 +12,6 @@ typedef struct {
     u8 unkB;
 } SpotlightBeam; /* size: 0xC */
 
-struct Task *CreateSpotlightBeamTask(void);
+Task *CreateSpotlightBeamTask(void);
 
 #endif // GUARD_STAGE_UNK_TASK_H

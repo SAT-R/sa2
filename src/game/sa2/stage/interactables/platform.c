@@ -29,7 +29,7 @@ typedef struct {
 
 static void Task_PlatformMain(void);
 static void Task_FallingPlatformMain_Idle(void);
-static void TaskDestructor_Platform(struct Task *);
+static void TaskDestructor_Platform(Task *);
 
 void Task_FallingPlatformMain_FallDelay(void);
 void Task_FallingPlatformMain_Falling(void);
@@ -87,7 +87,7 @@ const AnimId sPlatformLevelAnims[38] = {
 
 void CreateEntity_Platform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_PlatformMain, sizeof(Sprite_Platform), 0x2010, 0, TaskDestructor_Platform);
+    Task *t = TaskCreate(Task_PlatformMain, sizeof(Sprite_Platform), 0x2010, 0, TaskDestructor_Platform);
     Sprite_Platform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -245,7 +245,7 @@ void Task_PlatformMain(void)
 
 void CreateEntity_FallingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_FallingPlatformMain_Idle, sizeof(Sprite_Platform), 0x2010, 0, TaskDestructor_Platform);
+    Task *t = TaskCreate(Task_FallingPlatformMain_Idle, sizeof(Sprite_Platform), 0x2010, 0, TaskDestructor_Platform);
     Sprite_Platform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -495,7 +495,7 @@ void Task_FallingPlatformMain_Falling(void)
     }
 }
 
-void TaskDestructor_Platform(struct Task *t)
+void TaskDestructor_Platform(Task *t)
 {
     Sprite_Platform *platform = TASK_DATA(t);
     void *vramPtr = platform->s.graphics.dest;

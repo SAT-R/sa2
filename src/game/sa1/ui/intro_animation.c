@@ -18,7 +18,7 @@
 
 #define EMERALD_START_X DISPLAY_CENTER_X
 #define EMERALD_START_Y -36
-typedef struct IntroSprite {
+typedef struct {
     Sprite s;
     u16 unk30;
     u8 unk32;
@@ -28,18 +28,18 @@ typedef struct IntroSprite {
     s32 qUnk40;
 } IntroSprite; /* 0x44 */
 
-typedef struct Intro_C8 {
+typedef struct {
     Sprite sprites[3];
     u8 filler60[0x24];
     u16 unkB4;
     u8 fillerB6[0x12];
 } Intro_C8; /* 0xC8 */
 
-typedef struct Intro_54 {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC;
-    struct Task *beamTasks[INTRO_SPOTLIGHT_COUNT]; // -> SpotlightBeam
-    struct Task *tasks18[NUM_CHARACTERS]; // -> Intro_C8
+    Task *taskC;
+    Task *beamTasks[INTRO_SPOTLIGHT_COUNT]; // -> SpotlightBeam
+    Task *tasks18[NUM_CHARACTERS]; // -> Intro_C8
     u8 filler28[0x24];
     s16 unk4C;
     u8 unk4E;
@@ -71,7 +71,7 @@ void Task_806562C(void);
 void sub_80656A4(void);
 void sub_806571C(void);
 void sub_8065794(void);
-void TaskDestructor_8065810(struct Task *t);
+void TaskDestructor_8065810(Task *t);
 
 extern u16 gUnknown_086B1AB4[16][16];
 extern u8 gUnknown_086B1CB4[0x540];
@@ -110,7 +110,7 @@ const s16 gUnknown_0868B280[2] = { 0x5C, 0x5A };
 const s16 gUnknown_0868B284[2] = { 0x58, 0x70 };
 const s16 gUnknown_0868B288[2] = { 0x1C, 0x5A };
 // TODO: This struct already appeared somewhere else. Merge them!
-typedef struct LocalTileInfo {
+typedef struct {
     u32 anim;
     u32 variant;
     void *vram;
@@ -219,7 +219,7 @@ void CreateIntroAnimation(void)
     u16 temp_r3;
     u16 temp_r5;
     u8 i;
-    struct Task *t, *t2;
+    Task *t, *t2;
     Sprite *s;
     IntroSprite *emerald;
     IntroSprite *introSpr;
@@ -474,7 +474,7 @@ void sub_8063E8C(u16 arg0)
     u16 temp_r6;
     s32 qVal;
     u8 i;
-    struct Task *t;
+    Task *t;
     IntroSprite *introSpr;
     Sprite *s;
 
@@ -659,7 +659,7 @@ void sub_8064244()
     u8 i;
     void *temp_r7_2;
     void *var_r0;
-    struct Task *t;
+    Task *t;
 
     Intro_C8 *temp_r0_7;
     Intro_54 *strc54 = TASK_DATA(gCurTask);
@@ -761,7 +761,7 @@ void sub_8064244()
             SpotlightBeam *beam;
 
             if (strc54->unk4C == 0xE1) {
-                struct Task *tBeam = CreateSpotlightBeamTask();
+                Task *tBeam = CreateSpotlightBeamTask();
                 strc54->beamTasks[0] = tBeam;
                 beam = TASK_DATA(tBeam);
                 beam->unk6 = 120;
@@ -826,7 +826,7 @@ void sub_80645E4()
     void *temp_r7_2;
     void *var_r0;
     u32 unk4C;
-    struct Task *t;
+    Task *t;
 
     Intro_C8 *strcC8;
     Intro_54 *strc54 = TASK_DATA(gCurTask);
@@ -981,7 +981,7 @@ void sub_80648D4()
     void *temp_r7_2;
     void *var_r0;
     u32 unk4C;
-    struct Task *t;
+    Task *t;
 
     Intro_C8 *strcC8;
     Intro_54 *strc54 = TASK_DATA(gCurTask);
@@ -1129,7 +1129,7 @@ void sub_8064BB4()
     void *temp_r7_2;
     void *var_r0;
     u32 unk4C;
-    struct Task *t;
+    Task *t;
 
     Intro_C8 *strcC8;
     Intro_54 *strc54 = TASK_DATA(gCurTask);
@@ -1275,7 +1275,7 @@ void sub_8064E84()
     void *temp_r7_2;
     void *var_r0;
     u32 unk4C;
-    struct Task *t;
+    Task *t;
 
     Intro_C8 *strcC8;
     Intro_54 *strc54 = TASK_DATA(gCurTask);
@@ -1734,7 +1734,7 @@ void sub_8065794(void)
     }
 }
 
-void TaskDestructor_8065810(struct Task *t) { }
+void TaskDestructor_8065810(Task *t) { }
 
 void Task_IntroChaosEmeraldUpdate()
 {

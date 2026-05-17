@@ -89,18 +89,18 @@ void sub_804CDF8(void)
     }
 }
 
-struct Task *CreateSomeTaskManager_60_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor)
+Task *CreateSomeTaskManager_60_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(proc, sizeof(SomeTaskManager_60), gCurTask->priority + 1, 0, dtor);
+    Task *t = TaskCreate(proc, sizeof(SomeTaskManager_60), gCurTask->priority + 1, 0, dtor);
 
     sub_804CD80(TASK_DATA(t), gfx);
 
     return t;
 }
 
-struct Task *CreateSomeTaskManager_7C_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor)
+Task *CreateSomeTaskManager_7C_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(proc, sizeof(SomeTaskManager_7C), gCurTask->priority + 1, 0, dtor);
+    Task *t = TaskCreate(proc, sizeof(SomeTaskManager_7C), gCurTask->priority + 1, 0, dtor);
 
     sub_804CF5C(TASK_DATA(t), gfx);
 
@@ -121,7 +121,7 @@ void sub_804CF5C(SomeTaskManager_7C *taskData, GfxInfo *gfx)
     taskData->unk76 = 0;
 }
 
-void TaskDestructor_SomeTaskManager_60_Common(struct Task *t)
+void TaskDestructor_SomeTaskManager_60_Common(Task *t)
 {
     SomeTaskManager_60 *taskData = TASK_DATA(t);
     Sprite *s = &taskData->s;

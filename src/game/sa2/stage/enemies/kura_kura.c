@@ -27,11 +27,11 @@ typedef struct {
 } Sprite_KuraKura; /* 0xB4*/
 
 void Task_8052024(void);
-void TaskDestructor_8052264(struct Task *);
+void TaskDestructor_8052264(Task *);
 
 void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_8052024, sizeof(Sprite_KuraKura), 0x4050, 0, TaskDestructor_8052264);
+    Task *t = TaskCreate(Task_8052024, sizeof(Sprite_KuraKura), 0x4050, 0, TaskDestructor_8052264);
     Sprite_KuraKura *kk = TASK_DATA(t);
     Sprite *s = &kk->s;
     kk->unkB0 = 0;
@@ -115,7 +115,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     DisplaySprite(s2);
 }
 
-void TaskDestructor_8052264(struct Task *t)
+void TaskDestructor_8052264(Task *t)
 {
     Sprite_KuraKura *kk = TASK_DATA(t);
     VramFree(kk->s.graphics.dest);

@@ -61,7 +61,7 @@ void CreateUnusedLevelSelect(void)
     PAUSE_BACKGROUNDS_QUEUE();
     PAUSE_GRAPHICS_QUEUE();
 #endif
-    struct Task *t = TaskCreate(Task_UnusedLevelSelectInit, sizeof(LevelSelect), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_UnusedLevelSelectInit, sizeof(LevelSelect), 0x2000, 0, NULL);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;

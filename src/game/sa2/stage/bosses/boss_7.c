@@ -70,7 +70,7 @@ typedef struct {
 } UNK_80D8710;
 
 static void Task_EggFrogMain(void);
-static void TaskDestructor_EggFrogMain(struct Task *);
+static void TaskDestructor_EggFrogMain(Task *);
 
 typedef void (*EggFrogCallback)(EggFrog *);
 
@@ -993,7 +993,7 @@ static void Task_EggFrogMain(void)
 
 static void sub_8048F44(void)
 {
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
     gDispCnt &= ~DISPCNT_BG0_ON;
     gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     TaskDestroy(t);
@@ -1175,7 +1175,7 @@ static void sub_804931C(EggFrog *boss)
     gFlags |= 1;
 }
 
-static void TaskDestructor_EggFrogMain(struct Task *t)
+static void TaskDestructor_EggFrogMain(Task *t)
 {
     EggFrog *boss = TASK_DATA(t);
     VramFree(boss->unk1E8);
@@ -1191,7 +1191,7 @@ static void TaskDestructor_EggFrogMain(struct Task *t)
 static void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(sub_80494EC, sizeof(EggFrogBomb), 0x6100, 0, NULL);
+    Task *t = TaskCreate(sub_80494EC, sizeof(EggFrogBomb), 0x6100, 0, NULL);
     EggFrogBomb *bomb = TASK_DATA(t);
 
     bomb->x = x - Q(gCamera.x) + 0x500;
@@ -1302,7 +1302,7 @@ static void sub_8049658(void)
 static void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_80497E0, sizeof(EggFrogBomb), 0x6100, 0, NULL);
+    Task *t = TaskCreate(Task_80497E0, sizeof(EggFrogBomb), 0x6100, 0, NULL);
     EggFrogBomb *bombFlame = TASK_DATA(t);
     bombFlame->x = x - Q(gCamera.x);
     bombFlame->y = y - Q(gCamera.y);

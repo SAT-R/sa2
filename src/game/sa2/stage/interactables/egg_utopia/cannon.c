@@ -32,7 +32,7 @@ typedef struct {
 } Sprite_Cannon;
 
 static void Task_Idle(void);
-static void TaskDestructor_Interactable093(struct Task *);
+static void TaskDestructor_Interactable093(Task *);
 static void HandleMovement(Sprite_Cannon *);
 static void Render(Sprite_Cannon *);
 static void Fire(Sprite_Cannon *);
@@ -50,7 +50,7 @@ static void Task_Activating(void);
 void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_Cannon), 0x2010, 0, TaskDestructor_Interactable093);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_Cannon), 0x2010, 0, TaskDestructor_Interactable093);
     Sprite_Cannon *cannon = TASK_DATA(t);
     cannon->facingRight = me->d.sData[0];
     cannon->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -304,7 +304,7 @@ static void Task_IdleBeforeReset(void)
     Render(cannon);
 }
 
-static void TaskDestructor_Interactable093(struct Task *unused)
+static void TaskDestructor_Interactable093(Task *unused)
 {
     // unused
 }

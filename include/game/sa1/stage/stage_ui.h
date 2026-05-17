@@ -74,12 +74,12 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ StrcUi_805423C unk0;
-    /* 0x0C */ struct Task *taskC; // -> Strc_Ui_24
-    /* 0x10 */ struct Task *task10; // -> Strc_Ui_24
-    /* 0x14 */ struct Task *task14; // -> Strc_Ui_24
-    /* 0x18 */ struct Task *task18; // -> Strc_Ui_24
-    /* 0x1C */ struct Task *task1C; // -> Strc_Ui_24
-    /* 0x20 */ struct Task *task20; // -> Strc_Ui_24
+    /* 0x0C */ Task *taskC; // -> Strc_Ui_24
+    /* 0x10 */ Task *task10; // -> Strc_Ui_24
+    /* 0x14 */ Task *task14; // -> Strc_Ui_24
+    /* 0x18 */ Task *task18; // -> Strc_Ui_24
+    /* 0x1C */ Task *task1C; // -> Strc_Ui_24
+    /* 0x20 */ Task *task20; // -> Strc_Ui_24
     /* 0x24 */ s16 unk24;
     /* 0x26 */ bool8 unk26;
     /* 0x27 */ u8 unk27;
@@ -91,11 +91,11 @@ typedef struct {
     void *vram8;
     void *vramC;
     void *vram10;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
-    struct Task *task24;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
+    Task *task24;
 } StrcStack;
 
 void LoadStageIntroGraphics(StrcStack *param0);

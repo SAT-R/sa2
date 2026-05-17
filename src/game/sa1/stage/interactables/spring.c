@@ -36,7 +36,7 @@ void Task_80220FC(void);
 void Task_8022354(void);
 void Task_Spring_Small_Up(void);
 void Task_8022594(void);
-void TaskDestructor_Spring(struct Task *t);
+void TaskDestructor_Spring(Task *t);
 
 bool32 sub_8022640(Sprite *s, MapEntity *me, SpringA *spring, Player *p);
 bool32 sub_8022804(Sprite *s, MapEntity *me, SpringA *spring, Player *p);
@@ -48,7 +48,7 @@ const s16 sData0Accel[4] = { Q(7.5), Q(9.0), Q(10.5), Q(12.0) };
 
 void CreateEntity_Spring_Normal_Up(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Normal_Up, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Normal_Up, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
     SpringA *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -94,7 +94,7 @@ void Task_Spring_Normal_Up(void)
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
     s32 i;
-    struct Task **t;
+    Task **t;
     TaskMain func;
 
     i = 0;
@@ -158,7 +158,7 @@ void Task_8021BC0(void)
 
 void CreateEntity_Spring_Normal_Down(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Normal_Down, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Normal_Down, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
     SpringA *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -197,7 +197,7 @@ void Task_Spring_Normal_Down(void)
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
     s32 i;
-    struct Task **t;
+    Task **t;
     TaskMain func;
 
     i = 0;
@@ -262,7 +262,7 @@ void Task_8021E70(void)
 // NOTE: IA_010 = Left, IA_011 = Right
 void CreateEntity_Spring_Horizontal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Horizontal, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Horizontal, sizeof(SpringA), 0x2000, 0, TaskDestructor_Spring);
     SpringA *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -366,7 +366,7 @@ void Task_80220FC(void)
 
 void CreateEntity_Spring_Big_Up(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Big_Up, sizeof(SpringB), 0x2000, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Big_Up, sizeof(SpringB), 0x2000, 0, TaskDestructor_Spring);
     SpringB *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -470,7 +470,7 @@ void Task_8022354(void)
 
 void CreateEntity_Spring_Small_Up(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Small_Up, sizeof(SpringB), 0x2000, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Small_Up, sizeof(SpringB), 0x2000, 0, TaskDestructor_Spring);
     SpringB *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -1073,7 +1073,7 @@ bool32 sub_8022E14(Sprite *s, MapEntity *me, SpringB *spring, Player *p)
     return FALSE;
 }
 
-void TaskDestructor_Spring(struct Task *t)
+void TaskDestructor_Spring(Task *t)
 {
     SpringA *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);

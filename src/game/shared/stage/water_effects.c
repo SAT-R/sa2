@@ -41,10 +41,10 @@ typedef struct {
 
 static void Task_StageWaterTask(void);
 static void Task_RunOnWaterEffect(void);
-static void TaskDestructor_WaterSurface(struct Task *);
+static void TaskDestructor_WaterSurface(Task *);
 static void SA2_LABEL(sub_8011A4C)(void);
 static void SA2_LABEL(VCountIntr_8011ACC)(void);
-static void TaskDestructor_RunOnWaterEffect(struct Task *);
+static void TaskDestructor_RunOnWaterEffect(Task *);
 
 #if (GAME == GAME_SA1)
 // SA2 allocates these in the Task, to save global memory.
@@ -218,7 +218,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
 static void Task_StageWaterTask(void)
 {
     Water *water = &gWater;
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     bool32 active;
     Sprite *s;
 
@@ -310,7 +310,7 @@ static void Task_StageWaterTask(void)
 #if (HAS_RUN_ON_WATER)
 void CreateRunOnWaterEffect(void)
 {
-    struct Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001, 0, TaskDestructor_RunOnWaterEffect);
+    Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001, 0, TaskDestructor_RunOnWaterEffect);
     RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;
     s->graphics.dest = VramMalloc(12);
@@ -362,9 +362,9 @@ void unused_DestroygWaterTask(void)
 }
 #endif
 
-struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
+Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
-    struct Task *t = CreateMultiplayerSpriteTask(x, y, 0x10, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    Task *t = CreateMultiplayerSpriteTask(x, y, 0x10, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
@@ -403,7 +403,7 @@ UNUSED void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 siz
 }
 #endif
 
-static void TaskDestructor_WaterSurface(struct Task *t)
+static void TaskDestructor_WaterSurface(Task *t)
 {
     Water *water = &gWater;
 
@@ -489,7 +489,7 @@ UNUSED void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 siz
 #endif
 
 #if (HAS_RUN_ON_WATER)
-static void TaskDestructor_RunOnWaterEffect(struct Task *t)
+static void TaskDestructor_RunOnWaterEffect(Task *t)
 {
     RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;

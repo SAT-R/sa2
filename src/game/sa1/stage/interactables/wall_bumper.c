@@ -68,7 +68,7 @@ void Task_WallBumper(void)
 
 void CreateEntity_WallBumper(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_WallBumper, sizeof(WallBumper), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_WallBumper, sizeof(WallBumper), 0x2000, 0, NULL);
     WallBumper *bumper = TASK_DATA(t);
 
     bumper->base.regionX = regionX;

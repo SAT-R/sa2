@@ -42,7 +42,7 @@ typedef struct {
 
 static void Task_AmyAttackHeartEffect(void);
 static void HandleAnimFrame(u16);
-static void TaskDestructor_AmyAttackHeartEffect(struct Task *);
+static void TaskDestructor_AmyAttackHeartEffect(Task *);
 
 ALIGNED(4)
 const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
@@ -109,7 +109,7 @@ extern void CreateAmyAttackHeartEffect(u16 kind)
         || (gPlayer.charState == CHARSTATE_TRICK_DOWN))
 #endif
     {
-        struct Task *t = TaskCreate(Task_AmyAttackHeartEffect, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_AmyAttackHeartEffect);
+        Task *t = TaskCreate(Task_AmyAttackHeartEffect, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_AmyAttackHeartEffect);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
         // TODO: Remove magic nums!
@@ -141,9 +141,9 @@ extern void CreateAmyAttackHeartEffect(u16 kind)
 static void Task_AmyAttackHeartEffect(void)
 {
 #ifndef NON_MATCHING
-    register struct Task *t asm("r2") = gCurTask;
+    register Task *t asm("r2") = gCurTask;
 #else
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
 #endif
     AmyAtkHearts *hearts = TASK_DATA(t);
     u8 i;
@@ -196,7 +196,7 @@ static void Task_AmyAttackHeartEffect(void)
     }
 
     for (i = 0; i < ARRAY_COUNT(hearts->sprHearts); i++) {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
 
         if (hearts->animFrames[i].count != 0) {
             Sprite *s;
@@ -282,7 +282,7 @@ void HandleAnimFrame(u16 frame)
     }
 }
 
-static void TaskDestructor_AmyAttackHeartEffect(struct Task *t)
+static void TaskDestructor_AmyAttackHeartEffect(Task *t)
 {
     AmyAtkHearts *hearts = TASK_DATA(t);
 

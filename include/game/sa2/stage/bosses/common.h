@@ -4,7 +4,7 @@
 #include "global.h"
 #include "core.h"
 
-extern struct Task *gActiveBossTask;
+extern Task *gActiveBossTask;
 typedef void (*TranslateBossFunction)(s32, s32);
 
 typedef enum {

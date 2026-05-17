@@ -31,7 +31,7 @@ void Task_PlatformThin(void);
 void Task_PlatformThin_Falling(void);
 void Task_802473C(void);
 void Task_802492C(void);
-void TaskDestructor_PlatformThin(struct Task *t);
+void TaskDestructor_PlatformThin(Task *t);
 
 const AnimId sPlatformThinAnims[NUM_LEVEL_IDS] = {
     SA1_ANIM_PLATFORM_HORZ_1,   SA1_ANIM_PLATFORM_HORZ_1, // Zone 1
@@ -47,7 +47,7 @@ const AnimId sPlatformThinAnims[NUM_LEVEL_IDS] = {
 
 void CreateEntity_PlatformThin(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PlatformThin, sizeof(PlatformThin), 0x2010, 0, TaskDestructor_PlatformThin);
+    Task *t = TaskCreate(Task_PlatformThin, sizeof(PlatformThin), 0x2010, 0, TaskDestructor_PlatformThin);
     PlatformThin *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
@@ -208,7 +208,7 @@ void Task_PlatformThin(void)
 
 void CreateEntity_PlatformThin_Falling(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PlatformThin_Falling, sizeof(PlatformThin), 0x2000, 0, TaskDestructor_PlatformThin);
+    Task *t = TaskCreate(Task_PlatformThin_Falling, sizeof(PlatformThin), 0x2000, 0, TaskDestructor_PlatformThin);
     PlatformThin *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
@@ -446,7 +446,7 @@ void Task_802492C(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_PlatformThin(struct Task *t)
+void TaskDestructor_PlatformThin(Task *t)
 {
     PlatformThin *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

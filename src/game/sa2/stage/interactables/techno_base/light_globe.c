@@ -24,7 +24,7 @@ typedef struct {
 } Sprite_LightGlobe;
 
 static void Task_Interactable080(void);
-static void TaskDestructor_Interactable080(struct Task *);
+static void TaskDestructor_Interactable080(Task *);
 static void sub_807B2D0(Sprite_LightGlobe *);
 static void sub_807B398(Sprite_LightGlobe *);
 static void sub_807B318(Sprite_LightGlobe *);
@@ -33,7 +33,7 @@ static void sub_807B3B0(void);
 
 void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010, 0, TaskDestructor_Interactable080);
+    Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010, 0, TaskDestructor_Interactable080);
     Sprite_LightGlobe *globe = TASK_DATA(t);
     Sprite *s;
 
@@ -136,7 +136,7 @@ static void Task_Interactable080(void)
     }
 }
 
-static void TaskDestructor_Interactable080(struct Task *t)
+static void TaskDestructor_Interactable080(Task *t)
 {
     Sprite_LightGlobe *globe = TASK_DATA(t);
     VramFree(globe->s.graphics.dest);

@@ -32,7 +32,7 @@ void Task_BulletBuzzerMain(void);
 
 void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer), 0x4040, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer), 0x4040, 0, TaskDestructor_EntityShared);
     Sprite_BulletBuzzer *bbuzzer = TASK_DATA(t);
     Sprite *s = &bbuzzer->s;
     bbuzzer->base.regionX = spriteRegionX;

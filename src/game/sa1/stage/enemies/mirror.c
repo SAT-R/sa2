@@ -43,7 +43,7 @@ void Task_MirrorProjectile(void);
 void CreateEntity_Mirror(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_6) || (LOADED_SAVE->difficultyLevel == DIFFICULTY_NORMAL)) {
-        struct Task *t = TaskCreate(Task_Mirror, sizeof(Mirror), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_Mirror, sizeof(Mirror), 0x2000, 0, TaskDestructor_EntityShared);
         Mirror *mirror = TASK_DATA(t);
         Sprite *s = &mirror->shared.s;
 
@@ -189,7 +189,7 @@ void Task_MirrorShoot(void)
 
 void CreateMirrorProjectile(CamCoord worldX, CamCoord worldY, u8 dir)
 {
-    struct Task *t = TaskCreate(Task_MirrorProjectile, sizeof(MirrorProjectile), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_MirrorProjectile, sizeof(MirrorProjectile), 0x3000, 0, NULL);
     MirrorProjectile *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 

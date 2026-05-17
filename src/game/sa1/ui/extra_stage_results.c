@@ -15,25 +15,25 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct CongratulationsAnim_48 {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC;
-    struct Task *task10;
-    struct Task *task14;
-    struct Task *task18; // -> ExtraStageResults_164
-    struct Task *task1C;
-    struct Task *task20;
-    struct Task *task24;
-    struct Task *task28;
-    struct Task *task2C;
-    struct Task *tasks30[4]; // ExtraStageResults_64_2
+    Task *taskC;
+    Task *task10;
+    Task *task14;
+    Task *task18; // -> ExtraStageResults_164
+    Task *task1C;
+    Task *task20;
+    Task *task24;
+    Task *task28;
+    Task *task2C;
+    Task *tasks30[4]; // ExtraStageResults_64_2
     s16 unk40;
     s8 unk42;
     s16 unk44;
     s16 unk46;
 } CongratulationsAnim_48;
 
-typedef struct ExtraStageResults_64 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u32 unk3C;
@@ -45,7 +45,7 @@ typedef struct ExtraStageResults_64 {
 
 // TODO:
 // This might just have been struct ExtraStageResults_164 all along?
-typedef struct ExtraStageResults_64_2 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u16 unk3C;
@@ -55,7 +55,7 @@ typedef struct ExtraStageResults_64_2 {
     s32 qUnk54[4];
 } ExtraStageResults_64_2;
 
-typedef struct ExtraStageResults_164 {
+typedef struct {
     Sprite s;
     SpriteTransform transform;
     u16 unk3C;
@@ -73,15 +73,15 @@ typedef struct ExtraStageResults_164 {
     u8 filler15E[0x7];
 } ExtraStageResults_164;
 
-typedef struct ExtraStageResultsState {
+typedef struct {
     StrcUi_805423C strc0; // -> ExtraStageResults_64
-    struct Task *taskC; // -> ExtraStageResults_64
-    struct Task *task10; // -> ExtraStageResults_64
-    struct Task *task14; // -> ExtraStageResults_64
-    struct Task *task18; // -> ExtraStageResults_64
-    struct Task *task1C; // -> ExtraStageResults_64
-    struct Task *tasks20[3]; // -> ExtraStageResults_164
-    struct Task *tasks2C[3]; // -> ExtraStageResults_64_2
+    Task *taskC; // -> ExtraStageResults_64
+    Task *task10; // -> ExtraStageResults_64
+    Task *task14; // -> ExtraStageResults_64
+    Task *task18; // -> ExtraStageResults_64
+    Task *task1C; // -> ExtraStageResults_64
+    Task *tasks20[3]; // -> ExtraStageResults_164
+    Task *tasks2C[3]; // -> ExtraStageResults_64_2
     s32 unk38;
     s32 unk3C;
     u8 unk40;
@@ -197,16 +197,16 @@ static inline void sub_80684F4__inline(s32 comp)
 
 void CreateCongratulationsAnimation(void)
 {
-    struct Task *tasks[3];
+    Task *tasks[3];
     Strc_80528AC gfx;
     ExtraStageResults_164 *strc164;
     CongratulationsAnim_48 *state;
-    struct Task *sp40;
-    struct Task *sp44;
-    struct Task *sp48;
-    struct Task *sp4C;
-    struct Task *sp50;
-    struct Task *temp_r0;
+    Task *sp40;
+    Task *sp44;
+    Task *sp48;
+    Task *sp4C;
+    Task *sp50;
+    Task *temp_r0;
     Sprite *s;
     u8 i;
 
@@ -489,14 +489,14 @@ void CreateCongratulationsAnimation(void)
 
 void Task_8065F5C_48(void)
 {
-    struct Task *tasks[4];
+    Task *tasks[4];
     ExtraStageResults_64_2 *sp14;
     ExtraStageResults_64_2 *sp18;
     ExtraStageResults_64_2 *sp1C;
     ExtraStageResults_64_2 *temp_sl;
     s16 var_r0;
     s8 *temp_r3_2;
-    struct Task *t;
+    Task *t;
     u16 temp_r3;
     u32 var_r7;
     u8 var_r6;
@@ -602,10 +602,10 @@ void Task_80661A8_48()
     void *strc64_2;
     void *strc64_3;
     void *strc64_4;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
     ExtraStageResults_164 *strc164_t14;
     ExtraStageResults_164 *strc164_t18;
     ExtraStageResults_164 *strc164_t1C;
@@ -669,10 +669,10 @@ void Task_80661A8_48()
 void Task_80662D0_48(void)
 {
     s16 *temp_r2;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
     ExtraStageResults_164 *strc164_t18;
     ExtraStageResults_164 *strc164_t1C;
     ExtraStageResults_164 *strc164_t20;
@@ -708,10 +708,10 @@ void Task_80662D0_48(void)
 void Task_806636C_48(void)
 {
     s16 *temp_r2;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
     ExtraStageResults_164 *strc164_t14;
     ExtraStageResults_164 *strc164_t18;
     ExtraStageResults_164 *strc164_t1C;
@@ -744,10 +744,10 @@ void Task_806636C_48(void)
 void Task_80663EC_48(void)
 {
     s16 *temp_r2;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
     ExtraStageResults_164 *strc164_t14;
     ExtraStageResults_164 *strc164_t18;
     ExtraStageResults_164 *strc164_t1C;
@@ -783,10 +783,10 @@ void Task_80663EC_48(void)
 void Task_8066478(void)
 {
     s16 *temp_r2;
-    struct Task *temp_r6;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
+    Task *temp_r6;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
     ExtraStageResults_164 *strc164;
     ExtraStageResults_164 *strc164_2;
     ExtraStageResults_164 *strc164_3;
@@ -1408,19 +1408,19 @@ void Task_8067084()
 
 void CreateExtraStageResults(void)
 {
-    struct Task *tasks[4];
+    Task *tasks[4];
     Strc_80528AC gfx;
-    struct Task *task64_0;
-    struct Task *task64_2;
-    struct Task *task64_1;
+    Task *task64_0;
+    Task *task64_2;
+    Task *task64_1;
     StrcUi_805423C *temp_r0_11;
     s16 var_r0;
     s16 var_r1;
     s8 *temp_r1_5;
     s8 *temp_r1_6;
-    struct Task *task64_3;
-    struct Task *task64_4;
-    struct Task *temp_r2_6;
+    Task *task64_3;
+    Task *task64_4;
+    Task *temp_r2_6;
     ExtraStageResultsState *state;
     ExtraStageResults_64 *strc64;
     Sprite *s;
@@ -1582,7 +1582,7 @@ void CreateExtraStageResults(void)
     s->frameFlags = 0x2000;
 
     for (i2 = 0; i2 < ARRAY_COUNT(tasks); i2++) {
-        struct Task *t = TaskCreate(Task_nullsub_8068448, sizeof(ExtraStageResults_64_2), 0x2120U, 0U, NULL);
+        Task *t = TaskCreate(Task_nullsub_8068448, sizeof(ExtraStageResults_64_2), 0x2120U, 0U, NULL);
         tasks[i2] = t;
         strc64 = TASK_DATA(t);
         s = &strc64->s;
@@ -1980,7 +1980,7 @@ void Task_8067B9C()
 // (81.56%) https://decomp.me/scratch/L5YKY
 NONMATCH("asm/non_matching/game/sa1/ui/extra_stage_results__Task_8067C24.inc", void Task_8067C24())
 {
-    struct Task *tasks[3];
+    Task *tasks[3];
     u32 sp10;
     ExtraStageResults_64 *sp14;
     ExtraStageResults_164 *temp_r3_2;
@@ -1991,7 +1991,7 @@ NONMATCH("asm/non_matching/game/sa1/ui/extra_stage_results__Task_8067C24.inc", v
     s32 var_r3;
     u16 var_r8_2;
     s8 *temp_r1_5;
-    struct Task *temp_r0_5;
+    Task *temp_r0_5;
     u16 temp_r0_3;
     u16 temp_r0_4;
     u16 temp_r1;

@@ -127,7 +127,7 @@ void Task_802EE78(void)
 
 void sub_802EF68(s16 p0, s16 p1, u8 p2)
 {
-    struct Task *t = TaskCreate(Task_802EE78, sizeof(StageResultsInit), 0x6080, 0, NULL);
+    Task *t = TaskCreate(Task_802EE78, sizeof(StageResultsInit), 0x6080, 0, NULL);
     StageResultsInit *sri = TASK_DATA(t);
     ScreenFade *ts = &sri->ts;
 

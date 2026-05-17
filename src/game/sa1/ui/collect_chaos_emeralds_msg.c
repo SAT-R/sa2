@@ -9,7 +9,7 @@
 
 #include "constants/sa1/animations.h"
 
-typedef struct CollectEmeraldsScreen {
+typedef struct {
     Sprite sprites[3];
     StrcUi_805423C strc90;
     u32 unk9C;

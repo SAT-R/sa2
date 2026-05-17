@@ -10,18 +10,18 @@ typedef struct {
     Sprite chars[SA2_ANIM_NUM_ASCII_CHARS];
 } DebugTextPrinter; /* size: 0x11A0 */
 
-static struct Task *sDebugUITask = NULL;
+static Task *sDebugUITask = NULL;
 
 void Task_802D4B4(void);
-void TaskDestructor_802D4B8(struct Task *);
+void TaskDestructor_802D4B8(Task *);
 
 #define DBG_UI_REQUIRED_TILES                  (2 * SA2_ANIM_NUM_ASCII_CHARS)
 #define DBG_UI_CHAR_SIZE                       (2 * TILE_SIZE_4BPP)
 #define DGB_UI_GET_CHAR_FROM_TASK(task, ascii) (Sprite *)&(((DebugTextPrinter *)TASK_DATA(task))->chars[(ascii) - '!'])
 
-struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
+Task *Debug_CreateAsciiTask(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_802D4B4, sizeof(DebugTextPrinter), 0xE100, 0, TaskDestructor_802D4B8);
+    Task *t = TaskCreate(Task_802D4B4, sizeof(DebugTextPrinter), 0xE100, 0, TaskDestructor_802D4B8);
     DebugTextPrinter *printer = TASK_DATA(t);
     u32 i;
 
@@ -128,7 +128,7 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 }
 void Task_802D4B4(void) { }
 
-void TaskDestructor_802D4B8(struct Task *t)
+void TaskDestructor_802D4B8(Task *t)
 {
     DebugTextPrinter *printer = TASK_DATA(t);
 

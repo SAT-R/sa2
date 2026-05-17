@@ -240,7 +240,7 @@ END_NONMATCH
 
 void CreateEntity_HalfPipeStart(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_HalfPipeStart, sizeof(HalfPipe), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_HalfPipeStart, sizeof(HalfPipe), 0x2000, 0, NULL);
     HalfPipe *halfpipe = TASK_DATA(t);
     s32 worldX, worldY;
 
@@ -264,7 +264,7 @@ void CreateEntity_HalfPipeStart(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
 void CreateEntity_HalfPipeEnd(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_HalfPipeEnd, sizeof(HalfPipe), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_HalfPipeEnd, sizeof(HalfPipe), 0x2000, 0, NULL);
     HalfPipe *halfpipe = TASK_DATA(t);
     s32 worldX, worldY;
 

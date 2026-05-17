@@ -13,7 +13,7 @@ typedef struct {
     Sprite unk30[11];
 } TimeDisplay; /* 0x240*/
 
-void sub_80832E0(struct Task *);
+void sub_80832E0(Task *);
 void sub_808328C(void);
 
 u32 gCollectRingsLastLapTime = 0;
@@ -41,7 +41,7 @@ void CreateCollectRingsTimeDisplay(void)
     u32 i;
     TimeDisplay *timeDisplay;
     Sprite *s;
-    struct Task *t = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
+    Task *t = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
     gCollectRingsLastLapTime = 0;
     timeDisplay = TASK_DATA(t);
 
@@ -330,7 +330,7 @@ void sub_808328C(void)
     }
 }
 
-void sub_80832E0(struct Task *t)
+void sub_80832E0(Task *t)
 {
     TimeDisplay *timeDisplay = TASK_DATA(t);
     VramFree(timeDisplay->unk0.graphics.dest);

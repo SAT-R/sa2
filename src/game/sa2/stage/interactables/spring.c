@@ -49,7 +49,7 @@ static void CreateEntity_Spring(u8, MapEntity *, u16, u16, u8);
 static void Task_Spring_Idle(void);
 static void Task_Spring_Activated(void);
 static bool32 CheckSpringPlayerCollisions(Sprite *p0, MapEntity *me, Sprite_Spring *spring, Player *player);
-static void TaskDestructor_Spring(struct Task *t);
+static void TaskDestructor_Spring(Task *t);
 
 #ifndef COLLECT_RINGS_ROM
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
@@ -111,7 +111,7 @@ static const u16 sSpring_MusicPlant_Soundeffects[5]
 void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s16 springKind = SPRING_KIND_NORMAL;
-    struct Task *t = TaskCreate(Task_Spring_Idle, sizeof(Sprite_Spring), 0x2010, 0, TaskDestructor_Spring);
+    Task *t = TaskCreate(Task_Spring_Idle, sizeof(Sprite_Spring), 0x2010, 0, TaskDestructor_Spring);
     Sprite_Spring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -251,7 +251,7 @@ static bool32 CheckSpringPlayerCollisions(Sprite *s, MapEntity *me, Sprite_Sprin
     }
 }
 
-static void TaskDestructor_Spring(struct Task *t)
+static void TaskDestructor_Spring(Task *t)
 {
     Sprite_Spring *spring = TASK_DATA(t);
 #ifndef COLLECT_RINGS_ROM

@@ -11,12 +11,12 @@ typedef struct {
 } Propeller;
 
 void Task_PropellerMain(void);
-void TaskDestructor_Propeller(struct Task *);
+void TaskDestructor_Propeller(Task *);
 
 #if 01
 void CreateEntity_Propeller(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PropellerMain, sizeof(Propeller), 0x2000, 0, TaskDestructor_Propeller);
+    Task *t = TaskCreate(Task_PropellerMain, sizeof(Propeller), 0x2000, 0, TaskDestructor_Propeller);
     Propeller *propeller = TASK_DATA(t);
     Sprite *s = &propeller->s;
 
@@ -65,7 +65,7 @@ void Task_PropellerMain(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Propeller(struct Task *t)
+void TaskDestructor_Propeller(Task *t)
 {
     Propeller *propeller = TASK_DATA(t);
     VramFree(propeller->s.graphics.dest);

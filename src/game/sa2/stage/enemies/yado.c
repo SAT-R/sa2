@@ -27,7 +27,7 @@ typedef struct {
 void Task_YadoMain(void);
 void Task_8055084(void);
 void Task_8055378(void);
-void TaskDestructor_Yado(struct Task *);
+void TaskDestructor_Yado(Task *);
 
 #define YADO_PLAYER_ACCEL  -Q(9.0)
 #define YADO_PROJ_COOLDOWN (2 * GBA_FRAMES_PER_SECOND)
@@ -39,7 +39,7 @@ void TaskDestructor_Yado(struct Task *);
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s32 regX, regY;
-    struct Task *t = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
+    Task *t = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
     Sprite_Yado *yado = TASK_DATA(t);
     Sprite *s = &yado->s;
     yado->base.regionX = spriteRegionX;
@@ -249,7 +249,7 @@ void Task_8055378(void)
     }
 }
 
-void TaskDestructor_Yado(struct Task *t)
+void TaskDestructor_Yado(Task *t)
 {
     Sprite_Yado *yado = TASK_DATA(t);
     VramFree(yado->s.graphics.dest);

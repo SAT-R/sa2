@@ -18,11 +18,11 @@ typedef struct {
 void Task_Spring_Hiding(void);
 void Task_8095158(void);
 bool32 sub_8095224(SpringHiding *spring, Sprite *s, s32 worldX, s32 worldY);
-void TaskDestructor_Spring_Hiding(struct Task *t);
+void TaskDestructor_Spring_Hiding(Task *t);
 
 void CreateEntity_Spring_Hiding(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spring_Hiding, sizeof(SpringHiding), 0x2000, 0, TaskDestructor_Spring_Hiding);
+    Task *t = TaskCreate(Task_Spring_Hiding, sizeof(SpringHiding), 0x2000, 0, TaskDestructor_Spring_Hiding);
     SpringHiding *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -166,7 +166,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/spring_hiding__sub_80952
 }
 END_NONMATCH
 
-void TaskDestructor_Spring_Hiding(struct Task *t)
+void TaskDestructor_Spring_Hiding(Task *t)
 {
     SpringHiding *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);

@@ -18,7 +18,7 @@ typedef struct {
 } Letter; /* 0x44 */
 
 void Task_SegaSonicLetter(void);
-void TaskDestructor_SegaSonicLetter(struct Task *t);
+void TaskDestructor_SegaSonicLetter(Task *t);
 
 ALIGNED(8) const u16 gUnknown_086CED90[] = { 500, 0x190, 0x12C };
 
@@ -27,7 +27,7 @@ ALIGNED(8) const u16 gUnknown_086CED90[] = { 500, 0x190, 0x12C };
 NONMATCH("asm/non_matching/game/sa1/stage/interactables/CreateEntity_SegaSonicLetter.inc",
          void CreateEntity_SegaSonicLetter(MapEntity *me, u16 regionX, u16 regionY, u8 id))
 {
-    struct Task *t;
+    Task *t;
     Letter *letter;
     Sprite *s;
 #if 0
@@ -169,7 +169,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/Task_SegaSonicLetter.inc
 }
 END_NONMATCH
 
-void TaskDestructor_SegaSonicLetter(struct Task *t)
+void TaskDestructor_SegaSonicLetter(Task *t)
 {
     Letter *letter = TASK_DATA(t);
     VramFree(letter->s.graphics.dest);

@@ -15,7 +15,7 @@
 #define FRAME_RELAY_A 90
 #define FRAME_RELAY_B 150
 
-typedef struct SpecialStageIntro44 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -25,7 +25,7 @@ typedef struct SpecialStageIntro44 {
 } SpecialStageIntro44;
 
 // TODO: Integrate SpecialStageIntro44 into this?
-typedef struct SpecialStageIntroC4 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -37,7 +37,7 @@ typedef struct SpecialStageIntroC4 {
 } SpecialStageIntroC4; /* 0xC4 */
 
 // TODO: Integrate SpecialStageIntro44 into this?
-typedef struct SpecialStageIntro64 {
+typedef struct {
     Sprite s;
     u32 unk30;
     s32 qUnk34;
@@ -47,23 +47,23 @@ typedef struct SpecialStageIntro64 {
     s32 unk44[8];
 } SpecialStageIntro64; /* 0xC4 */
 
-typedef struct SpecialStageIntro20 {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC; // SpecialStageIntro64
-    struct Task *task10; // SpecialStageIntro64
-    struct Task *task14; // SpecialStageIntro64
+    Task *taskC; // SpecialStageIntro64
+    Task *task10; // SpecialStageIntro64
+    Task *task14; // SpecialStageIntro64
     s16 unk18;
     u8 unk1A;
     s16 unk1C;
     s16 unk1E;
 } SpecialStageIntro20;
 
-typedef struct SpecialStageIntro28 {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC; // SpecialStageIntro44
-    struct Task *task10; // SpecialStageIntro44
-    struct Task *task14; // SpecialStageIntro44
-    struct Task *task18; // SpecialStageIntro44
+    Task *taskC; // SpecialStageIntro44
+    Task *task10; // SpecialStageIntro44
+    Task *task14; // SpecialStageIntro44
+    Task *task18; // SpecialStageIntro44
     s16 unk1C;
     u8 unk1E;
     s16 unk20;
@@ -104,8 +104,8 @@ extern u8 gUnknown_08487134[NUM_LEVEL_IDS];
 
 void CreateSpecialStageIntro(void)
 {
-    struct Task *taskC;
-    struct Task *task10;
+    Task *taskC;
+    Task *task10;
     SpecialStageIntroC4 *temp_r0_3;
     SpecialStageIntro20 *temp_r0_6;
     SpecialStageIntroC4 *temp_r2;
@@ -221,7 +221,7 @@ void Task_8068948()
 {
     SpecialStageIntroC4 *temp_r2;
     SpecialStageIntroC4 *temp_r7;
-    struct Task *t;
+    Task *t;
     Sprite *s;
     u32 temp_r5;
 
@@ -403,12 +403,12 @@ void Task_8068CD4(void)
 
 void sub_8068D0C(void)
 {
-    struct Task *tasks[4];
+    Task *tasks[4];
     Strc_80528AC gfx;
-    struct Task *sp44;
-    struct Task *sp48;
-    struct Task *sp4C;
-    struct Task *t;
+    Task *sp44;
+    Task *sp48;
+    Task *sp4C;
+    Task *t;
     SpecialStageIntro44 *temp_r2;
     SpecialStageIntro44 *temp_r1;
     SpecialStageIntro64 *temp_r1_2;
@@ -587,7 +587,7 @@ void Task_8069100(void)
     SpecialStageIntro44 *strc44_0;
     SpecialStageIntro44 *temp_sl;
     SpecialStageIntro44 *var_r7;
-    struct Task *t;
+    Task *t;
     u32 temp_r0;
 
     SpecialStageIntro28 *strc28 = TASK_DATA(gCurTask);

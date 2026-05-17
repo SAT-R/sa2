@@ -30,7 +30,7 @@ typedef struct {
     Color *data;
     int width, height;
 } TextureBuffer;
-static TextureBuffer sDynTextureBuffer = { 0 };
+TextureBuffer sDynTextureBuffer = { 0 };
 
 // TODO: This can be removed once full 32bit RGBA works
 static Background *sActiveBackgrounds[4] = { 0 };
@@ -86,28 +86,28 @@ static void TempConvert4bppToRGBA8_DynTextureBuffer(const u8 *bitmap4bpp, int wi
     }
 }
 
-typedef struct ChunkTileVertex {
+typedef struct {
     u8 x, y;
 } ChunkTileVertex;
 
-typedef struct ChunkGfx {
+typedef struct {
     ChunkTileVertex *tileVerts;
     u8 *rgbaChunks;
     u16 count;
     u16 capacity;
 } ChunkGfx;
 
-static ChunkGfx sChunkGfx = { 0 };
+ChunkGfx sChunkGfx = { 0 };
 #define RENDERED_CHUNKS_W ((DISPLAY_WIDTH / 96) + 2)
 #define RENDERED_CHUNKS_H ((DISPLAY_HEIGHT / 96) + 2)
 #define RENDERED_CHUNKS   (RENDERED_CHUNKS_W * RENDERED_CHUNKS_H)
 
 // Set of chunks that have to be drawn this frame
-typedef struct ChunkSet {
+typedef struct {
     MetatileIndexType *items;
     u16 count, capacity;
 } ChunkSet;
-static ChunkSet sChunkSet = { 0 };
+ChunkSet sChunkSet = { 0 };
 
 // TODO: minY should be from upper-left corner, not bottom-left!
 void OpenGL_RenderRGBABuffer(Color *buffer, u16 bufferWidth, u16 bufferHeight, float minX, float minY, float maxX, float maxY)

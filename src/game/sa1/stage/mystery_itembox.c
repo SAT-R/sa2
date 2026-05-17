@@ -51,7 +51,7 @@ typedef struct {
 
 void Task_MysteryItemBox_Main0(void);
 void Task_MysteryItemBox_Main1(void);
-void TaskDestructor_MysteryItemBox(struct Task *);
+void TaskDestructor_MysteryItemBox(Task *);
 void sub_801C69C(void);
 void Task_801C2FC(void);
 void Task_801C420(void);
@@ -70,7 +70,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 regionX, u16 regionY, u8 spr
 {
     Sprite *s;
     MysteryItemBox *itemBox;
-    struct Task *t;
+    Task *t;
     if ((gRandomItemBox & 7) == me->d.sData[DATABYTE_A] && me->d.sData[DATABYTE_B] <= (gRandomItemBox >> 4)) {
         t = TaskCreate(Task_MysteryItemBox_Main0, sizeof(MysteryItemBox), 0x2000, 0, TaskDestructor_MysteryItemBox);
     } else {
@@ -273,7 +273,7 @@ void Task_MysteryItemBox_Main0()
     s->y = (worldY - gCamera.y) + itembox->unk7C;
     if ((gGameMode == 3) || (gGameMode == 5)) {
         for (var_r2 = 0; var_r2 < 4; var_r2++) {
-            struct Task **mpTasks = gMultiplayerPlayerTasks;
+            Task **mpTasks = gMultiplayerPlayerTasks;
             if (mpTasks[var_r2] == NULL)
                 break;
 
@@ -579,7 +579,7 @@ void sub_801C69C()
     sub_801C5C4();
 }
 
-void TaskDestructor_MysteryItemBox(struct Task *t)
+void TaskDestructor_MysteryItemBox(Task *t)
 {
     MysteryItemBox *itembox = TASK_DATA(t);
 

@@ -31,7 +31,7 @@ void Task_StageGoal4(void);
 void Task_StageGoal5(void);
 void Task_StageGoal6(void);
 void Task_ShowResults(void);
-void TaskDestructor_EntityShared(struct Task *t);
+void TaskDestructor_EntityShared(Task *t);
 
 void CreateEntity_StageGoal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
@@ -46,7 +46,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     }
 
     {
-        struct Task *t = TaskCreate(Task_StageGoal, sizeof(StageGoal), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_StageGoal, sizeof(StageGoal), 0x2000, 0, TaskDestructor_EntityShared);
         StageGoal *goal = TASK_DATA(t);
         Sprite *s = &goal->shared.s;
 
@@ -293,7 +293,7 @@ void Task_StageGoal2(void)
         // MP Race
         s32 count = 0;
         u32 i;
-        struct Task **mppTasks = &gMultiplayerPlayerTasks[0];
+        Task **mppTasks = &gMultiplayerPlayerTasks[0];
         MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
         gPlayer.itemEffect &= ~(PLAYER_ITEM_EFFECT__CONFUSION);
         gPlayer.timerConfusion = count;
@@ -352,7 +352,7 @@ void Task_StageGoal2(void)
         }
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            struct Task *t = gMultiplayerPlayerTasks[i];
+            Task *t = gMultiplayerPlayerTasks[i];
             if (t == NULL)
                 break;
 
@@ -453,7 +453,7 @@ void Task_StageGoal4(void)
         s32 count = 0;
         u32 i;
         s32 r2, r3;
-        struct Task **mppTasks;
+        Task **mppTasks;
         MultiplayerPlayer *mpp;
         mppTasks = &gMultiplayerPlayerTasks[0];
 
@@ -520,7 +520,7 @@ void Task_StageGoal4(void)
             gPlayer.moveState |= MOVESTATE_800000;
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX && gMultiplayerPlayerTasks[i]; i++) {
-                struct Task *t = gMultiplayerPlayerTasks[i];
+                Task *t = gMultiplayerPlayerTasks[i];
                 if (t == NULL)
                     break;
 
@@ -534,7 +534,7 @@ void Task_StageGoal4(void)
             if (sp04 >= (i - 1) || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY) {
                 u32 j;
                 for (j = 0; j < MULTI_SIO_PLAYERS_MAX && gMultiplayerPlayerTasks[j]; j++) {
-                    struct Task *t = gMultiplayerPlayerTasks[j];
+                    Task *t = gMultiplayerPlayerTasks[j];
                     if (t == NULL)
                         break;
 

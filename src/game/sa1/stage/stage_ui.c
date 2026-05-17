@@ -28,8 +28,8 @@ void Task_8055904(void);
 void Task_8055998(void);
 void Task_8055AA0(void);
 void Task_8055B18(void);
-void TaskDestructor_8055C38(struct Task *);
-void TaskDestructor_StrcUI28_8055C4C(struct Task *);
+void TaskDestructor_8055C38(Task *);
+void TaskDestructor_StrcUI28_8055C4C(Task *);
 
 extern const char gUnknown_0865F174[];
 extern const char gUnknown_0865F178[];
@@ -319,7 +319,7 @@ void StageUI_DrawTimer(u32 courseTime)
 // (95.64%) https://decomp.me/scratch/qd1UL
 NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__sub_8053BAC.inc", void sub_8053BAC(void))
 {
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
     StageUI *ui = TASK_DATA(t);
     u8 *ptr = &ui->digitsRings[0];
     u16 *ptr_r8 = &ui->unk48;
@@ -619,11 +619,11 @@ void CreateStageUI(void)
 #ifndef NON_MATCHING
     register void *dtor asm("r1") = 0;
     StageUI_20 *unk20 = NULL;
-    register struct Task *t asm("r1") = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
+    register Task *t asm("r1") = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
 #else
     void *dtor = 0;
     StageUI_20 *unk20 = NULL;
-    struct Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
+    Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
 #endif
     StageUI *ui = TASK_DATA(t);
 
@@ -644,10 +644,10 @@ void CreateSpecialStageUI(void)
 {
 #ifndef NON_MATCHING
     register void *dtor asm("r1") = 0;
-    register struct Task *t asm("r1");
+    register Task *t asm("r1");
 #else
     void *dtor = 0;
-    struct Task *t;
+    Task *t;
 #endif
     s32 zero;
     StageUI *ui;

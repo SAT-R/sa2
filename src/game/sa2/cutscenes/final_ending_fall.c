@@ -72,7 +72,7 @@ struct FinalEndingFallCutScene {
 }; /* 0x49C */
 
 void sub_8092690(void);
-void sub_8092800(struct Task *);
+void sub_8092800(Task *);
 void sub_8091F68(struct FinalEndingFallCutScene *);
 void sub_809205C(struct FinalEndingFallCutScene *);
 void sub_80920E4(struct FinalEndingFallCutScene *);
@@ -122,7 +122,7 @@ void CreateFinalEndingFallCutScene(void)
 {
 
     Background *background;
-    struct Task *t;
+    Task *t;
     struct FinalEndingFallCutScene *scene = NULL;
     ScreenFade *fade = NULL;
 
@@ -832,12 +832,12 @@ void sub_8092780(void)
 
 void sub_80927E8(void)
 {
-    struct Task UNUSED *t = gCurTask;
+    Task UNUSED *t = gCurTask;
     CreateFinalEndingLandingCutScene();
     TaskDestroy(gCurTask);
 }
 
-void sub_8092800(struct Task *t)
+void sub_8092800(Task *t)
 {
     // unused logic
 }

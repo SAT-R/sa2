@@ -43,11 +43,11 @@ const AnimId ALIGNED(4) gAnimSlideSplashes[NUM_LEVEL_IDS] = {
 };
 
 void Task_ForcedSlide(void);
-void TaskDestructor_ForcedSlide(struct Task *t);
+void TaskDestructor_ForcedSlide(Task *t);
 
 void CreateEntity_ForcedSlide(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_ForcedSlide, sizeof(ForcedSlide), me->d.sData[1] + 0x1000, 0, TaskDestructor_ForcedSlide);
+    Task *t = TaskCreate(Task_ForcedSlide, sizeof(ForcedSlide), me->d.sData[1] + 0x1000, 0, TaskDestructor_ForcedSlide);
     ForcedSlide *slide = TASK_DATA(t);
     Sprite *s = &slide->s;
 
@@ -219,7 +219,7 @@ void Task_ForcedSlide(void)
     }
 }
 
-void TaskDestructor_ForcedSlide(struct Task *t)
+void TaskDestructor_ForcedSlide(Task *t)
 {
     ForcedSlide *slide = TASK_DATA(t);
     VramFree(slide->s.graphics.dest);

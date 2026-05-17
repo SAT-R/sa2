@@ -37,7 +37,7 @@ typedef struct {
 #define MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT 2
 
 static void Task_Keyboard(void);
-static void TaskDestructor_Keyboard(struct Task *);
+static void TaskDestructor_Keyboard(Task *);
 static bool32 ShouldDespawn(Sprite_Keyboard *);
 
 static void DespawnKeyboard(Sprite_Keyboard *);
@@ -56,7 +56,7 @@ const s16 sKeyboardAccelTechnoBase[3][2] = {
 
 void CreateEntity_Keyboard(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 type)
 {
-    struct Task *t = TaskCreate(Task_Keyboard, sizeof(Sprite_Keyboard), 0x2010, 0, TaskDestructor_Keyboard);
+    Task *t = TaskCreate(Task_Keyboard, sizeof(Sprite_Keyboard), 0x2010, 0, TaskDestructor_Keyboard);
 
     Sprite_Keyboard *kb = TASK_DATA(t);
     kb->kbType = type;
@@ -265,7 +265,7 @@ static void Task_Keyboard(void)
     }
 }
 
-static void TaskDestructor_Keyboard(struct Task *UNUSED t) { }
+static void TaskDestructor_Keyboard(Task *UNUSED t) { }
 
 static bool32 ShouldDespawn(Sprite_Keyboard *kb)
 {

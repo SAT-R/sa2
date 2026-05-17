@@ -27,7 +27,7 @@ typedef struct {
 void Task_ShrubberyMain(void);
 void Task_ShrubberyParticles(void);
 void CreateShrubberyParticles(CamCoord worldX, CamCoord worldY);
-void TaskDestructor_ShrubberyParticles(struct Task *t);
+void TaskDestructor_ShrubberyParticles(Task *t);
 
 void Task_ShrubberyMain(void)
 {
@@ -75,7 +75,7 @@ void Task_ShrubberyMain(void)
 
 void CreateShrubberyParticles(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t = TaskCreate(Task_ShrubberyParticles, sizeof(ShrubberyParticles), 0x3000, 0, TaskDestructor_ShrubberyParticles);
+    Task *t = TaskCreate(Task_ShrubberyParticles, sizeof(ShrubberyParticles), 0x3000, 0, TaskDestructor_ShrubberyParticles);
     ShrubberyParticles *parts = TASK_DATA(t);
     Sprite *s = &parts->s;
 
@@ -128,7 +128,7 @@ void Task_ShrubberyParticles(void)
 
 void CreateEntity_Shrubbery(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_ShrubberyMain, sizeof(Shrubbery), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_ShrubberyMain, sizeof(Shrubbery), 0x2000, 0, NULL);
     Shrubbery *shrubbery = TASK_DATA(t);
 
     // NOTE: This entity itself actually doesn't make use of any Sprites, only ShrubberyParticles does
@@ -147,7 +147,7 @@ void CreateEntity_Shrubbery(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void TaskDestructor_ShrubberyParticles(struct Task *t)
+void TaskDestructor_ShrubberyParticles(Task *t)
 {
     ShrubberyParticles *parts = TASK_DATA(t);
     VramFree(parts->s.graphics.dest);

@@ -14,9 +14,9 @@ typedef struct {
     /* 0x40 */ u16 qUnk40; // TODO: qUnk40 not a Q()?
 } NutsAndBolts;
 
-extern struct Task *CreateNutsAndBoltsTask(u16 taskFlags, void *vramTiles, u16 anim, u8 variant, TaskDestructor dtor);
+extern Task *CreateNutsAndBoltsTask(u16 taskFlags, void *vramTiles, u16 anim, u8 variant, TaskDestructor dtor);
 extern void Task_NutsAndBolts(void);
-extern void TaskDestructor_NutsAndBolts(struct Task *t);
+extern void TaskDestructor_NutsAndBolts(Task *t);
 
 extern const u16 gUnknown_080BB41C[8];
 extern const u8 gUnknown_080BB42C[8];

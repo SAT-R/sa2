@@ -16,7 +16,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h" // for UILANG_COUNT
 
-typedef struct OptionsMenu {
+typedef struct {
     /* 0x000 */ Sprite s0;
     /* 0x030 */ Sprite sprites30[8];
     /* 0x1B0 */ Sprite s1B0;
@@ -39,7 +39,7 @@ void sub_8010CB4(void);
 void sub_8011104(void);
 void sub_801123C(void);
 void sub_801176C(void);
-void TaskDestructor_OptionsMenu(struct Task *t);
+void TaskDestructor_OptionsMenu(Task *t);
 
 extern void sub_8012F6C();
 extern void CreatePlayerDataMenu(void);
@@ -718,7 +718,7 @@ void sub_80114A0()
     CreateMainMenu(1);
 }
 
-void TaskDestructor_OptionsMenu(struct Task *t)
+void TaskDestructor_OptionsMenu(Task *t)
 {
     u8 i;
 

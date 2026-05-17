@@ -34,7 +34,7 @@ typedef struct {
 } Sprite_Kubinaga;
 
 static void sub_80524D0(void);
-static void sub_8052F70(struct Task *);
+static void sub_8052F70(Task *);
 static void sub_8052AEC(void);
 static void sub_80528AC(void);
 static void sub_8052CC8(Sprite_Kubinaga *k);
@@ -47,7 +47,7 @@ static const u16 gUnknown_080D8F30[][2] = {
 
 void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
+    Task *t = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
     Sprite_Kubinaga *k = TASK_DATA(t);
     Sprite *s = &k->sBase;
 
@@ -389,7 +389,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
     DisplaySprite(sHead);
 }
 
-static void sub_8052F70(struct Task *t)
+static void sub_8052F70(Task *t)
 {
     Sprite_Kubinaga *k = TASK_DATA(t);
     VramFree(k->sBase.graphics.dest);

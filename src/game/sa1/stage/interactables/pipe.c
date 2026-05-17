@@ -51,11 +51,11 @@ typedef struct {
 void Task_PipeEntrance(void);
 void Task_8095D28(void);
 void Task_8095E90(void);
-void TaskDestructor_PipeEntrance(struct Task *t);
+void TaskDestructor_PipeEntrance(Task *t);
 void Task_PipeExit(void);
 void Task_809656C(void);
 void Task_8096724(void);
-void TaskDestructor_PipeExit(struct Task *t);
+void TaskDestructor_PipeExit(Task *t);
 
 void CreateEntity_PipeEntrance(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
@@ -63,7 +63,7 @@ void CreateEntity_PipeEntrance(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
     i = 0;
     do {
-        struct Task *t = TaskCreate(Task_PipeEntrance, sizeof(PipeEntrance), me->d.uData[3] | 0x2000, 0, TaskDestructor_PipeEntrance);
+        Task *t = TaskCreate(Task_PipeEntrance, sizeof(PipeEntrance), me->d.uData[3] | 0x2000, 0, TaskDestructor_PipeEntrance);
         PipeEntrance *pipe = TASK_DATA(t);
         Sprite *s = &pipe->s;
 
@@ -526,7 +526,7 @@ void Task_8095E90(void)
     }
 }
 
-void TaskDestructor_PipeEntrance(struct Task *t)
+void TaskDestructor_PipeEntrance(Task *t)
 {
     PipeEntrance *pipe = TASK_DATA(t);
 
@@ -541,7 +541,7 @@ void CreateEntity_PipeExit(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
     i = 0;
     do {
-        struct Task *t = TaskCreate(Task_PipeExit, sizeof(PipeExit), me->d.uData[3] | 0x2000, 0, TaskDestructor_PipeExit);
+        Task *t = TaskCreate(Task_PipeExit, sizeof(PipeExit), me->d.uData[3] | 0x2000, 0, TaskDestructor_PipeExit);
         PipeExit *pipe = TASK_DATA(t);
         Sprite *s = &pipe->s;
 
@@ -861,7 +861,7 @@ void Task_8096724(void)
     }
 }
 
-void TaskDestructor_PipeExit(struct Task *t)
+void TaskDestructor_PipeExit(Task *t)
 {
     PipeExit *pipe = TASK_DATA(t);
 

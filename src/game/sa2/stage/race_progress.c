@@ -25,7 +25,7 @@ struct RaceProgressIndicator {
 static void Task_UpdateAvatarPositions(void);
 static void CreateUI(struct RaceProgressIndicator *);
 static void RenderUI(struct RaceProgressIndicator *);
-static void RaceProgressIndicatorOnDestroy(struct Task *);
+static void RaceProgressIndicatorOnDestroy(Task *);
 
 static const u16 sCourseStepSizes[] = {
     [COURSE_INDEX(ZONE_1, ACT_1)] = 816,  [COURSE_INDEX(ZONE_1, ACT_2)] = 845,
@@ -56,8 +56,7 @@ static const u8 sCharacterAvatars[] = {
 void CreateRaceProgressIndicator(void)
 {
     u8 i;
-    struct Task *t
-        = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator), 0x1000, 0, RaceProgressIndicatorOnDestroy);
+    Task *t = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator), 0x1000, 0, RaceProgressIndicatorOnDestroy);
     struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
@@ -174,7 +173,7 @@ static void RenderUI(struct RaceProgressIndicator *progressIndicator)
     }
 }
 
-static void RaceProgressIndicatorOnDestroy(struct Task *t)
+static void RaceProgressIndicatorOnDestroy(Task *t)
 {
     u8 i;
     struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);

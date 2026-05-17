@@ -25,7 +25,7 @@ typedef struct {
 Cheese *gCheese = NULL;
 
 void sub_801420C(void);
-void sub_8015360(struct Task *);
+void sub_8015360(Task *);
 
 void sub_801555C(void);
 
@@ -34,7 +34,7 @@ void sub_8015500(void);
 void sub_80153F8(void);
 
 void sub_8014C60(void);
-void sub_8015604(struct Task *);
+void sub_8015604(Task *);
 
 void sub_8014BB0(Cheese *cheese);
 void sub_80155D0(Cheese *);
@@ -82,7 +82,7 @@ void CreateCheese(Player *player)
     Cheese *cheese;
     Sprite *s;
     if (IS_SINGLE_PLAYER) {
-        struct Task *t;
+        Task *t;
         if (IS_EXTRA_STAGE(gCurrentLevel)) {
             gCheese = NULL;
             return;
@@ -111,7 +111,7 @@ void CreateCheese(Player *player)
 
         for (j = 0; j < i; j++) {
             if (gMultiplayerCharacters[j] == CHARACTER_CREAM) {
-                struct Task *t;
+                Task *t;
                 mpp = TASK_DATA(gMultiplayerPlayerTasks[j]);
                 t = TaskCreate(sub_801420C, sizeof(Cheese), 0x5010, 0, sub_8015360);
                 cheese = TASK_DATA(t);
@@ -191,7 +191,7 @@ void sub_801412C(Cheese *cheese)
 
 void sub_801420C(void)
 {
-    struct Task **t = &gCurTask;
+    Task **t = &gCurTask;
     Cheese *cheese = TASK_DATA(*t);
     Cheese_UNK54 *unk54 = &cheese->unk54;
 
@@ -382,7 +382,7 @@ void sub_80145D8(void)
 void sub_801464C(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
-    struct Task *t = cheese->unk18;
+    Task *t = cheese->unk18;
     Cheese_UNK54 *unk54 = &cheese->unk54;
     u32 temp5;
     s32 r0;
@@ -512,7 +512,7 @@ end:
 void sub_8014834(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
-    struct Task *t = cheese->unk18;
+    Task *t = cheese->unk18;
     Cheese_UNK54 *unk54 = &cheese->unk54;
     if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69 && unk54->unk68->graphics.anim != 0x6D
         && unk54->unk68->graphics.anim != 0x71) {
@@ -677,7 +677,7 @@ void sub_8014AFC(void)
 
 void sub_8014BB0(Cheese *cheese)
 {
-    struct Task *t = TaskCreate(sub_8014C60, sizeof(Cheese_UNK8014BB0), 0x5040, 0, sub_8015604);
+    Task *t = TaskCreate(sub_8014C60, sizeof(Cheese_UNK8014BB0), 0x5040, 0, sub_8015604);
     Cheese_UNK8014BB0 *unk4BB0 = TASK_DATA(t);
 
     unk4BB0->unk3C = 0;
@@ -1084,7 +1084,7 @@ void sub_80152EC(void)
     }
 }
 
-void sub_8015360(struct Task *t)
+void sub_8015360(Task *t)
 {
     Cheese *cheese = TASK_DATA(t);
     Sprite *s = &cheese->s;
@@ -1199,7 +1199,7 @@ void sub_80155D0(Cheese *cheese)
     }
 }
 
-void sub_8015604(struct Task *t)
+void sub_8015604(Task *t)
 {
     Cheese_UNK8014BB0 *unk4BB0 = TASK_DATA(t);
     Sprite *s = &unk4BB0->s;

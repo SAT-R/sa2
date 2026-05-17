@@ -98,13 +98,13 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 i);
 static void sub_804A398(SuperEggRoboZTowers *towers, u8 i);
 static void sub_804A53C(SuperEggRoboZTowers *towers, u8 i);
 static void Task_SuperEggRoboZTowersMain(void);
-static void TaskDestructor_SuperEggRoboZTowers(struct Task *);
+static void TaskDestructor_SuperEggRoboZTowers(Task *);
 
 static void Task_SuperEggRoboZMain(void);
-static void TaskDestructor_SuperEggRoboZMain(struct Task *);
+static void TaskDestructor_SuperEggRoboZMain(Task *);
 
 static void Task_BossRunManagerMain(void);
-static void TaskDestructor_BossRunManager(struct Task *);
+static void TaskDestructor_BossRunManager(Task *);
 
 void Task_804AB24(void);
 static void Task_804AD68(void);
@@ -198,7 +198,7 @@ const ColorRaw sArmPalettes[2][PALETTE_LEN_4BPP] = {
 
 void CreateBossRunManager(u8 bossIndex)
 {
-    struct Task *t = TaskCreate(Task_BossRunManagerMain, sizeof(BossRunManager), 0x4000, 0, TaskDestructor_BossRunManager);
+    Task *t = TaskCreate(Task_BossRunManagerMain, sizeof(BossRunManager), 0x4000, 0, TaskDestructor_BossRunManager);
     BossRunManager *manager = TASK_DATA(t);
     manager->bossIndex = bossIndex;
     manager->unk5 = 0;
@@ -373,12 +373,12 @@ static void Task_BossRunManagerMain(void)
     gBossCameraClampYUpper = manager->unk2;
 }
 
-static void TaskDestructor_BossRunManager(struct Task *t) { }
+static void TaskDestructor_BossRunManager(Task *t) { }
 
 static void CreateSuperEggRoboZTowers(void *vram, SuperEggRoboZ *boss)
 {
     u8 i, j;
-    struct Task *t = TaskCreate(Task_SuperEggRoboZTowersMain, sizeof(SuperEggRoboZTowers), 0x4080, 0, TaskDestructor_SuperEggRoboZTowers);
+    Task *t = TaskCreate(Task_SuperEggRoboZTowersMain, sizeof(SuperEggRoboZTowers), 0x4080, 0, TaskDestructor_SuperEggRoboZTowers);
     SuperEggRoboZTowers *towers = TASK_DATA(t);
     void *vrams[2];
     Sprite *s;
@@ -709,7 +709,7 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
     DisplaySprite(s2);
 }
 
-static void TaskDestructor_SuperEggRoboZTowers(struct Task *t)
+static void TaskDestructor_SuperEggRoboZTowers(Task *t)
 {
     SuperEggRoboZTowers *towers = TASK_DATA(t);
     VramFree(towers->sprites[0]->graphics.dest);
@@ -717,7 +717,7 @@ static void TaskDestructor_SuperEggRoboZTowers(struct Task *t)
 
 void CreateSuperEggRoboZ(void)
 {
-    struct Task *t;
+    Task *t;
     SuperEggRoboZ *boss;
     ScreenFade *fade;
     Sprite *s;
@@ -2094,7 +2094,7 @@ static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
     }
 }
 
-static void TaskDestructor_SuperEggRoboZMain(struct Task *t)
+static void TaskDestructor_SuperEggRoboZMain(Task *t)
 {
     SuperEggRoboZ *boss = TASK_DATA(t);
     VramFree(boss->tilesCloud);

@@ -384,9 +384,9 @@ END_NONMATCH
 #endif
 #endif
 
-struct Task *CreateMultiplayerSendEventMgr(void)
+Task *CreateMultiplayerSendEventMgr(void)
 {
-    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Send, 0, -2, 0, NULL);
+    Task *t = TaskCreate(Task_MultiplayerEventMgr_Send, 0, -2, 0, NULL);
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
     DmaFill32(3, 0, &gRoomEventQueue, sizeof(gRoomEventQueue));
@@ -394,9 +394,9 @@ struct Task *CreateMultiplayerSendEventMgr(void)
     return t;
 }
 
-struct Task *CreateMultiplayerReceiveEventMgr(void)
+Task *CreateMultiplayerReceiveEventMgr(void)
 {
-    struct Task *t = TaskCreate(Task_MultiplayerEventMgr_Receive, 0, 1, 0, NULL);
+    Task *t = TaskCreate(Task_MultiplayerEventMgr_Receive, 0, 1, 0, NULL);
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
     DmaFill32(3, 0, &gRoomEventQueue, sizeof(gRoomEventQueue));

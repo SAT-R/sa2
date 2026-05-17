@@ -24,7 +24,7 @@ static void sub_802888C(void);
 static void sub_8028910(void);
 static void Task_8028A1C(void);
 static bool32 UpdateChaoPosition(CamCoord x, CamCoord y);
-static void TaskDestructor_Chao(struct Task *t);
+static void TaskDestructor_Chao(Task *t);
 
 const u16 sChaoSpawnPositions[NUM_LEVEL_IDS_MP][SPAWN_INDEX_COUNT][2] = { //
     [ACT_CHAO_HUNT_A - NUM_LEVEL_IDS_SP] = {
@@ -69,11 +69,11 @@ const u16 sChaoSpawnPositions[NUM_LEVEL_IDS_MP][SPAWN_INDEX_COUNT][2] = { //
     }
 };
 
-struct Task *CreateMultiplayerChao(u8 spawnIndex, u8 id)
+Task *CreateMultiplayerChao(u8 spawnIndex, u8 id)
 {
     Chao *chao;
     Sprite *s;
-    struct Task *t;
+    Task *t;
     CamCoord x, y;
 
 #ifdef BUG_FIX
@@ -139,7 +139,7 @@ void Task_802816C(void)
     } else {
         u32 pid;
         for (pid = 0; pid < 4; pid++) {
-            struct Task **mpTasks = gMultiplayerPlayerTasks;
+            Task **mpTasks = gMultiplayerPlayerTasks;
             MultiplayerPlayer *mpp;
             if (mpTasks[pid] == NULL)
                 break;
@@ -308,7 +308,7 @@ void Task_8028518()
 void Task_80286B0()
 {
     s32 theta;
-    struct Task *chaoTask;
+    Task *chaoTask;
     Chao *chaoZero;
     MultiplayerPlayer *mpp;
     u16 worldX;
@@ -549,7 +549,7 @@ bool32 UpdateChaoPosition(CamCoord playerX, CamCoord playerY)
     return 0U;
 }
 
-void TaskDestructor_Chao(struct Task *t)
+void TaskDestructor_Chao(Task *t)
 {
     Chao *chao = TASK_DATA(t);
     VramFree(chao->s.graphics.dest);

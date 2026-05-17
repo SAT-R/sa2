@@ -125,7 +125,7 @@ static void sub_80412B4(EggTotem *);
 static void Task_EggTotemMain(void);
 static void Task_8041138(void);
 static void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed);
-static void TaskDestructor_EggTotemMain(struct Task *t);
+static void TaskDestructor_EggTotemMain(Task *t);
 static void Task_EggTotemBullet(void);
 
 const TileInfo sTileInfoWheels[] = {
@@ -198,7 +198,7 @@ void CreateEggTotem(void)
 #ifndef NON_MATCHING
     s32 temp;
 #endif
-    struct Task *t;
+    Task *t;
     EggTotem *totem;
     Sprite *s;
     u8 i;
@@ -1532,7 +1532,7 @@ void sub_8040F14(EggTotem *totem)
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
-void TaskDestructor_EggTotemMain(struct Task *t)
+void TaskDestructor_EggTotemMain(Task *t)
 {
     u8 i;
     EggTotem *totem = TASK_DATA(t);
@@ -1664,7 +1664,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     Sprite *s;
     u16 sinIndex;
 
-    struct Task *t = TaskCreate(Task_EggTotemBullet, sizeof(EggTotemBullet), 0x6100, 0, NULL);
+    Task *t = TaskCreate(Task_EggTotemBullet, sizeof(EggTotemBullet), 0x6100, 0, NULL);
 
     EggTotemBullet *bullet = TASK_DATA(t);
 

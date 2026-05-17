@@ -109,7 +109,7 @@ typedef struct {
 } EggGoRound; /* 0x3CC */
 
 static void Task_IntroRollIn(void);
-static void TaskDestructor_EggGoRound(struct Task *);
+static void TaskDestructor_EggGoRound(Task *);
 static void Task_DestructionCutScene1(void);
 
 static void UpdatePilotAnim(EggGoRound *);
@@ -1319,7 +1319,7 @@ static void UpdateDestructionPropPositions(EggGoRound *boss)
     // }
 }
 
-static void TaskDestructor_EggGoRound(struct Task *t)
+static void TaskDestructor_EggGoRound(Task *t)
 {
     EggGoRound *boss = TASK_DATA(t);
     VramFree(boss->projectile.graphics.dest);

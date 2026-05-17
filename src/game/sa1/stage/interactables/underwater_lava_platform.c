@@ -32,12 +32,11 @@ typedef struct {
 
 void Task_UnderwaterLavaPlatform(void);
 void Task_80929A0(void);
-void TaskDestructor_UnderwaterLavaPlatform(struct Task *t);
+void TaskDestructor_UnderwaterLavaPlatform(Task *t);
 
 void CreateEntity_UnderwaterLavaPlatform(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t
-        = TaskCreate(Task_UnderwaterLavaPlatform, sizeof(UnderwaterLavaPlatform), 0x2000, 0, TaskDestructor_UnderwaterLavaPlatform);
+    Task *t = TaskCreate(Task_UnderwaterLavaPlatform, sizeof(UnderwaterLavaPlatform), 0x2000, 0, TaskDestructor_UnderwaterLavaPlatform);
     UnderwaterLavaPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
     Sprite *s2 = &platform->s2;
@@ -262,7 +261,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/lava_platform__Task_8092
 }
 END_NONMATCH
 
-void TaskDestructor_UnderwaterLavaPlatform(struct Task *t)
+void TaskDestructor_UnderwaterLavaPlatform(Task *t)
 {
     UnderwaterLavaPlatform *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

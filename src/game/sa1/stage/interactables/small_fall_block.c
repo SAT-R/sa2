@@ -24,11 +24,11 @@ typedef struct {
 void Task_SmallFallBlockMain(void);
 void Task_SmallFallBlock1(void);
 void Task_SmallFallBlock2(void);
-void TaskDestructor_SmallFallBlock(struct Task *t);
+void TaskDestructor_SmallFallBlock(Task *t);
 
 void CreateEntity_SmallFallBlock(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     SmallFallBlock *block;
     Sprite *s;
 
@@ -255,7 +255,7 @@ void Task_SmallFallBlock2(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_SmallFallBlock(struct Task *t)
+void TaskDestructor_SmallFallBlock(Task *t)
 {
     SmallFallBlock *block = TASK_DATA(t);
     VramFree(block->s.graphics.dest);

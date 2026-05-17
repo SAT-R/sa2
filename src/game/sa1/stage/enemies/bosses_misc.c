@@ -19,7 +19,7 @@
 #include "constants/sa1/vram_hardcoded.h"
 #include "constants/sa1/zones.h"
 
-typedef struct BossCapsule {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ SpriteTransform transform;
@@ -31,7 +31,7 @@ typedef struct BossCapsule {
     /* 0x74 */ u16 unk76;
 } BossCapsule;
 
-typedef struct Strc_sub_801749C {
+typedef struct {
     /* 0x00 */ s16 unk0;
     /* 0x02 */ s16 unk2;
     /* 0x04 */ s16 unk4;
@@ -40,7 +40,7 @@ typedef struct Strc_sub_801749C {
     /* 0x0A */ u16 unkA;
 } Strc_sub_801749C;
 
-typedef struct Strc_sub_8016D80 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 qUnk30;
     /* 0x30 */ s32 qUnk34;
@@ -51,7 +51,7 @@ typedef struct Strc_sub_8016D80 {
     /* 0x38 */ s16 qUnk40;
 } Strc_sub_8016D80;
 
-typedef struct Strc_sub_8016F44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s32 unk3C;
@@ -66,14 +66,14 @@ typedef struct Strc_sub_8016F44 {
     /* 0x40 */ s16 unk52;
 } Strc_sub_8016F44; /* 0x54 */
 
-typedef struct CameraPanning {
+typedef struct {
     /* 0x00 */ CamCoord unk0;
     /* 0x02 */ CamCoord unk2;
     /* 0x04 */ CamCoord unk4;
     /* 0x06 */ CamCoord unk6;
 } CameraPanning;
 
-typedef struct Strc_sub_801766C {
+typedef struct {
     /* 0x00 */ s16 unk0;
     /* 0x02 */ s16 unk2;
     /* 0x04 */ Player *p;
@@ -84,25 +84,25 @@ void Task_801623C(void);
 void Task_8016650(void);
 void Task_BossCapsuleUpdate(void);
 void sub_801766C(Player *p);
-struct Task *sub_801749C(CamCoord worldX, CamCoord worldY);
+Task *sub_801749C(CamCoord worldX, CamCoord worldY);
 void Task_801685C(void);
 void Task_8016A14(void); // :Strc_sub_80168F0
 void Task_8016B6C(void); // :Strc_sub_801749C
-struct Task *sub_8016D80(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant); // -> Strc_sub_8016D80
-struct Task *sub_8016F44(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant); // -> Strc_sub_8016F44
+Task *sub_8016D80(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant); // -> Strc_sub_8016D80
+Task *sub_8016F44(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant); // -> Strc_sub_8016F44
 
 void sub_8017054(void);
 void Task_8017244(void); // :CameraPanning
 void Task_8017400(void);
 
-void TaskDestructor_BossCapsule(struct Task *t);
-void TaskDestructor_sub_80168F0(struct Task *t);
+void TaskDestructor_BossCapsule(Task *t);
+void TaskDestructor_sub_80168F0(Task *t);
 
 extern u16 gUnknown_080BB43C[5][3];
 
 void CreateBossCapsule(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t;
+    Task *t;
     BossCapsule *capsule;
     Sprite *s;
     SpriteTransform *tf;
@@ -215,7 +215,7 @@ void Task_801623C()
         return;
     }
 
-    res = sa2__sub_801F100(gCamera.y + s->y + 8, gCamera.x + s->x, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(gCamera.y + s->y + 8, gCamera.x + s->x, 1, 8, SA2_LABEL(sub_801EC3C));
     if (res > 0) {
         return;
     }
@@ -444,12 +444,12 @@ void Task_801685C(void)
     DisplaySprite(s);
 }
 
-struct Task *sub_80168F0(CamCoord worldX, CamCoord worldY, u16 numTiles, AnimId anim, u8 variant)
+Task *sub_80168F0(CamCoord worldX, CamCoord worldY, u16 numTiles, AnimId anim, u8 variant)
 {
     SpriteTransform *spC;
     s32 sp10;
     SpriteTransform *temp_r2;
-    struct Task *t;
+    Task *t;
     Strc_sub_80168F0 *strc;
 
     t = TaskCreate(Task_8016A14, sizeof(Strc_sub_80168F0), 0x2000U, 0U, TaskDestructor_sub_80168F0);
@@ -599,11 +599,11 @@ void Task_8016B6C(void)
 }
 
 void sub_8016E54(void);
-void TaskDestructor_sub_8017658(struct Task *t);
+void TaskDestructor_sub_8017658(Task *t);
 
-struct Task *sub_8016D80(s16 worldX, s16 worldY, u16 anim, u8 variant)
+Task *sub_8016D80(s16 worldX, s16 worldY, u16 anim, u8 variant)
 {
-    struct Task *t;
+    Task *t;
     Strc_sub_8016D80 *strc;
 
     t = TaskCreate(sub_8016E54, sizeof(Strc_sub_8016D80), 0x2000U, 0U, TaskDestructor_sub_8017658);
@@ -641,7 +641,7 @@ void sub_8016E54()
     strc->qUnk30 += strc->qUnk3E;
 
     if ((strc->qUnk3C > 0)
-        && (sa2__sub_801F100(strc->unk3A + I(strc->qUnk34), strc->unk38 + I(strc->qUnk30), 1, 8, sa2__sub_801EC3C) < 0)) {
+        && (SA2_LABEL(sub_801F100)(strc->unk3A + I(strc->qUnk34), strc->unk38 + I(strc->qUnk30), 1, 8, SA2_LABEL(sub_801EC3C)) < 0)) {
         strc->qUnk3C = strc->qUnk40;
 
         if ((I(strc->qUnk30) < -32) && (strc->qUnk3E < 0)) {
@@ -663,10 +663,10 @@ void sub_8016E54()
     DisplaySprite(s);
 }
 
-struct Task *sub_8016F44(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant)
+Task *sub_8016F44(CamCoord worldX, CamCoord worldY, AnimId anim, u8 variant)
 {
     Strc_sub_8016F44 *strc;
-    struct Task *t;
+    Task *t;
     SpriteTransform *tf;
     Sprite *s;
 
@@ -767,10 +767,10 @@ void sub_8017054()
     DisplaySprite(s);
 }
 
-struct Task *Bosses_SetCamBounds(CamCoord minY, CamCoord maxY, CamCoord minX, CamCoord maxX)
+Task *Bosses_SetCamBounds(CamCoord minY, CamCoord maxY, CamCoord minX, CamCoord maxX)
 {
     s16 temp_r1;
-    struct Task *t;
+    Task *t;
     CameraPanning *temp_r2;
 
     t = TaskCreate(Task_8017244, 8U, 0x2000U, 0U, NULL);
@@ -909,9 +909,9 @@ void Task_8017400(void)
     }
 }
 
-struct Task *sub_801749C(s16 worldX, s16 worldY)
+Task *sub_801749C(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t;
+    Task *t;
     Strc_sub_801749C *strc;
     t = TaskCreate(Task_8016B6C, sizeof(Strc_sub_801749C), 0x2000U, 0U, NULL);
     strc = TASK_DATA(t);
@@ -925,9 +925,9 @@ struct Task *sub_801749C(s16 worldX, s16 worldY)
 
 void Task_PreBossCameraPan(void);
 
-struct Task *CreatePreBossCameraPan(s16 yMin, s16 yMax)
+Task *CreatePreBossCameraPan(s16 yMin, s16 yMax)
 {
-    struct Task *t;
+    Task *t;
     CameraPanning *pan;
 
     t = TaskCreate(Task_PreBossCameraPan, 8U, 0x2000U, 0U, NULL);
@@ -940,12 +940,12 @@ struct Task *CreatePreBossCameraPan(s16 yMin, s16 yMax)
     if ((s32)pan->unk2 > gCamera.maxY) {
         gCamera.maxY = gCamera.y + 320;
     }
-    return (struct Task *)t;
+    return (Task *)t;
 }
 
-struct Task *sub_8017540(s32 qParam0, s32 qParam1)
+Task *sub_8017540(s32 qParam0, s32 qParam1)
 {
-    struct Task *t = NULL;
+    Task *t = NULL;
     s32 temp_r0_2;
     NutsAndBolts *bolts;
     Sprite *s;
@@ -961,14 +961,14 @@ struct Task *sub_8017540(s32 qParam0, s32 qParam1)
     return t;
 }
 
-void TaskDestructor_BossCapsule(struct Task *t)
+void TaskDestructor_BossCapsule(Task *t)
 {
     BossCapsule *capsule = TASK_DATA(t);
     VramFree(capsule->s.graphics.dest);
     VramFree(capsule->s2.graphics.dest);
 }
 
-void TaskDestructor_sub_80168F0(struct Task *t)
+void TaskDestructor_sub_80168F0(Task *t)
 {
     Strc_sub_80168F0 *strc = TASK_DATA(t);
     VramFree(strc->s.graphics.dest);
@@ -1000,7 +1000,7 @@ void sub_80175D8(void)
     }
 }
 
-void TaskDestructor_sub_8017658(struct Task *t)
+void TaskDestructor_sub_8017658(Task *t)
 {
     Strc_sub_8016D80 *strc = TASK_DATA(t);
     VramFree(strc->s.graphics.dest);
@@ -1008,7 +1008,7 @@ void TaskDestructor_sub_8017658(struct Task *t)
 
 void sub_801766C(Player *p)
 {
-    struct Task *t = TaskCreate(Task_8017334, sizeof(Strc_sub_801766C), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_8017334, sizeof(Strc_sub_801766C), 0x2000, 0, NULL);
     Strc_sub_801766C *strc = TASK_DATA(t);
     strc->unk0 = 0;
     strc->p = p;

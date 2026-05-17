@@ -24,7 +24,7 @@ typedef struct {
 } Sprite_TecBaseNoteBlock;
 
 static void Task_NoteBlock(void);
-static void TaskDestructor_NoteBlock(struct Task *);
+static void TaskDestructor_NoteBlock(Task *);
 static void sub_8079CCC(Sprite_TecBaseNoteBlock *);
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *);
 static void sub_8079D9C(Sprite_TecBaseNoteBlock *);
@@ -52,7 +52,7 @@ static const u16 sTecBasBlockSfx[] = {
 
 void CreateEntity_BounceBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
+    Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
     Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(t);
     Sprite *s = &noteBlock->s;
     noteBlock->unk44 = 0;
@@ -196,7 +196,7 @@ static void Task_NoteBlock(void)
     }
 }
 
-static void TaskDestructor_NoteBlock(struct Task *t)
+static void TaskDestructor_NoteBlock(Task *t)
 {
     // unused
 }

@@ -49,8 +49,8 @@ struct SpecialStageResultsScreen {
     u16 unk51E;
 }; /* size 0x520 */
 
-struct Task *CreateSpecialStageUI(struct SpecialStage *);
-struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *);
+Task *CreateSpecialStageUI(struct SpecialStage *);
+Task *CreateSpecialStageResultsScreen(struct SpecialStage *);
 void SpecialStageResultsScreenNewEmeraldSequence(struct SpecialStage *);
 
 #endif

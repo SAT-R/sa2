@@ -62,7 +62,7 @@ typedef struct {
 
 void Task_BumperHexagon(void);
 void Task_BumperHexagon2(void);
-void TaskDestructor_BumperHexagon(struct Task *t);
+void TaskDestructor_BumperHexagon(Task *t);
 void Task_BumperRound_LinearMov2(void);
 void Task_BumperRound_LinearMov(void);
 void Task_BumperRound_CircularMov(void);
@@ -83,7 +83,7 @@ bool32 BumperCheckCollAndPosC3(BumperC *bumper, Sprite *s, s32 worldX, s32 world
 
 void CreateEntity_BumperHexagon(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BumperHexagon, sizeof(BumperA), 0x2000, 0, TaskDestructor_BumperHexagon);
+    Task *t = TaskCreate(Task_BumperHexagon, sizeof(BumperA), 0x2000, 0, TaskDestructor_BumperHexagon);
     BumperA *bumper = TASK_DATA(t);
     Sprite *s = &bumper->s;
 
@@ -267,7 +267,7 @@ bool32 BumperCheckCollAndPosA1(BumperA *bumper, Sprite *s, s32 worldX, s32 world
     return result;
 }
 
-void TaskDestructor_BumperHexagon(struct Task *t)
+void TaskDestructor_BumperHexagon(Task *t)
 {
     BumperA *bumper = TASK_DATA(t);
     VramFree(bumper->s.graphics.dest);
@@ -275,7 +275,7 @@ void TaskDestructor_BumperHexagon(struct Task *t)
 
 void CreateEntity_BumperRound_LinearMov(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BumperRound_LinearMov, sizeof(BumperA), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BumperRound_LinearMov, sizeof(BumperA), 0x2000, 0, NULL);
     BumperA *bumper = TASK_DATA(t);
     Sprite *s = &bumper->s;
 
@@ -475,7 +475,7 @@ bool32 BumperCheckCollAndPosA2(BumperA *bumper, Sprite *s, s32 worldX, s32 world
 
 void CreateEntity_BumperRound_CircularMov(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BumperRound_CircularMov, sizeof(BumperB), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BumperRound_CircularMov, sizeof(BumperB), 0x2000, 0, NULL);
     BumperB *bumper = TASK_DATA(t);
     Sprite *s = &bumper->s;
 
@@ -656,7 +656,7 @@ bool32 BumperCheckCollAndPosB(BumperB *bumper, Sprite *s, s32 worldX, s32 worldY
 void CreateEntity_BumperTriHorizontal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     Sprite *s = NULL; // for matching
-    struct Task *t = TaskCreate(Task_BumperTriHorizontal, sizeof(BumperC), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BumperTriHorizontal, sizeof(BumperC), 0x2000, 0, NULL);
     BumperC *bumper = TASK_DATA(t);
     s = &bumper->s;
 
@@ -701,7 +701,7 @@ void CreateEntity_BumperTriHorizontal(MapEntity *me, u16 regionX, u16 regionY, u
 void CreateEntity_BumperTriVertical(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     Sprite *s = NULL; // for matching
-    struct Task *t = TaskCreate(Task_BumperTriVertical, sizeof(BumperC), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BumperTriVertical, sizeof(BumperC), 0x2000, 0, NULL);
     BumperC *bumper = TASK_DATA(t);
     s = &bumper->s;
 
@@ -746,7 +746,7 @@ void CreateEntity_BumperTriVertical(MapEntity *me, u16 regionX, u16 regionY, u8 
 void CreateEntity_BumperTriBig(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     Sprite *s = NULL; // for matching
-    struct Task *t = TaskCreate(Task_BumperTriBig, sizeof(BumperC), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BumperTriBig, sizeof(BumperC), 0x2000, 0, NULL);
     BumperC *bumper = TASK_DATA(t);
     s = &bumper->s;
 

@@ -30,7 +30,7 @@ static void BeginPipeSequence(Sprite_PipeHorn *pipe);
 static bool32 ShouldDespawn(Sprite_PipeHorn *);
 static void Despawn(Sprite_PipeHorn *);
 static void Task_Active(void);
-static void TaskDestructor_PipeHorn(struct Task *t);
+static void TaskDestructor_PipeHorn(Task *t);
 static void UpdatePlayerPosWithinPipe(Sprite_PipeHorn *horn);
 
 const PipeSegment gPipeHornPipeSequence0[] = {
@@ -406,7 +406,7 @@ static void Despawn(Sprite_PipeHorn *pipe)
 
 void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_PipeHorn);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_PipeHorn), 0x2010, 0, TaskDestructor_PipeHorn);
     Sprite_PipeHorn *pipe = TASK_DATA(t);
 
     pipe->kind = me->d.sData[0];
@@ -440,7 +440,7 @@ static void Task_Active(void)
     UpdatePlayerPosWithinPipe(pipe);
 }
 
-static void TaskDestructor_PipeHorn(struct Task *t) { }
+static void TaskDestructor_PipeHorn(Task *t) { }
 
 static void UpdatePlayerPosWithinPipe(Sprite_PipeHorn *horn)
 {

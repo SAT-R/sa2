@@ -27,7 +27,7 @@ static void Task_80564BC(void);
 
 void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_MadilloMain, sizeof(Sprite_Madillo), 0x4040, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_MadilloMain, sizeof(Sprite_Madillo), 0x4040, 0, TaskDestructor_EntityShared);
     Sprite_Madillo *madillo = TASK_DATA(t);
     Sprite *s = &madillo->s;
     madillo->base.regionX = spriteRegionX;

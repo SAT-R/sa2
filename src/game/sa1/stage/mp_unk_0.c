@@ -9,7 +9,7 @@ void Task_801C810(void);
 void Task_801C8D4(void);
 void sub_801C9AC(void);
 void sub_801C9C0(int_vcount vcount);
-void TaskDestructor_801C980(struct Task *t);
+void TaskDestructor_801C980(Task *t);
 
 #define ROOT            DISPLAY_CENTER_X
 #define X_RANGE(offset) WIN_RANGE((ROOT) - (offset), (ROOT) + (offset))
@@ -177,9 +177,9 @@ static const winreg_t sWin0Ranges[DISPLAY_HEIGHT] = {
     X_RANGE(12), //
 };
 
-struct Task *sub_801C704(void)
+Task *sub_801C704(void)
 {
-    struct Task *t;
+    Task *t;
     UnkMP0 *strc;
 
     t = TaskCreate(Task_801C770, 8U, 0x2000U, 0U, TaskDestructor_801C980);
@@ -264,7 +264,7 @@ void Task_801C8D4()
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 }
 
-void TaskDestructor_801C980(struct Task *t)
+void TaskDestructor_801C980(Task *t)
 {
     gDispCnt &= ~DISPCNT_WIN0_ON;
     gBldRegs.bldCnt = 0;

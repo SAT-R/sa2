@@ -30,7 +30,7 @@ typedef struct {
 #define OUTRO_SP_RING_BONUS_Y_POS DISPLAY_CENTER_Y + 50
 
 static void Task_UpdateStageResults(void);
-static void TaskDestructor_StageResults(struct Task *);
+static void TaskDestructor_StageResults(Task *);
 static void AnimateResults(u16 frame);
 static void DestroyStageResultsGfx(void);
 
@@ -69,7 +69,7 @@ static const u16 sStageResultsTextOffset[] = { 0, 69, 173 };
 
 u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
-    struct Task *t;
+    Task *t;
     StageResults *outro;
     Sprite *s;
     u8 i;
@@ -636,7 +636,7 @@ void StageResults_AnimateTitle(void)
     }
 }
 
-static void TaskDestructor_StageResults(struct Task *t)
+static void TaskDestructor_StageResults(Task *t)
 {
     StageResults *outro = TASK_DATA(t);
     if (outro->base.separator.graphics.dest != NULL) {

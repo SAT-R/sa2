@@ -29,7 +29,7 @@ typedef struct {
 } CreditsSlidesCutScene;
 
 void sub_808F004(void);
-void sub_808F148(struct Task *);
+void sub_808F148(Task *);
 
 static const u16 sTilemapsCreditsSlides[] = {
     TM_CREDITS_0,  TM_CREDITS_1,  TM_CREDITS_2,  TM_CREDITS_3,  TM_CREDITS_4,  TM_CREDITS_5,  TM_CREDITS_6,  TM_CREDITS_7,  TM_CREDITS_8,
@@ -41,7 +41,7 @@ static const u8 gUnknown_080E12AA[] = { 6, 6, 8, 5, 0, 0 };
 
 void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
 {
-    struct Task *t;
+    Task *t;
     CreditsSlidesCutScene *scene = NULL;
     Background *background;
     ScreenFade *fade = NULL;
@@ -198,7 +198,7 @@ void sub_808F10C(void)
     TaskDestroy(gCurTask);
 }
 
-void sub_808F148(UNUSED struct Task *t)
+void sub_808F148(UNUSED Task *t)
 {
     // unused logic
 }

@@ -18,13 +18,13 @@ typedef struct {
 void Task_SecurityGateMain(void);
 void Task_SecurityGate1(void);
 void Task_SecurityGate2(void);
-void TaskDestructor_SecurityGateMain(struct Task *t);
+void TaskDestructor_SecurityGateMain(Task *t);
 
 // (97.55%) https://decomp.me/scratch/12dTu
 NONMATCH("asm/non_matching/game/sa1/stage/interactables/CreateEntity_SecurityGate.inc",
          void CreateEntity_SecurityGate(MapEntity *me, u16 regionX, u16 regionY, u8 id))
 {
-    struct Task *t = TaskCreate(Task_SecurityGateMain, sizeof(SecurityGate), 0x2000, 0, TaskDestructor_SecurityGateMain);
+    Task *t = TaskCreate(Task_SecurityGateMain, sizeof(SecurityGate), 0x2000, 0, TaskDestructor_SecurityGateMain);
     SecurityGate *gate = TASK_DATA(t);
     Sprite *s = &gate->s;
 
@@ -153,7 +153,7 @@ void Task_SecurityGate2(void)
     }
 }
 
-void TaskDestructor_SecurityGateMain(struct Task *t)
+void TaskDestructor_SecurityGateMain(Task *t)
 {
     SecurityGate *gate = TASK_DATA(t);
     VramFree(gate->s.graphics.dest);

@@ -26,11 +26,11 @@ typedef struct {
 void Task_RunWheel(void);
 bool32 sub_808EA80(RunWheel *wheel, Sprite *s, s32 worldX, s32 worldY, Player *p);
 bool32 sub_808EC84(RunWheel *wheel, Sprite *s, s32 worldX, s32 worldY, Player *p);
-void TaskDestructor_RunWheel(struct Task *t);
+void TaskDestructor_RunWheel(Task *t);
 
 void CreateEntity_RunWheel(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_RunWheel, sizeof(RunWheel), 0x2000, 0, TaskDestructor_RunWheel);
+    Task *t = TaskCreate(Task_RunWheel, sizeof(RunWheel), 0x2000, 0, TaskDestructor_RunWheel);
     RunWheel *wheel = TASK_DATA(t);
     Sprite *s = &wheel->s;
 
@@ -357,7 +357,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/run_wheel__sub_808EC84.i
 }
 END_NONMATCH
 
-void TaskDestructor_RunWheel(struct Task *t)
+void TaskDestructor_RunWheel(Task *t)
 {
     RunWheel *wheel = TASK_DATA(t);
     VramFree(wheel->s.graphics.dest);

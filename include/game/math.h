@@ -43,7 +43,7 @@ u16 Random(void);
 // Returns a 32-bit pseudorandom number
 #define Random32() ((Random() << 16) | Random())
 
-#define ShuffleRngSeed()                                                                                                                   \
+#define SHUFFLE_RNG_SEED()                                                                                                                 \
     ({                                                                                                                                     \
         u32 rand1, rand2, rand3;                                                                                                           \
         rand1 ^= (Random() << 16);                                                                                                         \

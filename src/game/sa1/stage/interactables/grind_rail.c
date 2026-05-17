@@ -36,7 +36,7 @@ void Task_8023EFC(void);
 // (96.59%) https://decomp.me/scratch/oIXga
 NONMATCH("asm/non_matching/game/sa1/stage/interactables/grind_rail__Task_GrindRailStart.inc", void Task_GrindRailStart(void))
 {
-    struct Task *grindTask;
+    Task *grindTask;
     GrindRail *rail;
     MapEntity *me;
     u8 meX;
@@ -187,7 +187,7 @@ void Task_GrindRailEnd(void)
 // Unused?
 void sub_8023ED0(void)
 {
-    struct Task *t = TaskCreate(Task_8023EFC, GRINDRAIL_UNK_SIZE, 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_8023EFC, GRINDRAIL_UNK_SIZE, 0x2000, 0, NULL);
     TASK_SET_MEMBER(GrindRailUnk, t, u16, frameCount, 0);
 }
 
@@ -203,7 +203,7 @@ void Task_8023EFC(void)
 
 void CreateEntity_GrindRail_Start(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GrindRailStart, GRINDRAIL_SIZE, 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRailStart, GRINDRAIL_SIZE, 0x2000, 0, NULL);
 
     TASK_SET_MEMBER(GrindRail, t, u16, regionX, regionX);
     TASK_SET_MEMBER(GrindRail, t, u16, regionY, regionY);
@@ -215,7 +215,7 @@ void CreateEntity_GrindRail_Start(MapEntity *me, u16 regionX, u16 regionY, u8 sp
 
 void CreateEntity_GrindRail_End(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GrindRailEnd, GRINDRAIL_SIZE, 0x900, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRailEnd, GRINDRAIL_SIZE, 0x900, 0, NULL);
 
     TASK_SET_MEMBER(GrindRail, t, u16, regionX, regionX);
     TASK_SET_MEMBER(GrindRail, t, u16, regionY, regionY);

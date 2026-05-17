@@ -67,13 +67,13 @@ typedef struct {
 void Task_MarbleTrack_Dir(void);
 void Task_MarbleTrack_Unk(void);
 void Task_MarbleTrack_Entrance(void);
-void TaskDestructor_MarbleTrack_Entrance(struct Task *t);
+void TaskDestructor_MarbleTrack_Entrance(Task *t);
 void Task_MarbleTrack_Exit(void);
-void TaskDestructor_MarbleTrack_Exit(struct Task *t);
+void TaskDestructor_MarbleTrack_Exit(Task *t);
 
 void CreateEntity_MarbleTrack_Dir(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MarbleTrack_Dir, sizeof(MarbleTrackDir), 0x2000 | me->d.uData[3], 0, NULL);
+    Task *t = TaskCreate(Task_MarbleTrack_Dir, sizeof(MarbleTrackDir), 0x2000 | me->d.uData[3], 0, NULL);
     MarbleTrackDir *dir = TASK_DATA(t);
     s32 i;
 
@@ -208,7 +208,7 @@ END_NONMATCH
 
 void CreateEntity_MarbleTrack_Pipe(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MarbleTrack_Unk, sizeof(SecretBasePipe), 0x2000 + me->d.sData[1], 0, NULL);
+    Task *t = TaskCreate(Task_MarbleTrack_Unk, sizeof(SecretBasePipe), 0x2000 + me->d.sData[1], 0, NULL);
     SecretBasePipe *basePipe = TASK_DATA(t);
 
     basePipe->base.regionX = regionX;
@@ -344,8 +344,8 @@ END_NONMATCH
 
 void CreateEntity_MarbleTrack_Entrance(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MarbleTrack_Entrance, sizeof(MarbleTrackEntrance), 0x1900 + me->d.uData[3], 0,
-                                TaskDestructor_MarbleTrack_Entrance);
+    Task *t = TaskCreate(Task_MarbleTrack_Entrance, sizeof(MarbleTrackEntrance), 0x1900 + me->d.uData[3], 0,
+                         TaskDestructor_MarbleTrack_Entrance);
     MarbleTrackEntrance *entrance = TASK_DATA(t);
     Sprite *s = &entrance->s;
 
@@ -518,7 +518,7 @@ void Task_MarbleTrack_Entrance(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_MarbleTrack_Entrance(struct Task *t)
+void TaskDestructor_MarbleTrack_Entrance(Task *t)
 {
     MarbleTrackEntrance *entrance = TASK_DATA(t);
     VramFree(entrance->s.graphics.dest);
@@ -526,8 +526,7 @@ void TaskDestructor_MarbleTrack_Entrance(struct Task *t)
 
 void CreateEntity_MarbleTrack_Exit(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t
-        = TaskCreate(Task_MarbleTrack_Exit, sizeof(MarbleTrackExit), 0x2100 + me->d.sData[1], 0, TaskDestructor_MarbleTrack_Exit);
+    Task *t = TaskCreate(Task_MarbleTrack_Exit, sizeof(MarbleTrackExit), 0x2100 + me->d.sData[1], 0, TaskDestructor_MarbleTrack_Exit);
     MarbleTrackExit *exit = TASK_DATA(t);
     Sprite *s = &exit->s;
 
@@ -713,7 +712,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/marble_track_exit__Task_
 }
 END_NONMATCH
 
-void TaskDestructor_MarbleTrack_Exit(struct Task *t)
+void TaskDestructor_MarbleTrack_Exit(Task *t)
 {
     MarbleTrackExit *exit = TASK_DATA(t);
     VramFree(exit->s.graphics.dest);

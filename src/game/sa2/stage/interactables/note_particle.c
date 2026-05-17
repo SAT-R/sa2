@@ -36,11 +36,11 @@ static const ALIGNED(4) u16 gUnknown_080E0140[4][5] = {
 
 static void Task_8080DB8(void);
 static void Task_8080E54(void);
-static void TaskDestructor_8080EF8(struct Task *);
+static void TaskDestructor_8080EF8(Task *);
 
 void CreateAngledNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 velocity, u8 quarterAngle, u8 kind)
 {
-    struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
+    Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
@@ -70,7 +70,7 @@ void CreateAngledNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 fr
 
 void CreateNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 accelX, s16 accelY, u8 kind)
 {
-    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
+    Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
@@ -99,7 +99,7 @@ void CreateNoteParticle(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUn
 
 static void Task_8080DB8(void)
 {
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
     Sprite_NoteParticle *np = TASK_DATA(t);
     if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
@@ -120,7 +120,7 @@ static void Task_8080DB8(void)
 
 static void Task_8080E54(void)
 {
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
     Sprite_NoteParticle *np = TASK_DATA(t);
     if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
@@ -143,7 +143,7 @@ static void Task_8080E54(void)
     }
 }
 
-static void TaskDestructor_8080EF8(struct Task *t)
+static void TaskDestructor_8080EF8(Task *t)
 {
     Sprite_NoteParticle *np = TASK_DATA(t);
     if (gUnknown_080E0140[np->kind][3] != 0) {

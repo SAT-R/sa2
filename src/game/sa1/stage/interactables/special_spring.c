@@ -22,7 +22,7 @@ typedef struct {
 
 void Task_SpecialSpringMain(void);
 void Task_TransitionSpStage(void);
-void TaskDestructor_SpecialSpring(struct Task *t);
+void TaskDestructor_SpecialSpring(Task *t);
 
 void CreateEntity_SpecialSpring(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
@@ -32,7 +32,7 @@ void CreateEntity_SpecialSpring(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     }
 
     {
-        struct Task *t = TaskCreate(Task_SpecialSpringMain, sizeof(SpecialSpring), 0x2000, 0, TaskDestructor_SpecialSpring);
+        Task *t = TaskCreate(Task_SpecialSpringMain, sizeof(SpecialSpring), 0x2000, 0, TaskDestructor_SpecialSpring);
         SpecialSpring *spring = TASK_DATA(t);
         Sprite *s = &spring->s;
 
@@ -212,7 +212,7 @@ void Task_TransitionSpStage(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_SpecialSpring(struct Task *t)
+void TaskDestructor_SpecialSpring(Task *t)
 {
     SpecialSpring *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);

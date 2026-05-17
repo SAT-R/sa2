@@ -657,9 +657,9 @@ s16 CalcRoboCollision(s32 dX, s32 dY)
     return r3_2;
 }
 
-struct Task *CreateSpecialStagePhysics(struct SpecialStage *stage)
+Task *CreateSpecialStagePhysics(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics), 0x4000, 0, NULL);
+    Task *t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics), 0x4000, 0, NULL);
     struct SpecialStagePhysics *physics = TASK_DATA(t);
 
     physics->stage = stage;

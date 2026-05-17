@@ -53,7 +53,7 @@ void Task_ItemBoxMain(void);
 void Task_Itembox2(void);
 void Task_Itembox3(void);
 void Task_Itembox4(void);
-void TaskDestructor_ItemBox(struct Task *t);
+void TaskDestructor_ItemBox(Task *t);
 #if (GAME == GAME_SA1)
 const s8 ItemBox_RingAmountTable[] = { 1, 5, 10, 20, 30, 40 };
 #elif (GAME == GAME_SA2)
@@ -67,7 +67,7 @@ extern u8 gUnknown_080BB4F0[4];
 #if (GAME == GAME_SA1)
 void CreateEntity_ItemBox(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     ItemBox *itembox;
     Sprite *s, *sTemp;
 
@@ -380,7 +380,7 @@ void Task_Itembox2(void)
                 u32 nearestPlayer = 0;
                 u32 smallestMagnitude = 0;
                 u32 playerId;
-                struct Task **mppTasks;
+                Task **mppTasks;
 
                 // Find the player that's closest to you
                 for (playerId = 0, mppTasks = gMultiplayerPlayerTasks; playerId < MULTI_SIO_PLAYERS_MAX && mppTasks[playerId] != NULL;
@@ -481,7 +481,7 @@ void Task_Itembox4(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_ItemBox(struct Task *t)
+void TaskDestructor_ItemBox(Task *t)
 {
     ItemBox *itembox = TASK_DATA(t);
     VramFree(itembox->s.graphics.dest);

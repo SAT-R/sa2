@@ -14,7 +14,7 @@
 
 #include "constants/sa1/animations.h"
 
-typedef struct Game_2_0_Sub {
+typedef struct {
     union {
         // TODO: This union might actually be their shared global type?
         GameOverB overB;
@@ -24,16 +24,16 @@ typedef struct Game_2_0_Sub {
     u16 unk1A;
 } Game_2_0_Sub;
 
-typedef struct Game_2_0 {
+typedef struct {
     s16 unk0;
     s16 unk2;
     s16 unk4;
     s16 unk6;
     s16 unk8;
     u8 unkA;
-    struct Task *taskC; // -> Game_2_0_Sub
-    struct Task *task10; // -> Game_2_0_Sub
-    struct Task *task14; // -> Game_2_0_Sub
+    Task *taskC; // -> Game_2_0_Sub
+    Task *task10; // -> Game_2_0_Sub
+    Task *task14; // -> Game_2_0_Sub
     s16 unk18;
     u8 unk1A;
 } Game_2_0;
@@ -44,7 +44,7 @@ void Task_805C594(void);
 void Task_805C6B0(void);
 void Task_805C740(void);
 void Task_805C83C(void);
-void TaskDestructor_nullsub_805C8FC(struct Task *t);
+void TaskDestructor_nullsub_805C8FC(Task *t);
 
 // (89.77%) https://decomp.me/scratch/ZhMAK
 NONMATCH("asm/non_matching/game/sa1/ui/game2_0__sub_805BC94.inc", void sub_805BC94(u16 arg0))
@@ -346,9 +346,9 @@ END_NONMATCH
 
 void sub_805C448(u8 arg0)
 {
-    struct Task *t2 = NULL;
-    struct Task *t1 = NULL;
-    struct Task *t3 = NULL;
+    Task *t2 = NULL;
+    Task *t1 = NULL;
+    Task *t3 = NULL;
     Game_2_0_Sub *sub = NULL;
     Game_2_0 *strc = NULL;
 
@@ -637,4 +637,4 @@ void Task_805C83C()
     }
 }
 
-void TaskDestructor_nullsub_805C8FC(struct Task *t) { }
+void TaskDestructor_nullsub_805C8FC(Task *t) { }

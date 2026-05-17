@@ -37,7 +37,7 @@ typedef struct {
 } Sprite_SpeedingPlatform; /* size 0x78 */
 
 static void Task_Interactable097(void);
-static void TaskDestructor_Interactable097(struct Task *);
+static void TaskDestructor_Interactable097(Task *);
 static void sub_807FF04(Sprite_SpeedingPlatform *);
 static void sub_807FB1C(Sprite_SpeedingPlatform *);
 static bool32 ShouldDespawn(Sprite_SpeedingPlatform *);
@@ -53,7 +53,7 @@ static void sub_807FFB0(void);
 void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 i;
-    struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform), 0x2010, 0, TaskDestructor_Interactable097);
+    Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform), 0x2010, 0, TaskDestructor_Interactable097);
     Sprite_SpeedingPlatform *platform = TASK_DATA(t);
     Sprite *s;
     platform->unk54 = 0;
@@ -259,7 +259,7 @@ static void Task_Interactable097(void)
     }
 }
 
-static void TaskDestructor_Interactable097(struct Task *t)
+static void TaskDestructor_Interactable097(Task *t)
 {
     Sprite_SpeedingPlatform *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

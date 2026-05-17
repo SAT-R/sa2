@@ -24,11 +24,11 @@ void Task_CircusMain(void);
 void Task_8055AB8(void);
 void Task_8055C0C(void);
 void Task_8055D7C(void);
-void TaskDestructor_Circus(struct Task *);
+void TaskDestructor_Circus(Task *);
 
 void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0, TaskDestructor_Circus);
+    Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0, TaskDestructor_Circus);
     Sprite_Circus *circus = TASK_DATA(t);
     Sprite *s = &circus->s;
     circus->base.regionX = spriteRegionX;
@@ -205,7 +205,7 @@ void Task_8055D7C(void)
     DisplaySprite(s2);
 }
 
-void TaskDestructor_Circus(struct Task *t)
+void TaskDestructor_Circus(Task *t)
 {
     Sprite_Circus *circus = TASK_DATA(t);
     VramFree(circus->s.graphics.dest);

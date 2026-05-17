@@ -17,12 +17,12 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct VramPtrs {
+typedef struct {
     /* 0x00 */ void *vram0;
     /* 0x04 */ void *vram4;
 } VramPtrs;
 
-typedef struct StrcStgResults_34 {
+typedef struct {
     /* 0x00 */ GameOverB unk0;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ u16 unk1C;
@@ -31,17 +31,17 @@ typedef struct StrcStgResults_34 {
     /* 0x30 */ s32 unk30;
 } StrcStgResults_34; /* 0x34 */
 
-typedef struct StrcStgResults_38 {
+typedef struct {
     /* 0x00 */ u16 unk0;
     /* 0x02 */ u16 unk2;
     /* 0x04 */ u16 unk4;
     /* 0x06 */ u16 unk6;
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u8 unkA;
-    /* 0x0C */ struct Task *taskC; // -> StrcStgResults_34 *
-    /* 0x10 */ struct Task *task10; // -> StrcStgResults_34 *
-    /* 0x14 */ struct Task *task14; // -> StrcStgResults_34 *
-    /* 0x18 */ struct Task *task18; // -> StrcStgResults_34 *
+    /* 0x0C */ Task *taskC; // -> StrcStgResults_34 *
+    /* 0x10 */ Task *task10; // -> StrcStgResults_34 *
+    /* 0x14 */ Task *task14; // -> StrcStgResults_34 *
+    /* 0x18 */ Task *task18; // -> StrcStgResults_34 *
     /* 0x1C */ VramPtrs vram1C;
     /* 0x24 */ s16 unk24;
     /* 0x28 */ s32 unk28;
@@ -67,7 +67,7 @@ void Task_805803C(void);
 
 // StrcStgResults_38
 void Task_8057888(void);
-void TaskDestructor_8058344(struct Task *t);
+void TaskDestructor_8058344(Task *t);
 
 void sub_8056FE4(VramPtrs *arg0)
 {
@@ -188,11 +188,11 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_results__CreateStageResults.inc"
     StrcStgResults_34 *temp_r7;
     StrcStgResults_34 *temp_r7_2;
     s32 var_r0;
-    struct Task *temp_r5;
-    struct Task *taskLast;
-    struct Task *t1;
-    struct Task *t2;
-    struct Task *t0;
+    Task *temp_r5;
+    Task *taskLast;
+    Task *t1;
+    Task *t2;
+    Task *t0;
     s32 sp10;
     u32 sp14;
     u32 sp18;
@@ -976,7 +976,7 @@ void Task_805803C(void)
     }
 }
 
-void TaskDestructor_8058344(struct Task *t)
+void TaskDestructor_8058344(Task *t)
 {
     StrcStgResults_38 *results = TASK_DATA(t);
 

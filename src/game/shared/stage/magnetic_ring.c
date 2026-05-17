@@ -26,7 +26,7 @@ void Task_MagneticRing(void);
 
 void CreateMagneticRing(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_MagneticRing, sizeof(StageRing), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_MagneticRing, sizeof(StageRing), 0x2000, 0, NULL);
     StageRing *ring = TASK_DATA(t);
     Sprite *s;
 

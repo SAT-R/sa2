@@ -288,7 +288,7 @@ static const s8 gUnknown_080D7984[] = {
 void CreateTrueArea53Intro(void)
 {
     u8 i;
-    struct Task *t;
+    Task *t;
     TrueArea53Intro *intro;
     Sprite *s;
     gBldRegs.bldCnt = 0x3FFF;
@@ -359,7 +359,7 @@ void CreateOrbitingEmeraldsSequence(void)
     Background *background;
     Sprite *emerald;
 
-    struct Task *t = TaskCreate(Task_OrbitingEmeraldsMoveOutwards, sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
+    Task *t = TaskCreate(Task_OrbitingEmeraldsMoveOutwards, sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
     OrbitingEmeraldsSequence *sequence = TASK_DATA(t);
     sequence->animFrame = 32;
 
@@ -556,7 +556,7 @@ void Task_DisplaySonicSonicArtworkAndDestroyTask(void)
 void CreateSuperSonicSpark(s32 x, s32 y)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
+    Task *t = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
     u32 type = PseudoRandBetween(2, 4);
     SuperSonicSpark *spark = TASK_DATA(t);
     spark->animFrame = 40;
@@ -602,7 +602,7 @@ void CreateActor(u8 character)
 {
     Sprite *s;
     const TileInfoPtr *tileInfo;
-    struct Task *t = TaskCreate(gUnknown_080D7970[character], sizeof(IntroActor), 0x7000, 0, NULL);
+    Task *t = TaskCreate(gUnknown_080D7970[character], sizeof(IntroActor), 0x7000, 0, NULL);
     IntroActor *actor = TASK_DATA(t);
     actor->character = character;
     actor->sequence = 0;
@@ -1527,7 +1527,7 @@ void IntroRenderSprites(u8 flockMode)
 
 void CreateBackgrounds(void)
 {
-    struct Task *t;
+    Task *t;
     Background *background;
     WorldBackgrounds *worldBgs;
     gDispCnt = 0x1341;

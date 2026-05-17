@@ -17,6 +17,6 @@ struct SpecialStageWorld {
     Sprite unk90[11];
 }; /* size 0x2A0 */
 
-struct Task *CreateSpecialStageWorld(struct SpecialStage *);
+Task *CreateSpecialStageWorld(struct SpecialStage *);
 
 #endif

@@ -122,7 +122,7 @@ END_NONMATCH
 
 void CreateEntity_InclineRamp(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_InclineRamp, INCLINE_RAMP_DATA_SIZE, 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_InclineRamp, INCLINE_RAMP_DATA_SIZE, 0x2000, 0, NULL);
 
     // *sigh*
     // Don't do this!

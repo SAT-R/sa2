@@ -21,7 +21,7 @@ typedef struct {
     u8 unkE4;
 } HeartParticles;
 
-static void sub_8086CBC(struct Task *);
+static void sub_8086CBC(Task *);
 static void sub_8086A88(void);
 static void sub_8086A0C(HeartParticles *);
 #ifdef BUG_FIX
@@ -34,7 +34,7 @@ static void sub_8086BE8(u8);
 void CreateHeartParticles(void)
 {
     u8 i;
-    struct Task *t = TaskCreate(sub_8086A88, sizeof(HeartParticles), 0x4000, 0, sub_8086CBC);
+    Task *t = TaskCreate(sub_8086A88, sizeof(HeartParticles), 0x4000, 0, sub_8086CBC);
     HeartParticles *unk998 = TASK_DATA(t);
     unk998->unkC2 = 0;
     unk998->unkE4 = 0;
@@ -192,7 +192,7 @@ static void sub_8086BE8(u8 i)
     unk998->unkC0 |= (1 << i);
 }
 
-static void sub_8086CBC(struct Task *t)
+static void sub_8086CBC(Task *t)
 {
     u8 i;
     HeartParticles *unk998 = TASK_DATA(t);

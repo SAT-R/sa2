@@ -147,7 +147,7 @@ void Task_HangBar(void)
 
 void CreateEntity_HangBar(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_HangBar, sizeof(HangBar), 0x8000, 0, NULL);
+    Task *t = TaskCreate(Task_HangBar, sizeof(HangBar), 0x8000, 0, NULL);
     HangBar *bar = TASK_DATA(t);
 
     bar->base.regionX = regionX;

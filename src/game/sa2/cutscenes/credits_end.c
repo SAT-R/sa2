@@ -44,7 +44,7 @@ struct CreditsEndCutScene {
 #define SEQUENCE_END                      3
 
 static void Task_FadeIn(void);
-static void TaskDestroy_CreditsEndCutScene(struct Task *);
+static void TaskDestroy_CreditsEndCutScene(Task *);
 static void UpdateCongratsMessagePos(struct CreditsEndCutScene *);
 static void UpdateMessageLine1Pos(struct CreditsEndCutScene *);
 static void UpdateMessageLine2Pos(struct CreditsEndCutScene *);
@@ -78,7 +78,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 {
     u8 i;
     s32 r6 = 1;
-    struct Task *t;
+    Task *t;
     struct CreditsEndCutScene *scene = NULL;
     ScreenFade *fade;
     gDispCnt = 0x1040;
@@ -576,7 +576,7 @@ static void Task_SequenceEnd(void)
     }
 }
 
-static void TaskDestroy_CreditsEndCutScene(UNUSED struct Task *t)
+static void TaskDestroy_CreditsEndCutScene(UNUSED Task *t)
 {
     // unused logic
 }

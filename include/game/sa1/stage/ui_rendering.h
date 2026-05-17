@@ -53,7 +53,7 @@ typedef struct Strc_8052C84 {
     /* 0x16 */ u8 unk16;
 } Strc_8052C84; /* size: 0x18 */ // <- GameOverB struct?
 
-extern struct Task *gTask_03006240;
+extern Task *gTask_03006240;
 
 struct GfxSubstruct {
     struct GfxSubstruct *next;

@@ -158,7 +158,7 @@ static const ColorRaw sBoss5Palettes[][PALETTE_LEN_4BPP] = {
 };
 
 void Task_EggSaucerIntro(void);
-void TaskDestructor_EggSaucerMain(struct Task *);
+void TaskDestructor_EggSaucerMain(Task *);
 static void SaucerUpdatePosAndRotate(EggSaucer *);
 void sub_8044784(EggSaucer *);
 
@@ -1793,7 +1793,7 @@ void sub_80459A0(EggSaucer *boss)
     }
 }
 
-void TaskDestructor_EggSaucerMain(struct Task *t)
+void TaskDestructor_EggSaucerMain(Task *t)
 {
     EggSaucer *boss = TASK_DATA(t);
     VramFree(boss->vram);

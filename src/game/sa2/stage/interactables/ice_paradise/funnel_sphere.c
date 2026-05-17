@@ -45,7 +45,7 @@ static void sub_8078594(Sprite_FunnelSphere *);
 static void sub_80784B0(Sprite_FunnelSphere *);
 static void sub_8077F7C(void);
 static void sub_8078634(void);
-static void sub_8078688(struct Task *);
+static void sub_8078688(Task *);
 static void sub_8078414(void);
 
 #define MUL_4(val) ({ (val) * 4; })
@@ -307,7 +307,7 @@ static void sub_8078594(Sprite_FunnelSphere *funnelSphere)
 
 void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_8078414, sizeof(Sprite_FunnelSphere), 0x2010, 0, sub_8078688);
+    Task *t = TaskCreate(sub_8078414, sizeof(Sprite_FunnelSphere), 0x2010, 0, sub_8078688);
     Sprite_FunnelSphere *funnelSphere = TASK_DATA(t);
     funnelSphere->me = me;
     funnelSphere->spriteX = me->x;
@@ -335,7 +335,7 @@ static void sub_8078634(void)
     }
 }
 
-static void sub_8078688(UNUSED struct Task *t)
+static void sub_8078688(UNUSED Task *t)
 {
     // unused
 }

@@ -15,7 +15,7 @@ MultiPlayerBgCtrlRegs *gMPAttackEffect2Regs = NULL;
 #endif
 
 static void Task_MPAttackEffect2(void);
-static void TaskDestructor_MPAttackEffect2(struct Task *);
+static void TaskDestructor_MPAttackEffect2(Task *);
 
 void CreateMPAttack2Effect(void)
 {
@@ -25,7 +25,7 @@ void CreateMPAttack2Effect(void)
             gMPAttackEffect2Regs->sizeChangeDelay = 600;
         } else {
             // _0801A3D0
-            struct Task *t = TaskCreate(Task_MPAttackEffect2, (sizeof(MultiPlayerBgCtrlRegs)), 0xE000, 0, TaskDestructor_MPAttackEffect2);
+            Task *t = TaskCreate(Task_MPAttackEffect2, (sizeof(MultiPlayerBgCtrlRegs)), 0xE000, 0, TaskDestructor_MPAttackEffect2);
             MultiPlayerBgCtrlRegs *regs = TASK_DATA(t);
 
             gMPAttackEffect2Regs = regs;
@@ -85,7 +85,7 @@ static void Task_MPAttackEffect2(void)
     gBgCntRegs[3] |= 0x40;
 }
 
-static void TaskDestructor_MPAttackEffect2(struct Task *t)
+static void TaskDestructor_MPAttackEffect2(Task *t)
 {
     gMPAttackEffect2Regs = NULL;
 

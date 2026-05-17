@@ -12,7 +12,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct Game_2_3_54 {
+typedef struct {
     u8 filler0[0x48];
     s32 unk48;
     s16 unk4C;
@@ -22,10 +22,10 @@ typedef struct Game_2_3_54 {
     u8 unk51;
 } Game_2_3_54;
 
-typedef struct Game_2_3_5C {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC; // -> Game_2_3_54
-    struct Task *task10; // -> Game_2_3_2DC
+    Task *taskC; // -> Game_2_3_54
+    Task *task10; // -> Game_2_3_2DC
     u8 filler14[0x8];
     Sprite s;
     s32 unk4C;
@@ -38,7 +38,7 @@ typedef struct Game_2_3_5C {
     u8 unk58;
 } Game_2_3_5C;
 
-typedef struct Game_2_3_2DC {
+typedef struct {
     Sprite sprites[5];
     u8 fillerF0[0x1E0];
     s32 unk2D0;
@@ -57,7 +57,7 @@ void Task_80634EC(void);
 void Task_8063638(void);
 void Task_8063824(void);
 void Task_80638B0(void);
-void TaskDestructor_8063910(struct Task *t);
+void TaskDestructor_8063910(Task *t);
 void Task_8063914(void);
 
 extern u8 gUnknown_086A17F4[];
@@ -66,7 +66,7 @@ extern u8 gUnknown_086A4FB4[];
 extern u16 gUnknown_086A4DB4[256];
 extern u8 gUnknown_086A5834[];
 
-typedef struct TileInfo32 {
+typedef struct {
     void *vram;
     u32 anim;
     u32 variant;
@@ -139,7 +139,7 @@ void sub_8062EDC(void)
 
 void sub_8062F90(void)
 {
-    struct Task *t;
+    Task *t;
     Game_2_3_54 *strc54;
     Game_2_3_5C *strc5C;
     Game_2_3_2DC *strc2DC;
@@ -437,7 +437,7 @@ NONMATCH("asm/non_matching/game/sa1/ui/game2_3__Task_8063638.inc", void Task_806
     }
 
     if (gMultiSioRecv->pat0.unk0 == 0x52) {
-        struct Task **chaoTasks;
+        Task **chaoTasks;
         gCurTask->main = Task_80638B0;
 
         chaoTasks = gChaoTasks;
@@ -529,6 +529,6 @@ void Task_80638B0(void)
     TaskDestroy(gCurTask);
 }
 
-void TaskDestructor_8063910(struct Task *t) { }
+void TaskDestructor_8063910(Task *t) { }
 
 void Task_8063914(void) { }

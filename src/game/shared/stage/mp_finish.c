@@ -42,7 +42,7 @@ static void Task_TransitionWaitForResults(void);
 static void Task_TransitionToResultsScreen(void);
 
 static void Task_DisplayResult(void);
-static void TaskDestructor_MultiplayerFinishResult(struct Task *);
+static void TaskDestructor_MultiplayerFinishResult(Task *);
 
 #ifndef COLLECT_RINGS_ROM
 
@@ -93,9 +93,9 @@ void CreateMultiplayerFinishResult(u8 sioId, u8 rank)
     if (gMultiplayerRanks[sioId] == -1)
 #endif
     {
-        struct Task *t = TaskCreate(Task_DisplayResult, sizeof(FinishResult), 0x2010, 0, TaskDestructor_MultiplayerFinishResult);
+        Task *t = TaskCreate(Task_DisplayResult, sizeof(FinishResult), 0x2010, 0, TaskDestructor_MultiplayerFinishResult);
         FinishResult *finish = TASK_DATA(t);
-        struct Task **mpt = &gMultiplayerPlayerTasks[0];
+        Task **mpt = &gMultiplayerPlayerTasks[0];
         Sprite *s;
 
         for (; i < ARRAY_COUNT(gMultiplayerPlayerTasks); i++) {
@@ -179,7 +179,7 @@ void Task_DisplayResult(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_MultiplayerFinishResult(struct Task *t)
+void TaskDestructor_MultiplayerFinishResult(Task *t)
 {
     FinishResult *finish = TASK_DATA(t);
     Sprite *s = &finish->s;
@@ -197,8 +197,8 @@ void CreateMultiplayerFinishTransition(void)
     u8 arr2[4] = {};
 #endif
     {
-        struct Task *mpt;
-        struct Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
+        Task *mpt;
+        Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
         FinishTransition *finishTransition = TASK_DATA(t);
 
         finishTransition->frame = 0;
@@ -567,8 +567,8 @@ void CreateMultiplayerFinishTransition(void)
     u32 i;
     u32 r2;
     u8 r6;
-    struct Task *mpt;
-    struct Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
+    Task *mpt;
+    Task *t = TaskCreate(Task_TransitionWaitForResults, sizeof(FinishTransition), 0x2000, 0, NULL);
     FinishTransition *finishTransition = TASK_DATA(t);
     finishTransition->frame = 0;
 }

@@ -81,7 +81,7 @@ void Task_Lava(void)
 
 void CreateEntity_Lava(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Lava, LAVA_DATA_SIZE, 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Lava, LAVA_DATA_SIZE, 0x2000, 0, NULL);
 
     TASK_SET_MEMBER(Lava, t, u16, regionX, regionX);
     TASK_SET_MEMBER(Lava, t, u16, regionY, regionY);

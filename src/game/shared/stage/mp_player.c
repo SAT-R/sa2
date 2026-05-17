@@ -60,7 +60,7 @@ u32 unused_3005838 = 0;
 bool8 gShouldSpawnMPAttack2Effect = FALSE;
 
 void Task_CreateMultiplayerPlayer(void);
-void TaskDestructor_MultiplayerPlayer(struct Task *);
+void TaskDestructor_MultiplayerPlayer(Task *);
 
 void SA2_LABEL(sub_8016D20)(void);
 void SA2_LABEL(sub_801707C)(void);
@@ -80,7 +80,7 @@ const u16 gUnknown_02015B18[] = { 0x55, 0x59, 0x5D, 0x61 };
 
 void CreateMultiplayerPlayer(u8 id)
 {
-    struct Task *t = TaskCreate(Task_CreateMultiplayerPlayer, sizeof(MultiplayerPlayer), 0x2000, 0, TaskDestructor_MultiplayerPlayer);
+    Task *t = TaskCreate(Task_CreateMultiplayerPlayer, sizeof(MultiplayerPlayer), 0x2000, 0, TaskDestructor_MultiplayerPlayer);
     MultiplayerPlayer *mpp = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *tf;
@@ -261,7 +261,7 @@ NONMATCH("asm/non_matching/game/shared/stage/sa1_mp_player__Task_CreateMultiplay
     MultiplayerPlayer *sp14;
     s32 temp_r4_2;
     s32 var_sl;
-    struct Task **var_r5_2;
+    Task **var_r5_2;
     u16 temp_r1;
     u16 temp_r1_3;
     u16 temp_r1_4;
@@ -1423,13 +1423,7 @@ void SA2_LABEL(sub_801707C)(void)
 }
 
 // Knuckles
-// NOTE: Matches in SA2!
-// (99.36%) https://decomp.me/scratch/cjmw6
-#if (GAME == GAME_SA1)
-NONMATCH("asm/non_matching/game/shared/stage/sa1_mp_player__sa2__sub_8017670.inc", void SA2_LABEL(sub_8017670)(void))
-#else
 void SA2_LABEL(sub_8017670)(void)
-#endif
 {
     Sprite *playerSprite, *s;
     MultiplayerPlayer *mpp;
@@ -1448,10 +1442,9 @@ void SA2_LABEL(sub_8017670)(void)
     }
 
 #if (GAME == GAME_SA1)
-    // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
+    if ((IS_TEAM_PLAY && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || !IS_TEAM_PLAY)
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
+    if (!IS_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (!SA2_LABEL(sub_8018300)()) {
@@ -1508,7 +1501,14 @@ void SA2_LABEL(sub_8017670)(void)
                     if ((!GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) > mpp->pos.y)
                         || (GRAVITY_IS_INVERTED && I(gPlayer.qWorldY) < mpp->pos.y)) {
                         gPlayer.moveState |= MOVESTATE_IA_OVERRIDE;
-                        PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
+#if (GAME == GAME_SA1) && !defined(NON_MATCHING)
+                        // https://decomp.me/scratch/cjmw6
+                        do {
+#endif
+                            PLAYERFN_CHANGE_SHIFT_OFFSETS(&gPlayer, 6, 14);
+#if (GAME == GAME_SA1) && !defined(NON_MATCHING)
+                        } while (0);
+#endif
                         gPlayer.qSpeedGround = 0;
                         gPlayer.qSpeedAirX = 0;
                         gPlayer.charState = CHARSTATE_IDLE;
@@ -1563,20 +1563,13 @@ void SA2_LABEL(sub_8017670)(void)
                 s32 x, y;
                 s32 playerUnk17 = gPlayer.spriteOffsetY;
                 bool32 gravityInverted = GRAVITY_IS_INVERTED;
-                // mpp->unk5C |= 4;
                 x = QS(mpp->pos.x);
 
                 // TODO: potential macro
                 if (!(gravityInverted)) {
-#if (GAME == GAME_SA1)
                     y = QS((mpp->pos.y + (s->hitboxes[0].b.top)) - rect[3]);
                     result = SA2_LABEL(sub_801F100)((mpp->pos.y + (s->hitboxes[0].b.top) - rect[3]) - playerUnk17, I(x), gPlayer.layer, -8,
                                                     SA2_LABEL(sub_801EC3C));
-#elif (GAME == GAME_SA2)
-                    y = QS((mpp->pos.y + (s->hitboxes[0].b.top)) - rect[3]);
-                    result = SA2_LABEL(sub_801F100)((mpp->pos.y + (s->hitboxes[0].b.top) - rect[3]) - playerUnk17, I(x), gPlayer.layer, -8,
-                                                    SA2_LABEL(sub_801EC3C));
-#endif
 
                     if (result < 0) {
                         y -= QS(result);
@@ -1585,15 +1578,9 @@ void SA2_LABEL(sub_8017670)(void)
                         mpp->unk5C &= ~4;
                     }
                 } else {
-#if (GAME == GAME_SA1)
                     y = QS(mpp->pos.y + (s->hitboxes[0].b.bottom) + rect[3]);
                     result = SA2_LABEL(sub_801F100)(((mpp->pos.y + (s->hitboxes[0].b.bottom) + rect[3]) + playerUnk17), I(x), gPlayer.layer,
                                                     8, SA2_LABEL(sub_801EC3C));
-#elif (GAME == GAME_SA2)
-                    y = QS(mpp->pos.y + (s->hitboxes[0].b.bottom) + rect[3]);
-                    result = SA2_LABEL(sub_801F100)(((mpp->pos.y + (s->hitboxes[0].b.bottom) + rect[3]) + playerUnk17), I(x), gPlayer.layer,
-                                                    8, SA2_LABEL(sub_801EC3C));
-#endif
 
                     if (result < 0) {
                         y += QS(result);
@@ -1654,9 +1641,6 @@ void SA2_LABEL(sub_8017670)(void)
         mpp->unk4C = val;
     }
 }
-#if (GAME == GAME_SA1)
-END_NONMATCH
-#endif
 
 void SA2_LABEL(sub_8017C28)(void)
 {
@@ -1670,9 +1654,9 @@ void SA2_LABEL(sub_8017C28)(void)
 
 #if (GAME == GAME_SA1)
     // Checks twice for gGameMode 3, 5 !
-    if (((gGameMode == 3 || gGameMode == 5) && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || (gGameMode != 3 && gGameMode != 5))
+    if ((IS_TEAM_PLAY && !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id)) || !IS_TEAM_PLAY)
 #elif (GAME == GAME_SA2)
-    if (gGameMode != GAME_MODE_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
+    if (!IS_TEAM_PLAY || !IS_SAME_TEAM(mpp->unk56, SIO_MULTI_CNT->id))
 #endif
     {
         if (!SA2_LABEL(sub_8018300)()) {
@@ -2168,7 +2152,7 @@ void SA2_LABEL(sub_8018818)(void)
 }
 #endif
 
-void TaskDestructor_MultiplayerPlayer(struct Task *t)
+void TaskDestructor_MultiplayerPlayer(Task *t)
 {
     MultiplayerPlayer *mpp = TASK_DATA(t);
     gMultiplayerPlayerTasks[mpp->unk56] = NULL;
@@ -2178,7 +2162,7 @@ void TaskDestructor_MultiplayerPlayer(struct Task *t)
 #ifndef COLLECT_RINGS_ROM
 void LaunchPlayer(s16 airSpeedY)
 {
-    struct Task *t = TaskCreate(Task_HandleLaunchPlayer, sizeof(s16), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_HandleLaunchPlayer, sizeof(s16), 0x2000, 0, NULL);
     s16 *airSpeed = TASK_DATA(t);
     *airSpeed = airSpeedY;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;

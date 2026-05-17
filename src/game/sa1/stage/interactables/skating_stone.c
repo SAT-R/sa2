@@ -43,12 +43,12 @@ void Task_SkatingStoneInit(void);
 void Task_SkatingStone2(void);
 void CreateSkatingStoneDebris(CamCoord worldX, CamCoord worldY);
 void Task_SkatingStoneDebris(void);
-void TaskDestructor_SkatingStone(struct Task *t);
-void TaskDestructor_SkatingStoneDebris(struct Task *t);
+void TaskDestructor_SkatingStone(Task *t);
+void TaskDestructor_SkatingStoneDebris(Task *t);
 
 void CreateEntity_SkatingStone(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_SkatingStoneInit, sizeof(SkatingStone), 0x2000, 0, TaskDestructor_SkatingStone);
+    Task *t = TaskCreate(Task_SkatingStoneInit, sizeof(SkatingStone), 0x2000, 0, TaskDestructor_SkatingStone);
     SkatingStone *stone = TASK_DATA(t);
     Sprite *s = &stone->s;
 
@@ -486,7 +486,7 @@ void Task_SkatingStone2(void)
 
 void CreateSkatingStoneDebris(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t = TaskCreate(Task_SkatingStoneDebris, sizeof(SkatingStoneDebris), 0x2000, 0, TaskDestructor_SkatingStoneDebris);
+    Task *t = TaskCreate(Task_SkatingStoneDebris, sizeof(SkatingStoneDebris), 0x2000, 0, TaskDestructor_SkatingStoneDebris);
     SkatingStoneDebris *debris = TASK_DATA(t);
     Sprite *s = &debris->s[0];
     SpriteTransform *tf = &debris->transform[0];
@@ -708,14 +708,14 @@ void Task_SkatingStoneDebris(void)
     }
 }
 
-void TaskDestructor_SkatingStone(struct Task *t)
+void TaskDestructor_SkatingStone(Task *t)
 {
     SkatingStone *stone = TASK_DATA(t);
     VramFree(stone->s.graphics.dest);
     m4aSongNumStop(SE_198);
 }
 
-void TaskDestructor_SkatingStoneDebris(struct Task *t)
+void TaskDestructor_SkatingStoneDebris(Task *t)
 {
     SkatingStoneDebris *debris = TASK_DATA(t);
     VramFree(debris->s[0].graphics.dest);

@@ -59,7 +59,7 @@ struct FinalEndingLandCutScene {
 };
 
 void sub_8093EDC(void);
-void sub_8093F9C(struct Task *);
+void sub_8093F9C(Task *);
 
 static const u16 gUnknown_080E179C[4] = {
     TM_CUTSCENE_FINAL_ENDING_LAND_FG,
@@ -127,7 +127,7 @@ void CreateFinalEndingLandingCutScene(void)
     u16 unk1AF4[0x10];
 
     u32 value = 0;
-    struct Task *t = NULL;
+    Task *t = NULL;
 
     gDispCnt = 0x1340;
     gBgCntRegs[0] = 0x9c03;
@@ -909,7 +909,7 @@ void sub_8093F54(void)
     }
 }
 
-void sub_8093F9C(UNUSED struct Task *t)
+void sub_8093F9C(UNUSED Task *t)
 {
     // unused logic
 }

@@ -33,7 +33,7 @@ typedef struct {
 } FerrisWheel; /* 0xB8 */
 
 void Task_FerrisWheel(void);
-void TaskDestructor_FerrisWheel(struct Task *t);
+void TaskDestructor_FerrisWheel(Task *t);
 
 const u16 gUnknown_086CEE2C[NUM_LEVEL_IDS] = {
     SA1_ANIM_PLATFORM_HORZ_1,   SA1_ANIM_PLATFORM_HORZ_1,   SA1_ANIM_PLATFORM_HORZ_2,   SA1_ANIM_PLATFORM_HORZ_2,
@@ -45,7 +45,7 @@ const u16 gUnknown_086CEE2C[NUM_LEVEL_IDS] = {
 
 void CreateEntity_FerrisWheel(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_FerrisWheel, sizeof(FerrisWheel), 0x2000, 0, TaskDestructor_FerrisWheel);
+    Task *t = TaskCreate(Task_FerrisWheel, sizeof(FerrisWheel), 0x2000, 0, TaskDestructor_FerrisWheel);
     FerrisWheel *wheel = TASK_DATA(t);
     CamCoord worldX, worldY;
     Sprite *s, *s2, *s3;
@@ -250,7 +250,7 @@ void Task_FerrisWheel(void)
     wheel->unkA0 = wheel->unkA4;
 }
 
-void TaskDestructor_FerrisWheel(struct Task *t)
+void TaskDestructor_FerrisWheel(Task *t)
 {
     FerrisWheel *wheel = TASK_DATA(t);
     VramFree(wheel->s.graphics.dest);

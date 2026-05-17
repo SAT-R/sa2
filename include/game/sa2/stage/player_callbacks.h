@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/shared/stage/player.h"
 
-struct Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2);
+Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2);
 void Player_SonicAmy_InitSkidAttack(Player *);
 void Player_SonicAmy_InitStopNSlam(Player *);
 void Player_Sonic_InitHomingAttack(Player *);

@@ -38,7 +38,7 @@ static void Task_StarOpen(void);
 
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0, TaskDestructor_EntityShared);
     Sprite_Star *star = TASK_DATA(t);
     Sprite *s = &star->s;
     star->base.regionX = spriteRegionX;

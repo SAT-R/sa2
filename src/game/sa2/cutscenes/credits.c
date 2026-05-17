@@ -26,7 +26,7 @@ struct CreditsCutScene {
     u32 unk54;
 }; /* 0x58 */
 
-static void TaskDestroy_CreditsCutScene(struct Task *);
+static void TaskDestroy_CreditsCutScene(Task *);
 static void sub_808EBC4(void);
 static void sub_808ECB4(void);
 
@@ -52,7 +52,7 @@ UNUSED static const u16 gUnknown_080E124E[] = { 56, 0, 828, 0, 78, 0, 828, 1, 60
 
 void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 {
-    struct Task *t;
+    Task *t;
     struct CreditsCutScene *scene = NULL;
     Background *background;
     ScreenFade *fade;
@@ -187,4 +187,4 @@ static void sub_808ED04(void)
     TaskDestroy(gCurTask);
 }
 
-static void TaskDestroy_CreditsCutScene(UNUSED struct Task *t) { }
+static void TaskDestroy_CreditsCutScene(UNUSED Task *t) { }

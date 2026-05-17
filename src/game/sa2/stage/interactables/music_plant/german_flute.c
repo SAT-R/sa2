@@ -43,7 +43,7 @@ static void sub_8076CF4(Sprite_GermanFlute UNUSED *);
 static void sub_8076D08(Sprite_GermanFlute UNUSED *);
 static void Task_GermanFlute(void);
 static void Task_8076DE8(void);
-static void TaskDestructor_GermanFlute(struct Task *);
+static void TaskDestructor_GermanFlute(Task *);
 static void sub_8076E3C(Sprite_GermanFlute *);
 static bool32 sub_8076EAC(Sprite_GermanFlute *);
 static void sub_8076EF4(Sprite_GermanFlute *);
@@ -279,7 +279,7 @@ static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
 
 void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0, TaskDestructor_GermanFlute);
+    Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0, TaskDestructor_GermanFlute);
     Sprite_GermanFlute *flute = TASK_DATA(t);
     s32 posX, posY;
 
@@ -326,7 +326,7 @@ static void Task_8076DE8(void)
     }
 }
 
-static void TaskDestructor_GermanFlute(struct Task *t) {};
+static void TaskDestructor_GermanFlute(Task *t) {};
 
 static void sub_8076E3C(Sprite_GermanFlute *flute)
 {

@@ -31,9 +31,9 @@ static void RenderScoresAnim(void);
 void Task_ResultsScreenSequencePart2(void);
 void Task_ResultsScreenNewEmeraldSequencePart2(void);
 void UpdateRingCounters(void);
-void sub_8070BEC(struct Task *);
+void sub_8070BEC(Task *);
 static void CreateDisplays(struct SpecialStageUI *);
-void SpecialStageResultsScreenOnDestroy(struct Task *);
+void SpecialStageResultsScreenOnDestroy(Task *);
 
 static const struct UNK_80DF670 sValueSprites[] = {
     { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('0'), 2, 0, 0 },
@@ -649,9 +649,9 @@ static void RenderScoresAnim(void)
     }
 }
 
-struct Task *CreateSpecialStageUI(struct SpecialStage *stage)
+Task *CreateSpecialStageUI(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(sub_806FB04, sizeof(struct SpecialStageUI), 0xD000, 0, sub_8070BEC);
+    Task *t = TaskCreate(sub_806FB04, sizeof(struct SpecialStageUI), 0xD000, 0, sub_8070BEC);
     struct SpecialStageUI *ui = TASK_DATA(t);
     ui->stage = stage;
     ui->unk2A4 = NULL;
@@ -663,15 +663,15 @@ struct Task *CreateSpecialStageUI(struct SpecialStage *stage)
     return t;
 }
 
-void sub_8070BEC(struct Task *t)
+void sub_8070BEC(Task *t)
 {
     // Unused logic
 }
 
-struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
+Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1, sizeof(struct SpecialStageResultsScreen), 0xD000, 0,
-                                SpecialStageResultsScreenOnDestroy);
+    Task *t = TaskCreate(Task_ResultsScreenSequencePart1, sizeof(struct SpecialStageResultsScreen), 0xD000, 0,
+                         SpecialStageResultsScreenOnDestroy);
     struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(t);
     resultsScreen->stage = stage;
     SpecialStageResultsScreenCreateUI(resultsScreen);
@@ -679,7 +679,7 @@ struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
     return t;
 }
 
-void SpecialStageResultsScreenOnDestroy(struct Task *t)
+void SpecialStageResultsScreenOnDestroy(Task *t)
 {
     // Unsued logic
 }

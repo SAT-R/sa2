@@ -12,7 +12,7 @@
 
 #include "constants/sa1/animations.h"
 
-typedef struct Game2_5 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ GameOverB strc60;
@@ -31,8 +31,8 @@ void sub_8069994(u8 *vram);
 void Task_8069E50(void);
 void sub_8069EE4(bool32 unk0);
 void sub_8069FDC(void);
-void sub_806A02C(TimeRecord record, struct Task *t);
-void TaskDestructor_806A124(struct Task *t);
+void sub_806A02C(TimeRecord record, Task *t);
+void TaskDestructor_806A124(Task *t);
 
 extern const s16 sZoneTimeSecondsTable[];
 extern const u16 sZoneTimeMinutesTable[];
@@ -122,7 +122,7 @@ void sub_8069994(u8 *vram)
 
 void CreateTimeAttackResult(TimeRecord record)
 {
-    struct Task *t;
+    Task *t;
     Sprite *s;
     Sprite *s2;
     StrcUi_805423C *strcA8;
@@ -336,7 +336,7 @@ void sub_8069FDC()
 }
 
 // TODO: Fake-match
-void sub_806A02C(TimeRecord record, struct Task *t)
+void sub_806A02C(TimeRecord record, Task *t)
 {
     s32 temp_r0_2;
     s32 temp_r2;
@@ -378,7 +378,7 @@ void sub_806A02C(TimeRecord record, struct Task *t)
     strc->unkB4[4] = 0x2A;
 }
 
-void TaskDestructor_806A124(struct Task *t)
+void TaskDestructor_806A124(Task *t)
 {
     Game2_5 *strc = TASK_DATA(t);
     VramFree(strc->s.graphics.dest);

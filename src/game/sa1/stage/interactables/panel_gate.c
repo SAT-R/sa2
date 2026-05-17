@@ -23,13 +23,13 @@ void Task_PanelGate_Vertical(void);
 void Task_PanelGate_Vertical2(void);
 void Task_PanelGate_Horizontal(void);
 void Task_PanelGate_Horizontal2(void);
-void TaskDestructor_PanelGate(struct Task *t);
+void TaskDestructor_PanelGate(Task *t);
 bool32 sub_8081C04(PanelGate *gate, Sprite *s, s32 worldX, s32 worldY);
 bool32 sub_8081F50(PanelGate *gate, Sprite *s, s32 worldX, s32 worldY);
 
 void CreateEntity_PanelGate_Vertical(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PanelGate_Vertical, sizeof(PanelGate), 0x2000, 0, TaskDestructor_PanelGate);
+    Task *t = TaskCreate(Task_PanelGate_Vertical, sizeof(PanelGate), 0x2000, 0, TaskDestructor_PanelGate);
     PanelGate *gate = TASK_DATA(t);
     Sprite *s = &gate->s;
 
@@ -154,7 +154,7 @@ void Task_PanelGate_Vertical2(void)
 
 void CreateEntity_PanelGate_Horizontal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PanelGate_Horizontal, sizeof(PanelGate), 0x2000, 0, TaskDestructor_PanelGate);
+    Task *t = TaskCreate(Task_PanelGate_Horizontal, sizeof(PanelGate), 0x2000, 0, TaskDestructor_PanelGate);
     PanelGate *gate = TASK_DATA(t);
     Sprite *s = &gate->s;
 
@@ -399,7 +399,7 @@ bool32 sub_8081F50(PanelGate *gate, Sprite *s, s32 worldX, s32 worldY)
     return result;
 }
 
-void TaskDestructor_PanelGate(struct Task *t)
+void TaskDestructor_PanelGate(Task *t)
 {
     PanelGate *gate = TASK_DATA(t);
     VramFree(gate->s.graphics.dest);

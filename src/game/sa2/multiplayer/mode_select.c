@@ -43,7 +43,7 @@ struct MultiplayerModeSelectScreen {
 };
 
 static void Task_FadeInAndStartEnterAnim(void);
-static void MultiplayerModeSelectScreenOnDestroy(struct Task *);
+static void MultiplayerModeSelectScreenOnDestroy(Task *);
 static void Task_EnterAnimPart2(void);
 static void Task_ScreenMain(void);
 static void RenderUI(struct MultiplayerModeSelectScreen *);
@@ -70,7 +70,7 @@ static const TileInfo sMultiplayerModeSelectScreenText[] = {
 
 void CreateMultiplayerModeSelectScreen(void)
 {
-    struct Task *t;
+    Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
     ScreenFade *fade;
     Sprite *s;
@@ -436,7 +436,7 @@ static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
     };
 }
 
-static void MultiplayerModeSelectScreenOnDestroy(struct Task *t)
+static void MultiplayerModeSelectScreenOnDestroy(Task *t)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(t);
     VramFree(modeScreen->unk80.graphics.dest);

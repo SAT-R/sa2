@@ -30,7 +30,7 @@ typedef struct {
 } Sprite_NoteBlock; /* size: 0x4C */
 
 static void Task_Idle(void);
-static void TaskDestructor_NoteBlock(struct Task *);
+static void TaskDestructor_NoteBlock(Task *);
 static void HandleBounceComplete(Sprite_NoteBlock *);
 static void UpdateBouncePosition(Sprite_NoteBlock *);
 static bool32 ShouldDespawn(Sprite_NoteBlock *);
@@ -62,7 +62,7 @@ const u16 sSfxGlockenspiel[NUM_NOTE_BLOCK_TYPES + 1] = {
 
 void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_NoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_NoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
     Sprite_NoteBlock *block = TASK_DATA(t);
     Sprite *s = &block->s;
 
@@ -168,7 +168,7 @@ static void Task_Idle(void)
     }
 }
 
-static void TaskDestructor_NoteBlock(struct Task *UNUSED t) { }
+static void TaskDestructor_NoteBlock(Task *UNUSED t) { }
 
 static void HandleBounceComplete(Sprite_NoteBlock *block)
 {

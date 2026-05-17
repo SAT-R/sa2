@@ -34,7 +34,7 @@ static void Task_Idle(void);
 
 static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
 static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *);
-static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
+static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(Task *);
 static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *);
 static void Render(Sprite_NoteSphere *);
 static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *);
@@ -58,7 +58,7 @@ static const u16 sNoteSphereSfx[8] = {
 
 void CreateEntity_NoteSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_NoteSphere), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_NoteSphere), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
     Sprite_NoteSphere *note = TASK_DATA(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
@@ -212,7 +212,7 @@ static void Task_Idle(void)
     }
 }
 
-static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *UNUSED t) { }
+static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(Task *UNUSED t) { }
 
 static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *note)
 {

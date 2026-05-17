@@ -22,11 +22,11 @@ typedef struct {
 } IA107;
 
 void Task_Interactable107(void);
-void TaskDestructor_SmallFallBlock(struct Task *t);
+void TaskDestructor_SmallFallBlock(Task *t);
 
 void CreateEntity_Interactable107(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     IA107 *ia;
     s32 i;
 

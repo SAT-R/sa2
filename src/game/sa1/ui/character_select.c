@@ -23,27 +23,27 @@
 #define CIDX_BLOCK  3 // appears when a character was chosen already in MP
 #define CIDX_COUNT  4
 
-typedef struct CharSelect_20 {
+typedef struct {
     GameOverB overB;
     s32 unk18;
     u16 unk1C;
     s16 unk1E;
 } CharSelect_20;
 
-typedef struct CharSelect_34 {
+typedef struct {
     Sprite s;
     u16 unk30;
     u16 unk32;
 } CharSelect_34;
 
-typedef struct CharSelect_3C {
+typedef struct {
     StrcUi_805423C strc0;
-    struct Task *taskC; // -> CharSelect_Chars
-    struct Task *task10; // -> CharSelect_20
-    struct Task *task14; // -> CharSelect_44
-    struct Task *task18; // -> CharSelect_20
-    struct Task *task1C; // -> CharSelect_20
-    struct Task *task20; // -> CharSelect_34
+    Task *taskC; // -> CharSelect_Chars
+    Task *task10; // -> CharSelect_20
+    Task *task14; // -> CharSelect_44
+    Task *task18; // -> CharSelect_20
+    Task *task1C; // -> CharSelect_20
+    Task *task20; // -> CharSelect_34
     u32 unk24;
     s16 unk28;
     s8 unk2A;
@@ -56,7 +56,7 @@ typedef struct CharSelect_3C {
     u8 unk39;
 } CharSelect_3C;
 
-typedef struct CharSelect_44 {
+typedef struct {
     GameOverB overB;
     GameOverB overB2;
     u32 unk30;
@@ -66,7 +66,7 @@ typedef struct CharSelect_44 {
     s16 unk40;
 } CharSelect_44;
 
-typedef struct CharSelect_Chars {
+typedef struct {
     Sprite sprites[CIDX_COUNT];
     u32 unkC0;
     s16 unkC4;
@@ -116,8 +116,8 @@ NONMATCH("asm/non_matching/game/sa1/char_select__CreateCharacterSelectionScreen.
     Strc_80528AC gfx;
     s32 sp38;
     s8 *sp3C;
-    struct Task *t;
-    struct Task *t2;
+    Task *t;
+    Task *t2;
     CharSelect_20 *temp_r0_2;
     CharSelect_20 *temp_r0_4;
     CharSelect_20 *temp_r0_6;
@@ -641,8 +641,8 @@ NONMATCH("asm/non_matching/game/sa1/char_select__Task_805A54C.inc", void Task_80
     u32 i;
     s32 var_r4;
     s32 var_r6;
-    struct Task *temp_r2;
-    struct Task *temp_r2_2;
+    Task *temp_r2;
+    Task *temp_r2_2;
     u16 temp_r2_3;
     u8 *temp_r1_3;
     u8 *var_r2;
@@ -726,8 +726,8 @@ NONMATCH("asm/non_matching/game/sa1/char_select__Task_805A798.inc", void Task_80
     s32 temp_r0_2;
     u32 i;
     s32 var_r6;
-    struct Task *temp_r2;
-    struct Task *temp_r2_2;
+    Task *temp_r2;
+    Task *temp_r2_2;
     u16 temp_r2_3;
     u8 *temp_r1_3;
     u8 *var_r2;
@@ -849,7 +849,7 @@ void Task_805AAF8()
 {
     u8 arr[4] = { 38, 38, 38, 38 };
     CharSelect_3C *strc3C = TASK_DATA(gCurTask);
-    struct Task *task18 = strc3C->task18;
+    Task *task18 = strc3C->task18;
 
     if (++strc3C->unk24 > 0x38U) {
         u8 temp_r6 = strc3C->unk39;

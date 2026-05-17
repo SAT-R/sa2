@@ -11,9 +11,9 @@
 extern const u8 gSecondsRenderLUT[60][2];
 extern const u8 gMillisRenderLUT[60][2];
 
-extern struct Task *gStageUITask;
+extern Task *gStageUITask;
 
-struct Task *CreateStageUI(void);
+Task *CreateStageUI(void);
 extern void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId);
 
 #endif // GUARD_TIME_H

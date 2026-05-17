@@ -148,14 +148,14 @@ UNUSED static const u16 gUnknown_080E1232[] = {
     0, 26, 0, 757, 1, 26, 0, 757, 2,
 };
 
-void sub_808E890(struct Task *);
+void sub_808E890(Task *);
 
 void CreateStageResultsCutscene(u8 mode)
 {
     TaskMain mains[3];
     u16 unk1214[6], unk1220[6], unk122C[3];
 
-    struct Task *t;
+    Task *t;
     ResultsCutScene *scene;
     Sprite *s;
     ScreenFade *fade;
@@ -616,7 +616,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
     // as soon as any cutscene starts
     CreateTitleScreenAndSkipIntro();
 #else
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
+    Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = zone * 4;
     scene->unk10E = zone * 5;
@@ -628,7 +628,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
 
 void CreateCreamUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
+    Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 0;
     scene->unk10E = 0;
@@ -638,7 +638,7 @@ void CreateCreamUnlockCutScene(void)
 
 void CreateTailsUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
+    Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 8;
     scene->unk10E = 10;
@@ -648,7 +648,7 @@ void CreateTailsUnlockCutScene(void)
 
 void CreateKnucklesUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
+    Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 4;
     scene->unk10E = 5;
@@ -656,7 +656,7 @@ void CreateKnucklesUnlockCutScene(void)
     sub_808E274(scene);
 }
 
-void sub_808E890(struct Task *t)
+void sub_808E890(Task *t)
 {
     ResultsCutScene *scene = TASK_DATA(t);
     VramFree(scene->unk4.graphics.dest);

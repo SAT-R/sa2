@@ -163,7 +163,7 @@ static TrappedAnimalsFunc const sTrappedAnimalSpawnFunctions[] = {
 
 static void CreateFlyingAnimal(SpawnOptions *init)
 {
-    struct Task *t = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
     FlyingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);
@@ -233,7 +233,7 @@ static void Task_FlyingAnimal(void)
 
 static void CreateBouncingAnimal(SpawnOptions *init)
 {
-    struct Task *t = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
     BouncingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);
@@ -300,7 +300,7 @@ static void Task_BouncingAnimal(void)
 
 static void CreateStaticAnimal(SpawnOptions *init)
 {
-    struct Task *t = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
     StaticAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);

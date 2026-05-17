@@ -36,7 +36,7 @@ typedef struct {
 } DCCredits;
 
 void Task_DecompCreditsFirst();
-void TaskDestructor_DecompCredits(struct Task *t);
+void TaskDestructor_DecompCredits(Task *t);
 
 void customHBlank(void);
 
@@ -60,7 +60,7 @@ s32 logoOllieMove(s32 frameNum)
 
 void CreateDecompCreditsScreen(bool32 hasProfile)
 {
-    struct Task *t;
+    Task *t;
     DCCredits *cred;
     Sprite *s;
 
@@ -245,7 +245,7 @@ void Task_SonicArrived(void)
     cred->sonicArrivedT0++;
 }
 
-void TaskDestructor_DecompCredits(struct Task *t)
+void TaskDestructor_DecompCredits(Task *t)
 {
     DCCredits *cred = TASK_DATA(t);
 

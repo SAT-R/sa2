@@ -14,11 +14,11 @@ typedef struct {
 } WaterBridgeSplash;
 
 void Task_WaterBridgeSplash(void);
-void TaskDestructor_WaterBridgeSplash(struct Task *);
+void TaskDestructor_WaterBridgeSplash(Task *);
 
 void CreateEntity_WaterBridgeSplash(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_WaterBridgeSplash, sizeof(WaterBridgeSplash), 0x2000, 0, TaskDestructor_WaterBridgeSplash);
+    Task *t = TaskCreate(Task_WaterBridgeSplash, sizeof(WaterBridgeSplash), 0x2000, 0, TaskDestructor_WaterBridgeSplash);
     WaterBridgeSplash *splash = TASK_DATA(t);
     Sprite *s;
     s32 worldX, worldY;
@@ -66,7 +66,7 @@ void Task_WaterBridgeSplash(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_WaterBridgeSplash(struct Task *t)
+void TaskDestructor_WaterBridgeSplash(Task *t)
 {
     WaterBridgeSplash *splash = TASK_DATA(t);
     Sprite *s = &splash->s;

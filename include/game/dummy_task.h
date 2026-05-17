@@ -6,6 +6,6 @@
 void CreateDummyTask(void);
 
 // Some sort of unused task variable
-extern struct Task *gDummyTask;
+extern Task *gDummyTask;
 
 #endif

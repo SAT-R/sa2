@@ -37,7 +37,7 @@ void Task_Item_Shield_Normal(void);
 void Task_Item_Invincibility(void);
 void Task_Item_Shield_Magnetic(void);
 void Task_Item_Confusion(void);
-void TaskDestructor_ItemTasks(struct Task *);
+void TaskDestructor_ItemTasks(Task *);
 
 #define ITEMTASK_GET_PLAYER_NUM()                                                                                                          \
     ({                                                                                                                                     \
@@ -45,9 +45,9 @@ void TaskDestructor_ItemTasks(struct Task *);
         it->unk30;                                                                                                                         \
     })
 
-struct Task *CreateItemTask_Shield_Normal(s8 playerID)
+Task *CreateItemTask_Shield_Normal(s8 playerID)
 {
-    struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
+    Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
@@ -75,9 +75,9 @@ struct Task *CreateItemTask_Shield_Normal(s8 playerID)
     return t;
 }
 
-struct Task *CreateItemTask_Invincibility(s8 playerID)
+Task *CreateItemTask_Invincibility(s8 playerID)
 {
-    struct Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
+    Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
@@ -103,9 +103,9 @@ struct Task *CreateItemTask_Invincibility(s8 playerID)
     return t;
 }
 
-struct Task *CreateItemTask_Shield_Magnetic(s8 playerID)
+Task *CreateItemTask_Shield_Magnetic(s8 playerID)
 {
-    struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
+    Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = (ItemTask *)TASK_DATA(t);
 
     item->unk30 = playerID;
@@ -137,9 +137,9 @@ struct Task *CreateItemTask_Shield_Magnetic(s8 playerID)
     return t;
 }
 
-struct Task *CreateItemTask_Confusion(s8 playerID)
+Task *CreateItemTask_Confusion(s8 playerID)
 {
-    struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
+    Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
 
     item->unk30 = playerID;
@@ -178,7 +178,7 @@ void Task_Item_Shield_Normal(void)
     s32 pid2;
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Player *p;
     u32 itemEffect;
 #if (GAME == GAME_SA1) && !defined(NON_MATCHING)
@@ -310,7 +310,7 @@ void Task_Item_Shield_Magnetic(void)
     s32 pid2;
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Player *p;
     u32 itemEffect;
 #ifndef NON_MATCHING
@@ -383,9 +383,9 @@ UNUSED void Task_802ABC8(void)
     // I'm not sure why tese were swapped :(
 #if (GAME == GAME_SA1)
     Sprite *s = &item->s;
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 #else
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     Sprite *s = &item->s;
 #endif
     s16 screenX, screenY;
@@ -441,7 +441,7 @@ void Task_Item_Invincibility(void)
     s32 pid = ITEMTASK_GET_PLAYER_NUM();
 
     ItemTask *item = TASK_DATA(gCurTask);
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
     s16 screenX, screenY;
     u32 priority;
     bool32 b;
@@ -482,7 +482,7 @@ void Task_Item_Invincibility(void)
 #if (GAME == GAME_SA1)
     if ((gStageTime & 0x7) == 0) {
         // Create random small "sparkle" effects during invincibility
-        struct Task *t;
+        Task *t;
         MultiplayerSpriteTask *mpSprite;
         Sprite *sprInvin;
 #ifndef NON_MATCHING
@@ -540,7 +540,7 @@ void Task_Item_Confusion(void)
     Sprite *s = &item->s;
     u32 b;
 
-    struct Camera *cam = &gCamera;
+    Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
         MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[param]);
@@ -581,7 +581,7 @@ void Task_Item_Confusion(void)
     }
 }
 
-void TaskDestructor_ItemTasks(struct Task *t)
+void TaskDestructor_ItemTasks(Task *t)
 {
     ItemTask *item = TASK_DATA(t);
     VramFree(item->s.graphics.dest);

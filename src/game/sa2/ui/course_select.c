@@ -81,7 +81,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void);
 static void RenderUI(struct CourseSelectionScreen *coursesScreen);
 static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen);
 
-static void CourseSelectionScreenOnDestroy(struct Task *t);
+static void CourseSelectionScreenOnDestroy(Task *t);
 
 static const u16 sZoneMapPathAssets[][3] = {
     [ZONE_1] = { 6, 749, 1 },  [ZONE_2] = { 12, 750, 1 }, [ZONE_3] = { 10, 751, 1 }, [ZONE_4] = { 6, 752, 1 },
@@ -237,7 +237,7 @@ static const u8 sCourseIndexToLevelIndex[] = {
 
 void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 {
-    struct Task *t;
+    Task *t;
     ScreenFade *fade;
     Background *background;
     Sprite *s = NULL;
@@ -1093,4 +1093,4 @@ static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
     RenderUI(coursesScreen);
 }
 
-static void CourseSelectionScreenOnDestroy(struct Task *t) { DestroyUI(TASK_DATA(t)); }
+static void CourseSelectionScreenOnDestroy(Task *t) { DestroyUI(TASK_DATA(t)); }

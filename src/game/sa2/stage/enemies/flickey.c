@@ -37,7 +37,7 @@ static void sub_80591FC(void);
 static void sub_8058EDC(void);
 
 static void Flickey_RenderIronBalls(Sprite_Flickey *flickey);
-static void TaskDestructor_Flickey(struct Task *);
+static void TaskDestructor_Flickey(Task *);
 
 void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -45,7 +45,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     s32 x, y;
 
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0, TaskDestructor_Flickey);
+        Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0, TaskDestructor_Flickey);
         Sprite_Flickey *flickey = TASK_DATA(t);
         Sprite *s = &flickey->s;
         flickey->base.regionX = spriteRegionX;
@@ -311,7 +311,7 @@ static void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
     }
 }
 
-static void TaskDestructor_Flickey(struct Task *t)
+static void TaskDestructor_Flickey(Task *t)
 {
     Sprite_Flickey *flickey = TASK_DATA(t);
     VramFree(flickey->s.graphics.dest);

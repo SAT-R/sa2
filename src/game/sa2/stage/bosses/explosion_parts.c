@@ -27,7 +27,7 @@ void Task_DestroyExplosionParts(void);
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
@@ -94,7 +94,7 @@ void Task_BossParticleWithExplosionUpdate(void)
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t = TaskCreate(Task_BossParticleStatic, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        Task *t = TaskCreate(Task_BossParticleStatic, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;

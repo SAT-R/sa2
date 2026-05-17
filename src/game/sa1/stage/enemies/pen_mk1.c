@@ -63,7 +63,7 @@ void Task_SnowballDebris(void);
 void CreateEntity_PenMk1(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     if (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_4 || (LOADED_SAVE->difficultyLevel == DIFFICULTY_NORMAL)) {
-        struct Task *t = TaskCreate(Task_PenMk1Main, sizeof(PenMk1), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_PenMk1Main, sizeof(PenMk1), 0x2000, 0, TaskDestructor_EntityShared);
         PenMk1 *pen = TASK_DATA(t);
         Sprite *s = &pen->shared.s;
 
@@ -229,7 +229,7 @@ void Task_8073CC4(void)
 
 void CreatePenMk1Snowball(CamCoord worldX, CamCoord worldY, u8 dir)
 {
-    struct Task *t = TaskCreate(Task_PenMk1Snowball, sizeof(PenMk1Snowball), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_PenMk1Snowball, sizeof(PenMk1Snowball), 0x3000, 0, NULL);
     PenMk1Snowball *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
     u8 sp08;
@@ -414,7 +414,7 @@ END_NONMATCH
 
 void CreatePenMk1SnowballDebris(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t = TaskCreate(Task_SnowballDebris, sizeof(PenMk1Debris), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_SnowballDebris, sizeof(PenMk1Debris), 0x3000, 0, NULL);
     PenMk1Debris *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 

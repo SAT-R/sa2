@@ -17,7 +17,7 @@
 
 void sub_806EA04(void);
 void sub_806E7C0(struct SpecialStageWorld *world);
-void sub_806EBF4(struct Task *);
+void sub_806EBF4(Task *);
 void sub_806E94C(struct SpecialStageWorld *world);
 void sub_806EB74(void);
 
@@ -75,10 +75,10 @@ const struct UNK_8C87920 gUnknown_080DF6EC[] = {
     { 914, 0 },
 };
 
-struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
+Task *CreateSpecialStageWorld(struct SpecialStage *stage)
 {
 
-    struct Task *t;
+    Task *t;
     struct SpecialStageWorld *world;
 
     s16 skys[7] = {
@@ -278,7 +278,7 @@ void sub_806EB74(void)
     }
 }
 
-void sub_806EBF4(struct Task *t)
+void sub_806EBF4(Task *t)
 {
     struct SpecialStageWorld *world = TASK_DATA(t);
 

@@ -72,7 +72,7 @@ END_NONMATCH
 
 void CreateEntity_Interactable034(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Interactable034, sizeof(IA034), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Interactable034, sizeof(IA034), 0x2000, 0, NULL);
     IA034 *ia = TASK_DATA(t);
     s32 worldX, worldY;
 

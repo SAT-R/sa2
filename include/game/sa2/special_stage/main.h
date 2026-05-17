@@ -20,12 +20,12 @@
 #define MAX_SPECIAL_STAGE_GUARD_ROBO_Y 982
 
 struct SpecialStage {
-    struct Task *physicsTask;
-    struct Task *worldTask;
-    struct Task *collectablesTask;
-    struct Task *playerTask;
-    struct Task *uiTask;
-    struct Task *guardRoboTask;
+    Task *physicsTask;
+    Task *worldTask;
+    Task *collectablesTask;
+    Task *playerTask;
+    Task *uiTask;
+    Task *guardRoboTask;
 
     Sprite introText;
     Background unk48;

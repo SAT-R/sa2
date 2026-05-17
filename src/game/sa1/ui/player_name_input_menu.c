@@ -75,7 +75,7 @@ static inline void incUnkFC()
 NONMATCH("asm/non_matching/game/sa1/ui/player_name_input_menu__CreatePlayerNameInputMenu.inc", void CreatePlayerNameInputMenu(void))
 {
     Strc_80528AC sp4;
-    struct Task *t;
+    Task *t;
     s32 temp_r3;
     s32 var_r8_2;
     u8 *temp_r3_2;
@@ -225,7 +225,7 @@ NONMATCH("asm/non_matching/game/sa1/ui/player_name_input_menu__sub_8058830.inc",
     s8 sp28;
     s8 sp2B;
     StrcUi_805423C *sp30;
-    struct Task *sp34;
+    Task *sp34;
     s32 sp44;
     s32 sp48;
     PlayerNameMenu *sp64;
@@ -656,7 +656,7 @@ NONMATCH("asm/non_matching/game/sa1/ui/player_name_input_menu__Task_80595DC.inc"
     u32 i, j;
     s32 var_r7 = 0;
     PlayerNameMenu *menu = TASK_DATA(gCurTask);
-    struct Task *t;
+    Task *t;
 
     sub_805423C(&menu->strc18);
 

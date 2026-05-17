@@ -21,11 +21,11 @@ typedef struct {
 } Booster;
 
 void Task_Booster(void);
-void TaskDestructor_Booster(struct Task *);
+void TaskDestructor_Booster(Task *);
 
 void CreateEntity_Booster(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -64,7 +64,7 @@ void CreateEntity_Booster(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
 void CreateEntity_Booster_SlightLeft(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -103,7 +103,7 @@ void CreateEntity_Booster_SlightLeft(MapEntity *me, u16 regionX, u16 regionY, u8
 
 void CreateEntity_Booster_SlightRight(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -142,7 +142,7 @@ void CreateEntity_Booster_SlightRight(MapEntity *me, u16 regionX, u16 regionY, u
 
 void CreateEntity_Booster_Wall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -181,7 +181,7 @@ void CreateEntity_Booster_Wall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
 void CreateEntity_Booster_Steep(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -220,7 +220,7 @@ void CreateEntity_Booster_Steep(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
 void CreateEntity_Booster_Steep2(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
+    Task *t = TaskCreate(Task_Booster, sizeof(Booster), 0x2000, 0, TaskDestructor_Booster);
     Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
 
@@ -337,7 +337,7 @@ void Task_Booster(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Booster(struct Task *t)
+void TaskDestructor_Booster(Task *t)
 {
     Booster *booster = TASK_DATA(t);
     VramFree(booster->s.graphics.dest);

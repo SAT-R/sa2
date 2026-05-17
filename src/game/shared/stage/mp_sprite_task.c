@@ -29,9 +29,9 @@ const u16 sAnimData_StageGoalScoreBonus[][3] = {
 
 #if (GAME == GAME_SA2)
 // This function was reordered in SA2, it exists twice in this file!
-struct Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
+Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
+    Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
 
     MultiplayerSpriteTask *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
@@ -94,7 +94,7 @@ void Task_UpdateMpSpriteTaskSprite(void)
 #if (GAME == GAME_SA2)
                         s8 id = SIO_MULTI_CNT->id;
 #endif
-                        struct Task *tmpp = gMultiplayerPlayerTasks[id];
+                        Task *tmpp = gMultiplayerPlayerTasks[id];
                         MultiplayerPlayer *mpp = TASK_DATA(tmpp);
 #if (GAME == GAME_SA1)
                         s->x = mpp->pos.x;
@@ -117,14 +117,14 @@ void Task_UpdateMpSpriteTaskSprite(void)
             }
 
             {
-                struct Camera *cam = &gCamera;
+                Camera *cam = &gCamera;
                 s->x = ts->x - cam->x;
                 s->y = ts->y - cam->y;
             }
         } break;
 
         case 1: {
-            struct Camera *cam = &gCamera;
+            Camera *cam = &gCamera;
 #if (GAME == GAME_SA1)
             s->x = ts->x - cam->SA2_LABEL(unk52);
             s->y = ts->y - cam->SA2_LABEL(unk54);
@@ -163,9 +163,9 @@ void Task_UpdateMpSpriteTaskSprite(void)
 #if (GAME == GAME_SA1)
 // This function was reordered in SA2, it exists twice in this file!
 // TODO: Rename CreateMultiplayerSpriteTask ?
-struct Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
+Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
+    Task *t = TaskCreate(main, sizeof(MultiplayerSpriteTask), 0x4001, 0, dtor);
 
     MultiplayerSpriteTask *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
@@ -196,12 +196,12 @@ struct Task *CreateMultiplayerSpriteTask(s16 x, s16 y, u8 param2, s8 param3, Tas
 #endif
 
 #if (GAME == GAME_SA2)
-struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
+Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
 {
     if ((score != 100) && (score != 200) && (score != 300) && (score != 500) && (score != 800)) {
         return NULL;
     } else {
-        struct Task *t;
+        Task *t;
         MultiplayerSpriteTask *ts;
         Sprite *s;
         t = CreateMultiplayerSpriteTask(x, y, 32, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
@@ -239,9 +239,9 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
     }
 }
 
-static inline struct Task *CreateGrindfEffect2Sprite_inline(s16 x, s16 y)
+static inline Task *CreateGrindfEffect2Sprite_inline(s16 x, s16 y)
 {
-    struct Task *t = CreateMultiplayerSpriteTask(x, y, 192, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    Task *t = CreateMultiplayerSpriteTask(x, y, 192, 0, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
@@ -281,7 +281,7 @@ void CreateGrindEffect2(void)
 }
 #endif // (GAME == GAME_SA2)
 
-void TaskDestructor_MultiplayerSpriteTask(struct Task *t)
+void TaskDestructor_MultiplayerSpriteTask(Task *t)
 {
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
@@ -290,5 +290,5 @@ void TaskDestructor_MultiplayerSpriteTask(struct Task *t)
 }
 
 #if (GAME == GAME_SA2)
-struct Task *CreateGrindfEffect2Sprite(s16 x, s16 y) { return CreateGrindfEffect2Sprite_inline(x, y); }
+Task *CreateGrindfEffect2Sprite(s16 x, s16 y) { return CreateGrindfEffect2Sprite_inline(x, y); }
 #endif

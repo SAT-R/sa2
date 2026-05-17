@@ -29,7 +29,7 @@ typedef struct {
 } Sprite_PlatformSquare; /* size: 0x68 */
 
 static void Task_Platform_Square(void);
-static void TaskDestructor_Platform_Square(struct Task *);
+static void TaskDestructor_Platform_Square(Task *);
 static void Platform_Square_KillPlayer(void);
 static void HandleSquarePlatformOffsetStorage(Sprite_PlatformSquare *);
 
@@ -41,7 +41,7 @@ static const u16 sAnimsPlatformSquare[9][3] = {
 
 void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare), 0x2010, 0, TaskDestructor_Platform_Square);
+    Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare), 0x2010, 0, TaskDestructor_Platform_Square);
     Sprite_PlatformSquare *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -338,7 +338,7 @@ static void Task_Platform_Square(void)
     }
 }
 
-static void TaskDestructor_Platform_Square(struct Task *t)
+static void TaskDestructor_Platform_Square(Task *t)
 {
     Sprite_PlatformSquare *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

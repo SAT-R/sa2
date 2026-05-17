@@ -26,7 +26,7 @@ typedef struct {
 
 static void CreateEntity_Toggle_Gravity(MapEntity *, u16, u16, u8, u8);
 static void Task_GravityToggleNoAliveCheck(void);
-static void TaskDestructor_GravityToggle(struct Task *);
+static void TaskDestructor_GravityToggle(Task *);
 static void UpdateTogglePlayerSpeed(Sprite_GravityToggle *);
 static bool32 ToggleIsOffscreen(Sprite_GravityToggle *);
 static void DestroyGravityToggle(Sprite_GravityToggle *);
@@ -38,7 +38,7 @@ static void Task_GravityToggle(void);
 
 static void CreateEntity_Toggle_Gravity(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 id, u8 toggleKind)
 {
-    struct Task *t = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle), 0x2010, 0, TaskDestructor_GravityToggle);
+    Task *t = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle), 0x2010, 0, TaskDestructor_GravityToggle);
     Sprite_GravityToggle *toggle = TASK_DATA(t);
 
     toggle->kind = toggleKind;
@@ -121,7 +121,7 @@ void Task_GravityToggleNoAliveCheck(void)
     }
 }
 
-void TaskDestructor_GravityToggle(UNUSED struct Task *t) { }
+void TaskDestructor_GravityToggle(UNUSED Task *t) { }
 
 void UpdateTogglePlayerSpeed(Sprite_GravityToggle *toggle)
 {

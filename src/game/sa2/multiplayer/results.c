@@ -121,7 +121,7 @@ static const u16 sResultsScreenBgSelectedCharacters[] = {
 
 void CreateMultiplayerResultsScreen(u8 mode)
 {
-    struct Task *t;
+    Task *t;
     struct MultiplayerResultsScreen *resultsScreen;
     Background *background;
     u32 i;

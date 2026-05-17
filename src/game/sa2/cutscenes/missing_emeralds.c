@@ -13,7 +13,7 @@
 #include "constants/sa2/tilemaps.h"
 
 void Task_8094360(void);
-void TaskDestructor_80945A0(struct Task *);
+void TaskDestructor_80945A0(Task *);
 
 struct MissingChaosEmaraldsCutScene {
     Background unk0;
@@ -80,7 +80,7 @@ static const TileInfo gUnknown_080E1CA0[3] = {
 void CreateMissingChaosEmaraldsCutScene(void)
 {
     u8 i;
-    struct Task *t;
+    Task *t;
     struct MissingChaosEmaraldsCutScene *scene = NULL;
     ScreenFade *fade = NULL;
 
@@ -308,7 +308,7 @@ void sub_8094570(void)
     }
 }
 
-void TaskDestructor_80945A0(struct Task *t)
+void TaskDestructor_80945A0(Task *t)
 {
     // unused logic
 }

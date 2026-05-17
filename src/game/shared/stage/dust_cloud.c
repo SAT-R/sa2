@@ -20,7 +20,7 @@ static void Task_CreateDustCloud(void);
 // Create cloud that appears when defeating enemies / opening item boxes
 void CreateDustCloud(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_CreateDustCloud, sizeof(Sprite), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_CreateDustCloud, sizeof(Sprite), 0x2000, 0, NULL);
     Sprite *s = TASK_DATA(t);
 
     s->x = x;

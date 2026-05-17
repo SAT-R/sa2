@@ -42,11 +42,11 @@ void Task_TentouMain(void);
 void sub_8074928(void);
 void CreateTentouProjectiles(s16 x, s16 y);
 void sub_8074C50(void);
-void TaskDestructor_TentouProjectiles(struct Task *);
+void TaskDestructor_TentouProjectiles(Task *);
 
 void CreateEntity_Tentou(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_TentouMain, sizeof(Tentou), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_TentouMain, sizeof(Tentou), 0x2000, 0, TaskDestructor_EntityShared);
     Tentou *tentou = TASK_DATA(t);
     Sprite *s = &tentou->shared.s;
 
@@ -309,7 +309,7 @@ END_NONMATCH
 void CreateTentouProjectiles(s16 screenX, s16 screenY)
 {
     TentouProj *proj;
-    struct Task *t;
+    Task *t;
     Sprite *s;
     s32 i;
     s32 v;
@@ -391,7 +391,7 @@ void sub_8074C50(void)
     s->y = oldWorldY;
 }
 
-void TaskDestructor_TentouProjectiles(struct Task *t)
+void TaskDestructor_TentouProjectiles(Task *t)
 {
     TentouProj *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);

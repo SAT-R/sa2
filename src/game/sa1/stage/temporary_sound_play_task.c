@@ -86,7 +86,7 @@ void CreateTempSoundTask(u16 songId)
     struct MP2KSongHeader *songHeader = info->songHeader;
 
     if (info->songHeader != gSongTable[songId].header) {
-        struct Task *t = TaskCreate(Task_CallTempSoundTask, sizeof(TrickField), 0x3000, 0, NULL);
+        Task *t = TaskCreate(Task_CallTempSoundTask, sizeof(TrickField), 0x3000, 0, NULL);
         TrickField *field = TASK_DATA(t);
 
         field->songInfo = info;
@@ -102,7 +102,7 @@ void CreateSpStageTrickSoundTask(u16 expectedSongId, u16 resumeSongId)
     struct MP2KSongHeader *songHeader = info->songHeader;
 
     if (songHeader != gSongTable[expectedSongId].header) {
-        struct Task *t = TaskCreate(Task_CallSpStageTrickTask, sizeof(TrickField), 0x3000, 0, NULL);
+        Task *t = TaskCreate(Task_CallSpStageTrickTask, sizeof(TrickField), 0x3000, 0, NULL);
         TrickField *field = TASK_DATA(t);
 
         field->songInfo = info;

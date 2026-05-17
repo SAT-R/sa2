@@ -24,7 +24,7 @@
 
 /* X-Zone Final Boss */
 
-typedef struct EggX_10 {
+typedef struct {
     u16 unk0;
     u16 unk2;
     u16 unk4;
@@ -36,7 +36,7 @@ typedef struct EggX_10 {
     u16 unkE;
 } EggX_10;
 
-typedef struct EggX_48 {
+typedef struct {
     Sprite s;
     u16 unk30;
     u8 filler32[0x2];
@@ -50,7 +50,7 @@ typedef struct EggX_48 {
     u8 filler46[0x2];
 } EggX_48;
 
-typedef struct EggX_Sparkle {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ u16 unk3C;
@@ -72,7 +72,7 @@ typedef struct EggX_Sparkle {
     /* 0x62 */ u8 unk62;
 } EggX_Sparkle;
 
-typedef struct EggX_7C {
+typedef struct {
     Sprite s;
     Sprite s2;
     s16 unk60;
@@ -89,7 +89,7 @@ typedef struct EggX_7C {
     u8 unk7B;
 } EggX_7C;
 
-typedef struct EggX {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -111,7 +111,7 @@ typedef struct EggX {
     /* 0x98 */ u8 unk98;
     /* 0x99 */ u8 unk99;
     /* 0x9A */ u8 unk9A;
-    /* 0x9C */ struct Task *task9C; // -> EggX_7C
+    /* 0x9C */ Task *task9C; // -> EggX_7C
 } EggX; /* 0xA0 */
 
 void Task_EggXMain(void);
@@ -145,11 +145,11 @@ void sub_803A54C(void);
 void sub_803A594(void);
 void sub_803A170(u32 param0);
 
-void TaskDestructor_EggX7C(struct Task *t);
-void TaskDestructor_EggX_Sparkle(struct Task *t);
+void TaskDestructor_EggX7C(Task *t);
+void TaskDestructor_EggX_Sparkle(Task *t);
 void sub_80472AC(Player *p);
-void TaskDestructor_EggX(struct Task *t);
-void TaskDestructor_EggX48(struct Task *t);
+void TaskDestructor_EggX(Task *t);
+void TaskDestructor_EggX48(Task *t);
 
 extern const s16 gUnknown_084ACF1C[4];
 extern const s16 gUnknown_084ACF24[];
@@ -1083,7 +1083,7 @@ void Task_8038154()
     switch (boss->unk99) {
         case 0:
             boss->unk92--;
-            res = sa2__sub_801F100(worldY + 20, worldX, 1, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(worldY + 20, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 boss->qUnk78 += Q(res);
                 boss->qUnk80 = (boss->qUnk80 >> 2) - boss->qUnk80;
@@ -1141,7 +1141,7 @@ void Task_8038154()
 //       Many bosses calling CreateNutsAndBoltsTask have this same structure, almost identically.
 void sub_8038420(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t;
+    Task *t;
     NutsAndBolts *bolts;
     Sprite *sprBolts;
     s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -1417,7 +1417,7 @@ void Task_Strc10_803891C()
 
 void sub_8038B38(void)
 {
-    struct Task *t;
+    Task *t;
     EggX_48 *strc48;
     Sprite *s;
 
@@ -1565,7 +1565,7 @@ void sub_8038F04(void)
     Sprite *s2;
     EggX_7C *strc7C;
     EggX *boss = TASK_DATA(gCurTask);
-    struct Task *t;
+    Task *t;
     CamCoord worldX, worldY;
 
     t = TaskCreate(Task_8039264, sizeof(EggX_7C), 0x2001U, 0U, TaskDestructor_EggX7C);
@@ -1900,7 +1900,7 @@ void sub_803967C(void)
     s32 rnd = PseudoRandom32() & 0x800;
     EggX *boss = TASK_DATA(gCurTask);
     Sprite *s;
-    struct Task *t;
+    Task *t;
     EggX_48 *strc48;
     s32 r2;
     s32 v;
@@ -1971,7 +1971,7 @@ void Task_80397A8(void)
     strc48->qUnk38 += strc48->qUnk3E;
     worldX = I(strc48->qUnk34) + strc48->unk40;
     worldY = I(strc48->qUnk38) + strc48->unk42;
-    res = sa2__sub_801F100(worldY + 8, worldX, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
     if (res < 0) {
         s32 v16;
         s32 v;
@@ -2006,7 +2006,7 @@ void sub_8039940()
     u8 *temp_r1;
 
     EggX *boss = TASK_DATA(gCurTask);
-    struct Task *t;
+    Task *t;
     EggX_Sparkle *sparkle;
     Sprite *s;
 
@@ -2152,7 +2152,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_x3__Task_8039A64.inc", vo
 
             worldX = ABS(worldX);
 
-            worldX = (u16)sa2__sub_8004418(worldY, worldX);
+            worldX = (u16)SA2_LABEL(sub_8004418)(worldY, worldX);
             if ((u32)((u32)((worldX - 225) + 0xFF1F0000) >> 0x10) < 0x11F) {
                 worldX = 224;
             }
@@ -2371,7 +2371,7 @@ void sub_803A1D8()
     s32 sp4;
     SpriteTransform *tf;
     s16 var_r0;
-    struct Task *t;
+    Task *t;
     EggX_Sparkle *sparkle;
     EggX_Sparkle *sparkleParent;
     Sprite *s;
@@ -2487,7 +2487,7 @@ void Task_803A46C()
     worldX = I(sparkle->unk54);
     worldY = I(sparkle->unk58);
 
-    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 8, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
 
     if (res < 0) {
         sparkle->unk58 += Q(res);
@@ -2505,7 +2505,7 @@ void Task_803A46C()
     }
 }
 
-void TaskDestructor_EggX(struct Task *t)
+void TaskDestructor_EggX(Task *t)
 {
     EggX *boss = TASK_DATA(t);
     VramFree(boss->s.graphics.dest);
@@ -2541,20 +2541,20 @@ void sub_803A594(void)
     strc10->unk8 = 0;
 }
 
-void TaskDestructor_EggX7C(struct Task *t)
+void TaskDestructor_EggX7C(Task *t)
 {
     EggX_7C *strc7C = TASK_DATA(t);
     VramFree(strc7C->s.graphics.dest);
     VramFree(strc7C->s2.graphics.dest);
 }
 
-void TaskDestructor_EggX48(struct Task *t)
+void TaskDestructor_EggX48(Task *t)
 {
     EggX_48 *strc48 = TASK_DATA(t);
     VramFree(strc48->s.graphics.dest);
 }
 
-void TaskDestructor_EggX_Sparkle(struct Task *t)
+void TaskDestructor_EggX_Sparkle(Task *t)
 {
     EggX_Sparkle *strc48 = TASK_DATA(t);
     VramFree(strc48->s.graphics.dest);
@@ -2587,7 +2587,7 @@ void sub_803A650(CamCoord worldX, CamCoord worldY)
 }
 
 // Belongs to sub_803A6EC, might be able to be removed once matched...
-typedef struct Test {
+typedef struct {
     Sprite *s;
 } Test;
 

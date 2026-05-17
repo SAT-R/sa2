@@ -28,7 +28,7 @@ typedef struct {
 } Sprite_IceParadiseHalfPipe;
 
 static void Task_HalfPipeMain(void);
-static void TaskDestructor_HalfPipe(struct Task *);
+static void TaskDestructor_HalfPipe(Task *);
 static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *);
 static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *, u16);
 static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *);
@@ -42,7 +42,7 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *);
 
 static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, s32 direction)
 {
-    struct Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe), 0x2010, 0, TaskDestructor_HalfPipe);
+    Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe), 0x2010, 0, TaskDestructor_HalfPipe);
     Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(t);
     halfPipe->direction = direction;
     halfPipe->x = Q(spriteRegionX) + me->x * TILE_WIDTH;
@@ -160,7 +160,7 @@ static void Task_HalfPipeMain(void)
     }
 }
 
-static void TaskDestructor_HalfPipe(struct Task *t)
+static void TaskDestructor_HalfPipe(Task *t)
 {
     // unused
 }

@@ -54,7 +54,7 @@ static PlayerStateHandler const sPlayerStateHandlers[] = {
     sub_806D388, sub_806D5D0, sub_806D5D0, sub_806D5D0, sub_806D4E4, sub_806D388, sub_806D6DC, sub_806D5CC, sub_806D740,
 };
 
-struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
+Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
 {
     const struct UNK_80DF670 *characterSprites[NUM_CHARACTERS];
     u8 zone;
@@ -63,7 +63,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     void *ram;
     u32 variant;
 
-    struct Task *t;
+    Task *t;
     struct SpecialStagePlayer *player;
 
     memcpy(&characterSprites, &gUnknown_080DF670, sizeof(characterSprites));

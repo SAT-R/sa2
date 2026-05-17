@@ -22,6 +22,6 @@ void GoToNextLevel(void);
 void HandleLifeLost(void);
 void HandleDeath(void);
 
-extern struct Task *gGameStageTask;
+extern Task *gGameStageTask;
 
 #endif // GUARD_STAGE_H

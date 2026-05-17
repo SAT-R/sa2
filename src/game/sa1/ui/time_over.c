@@ -10,30 +10,30 @@
 #include "constants/sa1/animations.h"
 #include "constants/sa1/zones.h"
 
-typedef struct TimeOverState {
+typedef struct {
     StrcUi_805423C strc0;
     Sprite s;
     Sprite s2;
     s32 timer;
 } TimeOverState;
 
-typedef struct TimeOverTimer {
-    struct Task *t; // -> TimeOverState
+typedef struct {
+    Task *t; // -> TimeOverState
     s16 timer;
 } TimeOverTimer;
 
 void Task_TimeOverTimerUpdate(void);
 void Task_TimeOverStateUpdate(void);
-void TaskDestructor_TimeOverState(struct Task *t);
-void TaskDestructor_805BC90(struct Task *t);
+void TaskDestructor_TimeOverState(Task *t);
+void TaskDestructor_805BC90(Task *t);
 
 void CreateTimeOver()
 {
     TimeOverTimer *overTimer;
     Sprite *s;
-    struct Task *t2 = NULL;
+    Task *t2 = NULL;
 
-    struct Task *t = TaskCreate(Task_TimeOverStateUpdate, sizeof(TimeOverState), 0x2220U, 0U, TaskDestructor_TimeOverState);
+    Task *t = TaskCreate(Task_TimeOverStateUpdate, sizeof(TimeOverState), 0x2220U, 0U, TaskDestructor_TimeOverState);
     TimeOverState *state = TASK_DATA(t);
     StrcUi_805423C *strc0 = &state->strc0;
 
@@ -135,7 +135,7 @@ void Task_TimeOverStateUpdate()
     DisplaySprite(s);
 }
 
-void TaskDestructor_TimeOverState(struct Task *t)
+void TaskDestructor_TimeOverState(Task *t)
 {
     TimeOverState *state;
 
@@ -146,4 +146,4 @@ void TaskDestructor_TimeOverState(struct Task *t)
     gDispCnt &= ~0xE000;
 }
 
-void TaskDestructor_805BC90(struct Task *t) { }
+void TaskDestructor_805BC90(Task *t) { }

@@ -20,9 +20,9 @@ void Task_SimpleSpriteParticleMain(void);
 
 // Seems to create the given animation on the screen in a fixed position
 // and despawns once it leaves player range?
-struct Task *CreateSimpleSpriteParticle(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant, TaskDestructor dtor)
+Task *CreateSimpleSpriteParticle(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(Task_SimpleSpriteParticleMain, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
+    Task *t = TaskCreate(Task_SimpleSpriteParticleMain, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
 
     Sprite_StageSprUnknown *su = TASK_DATA(t);
     su->x = 0;
@@ -76,7 +76,7 @@ void Task_SimpleSpriteParticleMain(void)
     }
 }
 
-void TaskDestructor_800A694(struct Task *t)
+void TaskDestructor_800A694(Task *t)
 {
     Sprite_StageSprUnknown *su = TASK_DATA(t);
     VramFree(su->s.graphics.dest);

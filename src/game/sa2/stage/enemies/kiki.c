@@ -37,11 +37,11 @@ static void Task_KikiProjSplit(void);
 static void CreateKikiProjectilePiece(s16, s16);
 static void Task_ProjPieceMain(void);
 
-static void TaskDestructor_KikiProj(struct Task *);
+static void TaskDestructor_KikiProj(Task *);
 
 void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0, TaskDestructor_EntityShared);
     Sprite_Kiki *kiki = TASK_DATA(t);
     Sprite *s = &kiki->s;
 
@@ -172,7 +172,7 @@ static void sub_8053A38(void)
 
 static void CreateKikiProjectile(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_KikiProjMain, sizeof(Kiki_Proj), 0x4028, 0, TaskDestructor_KikiProj);
+    Task *t = TaskCreate(Task_KikiProjMain, sizeof(Kiki_Proj), 0x4028, 0, TaskDestructor_KikiProj);
     Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
@@ -282,7 +282,7 @@ static void Task_KikiProjSplit(void)
 
 static void CreateKikiProjectilePiece(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0, TaskDestructor_KikiProj);
+    Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0, TaskDestructor_KikiProj);
     Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
@@ -342,7 +342,7 @@ static void Task_ProjPieceMain(void)
     s->y = y;
 }
 
-static void TaskDestructor_KikiProj(struct Task *t)
+static void TaskDestructor_KikiProj(Task *t)
 {
     Kiki_Proj *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);

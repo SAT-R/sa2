@@ -24,7 +24,7 @@ void Task_Pierrot(void);
 
 void CreateEntity_Pierrot(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     Pierrot *pierrot;
     Sprite *s;
 

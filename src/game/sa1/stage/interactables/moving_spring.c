@@ -31,7 +31,7 @@ typedef struct {
 
 void Task_MovingSpringMain(void);
 void Task_808B5AC(void);
-void TaskDestructor_MovingSpring(struct Task *t);
+void TaskDestructor_MovingSpring(Task *t);
 bool32 sub_808B7A0(MovingSpring *spring, Sprite *s, s32 worldX, s32 worldY);
 bool32 sub_808BB44(Sprite *s, s32 worldX, s32 worldY, Rect8 *rect, Player *p);
 
@@ -44,7 +44,7 @@ void CreateEntity_MovingSpring(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
 #endif
 
-    struct Task *t = TaskCreate(Task_MovingSpringMain, sizeof(MovingSpring), 0x2000, 0, TaskDestructor_MovingSpring);
+    Task *t = TaskCreate(Task_MovingSpringMain, sizeof(MovingSpring), 0x2000, 0, TaskDestructor_MovingSpring);
     MovingSpring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
@@ -319,7 +319,7 @@ bool32 sub_808BB44(Sprite *s, s32 worldX, s32 worldY, Rect8 *rect, Player *p)
 
     return FALSE;
 }
-void TaskDestructor_MovingSpring(struct Task *t)
+void TaskDestructor_MovingSpring(Task *t)
 {
     MovingSpring *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);

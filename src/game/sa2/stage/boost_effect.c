@@ -154,7 +154,7 @@ typedef struct {
 } PlayerActions; /* size: 0x60 */
 
 void Task_80159C8(void);
-void TaskDestructor_8015B50(struct Task *);
+void TaskDestructor_8015B50(Task *);
 
 static inline void sub_8015B64_inline(AnimId anim, u16 palId)
 {
@@ -188,7 +188,7 @@ void CreateBoostEffectTasks(void)
         gBoostEffectTasksCreated = TRUE;
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5674); i++) {
-            struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0, TaskDestructor_8015B50);
+            Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0, TaskDestructor_8015B50);
             PlayerActions *actions = TASK_DATA(t);
 
             actions->unk5C = i;
@@ -296,7 +296,7 @@ void Task_80159C8(void)
     }
 }
 
-void TaskDestructor_8015B50(struct Task *t)
+void TaskDestructor_8015B50(Task *t)
 {
     PlayerActions *actions = TASK_DATA(t);
     VramFree(actions->s.graphics.dest);

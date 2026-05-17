@@ -25,7 +25,7 @@ typedef struct {
 
 static void sub_8057F80(void);
 static void sub_8058264(void);
-static void sub_8058480(struct Task *);
+static void sub_8058480(Task *);
 
 static const TileInfo gUnknown_080D8F50[4] = {
     { .numTiles = 9, .anim = SA2_ANIM_GEJIGEJI, .variant = 3 },
@@ -37,7 +37,7 @@ static const TileInfo gUnknown_080D8F50[4] = {
 void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 i;
-    struct Task *t = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
+    Task *t = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
     Sprite_GejiGeji *gg = TASK_DATA(t);
 
     Sprite *s = &gg->s;
@@ -214,7 +214,7 @@ static void sub_8058264(void)
     gg->positions[1][gg->unk27E] = pos.y;
 }
 
-static void sub_8058480(struct Task *t)
+static void sub_8058480(Task *t)
 {
     Sprite_GejiGeji *gg = TASK_DATA(t);
 

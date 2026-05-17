@@ -22,7 +22,7 @@ typedef struct {
 } Sprite_TurnAroundBar;
 
 static void Task_TurnAroundBarMain(void);
-static void TaskDestructor_InteractableTurnAroundBar(struct Task *);
+static void TaskDestructor_InteractableTurnAroundBar(Task *);
 static void sub_8073670(Sprite_TurnAroundBar *);
 static void sub_8073760(Sprite_TurnAroundBar *);
 static bool32 sub_8073784(Sprite_TurnAroundBar *);
@@ -33,7 +33,7 @@ static void sub_807371C(Sprite_TurnAroundBar *);
 
 void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar), 0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
+    Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar), 0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
     Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(t);
     Sprite *s = &turnAroundBar->s;
 
@@ -154,7 +154,7 @@ static void sub_8073600(void)
     }
 }
 
-static void TaskDestructor_InteractableTurnAroundBar(struct Task *t)
+static void TaskDestructor_InteractableTurnAroundBar(Task *t)
 {
     Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(t);
     VramFree(turnAroundBar->s.graphics.dest);

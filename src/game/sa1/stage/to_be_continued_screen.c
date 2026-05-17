@@ -18,7 +18,7 @@ typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 positions[16][2];
-    /* 0x74 */ struct Task *tasks74[2];
+    /* 0x74 */ Task *tasks74[2];
     /* 0x7C */ u16 unk7C;
     /* 0x7E */ u16 unk7E;
 } ToBeContinuedScreen;
@@ -26,14 +26,14 @@ typedef struct {
 void Task_ToBeContinuedScreenInit(void);
 void Task_80124C4(void);
 void Task_801252C(void);
-void TaskDestructor_ToBeContinuedScreen(struct Task *t);
+void TaskDestructor_ToBeContinuedScreen(Task *t);
 void Task_ShrunkToBeContinuedScreenInit(void);
-void TaskDestructor_8012724(struct Task *t);
-struct Task *sub_80125C0(struct Task *tbcTask, u8 taskPriority);
+void TaskDestructor_8012724(Task *t);
+Task *sub_80125C0(Task *tbcTask, u8 taskPriority);
 
 void CreateToBeContinuedScreen(void)
 {
-    struct Task *t, *t2;
+    Task *t, *t2;
     ToBeContinuedScreen *tbc;
     u8 i;
     Sprite *s;
@@ -133,9 +133,9 @@ void Task_801252C(void)
     }
 }
 
-struct Task *sub_80125C0(struct Task *tbcTask, u8 priority)
+Task *sub_80125C0(Task *tbcTask, u8 priority)
 {
-    struct Task *t;
+    Task *t;
     ToBeContinuedScreenShrunk *shrunk;
     ToBeContinuedScreen *tbc;
     u8 i;
@@ -180,6 +180,6 @@ void Task_ShrunkToBeContinuedScreenInit(void)
     DisplaySprite(&sub->s);
 }
 
-void TaskDestructor_ToBeContinuedScreen(struct Task *t) { }
+void TaskDestructor_ToBeContinuedScreen(Task *t) { }
 
-void TaskDestructor_8012724(struct Task *t) { }
+void TaskDestructor_8012724(Task *t) { }

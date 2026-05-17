@@ -15,11 +15,11 @@ typedef struct {
 } ConveyorBeltObject; /* 0x44 */
 
 void Task_ConveyorBeltObject(void);
-void TaskDestructor_ConveyorBeltObject(struct Task *t);
+void TaskDestructor_ConveyorBeltObject(Task *t);
 
 void CreateEntity_ConveyorBeltObject(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_ConveyorBeltObject, sizeof(ConveyorBeltObject), 0x2000, 0, TaskDestructor_ConveyorBeltObject);
+    Task *t = TaskCreate(Task_ConveyorBeltObject, sizeof(ConveyorBeltObject), 0x2000, 0, TaskDestructor_ConveyorBeltObject);
     ConveyorBeltObject *belt = TASK_DATA(t);
     Sprite *s = &belt->s;
 
@@ -114,7 +114,7 @@ void Task_ConveyorBeltObject(void)
     }
 }
 
-void TaskDestructor_ConveyorBeltObject(struct Task *t)
+void TaskDestructor_ConveyorBeltObject(Task *t)
 {
     ConveyorBeltObject *belt = TASK_DATA(t);
     VramFree(belt->s.graphics.dest);

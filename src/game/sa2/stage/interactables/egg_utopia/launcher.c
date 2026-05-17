@@ -65,7 +65,7 @@ static void Task_Idle(void);
 static void Task_WaitToReset(void);
 
 // static
-void TaskDestructor_807DF38(struct Task *t);
+void TaskDestructor_807DF38(Task *t);
 
 static void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
 static void CycleKartSpritePos(Sprite_EggUtopia_Launcher *);
@@ -75,7 +75,7 @@ static bool16 MoveKartToBase(Sprite_EggUtopia_Launcher *launcher);
 
 void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_EggUtopia_Launcher), 0x2010, 0, TaskDestructor_807DF38);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_EggUtopia_Launcher), 0x2010, 0, TaskDestructor_807DF38);
     Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
 
     launcher->kind = kind;
@@ -342,7 +342,7 @@ static void Task_WaitToReset(void)
 }
 
 // static
-void TaskDestructor_807DF38(struct Task *t)
+void TaskDestructor_807DF38(Task *t)
 {
     Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
     VramFree(launcher->s.graphics.dest);

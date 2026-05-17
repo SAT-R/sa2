@@ -33,7 +33,7 @@ void Task_GamiGamiProjectile(void);
 
 void CreateEntity_GamiGami(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_GamiGamiInit, sizeof(GamiGami), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_GamiGamiInit, sizeof(GamiGami), 0x2000, 0, TaskDestructor_EntityShared);
     GamiGami *gamigami = TASK_DATA(t);
     Sprite *s = &gamigami->shared.s;
 
@@ -194,7 +194,7 @@ void CreateGamiGamiProjectiles(CamCoord worldX, CamCoord worldY)
 
     for (i = 0; i < 2; i++) {
         {
-            struct Task *t = TaskCreate(Task_GamiGamiProjectile, sizeof(GamiGamiProjectile), 0x3000, 0, NULL);
+            Task *t = TaskCreate(Task_GamiGamiProjectile, sizeof(GamiGamiProjectile), 0x3000, 0, NULL);
             GamiGamiProjectile *proj = TASK_DATA(t);
             Sprite *s = &proj->s;
 #ifndef NON_MATCHING

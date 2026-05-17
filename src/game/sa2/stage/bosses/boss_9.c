@@ -35,12 +35,12 @@ extern void Task_804DC60(void);
 extern void CreateTrueArea53Boss(void);
 extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
-extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
+extern void TaskDestructor_TrueArea53BossGfx(Task *);
 void Task_TrueArea53BossMain(void);
 void sub_804F1EC(struct TA53_unk558 *);
 void sub_804F47C(struct TA53_unk558 *);
 void sub_8050DC8(struct TA53_unk558 *);
-void TaskDestructor_TrueArea53BossGfx(struct Task *);
+void TaskDestructor_TrueArea53BossGfx(Task *);
 void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2);
 
 void sub_804DD9C(struct TA53_RocketExhaust *);
@@ -2906,7 +2906,7 @@ void sub_8050958(TA53Boss *boss)
     }
 }
 
-void TaskDestructor_TrueArea53BossGfx(struct Task *t)
+void TaskDestructor_TrueArea53BossGfx(Task *t)
 {
     TA53Boss *boss = TASK_DATA(t);
     u8 i;

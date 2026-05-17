@@ -44,7 +44,7 @@ void sub_806E7E0(void);
 void CreateEntity_Slot(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (LOADED_SAVE->difficultyLevel == DIFFICULTY_NORMAL)) {
-        struct Task *t = TaskCreate(Task_SlotInit, sizeof(Slot), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_SlotInit, sizeof(Slot), 0x2000, 0, TaskDestructor_EntityShared);
         Slot *slot = TASK_DATA(t);
         Sprite *s = &slot->shared.s;
 
@@ -194,7 +194,7 @@ void sub_806E374(void)
 
 void CreateSlotProjectile(s16 worldX, s16 worldY)
 {
-    struct Task *t = TaskCreate(Task_SlotProjectileMain, sizeof(SlotProjectile), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_SlotProjectileMain, sizeof(SlotProjectile), 0x3000, 0, NULL);
     SlotProjectile *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 

@@ -80,7 +80,7 @@ void Task_807D268(void);
 void sub_807D2BC(Sprite_IA86 *);
 
 static void Task_807D06C(void);
-void TaskDestructor_Interactable086(struct Task *t);
+void TaskDestructor_Interactable086(Task *t);
 
 static const u16 gUnknown_080E0124[3][3] = {
     { SA2_ANIM_WHIRLWIND, 2, 1 },
@@ -94,7 +94,7 @@ static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
 void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
-    struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0, TaskDestructor_Interactable086);
+    Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0, TaskDestructor_Interactable086);
     Sprite_IA86 *ia086 = TASK_DATA(t);
     s32 someX, someY;
     s32 value;
@@ -548,7 +548,7 @@ void Task_807D0C4(void)
     sub_807D16C(ia086);
 }
 
-void TaskDestructor_Interactable086(struct Task *t)
+void TaskDestructor_Interactable086(Task *t)
 {
     Sprite_IA86 *ia086 = TASK_DATA(t);
     VramFree(ia086->unk228.vramMem);

@@ -19,12 +19,12 @@
 #include "constants/sa1/tilemaps.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct SpriteStrc {
+typedef struct {
     Sprite s;
     u8 filler30[0x8];
 } SpriteStrc;
 
-typedef struct MPStrc1 {
+typedef struct {
     /*  0x00 */ Background bg0;
     /*  0x40 */ u8 filler40[0x40];
     /*  0x80 */ SpriteStrc sprites[4];
@@ -37,7 +37,7 @@ typedef struct MPStrc1 {
     /* 0x432 */ s16 unk432;
 } MPStrc1; /* 0x434 */
 
-typedef struct MPStrc2 {
+typedef struct {
     /* 0x00 */ GameOverB overBs[4];
     /* 0x60 */ u16 unk60;
     /* 0x60 */ u16 unk62;
@@ -49,7 +49,7 @@ void sub_801CF08(void);
 void sub_801D0CC();
 void Task_801D200(void);
 void Task_801D34C(void);
-void TaskDestructor_801D3C8(struct Task *t);
+void TaskDestructor_801D3C8(Task *t);
 
 extern void sub_8018AE0(void);
 extern void sub_8062F90(void);
@@ -60,7 +60,7 @@ void sub_801C9D8(void)
 {
     MPStrc1 *strc;
     Sprite *s;
-    struct Task *t;
+    Task *t;
     u32 i;
 
     gWinRegs[4] = 0;
@@ -442,7 +442,7 @@ void Task_801D34C()
     }
 }
 
-void TaskDestructor_801D3C8(struct Task *t)
+void TaskDestructor_801D3C8(Task *t)
 {
     MPStrc2 *strc = TASK_DATA(t);
     VramFree(strc->vram64);

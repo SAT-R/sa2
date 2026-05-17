@@ -30,11 +30,11 @@ typedef struct {
 
 void Task_SteamExhaust(void);
 void Task_SteamExhaust2(void);
-void TaskDestructor_SteamExhaust(struct Task *);
+void TaskDestructor_SteamExhaust(Task *);
 
 void CreateEntity_SteamExhaust(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_SteamExhaust, sizeof(SteamExhaust), 0x2000, 0, TaskDestructor_SteamExhaust);
+    Task *t = TaskCreate(Task_SteamExhaust, sizeof(SteamExhaust), 0x2000, 0, TaskDestructor_SteamExhaust);
     SteamExhaust *exhaust = TASK_DATA(t);
     Sprite *s = &exhaust->s;
     Sprite *s2 = &exhaust->s2;
@@ -258,7 +258,7 @@ void Task_SteamExhaust2(void)
     DisplaySprite(s2);
 }
 
-void TaskDestructor_SteamExhaust(struct Task *t)
+void TaskDestructor_SteamExhaust(Task *t)
 {
     SteamExhaust *exhaust = TASK_DATA(t);
     VramFree(exhaust->s.graphics.dest);

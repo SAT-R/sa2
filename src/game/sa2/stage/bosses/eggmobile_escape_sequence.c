@@ -21,11 +21,11 @@ typedef struct {
 static void Task_EggmobileMoveUp(void);
 static void Task_EggmobileSwitchMovement(void);
 static void Task_EggmobileMoveRight(void);
-static void TaskDestructor_EggmobileEscape(struct Task *t);
+static void TaskDestructor_EggmobileEscape(Task *t);
 
 void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
 {
-    struct Task *t = TaskCreate(Task_EggmobileMoveUp, sizeof(Sprite_EggMobile), 0x3800, 0, TaskDestructor_EggmobileEscape);
+    Task *t = TaskCreate(Task_EggmobileMoveUp, sizeof(Sprite_EggMobile), 0x3800, 0, TaskDestructor_EggmobileEscape);
     Sprite_EggMobile *em = TASK_DATA(t);
     Sprite *s;
 
@@ -139,7 +139,7 @@ static void Task_EggmobileMoveRight(void)
     }
 }
 
-static void TaskDestructor_EggmobileEscape(struct Task *t)
+static void TaskDestructor_EggmobileEscape(Task *t)
 {
     Sprite_EggMobile *em = TASK_DATA(t);
     VramFree(em->s.graphics.dest);

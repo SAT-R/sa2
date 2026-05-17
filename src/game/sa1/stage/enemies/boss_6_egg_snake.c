@@ -17,7 +17,7 @@
 
 #define NUM_SEGMENTS 9
 
-typedef struct EggSnakeSegment {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
@@ -31,9 +31,9 @@ typedef struct EggSnakeSegment {
     /* 0x52 */ u8 unk52;
 } EggSnakeSegment;
 
-typedef struct EggSnakeSegmentManager {
+typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ struct Task *tasks[NUM_SEGMENTS];
+    /* 0x30 */ Task *tasks[NUM_SEGMENTS];
     /* 0x54 */ u8 unk54;
     /* 0x55 */ u8 unk55;
     /* 0x56 */ u8 unk56;
@@ -45,7 +45,7 @@ typedef struct EggSnakeSegmentManager {
     s16 unk5E;
 } EggSnakeSegmentManager; /* 0x60 */
 
-typedef struct EggSnakeProjectile {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ u16 unk60;
@@ -58,12 +58,12 @@ typedef struct EggSnakeProjectile {
     /* 0x72 */ CamCoord originY;
 } EggSnakeProjectile; /* 0x74 */
 
-typedef struct EggSnake {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
     /* 0x44 */ Sprite s2;
-    /* 0x74 */ struct Task *t; // EggSnakeSegmentManager *
+    /* 0x74 */ Task *t; // EggSnakeSegmentManager *
     /* 0x78 */ s32 qUnk78;
     /* 0x7C */ s32 qUnk7C;
     /* 0x80 */ s32 unk80;
@@ -88,7 +88,7 @@ typedef struct EggSnake {
 } EggSnake; /* 0xAC */
 
 // static memory at 0x03005860
-typedef struct PlayerSpeedState {
+typedef struct {
     /* 0x00 */ s32 qWorldX;
     /* 0x04 */ s32 qWorldY;
     /* 0x08 */ s16 qSpeedAirX;
@@ -117,9 +117,9 @@ void Task_8033924(void);
 void Task_8034098(void); // : EggSnakeSegment
 void sub_80339BC(EggSnakeSegmentManager *mgr);
 void Task_8033AA0(void);
-void TaskDestructor_8034208(struct Task *t);
-void TaskDestructor_8034224(struct Task *t);
-void TaskDestructor_8034238(struct Task *t);
+void TaskDestructor_8034208(Task *t);
+void TaskDestructor_8034224(Task *t);
+void TaskDestructor_8034238(Task *t);
 
 s16 gUnknown_03005870[NUM_SEGMENTS];
 s16 gUnknown_03005890[NUM_SEGMENTS];
@@ -681,7 +681,7 @@ void Task_8032AF8(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk78);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk7C);
 
-    res = sa2__sub_801F100(worldY, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
     if (res < 0) {
         boss->unk98 = 60;
@@ -700,7 +700,7 @@ void Task_8032AF8(void)
 
     boss->unk98++;
     if ((boss->unk98 & 0x7) == 0) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -959,7 +959,7 @@ void sub_8032F58(void)
 void sub_803330C()
 {
     EggSnake *boss = TASK_DATA(gCurTask); // NOTE: Unused, but needed for matching!
-    struct Task *t = TaskCreate(Task_8033480, sizeof(EggSnakeProjectile), 0x2200U, 0U, TaskDestructor_8034224);
+    Task *t = TaskCreate(Task_8033480, sizeof(EggSnakeProjectile), 0x2200U, 0U, TaskDestructor_8034224);
     EggSnakeProjectile *proj = TASK_DATA(t);
     Sprite *s;
     Sprite *s2;
@@ -1106,7 +1106,7 @@ void CreateProjectile()
     newProj->unk68 = Q(boss->unk92);
     temp_r3 = I(gPlayer.qWorldX) - (newProj->originX + I(newProj->unk64));
     temp_r1 = I(gPlayer.qWorldY) - (newProj->originY + I(newProj->unk68));
-    angle = sa2__sub_8004418(temp_r1 / 2, temp_r3 / 2);
+    angle = SA2_LABEL(sub_8004418)(temp_r1 / 2, temp_r3 / 2);
     newProj->unk6C = COS_24_8(angle);
     newProj->unk6E = SIN_24_8(angle);
     newProj->s.x = 0;
@@ -1178,7 +1178,7 @@ void Task_8033730()
 void sub_8033878()
 {
     EggSnake *boss = TASK_DATA(gCurTask);
-    struct Task *t = TaskCreate(Task_8033924, sizeof(EggSnakeSegmentManager), 0x2000U, 0U, TaskDestructor_8034238);
+    Task *t = TaskCreate(Task_8033924, sizeof(EggSnakeSegmentManager), 0x2000U, 0U, TaskDestructor_8034238);
     EggSnakeSegmentManager *mgr;
     Sprite *s;
     Sprite *s2;
@@ -1562,20 +1562,20 @@ void Task_8034098(void)
     }
 }
 
-void TaskDestructor_8034208(struct Task *t)
+void TaskDestructor_8034208(Task *t)
 {
     EggSnake *boss = TASK_DATA(t);
     VramFree(boss->s.graphics.dest);
     VramFree(boss->s2.graphics.dest);
 }
 
-void TaskDestructor_8034224(struct Task *t)
+void TaskDestructor_8034224(Task *t)
 {
     EggSnakeProjectile *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }
 
-void TaskDestructor_8034238(struct Task *t)
+void TaskDestructor_8034238(Task *t)
 {
     EggSnakeSegmentManager *mgr = TASK_DATA(t);
     VramFree(mgr->s.graphics.dest);

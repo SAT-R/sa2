@@ -42,12 +42,12 @@ void Task_BubbleContainingAir(void);
 void sub_80914F8(CamCoord worldX, CamCoord worldY, u8 param2);
 void Task_809141C(void);
 void Task_80915F0(void);
-void TaskDestructor_AirBubbles(struct Task *t);
-void TaskDestructor_AirBubbleBig(struct Task *t);
+void TaskDestructor_AirBubbles(Task *t);
+void TaskDestructor_AirBubbleBig(Task *t);
 
 void CreateEntity_AirBubbles(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_AirBubbles, sizeof(AirBubbles), 0x2000, 0, TaskDestructor_AirBubbles);
+    Task *t = TaskCreate(Task_AirBubbles, sizeof(AirBubbles), 0x2000, 0, TaskDestructor_AirBubbles);
     AirBubbles *bubbles = TASK_DATA(t);
     Sprite *s = &bubbles->s;
 
@@ -116,7 +116,7 @@ void Task_AirBubbles(void)
 
 void CreateBubbleContainingAir(CamCoord worldX, CamCoord worldY, u8 param2)
 {
-    struct Task *t = TaskCreate(Task_BubbleContainingAir, sizeof(AirBubbleBig), 0x2000, 0, TaskDestructor_AirBubbleBig);
+    Task *t = TaskCreate(Task_BubbleContainingAir, sizeof(AirBubbleBig), 0x2000, 0, TaskDestructor_AirBubbleBig);
     AirBubbleBig *bubbles = TASK_DATA(t);
     Sprite *s = &bubbles->s;
     MapEntity *me = bubbles->base.me;
@@ -235,7 +235,7 @@ void Task_809141C(void)
 
 void sub_80914F8(CamCoord worldX, CamCoord worldY, u8 param2)
 {
-    struct Task *t = TaskCreate(Task_80915F0, sizeof(AirBubbleBig), 0x2000, 0, TaskDestructor_AirBubbleBig);
+    Task *t = TaskCreate(Task_80915F0, sizeof(AirBubbleBig), 0x2000, 0, TaskDestructor_AirBubbleBig);
     AirBubbleBig *bubbles = TASK_DATA(t);
     Sprite *s = &bubbles->s;
     MapEntity *me = bubbles->base.me;
@@ -289,13 +289,13 @@ void Task_80915F0(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_AirBubbles(struct Task *t)
+void TaskDestructor_AirBubbles(Task *t)
 {
     AirBubbles *bubbles = TASK_DATA(t);
     VramFree(bubbles->s.graphics.dest);
 }
 
-void TaskDestructor_AirBubbleBig(struct Task *t)
+void TaskDestructor_AirBubbleBig(Task *t)
 {
     AirBubbleBig *bubbles = TASK_DATA(t);
 

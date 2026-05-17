@@ -29,7 +29,7 @@ static void Task_PenTurn(void);
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0, TaskDestructor_EntityShared);
     Sprite_Pen *pen = TASK_DATA(t);
     Sprite *s = &pen->s;
     pen->base.regionX = spriteRegionX;

@@ -21,7 +21,7 @@ void Task_Mole2(void);
 
 void CreateEntity_Mole(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     Mole *mole;
     Sprite *s;
 

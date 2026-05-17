@@ -21,7 +21,7 @@ typedef enum EPDM_Options {
     PDM_OPTION_COUNT
 } EPDM_Options;
 
-typedef struct PlayerDataMenu {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2[PDM_OPTION_COUNT + 1];
     /* 0xF0 */ StrcUi_805423C strcF0;
@@ -34,7 +34,7 @@ typedef struct PlayerDataMenu {
 
 void CreatePlayerDataMenu();
 void Task_PlayerDataMenuInit(void);
-void TaskDestructor_PlayerDataMenu(struct Task *t);
+void TaskDestructor_PlayerDataMenu(Task *t);
 void sub_8011C94(void);
 
 extern void CreateOptionsMenu();
@@ -69,7 +69,7 @@ void CreatePlayerDataMenu()
     StrcUi_805423C *temp_r4;
     u8 i;
 
-    struct Task *t;
+    Task *t;
     PlayerDataMenu *menu;
 
     gDispCnt = 0x1140;
@@ -321,7 +321,7 @@ void PlayerDataSelectOK(void)
     CreateOptionsMenu();
 }
 
-void TaskDestructor_PlayerDataMenu(struct Task *t)
+void TaskDestructor_PlayerDataMenu(Task *t)
 {
     PlayerDataMenu *menu;
     u8 i;

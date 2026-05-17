@@ -60,7 +60,7 @@ void Task_Fireball(void)
     }
 
     if (Mod(gStageTime + spawner->unk4, FIREBALL_SPAWN_RATE) == 0) {
-        struct Task *t = TaskCreate(Task_FireballUpdateRise, sizeof(Fireball), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_FireballUpdateRise, sizeof(Fireball), 0x2000, 0, TaskDestructor_EntityShared);
         Fireball *fireball = TASK_DATA(t);
         Sprite *s = &fireball->shared.s;
         fireball->shared.base.regionX = spawner->regionX;
@@ -172,7 +172,7 @@ void Task_FireballExtinguish(void)
 // (99.61%) https://decomp.me/scratch/MmGb6
 NONMATCH("asm/non_matching/game/sa1/stage/enemies/fireball__CreateFireballSparks.inc", void CreateFireballSparks(s16 screenX, s16 screenY))
 {
-    struct Task *t;
+    Task *t;
     FireballSpark *spark;
     Sprite *s;
     s32 i;
@@ -260,7 +260,7 @@ void Task_FireballSpark(void)
 
 void CreateEntity_Fireball(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Fireball, sizeof(FireballSpawner), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Fireball, sizeof(FireballSpawner), 0x2000, 0, NULL);
     FireballSpawner *spawner = TASK_DATA(t);
 
     spawner->me = me;

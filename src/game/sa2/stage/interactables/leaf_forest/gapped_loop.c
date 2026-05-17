@@ -167,7 +167,7 @@ static void Task_JumpSequenceReverse(void)
 
 void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
     Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
@@ -181,7 +181,7 @@ void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
 void CreateEntity_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
     Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;

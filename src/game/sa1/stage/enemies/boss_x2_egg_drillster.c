@@ -17,7 +17,7 @@
 
 #define NUM_WHEELS 4
 
-typedef struct EggDrillster {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
@@ -39,7 +39,7 @@ typedef struct EggDrillster {
     /* 0x8D */ char filler8E[2];
 } EggDrillster; /* size = 0x90 */
 
-typedef struct Component {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ s16 unk32;
@@ -58,8 +58,8 @@ void Task_8035DD4(void);
 static void CreateFalloffComponents(void);
 void Task_8035F70(void);
 void sub_8035AAC(void);
-void TaskDestructor_EggDrillster(struct Task *t);
-void TaskDestructor_Drill(struct Task *t);
+void TaskDestructor_EggDrillster(Task *t);
+void TaskDestructor_Drill(Task *t);
 void Task_8035F70(void);
 
 void sub_803596C(CamCoord worldX, CamCoord worldY);
@@ -70,7 +70,7 @@ void Task_803623C(void);
 void sub_803673C(void);
 void Task_Drill(void);
 void Task_8036B94(void);
-void TaskDestructor_Drill(struct Task *t);
+void TaskDestructor_Drill(Task *t);
 
 void Task_8036810(void);
 
@@ -202,7 +202,7 @@ void CreateEntity_EggDrillster(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     s32 temp_r4;
     s32 temp_r4_2;
 
-    struct Task *t;
+    Task *t;
     EggDrillster *boss;
 
     if (gBossIndex != 0) {
@@ -498,7 +498,7 @@ void Task_803623C()
     switch (boss->unk8D) {
         case 0:
             boss->unk84--;
-            res = sa2__sub_801F100(worldY + 20, worldX, 1, 8, sa2__sub_801EC3C);
+            res = SA2_LABEL(sub_801F100)(worldY + 20, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
             if (res < 0) {
                 boss->unk70 += Q(res);
                 boss->unk78 = 0;
@@ -533,7 +533,7 @@ void Task_803623C()
 // Almost identical to sub_8034EE0()
 void sub_8036478(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t;
+    Task *t;
     NutsAndBolts *bolts;
     Sprite *sprBolts;
     s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -561,7 +561,7 @@ void sub_8036478(CamCoord worldX, CamCoord worldY)
 static void CreateFalloffComponents()
 {
     EggDrillster *boss = TASK_DATA(gCurTask);
-    struct Task *t;
+    Task *t;
     Component *component;
     Sprite *s;
     u8 i;
@@ -684,7 +684,7 @@ void Task_8036810()
         component->unk38 += component->qUnk3E;
         worldX = component->worldX + I(component->unk34);
         worldY = component->worldY + I(component->unk38);
-        res = sa2__sub_801F100(worldY + 30, worldX, 1, 8, sa2__sub_801EC3C);
+        res = SA2_LABEL(sub_801F100)(worldY + 30, worldX, 1, 8, SA2_LABEL(sub_801EC3C));
 
         if (res < 0) {
             component->unk38 += Q(res);
@@ -783,14 +783,14 @@ void Task_8036B94()
     }
 }
 
-void TaskDestructor_EggDrillster(struct Task *t)
+void TaskDestructor_EggDrillster(Task *t)
 {
     EggDrillster *boss = TASK_DATA(t);
     VramFree(boss->s.graphics.dest);
     VramFree(boss->s2.graphics.dest);
 }
 
-void TaskDestructor_Drill(struct Task *t)
+void TaskDestructor_Drill(Task *t)
 {
     Component *drill = TASK_DATA(t);
     VramFree(drill->s.graphics.dest);

@@ -147,13 +147,13 @@ typedef u32 region_t;
 #define READ_START_INDEX(p, hrc, rx, ry) (*((u32 *)((((u8 *)(p)) + (((hrc) * (ry)) * (sizeof(u32)))) + ((rx) * (sizeof(u32))))))
 #define NUM_ENEMY_DEFEAT_SCORES          5
 
-typedef struct Task *(*StagePreInitFunc)(void);
+typedef Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
 
 static void SA2_LABEL(Task_8008DCC)(void);
 
 #ifndef COLLECT_RINGS_ROM
-static void TaskDestructor_EntitiesManager(struct Task *);
+static void TaskDestructor_EntitiesManager(Task *);
 #endif
 
 #if (GAME == GAME_SA1)
@@ -818,7 +818,7 @@ const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
 void CreateStageEntitiesManager(void)
 {
     void *decompBuf;
-    struct Task *t;
+    Task *t;
     EntitiesManager *em;
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         t = TaskCreate(SA2_LABEL(Task_8008DCC), sizeof(EntitiesManager), 0x2000, 0, TaskDestructor_EntitiesManager);
@@ -1371,7 +1371,7 @@ static void SA2_LABEL(Task_8008DCC)(void)
 void CreateStageEntitiesManager(void)
 {
     void *decompBuf;
-    struct Task *t = TaskCreate(SA2_LABEL(Task_8008DCC), sizeof(EntitiesManager), 0x2000, 0, NULL);
+    Task *t = TaskCreate(SA2_LABEL(Task_8008DCC), sizeof(EntitiesManager), 0x2000, 0, NULL);
     EntitiesManager *em = TASK_DATA(t);
 
     decompBuf = (void *)EWRAM_START + 0x3F000;
@@ -1405,13 +1405,13 @@ void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
     }
 }
 
-void TaskDestructor_EntityShared(struct Task *t)
+void TaskDestructor_EntityShared(Task *t)
 {
     Sprite_Entity *s = TASK_DATA(t);
     VramFree(s->displayed.graphics.dest);
 }
 
-static void TaskDestructor_EntitiesManager(struct Task *t)
+static void TaskDestructor_EntitiesManager(Task *t)
 {
     EntitiesManager *em = TASK_DATA(t);
     EwramFree(em->interactables);

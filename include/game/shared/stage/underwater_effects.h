@@ -6,9 +6,9 @@
 
 extern void InitWaterPalettes(void);
 
-struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown);
-struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3);
-struct Task *SpawnBubblesAfterDrowning(Player *p);
+Task *SpawnDrowningCountdownNum(Player *p, s32 countdown);
+Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3);
+Task *SpawnBubblesAfterDrowning(Player *p);
 bool32 RandomlySpawnAirBubbles(Player *p);
 
 extern u8 gSmallAirBubbleCount;

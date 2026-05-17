@@ -8,6 +8,6 @@ typedef struct UnkMP0 {
     u8 unk6;
 } UnkMP0;
 
-struct Task *sub_801C704(void); // -> UnkMP0
+Task *sub_801C704(void); // -> UnkMP0
 
 #endif // GUARD_SA1_MP_UNK_0_H

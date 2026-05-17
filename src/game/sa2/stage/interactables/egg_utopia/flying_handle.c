@@ -40,7 +40,7 @@ typedef struct {
 } Sprite_FlyingHandle;
 
 static void Task_Idle(void);
-static void TaskDestructor_FlyingHandle(struct Task *);
+static void TaskDestructor_FlyingHandle(Task *);
 static void IncrementMpPosQueue(Sprite_FlyingHandle *);
 static void HandlePlayerJumpOff(Sprite_FlyingHandle *);
 static void HandlePlayerHit(Sprite_FlyingHandle *);
@@ -59,7 +59,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 {
     u32 i;
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_FlyingHandle), 0x2010, 0, TaskDestructor_FlyingHandle);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_FlyingHandle), 0x2010, 0, TaskDestructor_FlyingHandle);
     Sprite_FlyingHandle *flyingHandle = TASK_DATA(t);
     flyingHandle->qOscillationTurns = 0;
     flyingHandle->speedX = 0;
@@ -263,7 +263,7 @@ static void Task_Deactivate(void)
     Render(flyingHandle);
 }
 
-static void TaskDestructor_FlyingHandle(struct Task *t)
+static void TaskDestructor_FlyingHandle(Task *t)
 {
     Sprite_FlyingHandle *flyingHandle = TASK_DATA(t);
     VramFree(flyingHandle->s.graphics.dest);

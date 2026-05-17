@@ -39,18 +39,18 @@ typedef struct {
     /* 0x0E|0x10 */ CamCoord prevCamY;
     /* 0x10|0x14 */ u8 SA2_LABEL(unk14);
 #if (GAME == GAME_SA2)
-    /* 0x18|0x18 */ struct Task *preInit;
+    /* 0x18|0x18 */ Task *preInit;
 #endif
 } EntitiesManager;
-extern struct Task *gEntitiesManagerTask;
+extern Task *gEntitiesManagerTask;
 
 void CreateStageEntitiesManager(void);
 
 void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y);
 
 // TaskDestructor_SpriteEntity
-void TaskDestructor_EntityShared(struct Task *);
+void TaskDestructor_EntityShared(Task *);
 // The same as above, should align the name
-void TaskDestructor_EntityShared(struct Task *);
+void TaskDestructor_EntityShared(Task *);
 
 #endif

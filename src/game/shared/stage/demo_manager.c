@@ -51,14 +51,14 @@ typedef struct {
 void Task_DemoManagerMain(void);
 void Task_DemoManagerFadeout(void);
 void CreateMusicFadeoutTask(u16);
-void TaskDestructor_DemoManagerMain(struct Task *);
+void TaskDestructor_DemoManagerMain(Task *);
 void Task_DemoManagerMusicFadeout(void);
 
 void CreateDemoManager(void)
 {
     u8 blendCtrl;
     s8 lang;
-    struct Task *t;
+    Task *t;
     DemoManager *dm;
     Sprite *s;
 #if (GAME == GAME_SA1)
@@ -264,7 +264,7 @@ void Task_DemoManagerFadeout(void)
     }
 }
 
-void TaskDestructor_DemoManagerMain(struct Task *t)
+void TaskDestructor_DemoManagerMain(Task *t)
 {
     DemoManager *dm = TASK_DATA(t);
     VramFree(dm->textPressStart.graphics.dest);
@@ -277,7 +277,7 @@ void TaskDestructor_DemoManagerMain(struct Task *t)
 #if (GAME == GAME_SA2)
 void CreateMusicFadeoutTask(u16 factor)
 {
-    struct Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
+    Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
     DemoMusicFadeout *mf = TASK_DATA(t);
     mf->volume = 0x100;
     mf->unk2 = (s32)mf->volume / factor;

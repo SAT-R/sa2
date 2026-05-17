@@ -114,7 +114,7 @@ void Task_SlowingSnow(void)
 
 void CreateEntity_ConveyorBelt(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     ConveyorBeltMvt *mvt;
     u8 zone;
 

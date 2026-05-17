@@ -32,7 +32,7 @@ typedef struct {
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 r2;
-    struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0, TaskDestructor_EntityShared);
     Sprite_Mon *mon = TASK_DATA(t);
     Sprite *s = &mon->s;
     mon->base.regionX = spriteRegionX;

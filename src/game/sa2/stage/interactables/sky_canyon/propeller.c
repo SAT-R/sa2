@@ -44,7 +44,7 @@ static void StartPlayerFloatingTask(Sprite_Propeller *);
 static bool32 ShouldDespawn(Sprite_Propeller *);
 static void DestroyPropeller(Sprite_Propeller *);
 Sprite_OnInit_SkyCanyon *sub_807BA54(void);
-static void TaskDestructor_GiantPropeller(struct Task *);
+static void TaskDestructor_GiantPropeller(Task *);
 static bool32 sub_807B9F0(Sprite_Propeller *);
 
 static void Task_PlayerFloating(void)
@@ -330,7 +330,7 @@ static void sub_807BA70(void)
 
 void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_Propeller), 0x2010, 0, TaskDestructor_GiantPropeller);
+    Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_Propeller), 0x2010, 0, TaskDestructor_GiantPropeller);
 
     Sprite_Propeller *propeller = TASK_DATA(t);
     propeller->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -343,7 +343,7 @@ void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void TaskDestructor_GiantPropeller(struct Task *t)
+static void TaskDestructor_GiantPropeller(Task *t)
 {
     // unused
 }

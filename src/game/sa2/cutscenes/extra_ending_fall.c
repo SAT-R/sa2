@@ -66,7 +66,7 @@ struct ExtraEndingCutScene {
 }; /* size 0x5CC */
 
 void sub_8090480(void);
-void sub_8091480(struct Task *);
+void sub_8091480(Task *);
 
 static const TileInfo gUnknown_080E12FC[] = {
     { 24, 818, 0 }, { 30, 819, 0 }, { 35, 822, 0 }, { 80, 824, 3 }, { 30, 824, 2 }, { 21, 824, 1 }, { 10, 824, 0 }, { 4, 821, 0 },
@@ -125,7 +125,7 @@ static const u8 gUnknown_080E15C8[][0x20] = {
 void CreateExtraEndingFallCutScene(void)
 {
     u8 j, i;
-    struct Task *t;
+    Task *t;
     struct ExtraEndingCutScene *scene = NULL;
     ScreenFade *fade = NULL;
 
@@ -1024,7 +1024,7 @@ void sub_8091468(void)
     TaskDestroy(gCurTask);
 }
 
-void sub_8091480(struct Task *t)
+void sub_8091480(Task *t)
 {
     // unused logic
 }

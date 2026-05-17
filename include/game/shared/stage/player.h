@@ -244,7 +244,7 @@ typedef struct Player_ {
     /* 0x5B */ s8 framesUntilDrownCountDecrement;
     /* 0x5C */ s8 framesUntilWaterSurfaceEffect;
 
-    /* 0x60 */ struct Task *spriteTask;
+    /* 0x60 */ Task *spriteTask;
     /* 0x64 */ PlayerSpriteInfo *spriteInfoBody; // for character sprites
     /* 0x68 */ PlayerSpriteInfo *spriteInfoLimbs; // SpriteInfo for Tails' tails / Cream's ears, when rolling
 
@@ -376,7 +376,7 @@ void CallSetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p);
 
 #if (GAME == GAME_SA1)
 // Task -> (MultiplayerSpriteTask *)
-struct Task *Player_Tails_InitGfxMarbleTrack(Player *p);
+Task *Player_Tails_InitGfxMarbleTrack(Player *p);
 #endif
 
 void SA2_LABEL(sub_8021BE0)(Player *p);

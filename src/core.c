@@ -17,7 +17,7 @@ typedef bool32 (*VBlankProcessFunc)(void);
 
 IntrFunc gIntrTable[] = {};
 u32 gIntrMainBuf[] = {};
-struct Task gTasks[] = {};
+Task gTasks[] = {};
 u16 gSpriteTransformScaleX ALIGNED(4) = 0;
 Vec2_16 gSpriteOffset ALIGNED(4) = {};
 Background *gBackgroundsCopyQueue[] ALIGNED(16) = {};
@@ -37,7 +37,7 @@ u32 gUnknown_03002BF0 = 0;
 u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
-struct Task gEmptyTask ALIGNED(16) = {};
+Task gEmptyTask ALIGNED(16) = {};
 
 #if (ENGINE >= ENGINE_3)
 // NOTE: gNextFreeAffineIndex introduced in SA3, unused before.
@@ -55,7 +55,7 @@ u8 gUnknown_03002C60 ALIGNED(4) = 0;
 u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
-struct Task *gTaskPtrs[] ALIGNED(16) = {};
+Task *gTaskPtrs[] ALIGNED(16) = {};
 int_vcount gBgOffsetsBuffer[2][DISPLAY_HEIGHT][4] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlankPrimary */
 ColorRaw gObjPalette[] = {};
 Tilemap **gTilemapsRef = NULL;
@@ -66,13 +66,13 @@ u8 gBgSprites_Unknown2[4][4] = {};
 u16 gInput = 0;
 #if (ENGINE >= ENGINE_3)
 s32 gUnknown_030035A4 = 0;
-struct Task *gNextTaskToCheckForDestruction = NULL;
+Task *gNextTaskToCheckForDestruction = NULL;
 #endif // (ENGINE >= ENGINE_3)
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
 void *gBgOffsetsHBlankSecondary = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
-struct Task *gNextTask = NULL;
+Task *gNextTask = NULL;
 #if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
 // Only here in SA3
 // struct GraphicsData *gVramGraphicsCopyQueue[];
@@ -90,7 +90,7 @@ s16 gMosaicReg = 0;
 #endif
 
 HBlankIntrFunc gHBlankCallbacks[4] ALIGNED(16) = {};
-struct Task *gCurTask = NULL;
+Task *gCurTask = NULL;
 u8 sLastCalledVblankFuncId = 0;
 u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 

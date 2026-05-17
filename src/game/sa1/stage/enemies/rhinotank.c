@@ -27,7 +27,7 @@ void Task_806C9A0(void);
 
 void CreateEntity_Rhinotank(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_RhinotankInit, sizeof(Rhinotank), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_RhinotankInit, sizeof(Rhinotank), 0x2000, 0, TaskDestructor_EntityShared);
     Rhinotank *rhinotank = TASK_DATA(t);
     Sprite *s = &rhinotank->shared.s;
 

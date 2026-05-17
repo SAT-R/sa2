@@ -17,7 +17,7 @@
 #include "constants/sa1/zones.h"
 
 typedef struct {
-    /* 0x00 */ struct Task *t;
+    /* 0x00 */ Task *t;
     /* 0x04 */ CamCoord worldY;
     /* 0x04 */ u16 qUnk6;
     /* 0x04 */ u16 qUnk8;
@@ -34,7 +34,7 @@ void Task_80298C0(void);
 
 void CreateEggRocketStageSeparation(CamCoord worldY)
 {
-    struct Task *t = TaskCreate(Task_8028CE4, sizeof(EggRocketScreenShake), 0x4000, 0, NULL);
+    Task *t = TaskCreate(Task_8028CE4, sizeof(EggRocketScreenShake), 0x4000, 0, NULL);
     EggRocketScreenShake *shake = TASK_DATA(t);
 
     shake->unkA = 0x100;
@@ -59,7 +59,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Ta
     if (++gCamera.shiftY >= shake->worldY - gCamera.y + DISPLAY_CENTER_Y) {
         // _08028D1C
         void *tiles;
-        struct Task *t;
+        Task *t;
         NutsAndBolts *nuts;
         CamCoord prevCamX = gCamera.x, prevCamY = gCamera.y - 32;
 
@@ -206,7 +206,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8029194.inc", void Ta
 
     if ((shake->unkC++ & 0xF) == 0) {
         void *tiles;
-        struct Task *t;
+        Task *t;
         NutsAndBolts *nuts;
         CamCoord prevCamX = gCamera.x, prevCamY = gCamera.y - 32;
 
@@ -293,7 +293,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_80294A8.inc", void Ta
 
     if ((shake->unkC++ & 0xF) == 0) {
         void *tiles;
-        struct Task *t;
+        Task *t;
         NutsAndBolts *nuts;
         prevCamX = gCamera.x;
         prevCamY = gCamera.y - 32;
@@ -412,7 +412,7 @@ void Task_80297E8(void)
 
 void CreateEggRocketLaunchScreenShakeEffect()
 {
-    struct Task *t = TaskCreate(Task_80298C0, sizeof(EggRocketScreenShake), 0x4000, 0, NULL);
+    Task *t = TaskCreate(Task_80298C0, sizeof(EggRocketScreenShake), 0x4000, 0, NULL);
     EggRocketScreenShake *shake = TASK_DATA(t);
 
     shake->unkC = TIME(0, 1);

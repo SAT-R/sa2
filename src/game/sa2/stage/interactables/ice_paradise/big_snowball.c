@@ -53,11 +53,11 @@ typedef struct {
 } Sprite_IA69 /*size: 0x1C0 */;
 
 void Task_Interactable069(void);
-void TaskDestructor_Interactable069(struct Task *);
+void TaskDestructor_Interactable069(Task *);
 
 void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable069, sizeof(Sprite_IA69), 0x2010, 0, TaskDestructor_Interactable069);
+    Task *t = TaskCreate(Task_Interactable069, sizeof(Sprite_IA69), 0x2010, 0, TaskDestructor_Interactable069);
     Sprite *s;
     Sprite_IA69 *ia69 = TASK_DATA(t);
     void *vramBase;
@@ -483,7 +483,7 @@ void Task_Interactable069(void)
     }
 }
 
-void TaskDestructor_Interactable069(struct Task *t)
+void TaskDestructor_Interactable069(Task *t)
 {
     Sprite_IA69 *ia69 = TASK_DATA(t);
     VramFree(ia69->vram);

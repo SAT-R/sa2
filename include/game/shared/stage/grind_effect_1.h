@@ -3,6 +3,6 @@
 
 #include "task.h"
 
-struct Task *CreateGrindEffect(void);
+Task *CreateGrindEffect(void);
 
 #endif // GUARD_GRIND_EFFECT_1_H

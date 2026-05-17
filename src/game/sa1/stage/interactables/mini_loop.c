@@ -80,7 +80,7 @@ void Task_MiniLoop_Exit(void)
 
 void CreateEntity_MiniLoop_StartBoost(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MiniLoop_StartBoost, sizeof(MiniLoop), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_MiniLoop_StartBoost, sizeof(MiniLoop), 0x2000, 0, NULL);
     MiniLoop *loop = TASK_DATA(t);
     s32 worldX, worldY;
 
@@ -103,7 +103,7 @@ void CreateEntity_MiniLoop_StartBoost(MapEntity *me, u16 regionX, u16 regionY, u
 
 void CreateEntity_MiniLoop_Exit(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MiniLoop_Exit, sizeof(MiniLoop), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_MiniLoop_Exit, sizeof(MiniLoop), 0x2000, 0, NULL);
     MiniLoop *loop = TASK_DATA(t);
     s32 worldX, worldY;
 
@@ -160,7 +160,7 @@ void Task_MiniLoop_Entrance(void)
 
 void CreateEntity_MiniLoop_Entrance(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MiniLoop_Entrance, sizeof(MiniLoop), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_MiniLoop_Entrance, sizeof(MiniLoop), 0x2000, 0, NULL);
     MiniLoop *loop = TASK_DATA(t);
     s32 worldX, worldY;
 

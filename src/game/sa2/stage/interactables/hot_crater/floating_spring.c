@@ -30,7 +30,7 @@ typedef struct {
 } Sprite_FloatingSpring; /* size 0x58 */
 
 static void sub_80750A8(void);
-static void sub_8075140(struct Task *);
+static void sub_8075140(Task *);
 
 static void sub_8075284(Sprite_FloatingSpring *);
 static void sub_8074FD8(Sprite_FloatingSpring *);
@@ -46,7 +46,7 @@ static void sub_8075334(Sprite_FloatingSpring *);
 
 void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
+    Task *t = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
     Sprite_FloatingSpring *floatingSpring = TASK_DATA(t);
     Sprite *s = &floatingSpring->s;
 
@@ -243,7 +243,7 @@ static void sub_80750A8(void)
     }
 }
 
-static void sub_8075140(struct Task *t)
+static void sub_8075140(Task *t)
 {
     Sprite_FloatingSpring *floatingSpring = TASK_DATA(t);
 

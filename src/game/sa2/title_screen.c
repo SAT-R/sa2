@@ -293,7 +293,7 @@ static const u16 sLensFlareStartPositions[][2] = {
 
 void CreateTitleScreen(void)
 {
-    struct Task *t;
+    Task *t;
     TitleScreen *titleScreen;
     ScreenFade *fade;
     BgPaletteEffectState *bgEffect;
@@ -1508,7 +1508,7 @@ UNUSED static void sub_808CDB0(TitleScreen *titleScreen, s8 index)
 
 static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
 {
-    struct Task *t = TaskCreate(Task_BirdAnim, sizeof(BirdAnimation), 0x2000, 0, 0);
+    Task *t = TaskCreate(Task_BirdAnim, sizeof(BirdAnimation), 0x2000, 0, 0);
     BirdAnimation *animation = TASK_DATA(t);
     Sprite *s = &animation->s;
 
@@ -1635,7 +1635,7 @@ static void Task_MenuItemTransitionInAnim(void)
 
 static void CreateLensFlareAnimation(void)
 {
-    struct Task *t = TaskCreate(Task_LensFlareAnim, sizeof(LensFlare), 0x2000, 0, 0);
+    Task *t = TaskCreate(Task_LensFlareAnim, sizeof(LensFlare), 0x2000, 0, 0);
     LensFlare *lensFlare = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *transform;
@@ -1766,7 +1766,7 @@ static void LoadTinyChaoGarden(void)
 
 void CreateTitleScreenAndSkipIntro(void)
 {
-    struct Task *t;
+    Task *t;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_ShowPressStartMenu, sizeof(TitleScreen), 0x1000, 0, 0);
@@ -1775,7 +1775,7 @@ void CreateTitleScreenAndSkipIntro(void)
 
 void CreateTitleScreenAtPlayModeMenu(void)
 {
-    struct Task *t;
+    Task *t;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_JumpToPlayModeMenu, sizeof(TitleScreen), 0x1000, 0, 0);
@@ -1784,7 +1784,7 @@ void CreateTitleScreenAtPlayModeMenu(void)
 
 void CreateTitleScreenAtSinglePlayerMenu(void)
 {
-    struct Task *t;
+    Task *t;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_JumpToSinglePlayerMenu, sizeof(TitleScreen), 0x1000, 0, 0);
@@ -1918,7 +1918,7 @@ static void BirdAnimEnd(void)
 
 static void CreateMenuItemTransition(Sprite *s, u8 type)
 {
-    struct Task *t;
+    Task *t;
     MenuItemTransition *miTransition;
 
     if (type == TRANSITION_OUT) {
@@ -1951,14 +1951,14 @@ static void LensFlareAnimEnd(void)
 // TODO: understand why this is inline
 static inline void inline_CreateTitleScreenTaskWithoutIntro(TaskMain main)
 {
-    struct Task *t = TaskCreate(main, sizeof(TitleScreen), 0x1000, 0, 0);
+    Task *t = TaskCreate(main, sizeof(TitleScreen), 0x1000, 0, 0);
     CreateTitleScreenWithoutIntro(TASK_DATA(t));
 }
 
 UNUSED void sub_808D824(void)
 {
     // Unused but required for match
-    struct Task *prevTask = gCurTask;
+    Task *prevTask = gCurTask;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     inline_CreateTitleScreenTaskWithoutIntro(Task_ShowPressStartMenu);

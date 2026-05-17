@@ -68,6 +68,6 @@ struct SpecialStagePlayer {
     s32 unk104;
 }; /* size 0x108 */
 
-struct Task *CreateSpecialStagePlayer(struct SpecialStage *);
+Task *CreateSpecialStagePlayer(struct SpecialStage *);
 
 #endif

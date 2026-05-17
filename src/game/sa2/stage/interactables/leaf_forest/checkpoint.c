@@ -25,7 +25,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ struct Task *task;
+    /* 0x3C */ Task *task;
 } Sprite_Checkpoint;
 
 typedef struct {
@@ -37,8 +37,8 @@ static void Task_Interactable_Toggle_Checkpoint(void);
 static void Task_CheckpointMain_Idle(void);
 static void Task_StageCheckpointMain_Activated(void);
 static void Task_CheckpointMain_Used(void);
-static void TaskDestructor_Checkpoint(struct Task *);
-static void TaskDestructor_PaletteLoader_Checkpoint(struct Task *);
+static void TaskDestructor_Checkpoint(Task *);
+static void TaskDestructor_PaletteLoader_Checkpoint(Task *);
 
 extern u32 gCheckpointTime;
 
@@ -55,7 +55,7 @@ static const u16 sAnimIdsCheckpoint[NUM_COURSE_ZONES + 1][2] = {
 
 void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t;
+    Task *t;
     Sprite_Checkpoint *chkPt;
     Sprite *s;
     u8 zone;
@@ -184,14 +184,14 @@ void Task_CheckpointMain_Used(void)
 }
 
 // static
-void TaskDestructor_Checkpoint(struct Task *t)
+void TaskDestructor_Checkpoint(Task *t)
 {
     Sprite_Checkpoint *chkPt = TASK_DATA(t);
     void *gfx = chkPt->s.graphics.dest;
     VramFree(gfx);
 }
 
-void TaskDestructor_PaletteLoader_Checkpoint(struct Task *unused)
+void TaskDestructor_PaletteLoader_Checkpoint(Task *unused)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
     s32 animId = sAnimIdsCheckpoint[zone][0];
@@ -247,7 +247,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
 void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (gBossIndex == 0) {
-        struct Task *t = TaskCreate(Task_Interactable_Toggle_Checkpoint, sizeof(Sprite_Toggle_Checkpoint), 0x2010, 0, NULL);
+        Task *t = TaskCreate(Task_Interactable_Toggle_Checkpoint, sizeof(Sprite_Toggle_Checkpoint), 0x2010, 0, NULL);
 
         Sprite_Toggle_Checkpoint *toggle = TASK_DATA(t);
         toggle->base.regionX = spriteRegionX;

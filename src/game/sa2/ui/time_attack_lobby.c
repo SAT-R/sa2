@@ -391,11 +391,11 @@ void sub_8088EB4(void)
     }
 }
 
-void sub_8089104(struct Task *);
+void sub_8089104(Task *);
 
 void CreateTimeAttackLobbyScreen()
 {
-    struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
+    Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->cursor = 0;
@@ -403,7 +403,7 @@ void CreateTimeAttackLobbyScreen()
     sub_8088944(lobbyScreen);
 }
 
-void sub_8089104(struct Task *t)
+void sub_8089104(Task *t)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
     VramFree(lobbyScreen->unkB0[1].graphics.dest);

@@ -29,12 +29,12 @@ typedef struct {
 } Sprite_Kyura; /* 0x5C*/
 
 void Task_KyuraMain(void);
-void TaskDestructor_EntityShared(struct Task *);
+void TaskDestructor_EntityShared(Task *);
 void Task_KyuraRecover(void);
 
 void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0, TaskDestructor_EntityShared);
     Sprite_Kyura *kyura = TASK_DATA(t);
     Sprite *s = &kyura->s;
     kyura->base.regionX = spriteRegionX;

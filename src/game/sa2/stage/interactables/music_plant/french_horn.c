@@ -28,7 +28,7 @@ static void UpdatePlayerPositionInPipe(Sprite_FrenchHorn *);
 static void FrenchHorn_HandleExit(Sprite_FrenchHorn *);
 static void Task_Idle(void);
 static void FrenchHorn_Despawn(Sprite_FrenchHorn *);
-static void TaskDestructor_FrenchHorn(struct Task *);
+static void TaskDestructor_FrenchHorn(Task *);
 
 const PipeSegment gFrenchHornPipeSequence0[] = {
     {
@@ -343,7 +343,7 @@ static void FrenchHorn_Despawn(Sprite_FrenchHorn *horn)
 
 void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_FrenchHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_FrenchHorn), 0x2010, 0, TaskDestructor_FrenchHorn);
     Sprite_FrenchHorn *horn = TASK_DATA(t);
 
     horn->kind = me->d.sData[0];
@@ -356,7 +356,7 @@ void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void TaskDestructor_FrenchHorn(struct Task *t)
+static void TaskDestructor_FrenchHorn(Task *t)
 {
     // unused
 }

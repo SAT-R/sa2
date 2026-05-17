@@ -175,11 +175,11 @@ typedef struct {
 static void SA2_LABEL(Task_801951C)(void);
 static void SA2_LABEL(Task_8019898)(void);
 static void Task_SelfPositionIndicator(void);
-static void TaskDestructor_OpponentPositionIndicator(struct Task *);
+static void TaskDestructor_OpponentPositionIndicator(Task *);
 
 void CreateOpponentPositionIndicator(u8 sid)
 {
-    struct Task *t;
+    Task *t;
     Sprite *spr;
     SpriteTransform *transform;
     OpponentIndicator *pi;
@@ -238,7 +238,7 @@ void CreateOpponentPositionIndicator(u8 sid)
 #if (GAME == GAME_SA2)
 void CreateSelfPositionIndicator(void)
 {
-    struct Task *t;
+    Task *t;
     Sprite *spr;
     SelfIndicator *pi;
 
@@ -272,7 +272,7 @@ void CreateSelfPositionIndicator(void)
 static void SA2_LABEL(Task_801951C)(void)
 {
     OpponentIndicator *pi = TASK_DATA(gCurTask);
-    struct Task *t = gMultiplayerPlayerTasks[pi->playerId];
+    Task *t = gMultiplayerPlayerTasks[pi->playerId];
     MultiplayerPlayer *mpp = TASK_DATA(t);
     Sprite *spr = &pi->spr;
     SpriteTransform *transform = &pi->transform;
@@ -292,7 +292,7 @@ static void SA2_LABEL(Task_801951C)(void)
 static void SA2_LABEL(Task_8019898)(void)
 {
     OpponentIndicator *pi = TASK_DATA(gCurTask);
-    struct Task *t = gMultiplayerPlayerTasks[pi->playerId];
+    Task *t = gMultiplayerPlayerTasks[pi->playerId];
     MultiplayerPlayer *mpp = TASK_DATA(t);
     Sprite *spr = &pi->spr;
     SpriteTransform *transform = &pi->transform;
@@ -335,4 +335,4 @@ static void Task_SelfPositionIndicator(void)
 }
 #endif
 
-static void TaskDestructor_OpponentPositionIndicator(struct Task *t) { }
+static void TaskDestructor_OpponentPositionIndicator(Task *t) { }

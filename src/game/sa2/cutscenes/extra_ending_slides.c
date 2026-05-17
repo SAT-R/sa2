@@ -18,11 +18,11 @@ struct ExtraEndingCutSceneSlides {
 }; /* 0x50 */
 
 void sub_8091590(void);
-void sub_8091680(struct Task *);
+void sub_8091680(Task *);
 
 void CreateExtraEndingSlidesCutScene(void)
 {
-    struct Task *t = NULL;
+    Task *t = NULL;
     struct ExtraEndingCutSceneSlides *scene;
     Background *background;
     ScreenFade *fade = NULL;
@@ -119,7 +119,7 @@ void sub_8091638(void)
     }
 }
 
-void sub_8091680(struct Task *t)
+void sub_8091680(Task *t)
 {
     // unused logic
 }

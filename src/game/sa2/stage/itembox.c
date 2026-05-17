@@ -45,7 +45,7 @@ void DrawItemBox(Entity_ItemBox *, bool32);
 void Task_ItemBoxMain(void);
 void Task_ItemBoxIconMain_Rising(void);
 void Task_ItemBoxIconMain_Idle(void);
-void TaskDestructor_ItemBox(struct Task *);
+void TaskDestructor_ItemBox(Task *);
 void MultiplayerItemBoxBreak(Entity_ItemBox *);
 bool32 CheckItemBoxOutOfBounds(Entity_ItemBox *);
 bool32 CheckItemBoxPlayerCollision(Entity_ItemBox *);
@@ -80,7 +80,7 @@ const u8 ItemBox_ringAmountTable[] = { 1, 5, 10, 30, 50 };
 
 void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t;
+    Task *t;
     Entity_ItemBox *itembox;
     Sprite *s;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
@@ -457,7 +457,7 @@ void Task_ItemBoxIconMain_Idle(void)
         DrawItemBox(itembox, TRUE);
 }
 
-void TaskDestructor_ItemBox(struct Task *t)
+void TaskDestructor_ItemBox(Task *t)
 {
     Entity_ItemBox *itembox = TASK_DATA(t);
     VramFree(itembox->s.graphics.dest);

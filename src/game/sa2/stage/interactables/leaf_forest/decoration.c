@@ -15,7 +15,7 @@ typedef struct {
 } Sprite_Decoration;
 
 void Task_Decoration(void);
-void TaskDestructor_Decoration(struct Task *);
+void TaskDestructor_Decoration(Task *);
 
 static const TileInfo sDecoTileAnimInfo[7] = {
     { 2, SA2_ANIM_DECORATION__FLOWER_BLUE_SMALL, 0 },
@@ -31,7 +31,7 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 
 void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
-    struct Task *t;
+    Task *t;
     Sprite_Decoration *base;
     Sprite *s;
 
@@ -100,7 +100,7 @@ void Task_Decoration(void)
 }
 
 // InteractableDecorationOnDestroy
-void TaskDestructor_Decoration(struct Task *t)
+void TaskDestructor_Decoration(Task *t)
 {
     Sprite_Decoration *s = TASK_DATA(t);
     VramFree(s->displayed.graphics.dest);

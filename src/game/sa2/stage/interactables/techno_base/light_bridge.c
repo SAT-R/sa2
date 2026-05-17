@@ -42,7 +42,7 @@ struct UNK_80E0044 {
 };
 
 static void Task_LightBridgeInactive(void);
-static void TaskDestructor_InteractableTecBaseLightBridge(struct Task *);
+static void TaskDestructor_InteractableTecBaseLightBridge(Task *);
 static void DeactivateBridge(Sprite_LightBridge *);
 static bool32 IsPlayerWithinRange(Sprite_LightBridge *);
 static void sub_807A25C(Sprite_LightBridge *);
@@ -81,8 +81,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 {
     void *vram;
     u8 i;
-    struct Task *t
-        = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0, TaskDestructor_InteractableTecBaseLightBridge);
+    Task *t = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0, TaskDestructor_InteractableTecBaseLightBridge);
     Sprite_LightBridge *lightBridge = TASK_DATA(t);
     Sprite *s;
     lightBridge->type = me->d.uData[0];
@@ -276,7 +275,7 @@ static void Task_LightBridgeInactive(void)
     }
 }
 
-static void TaskDestructor_InteractableTecBaseLightBridge(struct Task *t)
+static void TaskDestructor_InteractableTecBaseLightBridge(Task *t)
 {
     Sprite_LightBridge *lightBridge = TASK_DATA(t);
     VramFree(lightBridge->vram);

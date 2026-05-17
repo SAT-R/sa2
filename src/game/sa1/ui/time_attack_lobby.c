@@ -12,7 +12,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 
-typedef struct TimeAttackLobby {
+typedef struct {
     /* 0x000 */ Sprite sprites[4];
     /* 0x0C0 */ Sprite s2;
     /* 0x0F0 */ Sprite s3;
@@ -36,7 +36,7 @@ static void Task_HandleInput(void);
 void Task_806A508(void);
 void sub_806A5BC(void);
 void CreateCourseSelect(u8 param0);
-void TaskDestructor_806A698(struct Task *t);
+void TaskDestructor_806A698(Task *t);
 
 void sub_806A150(void);
 void CreateTimeAttackLobbyScreen(void);
@@ -65,7 +65,7 @@ void sub_806A150(void)
 void CreateTimeAttackLobbyScreen(void)
 {
     Sprite *s;
-    struct Task *t;
+    Task *t;
     TimeAttackLobby *lobby;
     StrcUi_805423C *unk120;
     u8 i;
@@ -255,7 +255,7 @@ void sub_806A680(void) { CreateCourseSelect(0); }
 
 void sub_806A68C(void) { CreateTitleScreen(1); }
 
-void TaskDestructor_806A698(struct Task *t)
+void TaskDestructor_806A698(Task *t)
 {
     TimeAttackLobby *lobby = TASK_DATA(t);
     u8 i;

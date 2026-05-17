@@ -38,12 +38,12 @@
 #define HB_ALT_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
 #define HB_ALT_BOTTOM(p, hb) (I((p)->qWorldY) + HB_ALT_HEIGHT(hb))
 
-struct Task *gRingsScatterTask = NULL;
+Task *gRingsScatterTask = NULL;
 
 void Task_RingsScatter_Singleplayer(void);
 void Task_RingsScatter_MP_Singlepak(void);
 void Task_RingsScatter_MP_Multipak(void);
-void TaskDestructor_RingsScatter(struct Task *);
+void TaskDestructor_RingsScatter(Task *);
 
 // Called on Stage Initialization
 void InitPlayerHitRingsScatter(void)
@@ -55,8 +55,8 @@ void InitPlayerHitRingsScatter(void)
 #endif
     RingsScatter *rs;
     Sprite *s;
-    struct Task **tgtTask;
-    struct Task *t;
+    Task **tgtTask;
+    Task *t;
     void *dmaDest;
     u32 size;
 
@@ -1095,4 +1095,4 @@ void Task_RingsScatter_MP_Multipak(void)
 void Task_RingsScatter_MP_Singlepak(void) { RingsScatterSinglepakMain(); }
 #endif
 
-void TaskDestructor_RingsScatter(struct Task UNUSED *t) { gRingsScatterTask = NULL; }
+void TaskDestructor_RingsScatter(Task UNUSED *t) { gRingsScatterTask = NULL; }

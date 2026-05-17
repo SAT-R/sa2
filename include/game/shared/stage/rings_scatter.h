@@ -31,7 +31,7 @@ typedef struct {
     /* 0x336|0x2B6 */ u16 SA2_LABEL(unk2B6);
 } RingsScatter; /* size: 0x2B8 */
 
-extern struct Task *gRingsScatterTask; // -> RingsScatter
+extern Task *gRingsScatterTask; // -> RingsScatter
 
 void InitPlayerHitRingsScatter(void);
 void DestroyRingsScatterTask(void);

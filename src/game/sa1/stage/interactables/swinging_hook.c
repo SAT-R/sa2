@@ -30,11 +30,11 @@ typedef struct {
 } SwingingHook;
 
 void Task_SwingingHook(void);
-void TaskDestructor_SwingingHook(struct Task *t);
+void TaskDestructor_SwingingHook(Task *t);
 
 void CreateEntity_SwingingHook(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_SwingingHook, sizeof(SwingingHook), 0x2000, 0, TaskDestructor_SwingingHook);
+    Task *t = TaskCreate(Task_SwingingHook, sizeof(SwingingHook), 0x2000, 0, TaskDestructor_SwingingHook);
     SwingingHook *hook = TASK_DATA(t);
     Sprite *s1 = &hook->s1;
     Sprite *s2 = &hook->s2;
@@ -404,7 +404,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/hook__Task_SwingingHook.
 }
 END_NONMATCH
 
-void TaskDestructor_SwingingHook(struct Task *t)
+void TaskDestructor_SwingingHook(Task *t)
 {
     SwingingHook *hook = TASK_DATA(t);
     VramFree(hook->s1.graphics.dest);

@@ -31,7 +31,7 @@ typedef struct {
     u8 rank;
 } TimeAttackResultsCutScene;
 
-static void TaskDestructor_TimeAttackResults(struct Task *);
+static void TaskDestructor_TimeAttackResults(Task *);
 static void Task_AnimateResults(void);
 static void Task_HandleExit(void);
 static u8 StoreRecord(u32 finishTime);
@@ -45,7 +45,7 @@ static const u8 unused[] = {
 
 u32 CreateTimeAttackResults(u32 finishTime)
 {
-    struct Task *t;
+    Task *t;
     TimeAttackResultsCutScene *resultsCutScene;
     ScreenFade *fade;
     Sprite *s = NULL;
@@ -429,7 +429,7 @@ static void Task_HandleExit(void)
     AnimateResults();
 }
 
-static void TaskDestructor_TimeAttackResults(struct Task *t)
+static void TaskDestructor_TimeAttackResults(Task *t)
 {
     u32 i;
     TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(t);

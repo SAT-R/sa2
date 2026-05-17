@@ -11,7 +11,7 @@
 
 #include "constants/sa1/text.h"
 
-typedef struct ContinueScreen {
+typedef struct {
     Background bg;
     Sprite sprites[3];
     Sprite sprD0;
@@ -24,7 +24,7 @@ typedef struct ContinueScreen {
 } ContinueScreen; /* 0x174 */
 
 void Task_MultiplayerContinueScreen(void);
-void TaskDestructor_MultiplayerContinueScreen(struct Task *t);
+void TaskDestructor_MultiplayerContinueScreen(Task *t);
 void sub_806B534(void);
 void sub_806B5A4(void);
 extern void sub_8018538(void);
@@ -335,7 +335,7 @@ void sub_806B5A4(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_MultiplayerContinueScreen(struct Task *t)
+void TaskDestructor_MultiplayerContinueScreen(Task *t)
 {
     ContinueScreen *screen = TASK_DATA(t);
     u8 i;

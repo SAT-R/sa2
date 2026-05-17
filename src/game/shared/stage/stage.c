@@ -52,18 +52,18 @@
 
 #define BOSS_RINGS_DEFAULT_RESPAWN_COUNT 10
 
-struct Task *gGameStageTask = NULL;
+Task *gGameStageTask = NULL;
 
 void Task_GameStage(void);
-void TaskDestructor_GameStage(struct Task *t);
+void TaskDestructor_GameStage(Task *t);
 void StageInit_CollectRings(void);
 
 extern void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask);
 #if (GAME == GAME_SA1)
-extern struct Task *CreateMultiplayerChao(u8, u8);
-extern struct Task *sub_80550F8(void);
+extern Task *CreateMultiplayerChao(u8, u8);
+extern Task *sub_80550F8(void);
 // stage_ui_z.c
-typedef struct Struct_sub_80550F8 {
+typedef struct {
     u8 filler0[0x27];
     bool8 screenBlank;
 } Struct_sub_80550F8; /* size: 0x28 */
@@ -268,7 +268,7 @@ void CreateGameStage(void)
     u8 i;
     u32 j;
 #if (GAME == GAME_SA1)
-    struct Task *someTask;
+    Task *someTask;
 #ifdef BUG_FIX
     someTask = NULL;
 #endif
@@ -1155,7 +1155,7 @@ void GoToNextLevel(void)
 #endif
 #endif
 
-void TaskDestructor_GameStage(struct Task *t)
+void TaskDestructor_GameStage(Task *t)
 {
 #if (GAME == GAME_SA1)
     if ((gGameMode == GAME_MODE_TIME_ATTACK || (gGameMode == GAME_MODE_RACE) || (gGameMode == GAME_MODE_MULTI_PLAYER))

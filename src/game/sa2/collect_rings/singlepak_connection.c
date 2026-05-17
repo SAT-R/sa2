@@ -152,7 +152,7 @@ static const u32 gUnknown_080E0218[7] = {
 #if COLLECT_RINGS_ROM
 void LinkCommunicationError(void)
 {
-    struct Task *t;
+    Task *t;
     Background *background;
     ConnectionErrorScreen *errorScreen;
 
@@ -273,7 +273,7 @@ void sub_8081200(void)
 
 void StartSinglePakConnect(void)
 {
-    struct Task *t;
+    Task *t;
     struct SinglePakConnectScreen *connectScreen;
     ScreenFade *fade;
     Sprite *s;

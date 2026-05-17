@@ -34,19 +34,19 @@ typedef struct {
     /* 0x48 */ s32 unk48;
     /* 0x4C */ s32 worldX;
     /* 0x50 */ s32 worldY;
-    /* 0x54 */ struct Task *iceBlock; // -> IceBlock *
+    /* 0x54 */ Task *iceBlock; // -> IceBlock *
 } Drisame; /* 0x58 */
 
 void Task_DrisameInit(void);
 void sub_8072E68(void);
-struct Task *CreateIceBlock(s16 worldX, s16 worldY);
+Task *CreateIceBlock(s16 worldX, s16 worldY);
 void Task_IceBlockInit(void);
 void Task_IceBlock_8073364(void);
-void TaskDestructor_IceBlock(struct Task *t);
+void TaskDestructor_IceBlock(Task *t);
 
 void CreateEntity_Drisame(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_DrisameInit, sizeof(Drisame), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_DrisameInit, sizeof(Drisame), 0x2000, 0, TaskDestructor_EntityShared);
     Drisame *drisame = TASK_DATA(t);
     Sprite *s = &drisame->shared.s;
 
@@ -217,10 +217,10 @@ void sub_8072E68(void)
     DisplaySprite(s);
 }
 
-struct Task *CreateIceBlock(s16 worldX, s16 worldY)
+Task *CreateIceBlock(s16 worldX, s16 worldY)
 {
     s8 arr[4][2] = { { 16, 0 }, { 0, 8 }, { -16, 0 }, { 0, -8 } }; // maybe u8[4][2]?
-    struct Task *t;
+    Task *t;
     Sprite *s;
     Sprite *s2;
     Sprite *s3;
@@ -317,7 +317,7 @@ struct Task *CreateIceBlock(s16 worldX, s16 worldY)
 
 void Task_IceBlockInit(void)
 {
-    struct Task *t;
+    Task *t;
     Sprite *s3;
     IceBlock *iceBlock;
     CamCoord screenX, screenY;
@@ -351,7 +351,7 @@ void Task_IceBlockInit(void)
 void Task_IceBlock_8073364(void)
 {
     IceBlock *iceBlock;
-    struct Task *t;
+    Task *t;
     Sprite *s;
     Sprite *s2;
     CamCoord worldX, worldY;
@@ -395,7 +395,7 @@ void Task_IceBlock_8073364(void)
     }
 }
 
-void TaskDestructor_IceBlock(struct Task *t)
+void TaskDestructor_IceBlock(Task *t)
 {
     IceBlock *iceBlock = TASK_DATA(t);
     VramFree(iceBlock->s.graphics.dest);

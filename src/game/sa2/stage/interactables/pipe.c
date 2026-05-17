@@ -124,7 +124,7 @@ static void Task_Pipe_End(void)
 
 void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;
@@ -136,7 +136,7 @@ void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 
 void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;

@@ -43,12 +43,12 @@ static void CreateSprite_Notif_RingBonus(void);
 static void Task_LapTriggerInactive(void);
 static void HandleTrigger(Sprite_LapTrigger UNUSED *s);
 static void Task_NotifRingBonus(void);
-static void TaskDestructor_NotifRingBonus(struct Task *t);
+static void TaskDestructor_NotifRingBonus(Task *t);
 static void Task_LapTriggerActive(void);
 
 void CreateEntity_CollectRingsLapTrigger(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_LapTriggerInactive, sizeof(Sprite_LapTrigger), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_LapTriggerInactive, sizeof(Sprite_LapTrigger), 0x2010, 0, NULL);
     Sprite_LapTrigger *trigger = TASK_DATA(t);
 
     trigger->prevTime = 0;
@@ -191,7 +191,7 @@ static void UpdatePlayerPosition(Sprite_LapTrigger *trigger)
 
 static void CreateSprite_Notif_RingBonus(void)
 {
-    struct Task *t = TaskCreate(Task_NotifRingBonus, sizeof(Sprite_Notif_RingBonus), 0x2010, 0, TaskDestructor_NotifRingBonus);
+    Task *t = TaskCreate(Task_NotifRingBonus, sizeof(Sprite_Notif_RingBonus), 0x2010, 0, TaskDestructor_NotifRingBonus);
     Sprite_Notif_RingBonus *notif = TASK_DATA(t);
     Sprite *s = &notif->s;
 
@@ -233,7 +233,7 @@ static void Task_NotifRingBonus(void)
     }
 }
 
-static void TaskDestructor_NotifRingBonus(struct Task *t)
+static void TaskDestructor_NotifRingBonus(Task *t)
 {
     Sprite_Notif_RingBonus *trigger = TASK_DATA(t);
     VramFree(trigger->s.graphics.dest);

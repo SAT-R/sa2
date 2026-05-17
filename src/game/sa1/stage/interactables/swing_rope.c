@@ -202,7 +202,7 @@ END_NONMATCH
 
 void CreateEntity_SwingRope(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_SwingRope, sizeof(SwingRope), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_SwingRope, sizeof(SwingRope), 0x2000, 0, NULL);
     SwingRope *rope = TASK_DATA(t);
     s32 i;
 

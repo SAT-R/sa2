@@ -52,11 +52,11 @@ const TileInfo sAnimInfoPauseMenu[] = {
 #endif
 
 void Task_PauseMenuInit(void);
-void TaskDestructor_PauseMenu(struct Task *);
+void TaskDestructor_PauseMenu(Task *);
 
 void CreatePauseMenu(void)
 {
-    struct Task *t;
+    Task *t;
     PauseMenu *pm;
     Sprite *s;
 
@@ -335,7 +335,7 @@ void Task_PauseMenuInit(void)
     gCurTask->main = Task_PauseMenuUpdate;
 }
 
-void TaskDestructor_PauseMenu(struct Task *t)
+void TaskDestructor_PauseMenu(Task *t)
 {
     PauseMenu *pm = TASK_DATA(t);
 #if (GAME == GAME_SA1)

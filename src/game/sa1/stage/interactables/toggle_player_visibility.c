@@ -52,7 +52,7 @@ void Task_Toggle_PlayerVisibility(void)
 
 void CreateEntity_Toggle_PlayerVisibility(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Toggle_PlayerVisibility, sizeof(TogglePlayerVisibility), 0x2000 | me->d.uData[3], 0, NULL);
+    Task *t = TaskCreate(Task_Toggle_PlayerVisibility, sizeof(TogglePlayerVisibility), 0x2000 | me->d.uData[3], 0, NULL);
     TogglePlayerVisibility *ia = TASK_DATA(t);
 
     ia->base.regionX = regionX;

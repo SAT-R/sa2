@@ -26,7 +26,7 @@ typedef struct {
 } SpikedBarrel;
 
 void Task_SpikedBarrel(void);
-void TaskDestructor_SpikedBarrel(struct Task *t);
+void TaskDestructor_SpikedBarrel(Task *t);
 
 // TODO: Unused except for the 1st element...
 const TileInfoBarrel gUnknown_086CEE50[4] = {
@@ -38,7 +38,7 @@ const TileInfoBarrel gUnknown_086CEE50[4] = {
 
 void CreateEntity_SpikedBarrel(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_SpikedBarrel, sizeof(SpikedBarrel), 0x2000, 0, TaskDestructor_SpikedBarrel);
+    Task *t = TaskCreate(Task_SpikedBarrel, sizeof(SpikedBarrel), 0x2000, 0, TaskDestructor_SpikedBarrel);
     SpikedBarrel *barrel = TASK_DATA(t);
     Sprite *s = &barrel->s;
 
@@ -225,7 +225,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/spiked_barrel__Task_Spik
 }
 END_NONMATCH
 
-void TaskDestructor_SpikedBarrel(struct Task *t)
+void TaskDestructor_SpikedBarrel(Task *t)
 {
     SpikedBarrel *barrel = TASK_DATA(t);
     VramFree(barrel->s.graphics.dest);

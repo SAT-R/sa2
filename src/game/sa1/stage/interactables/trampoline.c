@@ -19,11 +19,11 @@ typedef struct {
 void Task_Trampoline(void);
 void Task_Trampoline1(void);
 bool32 sub_8074FB0(Sprite *s, s16 worldX, s16 worldY);
-void TaskDestructor_Trampoline(struct Task *);
+void TaskDestructor_Trampoline(Task *);
 
 void CreateEntity_Trampoline(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Trampoline, sizeof(Trampoline), 0x2000, 0, TaskDestructor_Trampoline);
+    Task *t = TaskCreate(Task_Trampoline, sizeof(Trampoline), 0x2000, 0, TaskDestructor_Trampoline);
     Trampoline *trampoline = TASK_DATA(t);
     Sprite *s = &trampoline->s;
 
@@ -172,7 +172,7 @@ bool32 sub_8074FB0(Sprite *s, s16 worldX, s16 worldY)
     return result;
 }
 
-void TaskDestructor_Trampoline(struct Task *t)
+void TaskDestructor_Trampoline(Task *t)
 {
     Trampoline *trampoline = TASK_DATA(t);
     VramFree(trampoline->s.graphics.dest);

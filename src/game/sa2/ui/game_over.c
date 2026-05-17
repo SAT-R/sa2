@@ -67,7 +67,7 @@ void DisplayOverScreenTextSprites(GameOverScreen *screen);
 void Task_OverScreenFadeBgUpdate(void);
 static void InitOverScreen(LostLifeCause lostLifeCause);
 void Task_GameOverScreenMain(void);
-void TaskDestructor_GameOverTimeOverScreen(struct Task *);
+void TaskDestructor_GameOverTimeOverScreen(Task *);
 void Task_TimeOverScreenMain(void);
 void Task_OverScreenWaitMusicEnd(void);
 void UpdateTimeOverScreenSprites(GameOverScreen *screen);
@@ -75,7 +75,7 @@ void Task_OverScreenFadeTextUpdate(void);
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
-    struct Task *t = TaskCreate(Task_FadeoutToOverScreen, sizeof(GameOverScreenFade), 0x2220, 0, NULL);
+    Task *t = TaskCreate(Task_FadeoutToOverScreen, sizeof(GameOverScreenFade), 0x2220, 0, NULL);
     GameOverScreenFade *screenFade = TASK_DATA(t);
 
     ScreenFade *fade = &screenFade->unk0;
@@ -123,7 +123,7 @@ void Task_FadeoutToOverScreen(void)
 
 static void InitOverScreen(LostLifeCause lostLifeCause)
 {
-    struct Task *t;
+    Task *t;
     GameOverScreen *screen;
     Sprite *s;
     ScreenFade *fade;
@@ -398,7 +398,7 @@ void UpdateTimeOverScreenSprites(GameOverScreen *screen)
     DisplaySprite(sprite2);
 }
 
-void TaskDestructor_GameOverTimeOverScreen(struct Task *t)
+void TaskDestructor_GameOverTimeOverScreen(Task *t)
 {
     GameOverScreen *screen = TASK_DATA(t);
 

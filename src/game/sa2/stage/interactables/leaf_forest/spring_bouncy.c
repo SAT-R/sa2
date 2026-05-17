@@ -24,7 +24,7 @@ typedef struct {
 
 static void Task_Interactable_BouncySpring(void);
 static void Task_805E02C(void);
-static void TaskDestructor_Interactable_BouncySpring(struct Task *);
+static void TaskDestructor_Interactable_BouncySpring(Task *);
 
 static const TileInfo gUnknown_080D948C[3] = {
     { 24, SA2_ANIM_BOUNCY_SPRING, 1 },
@@ -46,8 +46,7 @@ static const TileInfo gUnknown_080D94BC[3] = {
 
 void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Interactable_BouncySpring, sizeof(Sprite_BouncySpring), 0x2010, 0, TaskDestructor_Interactable_BouncySpring);
+    Task *t = TaskCreate(Task_Interactable_BouncySpring, sizeof(Sprite_BouncySpring), 0x2010, 0, TaskDestructor_Interactable_BouncySpring);
     Sprite_BouncySpring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
     u32 variant = 0;
@@ -195,7 +194,7 @@ static void Task_805E02C()
     }
 }
 
-static void TaskDestructor_Interactable_BouncySpring(struct Task *t)
+static void TaskDestructor_Interactable_BouncySpring(Task *t)
 {
     Sprite_BouncySpring *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);

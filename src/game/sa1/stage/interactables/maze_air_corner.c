@@ -18,7 +18,7 @@ u32 Coll_Player_PlatformCrumbling(Sprite *s, s16 worldX, s16 worldY, Player *p);
 
 void CreateEntity_TrackAirCorner(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_TrackAirCorner, sizeof(TrackAirCorner), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_TrackAirCorner, sizeof(TrackAirCorner), 0x2000, 0, NULL);
     TrackAirCorner *ia = TASK_DATA(t);
     Sprite *s = &ia->s;
 

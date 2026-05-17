@@ -38,7 +38,7 @@ void sub_804A2FC(Player *p);
 void sub_804A498(s32 qWorldX, s32 qWorldY, bool32 param2);
 void Task_804A54C(void);
 void Task_804A71C(void);
-void TaskDestructor_804A830(struct Task *);
+void TaskDestructor_804A830(Task *);
 void sub_804A854(Player *p);
 void Task_804AAC4(void);
 void Task_804AD0C(void);
@@ -857,9 +857,9 @@ void sub_804A3B8(Player *p) { p->qSpeedAirY += Q(32. / 256.); }
 void Task_804A3C0(void)
 {
 #ifndef NON_MATCHING
-    register struct Task *t asm("r2") = gCurTask;
+    register Task *t asm("r2") = gCurTask;
 #else
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
 #endif
     SomeTaskManager_60 *mgr = TASK_DATA(t);
     Sprite *s = &mgr->s;
@@ -902,7 +902,7 @@ void Task_804A3C0(void)
 
 void sub_804A498(s32 qWorldX, s32 qWorldY, bool32 param2)
 {
-    struct Task *t;
+    Task *t;
     GfxInfo gfx;
     SomeTaskManager_60 *mgr;
 
@@ -957,7 +957,7 @@ void Task_804A54C(void)
 
 void sub_804A5D8(s32 screenX, s32 screenY)
 {
-    struct Task *t;
+    Task *t;
     SomeTaskManager_60 *mgr;
     GfxInfo gfx, sp08, sp0C, sp10;
 
@@ -1099,7 +1099,7 @@ void Task_804A71C(void)
     mgr->unk4++;
 }
 
-void TaskDestructor_804A830(struct Task *t)
+void TaskDestructor_804A830(Task *t)
 {
     SomeTaskManager_60 *mgr = TASK_DATA(t);
     sSparkleCount++;
@@ -1112,7 +1112,7 @@ void sub_804A854(Player *p)
 {
     GfxInfo gfx;
     SomeTaskManager_60 *mgr;
-    struct Task *t;
+    Task *t;
 
     gfx.tileInfo.anim = SA1_ANIM_SUPER_SONIC_DASH;
     gfx.tileInfo.variant = 0;
@@ -1126,7 +1126,7 @@ void sub_804A854(Player *p)
 void sub_804A8A8(s32 qX, s32 qY, s32 param2)
 {
     GfxInfo gfx;
-    struct Task *t;
+    Task *t;
     SomeTaskManager_7C *mgr;
 
     switch (param2) {
@@ -1416,7 +1416,7 @@ void sub_804AFCC(s32 qX, s32 qY)
 {
     GfxInfo gfx;
     SomeTaskManager_7C *mgr;
-    struct Task *t;
+    Task *t;
     s32 i;
 
     gfx.tileInfo.anim = SA1_ANIM_BOSS_XTRA_CAPSULE_PART;
@@ -1528,7 +1528,7 @@ s32 ExtraBoss__CapsuleGetCaptureState(SomeTaskManager_7C *mgr, Sprite *s, SuperE
 void sub_804B2BC(s32 qWorldX, s32 qWorldY)
 {
     GfxInfo gfx;
-    struct Task *t;
+    Task *t;
     SomeTaskManager_7C *mgr;
 
     gfx.tileInfo.anim = SA1_ANIM_BOSS_XTRA_CAPSULE;
@@ -1665,7 +1665,7 @@ void Task_804B420(void)
 void sub_804B570(s32 qWorldX, s32 qWorldY)
 {
     GfxInfo gfx;
-    struct Task *t;
+    Task *t;
     SomeTaskManager_7C *mgr;
 
     gfx.tileInfo.anim = SA1_ANIM_BOSS_XTRA_LASER;

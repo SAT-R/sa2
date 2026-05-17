@@ -12,6 +12,6 @@ typedef struct {
     /* 0x62 */ u16 unk62;
 } Sprite_OnInit_SkyCanyon;
 
-struct Task *sub_80807CC(void);
+Task *sub_80807CC(void);
 
 #endif

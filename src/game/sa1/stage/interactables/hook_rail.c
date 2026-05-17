@@ -30,7 +30,7 @@ void Task_HookRail_Type2_1(void);
 void Task_HookRail_Type2(void);
 void Task_HookRail_Shared0(void);
 void Task_HookRail_Shared1(void);
-void TaskDestructor_HookRail(struct Task *t);
+void TaskDestructor_HookRail(Task *t);
 
 #define HOOK_PLAYER_OFFSET_X       (+6)
 #define HOOK_PLAYER_OFFSET_T1_2_X  (+5)
@@ -42,7 +42,7 @@ void TaskDestructor_HookRail(struct Task *t);
 void CreateEntity_HookRail(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     TaskMain taskFunc;
-    struct Task *t;
+    Task *t;
     Sprite *s;
     HookRail *hookRail;
 
@@ -731,7 +731,7 @@ void Task_HookRail_Type2_1(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_HookRail(struct Task *t)
+void TaskDestructor_HookRail(Task *t)
 {
     HookRail *hookRail = TASK_DATA(t);
     VramFree(hookRail->s.graphics.dest);

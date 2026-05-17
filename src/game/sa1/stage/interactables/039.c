@@ -51,7 +51,7 @@ void Task_Interactable039Main(void)
 
 void CreateEntity_Interactable039(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Interactable039Main, sizeof(IA039), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Interactable039Main, sizeof(IA039), 0x2000, 0, NULL);
     IA039 *ia = TASK_DATA(t);
     s32 worldX, worldY;
 

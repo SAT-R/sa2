@@ -22,11 +22,11 @@ struct EndingCutSceneTransition {
 } /* 0x74 */;
 
 void sub_808E9AC(void);
-void sub_808E9F8(struct Task *);
+void sub_808E9F8(Task *);
 
 void StartEndingCutscenes(void)
 {
-    struct Task *t = TaskCreate(sub_808E9AC, sizeof(struct EndingCutSceneTransition), 0x3100, 0, sub_808E9F8);
+    Task *t = TaskCreate(sub_808E9AC, sizeof(struct EndingCutSceneTransition), 0x3100, 0, sub_808E9F8);
     struct EndingCutSceneTransition *fade = TASK_DATA(t);
 
     fade->unk6C = 0;
@@ -78,7 +78,7 @@ void sub_808E9AC(void)
     }
 }
 
-void sub_808E9F8(UNUSED struct Task *t)
+void sub_808E9F8(UNUSED Task *t)
 {
     // unused logic
 }

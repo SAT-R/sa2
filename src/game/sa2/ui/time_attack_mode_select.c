@@ -41,7 +41,7 @@ static void Task_FadeOutModeSelected(void);
 static void Task_FadeOutToTitleScreen(void);
 static void Task_HandleModeSelectedExit(void);
 
-static void TimeAttackModeSelectionScreenOnDestroy(struct Task *);
+static void TimeAttackModeSelectionScreenOnDestroy(Task *);
 
 const TileInfo gUnknown_080E0384[] = {
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_ZONE, 12, SA2_ANIM_TIME_ATTACK_JP),
@@ -83,7 +83,7 @@ const TileInfo gUnknown_080E0384[] = {
 
 void CreateTimeAttackModeSelectionScreen(void)
 {
-    struct Task *t;
+    Task *t;
     struct TimeAttackModeSelectionScreen *modeScreen;
     ScreenFade *fade;
     Sprite *s;
@@ -484,7 +484,7 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
     }
 }
 
-static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
+static void TimeAttackModeSelectionScreenOnDestroy(Task *t)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(t);
     VramFree(modeScreen->title.graphics.dest);

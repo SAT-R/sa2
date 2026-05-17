@@ -45,7 +45,7 @@ void Player_Tails_TailSwipe(Player *p);
 void Player_SonicAmy_WindupStopNSlam(Player *);
 void Player_SonicAmy_StopNSlam_AfterGroundCollision(Player *);
 void Player_SonicAmy_StopNSlam_FallAfterCollision(Player *p);
-void TaskDestructor_SonicBoundMotionFrames(struct Task *);
+void TaskDestructor_SonicBoundMotionFrames(Task *);
 void Player_Sonic_HomingAttack(Player *p);
 void Player_Cream_Flying(Player *p);
 void Player_Cream_ChaoAttack(Player *p);
@@ -94,10 +94,10 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 
 /* Character: Sonic */
 
-struct Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2)
+Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2)
 {
     MultiplayerSpriteTask *ts;
-    struct Task *t;
+    Task *t;
     Sprite *s;
 
     if (IS_MULTI_PLAYER) {
@@ -137,12 +137,12 @@ struct Task *CreateSonicAmySkidAttackEffect(s32 x, s32 y, u16 p2)
 }
 
 // For Sonic's Down-Trick "Bound"
-struct Task *CreateSonicBoundEffect(s32 x, s32 y)
+Task *CreateSonicBoundEffect(s32 x, s32 y)
 {
     if (IS_MULTI_PLAYER) {
         return NULL;
     } else {
-        struct Task *t = TaskCreate(Task_SonicBoundMotionFrames, sizeof(TrickBound), 0x4001, 0, TaskDestructor_SonicBoundMotionFrames);
+        Task *t = TaskCreate(Task_SonicBoundMotionFrames, sizeof(TrickBound), 0x4001, 0, TaskDestructor_SonicBoundMotionFrames);
 
         TrickBound *bound = TASK_DATA(t);
         Sprite *s = &bound->s;
@@ -484,7 +484,7 @@ void Player_UpdateHomingPosition(s32 qX, s32 qY)
             }
         }
     } else if (gPlayer.character == CHARACTER_CREAM) {
-        struct Task *t = gCurTask;
+        Task *t = gCurTask;
 
         if (sqDistance < gCheeseTarget.squarePlayerDistance) {
             if (((gPlayer.moveState & MOVESTATE_FACING_LEFT) && (vecTargetX >= 0))
@@ -550,7 +550,7 @@ void Player_SonicAmy_StopNSlam_FallAfterCollision(Player *p)
     }
 }
 
-void TaskDestructor_SonicBoundMotionFrames(struct Task *t)
+void TaskDestructor_SonicBoundMotionFrames(Task *t)
 {
     TrickBound *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
@@ -808,14 +808,14 @@ void Player_Cream_WindupMidAirChaoAttack(Player *p)
 
 /* Character: Tails */
 
-struct Task *CreateTailsTailSwipeEffect(s32 x, s32 y)
+Task *CreateTailsTailSwipeEffect(s32 x, s32 y)
 {
-    struct Task *result;
+    Task *result;
 
     if (IS_MULTI_PLAYER) {
         result = NULL;
     } else {
-        struct Task *t;
+        Task *t;
         MultiplayerSpriteTask *ts;
         Sprite *s;
         t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
@@ -1010,16 +1010,16 @@ void Player_Tails_TailSwipe(Player *p)
 
 /* Character: Knuckles */
 
-struct Task *CreateKnucklesFireEffect(s32 x, s32 y, u16 p2)
+Task *CreateKnucklesFireEffect(s32 x, s32 y, u16 p2)
 {
-    struct Task *result;
+    Task *result;
 
     if (IS_MULTI_PLAYER) {
         result = NULL;
     } else {
         MultiplayerSpriteTask *ts;
         Sprite *s;
-        struct Task *t;
+        Task *t;
         t = CreateMultiplayerSpriteTask(x, y, 232, gPlayer.playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
         ts = TASK_DATA(t);
 

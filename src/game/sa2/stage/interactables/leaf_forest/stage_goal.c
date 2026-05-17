@@ -31,7 +31,7 @@ typedef struct {
 } Sprite_StageGoalToggle;
 
 static void Task_StageGoalMain(void);
-static void TaskDestructor_StageGoal(struct Task *);
+static void TaskDestructor_StageGoal(Task *);
 static void Task_StageGoalAnimate(void);
 static void StageGoalToggle_PlayerReachedGoal(void);
 static void StageGoalToggle_HandleMultiplayerFinish(void);
@@ -40,7 +40,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void);
 
 void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0, TaskDestructor_StageGoal);
+    Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0, TaskDestructor_StageGoal);
     Sprite_StageGoal *stageGoal = TASK_DATA(t);
     Sprite *s = &stageGoal->s;
 
@@ -216,7 +216,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
 static UNUSED void StageGoalToggle_ForceMultiplayerFinish(void)
 {
     u32 thing = 0;
-    struct Task **mpTasks = gMultiplayerPlayerTasks;
+    Task **mpTasks = gMultiplayerPlayerTasks;
     RoomEvent *roomEvent;
     u32 j;
 
@@ -259,7 +259,7 @@ static void StageGoalToggle_PlayerReachedGoal(void)
 
     if (gMultiplayerRanks[id] != -1) {
         u32 j;
-        struct Task **tasks;
+        Task **tasks;
         for (j = 0, tasks = gMultiplayerPlayerTasks; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
             MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
             if (otherPlayer->unk54 & 0x100) {
@@ -268,7 +268,7 @@ static void StageGoalToggle_PlayerReachedGoal(void)
         }
 
         if (count != 0 && (count >= (j - 1) || gGameMode == GAME_MODE_TEAM_PLAY)) {
-            struct Task **tasks;
+            Task **tasks;
             u32 i;
             // Check seems redundant, required for match
             if (gMultiplayerPlayerTasks[0] != NULL) {
@@ -290,7 +290,7 @@ static void StageGoalToggle_PlayerReachedGoal(void)
 
 void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle), 0x2010, 0, NULL);
     Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(t);
 
     stageGoalToggle->base.regionX = spriteRegionX;
@@ -300,7 +300,7 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void TaskDestructor_StageGoal(struct Task *t)
+static void TaskDestructor_StageGoal(Task *t)
 {
     Sprite_StageGoal *stageGoal = TASK_DATA(t);
     VramFree(stageGoal->s.graphics.dest);

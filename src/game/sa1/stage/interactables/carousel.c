@@ -32,11 +32,11 @@ typedef struct {
 void Task_CarouselIdle(void);
 void Task_RidingCarousel(void);
 void Task_ExitCarousel(void);
-void TaskDestructor_Carousel(struct Task *t);
+void TaskDestructor_Carousel(Task *t);
 
 void CreateEntity_Carousel(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_CarouselIdle, sizeof(Carousel), 0x2000, 0, TaskDestructor_Carousel);
+    Task *t = TaskCreate(Task_CarouselIdle, sizeof(Carousel), 0x2000, 0, TaskDestructor_Carousel);
     Carousel *carousel = TASK_DATA(t);
     Sprite *s1 = &carousel->s1;
     Sprite *s2 = &carousel->s2;
@@ -432,7 +432,7 @@ void Task_ExitCarousel(void)
     DisplaySprite(s2);
 }
 
-void TaskDestructor_Carousel(struct Task *t)
+void TaskDestructor_Carousel(Task *t)
 {
     Carousel *carousel = TASK_DATA(t);
     VramFree(carousel->s1.graphics.dest);

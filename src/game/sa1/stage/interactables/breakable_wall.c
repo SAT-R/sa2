@@ -29,11 +29,11 @@ extern u16 gUnknown_080BB544[NUM_LEVEL_IDS];
 
 void Task_BreakableWall(void);
 void Task_BreakableWall2(void);
-void TaskDestructor_BreakableWall(struct Task *);
+void TaskDestructor_BreakableWall(Task *);
 
 void CreateEntity_BreakableWall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BreakableWall, sizeof(Wall), 0x2000, 0, TaskDestructor_BreakableWall);
+    Task *t = TaskCreate(Task_BreakableWall, sizeof(Wall), 0x2000, 0, TaskDestructor_BreakableWall);
     Wall *wall = TASK_DATA(t);
     Sprite *s = &wall->s;
 
@@ -297,7 +297,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/BreakableWall__Task_Brea
 }
 END_NONMATCH
 
-void TaskDestructor_BreakableWall(struct Task *t)
+void TaskDestructor_BreakableWall(Task *t)
 {
     Wall *wall = TASK_DATA(t);
     VramFree(wall->s.graphics.dest);

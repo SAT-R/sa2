@@ -39,7 +39,7 @@ void Task_BuzzerProjectileMain(void);
 void CreateEntity_Buzzer(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     if (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_1 || LOADED_SAVE->difficultyLevel == DIFFICULTY_NORMAL) {
-        struct Task *t = TaskCreate(Task_BuzzerInit, sizeof(Buzzer), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_BuzzerInit, sizeof(Buzzer), 0x2000, 0, TaskDestructor_EntityShared);
         Buzzer *buzzer = TASK_DATA(t);
         Sprite *s = &buzzer->shared.s;
 
@@ -241,7 +241,7 @@ void CreateBuzzerProjectile(CamCoord worldX, CamCoord worldY)
 {
     s32 i;
 
-    struct Task *t = TaskCreate(Task_BuzzerProjectileMain, sizeof(BuzzerProjectile), 0x9000, 0, NULL);
+    Task *t = TaskCreate(Task_BuzzerProjectileMain, sizeof(BuzzerProjectile), 0x9000, 0, NULL);
     BuzzerProjectile *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
     s16 res;

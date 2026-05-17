@@ -24,7 +24,7 @@ typedef struct {
 } Sprite_SpecialRing; /* size = 0x44 */
 
 static void Task_SpecialRingVisible(void);
-static void TaskDestructor_Interactable_SpecialRing(struct Task *);
+static void TaskDestructor_Interactable_SpecialRing(Task *);
 static void CollectRing(Sprite_SpecialRing *);
 static bool32 ShouldDespawn(Sprite_SpecialRing *);
 static void Despawn(Sprite_SpecialRing *, u32);
@@ -34,8 +34,7 @@ static void Task_SpecialRingCollected(void);
 void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (IS_SINGLE_PLAYER) {
-        struct Task *t
-            = TaskCreate(Task_SpecialRingVisible, sizeof(Sprite_SpecialRing), 0x4040, 0, TaskDestructor_Interactable_SpecialRing);
+        Task *t = TaskCreate(Task_SpecialRingVisible, sizeof(Sprite_SpecialRing), 0x4040, 0, TaskDestructor_Interactable_SpecialRing);
 
         Sprite_SpecialRing *ring = TASK_DATA(t);
         Sprite *s;
@@ -121,7 +120,7 @@ static void Task_SpecialRingVisible(void)
     }
 }
 
-static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
+static void TaskDestructor_Interactable_SpecialRing(Task *t)
 {
     Sprite_SpecialRing *ring = TASK_DATA(t);
     void *gfx = ring->displayed.graphics.dest;

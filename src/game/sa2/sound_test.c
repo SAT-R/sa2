@@ -74,12 +74,12 @@ struct SoundTestScreen {
 #endif
 }; /* size 0x75C */
 
-static void SoundTestScreenCreateUI(struct Task *t);
-static void SoundTestScreenInitRegistersAndBackground(struct Task *t);
+static void SoundTestScreenCreateUI(Task *t);
+static void SoundTestScreenInitRegistersAndBackground(Task *t);
 static void SoundTestScreenRenderUI(void);
 static void Task_SoundTestScreenInOutTransition(void);
 
-static void SoundTestScreenOnDestroy(struct Task *t);
+static void SoundTestScreenOnDestroy(Task *t);
 static void Task_SoundTestScreenCleanup(void);
 
 static void SoundTestScreenUpdateCreamAnim(void);
@@ -255,8 +255,7 @@ static const u32 sBackButtonText[NUM_LANGUAGES * 3 * 2] = {
 
 void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t
-        = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
+    Task *t = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     ScreenFade *fade;
     BgPaletteEffectState *bgPaletteEffect;
@@ -312,7 +311,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     gBgPaletteEffects.state = bgPaletteEffect;
 }
 
-static void SoundTestScreenCreateUI(struct Task *t)
+static void SoundTestScreenCreateUI(Task *t)
 {
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
 
@@ -834,7 +833,7 @@ static void SoundTestScreenUpdateCreamAnim(void)
     }
 }
 
-static void SoundTestScreenOnDestroy(struct Task *t)
+static void SoundTestScreenOnDestroy(Task *t)
 {
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     soundTestScreen->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
@@ -861,7 +860,7 @@ static void Task_SoundTestScreenCleanup(void)
     TaskDestroy(gCurTask);
 }
 
-static void SoundTestScreenInitRegistersAndBackground(struct Task *t)
+static void SoundTestScreenInitRegistersAndBackground(Task *t)
 {
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     gDispCnt = 0x1141;

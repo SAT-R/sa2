@@ -39,7 +39,7 @@ typedef struct {
     /* 0x8D */ u8 unk8E;
 } EggWrecker; /* 0x90 */
 
-typedef struct EggWrecker_44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x30 */ s16 unk32;
@@ -65,8 +65,8 @@ void Task_803540C(void);
 void Task_80354F4(void);
 void Task_8035588(void);
 void Task_8035768(void);
-void TaskDestructor_8035818(struct Task *t);
-void TaskDestructor_EggWrecker(struct Task *t);
+void TaskDestructor_8035818(Task *t);
+void TaskDestructor_EggWrecker(Task *t);
 
 static inline void sub_803582C_inline(CamCoord worldX, CamCoord worldY)
 {
@@ -206,7 +206,7 @@ void CreateEntity_EggWrecker(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     u16 temp_r2;
     u8 *temp_r1_3;
     u8 *temp_r2_2;
-    struct Task *t;
+    Task *t;
     EggWrecker *boss;
     Sprite *s;
     Sprite *s2;
@@ -581,7 +581,7 @@ void Task_8034CA0()
 
 void sub_8034EE0(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t;
+    Task *t;
     NutsAndBolts *bolts;
     Sprite *sprBolts;
     s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -609,7 +609,7 @@ void sub_8034EE0(CamCoord worldX, CamCoord worldY)
 void sub_8035010(void)
 {
     EggWrecker_44 *strc_44;
-    struct Task *t;
+    Task *t;
     Sprite *s;
     u8 i;
 
@@ -927,14 +927,14 @@ void Task_8035768(void)
     }
 }
 
-void TaskDestructor_EggWrecker(struct Task *t)
+void TaskDestructor_EggWrecker(Task *t)
 {
     EggWrecker *boss = TASK_DATA(t);
     VramFree(boss->s.graphics.dest);
     VramFree(boss->s2.graphics.dest);
 }
 
-void TaskDestructor_8035818(struct Task *t)
+void TaskDestructor_8035818(Task *t)
 {
     EggWrecker_44 *boss_44 = TASK_DATA(t);
     VramFree(boss_44->s.graphics.dest);

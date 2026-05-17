@@ -35,14 +35,14 @@ static void Task_Interactable_019(void);
 static void Task_805E35C(void);
 static void Task_805E480(void);
 static void Task_805E6A4(void);
-static void TaskDestructor_Interactable019(struct Task *);
+static void TaskDestructor_Interactable019(Task *);
 
 // @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
 
 void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0, TaskDestructor_Interactable019);
+    Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0, TaskDestructor_Interactable019);
     Sprite_019 *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
@@ -329,7 +329,7 @@ void Task_805E6A4(void)
     }
 }
 
-void TaskDestructor_Interactable019(struct Task *t)
+void TaskDestructor_Interactable019(Task *t)
 {
     Sprite_019 *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

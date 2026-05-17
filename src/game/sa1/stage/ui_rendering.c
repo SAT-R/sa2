@@ -7,10 +7,10 @@
 /* TODO: I guess this can be called ui_rendering.c or something like that? */
 
 void Task_80536D4(void);
-void TaskDestructor_80536D8(struct Task *t);
+void TaskDestructor_80536D8(Task *t);
 
 // TODO: make static
-struct Task *gTask_03006240 = NULL;
+Task *gTask_03006240 = NULL;
 u8 tempFiller_03006244[0xC] = {};
 struct Strc_3006250 gUnknown_03006250[10] = {};
 u8 tempFiller_030062B8[0x8] = {};
@@ -737,4 +737,4 @@ struct GraphicsData *UiGfxStackPop(void)
 
 void Task_80536D4(void) { }
 
-void TaskDestructor_80536D8(struct Task *t) { gTask_03006240 = NULL; }
+void TaskDestructor_80536D8(Task *t) { gTask_03006240 = NULL; }

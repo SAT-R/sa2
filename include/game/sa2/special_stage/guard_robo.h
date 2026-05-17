@@ -26,6 +26,6 @@ struct SpecialStageGuardRobo {
     s16 filler56;
 }; /* 0x58 */
 
-struct Task *CreateSpecialStageGuardRobo(struct SpecialStage *);
+Task *CreateSpecialStageGuardRobo(struct SpecialStage *);
 
 #endif

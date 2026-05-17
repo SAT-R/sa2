@@ -28,11 +28,11 @@ void Task_8077E9C(void);
 bool32 sub_8077FA4(RedFlagPole *pole, Sprite *s, s32 worldX, s32 worldY);
 bool32 sub_80780B4(RedFlagPole *pole, Sprite *s, s32 worldX, s32 worldY);
 bool32 sub_80781E4(RedFlagPole *pole, Sprite *s, s32 worldX, s32 worldY);
-void TaskDestructor_RedFlag(struct Task *t);
+void TaskDestructor_RedFlag(Task *t);
 
 void CreateEntity_RedFlag(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_RedFlag, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
+    Task *t = TaskCreate(Task_RedFlag, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
     RedFlagPole *pole = TASK_DATA(t);
     Sprite *s = &pole->s;
 
@@ -75,9 +75,9 @@ void CreateEntity_RedFlag(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 void Task_RedFlag(void)
 {
 #ifndef NON_MATCHING
-    register struct Task **t asm("r8") = &gCurTask;
+    register Task **t asm("r8") = &gCurTask;
 #else
-    struct Task **t = &gCurTask;
+    Task **t = &gCurTask;
 #endif
     RedFlagPole *pole = TASK_DATA(*t);
     Sprite *s = &pole->s;
@@ -222,7 +222,7 @@ void Task_8077918(void)
 void CreateEntity_WallPole_Left(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
-    struct Task *t = TaskCreate(Task_8077C5C, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
+    Task *t = TaskCreate(Task_8077C5C, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
     RedFlagPole *pole = TASK_DATA(t);
     Sprite *s = &pole->s;
 
@@ -266,7 +266,7 @@ void CreateEntity_WallPole_Left(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 void CreateEntity_WallPole_Right(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
-    struct Task *t = TaskCreate(Task_8077C5C, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
+    Task *t = TaskCreate(Task_8077C5C, sizeof(RedFlagPole), 0x2000, 0, TaskDestructor_RedFlag);
     RedFlagPole *pole = TASK_DATA(t);
     Sprite *s = &pole->s;
 
@@ -623,7 +623,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/red_flag__sub_80781E4.in
 END_NONMATCH
 
 // Shared with WallPole
-void TaskDestructor_RedFlag(struct Task *t)
+void TaskDestructor_RedFlag(Task *t)
 {
     RedFlagPole *pole = TASK_DATA(t);
     VramFree(pole->s.graphics.dest);

@@ -32,7 +32,7 @@ typedef struct {
 
 void Task_Platform085(void);
 void Task_Platform089(void);
-void TaskDestructor_Platforms_085_089(struct Task *t);
+void TaskDestructor_Platforms_085_089(Task *t);
 
 const u16 gUnknown_086CEDC0[NUM_LEVEL_IDS][3] = {
     { SA1_ANIM_PLATFORM_HORZ_1, 0x0000, MAX_TILES(SA1_ANIM_PLATFORM_HORZ_1) },
@@ -57,7 +57,7 @@ const u16 gUnknown_086CEDC0[NUM_LEVEL_IDS][3] = {
 
 void CreateEntity_Platform_SlowDescent(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Platform085, sizeof(Platform085_089), 0x2000, 0, TaskDestructor_Platforms_085_089);
+    Task *t = TaskCreate(Task_Platform085, sizeof(Platform085_089), 0x2000, 0, TaskDestructor_Platforms_085_089);
     Platform085_089 *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -198,7 +198,7 @@ void Task_Platform085(void)
 
 void CreateEntity_Platform089(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Platform089, sizeof(Platform085_089), 0x2000, 0, TaskDestructor_Platforms_085_089);
+    Task *t = TaskCreate(Task_Platform089, sizeof(Platform085_089), 0x2000, 0, TaskDestructor_Platforms_085_089);
     Platform085_089 *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -320,7 +320,7 @@ void Task_Platform089(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Platforms_085_089(struct Task *t)
+void TaskDestructor_Platforms_085_089(Task *t)
 {
     Platform085_089 *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

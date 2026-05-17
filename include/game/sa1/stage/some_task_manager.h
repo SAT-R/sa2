@@ -39,8 +39,8 @@ typedef struct SomeTaskManager_7C {
 
 void sub_804CFA0(SomeTaskManager_60 *taskData);
 bool32 sub_804CFE0(u16 *param0, u16 param1, u16 param2);
-struct Task *CreateSomeTaskManager_60_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor); // -> SomeTaskManager_60
-struct Task *CreateSomeTaskManager_7C_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor); // -> SomeTaskManager_7C
-void TaskDestructor_SomeTaskManager_60_Common(struct Task *t);
+Task *CreateSomeTaskManager_60_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor); // -> SomeTaskManager_60
+Task *CreateSomeTaskManager_7C_Task(GfxInfo *gfx, TaskMain proc, TaskDestructor dtor); // -> SomeTaskManager_7C
+void TaskDestructor_SomeTaskManager_60_Common(Task *t);
 
 #endif // GUARD_SOME_TASK_MANAGER_H

@@ -20,7 +20,7 @@ extern struct MP2KSongHeader se_ring_copy;
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct Strc_30055E0 {
+typedef struct {
     u8 unk0;
     s16 unk2;
     u16 qBlend;
@@ -28,7 +28,7 @@ typedef struct Strc_30055E0 {
     u8 fillerC[0x4];
 } Strc_30055E0; /* 0x10 */
 
-typedef struct Strc_3005690 {
+typedef struct {
     s32 unk0;
     s32 unk4;
     s32 unk8;
@@ -76,7 +76,7 @@ typedef struct Strc_3005690 {
     u8 filler56[0xA];
 } Strc_3005690; /* 0x60 */
 
-typedef struct Strc_3005780 {
+typedef struct {
     s16 unk0;
     s16 unk2;
     s16 unk4;
@@ -90,7 +90,7 @@ typedef struct Strc_3005780 {
     s8 unk13;
 } Strc_3005780;
 
-typedef struct SpStage74 {
+typedef struct {
     SpriteTransform tf;
     Sprite s;
     s32 unk3C;
@@ -123,7 +123,7 @@ typedef struct SpStage74 {
     u8 filler72[2];
 } SpStage74;
 
-typedef struct SpStage8 {
+typedef struct {
     u8 filler0[2];
     u16 unk2;
     u16 unk4;
@@ -131,14 +131,14 @@ typedef struct SpStage8 {
 } SpStage8;
 
 // Stage layouts?
-typedef struct SpStageC {
+typedef struct {
     s16 unk0;
     s16 unk2;
     s32 unk4;
     u16 unk8;
 } SpStageC; /* 0x0C */
 
-typedef struct SpStage40 {
+typedef struct {
     SpriteTransform tf;
     Sprite s;
     void *mem;
@@ -207,7 +207,7 @@ void sub_802D3E4(void);
 void sub_802D450(void);
 void sub_802D4C4(void);
 void Task_802D508(void);
-void TaskDestructor_802D578(struct Task *t);
+void TaskDestructor_802D578(Task *t);
 void sub_802D560(void);
 u8 sub_802D58C(s16 param0);
 void SpStage_PlayRingSoundeffect(void); // 0x0802D5EC
@@ -225,7 +225,7 @@ extern void sub_8068D0C();
 
 extern void SetPlayerControls(bool32 flipFaceButtons);
 
-typedef struct TfSprite {
+typedef struct {
     SpriteTransform tf;
     Sprite s;
 } TfSprite;
@@ -343,7 +343,7 @@ const Background gUnknown_084870F4 = {
     .prevScrollY = 0x7FFF,
 };
 
-typedef struct HitboxS16 {
+typedef struct {
     s16 left;
     s16 top;
     s16 right;
@@ -2014,7 +2014,7 @@ void sub_802C0CC(void)
     x = (strc5690->unkC - strc74->unk4C);
     y = (strc5690->unkE - strc74->unk4E);
 
-    theta = sa2__sub_8004418(y, x);
+    theta = SA2_LABEL(sub_8004418)(y, x);
     strc74->unk52 += 0x15;
     v0 = (strc74->unk52 * COS(theta));
     v1 = (SIN(theta));
@@ -2564,7 +2564,7 @@ void sub_802D190(void)
 
 void sub_802D1D8(void)
 {
-    struct Task *t = TaskCreate(Task_802B3E4, sizeof(SpStage8), 0x1400, 0, NULL);
+    Task *t = TaskCreate(Task_802B3E4, sizeof(SpStage8), 0x1400, 0, NULL);
     SpStage8 *strc8 = TASK_DATA(t);
     strc8->unk2 = 0;
     strc8->unk4 = 0;
@@ -2763,7 +2763,7 @@ void sub_802D560(void)
     }
 }
 
-void TaskDestructor_802D578(struct Task *t)
+void TaskDestructor_802D578(Task *t)
 {
     SpStage40 *strc40 = TASK_DATA(t);
     EwramFree(strc40->mem);

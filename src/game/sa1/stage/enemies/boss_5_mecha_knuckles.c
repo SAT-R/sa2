@@ -61,7 +61,7 @@ typedef enum {
     /* 25 */ MKSTATE_COUNT
 } MechaKnucklesStates;
 
-typedef struct MechaKnuckles {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
@@ -86,7 +86,7 @@ typedef struct MechaKnuckles {
     /* 0x9B */ s8 state2;
 } MechaKnuckles; /* 0x9C */
 
-typedef struct MechaKnucklesRocket {
+typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x00 */ s32 unk4;
     /* 0x00 */ s16 unk8;
@@ -99,7 +99,7 @@ typedef struct MechaKnucklesRocket {
     /* 0x44 */ SpriteTransform transform;
 } MechaKnucklesRocket; /* 0x50 */
 
-typedef struct MechaKnucklesParts {
+typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x04 */ s32 unk4;
     /* 0x08 */ s16 unk8;
@@ -116,24 +116,24 @@ typedef struct MechaKnucklesParts {
 typedef bool32 (*MechaKnuxPlayerFn)(MechaKnuckles *boss, Player *p);
 typedef void (*MechaKnuxFn)(MechaKnuckles *boss, Player *p);
 
-typedef struct Unk {
+typedef struct {
     s16 anim;
     u8 variant;
     u8 unk3;
 } Unk;
 
 void Task_MechaKnucklesInit(void);
-void TaskDestructor_MechaKnuckles(struct Task *t);
+void TaskDestructor_MechaKnuckles(Task *t);
 void sub_804E8D4(MechaKnuckles *boss, s32 param1);
 void sub_804EC60(MechaKnuckles *boss, MapEntity *me);
 
 void CreateMechaKnucklesRocket(MechaKnuckles *boss);
 void Task_MechaKnucklesRocketInit(void);
-void TaskDestructor_MechaKnuckles_Rocket(struct Task *t);
+void TaskDestructor_MechaKnuckles_Rocket(Task *t);
 
-struct Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant);
+Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant);
 void Task_MechaKnucklesPartsInit(void);
-void TaskDestructor_MechaKnuckles_Parts(struct Task *t);
+void TaskDestructor_MechaKnuckles_Parts(Task *t);
 
 void sub_804EB04(MechaKnuckles *boss);
 void sub_804EB90(MechaKnuckles *boss);
@@ -195,7 +195,7 @@ bool32 sub_804FCEC(MechaKnuckles *boss, Player *p);
 bool32 sub_804FD54(MechaKnuckles *boss, Player *p);
 MechaKnucklesStates sub_804ED80(MechaKnuckles *boss, Player *p);
 
-typedef struct ProcDataBoss5 {
+typedef struct {
     MechaKnuxPlayerFn knuxPlayerFn;
     MechaKnuxFn changeState;
     s16 unk8;
@@ -504,7 +504,7 @@ const TileInfoFirework sMechaKnucklesParts[MECHA_KNUX_PARTS_VARIANTS] = {
 // TODO: Fake-match
 void CreateEntity_MechaKnuckles(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     MechaKnuckles *boss;
 
     if (IS_MULTI_PLAYER) {
@@ -810,7 +810,7 @@ void sub_804EB90(MechaKnuckles *boss)
 
     boss->flags88 &= ~1;
 
-    res = sa2__sub_801E4E4(temp_r6 + boss->unk99, temp_r7, 1, 8, NULL, sa2__sub_801EE64);
+    res = SA2_LABEL(sub_801E4E4)(temp_r6 + boss->unk99, temp_r7, 1, 8, NULL, SA2_LABEL(sub_801EE64));
     if (boss->flags88 & 0x10) {
         if (res < 0) {
             boss->qUnk78 += res << 8;
@@ -824,7 +824,7 @@ void sub_804EB90(MechaKnuckles *boss)
     boss->flags88 &= ~2;
 
     if (boss->unk7E < 0) {
-        res = sa2__sub_801E4E4(temp_r6 - boss->unk99, temp_r7, 1, -8, NULL, sa2__sub_801EE64);
+        res = SA2_LABEL(sub_801E4E4)(temp_r6 - boss->unk99, temp_r7, 1, -8, NULL, SA2_LABEL(sub_801EE64));
 
         if (res < 0) {
             boss->qUnk78 -= Q(res);
@@ -950,7 +950,7 @@ bool32 sub_804EE20(MechaKnuckles *boss)
     s32 result = FALSE;
 
     if (!(gStageTime & 7)) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
 
         temp_r0 = (((u32)PseudoRandom32() & 0x1FFF00) >> 8) - 4096;
@@ -1081,7 +1081,7 @@ void CreateMechaKnucklesRocket(MechaKnuckles *boss)
     s32 isFlippedX;
     Sprite *s;
     SpriteTransform *tf;
-    struct Task *t;
+    Task *t;
     MechaKnucklesRocket *rocket;
     t = TaskCreate(Task_MechaKnucklesRocketInit, sizeof(MechaKnucklesRocket), 0x2001U, 0U, TaskDestructor_MechaKnuckles_Rocket);
     rocket = TASK_DATA(t);
@@ -1243,9 +1243,9 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_5__Task_MechaKnucklesRock
 }
 END_NONMATCH
 
-struct Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant)
+Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant)
 {
-    struct Task *sp4;
+    Task *sp4;
     TileInfoFirework *temp_r4;
     s32 temp_r0_2;
     s32 temp_r0_3;
@@ -1253,7 +1253,7 @@ struct Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant)
     s32 temp_r2;
     s32 temp_r2_2;
     u32 numTiles;
-    struct Task *t;
+    Task *t;
     MechaKnucklesParts *parts;
     SpriteTransform *tf;
     Sprite *s;
@@ -1771,7 +1771,7 @@ u32 sub_804FD54(MechaKnuckles *boss, Player *p)
     return result;
 }
 
-void TaskDestructor_MechaKnuckles(struct Task *t)
+void TaskDestructor_MechaKnuckles(Task *t)
 {
     MechaKnuckles *boss = TASK_DATA(t);
     VramFree(boss->s.graphics.dest);
@@ -1805,7 +1805,7 @@ void sub_804FDD4(MechaKnuckles *boss)
     boss->flags88 = var_r3;
 }
 
-void TaskDestructor_MechaKnuckles_Rocket(struct Task *t)
+void TaskDestructor_MechaKnuckles_Rocket(Task *t)
 {
     MechaKnucklesRocket *rocket = TASK_DATA(t);
     Sprite *s = &rocket->s;
@@ -1813,7 +1813,7 @@ void TaskDestructor_MechaKnuckles_Rocket(struct Task *t)
     m4aSongNumStop(SE_200);
 }
 
-void TaskDestructor_MechaKnuckles_Parts(struct Task *t)
+void TaskDestructor_MechaKnuckles_Parts(Task *t)
 {
     MechaKnucklesParts *parts = TASK_DATA(t);
     Sprite *s = &parts->s;

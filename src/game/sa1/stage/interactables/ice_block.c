@@ -31,13 +31,13 @@ typedef struct {
 
 void Task_IceBlock(void);
 void Task_IceBlockShards(void);
-void TaskDestructor_IceBlockShards(struct Task *t);
+void TaskDestructor_IceBlockShards(Task *t);
 void CreateIceBlockShards(CamCoord worldX, CamCoord worldY);
 u32 sub_8091E88(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p);
 
 void CreateEntity_IceBlock(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_IceBlock, sizeof(IceBlock), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_IceBlock, sizeof(IceBlock), 0x2000, 0, TaskDestructor_EntityShared);
     IceBlock *block = TASK_DATA(t);
     Sprite *s = &block->shared.s;
 
@@ -181,7 +181,7 @@ END_NONMATCH
 
 void CreateIceBlockShards(CamCoord x, CamCoord y)
 {
-    struct Task *t = TaskCreate(Task_IceBlockShards, sizeof(IceBlockShards), 0x2000, 0, TaskDestructor_IceBlockShards);
+    Task *t = TaskCreate(Task_IceBlockShards, sizeof(IceBlockShards), 0x2000, 0, TaskDestructor_IceBlockShards);
     IceBlockShards *debris = TASK_DATA(t);
 
     Sprite *s;
@@ -411,7 +411,7 @@ u32 sub_8091E88(Sprite *s, CamCoord worldX, CamCoord worldY, Player *p)
     return result;
 }
 
-void TaskDestructor_IceBlockShards(struct Task *t)
+void TaskDestructor_IceBlockShards(Task *t)
 {
     IceBlockShards *debris = TASK_DATA(t);
     VramFree(debris->sprites[0].graphics.dest);

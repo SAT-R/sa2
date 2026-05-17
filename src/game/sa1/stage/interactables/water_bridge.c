@@ -30,11 +30,11 @@ typedef struct {
 } WaterBridge;
 
 void Task_WaterBridge(void);
-void TaskDestructor_WaterBridge(struct Task *t);
+void TaskDestructor_WaterBridge(Task *t);
 
 void CreateEntity_WaterBridge(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_WaterBridge, sizeof(WaterBridge), 0x2000, 0, TaskDestructor_WaterBridge);
+    Task *t = TaskCreate(Task_WaterBridge, sizeof(WaterBridge), 0x2000, 0, TaskDestructor_WaterBridge);
     WaterBridge *bridge = TASK_DATA(t);
     Sprite *s;
     s32 worldX, worldY;
@@ -191,7 +191,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/water_bridge__Task_Water
 }
 END_NONMATCH
 
-void TaskDestructor_WaterBridge(struct Task *t)
+void TaskDestructor_WaterBridge(Task *t)
 {
     WaterBridge *bridge = TASK_DATA(t);
     Sprite *s = &bridge->s;

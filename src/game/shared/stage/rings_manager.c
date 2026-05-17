@@ -28,7 +28,7 @@ typedef struct {
 } RingsManager;
 
 void Task_RingsMgrMain(void);
-void TaskDestructor_RingsMgr(struct Task *);
+void TaskDestructor_RingsMgr(Task *);
 
 #if COLLECT_RINGS_ROM
 #define RECT_TOUCHING_RING_NON_MATCH(t, posX, posY, ringIntX, ringIntY, rect)                                                              \
@@ -125,7 +125,7 @@ const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
 
 void CreateStageRingsManager(void)
 {
-    struct Task *t;
+    Task *t;
     RingsManager *mgr;
     void **mgrRings;
     Sprite *s;
@@ -541,7 +541,7 @@ void Task_RingsMgrMain(void)
 }
 
 #ifndef COLLECT_RINGS_ROM
-void TaskDestructor_RingsMgr(struct Task *t)
+void TaskDestructor_RingsMgr(Task *t)
 {
     void *rings = *(void **)(TASK_DATA(t) + offsetof(RingsManager, rings));
     EwramFree(rings);

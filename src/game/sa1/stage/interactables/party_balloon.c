@@ -14,11 +14,11 @@
 
 void Task_PartyBalloon(void);
 void Task_PartyBalloonPopped(void);
-void TaskDestructor_PartyBalloon(struct Task *);
+void TaskDestructor_PartyBalloon(Task *);
 
 void CreateEntity_PartyBalloon(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PartyBalloon, sizeof(PartyBalloon), 0x2000, 0, TaskDestructor_PartyBalloon);
+    Task *t = TaskCreate(Task_PartyBalloon, sizeof(PartyBalloon), 0x2000, 0, TaskDestructor_PartyBalloon);
     PartyBalloon *balloon = TASK_DATA(t);
     Sprite *s = &balloon->s;
 
@@ -180,7 +180,7 @@ void Task_PartyBalloonPopped(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_PartyBalloon(struct Task *t)
+void TaskDestructor_PartyBalloon(Task *t)
 {
     PartyBalloon *balloon = TASK_DATA(t);
     VramFree(balloon->s.graphics.dest);

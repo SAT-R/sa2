@@ -21,12 +21,12 @@ typedef struct {
 } Sprite_SlowingSnow; // size = 0x18
 
 static void Task_SlowingSnow(void);
-static void TaskDestructor_SlowingSnow(struct Task *t);
+static void TaskDestructor_SlowingSnow(Task *t);
 static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
 void CreateEntity_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0, TaskDestructor_SlowingSnow);
+    Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0, TaskDestructor_SlowingSnow);
 
     Sprite_SlowingSnow *snow = TASK_DATA(t);
     MapEntity *me = in_ia;
@@ -78,7 +78,7 @@ void Task_SlowingSnow(void)
     }
 }
 
-void TaskDestructor_SlowingSnow(struct Task *t) { }
+void TaskDestructor_SlowingSnow(Task *t) { }
 
 static bool32 ShouldDespawn(Sprite_SlowingSnow *snow)
 {

@@ -20,7 +20,7 @@ static void RenderGuardRobo(Sprite *s, s16 a1, s16 a, u8 b, const struct UNK_80D
 void sub_8071478(void);
 void sub_80714F4(struct SpecialStageGuardRobo *);
 void sub_807120C(struct SpecialStageGuardRobo *);
-static void SpecialStageGuardRoboOnDestroy(struct Task *);
+static void SpecialStageGuardRoboOnDestroy(Task *);
 
 static const struct UNK_80DF670 gUnknown_080DF914[9] = {
     { 883, 4, 64, 16, 0 }, { 883, 5, 64, 16, 0 }, { 883, 6, 64, 16, 0 }, { 883, 7, 64, 16, 0 }, { 883, 0, 64, 16, 0 },
@@ -260,16 +260,16 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     *oam = 0x100;
 }
 
-struct Task *CreateSpecialStageGuardRobo(struct SpecialStage *stage)
+Task *CreateSpecialStageGuardRobo(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_GuardRoboMain, sizeof(struct SpecialStageGuardRobo), 0xA000, 0, SpecialStageGuardRoboOnDestroy);
+    Task *t = TaskCreate(Task_GuardRoboMain, sizeof(struct SpecialStageGuardRobo), 0xA000, 0, SpecialStageGuardRoboOnDestroy);
     struct SpecialStageGuardRobo *guardRobo = TASK_DATA(t);
     guardRobo->stage = stage;
     GuardRoboInit(guardRobo);
     return t;
 }
 
-void SpecialStageGuardRoboOnDestroy(UNUSED struct Task *t)
+void SpecialStageGuardRoboOnDestroy(UNUSED Task *t)
 {
     // unused logic
 }

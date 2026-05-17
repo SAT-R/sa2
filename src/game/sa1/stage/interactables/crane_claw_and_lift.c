@@ -50,12 +50,12 @@ void Task_LiftMain(void);
 void Task_Lift2(void);
 void Task_Lift3(void);
 void Task_Lift4(void);
-void TaskDestructor_CraneClaw(struct Task *t);
-void TaskDestructor_Lift(struct Task *t);
+void TaskDestructor_CraneClaw(Task *t);
+void TaskDestructor_Lift(Task *t);
 
 void CreateEntity_CraneClaw(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_CraneClawMain, sizeof(CraneClaw), 0x2000, 0, TaskDestructor_CraneClaw);
+    Task *t = TaskCreate(Task_CraneClawMain, sizeof(CraneClaw), 0x2000, 0, TaskDestructor_CraneClaw);
     CraneClaw *crane = TASK_DATA(t);
     Sprite *s = &crane->s;
     Sprite *s2 = &crane->s2;
@@ -514,7 +514,7 @@ void Task_CraneClaw8(void)
 
 void CreateEntity_Lift(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_LiftMain, sizeof(Lift), 0x2000, 0, TaskDestructor_Lift);
+    Task *t = TaskCreate(Task_LiftMain, sizeof(Lift), 0x2000, 0, TaskDestructor_Lift);
     Lift *lift = TASK_DATA(t);
     Sprite *s = &lift->s;
     Sprite *s2 = &lift->s2;
@@ -797,7 +797,7 @@ void Task_Lift4(void)
     DisplaySprite(s2);
 }
 
-void TaskDestructor_CraneClaw(struct Task *t)
+void TaskDestructor_CraneClaw(Task *t)
 {
     CraneClaw *crane = TASK_DATA(t);
     VramFree(crane->s.graphics.dest);
@@ -805,7 +805,7 @@ void TaskDestructor_CraneClaw(struct Task *t)
     VramFree(crane->s3.graphics.dest);
 }
 
-void TaskDestructor_Lift(struct Task *t)
+void TaskDestructor_Lift(Task *t)
 {
     Lift *lift = TASK_DATA(t);
     VramFree(lift->s.graphics.dest);

@@ -17,11 +17,11 @@
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
 
-typedef struct EggBall {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s2;
-    /* 0x6C */ struct Task *strc6C; // -> EggBall_44
+    /* 0x6C */ Task *strc6C; // -> EggBall_44
     /* 0x70 */ s32 qUnk70;
     /* 0x74 */ s32 qUnk74;
     /* 0x78 */ s32 qUnk78;
@@ -40,7 +40,7 @@ typedef struct EggBall {
     /* 0x98 */ void *vram98;
 } EggBall;
 
-typedef struct EggBall_44 {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 qUnk30;
     /* 0x34 */ s32 qUnk34;
@@ -50,7 +50,7 @@ typedef struct EggBall_44 {
     /* 0x42 */ u8 unk42;
 } EggBall_44;
 
-typedef struct EggBall_Pipe {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     s16 unk3C;
@@ -78,9 +78,9 @@ void Task_803020C(void);
 void Task_8030364(void);
 void Task_8030414(void);
 void Task_PipeExtend(void);
-void TaskDestructor_EggBall(struct Task *t);
-void TaskDestructor_EggBall_44(struct Task *t);
-void TaskDestructor_8030754(struct Task *t);
+void TaskDestructor_EggBall(Task *t);
+void TaskDestructor_EggBall_44(Task *t);
+void TaskDestructor_8030754(Task *t);
 
 extern s16 gUnknown_084ACDC0[9];
 extern u16 gUnknown_084ACDD2[8][2][2];
@@ -209,7 +209,7 @@ void Task_802F0D0(void)
 
 void CreateEntity_EggBall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     EggBall *boss;
     SpriteBase *base;
     Sprite *s0;
@@ -374,7 +374,7 @@ void Task_EggBallMain(void)
 
 void Task_802F56C(void)
 {
-    struct Task *t = gCurTask;
+    Task *t = gCurTask;
     EggBall *boss = TASK_DATA(t);
     Sprite *s = &boss->s;
     Sprite *s2 = &boss->s2;
@@ -412,7 +412,7 @@ void Task_802F644()
     MapEntity *me;
     Sprite *s;
     Sprite *s2;
-    struct Task *t;
+    Task *t;
     CamCoord worldX, worldY;
 
     EggBall *boss = TASK_DATA(gCurTask);
@@ -621,7 +621,7 @@ void Task_802FC14(void)
     worldX = TO_WORLD_POS(boss->base.meX, boss->base.regionX) + I(boss->qUnk70);
     worldY = TO_WORLD_POS(me->y, boss->base.regionY) + I(boss->qUnk74);
 
-    res = sa2__sub_801F100(worldY + 0x18, worldX, 1, 8, &sa2__sub_801EC3C);
+    res = SA2_LABEL(sub_801F100)(worldY + 0x18, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
     if (res < 0) {
         boss->qUnk74 += Q(res);
         boss->qUnk90 = (boss->qUnk90 >> 2) - boss->qUnk90;
@@ -642,7 +642,7 @@ void Task_802FC14(void)
 
     boss->unk88++;
     if ((boss->unk88 & 0x7) == 0) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -713,7 +713,7 @@ void Task_802FE88(void)
     }
 
     if ((boss->unk88 & 7) == 0) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -862,7 +862,7 @@ void Task_8030414(void)
     s->y = worldY - gCamera.y;
 
     if (boss_44->qUnk3C > 0) {
-        s32 res = sa2__sub_801F100(worldY + 0x18, worldX, 1, 8, &sa2__sub_801EC3C);
+        s32 res = SA2_LABEL(sub_801F100)(worldY + 0x18, worldX, 1, 8, &SA2_LABEL(sub_801EC3C));
 
         if (res < 0) {
             boss_44->qUnk34 += Q(res);
@@ -942,7 +942,7 @@ void Task_PipeExtend()
     DisplaySprite(s);
 }
 
-void TaskDestructor_EggBall(struct Task *t)
+void TaskDestructor_EggBall(Task *t)
 {
     EggBall *boss = TASK_DATA(t);
 
@@ -950,14 +950,14 @@ void TaskDestructor_EggBall(struct Task *t)
     VramFree(boss->s2.graphics.dest);
 }
 
-void TaskDestructor_EggBall_44(struct Task *t)
+void TaskDestructor_EggBall_44(Task *t)
 {
     EggBall_44 *boss_44 = TASK_DATA(t);
 
     VramFree(boss_44->s.graphics.dest);
 }
 
-void TaskDestructor_8030754(struct Task *t)
+void TaskDestructor_8030754(Task *t)
 {
     EggBall_Pipe *pipe = TASK_DATA(t);
 

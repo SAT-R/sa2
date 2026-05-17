@@ -465,7 +465,7 @@ void Task_8062414(void)
 
 void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
     Sprite_Corkscrew3D *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
@@ -480,7 +480,7 @@ void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 sprite
 
 void CreateEntity_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
     Sprite_Corkscrew3D *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;

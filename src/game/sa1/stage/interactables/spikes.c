@@ -35,11 +35,11 @@ bool32 sub_8020E98(Sprite *s, MapEntity *me, Spikes *spikes, Player *p);
 bool32 sub_8020F2C(Sprite *s, MapEntity *me, Spikes *spikes, Player *p, bool32 *out);
 bool32 sub_8021208(Sprite *s, MapEntity *me, Spikes *spikes, Player *p, bool32 *out);
 
-void TaskDestructor_Spikes(struct Task *t);
+void TaskDestructor_Spikes(Task *t);
 
 void CreateEntity_Spikes_Up(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spikes_Up, sizeof(Spikes), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Spikes_Up, sizeof(Spikes), 0x2000, 0, NULL);
     Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
     CamCoord worldX, worldY;
@@ -75,7 +75,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 
 void CreateEntity_Spikes_Down(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spikes_Down, sizeof(Spikes), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Spikes_Down, sizeof(Spikes), 0x2000, 0, NULL);
     Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
     CamCoord worldX, worldY;
@@ -215,7 +215,7 @@ void Task_Spikes_Down(void)
 
 void CreateEntity_Spikes_Horizontal(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spikes_Horizontal, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_Spikes_Horizontal, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
     CamCoord worldX, worldY;
@@ -340,7 +340,7 @@ void Task_Spikes_Horizontal(void)
 
 void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spikes_HidingUp, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_Spikes_HidingUp, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
     CamCoord worldX, worldY;
@@ -414,7 +414,7 @@ void Task_Spikes_HidingUp(void)
 
 void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Spikes_HidingDown, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
+    Task *t = TaskCreate(Task_Spikes_HidingDown, sizeof(Spikes), 0x2000, 0, TaskDestructor_Spikes);
     Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
     CamCoord worldX, worldY;
@@ -834,7 +834,7 @@ bool32 sub_8021208(Sprite *s, MapEntity *me, Spikes *spikes, Player *p, bool32 *
     return TRUE;
 }
 
-void TaskDestructor_Spikes(struct Task *t)
+void TaskDestructor_Spikes(Task *t)
 {
     Spikes *spikes = TASK_DATA(t);
     VramFree(spikes->s.graphics.dest);

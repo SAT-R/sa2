@@ -50,11 +50,11 @@ typedef struct {
 } RaceStartMessage; /* 0x7C */
 
 void sub_8036168(void);
-void TaskDestructor_CourseStartCountdown(struct Task *);
+void TaskDestructor_CourseStartCountdown(Task *);
 void CreateRaceStartMessage(void);
 void sub_8036398(void);
 void Task_RaceStartMessageMain(void);
-void TaskDestructor_RaceStartMessage(struct Task *);
+void TaskDestructor_RaceStartMessage(Task *);
 
 const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
     TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC)),
@@ -70,7 +70,7 @@ const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
 
 void CreateCourseStartCountdown(bool8 playerSkippedIntro)
 {
-    struct Task *t;
+    Task *t;
     CourseStartCountdown *countdown;
     Sprite *s;
 
@@ -199,7 +199,7 @@ void sub_8036398(void)
 
 void CreateRaceStartMessage(void)
 {
-    struct Task *t = TaskCreate(Task_RaceStartMessageMain, sizeof(RaceStartMessage), 0x3000, 0, TaskDestructor_RaceStartMessage);
+    Task *t = TaskCreate(Task_RaceStartMessageMain, sizeof(RaceStartMessage), 0x3000, 0, TaskDestructor_RaceStartMessage);
     RaceStartMessage *startMessage = TASK_DATA(t);
     Sprite *s;
 
@@ -291,14 +291,14 @@ void Task_RaceStartMessageMain(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_CourseStartCountdown(struct Task *t)
+void TaskDestructor_CourseStartCountdown(Task *t)
 {
     CourseStartCountdown *countdown = TASK_DATA(t);
     VramFree(countdown->sprMachine.graphics.dest);
     VramFree(countdown->sprCountdownDigits.graphics.dest);
 }
 
-void TaskDestructor_RaceStartMessage(struct Task *t)
+void TaskDestructor_RaceStartMessage(Task *t)
 {
     RaceStartMessage *startMessage = TASK_DATA(t);
     VramFree(startMessage->sRight.graphics.dest);

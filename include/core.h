@@ -238,11 +238,11 @@ extern IntrFunc gIntrTable[16];
 extern IntrFunc const gIntrTableTemplate[14];
 extern u32 gIntrMainBuf[0x80];
 
-extern struct Task *gCurTask;
-extern struct Task gTasks[MAX_TASK_NUM];
-extern struct Task *gTaskPtrs[MAX_TASK_NUM];
-extern struct Task *gNextTask;
-extern struct Task gEmptyTask;
+extern Task *gCurTask;
+extern Task gTasks[MAX_TASK_NUM];
+extern Task *gTaskPtrs[MAX_TASK_NUM];
+extern Task *gNextTask;
+extern Task gEmptyTask;
 extern s32 gNumTasks;
 
 extern u16 gInput;

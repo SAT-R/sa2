@@ -29,7 +29,7 @@ u8 gSmallAirBubbleCount = 0;
 
 static void Task_DrowningCountdown(void);
 static void Task_SpawnAirBubbles(void);
-static void TaskDestructor_SpawnAirBubbles(struct Task *t);
+static void TaskDestructor_SpawnAirBubbles(Task *t);
 
 void Task_DrowningCountdown(void)
 {
@@ -72,10 +72,10 @@ void Task_DrowningCountdown(void)
     DisplaySprite(s);
 }
 
-struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
+Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 {
-    struct Camera *cam = &gCamera;
-    struct Task *t = CreateMultiplayerSpriteTask(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_MultiplayerSpriteTask);
+    Camera *cam = &gCamera;
+    Task *t = CreateMultiplayerSpriteTask(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *ts = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *transform;
@@ -112,12 +112,12 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 }
 
 // Called when air bubbles spawn underwater
-struct Task *SpawnAirBubbles(s32 x, s32 y, s32 p2, s32 p3)
+Task *SpawnAirBubbles(s32 x, s32 y, s32 p2, s32 p3)
 {
     if ((s8)gSmallAirBubbleCount > MAX_SMALL_BUBBLE_COUNT) {
         return NULL;
     } else {
-        struct Task *t;
+        Task *t;
         MultiplayerSpriteTask *ts;
         Sprite *s;
         SpriteTransform *transform;
@@ -207,7 +207,7 @@ static void Task_SpawnAirBubbles(void)
 
     r1 += SIN((unk10 & 0xFF) * 4) >> 4;
     {
-        struct Camera *cam = &gCamera;
+        Camera *cam = &gCamera;
         transform->x = I(r1) - cam->x;
         transform->y = I(r4) - cam->y;
     }
@@ -275,9 +275,9 @@ static void Task_SpawnBubblesAfterDrowning(void)
     }
 }
 
-struct Task *SpawnBubblesAfterDrowning(Player *p)
+Task *SpawnBubblesAfterDrowning(Player *p)
 {
-    struct Task *t = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
+    Task *t = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
     DrownBubbles *db = TASK_DATA(t);
     db->p = p;
@@ -285,4 +285,4 @@ struct Task *SpawnBubblesAfterDrowning(Player *p)
     return t;
 }
 
-static void TaskDestructor_SpawnAirBubbles(struct Task *t) { gSmallAirBubbleCount--; }
+static void TaskDestructor_SpawnAirBubbles(Task *t) { gSmallAirBubbleCount--; }

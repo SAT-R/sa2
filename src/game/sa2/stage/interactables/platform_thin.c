@@ -43,10 +43,10 @@ typedef struct {
 } PlatformBreakParticles /* size 0xF4*/;
 
 static void Task_PlatformThinMain(void);
-static void TaskDestructor_PlatformThin(struct Task *);
+static void TaskDestructor_PlatformThin(Task *);
 
 static void Task_PlatformBreakParticlesMain(void);
-static void TaskDestructor_PlatformBreakParticles(struct Task *);
+static void TaskDestructor_PlatformBreakParticles(Task *);
 
 static void CreatePlatformBreakParticles(s16, s16);
 static u32 HandleThinPlatformCollision(Sprite *, s32, s32, Player *);
@@ -78,7 +78,7 @@ static const u16 unused = 0;
 
 void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform), 0x2010, 0, TaskDestructor_PlatformThin);
+    Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform), 0x2010, 0, TaskDestructor_PlatformThin);
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -225,8 +225,7 @@ static void Task_PlatformThinMain(void)
 
 static void CreatePlatformBreakParticles(s16 x, s16 y)
 {
-    struct Task *t
-        = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
+    Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(PlatformBreakParticles), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     PlatformBreakParticles *particles = TASK_DATA(t);
 
     SpriteTransform *transform;
@@ -424,14 +423,14 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y = y;
 }
 
-static void TaskDestructor_PlatformThin(struct Task *t)
+static void TaskDestructor_PlatformThin(Task *t)
 {
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
 
     VramFree(platform->s.graphics.dest);
 }
 
-static void TaskDestructor_PlatformBreakParticles(struct Task *t)
+static void TaskDestructor_PlatformBreakParticles(Task *t)
 {
     PlatformBreakParticles *platform = TASK_DATA(t);
     VramFree(platform->unk0.graphics.dest);

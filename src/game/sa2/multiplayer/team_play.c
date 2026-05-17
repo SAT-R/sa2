@@ -69,7 +69,7 @@ static const TileInfo gUnknown_080D92DC[] = {
 
 void CreateMultiplayerTeamPlayScreen(void)
 {
-    struct Task *t;
+    Task *t;
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
     Sprite *s;
     Background *background;

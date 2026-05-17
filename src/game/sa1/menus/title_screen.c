@@ -37,7 +37,7 @@
 #define MENU_ITEMS_SPACE    14
 #define NUM_MAIN_MENU_ITEMS 5
 
-void TaskDestructor_TitleScreen(struct Task *t);
+void TaskDestructor_TitleScreen(Task *t);
 void Task_800D268();
 void Task_800D450();
 void Task_MainMenu_Select(void);
@@ -70,18 +70,18 @@ const u8 gUnknown_080BB327[] = { 0, 1, 3, 2, 0 };
 const VoidFn sMainMenuSecondaryItems[NUM_MAIN_MENU_ITEMS - 1]
     = { CreateMultiplayerModeSelectScreen, CreateTimeAttackMenu, CreateOptionsMenu, LoadTinyChaoGarden };
 
-typedef struct SegaLogo {
+typedef struct {
     u16 unk0;
     Background bg;
 } SegaLogo; /* 0x44 */
 
-typedef struct SonicTeamLogo {
+typedef struct {
     u16 unk0;
     Background bg;
     s16 qFade;
 } SonicTeamLogo; /* 0x48 */
 
-typedef struct MainMenu {
+typedef struct {
     /* 0x000 */ Sprite s;
     /* 0x030 */ Sprite items[NUM_MAIN_MENU_ITEMS];
     /* 0x120 */ Background bg120;
@@ -95,7 +95,7 @@ typedef struct MainMenu {
 
 void CreateSegaLogo(void)
 {
-    struct Task *t;
+    Task *t;
     SegaLogo *logo;
     Background *bg;
 
@@ -173,7 +173,7 @@ void Task_800D11C(void)
 
 void CreateSonicTeamLogo(void)
 {
-    struct Task *t;
+    Task *t;
     SonicTeamLogo *logo;
     Background *bg;
 
@@ -324,7 +324,7 @@ void Task_800D4B0(void)
     CreateTitleScreen(1);
 }
 
-typedef struct TitleScreen {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Sprite s2;
     /* 0x60 */ Background bg;
@@ -338,7 +338,7 @@ typedef struct TitleScreen {
 
 void CreateTitleScreen(u32 playMusic)
 {
-    struct Task *t;
+    Task *t;
     TitleScreen *title;
     Sprite *s;
     Background *bg;
@@ -513,8 +513,8 @@ void CreateMainMenu(u32 param0)
     StrcUi_805423C *temp_r1_3;
     s8 *temp_r0;
 
-    struct Task *t;
-    struct MainMenu *menu;
+    Task *t;
+    MainMenu *menu;
     Sprite *s;
     Background *bg;
 
@@ -837,7 +837,7 @@ void Task_SwitchToMainMenu(void)
     CreateMainMenu(0);
 }
 
-void TaskDestructor_TitleScreen(struct Task *t)
+void TaskDestructor_TitleScreen(Task *t)
 {
 #ifdef BUG_FIX
     // NOTE: This is *technically* not a bug, but it's more coherent like this.

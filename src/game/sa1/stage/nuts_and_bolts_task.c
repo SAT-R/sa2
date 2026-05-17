@@ -4,9 +4,9 @@
 #include "malloc_vram.h"
 #include "game/sa1/stage/nuts_and_bolts_task.h"
 
-struct Task *CreateNutsAndBoltsTask(u16 taskFlags, void *vramTiles, u16 anim, u8 variant, TaskDestructor dtor)
+Task *CreateNutsAndBoltsTask(u16 taskFlags, void *vramTiles, u16 anim, u8 variant, TaskDestructor dtor)
 {
-    struct Task *t = TaskCreate(Task_NutsAndBolts, sizeof(NutsAndBolts), taskFlags, 0, dtor);
+    Task *t = TaskCreate(Task_NutsAndBolts, sizeof(NutsAndBolts), taskFlags, 0, dtor);
     NutsAndBolts *nuts = TASK_DATA(t);
 
     nuts->qUnk30 = 0;
@@ -38,7 +38,7 @@ struct Task *CreateNutsAndBoltsTask(u16 taskFlags, void *vramTiles, u16 anim, u8
 
 void Task_NutsAndBolts(void)
 {
-    struct Task **taskPtr = &gCurTask; // TODO: Remove this by properly matching the range check-if below...
+    Task **taskPtr = &gCurTask; // TODO: Remove this by properly matching the range check-if below...
     NutsAndBolts *nuts = TASK_DATA(*taskPtr);
     Sprite *s = &nuts->s;
 
@@ -64,7 +64,7 @@ void Task_NutsAndBolts(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_NutsAndBolts(struct Task *t)
+void TaskDestructor_NutsAndBolts(Task *t)
 {
     NutsAndBolts *nuts = TASK_DATA(t);
     VramFree(nuts->s.graphics.dest);

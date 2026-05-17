@@ -35,7 +35,7 @@ typedef struct {
 static inline void sub_80865E4_inline(void);
 static void sub_80865E4(void);
 static void sub_808673C(void);
-static void sub_80867E8(struct Task *);
+static void sub_80867E8(Task *);
 static void sub_808623C(void);
 static void sub_8086858(Sprite_MysteryItemBox *);
 static bool32 sub_808693C(Sprite_MysteryItemBox *);
@@ -60,7 +60,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 {
     Sprite *s;
     Sprite_MysteryItemBox *itemBox;
-    struct Task *t;
+    Task *t;
     if ((gRandomItemBox & 7) == me->d.sData[0] && me->d.sData[1] <= (gRandomItemBox >> 4)) {
         t = TaskCreate(sub_80865E4, sizeof(Sprite_MysteryItemBox), 0x2000, 0, sub_80867E8);
     } else {
@@ -439,7 +439,7 @@ static void sub_808679C(void)
     sub_808636C();
 }
 
-static void sub_80867E8(struct Task *t)
+static void sub_80867E8(Task *t)
 {
     Sprite_MysteryItemBox *itemBox = TASK_DATA(t);
     VramFree(itemBox->box.graphics.dest);

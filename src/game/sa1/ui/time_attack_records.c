@@ -17,14 +17,14 @@
 
 /* These are the records appearing after selecting / before starting to play a stage */
 
-typedef struct CharacterCard {
+typedef struct {
     const u8 *tiles;
     s32 tilesSize;
     const u16 *palette;
     const u8 *layout;
 } CharacterCard;
 
-typedef struct TimeAttackRecords {
+typedef struct {
     /* 0x00 */ Sprite sprites[3];
     /* 0x90 */ Sprite s3;
     /* 0xC0 */ GameOverB overB;
@@ -42,8 +42,8 @@ void TimeAttackRecordsInitUI(u8 *vram);
 void Task_806BBC0(void);
 void sub_806BD24(void);
 void sub_806BF04(void);
-void sub_806BDC4(u8 rankIndex, struct Task *t);
-void TaskDestructor_806BF38(struct Task *t);
+void sub_806BDC4(u8 rankIndex, Task *t);
+void TaskDestructor_806BF38(Task *t);
 
 extern u16 gUnknown_086CC774[16];
 extern u8 gUnknown_086CC794[0xA0];
@@ -149,7 +149,7 @@ void TimeAttackRecordsInitUI(u8 *vram)
 
 void CreateTimeAttackRecords()
 {
-    struct Task *t;
+    Task *t;
     GameOverB *temp_r4;
     Sprite *s;
     StrcUi_805423C *temp_r2;
@@ -371,7 +371,7 @@ void sub_806BD24()
     }
 }
 
-void sub_806BDC4(u8 rankIndex, struct Task *t)
+void sub_806BDC4(u8 rankIndex, Task *t)
 {
     s32 temp_r0_2;
     s32 temp_r2;
@@ -413,7 +413,7 @@ void sub_806BF04(void)
     }
 }
 
-void TaskDestructor_806BF38(struct Task *t)
+void TaskDestructor_806BF38(Task *t)
 {
     TimeAttackRecords *recs = TASK_DATA(t);
 

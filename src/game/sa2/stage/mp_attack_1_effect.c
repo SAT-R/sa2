@@ -157,12 +157,12 @@ void sub_80871C4(s16 a, s16 b, s16 c)
     }
 }
 
-void TaskDestructor_MPAttackEffect(struct Task *);
+void TaskDestructor_MPAttackEffect(Task *);
 void InitGraphicsForMPAttackEffect(void);
 
 void CreateMPAttackEffect(void)
 {
-    struct Task *t = TaskCreate(Task_MPAttackEffect, sizeof(struct MPAttack1Effect), 0x8000, 0, TaskDestructor_MPAttackEffect);
+    Task *t = TaskCreate(Task_MPAttackEffect, sizeof(struct MPAttack1Effect), 0x8000, 0, TaskDestructor_MPAttackEffect);
     struct MPAttack1Effect *effect = TASK_DATA(t);
     effect->unk0 = 0;
     InitGraphicsForMPAttackEffect();
@@ -180,4 +180,4 @@ void InitGraphicsForMPAttackEffect(void)
     gWinRegs[2] = WIN_RANGE(0, DISPLAY_HEIGHT);
 }
 
-void TaskDestructor_MPAttackEffect(UNUSED struct Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }
+void TaskDestructor_MPAttackEffect(UNUSED Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }

@@ -31,12 +31,12 @@ typedef struct {
 } PlatformSpiked;
 
 void Task_Platform_Spiked(void);
-void TaskDestructor_Platform_Spiked(struct Task *t);
+void TaskDestructor_Platform_Spiked(Task *t);
 bool32 sub_80805C8(Sprite *s, s32 worldX, s32 worldY, Rect8 *rect, Player *p);
 
 void CreateEntity_Platform_Spiked(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Platform_Spiked, sizeof(PlatformSpiked), 0x2000, 0, TaskDestructor_Platform_Spiked);
+    Task *t = TaskCreate(Task_Platform_Spiked, sizeof(PlatformSpiked), 0x2000, 0, TaskDestructor_Platform_Spiked);
     PlatformSpiked *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -389,7 +389,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/platform_spiked__sub_808
 }
 END_NONMATCH
 
-void TaskDestructor_Platform_Spiked(struct Task *t)
+void TaskDestructor_Platform_Spiked(Task *t)
 {
     PlatformSpiked *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

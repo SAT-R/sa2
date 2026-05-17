@@ -111,7 +111,7 @@ END_NONMATCH
 
 void CreateEntity_ToggleGravity(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = NULL;
+    Task *t = NULL;
     ToggleGravity *ia;
     t = TaskCreate(Task_ToggleGravity, sizeof(ToggleGravity), 0x2000, 0, NULL);
     ia = TASK_DATA(t);

@@ -98,7 +98,7 @@ typedef struct {
 #define CHEESE_DISTANCE_MAX 200
 typedef struct {
     /* 0x00 */ s32 squarePlayerDistance;
-    /* 0x04 */ struct Task *task;
+    /* 0x04 */ Task *task;
 } CheeseTarget; /* size: unknown (but >= 0x8?) */
 
 // Incomplete
@@ -152,7 +152,7 @@ extern u16 gUnknown_0300507C;
 extern u8 gSpikesUnknownTimer;
 
 extern s8 SA2_LABEL(gUnknown_0300543C);
-extern struct Task *gEntitiesManagerTask;
+extern Task *gEntitiesManagerTask;
 
 extern u8 gDestroySpotlights;
 
@@ -182,7 +182,7 @@ extern u8 gBossRingsRespawnCount;
 extern bool8 gBossRingsShallRespawn;
 extern bool8 gBoostEffectTasksCreated;
 
-extern struct Task *gMultiplayerPlayerTasks[4];
+extern Task *gMultiplayerPlayerTasks[4];
 extern s8 gMultiplayerCharacters[4];
 extern s8 gMultiplayerRanks[4];
 extern u8 gOamMatrixIndex;
@@ -221,7 +221,7 @@ extern RoomEvent gRoomEventQueue[16];
 
 extern CheeseTarget gCheeseTarget;
 
-extern struct Task *gChaoTasks[3];
+extern Task *gChaoTasks[3];
 
 #define MPC_FLAG_SHIFT_REGISTERED 0
 #define MPC_FLAG_SHIFT_B_TEAM     4

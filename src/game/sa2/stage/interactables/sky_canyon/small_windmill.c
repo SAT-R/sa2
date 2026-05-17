@@ -32,7 +32,7 @@ typedef struct {
 #define ROTATE_SPEED         8
 
 static void Task_SmallSpinnyWindmill(void);
-static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *);
+static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(Task *);
 static void SlowWindmillToStop(void);
 static void Task_RotateSequence(void);
 static bool32 ShouldDespawn(Sprite_SmallWindmill *);
@@ -42,8 +42,8 @@ static void ResetWindmill(Sprite_SmallWindmill *);
 
 void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SmallSpinnyWindmill, sizeof(Sprite_SmallWindmill), 0x2010, 0,
-                                TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
+    Task *t = TaskCreate(Task_SmallSpinnyWindmill, sizeof(Sprite_SmallWindmill), 0x2010, 0,
+                         TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
     Sprite_SmallWindmill *windmill = TASK_DATA(t);
     Sprite *s;
     windmill->type = me->d.uData[0];
@@ -301,7 +301,7 @@ static void SlowWindmillToStop(void)
     RenderWindmill(windmill);
 }
 
-static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *t)
+static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(Task *t)
 {
     Sprite_SmallWindmill *windmill = TASK_DATA(t);
     VramFree(windmill->s.graphics.dest);

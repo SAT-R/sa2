@@ -31,7 +31,7 @@
 #endif
 
 static void Task_ShowIntroScreen(void);
-static void SpecialStageOnDestroy(struct Task *);
+static void SpecialStageOnDestroy(Task *);
 static void Task_InitComponents(void);
 #ifndef BUG_FIX
 static void SpecialStagePauseMenuMain(void);
@@ -56,7 +56,7 @@ void sub_806C158(void);
 
 void CreateSpecialStage(s16 selectedCharacter, s16 level)
 {
-    struct Task *t;
+    Task *t;
     struct SpecialStage *stage;
 
     s16 zone, character, temp, i, viewDistance;
@@ -723,7 +723,7 @@ bool32 SpecialStagePauseMenuMain(void)
     BUG_FIX_RETURN(FALSE);
 }
 
-static void SpecialStageOnDestroy(UNUSED struct Task *t)
+static void SpecialStageOnDestroy(UNUSED Task *t)
 {
     gBgOffsetsPrimary = &gBgOffsetsBuffer[0];
     gBgOffsetsSecondary = &gBgOffsetsBuffer[1];

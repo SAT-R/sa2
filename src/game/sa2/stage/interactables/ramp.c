@@ -23,14 +23,14 @@ typedef struct {
 } Sprite_Ramp /* size 0x40 */;
 
 static void Task_Ramp(void);
-static void TaskDestructor_Ramp(struct Task *);
+static void TaskDestructor_Ramp(Task *);
 
 void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 temp;
     u32 r0;
     s32 temp2;
-    struct Task *t = TaskCreate(Task_Ramp, sizeof(Sprite_Ramp), 0x2010, 0, TaskDestructor_Ramp);
+    Task *t = TaskCreate(Task_Ramp, sizeof(Sprite_Ramp), 0x2010, 0, TaskDestructor_Ramp);
     Sprite_Ramp *ramp = TASK_DATA(t);
     Sprite *s = &ramp->s;
 
@@ -185,7 +185,7 @@ static void Task_Ramp(void)
     DisplaySprite(s);
 }
 
-static void TaskDestructor_Ramp(struct Task *t)
+static void TaskDestructor_Ramp(Task *t)
 {
     Sprite_Ramp *ramp = TASK_DATA(t);
     VramFree(ramp->s.graphics.dest);

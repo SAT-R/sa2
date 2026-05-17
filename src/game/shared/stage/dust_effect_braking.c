@@ -16,9 +16,9 @@
 DustEffectBraking ALIGNED(8) gDustEffectBrakingTask = {};
 
 void Task_BrakingDustEffect(void);
-void TaskDestructor_BrakingDustEffectRelated(struct Task *);
+void TaskDestructor_BrakingDustEffectRelated(Task *);
 void Task_BrakingDustEffectRelated(void);
-void TaskDestructor_BrakingDustEffect(struct Task *);
+void TaskDestructor_BrakingDustEffect(Task *);
 
 /* This generates the Dust Clouds that appear while running and then braking by
  * holding the DPAD in the other direction. */
@@ -29,12 +29,12 @@ void TaskDestructor_BrakingDustEffect(struct Task *);
 #define BRAKING_DUST_EFFECT_DTOR NULL
 #endif
 
-struct Task *CreateBrakingDustEffect(s32 x, s32 y)
+Task *CreateBrakingDustEffect(s32 x, s32 y)
 {
     if (gDustEffectBrakingTask.t == NULL || gDustEffectBrakingTask.unk0 == 0) {
         return NULL;
     } else {
-        struct Task *t;
+        Task *t;
         BrakeDustEffect *bde;
         Player *p;
         Sprite *s;
@@ -116,7 +116,7 @@ void Task_BrakingDustEffect(void)
 void CreateBrakingDustEffectRelatedTask(void)
 {
     if (gDustEffectBrakingTask.t == NULL) {
-        struct Task *t = TaskCreate(Task_BrakingDustEffectRelated, 0, 0x4000, 0, TaskDestructor_BrakingDustEffectRelated);
+        Task *t = TaskCreate(Task_BrakingDustEffectRelated, 0, 0x4000, 0, TaskDestructor_BrakingDustEffectRelated);
         gDustEffectBrakingTask.t = t;
         gDustEffectBrakingTask.unk0 = 20;
     }
@@ -130,13 +130,13 @@ void DestroyBrakingDustEffectRelatedTask(void)
     }
 }
 
-void TaskDestructor_BrakingDustEffectRelated(struct Task *t) { gDustEffectBrakingTask.t = NULL; }
+void TaskDestructor_BrakingDustEffectRelated(Task *t) { gDustEffectBrakingTask.t = NULL; }
 
 void Task_BrakingDustEffectRelated(void) { }
 
 #if (GAME == GAME_SA2)
 // This destructor only gets used in SA2 for the after-goal braking effect.
-void TaskDestructor_BrakingDustEffect(struct Task *t)
+void TaskDestructor_BrakingDustEffect(Task *t)
 {
     BrakeDustEffect *bde = TASK_DATA(t);
     Sprite *s = &bde->s;

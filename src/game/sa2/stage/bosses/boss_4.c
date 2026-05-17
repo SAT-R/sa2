@@ -124,7 +124,7 @@ static void sub_80424EC(AeroEgg *boss);
 static void sub_8042560(AeroEgg *boss);
 static void Task_AeroEggMain(void);
 static void sub_8042774(AeroEgg *boss);
-static void TaskDestructor_AeroEggMain(struct Task *t);
+static void TaskDestructor_AeroEggMain(Task *t);
 
 void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY);
 static void AeroEgg_UpdatePos(AeroEgg *boss);
@@ -857,7 +857,7 @@ static void sub_8042774(AeroEgg *boss)
     }
 }
 
-static void TaskDestructor_AeroEggMain(struct Task *t)
+static void TaskDestructor_AeroEggMain(Task *t)
 {
     AeroEgg *boss = TASK_DATA(t);
 
@@ -872,7 +872,7 @@ static void TaskDestructor_AeroEggMain(struct Task *t)
 
 void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
 {
-    struct Task *t = TaskCreate(Task_CreateAeroEggBombMain, sizeof(AeroEggBomb), 0x6100, 0, NULL);
+    Task *t = TaskCreate(Task_CreateAeroEggBombMain, sizeof(AeroEggBomb), 0x6100, 0, NULL);
     AeroEggBomb *eb = TASK_DATA(t);
     Sprite *s;
 
@@ -991,7 +991,7 @@ static void Task_AeroEggBombHitGround(void)
 
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3, u16 param4)
 {
-    struct Task *t = TaskCreate(Task_AeroEggBombDebris, sizeof(AeroEggDebris), 0x6100, 0, NULL);
+    Task *t = TaskCreate(Task_AeroEggBombDebris, sizeof(AeroEggDebris), 0x6100, 0, NULL);
     AeroEggDebris *deb = TASK_DATA(t);
     Sprite *s;
 

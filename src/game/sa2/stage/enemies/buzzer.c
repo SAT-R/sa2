@@ -27,7 +27,7 @@ typedef struct {
 } Sprite_Buzzer; /* size: 0x6C */
 
 static void Task_BuzzerMain(void);
-static void TaskDestructor_Buzzer(struct Task *);
+static void TaskDestructor_Buzzer(Task *);
 static void sub_80533B4(void);
 static void sub_80534F0(void);
 static void sub_8053620(void);
@@ -35,7 +35,7 @@ static void sub_8053620(void);
 void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1) {
-        struct Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0, TaskDestructor_Buzzer);
+        Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0, TaskDestructor_Buzzer);
         Sprite_Buzzer *buzzer = TASK_DATA(t);
         Sprite *s = &buzzer->s;
         buzzer->base.regionX = spriteRegionX;
@@ -208,7 +208,7 @@ static void sub_8053620(void)
     });
 }
 
-static void TaskDestructor_Buzzer(struct Task *t)
+static void TaskDestructor_Buzzer(Task *t)
 {
     Sprite_Buzzer *buzzer = TASK_DATA(t);
     VramFree(buzzer->s.graphics.dest);

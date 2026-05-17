@@ -27,7 +27,7 @@
 #endif
 #define RINGS_CONTAINER_Y 0
 
-struct Task *gStageUITask = NULL;
+Task *gStageUITask = NULL;
 
 const u16 sAnimsAsciiDigits[12][2] = {
     { SA2_ANIM_ASCII, '0' - 32 }, { SA2_ANIM_ASCII, '1' - 32 }, { SA2_ANIM_ASCII, '2' - 32 },
@@ -99,10 +99,10 @@ typedef struct {
 } StageUI; /* size: 0x2F0 */
 
 void Task_StageUIMain(void);
-void TaskDestructor_CreateStageUI(struct Task *t);
+void TaskDestructor_CreateStageUI(Task *t);
 
 // TODO: rename stage hud
-struct Task *CreateStageUI(void)
+Task *CreateStageUI(void)
 {
     u32 i;
     u32 tile;
@@ -110,7 +110,7 @@ struct Task *CreateStageUI(void)
     StageUI *ui;
     Sprite *s;
 
-    struct Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2102, 0, TaskDestructor_CreateStageUI);
+    Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2102, 0, TaskDestructor_CreateStageUI);
     gStageUITask = t;
     ui = TASK_DATA(t);
 
@@ -552,7 +552,7 @@ void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
     }
 }
 
-void TaskDestructor_CreateStageUI(struct Task *t)
+void TaskDestructor_CreateStageUI(Task *t)
 {
     StageUI *ui = TASK_DATA(t);
     VramFree(ui->ring.graphics.dest);

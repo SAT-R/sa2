@@ -32,12 +32,12 @@ static void sub_8051928(void);
 static bool8 CheckPlayerHit(Sprite_Gohla *gohla, s32 x, s32 y);
 static void sub_8051AF0(void);
 static void RenderProjectiles(Sprite_Gohla *gohla, s16 x, s16 y, u32);
-static void TaskDestructor_Gohla(struct Task *);
+static void TaskDestructor_Gohla(Task *);
 
 void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != 1) {
-        struct Task *t = TaskCreate(sub_8051928, sizeof(Sprite_Gohla), 0x4040, 0, TaskDestructor_Gohla);
+        Task *t = TaskCreate(sub_8051928, sizeof(Sprite_Gohla), 0x4040, 0, TaskDestructor_Gohla);
         Sprite_Gohla *gohla = TASK_DATA(t);
         Sprite *s = &gohla->s;
         gohla->base.regionX = spriteRegionX;
@@ -197,7 +197,7 @@ static bool8 CheckPlayerHit(Sprite_Gohla *gohla, s32 x, s32 y)
     return ret;
 }
 
-static void TaskDestructor_Gohla(struct Task *t)
+static void TaskDestructor_Gohla(Task *t)
 {
     Sprite_Gohla *gohla = TASK_DATA(t);
     VramFree(gohla->s.graphics.dest);

@@ -21,11 +21,11 @@ typedef struct {
 
 void Task_SpindashDustEffect(void);
 void Task_SpindashDustEffectBig(void);
-void TaskDestructor_SpindashDustEffect(struct Task *);
+void TaskDestructor_SpindashDustEffect(Task *);
 
-struct Task *CreateSpindashDustEffect()
+Task *CreateSpindashDustEffect()
 {
-    struct Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0, TaskDestructor_SpindashDustEffect);
+    Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0, TaskDestructor_SpindashDustEffect);
 
     DustEffect *sde = TASK_DATA(t);
     Sprite *s = &sde->s;
@@ -49,7 +49,7 @@ struct Task *CreateSpindashDustEffect()
 
 void Task_SpindashDustEffect(void)
 {
-    struct Camera *cam;
+    Camera *cam;
     Player *p = &gPlayer;
     s32 offY;
 
@@ -80,7 +80,7 @@ void Task_SpindashDustEffect(void)
 
 #if (GAME == GAME_SA2)
         if (IS_MULTI_PLAYER) {
-            struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
+            Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->pos.x - cam->x);
             s->y = ((mpp->pos.y + offY) - cam->y);
@@ -110,7 +110,7 @@ void Task_SpindashDustEffect(void)
 
 void Task_SpindashDustEffectBig(void)
 {
-    struct Camera *cam;
+    Camera *cam;
     Player *p = &gPlayer;
     s32 offY;
 
@@ -141,7 +141,7 @@ void Task_SpindashDustEffectBig(void)
 
 #if (GAME == GAME_SA2)
         if (IS_MULTI_PLAYER) {
-            struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
+            Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->pos.x - cam->x);
             s->y = ((mpp->pos.y + offY) - cam->y);
@@ -169,7 +169,7 @@ void Task_SpindashDustEffectBig(void)
     }
 }
 
-void TaskDestructor_SpindashDustEffect(struct Task *t)
+void TaskDestructor_SpindashDustEffect(Task *t)
 {
     DustEffect *sde = TASK_DATA(t);
     VramFree(sde->s.graphics.dest);

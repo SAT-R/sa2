@@ -42,8 +42,8 @@ void Task_8056F80(void);
 void Task_8056FA0(void);
 void Task_DestroyGameOverD(void);
 void Task_DestroyGameOverC(void);
-void TaskDestructor_GameOverScreen(struct Task *t);
-void TaskDestructor_8056F30(struct Task *t);
+void TaskDestructor_GameOverScreen(Task *t);
+void TaskDestructor_8056F30(Task *t);
 
 // NOTE: param0[param1->byteCount (offset: 0xE)]
 extern const u16 gUnknown_086883E4[10];
@@ -108,8 +108,8 @@ void sub_8055C50(Strc_8055C50 *param0)
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
-    struct Task *t = NULL;
-    struct Task *t2;
+    Task *t = NULL;
+    Task *t2;
     GameOverScreen *screen;
     Sprite *s;
     Strc_8055C50 strc;
@@ -852,7 +852,7 @@ void Task_8056AC8(void)
     }
 }
 
-void TaskDestructor_GameOverScreen(struct Task *t)
+void TaskDestructor_GameOverScreen(Task *t)
 {
     GameOverScreen *screen = TASK_DATA(t);
     VramFree(screen->s.graphics.dest);
@@ -982,7 +982,7 @@ void Task_8056EC4(void)
 
 void Task_DestroyGameOverC(void) { TaskDestroy(gCurTask); }
 
-void TaskDestructor_8056F30(struct Task *t)
+void TaskDestructor_8056F30(Task *t)
 {
     GameOverC *overC = TASK_DATA(t);
 

@@ -29,14 +29,14 @@ typedef struct {
 } PlatformSq;
 
 void Task_Platform_Square(void);
-void TaskDestructor_Platform_Square(struct Task *t);
+void TaskDestructor_Platform_Square(Task *t);
 void Task_BarrelOfDoomMini(void);
 bool32 sub_807E914(Sprite *s, s32 worldX, s32 worldY, Rect8 *unk08, Player *p);
 
 void CreateEntity_Platform_Square(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
-    struct Task *t = TaskCreate(Task_Platform_Square, sizeof(PlatformSq), 0x2000, 0, TaskDestructor_Platform_Square);
+    Task *t = TaskCreate(Task_Platform_Square, sizeof(PlatformSq), 0x2000, 0, TaskDestructor_Platform_Square);
     PlatformSq *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
     CamCoord worldX, worldY;
@@ -440,7 +440,7 @@ void Task_Platform_Square(void)
 void CreateEntity_BarrelOfDoomMini(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
-    struct Task *t = TaskCreate(Task_BarrelOfDoomMini, sizeof(PlatformSq), 0x2000, 0, TaskDestructor_Platform_Square);
+    Task *t = TaskCreate(Task_BarrelOfDoomMini, sizeof(PlatformSq), 0x2000, 0, TaskDestructor_Platform_Square);
     PlatformSq *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
     CamCoord worldX, worldY;
@@ -636,7 +636,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/interactables/platform_sq__sub_807E914
 }
 END_NONMATCH
 
-void TaskDestructor_Platform_Square(struct Task *t)
+void TaskDestructor_Platform_Square(Task *t)
 {
     PlatformSq *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

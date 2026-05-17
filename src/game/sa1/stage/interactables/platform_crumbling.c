@@ -27,7 +27,7 @@ void Task_PlatformCrumbling(void);
 void Task_8025008(void);
 void Task_8025190(void);
 void Task_8025400(void);
-void TaskDestructor_PlatformCrumbling(struct Task *t);
+void TaskDestructor_PlatformCrumbling(Task *t);
 
 const AnimId sPlatformCrumblingAnims[NUM_LEVEL_IDS] = {
     SA1_ANIM_CRUMBLE_PLATFORM_1,
@@ -52,7 +52,7 @@ const AnimId sPlatformCrumblingAnims[NUM_LEVEL_IDS] = {
 
 void CreateEntity_PlatformCrumbling(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_PlatformCrumbling, sizeof(PlatformCrumbling), 0x2000, 0, TaskDestructor_PlatformCrumbling);
+    Task *t = TaskCreate(Task_PlatformCrumbling, sizeof(PlatformCrumbling), 0x2000, 0, TaskDestructor_PlatformCrumbling);
     PlatformCrumbling *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
@@ -361,7 +361,7 @@ void Task_8025400(void)
     }
 }
 
-void TaskDestructor_PlatformCrumbling(struct Task *t)
+void TaskDestructor_PlatformCrumbling(Task *t)
 {
     PlatformCrumbling *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);

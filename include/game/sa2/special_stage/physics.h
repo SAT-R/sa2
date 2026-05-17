@@ -10,7 +10,7 @@ struct SpecialStagePhysics {
     u16 unk6;
 }; /* size 8 */
 
-struct Task *CreateSpecialStagePhysics(struct SpecialStage *);
+Task *CreateSpecialStagePhysics(struct SpecialStage *);
 void HandleRoboPlayerCollision(struct SpecialStage *stage);
 
 #endif

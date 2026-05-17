@@ -37,7 +37,7 @@ typedef struct {
     /* 0x04|0x06 */ s16 targetWaterLevel;
     /* 0x08|0x08 */ u32 flags;
     /* 0x0C|0x0C */ u32 blendColors;
-    /* 0x10 */ struct Task *t; /* -> WaterData |  size: SA1: 0x00, SA2: 0x400, SA3: *unused* */
+    /* 0x10 */ Task *t; /* -> WaterData |  size: SA1: 0x00, SA2: 0x400, SA3: *unused* */
     /* 0x14 */ Sprite s;
 #if (GAME == GAME_SA3)
     /* 0x3C */ WaterData wd;
@@ -54,7 +54,7 @@ void InitWaterPalettes(void);
 void CreateRunOnWaterEffect(void);
 #endif // HAS_RUN_ON_WATER
 
-struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y);
+Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y);
 void LoadPalette423Anim(void);
 
 #endif // GUARD_WATER_EFFECT_H

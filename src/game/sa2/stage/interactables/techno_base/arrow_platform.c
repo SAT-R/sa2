@@ -40,7 +40,7 @@ typedef struct {
 
 #define BORDER_VRAM_ADDR (OBJ_VRAM0 + 0x2C80)
 
-static void sub_807AB04(struct Task *);
+static void sub_807AB04(Task *);
 static void sub_807AA68(void);
 static void sub_807AB54(Sprite_IA75 *ia75);
 static void sub_807AB6C(Sprite_IA75 *);
@@ -53,7 +53,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     s32 i;
     Sprite *s;
-    struct Task *t = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
+    Task *t = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
     Sprite_IA75 *ia75 = TASK_DATA(t);
     ia75->unk94 = param;
     ia75->unk8C = 0;
@@ -374,7 +374,7 @@ static void sub_807AABC(void)
     }
 }
 
-static void sub_807AB04(struct Task *t)
+static void sub_807AB04(Task *t)
 {
     Sprite_IA75 *ia75 = TASK_DATA(t);
     VramFree(ia75->s1.graphics.dest);

@@ -30,12 +30,12 @@ typedef struct {
 } Sprite_Pole;
 
 static void Task_Pole_NotTouching(void);
-static void TaskDestructor_Interactable094(struct Task *);
+static void TaskDestructor_Interactable094(Task *);
 static void Task_807EA8C(void);
 
 void CreateEntity_Pole(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Pole_NotTouching, sizeof(Sprite_Pole), 0x2010, 0, TaskDestructor_Interactable094);
+    Task *t = TaskCreate(Task_Pole_NotTouching, sizeof(Sprite_Pole), 0x2010, 0, TaskDestructor_Interactable094);
     Sprite_Pole *pole = TASK_DATA(t);
     pole->worldX = TO_WORLD_POS(me->x, spriteRegionX);
     pole->worldY = TO_WORLD_POS(me->y, spriteRegionY);
@@ -177,7 +177,7 @@ static void Task_807EC70(void)
     }
 }
 
-static void TaskDestructor_Interactable094(struct Task *t)
+static void TaskDestructor_Interactable094(Task *t)
 {
     // unused
 }

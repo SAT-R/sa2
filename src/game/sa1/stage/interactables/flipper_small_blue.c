@@ -30,11 +30,11 @@ typedef struct {
 } BlueFlipper;
 
 void Task_Flipper_SmallBlue(void);
-void TaskDestructor_Flipper_SmallBlue(struct Task *t);
+void TaskDestructor_Flipper_SmallBlue(Task *t);
 
 void CreateEntity_Flipper_SmallBlue(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Flipper_SmallBlue, sizeof(BlueFlipper), 0x2000 + me->d.sData[1], 0, TaskDestructor_Flipper_SmallBlue);
+    Task *t = TaskCreate(Task_Flipper_SmallBlue, sizeof(BlueFlipper), 0x2000 + me->d.sData[1], 0, TaskDestructor_Flipper_SmallBlue);
     BlueFlipper *flipper = TASK_DATA(t);
     Sprite *s = &flipper->s;
     s32 i;
@@ -192,7 +192,7 @@ void Task_Flipper_SmallBlue(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Flipper_SmallBlue(struct Task *t)
+void TaskDestructor_Flipper_SmallBlue(Task *t)
 {
     BlueFlipper *flipper = TASK_DATA(t);
     VramFree(flipper->s.graphics.dest);

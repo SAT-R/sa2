@@ -19,7 +19,7 @@
 void Player_Tails_8047A3C(Player *p);
 s32 Player_Tails_8047B04(Player *p);
 
-struct Task *Player_Tails_InitGfx_TailSwipe(Player *p);
+Task *Player_Tails_InitGfx_TailSwipe(Player *p);
 
 static inline void sub_8047E94_inline(Player *p)
 {
@@ -293,9 +293,9 @@ void Task_8047D04(void)
     DisplaySprite(s);
 }
 
-struct Task *Player_Tails_InitGfxMarbleTrack(Player *p)
+Task *Player_Tails_InitGfxMarbleTrack(Player *p)
 {
-    struct Task *t = CreateMultiplayerSpriteTask(0, 0, 96, p->playerID, Task_8047D04, TaskDestructor_MultiplayerSpriteTask);
+    Task *t = CreateMultiplayerSpriteTask(0, 0, 96, p->playerID, Task_8047D04, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *mps = TASK_DATA(t);
     Sprite *s = &mps->s;
     SpriteTransform *tf = &mps->transform;
@@ -336,10 +336,9 @@ void Player_Tails_InitFlying(Player *p)
     Player_Tails_8047990(p);
 }
 
-struct Task *Player_Tails_InitGfx_TailSwipe(Player *p)
+Task *Player_Tails_InitGfx_TailSwipe(Player *p)
 {
-    struct Task *t
-        = CreateMultiplayerSpriteTask(0, 0, 224, p->playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    Task *t = CreateMultiplayerSpriteTask(0, 0, 224, p->playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *mps = TASK_DATA(t);
     Sprite *s = &mps->s;
 

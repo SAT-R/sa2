@@ -3,10 +3,10 @@
 
 #include "global.h"
 
-struct Task;
+struct Task_;
 
 typedef void (*TaskMain)(void);
-typedef void (*TaskDestructor)(struct Task *);
+typedef void (*TaskDestructor)(struct Task_ *);
 
 // The task system uses the GBA's unique memory layout to halve the size of pointers.
 // Other platforms need to have the same logical behavior, but done differently.
@@ -22,7 +22,7 @@ typedef u32 TaskPtr32;
 typedef u16 IwramData;
 #define CLEAR_TASK_MEMORY_ON_DESTROY FALSE
 #else
-typedef struct Task *TaskPtr;
+typedef struct Task_ *TaskPtr;
 typedef TaskPtr TaskPtr32;
 
 #define TASK_PTR(taskRef)  (taskRef)
@@ -52,7 +52,7 @@ typedef void *IwramData;
 // Used for uses of unk14, unk15, unk16 and unk18, which might have been debug data.
 #define USE_SA2_TASK_SYSTEM (GAME == GAME_SA2)
 
-typedef struct Task {
+typedef struct Task_ {
     /* 0x00 */ TaskPtr parent;
     /* 0x02 */ TaskPtr prev;
     /* 0x04 */ TaskPtr next;
@@ -98,8 +98,8 @@ struct IwramNode {
 };
 
 #define TASK_DATA(taskp)   (void *)TASK_PTR((taskp)->data)
-#define TASK_PARENT(taskp) (struct Task *)TASK_PTR((taskp)->parent)
-#define TASK_NEXT(taskp)   (struct Task *)TASK_PTR((taskp)->next)
+#define TASK_PARENT(taskp) (Task *)TASK_PTR((taskp)->parent)
+#define TASK_NEXT(taskp)   (Task *)TASK_PTR((taskp)->next)
 #define TasksDestroyAll()  TasksDestroyInPriorityRange(0, 0xFFFF)
 
 #define TASK_HEAP_SIZE ((0x881) * sizeof(uintptr_t))
@@ -110,15 +110,15 @@ struct IwramNode {
 #define TASK_SET_MEMBER(_taskType, _task, _memberType, _memberName, _value)                                                                \
     TASK_GET_MEMBER(_taskType, _task, _memberType, _memberName) = (_value);
 
-extern struct Task gTasks[MAX_TASK_NUM];
-extern struct Task gEmptyTask;
-extern struct Task *gTaskPtrs[MAX_TASK_NUM];
+extern Task gTasks[MAX_TASK_NUM];
+extern Task gEmptyTask;
+extern Task *gTaskPtrs[MAX_TASK_NUM];
 extern s32 gNumTasks;
 #if (ENGINE == ENGINE_3)
-extern struct Task *gNextTaskToCheckForDestruction;
+extern Task *gNextTaskToCheckForDestruction;
 #endif
-extern struct Task *gNextTask;
-extern struct Task *gCurTask;
+extern Task *gNextTask;
+extern Task *gCurTask;
 extern u8 gIwramHeap[TASK_HEAP_SIZE];
 
 u32 TasksInit(void);
@@ -127,21 +127,21 @@ void TasksExec(void);
 #if ENABLE_TASK_LOGGING
 #include <stdio.h>
 
-struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor, const char *name);
+Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor, const char *name);
 
 // The printout is split so we can still read the input, even if TaskCreate crashes.
 #define TaskCreate(taskMain, structSize, priority, flags, taskDestructor)                                                                  \
     ({                                                                                                                                     \
         printf("New '%s' (0x%X, %p) ", #taskMain, (u32)structSize, taskMain);                                                              \
-        struct Task *tt = TaskCreate(taskMain, structSize, priority, flags, taskDestructor, #taskMain);                                    \
+        Task *tt = TaskCreate(taskMain, structSize, priority, flags, taskDestructor, #taskMain);                                           \
         printf("at %p\n", tt);                                                                                                             \
         tt;                                                                                                                                \
     })
 #else
-struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor);
+Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor);
 #endif // ENABLE_TASK_LOGGING
 
-void TaskDestroy(struct Task *);
+void TaskDestroy(Task *);
 void *IwramMalloc(u16);
 void IwramFree(void *p);
 void TasksDestroyInPriorityRange(u16, u16);

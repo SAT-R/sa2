@@ -16,7 +16,7 @@
 /* Sonic */
 
 s32 sub_8047668(Player *p);
-struct Task *Player_Sonic_InitGfx_InstaShield(Player *p);
+Task *Player_Sonic_InitGfx_InstaShield(Player *p);
 
 void Player_Sonic_80473AC(Player *p)
 {
@@ -374,7 +374,7 @@ void sub_8047890(Player *p)
 
 void Player_Sonic_InitInstaShield(Player *p)
 {
-    struct Task *t;
+    Task *t;
     MultiplayerSpriteTask *mps;
     Sprite *s;
 
@@ -392,10 +392,9 @@ void Player_Sonic_InitInstaShield(Player *p)
     }
 }
 
-struct Task *Player_Sonic_InitGfx_InstaShield(Player *p)
+Task *Player_Sonic_InitGfx_InstaShield(Player *p)
 {
-    struct Task *t
-        = CreateMultiplayerSpriteTask(0, 0, 160, p->playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
+    Task *t = CreateMultiplayerSpriteTask(0, 0, 160, p->playerID, Task_UpdateMpSpriteTaskSprite, TaskDestructor_MultiplayerSpriteTask);
     MultiplayerSpriteTask *mps = TASK_DATA(t);
     Sprite *s = &mps->s;
 

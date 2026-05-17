@@ -62,7 +62,7 @@ static const TileInfo gUnknown_080D9050[] = {
 
 void StartMultiPakConnect(void)
 {
-    struct Task *t;
+    Task *t;
     struct MultiPakConnectScreen *connectScreen;
     ScreenFade *fade;
     Sprite *s;

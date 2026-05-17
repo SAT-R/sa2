@@ -31,7 +31,7 @@ void CreateEntity_Leon(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_5) || (LOADED_SAVE->difficultyLevel == DIFFICULTY_NORMAL)) {
         // _0806E9C4
 
-        struct Task *t = TaskCreate(Task_LeonInit, sizeof(Leon), 0x2000, 0, TaskDestructor_EntityShared);
+        Task *t = TaskCreate(Task_LeonInit, sizeof(Leon), 0x2000, 0, TaskDestructor_EntityShared);
         Leon *leon = TASK_DATA(t);
         Sprite *s = &leon->shared.s;
 

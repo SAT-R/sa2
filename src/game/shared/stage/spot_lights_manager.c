@@ -16,8 +16,8 @@
    (seem to be the same as in Sonic Advance's Secret Base Zone) */
 
 typedef struct {
-    struct Task *spotlightTaskA;
-    struct Task *spotlightTaskB;
+    Task *spotlightTaskA;
+    Task *spotlightTaskB;
     s16 qBlend;
 #if (GAME == GAME_SA2)
     s32 unkC;
@@ -30,7 +30,7 @@ void Task_801796C(void);
 #elif (GAME == GAME_SA2)
 void Task_800A8E0(void);
 #endif
-void TaskDestructor_SpotlightsManager(struct Task *);
+void TaskDestructor_SpotlightsManager(Task *);
 
 #if (GAME == GAME_SA1)
 #define Q_MIN_BLEND Q(8.0)
@@ -46,7 +46,7 @@ bool32 CreateSpotlightsManager(void)
     } else
 #endif
     {
-        struct Task *t = TaskCreate(Task_SpotlightsManagerMain, sizeof(SpotlightsManager), 0x2000, 0, TaskDestructor_SpotlightsManager);
+        Task *t = TaskCreate(Task_SpotlightsManagerMain, sizeof(SpotlightsManager), 0x2000, 0, TaskDestructor_SpotlightsManager);
         SpotlightsManager *manager = TASK_DATA(t);
         SpotlightBeam *beam;
 #if (GAME == GAME_SA1)
@@ -244,7 +244,7 @@ void Task_800A8E0(void)
 }
 #endif
 
-void TaskDestructor_SpotlightsManager(struct Task *t)
+void TaskDestructor_SpotlightsManager(Task *t)
 {
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
 #if (GAME == GAME_SA2)

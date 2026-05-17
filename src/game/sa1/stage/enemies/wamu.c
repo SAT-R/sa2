@@ -31,11 +31,11 @@ typedef struct {
 } Wamu;
 
 void Task_Wamu(void);
-void TaskDestructor_Wamu(struct Task *);
+void TaskDestructor_Wamu(Task *);
 
 void CreateEntity_Wamu(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Wamu, sizeof(Wamu), 0x2000, 0, TaskDestructor_Wamu);
+    Task *t = TaskCreate(Task_Wamu, sizeof(Wamu), 0x2000, 0, TaskDestructor_Wamu);
     Wamu *wamu = TASK_DATA(t);
     Sprite *s = &wamu->s;
 #ifdef BUG_FIX
@@ -340,7 +340,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/Wamu__Task_Wamu.inc", void Tas
 }
 END_NONMATCH
 
-void TaskDestructor_Wamu(struct Task *t)
+void TaskDestructor_Wamu(Task *t)
 {
     Wamu *wamu = TASK_DATA(t);
 

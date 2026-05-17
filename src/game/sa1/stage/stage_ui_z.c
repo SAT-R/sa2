@@ -22,8 +22,8 @@ void Task_8055904(void);
 void Task_8055998(void);
 void Task_8055AA0(void);
 void Task_8055B18(void);
-void TaskDestructor_8055C38(struct Task *);
-void TaskDestructor_StrcUI28_8055C4C(struct Task *);
+void TaskDestructor_8055C38(Task *);
+void TaskDestructor_StrcUI28_8055C4C(Task *);
 
 extern const char gUnknown_08688378[];
 extern const char gUnknown_08688386[];
@@ -283,17 +283,17 @@ NONMATCH("asm/non_matching/game/sa1/stage/intro__LoadStageIntroGraphics.inc", vo
 }
 END_NONMATCH
 
-// Output: struct Task *t -> Struct_sub_80550F8
+// Output: Task *t -> Struct_sub_80550F8
 // (94.00%) https://decomp.me/scratch/e0aBK
-NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__sub_80550F8.inc", struct Task *sub_80550F8(void))
+NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__sub_80550F8.inc", Task *sub_80550F8(void))
 {
     Strc_Ui_24 *ui_24;
     Strc_Ui_28 *ui_28;
-    struct Task *t, *tt;
+    Task *t, *tt;
     void *vram0, *vram1;
     StrcStack sp04;
     u8 i;
-    struct Task *t6;
+    Task *t6;
 
     if ((gCurrentLevel <= LEVEL_INDEX(ZONE_7, ACT_1)) && ((gCurrentLevel & 0x1) != ACT_1) && (gFinalBossActive != gCurrentLevel)
         && (!IS_EXTRA_STAGE(gCurrentLevel))) {
@@ -822,7 +822,7 @@ void Task_8055B18()
     }
 }
 
-void TaskDestructor_8055C38(struct Task *t)
+void TaskDestructor_8055C38(Task *t)
 {
     Strc_Ui_24 *strc = TASK_DATA(t);
 #ifdef BUG_FIX
@@ -833,4 +833,4 @@ void TaskDestructor_8055C38(struct Task *t)
     }
 }
 
-void TaskDestructor_StrcUI28_8055C4C(struct Task *t) { }
+void TaskDestructor_StrcUI28_8055C4C(Task *t) { }

@@ -20,13 +20,13 @@ typedef struct {
 } ShipSwing;
 
 void Task_ShipSwing(void);
-void TaskDestructor_ShipSwing(struct Task *t);
+void TaskDestructor_ShipSwing(Task *t);
 
 #define SHIP_SWING_NUM_SEGMENTS 5
 
 void CreateEntity_ShipSwing(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_ShipSwing, sizeof(ShipSwing), 0x7000, 0, TaskDestructor_ShipSwing);
+    Task *t = TaskCreate(Task_ShipSwing, sizeof(ShipSwing), 0x7000, 0, TaskDestructor_ShipSwing);
     ShipSwing *swing = TASK_DATA(t);
     Sprite *sprShip = &swing->sprShip;
     Sprite *sprSegment = &swing->sprSegment;
@@ -226,7 +226,7 @@ void Task_ShipSwing(void)
     SPRITE_FLAG_CLEAR(sprShip, X_FLIP);
 }
 
-void TaskDestructor_ShipSwing(struct Task *t)
+void TaskDestructor_ShipSwing(Task *t)
 {
     ShipSwing *swing = TASK_DATA(t);
 

@@ -56,8 +56,8 @@ typedef struct {
 void Task_BoulderMain(void);
 void Task_BoulderDebris(void);
 void Task_BoulderSpawnerMain(void);
-void TaskDestructor_Boulder(struct Task *t);
-void TaskDestructor_BoulderDebris(struct Task *t);
+void TaskDestructor_Boulder(Task *t);
+void TaskDestructor_BoulderDebris(Task *t);
 void CreateBoulderDebris(s32 x, s32 y);
 
 void Task_BoulderSpawnerMain(void)
@@ -73,7 +73,7 @@ void Task_BoulderSpawnerMain(void)
     worldY = TO_WORLD_POS(me->y, spawner->base.regionY);
 
     if (Mod(gStageTime, BOULDER_SPAWN_RATE) == 0) {
-        struct Task *t = TaskCreate(Task_BoulderMain, sizeof(Boulder), 0x2000, 0, TaskDestructor_Boulder);
+        Task *t = TaskCreate(Task_BoulderMain, sizeof(Boulder), 0x2000, 0, TaskDestructor_Boulder);
 
         Boulder *boulder = TASK_DATA(t);
         Sprite *s = &boulder->s;
@@ -193,7 +193,7 @@ void Task_BoulderMain(void)
 
 void CreateBoulderDebris(s32 x, s32 y)
 {
-    struct Task *t = TaskCreate(Task_BoulderDebris, sizeof(BoulderDebris), 0x2000, 0, TaskDestructor_BoulderDebris);
+    Task *t = TaskCreate(Task_BoulderDebris, sizeof(BoulderDebris), 0x2000, 0, TaskDestructor_BoulderDebris);
     BoulderDebris *debris = TASK_DATA(t);
 
     Sprite *s;
@@ -405,7 +405,7 @@ void Task_BoulderDebris(void)
 
 void CreateEntity_BoulderSpawner(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_BoulderSpawnerMain, sizeof(BoulderSpawner), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_BoulderSpawnerMain, sizeof(BoulderSpawner), 0x2000, 0, NULL);
     BoulderSpawner *spawner = TASK_DATA(t);
 
     spawner->base.regionX = regionX;
@@ -419,13 +419,13 @@ void CreateEntity_BoulderSpawner(MapEntity *me, u16 regionX, u16 regionY, u8 id)
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void TaskDestructor_Boulder(struct Task *t)
+void TaskDestructor_Boulder(Task *t)
 {
     Boulder *boulder = TASK_DATA(t);
     VramFree(boulder->s.graphics.dest);
 }
 
-void TaskDestructor_BoulderDebris(struct Task *t)
+void TaskDestructor_BoulderDebris(Task *t)
 {
     BoulderDebris *debris = TASK_DATA(t);
     VramFree(debris->sprites[0].graphics.dest);

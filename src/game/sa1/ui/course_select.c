@@ -15,12 +15,12 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/ui_graphics.h"
 
-typedef struct CourseSelectState {
+typedef struct {
     StrcUi_805423C strc0;
     u8 fillerC[4];
-    struct Task *task10;
-    struct Task *task14;
-    struct Task *task18;
+    Task *task10;
+    Task *task14;
+    Task *task18;
     Sprite s;
     u32 unk4C;
     u16 unk50;
@@ -33,7 +33,7 @@ typedef struct CourseSelectState {
     u8 unk59;
 } CourseSelectState;
 
-typedef struct CourseSelect_54 {
+typedef struct {
     Sprite s;
     u8 filler30[0x18];
     u32 unk48;
@@ -44,7 +44,7 @@ typedef struct CourseSelect_54 {
     u8 unk51;
 } CourseSelect_54;
 
-typedef struct CourseSelect_2DC {
+typedef struct {
     Sprite sprites[15];
     u32 unk2D0;
     u16 unk2D4;
@@ -64,7 +64,7 @@ extern u8 gUnknown_086A3DB4[];
 
 extern u8 gUnknown_03005140;
 
-typedef struct StaticTileInfo {
+typedef struct {
     void *vram;
     u32 anim;
     u32 variant;
@@ -102,7 +102,7 @@ void Task_8062540(void);
 void Task_80628A4(void);
 void CreateTimeAttackRecords(void);
 void Task_80629E8(void);
-void TaskDestructor_CourseSelect(struct Task *t);
+void TaskDestructor_CourseSelect(Task *t);
 
 extern void CreateTimeAttackRecord(u8 arg0);
 
@@ -147,8 +147,8 @@ void CreateCourseSelect(bool8 arg0)
 {
     Strc_80528AC gfx;
     s32 sp34;
-    struct Task *task0;
-    struct Task *task1;
+    Task *task0;
+    Task *task1;
     u8 unlockedLevelCount;
     s32 sp40;
     s32 temp_r1_2;
@@ -160,9 +160,9 @@ void CreateCourseSelect(bool8 arg0)
     CourseSelectState *state;
     CourseSelect_2DC *strc2DC;
     CourseSelect_2DC *strc2DC_2;
-    struct Task *temp_r0_2;
-    struct Task *task2;
-    struct Task *task3;
+    Task *temp_r0_2;
+    Task *task2;
+    Task *task3;
     Sprite *s;
     u8 i;
 
@@ -1050,4 +1050,4 @@ void Task_8062E18()
     }
 }
 
-void TaskDestructor_CourseSelect(struct Task *t) { }
+void TaskDestructor_CourseSelect(Task *t) { }

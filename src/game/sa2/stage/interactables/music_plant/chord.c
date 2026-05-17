@@ -37,7 +37,7 @@ typedef struct {
 } Sprite_Chord; /* size 0x78 */
 
 static void Task_Idle(void);
-static void TaskDestructor_Chord(struct Task *);
+static void TaskDestructor_Chord(Task *);
 static void Render(Sprite_Chord *);
 static bool32 PlayerIsHittingChord(Sprite_Chord *);
 static void LaunchPlayer(Sprite_Chord *);
@@ -48,7 +48,7 @@ static bool32 ShouldDespawn(Sprite_Chord *);
 
 void CreateEntity_Chord(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_Chord), 0x2010, 0, TaskDestructor_Chord);
+    Task *t = TaskCreate(Task_Idle, sizeof(Sprite_Chord), 0x2010, 0, TaskDestructor_Chord);
     Sprite_Chord *chord = TASK_DATA(t);
     Sprite *s = &chord->s;
     u16 i;
@@ -259,7 +259,7 @@ static void Task_Idle(void)
     Render(chord);
 }
 
-static void TaskDestructor_Chord(struct Task UNUSED *t) { }
+static void TaskDestructor_Chord(Task UNUSED *t) { }
 
 static void LaunchPlayer(Sprite_Chord UNUSED *chord)
 {

@@ -29,12 +29,12 @@ static void Render(Sprite_IronBall *);
 static bool32 IsTouchingPlayer(Sprite_IronBall *);
 static bool32 ShouldDespawn(Sprite_IronBall *);
 
-static void TaskDestructor_IronBall(struct Task *);
+static void TaskDestructor_IronBall(Task *);
 static void Despawn(Sprite_IronBall *);
 
 void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IronBall), 0x2010, 0, TaskDestructor_IronBall);
+    Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IronBall), 0x2010, 0, TaskDestructor_IronBall);
     Sprite_IronBall *ball = TASK_DATA(t);
     Sprite *s;
     ball->unk44 = 0;
@@ -114,7 +114,7 @@ static void Task_Interactable095Main(void)
     Render(ball);
 }
 
-static void TaskDestructor_IronBall(struct Task *t)
+static void TaskDestructor_IronBall(Task *t)
 {
     Sprite_IronBall *ball = TASK_DATA(t);
     VramFree(ball->s.graphics.dest);

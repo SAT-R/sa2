@@ -33,7 +33,7 @@ typedef struct {
 
 void Task_YukimaruGroundInit(void);
 void Task_8071BFC(void);
-void TaskDestructor_YukimaruGround(struct Task *t);
+void TaskDestructor_YukimaruGround(Task *t);
 void CreateSnowball(s16, s16);
 void CreateSnowball2(s16, s16, u8);
 void Task_Snowball(void);
@@ -43,11 +43,11 @@ void Task_Snowball2(void);
 
 void Task_YukimaruWallInit(void);
 void Task_YukimaruWallInit2(void);
-void TaskDestructor_YukimaruWall(struct Task *t);
+void TaskDestructor_YukimaruWall(Task *t);
 
 void CreateEntity_Yukimaru(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_YukimaruGroundInit, sizeof(Yukimaru), 0x2000, 0, TaskDestructor_YukimaruGround);
+    Task *t = TaskCreate(Task_YukimaruGroundInit, sizeof(Yukimaru), 0x2000, 0, TaskDestructor_YukimaruGround);
     Yukimaru *yukimaru = TASK_DATA(t);
     Sprite *s = &yukimaru->s;
 
@@ -246,7 +246,7 @@ void Task_8071BFC(void)
 
 void CreateSnowball(s16 worldX, s16 worldY)
 {
-    struct Task *t = TaskCreate(Task_Snowball, sizeof(Snowball), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_Snowball, sizeof(Snowball), 0x3000, 0, NULL);
     Snowball *snowball = TASK_DATA(t);
     Sprite *s = &snowball->s;
     s32 speed = worldX * 4;
@@ -314,7 +314,7 @@ void Task_Snowball(void)
     s->y = oldWorldY32;
 }
 
-void TaskDestructor_YukimaruGround(struct Task *t)
+void TaskDestructor_YukimaruGround(Task *t)
 {
     Yukimaru *yukimaru = TASK_DATA(t);
     VramFree(yukimaru->s.graphics.dest);
@@ -323,7 +323,7 @@ void TaskDestructor_YukimaruGround(struct Task *t)
 
 void CreateEntity_Yukimaru_Wall(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
 
     if (me->d.sData[0] != 0) {
         t = TaskCreate(Task_YukimaruWallInit, sizeof(Yukimaru), 0x2000, 0, TaskDestructor_YukimaruWall);
@@ -655,7 +655,7 @@ void sub_80727B4(void)
 
 void CreateSnowball2(s16 worldX, s16 worldY, u8 param2)
 {
-    struct Task *t = TaskCreate(Task_Snowball2, sizeof(Snowball), 0x3000, 0, NULL);
+    Task *t = TaskCreate(Task_Snowball2, sizeof(Snowball), 0x3000, 0, NULL);
     Snowball *snowball = TASK_DATA(t);
     Sprite *s = &snowball->s;
 
@@ -724,7 +724,7 @@ void Task_Snowball2(void)
     s->y = oldWorldY;
 }
 
-void TaskDestructor_YukimaruWall(struct Task *t)
+void TaskDestructor_YukimaruWall(Task *t)
 {
     Yukimaru *yukimaru = TASK_DATA(t);
     VramFree(yukimaru->s.graphics.dest);

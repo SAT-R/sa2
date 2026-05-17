@@ -10,14 +10,14 @@ typedef struct {
 } IA097;
 
 void Task_Interactable097(void);
-void TaskDestructor_Interactable097(struct Task *);
+void TaskDestructor_Interactable097(Task *);
 
 #if 0
 #endif
 
 void CreateEntity_Interactable097(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Interactable097, sizeof(IA097), 0x2000, 0, TaskDestructor_Interactable097);
+    Task *t = TaskCreate(Task_Interactable097, sizeof(IA097), 0x2000, 0, TaskDestructor_Interactable097);
     IA097 *ia = TASK_DATA(t);
     Sprite *s = &ia->s;
     s32 worldX, worldY;
@@ -81,7 +81,7 @@ void Task_Interactable097(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_Interactable097(struct Task *t)
+void TaskDestructor_Interactable097(Task *t)
 {
     IA097 *ia = TASK_DATA(t);
     VramFree(ia->s.graphics.dest);

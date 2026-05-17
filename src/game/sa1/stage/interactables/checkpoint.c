@@ -23,7 +23,7 @@ void Task_Checkpoint2(void);
 
 void CreateEntity_Checkpoint(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     Checkpoint *checkpoint;
     Sprite *s;
 

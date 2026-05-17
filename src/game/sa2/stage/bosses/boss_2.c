@@ -89,7 +89,7 @@ static void Task_BomberTankMain(void);
 static void Task_StartBossDestruction(void);
 static void Task_WaitForBossOffScreen(void);
 
-static void TaskDestructor_EggBomberTankMain(struct Task *);
+static void TaskDestructor_EggBomberTankMain(Task *);
 
 static void UpdateWheelPositions(EggBomberTank *boss);
 static bool8 HandleCannonCollision(EggBomberTank *boss);
@@ -164,7 +164,7 @@ void CreateEggBomberTank(void)
 {
     Sprite *s;
     u32 i;
-    struct Task *t;
+    Task *t;
     EggBomberTank *boss;
     void *vram;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
@@ -1077,7 +1077,7 @@ static void HandleCannonlessBombTrigger(EggBomberTank *boss)
     }
 }
 
-static void TaskDestructor_EggBomberTankMain(struct Task *t)
+static void TaskDestructor_EggBomberTankMain(Task *t)
 {
     EggBomberTank *boss = TASK_DATA(t);
     VramFree(boss->vram);
@@ -1098,7 +1098,7 @@ UNUSED static void sub_803E798(EggBomberTank *boss)
 
 static void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 explosionTime)
 {
-    struct Task *t = TaskCreate(Task_EggBomberTankBombExplosion, sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
+    Task *t = TaskCreate(Task_EggBomberTankBombExplosion, sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
     Sprite *s;
     EggBomberTankBomb *bomb = TASK_DATA(t);
     bomb->x = x - QS(gCamera.x);
@@ -1197,7 +1197,7 @@ static void Task_EggBomberTankBombExplosion(void)
 
 static void CreateBombExplosion(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
 {
-    struct Task *t;
+    Task *t;
     Sprite *s;
     EggBomberTankBomb *bomb;
 

@@ -192,7 +192,7 @@ static void Task_GrindRail_Air(void)
 static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
@@ -200,7 +200,7 @@ static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteR
     rail->me = me;
     rail->spriteX = me->x;
 #else
-    struct Task *t = TaskCreate(Task_GrindRail, 10, 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRail, 10, 0x2010, 0, NULL);
     void *rail;
     {
         rail = TASK_DATA(t);
@@ -235,7 +235,7 @@ static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteR
 static void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
@@ -243,7 +243,7 @@ static void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spr
     rail->me = me;
     rail->spriteX = me->x;
 #else
-    struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
+    Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
     void *rail;
     {
         rail = TASK_DATA(t);
@@ -278,7 +278,7 @@ static void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spr
 // Delays the playback of the grinding sound by 60 frames
 UNUSED static void CreateGrindrailAudioTask(void)
 {
-    struct Task *t = TaskCreate(GrindRailAudioDelay, sizeof(u16), 0x2010, 0, NULL);
+    Task *t = TaskCreate(GrindRailAudioDelay, sizeof(u16), 0x2010, 0, NULL);
     u16 *audioTimer = TASK_DATA(t);
     *audioTimer = 0;
 }

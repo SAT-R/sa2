@@ -58,7 +58,7 @@ void Task_MiniLoop_Base(void)
 
 void CreateEntity_MiniLoop_Base(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_MiniLoop_Base, sizeof(MiniLoopBoost), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_MiniLoop_Base, sizeof(MiniLoopBoost), 0x2000, 0, NULL);
     MiniLoopBoost *ia = TASK_DATA(t);
     s32 worldX, worldY;
 

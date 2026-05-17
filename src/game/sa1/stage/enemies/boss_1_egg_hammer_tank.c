@@ -16,7 +16,7 @@
 #include "constants/sa1/anim_sizes.h"
 #include "constants/sa1/songs.h"
 
-typedef struct EHTArm {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s16 unk3C;
@@ -29,7 +29,7 @@ typedef struct EHTArm {
     /* 0x50 */ u8 unk50;
 } EHTArm; /* 0x54 */
 
-typedef struct EHTHammer {
+typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
     /* 0x3C */ s16 unk3C;
@@ -43,13 +43,13 @@ typedef struct EHTHammer {
     /* 0x50 */ u8 unk50;
 } EHTHammer; /* 0x54 */
 
-typedef struct EggHammerTank {
+typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Hitbox reserved;
     /* 0x44 */ Sprite s2;
-    /* 0x74 */ struct Task *taskHammer;
-    /* 0x78 */ struct Task *tasksArm[5];
+    /* 0x74 */ Task *taskHammer;
+    /* 0x78 */ Task *tasksArm[5];
     /* 0x8C */ s32 qUnk8C;
     /* 0x90 */ s32 qUnk90;
     /* 0x94 */ s16 unk94;
@@ -64,17 +64,17 @@ typedef struct EggHammerTank {
 
 void Task_EHTArm(void);
 void Task_80272D0(void);
-void TaskDestructor_EHTArm(struct Task *t);
+void TaskDestructor_EHTArm(Task *t);
 
-struct Task *CreatePreBossCameraPan(s16, s16);
-struct Task *sub_8017540(s32, s32);
+Task *CreatePreBossCameraPan(s16, s16);
+Task *sub_8017540(s32, s32);
 void Task_802611C();
 void Task_EHTArm();
 void Task_EHTHammer();
 void Task_EggHammerTankMain();
 void Task_EggHammerTank_Intro();
-void TaskDestructor_EggHammerTank(struct Task *);
-void TaskDestructor_EHTHammer(struct Task *);
+void TaskDestructor_EggHammerTank(Task *);
+void TaskDestructor_EHTHammer(Task *);
 void Task_8025CC4();
 void Task_8025D80();
 void Task_8025E6C();
@@ -87,7 +87,7 @@ void Task_8027714();
 
 void CreateEntity_EggHammerTank_Intro(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     EggHammerTank *tank;
     Sprite *s;
     Sprite *s2;
@@ -327,7 +327,7 @@ void Task_8025E6C(void)
 
 void CreateEntity_EggHammerTank(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t;
+    Task *t;
     EggHammerTank *tank;
     Sprite *s;
     s16 tempY;
@@ -542,7 +542,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_1__Task_80264C8.inc", voi
     CamCoord worldX, worldY; // sp14, sp18
     s16 theta;
     EHit collPlayer, collPartner;
-    struct Task *t;
+    Task *t;
     Strc_sub_80168F0 *strc;
     u8 i;
 
@@ -829,7 +829,7 @@ void Task_8026C44(void)
     tank->unk98++;
 
     if (!(tank->unk98 & 7)) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -903,7 +903,7 @@ void Task_8026ED0(void)
     }
 
     if (!(tank->unk98 & 7)) {
-        struct Task *t;
+        Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
         s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
@@ -947,12 +947,12 @@ void Task_8026ED0(void)
     DisplaySprite(s2);
 }
 
-struct Task *CreateEHTArm(u8 arg0)
+Task *CreateEHTArm(u8 arg0)
 {
     s32 sp4;
     SpriteTransform *tf;
     Sprite *s;
-    struct Task *t;
+    Task *t;
     EHTArm *ehtArm;
 
     t = TaskCreate(Task_EHTArm, sizeof(EHTArm), 0x2000 | arg0, 0U, TaskDestructor_EHTArm);
@@ -1041,7 +1041,7 @@ void Task_80272D0(void)
     arm->qUnk48 += arm->qUnk4E;
 
     if (arm->qUnk4E > 0) {
-        s32 res = sa2__sub_801F100(arm->unk3E + I(arm->qUnk48), arm->unk3C + I(arm->qUnk44), 1, 8, sa2__sub_801EC3C);
+        s32 res = SA2_LABEL(sub_801F100)(arm->unk3E + I(arm->qUnk48), arm->unk3C + I(arm->qUnk44), 1, 8, SA2_LABEL(sub_801EC3C));
         if (res < 0) {
             arm->qUnk48 = arm->qUnk48 + Q(res);
             arm->qUnk4E = (arm->qUnk4E >> 2) - arm->qUnk4E;
@@ -1062,12 +1062,12 @@ void Task_80272D0(void)
     DisplaySprite(s);
 }
 
-struct Task *CreateEHTHammer(void)
+Task *CreateEHTHammer(void)
 {
     s32 sp4;
     SpriteTransform *tf;
     Sprite *s;
-    struct Task *t;
+    Task *t;
     EHTHammer *hammer;
 
     t = TaskCreate(Task_EHTHammer, sizeof(EHTHammer), 0x2005, 0U, TaskDestructor_EHTHammer);
@@ -1256,7 +1256,8 @@ void Task_8027714(void)
     hammer->qUnk48 += hammer->qUnk4E;
 
     if (hammer->qUnk4E > 0) {
-        s32 res = sa2__sub_801F100(hammer->unk3E + I(hammer->qUnk48), hammer->unk3C + I(hammer->qUnk44), 1, 8, sa2__sub_801EC3C);
+        s32 res
+            = SA2_LABEL(sub_801F100)(hammer->unk3E + I(hammer->qUnk48), hammer->unk3C + I(hammer->qUnk44), 1, 8, SA2_LABEL(sub_801EC3C));
         if (res < 0) {
             hammer->qUnk48 = hammer->qUnk48 + Q(res);
             hammer->qUnk4E = (hammer->qUnk4E >> 2) - hammer->qUnk4E;
@@ -1278,7 +1279,7 @@ void Task_8027714(void)
     DisplaySprite(s);
 }
 
-void sub_802784C(struct Task *t)
+void sub_802784C(Task *t)
 {
     EggHammerTank *tank = TASK_DATA(t);
 
@@ -1305,7 +1306,7 @@ void Task_EggHammerTankMain(void)
     }
 }
 
-void TaskDestructor_EggHammerTank(struct Task *t)
+void TaskDestructor_EggHammerTank(Task *t)
 {
     EggHammerTank *tank = TASK_DATA(t);
 
@@ -1336,13 +1337,13 @@ void Task_EHTArm(void)
     DisplaySprite(s);
 }
 
-void TaskDestructor_EHTArm(struct Task *t)
+void TaskDestructor_EHTArm(Task *t)
 {
     EHTArm *arm = TASK_DATA(t);
     VramFree(arm->s.graphics.dest);
 }
 
-void TaskDestructor_EHTHammer(struct Task *t)
+void TaskDestructor_EHTHammer(Task *t)
 {
     EHTHammer *ehtHammer = TASK_DATA(t);
     VramFree(ehtHammer->s.graphics.dest);

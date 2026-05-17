@@ -33,11 +33,11 @@ void Task_806D804(void);
 void CreateHanabiiProjectile(s16 a, s16 b);
 void Task_HanabiiProjectile(void);
 void Task_HanabiiProjectile2(void);
-void TaskDestructor_HanabiiProjectile(struct Task *t);
+void TaskDestructor_HanabiiProjectile(Task *t);
 
 void CreateEntity_Hanabii(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_HanabiiInit, sizeof(Hanabii), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_HanabiiInit, sizeof(Hanabii), 0x2000, 0, TaskDestructor_EntityShared);
     Hanabii *hanabii = TASK_DATA(t);
     Sprite *s = &hanabii->shared.s;
 
@@ -200,7 +200,7 @@ void Task_806D804(void)
 
 void CreateHanabiiProjectile(CamCoord worldX, CamCoord worldY)
 {
-    struct Task *t = TaskCreate(Task_HanabiiProjectile, sizeof(HanabiiProjectile), 0x3000, 0, TaskDestructor_HanabiiProjectile);
+    Task *t = TaskCreate(Task_HanabiiProjectile, sizeof(HanabiiProjectile), 0x3000, 0, TaskDestructor_HanabiiProjectile);
     HanabiiProjectile *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
@@ -327,7 +327,7 @@ void Task_HanabiiProjectile2(void)
     s->y = oldWorldY;
 }
 
-void TaskDestructor_HanabiiProjectile(struct Task *t)
+void TaskDestructor_HanabiiProjectile(Task *t)
 {
     HanabiiProjectile *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);

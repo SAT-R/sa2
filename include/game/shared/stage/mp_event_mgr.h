@@ -105,8 +105,8 @@ typedef struct {
     u8 unk2;
 } RoomEvent_Unknown;
 
-struct Task *CreateMultiplayerReceiveEventMgr(void);
-struct Task *CreateMultiplayerSendEventMgr(void);
+Task *CreateMultiplayerReceiveEventMgr(void);
+Task *CreateMultiplayerSendEventMgr(void);
 
 void ReceiveRoomEvent_PlatformChange(union MultiSioData *, u8);
 void ReceiveRoomEvent_ItemBoxBreak(union MultiSioData *, u8);

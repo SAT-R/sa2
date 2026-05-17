@@ -229,7 +229,7 @@ void *gProfileScreenNextVramAddress = NULL;
 void *gProfileScreenSubMenuNextVramAddress = NULL;
 
 static void Task_OptionsScreenShow(void);
-static void OptionsScreenTaskDestroyHandler(struct Task *);
+static void OptionsScreenTaskDestroyHandler(Task *);
 
 static void ReadProfileData(struct OptionsScreen *);
 
@@ -1172,7 +1172,7 @@ const struct UNK_080D95E8 sZoneBossTitles[NUM_LANGUAGES][7] = {
 
 void CreateOptionsScreen(u16 p1)
 {
-    struct Task *t;
+    Task *t;
     struct OptionsScreen *optionsScreen;
     s16 i;
 
@@ -1204,7 +1204,7 @@ void CreateOptionsScreen(u16 p1)
 // so this is within the profile source.
 void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter, s8 unused_currentLevel)
 {
-    struct Task *t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, TASK_x0004, NULL);
+    Task *t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, TASK_x0004, NULL);
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 i;
 
@@ -1247,10 +1247,10 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
 
 void CreateNewProfileScreen(void)
 {
-    struct Task *t;
+    Task *t;
     struct LanguageScreen *languageScreen;
 
-    ShuffleRngSeed();
+    SHUFFLE_RNG_SEED();
 
     t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, TASK_x0004, NULL);
     languageScreen = TASK_DATA(t);
@@ -1276,7 +1276,7 @@ void CreateNewProfileScreen(void)
 
 void CreateNewProfileNameScreen(s16 mode)
 {
-    struct Task *t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, NULL);
+    Task *t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, NULL);
     struct ProfileNameScreen *profileNameScreen = TASK_DATA(t);
     s16 i;
 
@@ -1874,7 +1874,7 @@ static void OptionsScreenRenderUI(void)
 
 static void CreatePlayerDataMenu(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t = TaskCreate(Task_PlayerDataMenuOpenAnimWait, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
+    Task *t = TaskCreate(Task_PlayerDataMenuOpenAnimWait, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
     struct PlayerDataMenu *playerDataMenu = TASK_DATA(t);
 
     s16 initialCursorPos;
@@ -2411,7 +2411,7 @@ static void Task_TimeLimitMenuCloseAnim(void)
 
 static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t = TaskCreate(Task_ButtonConfigMenuOpenAnimWait, sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_ButtonConfigMenuOpenAnimWait, sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
     struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(t);
 
     buttonConfigMenu->optionsScreen = optionsScreen;
@@ -3051,7 +3051,7 @@ static void LanguageScreenHandleLanguageChanged(void)
 
 static void CreateDeleteScreen(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t = TaskCreate(Task_DeleteScreenFadeIn, sizeof(struct DeleteScreen), 0x2000, TASK_x0004, NULL);
+    Task *t = TaskCreate(Task_DeleteScreenFadeIn, sizeof(struct DeleteScreen), 0x2000, TASK_x0004, NULL);
     struct DeleteScreen *deleteScreen = TASK_DATA(t);
 
     deleteScreen->optionsScreen = optionsScreen;
@@ -3253,7 +3253,7 @@ static void Task_DeleteScreenFadeOutAndExit(void)
 
 static void CreateEditProfileNameScreen(struct PlayerDataMenu *playerDataMenu)
 {
-    struct Task *t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
     struct ProfileNameScreen *profileNameScreen = TASK_DATA(t);
     s16 i;
 
@@ -3420,7 +3420,7 @@ static void Task_ProfileNameScreenMain(void)
 
     ProfileNameScreenRenderUI();
 
-    ShuffleRngSeed();
+    SHUFFLE_RNG_SEED();
 
     // Don't bother continuing if we take input
     // from any other functions
@@ -3850,7 +3850,7 @@ static void ProfileNameScreenRenderUI(void)
 
 static void CreateTimeRecordsScreen(struct PlayerDataMenu *playerDataMenu)
 {
-    struct Task *t = TaskCreate(Task_TimeRecordsScreenChoiceViewFadeIn, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_TimeRecordsScreenChoiceViewFadeIn, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 availableCharacters;
 
@@ -4009,7 +4009,7 @@ static void Task_TimeRecordsScreenModeChoiceMain(void)
 
 static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu *playerDataMenu)
 {
-    struct Task *t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 i;
 
@@ -4754,8 +4754,7 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
 
 static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu)
 {
-    struct Task *t
-        = TaskCreate(Task_MultiplayerRecordsScreenCreateNextTableRowUI, sizeof(struct MultiplayerRecordsScreen), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_MultiplayerRecordsScreenCreateNextTableRowUI, sizeof(struct MultiplayerRecordsScreen), 0x2000, 4, NULL);
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(t);
 
     struct MultiplayerRecordRow *rows;
@@ -5269,7 +5268,7 @@ static u16 sub_806A664(s16 mode, u16 inputCharacter)
     return inputCharacter;
 }
 
-static void OptionsScreenTaskDestroyHandler(struct Task *optionsScreenTask)
+static void OptionsScreenTaskDestroyHandler(Task *optionsScreenTask)
 {
     // unimplemented
 }
@@ -5629,7 +5628,7 @@ static void PlayerDataMenuRenderUI(void)
 
 static void CreateDifficultyMenu(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t = TaskCreate(Task_DifficultyMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_DifficultyMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, NULL);
     struct SwitchMenu *difficultyMenu = TASK_DATA(t);
 
     difficultyMenu->optionsScreen = optionsScreen;
@@ -5662,7 +5661,7 @@ static void DifficultyMenuRenderUI(void)
 
 static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
 {
-    struct Task *t = TaskCreate(Task_TimeLimitMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, 0);
+    Task *t = TaskCreate(Task_TimeLimitMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, 0);
     struct SwitchMenu *timeLimitMenu = TASK_DATA(t);
 
     timeLimitMenu->optionsScreen = optionsScreen;
@@ -5744,7 +5743,7 @@ static void Task_ButtonConfigMenuHandleBButtonComplete(void)
 
 static void CreateEditLanguageScreen(struct OptionsScreen *optionScreen)
 {
-    struct Task *t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, 4, NULL);
+    Task *t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, 4, NULL);
     struct LanguageScreen *languageScreen = TASK_DATA(t);
 
     languageScreen->optionsScreen = optionScreen;
@@ -5812,7 +5811,7 @@ static void Task_LanguageScreenFadeOutAndExit(void)
     TaskDestroy(gCurTask);
 }
 
-static void ReseedRng(void) { ShuffleRngSeed(); }
+static void ReseedRng(void) { SHUFFLE_RNG_SEED(); }
 
 static void LanguageScreenRenderUI(void)
 {

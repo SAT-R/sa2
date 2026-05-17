@@ -15,20 +15,20 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/zones.h"
 
-typedef struct Game_2_1_2C {
+typedef struct {
     u8 filler0[0xC];
-    struct Task *taskC;
-    struct Task *task10;
-    struct Task *task14;
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *task20;
-    struct Task *task24;
+    Task *taskC;
+    Task *task10;
+    Task *task14;
+    Task *task18;
+    Task *task1C;
+    Task *task20;
+    Task *task24;
     s16 unk28;
     u16 unk2A;
 } Game_2_1_2C;
 
-typedef struct Game_2_1_34 {
+typedef struct {
     union {
         // TODO: This union might actually be their shared global type?
         GameOverB overB;
@@ -58,7 +58,7 @@ void Task_805DD10(void);
 void Task_805DF2C(void);
 void sub_805E018(void);
 void sub_805D4F0(void);
-void TaskDestructor_805E1E4(struct Task *t);
+void TaskDestructor_805E1E4(Task *t);
 
 extern u8 gUnknown_08487134[NUM_TIME_ATTACK_ZONES * ACTS_PER_ZONE];
 
@@ -268,16 +268,16 @@ void sub_805C994(u8 arg0)
 // (91.64%) https://decomp.me/scratch/oLMqr
 NONMATCH("asm/non_matching/game/sa1/ui/game2_1__sub_805D048.inc", void sub_805D048(u8 arg0))
 {
-    struct Task *task18;
-    struct Task *task1C;
-    struct Task *taskC;
-    struct Task *task24;
-    struct Task *task10;
-    struct Task *task14;
-    struct Task *t;
+    Task *task18;
+    Task *task1C;
+    Task *taskC;
+    Task *task24;
+    Task *task10;
+    Task *task14;
+    Task *t;
     u32 sp20;
     s32 sp24;
-    struct Task *task20;
+    Task *task20;
     Game_2_1_2C *temp_r0_10;
     Game_2_1_34 *temp_r2;
     s32 var_r8;
@@ -1236,4 +1236,4 @@ void sub_805E018()
     }
 }
 
-void TaskDestructor_805E1E4(struct Task *t) { }
+void TaskDestructor_805E1E4(Task *t) { }

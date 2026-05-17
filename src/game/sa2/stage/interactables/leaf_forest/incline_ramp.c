@@ -91,7 +91,7 @@ static void Task_InclineRamp(void)
 
 void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
 {
-    struct Task *t = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
     Sprite_InclineRamp *ramp = TASK_DATA(t);
 
     // @BUG? (regionY gets set to regionX and vice versa)

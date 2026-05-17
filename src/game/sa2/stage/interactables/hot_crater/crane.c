@@ -58,7 +58,7 @@ typedef struct {
 
 static void Task_Inactive(void);
 static void Task_CraneExtend(void);
-static void TaskDestructor_80743B8(struct Task *);
+static void TaskDestructor_80743B8(Task *);
 static void HandlePlayerTouchingHook(Sprite_HCCrane *);
 static void HandleLaunchPlayer(Sprite_HCCrane *);
 static void UpdatePartScreenPositions(Sprite_HCCrane *);
@@ -79,7 +79,7 @@ static void Despawn(Sprite_HCCrane *);
 
 void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Inactive, sizeof(Sprite_HCCrane), 0x2010, 0, TaskDestructor_80743B8);
+    Task *t = TaskCreate(Task_Inactive, sizeof(Sprite_HCCrane), 0x2010, 0, TaskDestructor_80743B8);
     Sprite_HCCrane *crane = TASK_DATA(t);
     CranePart *part;
     u16 i;
@@ -640,7 +640,7 @@ static bool32 PlayerIsTouchingHook(Sprite_HCCrane *crane)
     return FALSE;
 }
 
-static void TaskDestructor_80743B8(struct Task *t) { }
+static void TaskDestructor_80743B8(Task *t) { }
 
 static void sub_80743BC(Sprite_HCCrane *crane)
 {

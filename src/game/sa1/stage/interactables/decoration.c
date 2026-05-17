@@ -43,11 +43,11 @@ typedef struct {
 void Task_DecorationMain(void);
 void CreateDecorationDebris(s16 vecX, s16 vecY);
 void Task_DecorationDebrisMain(void);
-void TaskDestructor_DecorationDebris(struct Task *t);
+void TaskDestructor_DecorationDebris(Task *t);
 
 void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_DecorationMain, sizeof(Decoration), 0x2000, 0, TaskDestructor_EntityShared);
+    Task *t = TaskCreate(Task_DecorationMain, sizeof(Decoration), 0x2000, 0, TaskDestructor_EntityShared);
     Decoration *deco = TASK_DATA(t);
     Sprite *s = &deco->shared.s;
 
@@ -164,7 +164,7 @@ void Task_DecorationMain(void)
 
 void CreateDecorationDebris(s16 vecX, s16 vecY)
 {
-    struct Task *t = TaskCreate(Task_DecorationDebrisMain, sizeof(DecorationDebris), 0x2000, 0, TaskDestructor_DecorationDebris);
+    Task *t = TaskCreate(Task_DecorationDebrisMain, sizeof(DecorationDebris), 0x2000, 0, TaskDestructor_DecorationDebris);
     DecorationDebris *debris = TASK_DATA(t);
     Sprite *s = &debris->s1;
     SpriteTransform *tf = &debris->transform1;
@@ -359,7 +359,7 @@ void Task_DecorationDebrisMain(void)
     tf->y = oldTransformY;
 }
 
-void TaskDestructor_DecorationDebris(struct Task *t)
+void TaskDestructor_DecorationDebris(Task *t)
 {
     DecorationDebris *debris = TASK_DATA(t);
     VramFree(debris->s1.graphics.dest);

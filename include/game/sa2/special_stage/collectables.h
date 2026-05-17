@@ -40,7 +40,7 @@ struct SpecialStageCollectables {
     s16 animFrame;
 }; /* size 0xA5C */
 
-struct Task *CreateSpecialStageCollectables(struct SpecialStage *);
+Task *CreateSpecialStageCollectables(struct SpecialStage *);
 void SpecialStageHandleLoseRings(struct SpecialStage *stage, s16 num);
 
 #endif

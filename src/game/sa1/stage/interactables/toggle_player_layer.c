@@ -83,7 +83,7 @@ void Task_Toggle_PlayerLayer(void)
 
 void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 regionX, u16 regionY, u8 id)
 {
-    struct Task *t = TaskCreate(Task_Toggle_PlayerLayer, TOGGLE_PLAYER_LAYER_SIZE, 0x2000, 0, NULL);
+    Task *t = TaskCreate(Task_Toggle_PlayerLayer, TOGGLE_PLAYER_LAYER_SIZE, 0x2000, 0, NULL);
 #ifndef NON_MATCHING
     TASK_SET_MEMBER(TogglePlayerLayer, t, u16, regionX, regionX);
     TASK_SET_MEMBER(TogglePlayerLayer, t, u16, regionY, regionY);

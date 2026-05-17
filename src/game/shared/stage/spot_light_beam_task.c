@@ -9,11 +9,11 @@
 #include "game/shared/stage/spot_light_beam_task.h"
 
 void Task_SpotlightBeam(void);
-void TaskDestructor_SpotlightBeam(struct Task *);
+void TaskDestructor_SpotlightBeam(Task *);
 
-struct Task *CreateSpotlightBeamTask(void)
+Task *CreateSpotlightBeamTask(void)
 {
-    struct Task *t = TaskCreate(Task_SpotlightBeam, sizeof(SpotlightBeam), 0x2000, 0, TaskDestructor_SpotlightBeam);
+    Task *t = TaskCreate(Task_SpotlightBeam, sizeof(SpotlightBeam), 0x2000, 0, TaskDestructor_SpotlightBeam);
     SpotlightBeam *beam = TASK_DATA(t);
 
     beam->unk6 = 120;
@@ -214,4 +214,4 @@ NONMATCH("asm/non_matching/game/shared/stage/Task_SpotlightBeamTask.inc", void T
 }
 END_NONMATCH
 
-void TaskDestructor_SpotlightBeam(struct Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }
+void TaskDestructor_SpotlightBeam(Task *t) { gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY; }
