@@ -1019,8 +1019,8 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                         );
                     }
                     
-                    int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK,  mtX, mtY);
-                    int mtIndexFront = GetMetatileIndex(&state->map, &state->paths.map, LAYER_FRONT, mtX, mtY);
+                    int mtIndexBack  = GetMetatileIndex(state->game, &state->map, &state->paths.map, LAYER_BACK,  mtX, mtY);
+                    int mtIndexFront = GetMetatileIndex(state->game, &state->map, &state->paths.map, LAYER_FRONT, mtX, mtY);
 
                     bool iterateAgain = false;
                     do {

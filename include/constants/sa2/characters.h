@@ -1,6 +1,7 @@
 #ifndef GUARD_CONSTANTS_CHARACTERS_H
 #define GUARD_CONSTANTS_CHARACTERS_H
 
+#if 01
 typedef enum {
     CHARACTER_SONIC,
 #if (GAME >= GAME_SA2)
@@ -12,6 +13,15 @@ typedef enum {
 
     NUM_CHARACTERS
 } ECharacters;
+#else
+// TODO: Right now these have to be defined like this for BriBaSA_ex to work.
+//       Obviously this shall change!
+#define CHARACTER_SONIC    0
+#define CHARACTER_TAILS    1
+#define CHARACTER_KNUCKLES 2
+#define CHARACTER_AMY      3
+#define NUM_CHARACTERS     4
+#endif
 
 // NOTE: Put this after NUM_CHARACTERS, to allow BriBaSA_ex to parse this file properly.
 //       Naming it CHARACTER_<something> before NUM_CHARACTERS confuses it.
