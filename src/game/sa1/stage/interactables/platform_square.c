@@ -12,7 +12,7 @@
 #include "constants/sa1/animations.h"
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

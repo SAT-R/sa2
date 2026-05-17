@@ -8,7 +8,7 @@
 #include "game/sa1/stage/stage_ui.h"
 
 #include "constants/sa1/animations.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     StrcUi_805423C strc0;

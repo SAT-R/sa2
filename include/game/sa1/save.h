@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/globals.h"
 
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #include "constants/sa1/characters.h"
 
 #define PLAYER_NAME_END_CHAR 0xFFFF

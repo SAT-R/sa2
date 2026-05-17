@@ -19,7 +19,7 @@
 #include "data/sa1/sprite_data.h"
 
 #include "constants/sa1/animations.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #include "constants/sa1/vram_hardcoded.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/stage/boost_effect.h"
@@ -27,7 +27,7 @@
 #include "data/sa2/sprite_data.h"
 
 #include "constants/sa2/animations.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/vram_hardcoded.h"
 #endif
 

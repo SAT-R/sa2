@@ -28,7 +28,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
 #include "constants/sa1/tilemaps.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"

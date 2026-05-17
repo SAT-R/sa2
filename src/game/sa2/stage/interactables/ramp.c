@@ -14,7 +14,7 @@
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/player_transitions.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

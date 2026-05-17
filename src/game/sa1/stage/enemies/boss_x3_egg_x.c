@@ -20,7 +20,7 @@
 #include "constants/sa1/anim_sizes.h"
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h" // for ALL_ZONE_CHAOS_EMERALDS
+#include "constants/zones.h" // for ALL_ZONE_CHAOS_EMERALDS
 
 /* X-Zone Final Boss */
 

@@ -14,12 +14,12 @@
 #include "game/sa1/stage/mp_unk_0.h"
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/stage/mp_attack_1_effect.h"
 #include "constants/sa2/char_states.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #endif
 
 typedef void (*RoomEventHandler)(union MultiSioData *recv, u8 i);

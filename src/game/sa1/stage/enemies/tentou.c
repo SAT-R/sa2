@@ -9,7 +9,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define NUM_PROJECTILES             2
 #define TENTOU_ATTACK_INIT_DISTANCE 80

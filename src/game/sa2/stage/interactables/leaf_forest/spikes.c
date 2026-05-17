@@ -14,7 +14,7 @@
 #include "constants/sa2/animations.h"
 #include "constants/sa2/interactables.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #ifndef COLLECT_RINGS_ROM
 #define SPIKES_VRAM_ADDRESS (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);

@@ -33,7 +33,7 @@
 #if (GAME == GAME_SA1)
 #include "constants/sa2/songs.h"
 #endif
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #include "game/sa2/assets/compressed/roms.h"
 

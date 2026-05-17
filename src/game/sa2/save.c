@@ -6,7 +6,7 @@
 #include "lib/m4a/m4a.h"
 #include "game/math.h"
 #include "constants/sa2/text.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 struct SaveSectorHeader {
     u32 security, version;

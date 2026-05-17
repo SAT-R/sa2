@@ -14,7 +14,7 @@
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/move_states.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define LAVA_SPURT_RATE TIME(0, 1.7)
 

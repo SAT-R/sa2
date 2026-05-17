@@ -6,7 +6,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define NUM_SPARKS          2
 #define FIREBALL_SPAWN_RATE TIME(0, 4)

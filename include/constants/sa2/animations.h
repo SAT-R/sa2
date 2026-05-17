@@ -6,10 +6,6 @@
  */
 #include "constants/sa2/anim_sizes.h"
 
-/**************************** SA1 ****************************/
-
-// "x_PROJ" means "projectile belonging to x"
-
 /**************************** SA2 ****************************/
 
 #define SA2_ANIM_CHAR_ID_CHEESE 5

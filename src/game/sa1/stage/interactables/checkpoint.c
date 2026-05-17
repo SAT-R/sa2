@@ -9,7 +9,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/move_states.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     // NOTE: EntityShared HAS to be the first element,

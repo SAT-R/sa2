@@ -15,7 +15,7 @@
 #include "constants/sa1/songs.h"
 #include "constants/sa1/ui_graphics.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 extern void InitWaterPalettes(void); // TODO: Move to correct Header!
 

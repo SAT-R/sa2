@@ -19,7 +19,7 @@
 #include "constants/sa1/interactables.h"
 #include "constants/sa1/songs.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     // NOTE: EntityShared HAS to be the first element,

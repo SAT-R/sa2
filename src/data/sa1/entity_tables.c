@@ -1,5 +1,5 @@
 #include "global.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 extern const u8 zone_1_act_1_rings[];
 extern const u8 zone_1_act_2_rings[];

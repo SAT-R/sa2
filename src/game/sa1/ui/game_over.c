@@ -19,7 +19,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 void Task_GameOverScreenInit(void);
 void Task_8056100(void);

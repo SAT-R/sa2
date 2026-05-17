@@ -31,7 +31,7 @@
 #include "constants/sa1/move_states.h"
 #include "constants/sa1/songs.h"
 #include "constants/sa1/tilemaps.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define MENU_ITEMS_TOP_Y    93
 #define MENU_ITEMS_SPACE    14

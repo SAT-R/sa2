@@ -22,7 +22,7 @@
 #include "constants/sa2/items.h"
 #include "constants/sa2/player_transitions.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #define ITEM_DURATION_INVINCIBILITY TIME(0, 20)
 #define ITEM_DURATION_SPEED_UP      TIME(0, 20)

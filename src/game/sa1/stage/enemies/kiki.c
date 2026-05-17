@@ -8,7 +8,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 /* TODO: Streamline all the gamespecific differences (using const etc.) */
 

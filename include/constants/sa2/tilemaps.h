@@ -1,165 +1,119 @@
 #ifndef GUARD_TILEMAPS
 #define GUARD_TILEMAPS
 
-#if (GAME == GAME_SA1)
-
-// NOTE: * 0-53 are MapHeaders
-#define TM_LEVEL_METATILES_0(level) (((level)*3) + 0)
-#define TM_LEVEL_METATILES_1(level) (((level)*3) + 1)
-#define TM_LEVEL_BG(level)          (((level)*3) + 2)
-
-#define TM_TILEMAP_54                         54
-#define TM_SPECIAL_STAGE_BG_FRAME_0           55
-#define TM_SPECIAL_STAGE_BG_FRAME_1           56
-#define TM_SPECIAL_STAGE_BG_FRAME_2           57
-#define TM_SPECIAL_STAGE_BG_FRAME_3           58
-#define TM_SPECIAL_STAGE_BG_FRAME_4           59
-#define TM_SPECIAL_STAGE_BG_FRAME_5           60
-#define TM_SPECIAL_STAGE_BG_FRAME_6           61
-#define TM_SPECIAL_STAGE_BG_FRAME_7           62
-#define TM_SPECIAL_STAGE_BG_FRAME_8           63
-#define TM_SPECIAL_STAGE_BG_FRAME_9           64
-#define TM_SPECIAL_STAGE_BG_FRAME_10          65
-#define TM_SPECIAL_STAGE_BG_FRAME_11          66
-#define TM_SPECIAL_STAGE_BG_FRAME_12          67
-#define TM_SPECIAL_STAGE_BG_FRAME_13          68
-#define TM_SPECIAL_STAGE_BG_FRAME_14          69
-#define TM_SPECIAL_STAGE_BG_FRAME_15          70
-#define TM_ICE_PARADISE_SNOW                  71
-#define TM_EGG_ROCKET_CLOUDS                  72
-#define TM_SA1_TITLE_LOGO_JP                  73
-#define TM_SA1_TITLE_LOGO_EN                  74
-#define TM_SA1_TITLE_BG                       75
-#define TM_MP_CHOOSE_PAK_TYPE_JP              76
-#define TM_MP_CHOOSE_PAK_TYPE_EN              77
-#define TM_MP_CONNECTION_SUCCESS              78
-#define TM_MP_CONNECTION_ERROR                79
-#define TM_MP_CONTINUE_SCREEN                 80
-#define TM_MP_TEAM_PLAY_SCREEN                81
-#define TM_MP_VS_BACKGROUND                   82
-#define TM_MP_SINGLEPAK_PROGRAM_IS_BEING_SENT 83
-#define TM_VS_MODE_SELECT_JP                  84
-#define TM_VS_MODE_SELECT                     85
-#define TM_INTRO_PRESENTED_BY_SEGA            86
-#define TM_INTRO_CREATED_BY_SONIC_TEAM        87
-#define TM_MP_MULTIPAK_PLAYER_OVERVIEW        88
-#define TM_TILEMAP_89                         89
-
-#elif (GAME == GAME_SA2)
-
 // NOTE: * 0-92 are MapHeaders
 //       *   93 == NULL
 #define TM_LEVEL_METATILES_0(level) (((level)*3) + 0)
 #define TM_LEVEL_METATILES_1(level) (((level)*3) + 1)
 #define TM_LEVEL_BG(level)          (((level)*3) + 2)
 
-#define TM_EMPTY_93                                   93
-#define TM_SA1_TITLE_LOGO                             94
-#define TM_SA1_TITLE_BG                               95
-#define TM_INTRO_PRESENTED_BY_SEGA                    96
-#define TM_INTRO_CREATED_BY_SONIC_TEAM                97
-#define TM_CHARACTER_SELECT_BACKGROUND                98
-#define TM_CHARACTER_SELECT_WHEEL                     99
-#define TM_STAGE_SELECT_BG_SONIC                      100
-#define TM_STAGE_SELECT_BG_CREAM                      101
-#define TM_STAGE_SELECT_BG_TAILS                      102
-#define TM_STAGE_SELECT_BG_KNUCKLES                   103
-#define TM_STAGE_SELECT_BG_AMY                        104
-#define TM_STAGE_SELECT_MAP                           105
-#define TM_EGG_SAUCER_WHEEL_COPY                      106
-#define TM_UNKNOWN_OPTIONS_BG                         107
-#define TM_TILEMAP_108                                108
-#define TM_SA2_TITLE_LOGO_JP                          109
-#define TM_TA_AND_MP_WHITE_BG                         110
-#define TM_MP_ORANGE_BG                               111
-#define TM_TA_ORANGE_BG                               112
-#define TM_STAGE_1_BG_0_COPY                          113
-#define TM_MP_WAIT_CONNECTION                         114
-#define TM_MP_MESSAGE_BOX_UNKNOWN                     115
-#define TM_MP_CHARACTERS_SELECTED_JP                  116
-#define TM_MP_CHARACTERS_SELECTED_EN                  117
-#define TM_MP_CHARACTERS_SELECTED_DE                  118
-#define TM_MP_CHARACTERS_SELECTED_FR                  119
-#define TM_MP_CHARACTERS_SELECTED_ES                  120
-#define TM_MP_CHARACTERS_SELECTED_IT                  121
-#define TM_MP_UNKNOWN_ORANGE_ZIGZAG                   122
-#define TM_MP_UNKNOWN_GREEN                           123
-#define TM_UNKNOWN_MESSAGE_BOX_WHITE                  124
-#define TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL            125
-#define TM_MP_VS_BACKGROUND_TEXT                      126
-#define TM_MP_CHEESE_PLEASE_WAIT_JP                   127
-#define TM_MP_CHEESE_PLEASE_WAIT_EN                   128
-#define TM_MP_CHEESE_PLEASE_WAIT_DE                   129
-#define TM_MP_CHEESE_PLEASE_WAIT_FR                   130
-#define TM_MP_CHEESE_PLEASE_WAIT_ES                   131
-#define TM_MP_CHEESE_PLEASE_WAIT_IT                   132
-#define TM_OPTIONS_BG0                                133
-#define TM_OPTIONS_LANGUAGE_SELECT                    134
-#define TM_OPTIONS_ENTER_NAME                         135
-#define TM_OPTIONS_ENTER_NAME_CHARACTERS              136
-#define TM_OPTIONS_TIME_RECORD_BG0                    137
-#define TM_OPTIONS_TIME_RECORD_BG1                    138
-#define TM_TILEMAP_139                                139
-#define TM_MP_CHARACTER_SELECTED_SONIC_BG             140
-#define TM_MP_CHARACTER_SELECTED_SONIC                141
-#define TM_MP_CHARACTER_SELECTED_TAILS_BG             142
-#define TM_MP_CHARACTER_SELECTED_TAILS                143
-#define TM_MP_CHARACTER_SELECTED_KNUCKLES_BG          144
-#define TM_MP_CHARACTER_SELECTED_KNUCKLES             145
-#define TM_MP_CHARACTER_SELECTED_AMY_BG               146
-#define TM_MP_CHARACTER_SELECTED_AMY                  147
-#define TM_MP_CHARACTER_SELECTED_CREAM_BG             148
-#define TM_MP_CHARACTER_SELECTED_CREAM                149
-#define TM_MESSAGE_BOX_BLACK                          150
-#define TM_GREEN_CARET                                151
-#define TM_OPTIONS_VS_RECORD_BG1                      152
-#define TM_SPECIAL_STAGE_1                            153
-#define TM_SPECIAL_STAGE_1_BG                         154
-#define TM_SPECIAL_STAGE_2                            155
-#define TM_SPECIAL_STAGE_2_BG                         156
-#define TM_SPECIAL_STAGE_3                            157
-#define TM_SPECIAL_STAGE_3_BG                         158
-#define TM_SPECIAL_STAGE_4                            159
-#define TM_SPECIAL_STAGE_4_BG                         160
-#define TM_SPECIAL_STAGE_5                            161
-#define TM_SPECIAL_STAGE_5_BG                         162
-#define TM_SPECIAL_STAGE_6                            163
-#define TM_SPECIAL_STAGE_6_BG                         164
-#define TM_SPECIAL_STAGE_7                            165
-#define TM_SPECIAL_STAGE_7_BG                         166
-#define TM_TECHNO_BASE_BG_PURPLE_GRID                 167
-#define TM_TECHNO_BASE_BG_CIRCUIT_MASK                168
-#define TM_SOUND_TEST_BG                              169
-#define TM_CUTSCENE_POST_EXTRA_BOSS_BG                170
-#define TM_CUTSCENE_FINAL_ENDING_FALL_BG              171
-#define TM_CUTSCENE_FINAL_ENDING_FALL_CLOUDS          172
-#define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK         173
-#define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK_2       174
+#define TM_EMPTY_93                             93
+#define TM_SA1_TITLE_LOGO                       94
+#define TM_SA1_TITLE_BG                         95
+#define TM_INTRO_PRESENTED_BY_SEGA              96
+#define TM_INTRO_CREATED_BY_SONIC_TEAM          97
+#define TM_CHARACTER_SELECT_BACKGROUND          98
+#define TM_CHARACTER_SELECT_WHEEL               99
+#define TM_STAGE_SELECT_BG_SONIC                100
+#define TM_STAGE_SELECT_BG_CREAM                101
+#define TM_STAGE_SELECT_BG_TAILS                102
+#define TM_STAGE_SELECT_BG_KNUCKLES             103
+#define TM_STAGE_SELECT_BG_AMY                  104
+#define TM_STAGE_SELECT_MAP                     105
+#define TM_EGG_SAUCER_WHEEL_COPY                106
+#define TM_UNKNOWN_OPTIONS_BG                   107
+#define TM_TILEMAP_108                          108
+#define TM_SA2_TITLE_LOGO_JP                    109
+#define TM_TA_AND_MP_WHITE_BG                   110
+#define TM_MP_ORANGE_BG                         111
+#define TM_TA_ORANGE_BG                         112
+#define TM_STAGE_1_BG_0_COPY                    113
+#define TM_MP_WAIT_CONNECTION                   114
+#define TM_MP_MESSAGE_BOX_UNKNOWN               115
+#define TM_MP_CHARACTERS_SELECTED_JP            116
+#define TM_MP_CHARACTERS_SELECTED_EN            117
+#define TM_MP_CHARACTERS_SELECTED_DE            118
+#define TM_MP_CHARACTERS_SELECTED_FR            119
+#define TM_MP_CHARACTERS_SELECTED_ES            120
+#define TM_MP_CHARACTERS_SELECTED_IT            121
+#define TM_MP_UNKNOWN_ORANGE_ZIGZAG             122
+#define TM_MP_UNKNOWN_GREEN                     123
+#define TM_UNKNOWN_MESSAGE_BOX_WHITE            124
+#define TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL      125
+#define TM_MP_VS_BACKGROUND_TEXT                126
+#define TM_MP_CHEESE_PLEASE_WAIT_JP             127
+#define TM_MP_CHEESE_PLEASE_WAIT_EN             128
+#define TM_MP_CHEESE_PLEASE_WAIT_DE             129
+#define TM_MP_CHEESE_PLEASE_WAIT_FR             130
+#define TM_MP_CHEESE_PLEASE_WAIT_ES             131
+#define TM_MP_CHEESE_PLEASE_WAIT_IT             132
+#define TM_OPTIONS_BG0                          133
+#define TM_OPTIONS_LANGUAGE_SELECT              134
+#define TM_OPTIONS_ENTER_NAME                   135
+#define TM_OPTIONS_ENTER_NAME_CHARACTERS        136
+#define TM_OPTIONS_TIME_RECORD_BG0              137
+#define TM_OPTIONS_TIME_RECORD_BG1              138
+#define TM_TILEMAP_139                          139
+#define TM_MP_CHARACTER_SELECTED_SONIC_BG       140
+#define TM_MP_CHARACTER_SELECTED_SONIC          141
+#define TM_MP_CHARACTER_SELECTED_TAILS_BG       142
+#define TM_MP_CHARACTER_SELECTED_TAILS          143
+#define TM_MP_CHARACTER_SELECTED_KNUCKLES_BG    144
+#define TM_MP_CHARACTER_SELECTED_KNUCKLES       145
+#define TM_MP_CHARACTER_SELECTED_AMY_BG         146
+#define TM_MP_CHARACTER_SELECTED_AMY            147
+#define TM_MP_CHARACTER_SELECTED_CREAM_BG       148
+#define TM_MP_CHARACTER_SELECTED_CREAM          149
+#define TM_MESSAGE_BOX_BLACK                    150
+#define TM_GREEN_CARET                          151
+#define TM_OPTIONS_VS_RECORD_BG1                152
+#define TM_SPECIAL_STAGE_1                      153
+#define TM_SPECIAL_STAGE_1_BG                   154
+#define TM_SPECIAL_STAGE_2                      155
+#define TM_SPECIAL_STAGE_2_BG                   156
+#define TM_SPECIAL_STAGE_3                      157
+#define TM_SPECIAL_STAGE_3_BG                   158
+#define TM_SPECIAL_STAGE_4                      159
+#define TM_SPECIAL_STAGE_4_BG                   160
+#define TM_SPECIAL_STAGE_5                      161
+#define TM_SPECIAL_STAGE_5_BG                   162
+#define TM_SPECIAL_STAGE_6                      163
+#define TM_SPECIAL_STAGE_6_BG                   164
+#define TM_SPECIAL_STAGE_7                      165
+#define TM_SPECIAL_STAGE_7_BG                   166
+#define TM_TECHNO_BASE_BG_PURPLE_GRID           167
+#define TM_TECHNO_BASE_BG_CIRCUIT_MASK          168
+#define TM_SOUND_TEST_BG                        169
+#define TM_CUTSCENE_POST_EXTRA_BOSS_BG          170
+#define TM_CUTSCENE_FINAL_ENDING_FALL_BG        171
+#define TM_CUTSCENE_FINAL_ENDING_FALL_CLOUDS    172
+#define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK   173
+#define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK_2 174
 
 // This has an image of Eggman, other languages are only the textbox
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_JP              175
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_EN              176
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_FR              177
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_DE              178
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_IT              179
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_ES              180
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_JP 175
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_EN 176
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_FR 177
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_DE 178
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_IT 179
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_ES 180
 
 // (Also used as BG for SoundTest unlock) This fills the entire screen, other
 // languages are only the textbox
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_JP               181
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_EN               182
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_FR               183
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_DE               184
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_IT               185
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_ES               186
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_JP 181
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_EN 182
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_FR 183
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_DE 184
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_IT 185
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_ES 186
 
 // Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
-#define TM_UNLOCKED_SOUND_TEST_JP                     187
-#define TM_UNLOCKED_SOUND_TEST_EN                     188
-#define TM_UNLOCKED_SOUND_TEST_FR                     189
-#define TM_UNLOCKED_SOUND_TEST_DE                     190
-#define TM_UNLOCKED_SOUND_TEST_IT                     191
-#define TM_UNLOCKED_SOUND_TEST_ES                     192
+#define TM_UNLOCKED_SOUND_TEST_JP 187
+#define TM_UNLOCKED_SOUND_TEST_EN 188
+#define TM_UNLOCKED_SOUND_TEST_FR 189
+#define TM_UNLOCKED_SOUND_TEST_DE 190
+#define TM_UNLOCKED_SOUND_TEST_IT 191
+#define TM_UNLOCKED_SOUND_TEST_ES 192
 
 // Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
 #define TM_UNLOCKED_BOSSES_TIME_ATTACK_JP             193
@@ -351,6 +305,5 @@
 #define TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART 379
 #define TM_REGULAR_FINAL_BOSS_BUILDING_BG             380
 #define TM_COUNT                                      381
-#endif
 
 #endif // GUARD_TILEMAPS

@@ -10,7 +10,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     u8 filler0[0x48];

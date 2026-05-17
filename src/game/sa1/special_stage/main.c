@@ -18,7 +18,7 @@ extern struct MP2KSongHeader se_ring_copy;
 #include "constants/sa1/animations.h"
 #include "constants/sa1/tilemaps.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     u8 unk0;

@@ -13,7 +13,7 @@
 #include "constants/sa1/ui_graphics.h"
 #include "constants/sa1/vram_hardcoded.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     u8 filler0[0xC];

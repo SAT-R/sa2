@@ -11,7 +11,7 @@
 #include "constants/sa1/anim_sizes.h"
 #include "constants/sa1/songs.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 /* TODO: Maybe inline this file into bosses_misc.c ? */
 

@@ -14,7 +14,7 @@
 #include "constants/sa2/char_states.h"
 #include "constants/sa2/player_transitions.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #define ITEM_ICON_DISPLAY_TIME  (1 * GBA_FRAMES_PER_SECOND)
 #define ITEM_ICON_DISPLAY_DELAY (int)(0.5 * GBA_FRAMES_PER_SECOND)

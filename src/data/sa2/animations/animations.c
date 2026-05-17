@@ -1,5 +1,5 @@
 #include "global.h"
-#include "constants/sa2/anim_commands.h"
+#include "constants/anim_commands.h"
 
 const s32 anim_0000__v0_l0[] = { // 0x080F40EC
     PALETTE(0, 16, 0x0)

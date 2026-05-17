@@ -5,7 +5,7 @@
 #include "game/shared/stage/player.h"
 
 #include "constants/sa2/tilemaps.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/move_states.h"
 
 // (88.05%) https://decomp.me/scratch/ekyaq

@@ -8,7 +8,7 @@
 
 #include "constants/sa1/animations.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef enum {
     DIR_LEFT = 0,

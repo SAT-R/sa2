@@ -15,7 +15,7 @@
 #include "game/sa1/stage/itembox.h"
 
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/stage/itembox.h"
 #include "game/sa2/stage/interactables/platform_thin.h"
@@ -118,7 +118,7 @@
 
 #include "game/sa2/assets/compressed/entities.h"
 
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/songs.h"
 
 #endif

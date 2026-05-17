@@ -10,7 +10,7 @@
 #include "game/shared/stage/entity.h"
 
 #include "constants/sa1/animations.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 /* Chao that spawns in the Chao Hunt minigame */
 

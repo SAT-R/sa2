@@ -17,7 +17,7 @@
 #include "constants/sa1/char_states.h"
 #include "constants/sa1/player_transitions.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 /* While you can tell the SA2 version stems from SA1's,
  *  it's clear they heavily modified it during SA2's development.

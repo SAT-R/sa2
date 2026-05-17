@@ -16,7 +16,7 @@
 #include "game/shared/stage/water_effects.h"
 
 #include "constants/sa2/animations.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #define INTRO_ICON_LEAF_FOREST  0
 #define INTRO_ICON_HOT_CRATAER  1

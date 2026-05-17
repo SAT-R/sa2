@@ -11,7 +11,7 @@
 #include "trig.h"
 #include "flags.h"
 #include "malloc_ewram.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/songs.h"
 #include "constants/sa2/tilemaps.h"
 

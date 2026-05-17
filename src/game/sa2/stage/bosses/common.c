@@ -19,7 +19,7 @@
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/player_transitions.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 Task *gActiveBossTask = NULL;
 

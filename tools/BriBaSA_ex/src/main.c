@@ -15,7 +15,7 @@
 #include <raylib.h>
 
 #include "../../../include/constants/sa2/interactables.h"
-#include "../../../include/constants/sa2/zones.h"
+#include "../../../include/constants/zones.h"
 
 #include "global.h"
 #include "drawing.h"

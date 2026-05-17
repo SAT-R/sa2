@@ -1,7 +1,7 @@
 #ifndef GUARD_PLAYER_SUPER_SONIC_H
 #define GUARD_PLAYER_SUPER_SONIC_H
 
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 struct SuperSonic;
 

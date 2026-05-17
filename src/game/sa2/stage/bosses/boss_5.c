@@ -22,7 +22,7 @@
 
 #include "lib/m4a/m4a.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/animations.h"
 #include "flags.h"
 

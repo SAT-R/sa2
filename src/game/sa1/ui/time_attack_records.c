@@ -13,7 +13,7 @@
 #include "constants/sa1/characters.h"
 #include "constants/sa1/songs.h"
 #include "constants/sa1/text.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 /* These are the records appearing after selecting / before starting to play a stage */
 

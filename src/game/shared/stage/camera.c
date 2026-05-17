@@ -18,12 +18,12 @@
 #include "constants/sa1/animations.h"
 #include "constants/sa1/characters.h"
 #include "constants/sa1/tilemaps.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/stage/player_super_sonic.h"
 
 #include "constants/sa2/tilemaps.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/characters.h"
 #endif
 

@@ -15,7 +15,7 @@
 #include "constants/sa1/move_states.h"
 #include "constants/sa1/songs.h"
 #include "constants/sa1/vram_hardcoded.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define BOULDER_SPAWN_RATE TIME(0, 2)
 

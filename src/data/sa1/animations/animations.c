@@ -1,5 +1,5 @@
 #include "global.h"
-#include "constants/sa1/anim_commands.h"
+#include "constants/anim_commands.h"
 
 const s32 anim_0000__v0_l0[] = { // 0x080DC188
     PALETTE(0, 16, 0x0) TILES(0x0, 20) HITBOX(0, -6, -13, 6, 16) SHOW_FRAME(6, 0)

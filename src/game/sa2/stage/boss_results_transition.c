@@ -14,7 +14,7 @@
 #include "game/sa2/stage/boss_results_transition.h"
 
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 // Seven unknown x/y positions
 const u16 gUnknown_080D6DE4[][2] = {

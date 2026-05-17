@@ -5,9 +5,9 @@
 #include "core.h"
 
 #if (GAME == GAME_SA1)
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #endif
 
 #if (GAME == GAME_SA1)

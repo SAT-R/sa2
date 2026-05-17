@@ -33,7 +33,7 @@
 
 #include "constants/sa1/characters.h"
 #include "constants/sa1/songs.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "game/sa2/save.h"
 #include "game/sa2/ui/game_over.h"
@@ -47,7 +47,7 @@
 #include "constants/sa2/animations.h"
 #include "constants/sa2/characters.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #endif
 
 #define BOSS_RINGS_DEFAULT_RESPAWN_COUNT 10

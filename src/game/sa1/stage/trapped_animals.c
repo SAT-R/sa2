@@ -9,7 +9,7 @@
 #include "game/shared/stage/camera.h"
 
 #include "constants/sa1/animations.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     s32 vramOffset;

@@ -6,7 +6,7 @@
 #include "game/globals.h"
 
 #include "game/sa2/stage/player_controls.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #include "constants/sa2/characters.h"
 
 #define PLAYER_NAME_END_CHAR 0xFFFF

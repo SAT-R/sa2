@@ -5,9 +5,9 @@
 #include "game/shared/stage/player.h"
 
 #if (GAME == GAME_SA1)
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #else
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #endif
 
 const Collision *gRefCollision = NULL;

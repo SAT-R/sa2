@@ -9,7 +9,7 @@
 #include "trig.h"
 #include "game/math.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 // Maybe same as SpecialStageCollectables_UNK874 or UNK_806CB84
 struct UNK_806DEA4 {

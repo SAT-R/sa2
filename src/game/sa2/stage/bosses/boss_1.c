@@ -28,7 +28,7 @@
 #include "constants/sa2/animations.h"
 #include "constants/sa2/char_states.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #define EGG_HAMMER_TANK_II_STATE_RESET   0
 #define EGG_HAMMER_TANK_II_STATE_EXTEND  1

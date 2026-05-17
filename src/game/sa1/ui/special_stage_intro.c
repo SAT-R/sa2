@@ -10,7 +10,7 @@
 #include "constants/sa1/animations.h"
 #include "constants/sa1/characters.h"
 #include "constants/sa1/ui_graphics.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 
 #define FRAME_RELAY_A 90
 #define FRAME_RELAY_B 150

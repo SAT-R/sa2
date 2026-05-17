@@ -12,7 +12,7 @@
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 #define UI_ASCII_COLON   10
 #define UI_ASCII_SP_RING 11

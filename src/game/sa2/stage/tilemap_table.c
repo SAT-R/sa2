@@ -4,7 +4,7 @@
 #include "data/sa2/tilemap_data.h"
 
 #include "constants/sa2/tilemaps.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 const Tilemap *const gTilemaps[] = {
     [0] = &MapHeader_zone_1_act_1_fg0.tileset,

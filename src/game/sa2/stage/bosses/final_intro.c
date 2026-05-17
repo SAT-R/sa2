@@ -18,7 +18,7 @@
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"
 #include "constants/sa2/tilemaps.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     u8 cameraY;

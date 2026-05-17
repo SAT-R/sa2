@@ -11,10 +11,10 @@
 
 #if (GAME == GAME_SA1)
 #include "constants/sa1/animations.h"
-#include "constants/sa1/zones.h"
+#include "constants/zones.h"
 #elif (GAME == GAME_SA2)
 #include "constants/sa2/animations.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 #endif
 
 typedef struct {

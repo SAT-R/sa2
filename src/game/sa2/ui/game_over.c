@@ -18,7 +18,7 @@
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 // NOTE:
 // The prefixes indicate their relation to the specific "over" screen:

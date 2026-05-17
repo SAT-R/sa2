@@ -15,7 +15,7 @@
 #include "constants/sa2/char_states.h"
 #include "constants/sa2/player_transitions.h"
 #include "constants/sa2/songs.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

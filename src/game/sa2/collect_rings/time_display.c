@@ -6,7 +6,7 @@
 #include "game/sa2/collect_rings/time_display.h"
 
 #include "constants/sa2/animations.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 typedef struct {
     Sprite unk0;

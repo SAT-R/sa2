@@ -10,7 +10,7 @@
 #include "game/sa2/stage/screen_fade.h"
 
 #include "constants/sa2/animations.h"
-#include "constants/sa2/zones.h"
+#include "constants/zones.h"
 
 struct RaceProgressIndicator {
     Sprite avatars[4];
