@@ -20,11 +20,7 @@ void sub_80543A4(StrcUi_805423C *param0);
 #define FROM_UI_DIGIT(_digit) ((_digit)-32)
 
 typedef struct {
-    u8 unk0[3];
-    u8 unk3;
-    u8 filler4[4];
-    u8 unk9;
-    u8 unkA;
+    u8 unk0[10];
     u8 unkB;
 } StageUI_10;
 

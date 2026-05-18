@@ -65,18 +65,14 @@ void Task_StageUIMain(void);
 void Task_SpecialStageUIMain(void);
 void CreateChaoHuntHUD(void);
 
-// (98.15%) https://decomp.me/scratch/LupqY
-NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_StageUIMain.inc", void Task_StageUIMain(void))
+void Task_StageUIMain(void)
 {
     StageUI *ui;
     GameOverB overB;
     s32 remainder;
     s32 remainder0;
-    StageUI_10 *unk10_A;
     s32 i;
     u8 *ptr;
-    s32 digitLives;
-    u8 lives;
 
     overB.qUnkA = -2;
     overB.unkC = -1;
@@ -120,20 +116,15 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_StageUIMain.inc", void 
 
     TASK_SET_MEMBER(StageUI, gCurTask, u16, ringCount, gRingCount);
 
-    (&TASK_GET_MEMBER(StageUI, gCurTask, StageUI_10, unk10))->unk9 = 0;
+    ptr = (void *)(&TASK_GET_MEMBER(StageUI, gCurTask, StageUI_10, unk10));
+    ptr[9] = 0;
 
     remainder = gLevelScore;
 
     for (i = 8; i >= 0; i--) {
-#ifdef BUG_FIX
-        // How did this even happen?
-        if (i >= ARRAY_COUNT(ui->digitsRings)) {
-            continue;
-        }
-#endif
         remainder0 = Div(remainder, 10);
 
-        ui->digitsRings[i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
+        ptr[i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
 
         remainder = remainder0;
     }
@@ -142,13 +133,12 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_StageUIMain.inc", void 
 
     ptr = &TASK_GET_MEMBER(StageUI, gCurTask, u8, digitLives);
     if (gNumLives > 9) {
-        digitLives = UI_DIGIT(9);
+        *ptr = UI_DIGIT(9);
     } else if (gNumLives != 0) {
-        digitLives = UI_DIGIT(gNumLives - 1);
+        *ptr = UI_DIGIT(gNumLives - 1);
     } else {
-        digitLives = UI_DIGIT(0);
+        *ptr = UI_DIGIT(0);
     }
-    *ptr = digitLives;
 
     sub_8053BAC();
 
@@ -168,7 +158,6 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_StageUIMain.inc", void 
         }
     }
 }
-END_NONMATCH
 
 void sub_80538BC(void)
 {
