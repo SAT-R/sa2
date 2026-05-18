@@ -103,12 +103,9 @@ void Task_StageUIMain(void)
     } else {
         remainder = gRingCount;
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < (s32)ARRAY_COUNT(ui->digitsRings); i++) {
             remainder0 = Div(remainder, 10);
-
-            //          ui->digitsRings[2 - i] = UI_DIGIT(remainder - (remainder0 * 10));
             ui->digitsRings[2 - i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
-
             remainder = remainder0;
         }
     }
@@ -121,11 +118,9 @@ void Task_StageUIMain(void)
 
     remainder = gLevelScore;
 
-    for (i = 8; i >= 0; i--) {
+    for (i = ARRAY_COUNT(ui->unk10.unk0) - 2; i >= 0; i--) {
         remainder0 = Div(remainder, 10);
-
         ptr[i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
-
         remainder = remainder0;
     }
 
@@ -497,11 +492,9 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
         unk10->unk0[2] = UI_DIGIT(9);
     } else {
         remainder = gSpecialStageTargetRings;
-        for (i = 0; i < (s32)ARRAY_COUNT(unk10->unk0); i++) {
+        for (i = 0; i < (s32)ARRAY_COUNT(ui->digitsRings); i++) {
             remainder0 = Div(remainder, 10);
-
             unk10->unk0[2 - i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
-
             remainder = remainder0;
         }
     }
