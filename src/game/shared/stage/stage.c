@@ -522,7 +522,7 @@ void Task_GameStage(void)
         if (GAME_MODE_REQUIRES_ITEM_RNG) {
             if ((framesSinceStageStart & ~(0x1FF)) != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
                 u32 mask, rand;
-                u32 temp = MultiplayerPseudoRandom32();
+                u32 temp = MP_PSEUDO_RANDOM_32();
 
                 if ((framesSinceStageStart & ~(0xFFF)) != ((framesSinceStageStart - timeStep) & ~(0xFFF))) {
                     u32 value = (gRandomItemBox >> 4) + 1;
@@ -534,7 +534,7 @@ void Task_GameStage(void)
             }
 
         } else if ((framesSinceStageStart & ~(0x3F)) != ((framesSinceStageStart - timeStep) & ~(0x3F))) {
-            u32 temp = MultiplayerPseudoRandom32();
+            u32 temp = MP_PSEUDO_RANDOM_32();
         }
 
         if (gCamera.SA2_LABEL(unk50) & CAM_MODE_SPECTATOR) {

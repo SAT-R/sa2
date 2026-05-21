@@ -1,3 +1,5 @@
+#include "core.h"
+#include "background.h"
 #include "trig.h"
 
 #include "game/globals.h"
@@ -406,14 +408,14 @@ static void sub_8047F0C(void)
     if (Mod(gStageTime, 7) == 0 && boss->unk65 == 0) {
         ExplosionPartsInfo explosion;
         u32 rand;
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnX = (I(boss->x) - gCamera.x) + (rand & 0x3F) - 0x1F;
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnY = (I(boss->y) - gCamera.y) + (rand & 0x3F) - 0x1F;
 
         explosion.velocity = 0;
-        explosion.rotation = ({ 1000 - ((PseudoRandom32() % 64u)); });
-        explosion.speed = ({ Q(4) - (PseudoRandom32() % (unsigned)Q(2)); });
+        explosion.rotation = ({ 1000 - ((PSEUDO_RANDOM_32() % 64u)); });
+        explosion.speed = ({ Q(4) - (PSEUDO_RANDOM_32() % (unsigned)Q(2)); });
         explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
         explosion.anim = SA2_ANIM_EXPLOSION;
         explosion.variant = 0;
@@ -547,7 +549,7 @@ static void sub_80484C8(EggFrog *boss)
             r1 = 0;
         } else {
 
-            r1 = PseudoRandom32() & 1;
+            r1 = PSEUDO_RANDOM_32() & 1;
         }
         boss->unk1A = r1;
 

@@ -1,23 +1,26 @@
 #include "global.h"
 #include "core.h"
-#include "game/sa2/options_screen.h"
-#include "lib/m4a/m4a.h"
-#include "task.h"
-#include "game/sa2/save.h"
-#include "malloc_ewram.h"
-#include "game/math.h"
 #include "sprite.h"
+#include "task.h"
+#include "background.h"
+#include "malloc_ewram.h"
+
+#include "lib/m4a/m4a.h"
+
+#include "game/math.h"
 #include "game/sa2/stage/screen_fade.h"
-#include "constants/sa2/songs.h"
-#include "constants/sa2/text.h"
+#include "game/sa2/options_screen.h"
+#include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
 #include "game/sa2/sound_test.h"
-#include "game/shared/stage/stage.h"
 #include "game/sa2/stage/stage_ui.h"
 #include "game/sa2/multiplayer/mode_select.h"
 #include "game/sa2/ui/character_select.h"
+#include "game/shared/stage/stage.h"
 
 #include "constants/sa2/tilemaps.h"
+#include "constants/sa2/songs.h"
+#include "constants/sa2/text.h"
 
 #define NUM_PLAYER_DATA_MENU_ITEMS 4
 

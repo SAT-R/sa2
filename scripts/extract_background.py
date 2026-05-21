@@ -6,7 +6,7 @@ address = int(sys.argv[1], 16)
 length = int(sys.argv[2], 16)
 
 graphics_data_reference = """
-struct GraphicsData {
+GraphicsData {
     void *src;
     void *dest;
     u16 size;
@@ -16,7 +16,7 @@ struct GraphicsData {
 
 background_reference = """
 typedef struct {
-    struct GraphicsData graphics;
+    GraphicsData graphics;
 
     // 'tilesVram' points to tile-index array in VRAM, telling the GBA which tiles to
     // draw on this BG
@@ -117,7 +117,7 @@ references = {
     "s8": (1, read_s8),
     "s16": (2, read_s16),
     "s32": (4, read_s32),
-    "struct GraphicsData": (4, read_graphics_data),
+    "GraphicsData": (4, read_graphics_data),
 }
 
 for line in graphics_data_reference.split("\n")[2:]:

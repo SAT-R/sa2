@@ -2,6 +2,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
+#include "sprite.h"
 
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"

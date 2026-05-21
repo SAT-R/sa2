@@ -500,8 +500,8 @@ void Task_Item_Invincibility(void)
         randB = (rand >> 8) % 256u;
 #else
         s16 randA, randB;
-        randA = ((u32)PseudoRandom32() >> 8) % 16u;
-        randB = ((u32)PseudoRandom32() >> 8) % 256u;
+        randA = ((u32)PSEUDO_RANDOM_32() >> 8) % 16u;
+        randB = ((u32)PSEUDO_RANDOM_32() >> 8) % 256u;
 #endif
 
         t = CreateMultiplayerSpriteTask(screenX + I(COS_24_8(randB * 4) * randA), screenY + I(SIN_24_8(randB * 4) * randA), 0, 0,

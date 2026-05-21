@@ -2,6 +2,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
+#include "sprite.h"
 
 #include "game/globals.h"
 #include "game/shared/stage/amy_attack_heart_effect.h"

@@ -5,6 +5,8 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "bg_triangles.h"
+#include "sprite.h"
+
 #include "game/sa1/stage/nuts_and_bolts_task.h"
 #include "game/globals.h"
 #include "game/shared/stage/camera.h"
@@ -64,14 +66,14 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Ta
         CamCoord prevCamX = gCamera.x, prevCamY = gCamera.y - 32;
 
         for (i = 0; i < 3; i++) {
-            s32 index = PseudoRandom32() % 8u;
+            s32 index = PSEUDO_RANDOM_32() % 8u;
             s32 index2;
 
             t = CreateNutsAndBoltsTask(0x2000, VramMalloc(gUnknown_080BB434[index]), gUnknown_080BB41C[index], gUnknown_080BB42C[index],
                                        TaskDestructor_NutsAndBolts);
             nuts = TASK_DATA(t);
 
-            nuts->qUnk30 = Q(prevCamX + (PseudoRandom32() & 0xFF));
+            nuts->qUnk30 = Q(prevCamX + (PSEUDO_RANDOM_32() & 0xFF));
             nuts->qUnk34 = Q(prevCamY);
 
             nuts->s.frameFlags = 0x3000;
@@ -79,7 +81,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Ta
             nuts->qUnk3E = Q(40. / 256.);
             nuts->qUnk40 = Q(1);
 
-            index2 = PseudoRandom32() & 0x1FF;
+            index2 = PSEUDO_RANDOM_32() & 0x1FF;
             nuts->qUnk3A = (SIN(index2) >> 6);
 
             nuts->qUnk3A = ABS(nuts->qUnk3A);
@@ -88,14 +90,14 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Ta
         }
 
         for (i = 0; i < 3; i++) {
-            s32 index = PseudoRandom32() % 8u;
+            s32 index = PSEUDO_RANDOM_32() % 8u;
             s32 index2;
 
             t = CreateNutsAndBoltsTask(0x2000, VramMalloc(gUnknown_080BB434[index]), gUnknown_080BB41C[index], gUnknown_080BB42C[index],
                                        TaskDestructor_NutsAndBolts);
             nuts = TASK_DATA(t);
 
-            nuts->qUnk30 = Q(prevCamX + (PseudoRandom32() % 256u));
+            nuts->qUnk30 = Q(prevCamX + (PSEUDO_RANDOM_32() % 256u));
             nuts->qUnk34 = Q(prevCamY);
 
             nuts->s.frameFlags = 0x0000;
@@ -103,7 +105,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8028CE4.inc", void Ta
             nuts->qUnk3E = Q(40. / 256.);
             nuts->qUnk40 = Q(1);
 
-            index2 = (PseudoRandom32() % 512u);
+            index2 = (PSEUDO_RANDOM_32() % 512u);
             nuts->qUnk3A = (SIN(index2) >> 5);
             nuts->qUnk3A = ABS(nuts->qUnk3A);
 
@@ -226,7 +228,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_8029194.inc", void Ta
             nuts->qUnk3E = Q(40. / 256.);
             nuts->qUnk40 = Q(1);
 
-            index2 = PseudoRandom32() & 0x1FF;
+            index2 = PSEUDO_RANDOM_32() & 0x1FF;
             nuts->qUnk3A = (SIN(index2) >> 6);
 
             nuts->qUnk3A = ABS(nuts->qUnk3A);
@@ -306,7 +308,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_80294A8.inc", void Ta
                                        TaskDestructor_NutsAndBolts);
             nuts = TASK_DATA(t);
 
-            nuts->qUnk30 = Q(prevCamX + (PseudoRandom32() & 0xFF));
+            nuts->qUnk30 = Q(prevCamX + (PSEUDO_RANDOM_32() & 0xFF));
             nuts->qUnk34 = Q(prevCamY);
 
             nuts->s.frameFlags = 0x3000;
@@ -314,7 +316,7 @@ NONMATCH("asm/non_matching/game/sa1/egg_rocket_trans__Task_80294A8.inc", void Ta
             nuts->qUnk3E = Q(40. / 256.);
             nuts->qUnk40 = Q(1);
 
-            index2 = PseudoRandom32() & 0x1FF;
+            index2 = PSEUDO_RANDOM_32() & 0x1FF;
             nuts->qUnk3A = (SIN(index2) >> 6);
 
             nuts->qUnk3A = ABS(nuts->qUnk3A);

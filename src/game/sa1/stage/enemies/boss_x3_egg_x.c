@@ -388,7 +388,7 @@ u8 sub_803711C(s16 arg0)
         }
     }
 
-    var_r1 = PseudoRandom32() % 100U;
+    var_r1 = PSEUDO_RANDOM_32() % 100U;
 
     for (i = 0; i < 4; i++) {
         var_r1 -= ptr[i];
@@ -689,7 +689,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_x3__Task_803775C.inc", vo
             boss->unk9A = 0;
             strc7C->unk79 = 8;
             boss->unk99++;
-            rnd = ((u32)PseudoRandom32() & 0x30) >> 4;
+            rnd = ((u32)PSEUDO_RANDOM_32() & 0x30) >> 4;
             switch (rnd) {
                 case 3:
                 case 0:
@@ -1144,7 +1144,7 @@ void sub_8038420(CamCoord worldX, CamCoord worldY)
     Task *t;
     NutsAndBolts *bolts;
     Sprite *sprBolts;
-    s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
+    s32 rndIndex = PSEUDO_RANDOM_32() % ARRAY_COUNT(gUnknown_080BB41C);
     s32 rndTheta;
     s32 a0, a1;
     s32 rnd;
@@ -1158,11 +1158,11 @@ void sub_8038420(CamCoord worldX, CamCoord worldY)
     sprBolts->oamFlags = SPRITE_OAM_ORDER(23);
     bolts->qUnk3E = Q(5. / 256.);
     bolts->qUnk40 = Q(32. / 256.);
-    rndTheta = PseudoRandom32();
+    rndTheta = PSEUDO_RANDOM_32();
     bolts->qUnk3A = (-(SIN(rndTheta & 0x1FF) * 0x600)) >> 0xE;
     bolts->qUnk38 = (-(COS(rndTheta & 0x1FF) * 0x600)) >> 0xE;
 
-    rnd = PseudoRandom32();
+    rnd = PSEUDO_RANDOM_32();
     sub_8017540(Q((worldX + (0x3F & rnd)) - 32), Q(worldY + 32 - ((rnd & 0x3F0000) >> 0x10)));
 }
 
@@ -1349,9 +1349,9 @@ void Task_Strc10_803891C()
     EggX_10 *strc10 = TASK_DATA(gCurTask);
 
     if ((++strc10->unk4 & 3) == 0) {
-        rndX = PseudoRandom32();
+        rndX = PSEUDO_RANDOM_32();
         x = (rndX % DISPLAY_WIDTH) + gCamera.x;
-        rndY = PseudoRandom32();
+        rndY = PSEUDO_RANDOM_32();
         y = (rndY % DISPLAY_HEIGHT) + gCamera.y;
         sub_8038420(x, y);
     }
@@ -1897,7 +1897,7 @@ void Task_8039264()
 
 void sub_803967C(void)
 {
-    s32 rnd = PseudoRandom32() & 0x800;
+    s32 rnd = PSEUDO_RANDOM_32() & 0x800;
     EggX *boss = TASK_DATA(gCurTask);
     Sprite *s;
     Task *t;
@@ -2132,7 +2132,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_x3__Task_8039A64.inc", vo
     switch (sparkle->unk61) {
         case 0:
             if (--sparkle->unk3C == 0) {
-                temp_r0 = PseudoRandom32();
+                temp_r0 = PSEUDO_RANDOM_32();
                 sparkle->unk48 = 0;
                 sparkle->unk61++;
                 if (((temp_r0 % 100) - 35) <= 0) {

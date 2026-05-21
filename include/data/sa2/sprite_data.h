@@ -2,7 +2,6 @@
 #define GUARD_DATA_ANIMATIONS_H
 
 #include "core.h"
-#include "animation_commands.h"
 #include "sprite.h"
 
 #if !ENABLE_DECOMP_CREDITS

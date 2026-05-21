@@ -380,7 +380,7 @@ void sub_801C130()
             switch (itembox->rndItemIndex) {
                 case 2:
                 case 0:
-                    ringsInBox = ItemBox_RingAmountTable[PseudoRandom32() % 6u];
+                    ringsInBox = ItemBox_RingAmountTable[PSEUDO_RANDOM_32() % 6u];
                     INCREMENT_RINGS(ringsInBox);
                     if ((gGameMode == 6) && ((u32)gRingCount > 0xFFU)) {
                         gRingCount = 0xFF;

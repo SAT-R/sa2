@@ -1167,9 +1167,9 @@ void Task_8066C78_164()
             strc164->unkD6[var_r8] -= 0x10;
         } else {
             s32 rnd2;
-            temp_r0_3 = PseudoRandom32();
+            temp_r0_3 = PSEUDO_RANDOM_32();
             strc164->unkD6[var_r8] = Mod(temp_r0_3, 40) + 0x8C;
-            rnd2 = PseudoRandom32();
+            rnd2 = PSEUDO_RANDOM_32();
             strc164->unk50[var_r8] = Mod(rnd2, 0xDC) + 0x14;
             var_r3 = temp_r5;
         }

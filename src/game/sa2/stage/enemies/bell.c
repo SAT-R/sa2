@@ -68,7 +68,7 @@ static void Task_BellMain(void)
     bell->unk4C--;
 
     if (bell->unk4C == 0) {
-        if (PseudoRandom32() & 1) {
+        if (PSEUDO_RANDOM_32() & 1) {
             bell->unk4C = 124;
         } else {
             bell->unk4C = 180;

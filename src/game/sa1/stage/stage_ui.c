@@ -382,8 +382,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__sub_8053BAC.inc", void sub_8
 }
 END_NONMATCH
 
-// (99.48%) https://decomp.me/scratch/Sg21j
-NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc", void Task_SpecialStageUIMain(void))
+void Task_SpecialStageUIMain(void)
 {
     StageUI *ui = TASK_DATA(gCurTask);
     u8 r7 = ui->unk48;
@@ -392,6 +391,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
     s32 remainder;
     s32 remainder0;
     s32 i;
+    s16 a;
     s32 sb_32;
     s16 sb;
     s16 sl;
@@ -402,11 +402,12 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
     ui->unk4C = sb_32;
     sl = 114;
     r4 = 90;
+    a = -6;
 
     if (sb >= 10 && sb < 30) {
         overB.unkC = Div((sb - 10) << 6, 20) - 70;
     } else if (sb >= 30) {
-        overB.unkC = -6;
+        overB.unkC = a;
     } else {
         overB.unkC = -70;
     }
@@ -420,10 +421,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
 
     sub_80530CC(gUnknown_0865F178, &overB);
 
-#ifndef NON_MATCHING
+    // Copy and paste probably causing the task to be reloaded
     ui = TASK_DATA(gCurTask);
-#endif
-
     if (gSpecialStageCollectedRings > 999) {
         ui->digitsRings[0] = UI_DIGIT(9);
         ui->digitsRings[1] = UI_DIGIT(9);
@@ -431,7 +430,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
     } else {
         // _08053DF0
         remainder = gSpecialStageCollectedRings;
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < (s32)ARRAY_COUNT(ui->digitsRings); i++) {
             remainder0 = Div(remainder, 10);
 
             ui->digitsRings[2 - i] = UI_DIGIT(remainder - ((remainder0 << 3) + (remainder0 << 1)));
@@ -538,7 +537,6 @@ NONMATCH("asm/non_matching/game/sa1/stage/stage_ui__Task_SpecialStageUIMain.inc"
         sub_80530CC((const char *)&unk10->unk0[0], &overB);
     }
 }
-END_NONMATCH
 
 void sub_8054068(void)
 {

@@ -1,5 +1,8 @@
 #include "global.h"
 #include "core.h"
+#include "sprite.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/character_select.h"
 #include "game/shared/multiplayer/communication_outcome.h"
@@ -166,11 +169,11 @@ NONMATCH("asm/non_matching/game/sa1/stage/results__Task_801874C.inc", void Task_
         if (strc->unk203 == 0) {
             gGameMode = GAME_MODE_RACE;
             TaskDestroy(gCurTask);
-            CreateCharacterSelectionScreen((PseudoRandom32() + SIO_MULTI_CNT->id) % 4u);
+            CreateCharacterSelectionScreen((PSEUDO_RANDOM_32() + SIO_MULTI_CNT->id) % 4u);
         } else {
             gGameMode = GAME_MODE_CHAO_HUNT;
             TaskDestroy(gCurTask);
-            CreateCharacterSelectionScreen((PseudoRandom32() + SIO_MULTI_CNT->id) % 4u);
+            CreateCharacterSelectionScreen((PSEUDO_RANDOM_32() + SIO_MULTI_CNT->id) % 4u);
         }
         return;
     }

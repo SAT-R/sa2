@@ -2,11 +2,11 @@
 #include "core.h"
 #include "flags.h"
 #include "sprite.h"
+#include "background.h"
 #include "trig.h"
+
 #include "lib/m4a/m4a.h"
 #include "platform/platform.h"
-
-#include "animation_commands.h"
 
 static AnimCmdResult animCmd_GetTiles_BG(void *, Sprite *);
 static AnimCmdResult animCmd_GetPalette_BG(void *, Sprite *);
@@ -748,7 +748,7 @@ s32 UpdateSpriteAnimation_BG(Sprite *s)
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
-                const struct SpriteTables *sprTables = gRefSpriteTables;
+                const SpriteTables *sprTables = gRefSpriteTables;
 
                 s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
             } else {

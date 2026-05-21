@@ -155,7 +155,7 @@ Task *SpawnAirBubbles(s32 x, s32 y, s32 p2, s32 p3)
 #endif
             s->variant = 0;
 
-            ts->unk14 = (((u32)PseudoRandom32() & 0x30000) >> 16);
+            ts->unk14 = (((u32)PSEUDO_RANDOM_32() & 0x30000) >> 16);
         }
 
         s->oamFlags = SPRITE_OAM_ORDER(9);
@@ -177,15 +177,15 @@ bool32 RandomlySpawnAirBubbles(Player *p)
     u32 result = FALSE;
 
     if ((gStageTime % 8u) == 0) {
-        rand = ((u32)PseudoRandom32() & 0x300);
+        rand = ((u32)PSEUDO_RANDOM_32() & 0x300);
         if (!rand) {
-            randX = (((u32)PseudoRandom32() & 0xF00) >> 8);
-            randY = (((u32)PseudoRandom32() & 0xF00) >> 8) - 8;
+            randX = (((u32)PSEUDO_RANDOM_32() & 0xF00) >> 8);
+            randY = (((u32)PSEUDO_RANDOM_32() & 0xF00) >> 8) - 8;
 
             if (!(p->moveState & MOVESTATE_FACING_LEFT))
                 randX = -randX;
 
-            SpawnAirBubbles(p->qWorldX - randX, p->qWorldY - randY, p->qSpeedAirX, ((u32)PseudoRandom32() & 0x100) >> 8);
+            SpawnAirBubbles(p->qWorldX - randX, p->qWorldY - randY, p->qSpeedAirX, ((u32)PSEUDO_RANDOM_32() & 0x100) >> 8);
 
             result = TRUE;
         }
@@ -256,18 +256,18 @@ static void Task_SpawnBubblesAfterDrowning(void)
         TaskDestroy(gCurTask);
         return;
     } else if (!(gStageTime & (0x2 | 0x1))) {
-        if ((PseudoRandom32() & 0x300) == 0) {
-            s32 r4 = ((u32)PseudoRandom32() & 0x100) >> 8;
+        if ((PSEUDO_RANDOM_32() & 0x300) == 0) {
+            s32 r4 = ((u32)PSEUDO_RANDOM_32() & 0x100) >> 8;
 
             do {
                 // TODO: Maybe these could be converted to PseudoRandBetween?
-                u32 r3, r2, r1 = ((u32)PseudoRandom32() & 0x7FF00) >> 8;
+                u32 r3, r2, r1 = ((u32)PSEUDO_RANDOM_32() & 0x7FF00) >> 8;
                 r1 -= 0x400;
 
-                r2 = ((u32)PseudoRandom32() & 0x7FF00) >> 8;
+                r2 = ((u32)PSEUDO_RANDOM_32() & 0x7FF00) >> 8;
                 r2 -= 0x400;
 
-                r3 = ((u32)PseudoRandom32() & 0x100) >> 8;
+                r3 = ((u32)PSEUDO_RANDOM_32() & 0x100) >> 8;
 
                 SpawnAirBubbles(p->qWorldX + r1, p->qWorldY + r2 - 0xC00, 0, r3);
             } while (r4-- != 0);

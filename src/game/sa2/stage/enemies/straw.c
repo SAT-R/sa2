@@ -47,7 +47,7 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
         ENEMY_SET_SPAWN_POS_FLYING(straw, me);
 
-        rand = CLAMP_SIN_PERIOD(PseudoRandom32());
+        rand = CLAMP_SIN_PERIOD(PSEUDO_RANDOM_32());
         straw->unk4C = COS(rand) >> 5;
         straw->unk50 = SIN(rand) >> 5;
         straw->unk54 = 100;
@@ -82,7 +82,7 @@ void sub_80567F8(void)
     ENEMY_DESTROY_IF_OFFSCREEN(straw, me, s);
 
     if (--straw->unk54 == 0) {
-        s32 rand = CLAMP_SIN_PERIOD(PseudoRandom32());
+        s32 rand = CLAMP_SIN_PERIOD(PSEUDO_RANDOM_32());
         straw->unk4C = COS(rand) >> 5;
         straw->unk50 = SIN(rand) >> 5;
         straw->unk54 = 100;

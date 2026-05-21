@@ -1,17 +1,20 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "sprite.h"
+#include "background.h"
 #include "trig.h"
 #include "task.h"
 #include "flags.h"
+
 #include "lib/m4a/m4a.h"
+
 #include "game/sa2/ui/character_select.h"
 #include "game/sa2/stage/boss_results_transition.h"
-#include "game/sa2/save.h"
 #include "game/sa2/ui/time_attack_mode_select.h"
 #include "game/sa2/stage/screen_fade.h"
 #include "game/sa2/title_screen.h"
 #include "game/sa2/stage/screen_mask.h"
+#include "game/sa2/save.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"

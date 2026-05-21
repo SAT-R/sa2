@@ -1,5 +1,7 @@
 #include "global.h"
 #include "core.h"
+#include "sprite.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/stage/ui_rendering.h"
 #include "game/sa1/stage/mp_chao.h"
@@ -461,9 +463,9 @@ NONMATCH("asm/non_matching/game/sa1/ui/game2_3__Task_8063638.inc", void Task_806
             gMultiSioSend.pat0.unk0 = 0x52;
             gMultiSioSend.pat0.unk2 = strc5C->unk55;
 
-            while (gMultiSioSend.pat0.unk3 == ((PseudoRandom32() >> 8) & 7))
+            while (gMultiSioSend.pat0.unk3 == ((PSEUDO_RANDOM_32() >> 8) & 7))
                 ;
-            while (gMultiSioSend.pat0.unk4 == ((PseudoRandom32() >> 8) & 7))
+            while (gMultiSioSend.pat0.unk4 == ((PSEUDO_RANDOM_32() >> 8) & 7))
                 ;
 
             // gMultiSioSend.pat0.unk5 = (s8) (var_r3_5 & 7);

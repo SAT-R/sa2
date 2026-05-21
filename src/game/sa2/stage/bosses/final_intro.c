@@ -1,6 +1,7 @@
 #include "core.h"
 #include "task.h"
 #include "sprite.h"
+#include "background.h"
 #include "trig.h"
 
 #include "lib/m4a/m4a.h"

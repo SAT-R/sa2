@@ -26,7 +26,7 @@ typedef struct {
 static const u16 sInt019_AnimationIds[]
     = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE, [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
 
-extern const struct SpriteTables *gRefSpriteTables;
+extern const SpriteTables *gRefSpriteTables;
 
 extern u32 Coll_Player_PlatformCrumbling(Sprite *, s32, s32, Player *);
 

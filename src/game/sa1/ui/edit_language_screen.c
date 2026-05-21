@@ -2,6 +2,8 @@
 #include "core.h"
 #include "flags.h"
 #include "malloc_vram.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/game_over.h"
 #include "game/sa1/menus/options_screen.h" // contains EditLanguageScreen

@@ -257,7 +257,7 @@ _08041F02:
 	adds r2, r0, #0
 	muls r2, r6, r2
 	ldr r3, _08042004 @ =0x3C6EF35F
-	adds r2, r2, r3             @ r2 = PseudoRandom32()
+	adds r2, r2, r3             @ r2 = PSEUDO_RANDOM_32()
 	movs r1, #0x3f
 	ands r1, r2
 	movs r0, #0xfa

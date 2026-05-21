@@ -1,12 +1,16 @@
 #include "global.h"
+#include "core.h"
+#include "sprite.h"
+#include "background.h"
+#include "task.h"
+
+#include "lib/m4a/m4a.h"
+
+#include "game/sa2/stage/screen_fade.h"
 #include "game/sa2/cutscenes/endings.h"
 #include "game/sa2/cutscenes/extra_ending_slides.h"
 #include "game/sa2/cutscenes/final_ending_land.h"
-#include "core.h"
-#include "sprite.h"
-#include "game/sa2/stage/screen_fade.h"
-#include "task.h"
-#include "lib/m4a/m4a.h"
+
 #include "game/sa2/save.h"
 #include "game/math.h"
 

@@ -509,18 +509,18 @@ NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_4__sub_8041D34.inc", void 
         do {
 #endif
             sub->unk6A = 0x30;
-            rand = PseudoRandom32() + 0;
+            rand = PSEUDO_RANDOM_32() + 0;
             spawnX = (I(sub->body.x));
             partsInfo.spawnX = (spawnX - gCamera.x) + (rand & 0x1F) - 0x1F;
             ;
 
-            rand = PseudoRandom32() + 0;
+            rand = PSEUDO_RANDOM_32() + 0;
             spawnY = (I(sub->body.y));
             partsInfo.spawnY = (spawnY - gCamera.y) + (rand % 64u) - 48;
             partsInfo.velocity = 0;
 
-            partsInfo.rotation = ({ (1000 - (PseudoRandom32() & 0x3F)); }) + 0;
-            partsInfo.speed = ({ 1024 - (PseudoRandom32() & 0x1FF); }) + 0;
+            partsInfo.rotation = ({ (1000 - (PSEUDO_RANDOM_32() & 0x3F)); }) + 0;
+            partsInfo.speed = ({ 1024 - (PSEUDO_RANDOM_32() & 0x1FF); }) + 0;
 
             partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
             partsInfo.anim = SA2_ANIM_EXPLOSION;
@@ -540,20 +540,20 @@ NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_4__sub_8041D34.inc", void 
         s32 spawnY, r5, r4;
         s32 temp;
 
-        rand = ({ PseudoRandom32() & 0xF; }) + 0;
+        rand = ({ PSEUDO_RANDOM_32() & 0xF; }) + 0;
 
         i = rand - Div(rand, 6) * 6;
         spawnX = I(sub->body.x);
         partsInfo.spawnX = (spawnX - gCamera.x) - rand * 2 + rand * 4;
 
-        rand = ({ PseudoRandom32() & 0xF; }) + 0;
+        rand = ({ PSEUDO_RANDOM_32() & 0xF; }) + 0;
         spawnY = I(sub->body.y);
         partsInfo.spawnY = (spawnY - gCamera.y) - (rand * 2) + rand * 4;
 
         partsInfo.velocity = Q_24_8(0.25);
 
-        partsInfo.rotation = ({ (PseudoRandom32() & 0x3FF); }) + 0;
-        partsInfo.speed = ({ 1792 - (PseudoRandom32() & 0x1FF); }) + 0;
+        partsInfo.rotation = ({ (PSEUDO_RANDOM_32() & 0x3FF); }) + 0;
+        partsInfo.speed = ({ 1792 - (PSEUDO_RANDOM_32() & 0x1FF); }) + 0;
 
         partsInfo.vram = (void *)(OBJ_VRAM0 + (gTileInfoBossScrews[i][0] * TILE_SIZE_4BPP));
         partsInfo.anim = gTileInfoBossScrews[i][1];
@@ -573,8 +573,8 @@ NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_4__sub_8041D34.inc", void 
             partsInfo.spawnY = spawnY - gCamera.y;
 
             partsInfo.velocity = 0;
-            partsInfo.rotation = ({ (1000 - (PseudoRandom32() & 0x3F)); }) + 0;
-            partsInfo.speed = ({ 1152 - (PseudoRandom32() & 0x1FF); }) + 0;
+            partsInfo.rotation = ({ (1000 - (PSEUDO_RANDOM_32() & 0x3F)); }) + 0;
+            partsInfo.speed = ({ 1152 - (PSEUDO_RANDOM_32() & 0x1FF); }) + 0;
 
             partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
             partsInfo.anim = SA2_ANIM_EXPLOSION;
@@ -594,8 +594,8 @@ NONMATCH("asm/non_matching/game/sa2/stage/bosses/boss_4__sub_8041D34.inc", void 
             partsInfo.spawnY = spawnY - gCamera.y;
 
             partsInfo.velocity = 0;
-            partsInfo.rotation = ({ (1000 - (PseudoRandom32() % 64u)); }) + 0;
-            partsInfo.speed = ({ 1024 - (PseudoRandom32() % 512u); }) + 0;
+            partsInfo.rotation = ({ (1000 - (PSEUDO_RANDOM_32() % 64u)); }) + 0;
+            partsInfo.speed = ({ 1024 - (PSEUDO_RANDOM_32() % 512u); }) + 0;
 
             partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
             partsInfo.anim = SA2_ANIM_EXPLOSION;
@@ -1007,7 +1007,7 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     s->x = I(screenX);
     s->y = I(deb->screenY);
 
-    if (PseudoRandom32() % 2u) {
+    if (PSEUDO_RANDOM_32() % 2u) {
         s->graphics.dest = boss->sub.tilesBomb + (32 * TILE_SIZE_4BPP);
         s->graphics.anim = SA2_ANIM_AERO_EGG_DEBRIS_BIG;
         s->variant = 0;

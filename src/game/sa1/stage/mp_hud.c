@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+
 #include "lib/m4a/m4a.h"
 
 #include "game/globals.h"

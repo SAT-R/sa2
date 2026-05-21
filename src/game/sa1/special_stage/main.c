@@ -2,6 +2,8 @@
 #include "core.h"
 #include "trig.h"
 #include "malloc_ewram.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "lib/m4a/m4a_internal.h" // for MP2KSongHeader
 #include "game/globals.h"
@@ -1565,7 +1567,7 @@ void sub_802B214(void)
     strc74->unk52 = 0;
     strc74->unk54 = 0;
     strc74->unk56 = 0;
-    rnd = PseudoRandom32();
+    rnd = PSEUDO_RANDOM_32();
     strc74->unk58 = rnd & 0xF;
     strc74->unk5A = -((0x70 & rnd) >> 4);
     strc74->unk5C = -0x10;

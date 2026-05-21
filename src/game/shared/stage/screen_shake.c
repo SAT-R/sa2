@@ -34,7 +34,7 @@ void Task_ScreenShake(void)
         Camera *cam = &gCamera;
 
         if (shake->flags & SCREENSHAKE_RANDOM_VALUE) {
-            factor = ((u32)(PseudoRandom32() << 15) >> 23) - 0xFF;
+            factor = ((u32)(PSEUDO_RANDOM_32() << 15) >> 23) - 0xFF;
         } else {
             factor = SIN_24_8(shake->unk14);
         }

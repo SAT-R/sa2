@@ -2,6 +2,8 @@
 #include "core.h"
 #include "flags.h"
 #include "multi_boot.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/shared/multiplayer/communication_outcome.h"
 #include "game/sa1/menus/mp_mode_select.h"

@@ -910,7 +910,7 @@ MechaKnucklesStates sub_804ED80(MechaKnuckles *boss, Player *p)
         diffX = temp_r1 - temp_r2;
     }
 
-    rnd = PseudoRandom32();
+    rnd = PSEUDO_RANDOM_32();
 
     if (boss->phase == MKPHASE_A) {
         if (diffX < 80) {
@@ -953,8 +953,8 @@ bool32 sub_804EE20(MechaKnuckles *boss)
         Task *t;
         NutsAndBolts *bolts;
 
-        temp_r0 = (((u32)PseudoRandom32() & 0x1FFF00) >> 8) - 4096;
-        temp_r3 = (((u32)PseudoRandom32() & 0x1FFF00) >> 8) - 4096;
+        temp_r0 = (((u32)PSEUDO_RANDOM_32() & 0x1FFF00) >> 8) - 4096;
+        temp_r3 = (((u32)PSEUDO_RANDOM_32() & 0x1FFF00) >> 8) - 4096;
         t = sub_8017540(boss->qUnk74 + Q(boss->spawnX) + temp_r0, boss->qUnk78 + Q(boss->spawnY) + temp_r3);
 
         bolts = TASK_DATA(t);
@@ -1100,7 +1100,7 @@ void CreateMechaKnucklesRocket(MechaKnuckles *boss)
     rocket->unkA = 0;
     rocket->unkC = 0x40;
 
-    if (PseudoRandom32() & 0x1000) {
+    if (PSEUDO_RANDOM_32() & 0x1000) {
         rocket->unkC = 0x20;
     }
 
@@ -1217,7 +1217,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_5__Task_MechaKnucklesRock
     }
     screenX = I(qWorldX) - gCamera.x;
     screenY = I(qWorldY) - gCamera.y;
-    temp_r2_2 = (PseudoRandom32() & 0x3FF) - Q(26);
+    temp_r2_2 = (PSEUDO_RANDOM_32() & 0x3FF) - Q(26);
 
     CreateBrakingDustEffect(I(qWorldX + Q_MUL(temp_r2_2, COS_24_8((var_r8 & 0xFF) * 4))),
                             I(qWorldY + Q_MUL(temp_r2_2, SIN_24_8((var_r8 & 0xFF) * 4))));
@@ -1273,17 +1273,17 @@ Task *CreateMechaKnucklesParts(MechaKnuckles *boss, s32 variant)
     s->frameFlags = 0x2000;
     parts->unk0 = Q(boss->spawnX) + boss->qUnk74;
     parts->unk4 = Q(boss->spawnY) + boss->qUnk78;
-    val = (((u32)(PseudoRandom32() << 0xD) >> 0x15) - Q(4));
+    val = (((u32)(PSEUDO_RANDOM_32() << 0xD) >> 0x15) - Q(4));
     parts->unk8 = val;
     {
-        s32 val = -((u32)(PseudoRandom32() << 15) >> 23) - Q(2);
+        s32 val = -((u32)(PSEUDO_RANDOM_32() << 15) >> 23) - Q(2);
         parts->unkA = val;
     }
     parts->unkC = 0;
-    parts->unkE = (s16)(0x2A - ((u32)(0x1F00 & PseudoRandom32()) >> 8));
+    parts->unkE = (s16)(0x2A - ((u32)(0x1F00 & PSEUDO_RANDOM_32()) >> 8));
     parts->unk10 = 0;
-    parts->unk12 = ((u32)PseudoRandom32() >> 8);
-    val = ((u32)(PseudoRandom32() << 0xC) >> 0x14) - Q(8);
+    parts->unk12 = ((u32)PSEUDO_RANDOM_32() >> 8);
+    val = ((u32)(PSEUDO_RANDOM_32() << 0xC) >> 0x14) - Q(8);
     parts->unk14 = val;
     s->graphics.size = 0;
     s->prevVariant = -1;

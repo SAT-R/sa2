@@ -933,14 +933,14 @@ static void sub_8046F00(EggGoRound *boss)
             for (j = 0; j < NUM_LINKS; j++) {
                 u32 rand;
 
-                rand = PseudoRandom32();
+                rand = PSEUDO_RANDOM_32();
                 explosion.spawnX = x + (rand % 16) - 8;
 
-                rand = PseudoRandom32();
+                rand = PSEUDO_RANDOM_32();
                 explosion.spawnY = y + (rand % 16) - 8;
 
                 explosion.velocity = 0;
-                rand = PseudoRandom32();
+                rand = PSEUDO_RANDOM_32();
                 explosion.rotation = idx - (rand % 64) + 31;
                 explosion.speed = Q(10) - (j * Q(2));
                 explosion.vram = (void *)OBJ_VRAM0 + (0x2980);
@@ -963,15 +963,15 @@ static void sub_8047060(EggGoRound *boss)
         ExplosionPartsInfo explosion;
         x = (I(boss->x) - gCamera.x);
         y = (I(boss->y) - gCamera.y);
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnX = x + (rand % 64) - 31;
 
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnY = y + (rand % 64) - 31;
 
         explosion.velocity = 0;
-        explosion.rotation = ({ 1031 - ((PseudoRandom32() % 64u)); });
-        explosion.speed = ({ Q(4) - (PseudoRandom32() % (unsigned)Q(2)); });
+        explosion.rotation = ({ 1031 - ((PSEUDO_RANDOM_32() % 64u)); });
+        explosion.speed = ({ Q(4) - (PSEUDO_RANDOM_32() % (unsigned)Q(2)); });
         explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
         explosion.anim = SA2_ANIM_EXPLOSION;
         explosion.variant = 0;
@@ -991,15 +991,15 @@ static void sub_8047138(EggGoRound *boss)
         ExplosionPartsInfo explosion;
         x = (I(destruction->cabin.x) - gCamera.x);
         y = (I(destruction->cabin.y) - gCamera.y);
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnX = x + (rand % 64) - 31;
 
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         explosion.spawnY = y + (rand % 64) - 31;
 
         explosion.velocity = 0;
-        explosion.rotation = ({ 1031 - ((PseudoRandom32() % 64u)); });
-        explosion.speed = ({ Q(4) - (PseudoRandom32() % (unsigned)Q(2)); });
+        explosion.rotation = ({ 1031 - ((PSEUDO_RANDOM_32() % 64u)); });
+        explosion.speed = ({ Q(4) - (PSEUDO_RANDOM_32() % (unsigned)Q(2)); });
         explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
         explosion.anim = SA2_ANIM_EXPLOSION;
         explosion.variant = 0;

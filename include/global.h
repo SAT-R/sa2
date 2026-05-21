@@ -333,22 +333,9 @@ typedef struct {
     void *data;
 } RLCompressed;
 
-struct BlendRegs {
-    u16 bldCnt;
-    u16 bldAlpha;
-    u16 bldY;
-};
-
 // TODO: Should this be in a GBA-specific header file?
 #define NUM_AFFINE_BACKGROUNDS 2
 #define NUM_BACKGROUNDS        4
-
-// Values to be passed top the affine registers
-// (used by BG2/BG3 in affine screen modes)
-typedef struct {
-    /* 0x00 */ u16 pa, pb, pc, pd;
-    /* 0x08 */ u32 x, y;
-} BgAffineReg;
 
 // TODO: Find better place for this
 typedef void (*HBlankIntrFunc)(int_vcount vcount);

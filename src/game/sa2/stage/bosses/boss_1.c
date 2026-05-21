@@ -1088,16 +1088,16 @@ static void DestructionScene_UpdateComponents(EggHammerTankII *boss)
             parts.unk4 = 0;
             CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
 
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
             CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
 
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             parts.spawnX = (I(ds->hammerX) - gCamera.x) + (rand & 15);
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             parts.spawnY = (I(ds->hammerY) - gCamera.y) + (rand & 15);
 
             CreateBossParticleWithExplosionUpdate(&parts, &ds->numPartsCreated);
@@ -1239,7 +1239,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
         init.spawnX = I(ds->bodyX) - gCamera.x;
         init.spawnY = I(ds->bodyY) - gCamera.y;
         init.velocity = 0x40;
-        init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
+        init.rotation = PSEUDO_RANDOM_32() & (SIN_PERIOD - 1);
         init.speed = 0x600;
         init.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[i][0] * TILE_SIZE_4BPP);
         init.anim = gTileInfoBossScrews[i][1];
@@ -1248,7 +1248,7 @@ static void DestructionScene_Render(EggHammerTankII *boss)
         CreateBossParticleWithExplosionUpdate(&init, &ds->numPartsCreated);
     }
 
-    if (Mod(boss->sceneTimer + PseudoRandom32(), 13) == 0) {
+    if (Mod(boss->sceneTimer + PSEUDO_RANDOM_32(), 13) == 0) {
         m4aSongNumStart(SE_EXPLOSION);
     }
 

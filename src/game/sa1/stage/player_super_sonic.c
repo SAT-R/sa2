@@ -434,12 +434,12 @@ void sub_8049D7C(Player *p)
         }
 
         if ((gStageTime % 4u) == 0) {
-            if (PseudoRandom32() & 0x10000) {
+            if (PSEUDO_RANDOM_32() & 0x10000) {
                 s32 qWorldX, qWorldY;
                 s32 qRand;
-                qWorldX = p->qWorldX + (((u32)PseudoRandom32() & 0xF0000) >> 8);
-                qWorldY = p->qWorldY + (((u32)PseudoRandom32() & 0xF0000) >> 8) - Q(8);
-                qRand = (((u32)PseudoRandom32() & 0x10000) >> 16);
+                qWorldX = p->qWorldX + (((u32)PSEUDO_RANDOM_32() & 0xF0000) >> 8);
+                qWorldY = p->qWorldY + (((u32)PSEUDO_RANDOM_32() & 0xF0000) >> 8) - Q(8);
+                qRand = (((u32)PSEUDO_RANDOM_32() & 0x10000) >> 16);
 
                 sub_804A498(qWorldX, qWorldY, qRand);
             }
@@ -1156,11 +1156,11 @@ void sub_804A8A8(s32 qX, s32 qY, s32 param2)
     mgr->unk0.qUnk54 = qY;
 
     if (qX == Q(512)) {
-        mgr->unk0.qUnk58 = -(((u32)PseudoRandom32() << 14) >> 22);
-        mgr->unk0.qUnk5A = ((u32)PseudoRandom32() & 0xFF00) >> 8;
+        mgr->unk0.qUnk58 = -(((u32)PSEUDO_RANDOM_32() << 14) >> 22);
+        mgr->unk0.qUnk5A = ((u32)PSEUDO_RANDOM_32() & 0xFF00) >> 8;
     } else {
-        mgr->unk0.qUnk58 = (((u32)PseudoRandom32() & 0x3FF00) >> 8) - 0x300;
-        mgr->unk0.qUnk5A = -(((u32)PseudoRandom32() & 0x3FF00) >> 8) - 0x80;
+        mgr->unk0.qUnk58 = (((u32)PSEUDO_RANDOM_32() & 0x3FF00) >> 8) - 0x300;
+        mgr->unk0.qUnk5A = -(((u32)PSEUDO_RANDOM_32() & 0x3FF00) >> 8) - 0x80;
     }
 
     if (param2 == 2) {
@@ -1169,8 +1169,8 @@ void sub_804A8A8(s32 qX, s32 qY, s32 param2)
     }
 
     mgr->unk0.qUnk5E = Q(7. / 256.);
-    mgr->unk70 = (u32)PseudoRandom32() >> 8;
-    mgr->unk72 = (((u32)PseudoRandom32() << 11) >> 19) - 0x1000;
+    mgr->unk70 = (u32)PSEUDO_RANDOM_32() >> 8;
+    mgr->unk72 = (((u32)PSEUDO_RANDOM_32() << 11) >> 19) - 0x1000;
 
     mgr->unk0.s.oamFlags = SPRITE_OAM_ORDER(12);
     mgr->unk0.s.frameFlags = SPRITE_FLAG(PRIORITY, 1);
@@ -1180,15 +1180,15 @@ void sub_804A8A8(s32 qX, s32 qY, s32 param2)
         u32 v;
         mgr->unk72 >>= 1;
 
-        v = (u32)PseudoRandom32();
+        v = (u32)PSEUDO_RANDOM_32();
         a = mgr->unk0.transform.qScaleX;
         mgr->unk0.transform.qScaleX = a - ((v & 0x4000) >> 8);
-        v = (u32)PseudoRandom32();
+        v = (u32)PSEUDO_RANDOM_32();
         b = mgr->unk0.transform.qScaleY;
         mgr->unk0.transform.qScaleY = b - ((v & 0x4000) >> 8);
     }
 
-    if ((u32)PseudoRandom32() & 0x10000) {
+    if ((u32)PSEUDO_RANDOM_32() & 0x10000) {
         mgr->unk0.transform.qScaleY = -mgr->unk0.transform.qScaleY;
     }
 }
@@ -1430,11 +1430,11 @@ void sub_804AFCC(s32 qX, s32 qY)
         mgr->unk0.qUnk50 = qX;
         mgr->unk0.qUnk54 = qY;
 
-        mgr->unk0.qUnk58 = -((((u32)PseudoRandom32() & 0x7F00) >> 8) + 0x80);
-        mgr->unk0.qUnk5A = +((((u32)PseudoRandom32() & 0x7F00) >> 8) + 0x40);
+        mgr->unk0.qUnk58 = -((((u32)PSEUDO_RANDOM_32() & 0x7F00) >> 8) + 0x80);
+        mgr->unk0.qUnk5A = +((((u32)PSEUDO_RANDOM_32() & 0x7F00) >> 8) + 0x40);
         mgr->unk0.qUnk5E = Q(7. / 256.);
 
-        mgr->unk72 = (((u32)PseudoRandom32() << 13) >> 21) - Q(4);
+        mgr->unk72 = (((u32)PSEUDO_RANDOM_32() << 13) >> 21) - Q(4);
 
         if (i & 1) {
             mgr->unk0.transform.qScaleX = -Q(1);

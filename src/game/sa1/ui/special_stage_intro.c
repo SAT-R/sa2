@@ -1,5 +1,7 @@
 #include "global.h"
 #include "core.h"
+#include "sprite.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/game_over.h"
 #include "game/sa1/stage/ui_rendering.h"
@@ -158,8 +160,8 @@ void CreateSpecialStageIntro(void)
     temp_r2->qUnk40 = 0;
 
     for (var_r5 = 0; var_r5 < 16; var_r5++) {
-        temp_r2->unk84[var_r5] = Mod(PseudoRandom32(), 40) - 20;
-        temp_r2->unk44[var_r5] = Mod(PseudoRandom32(), 220) + 20;
+        temp_r2->unk84[var_r5] = Mod(PSEUDO_RANDOM_32(), 40) - 20;
+        temp_r2->unk44[var_r5] = Mod(PSEUDO_RANDOM_32(), 220) + 20;
     }
 
     s->graphics.dest = OBJ_VRAM0 + 0x820;
@@ -366,8 +368,8 @@ void Task_8068BB0(void)
         if ((sp0 + var_r8) & 0xF) {
             strcC4->unk84[var_r8] += 0x10;
         } else {
-            strcC4->unk84[var_r8] = Mod(PseudoRandom32(), 0x28) - 0x14;
-            strcC4->unk44[var_r8] = Mod(PseudoRandom32(), 0xDC) + 0x14;
+            strcC4->unk84[var_r8] = Mod(PSEUDO_RANDOM_32(), 0x28) - 0x14;
+            strcC4->unk44[var_r8] = Mod(PSEUDO_RANDOM_32(), 0xDC) + 0x14;
         }
 
         s->x = strcC4->unk44[var_r8];

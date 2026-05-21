@@ -2,6 +2,7 @@
 #include "core.h"
 #include "task.h"
 #include "sprite.h"
+#include "background.h"
 #include "multi_sio.h"
 #include "flags.h"
 

@@ -286,7 +286,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
 {
     switch (itemBox->unk82) {
         case 0: {
-            u8 boxVal = sRingBonuses[(u32)PseudoRandom32() % ARRAY_COUNT(sRingBonuses)];
+            u8 boxVal = sRingBonuses[(u32)PSEUDO_RANDOM_32() % ARRAY_COUNT(sRingBonuses)];
             u16 prevRingCount = gRingCount;
             gRingCount = prevRingCount + boxVal;
 

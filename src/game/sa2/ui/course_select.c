@@ -1,23 +1,24 @@
-#include "game/sa2/ui/course_select.h"
 #include "core.h"
 #include "sprite.h"
-
-#include "game/sa2/stage/screen_fade.h"
-#include "game/sa2/save.h"
-#include "game/shared/stage/stage.h"
-
-#include "lib/m4a/m4a.h"
-#include "game/sa2/ui/character_select.h"
-#include "constants/sa2/songs.h"
-#include "constants/sa2/text.h"
+#include "background.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "game/sa2/multiplayer/multipak_connection.h"
-#include "game/sa2/stage/bosses/final_intro.h"
 #include "trig.h"
+
+#include "lib/m4a/m4a.h"
+
+#include "game/shared/stage/stage.h"
+#include "game/sa2/stage/bosses/final_intro.h"
+#include "game/sa2/stage/screen_fade.h"
+#include "game/sa2/ui/character_select.h"
+#include "game/sa2/ui/course_select.h"
+#include "game/sa2/multiplayer/multipak_connection.h"
+#include "game/sa2/save.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/tilemaps.h"
+#include "constants/sa2/songs.h"
+#include "constants/sa2/text.h"
 
 struct CourseSelectionScreen {
     ScreenFade fade;

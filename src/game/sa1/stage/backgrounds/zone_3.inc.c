@@ -204,14 +204,14 @@ void StageBgUpdate_Zone3Acts12(s32 x, s32 y)
         }
     }
 
-    if (((gStageTime % 4u) == 0) && ((PseudoRandom32() & 0x700) == 0)) {
+    if (((gStageTime % 4u) == 0) && ((PSEUDO_RANDOM_32() & 0x700) == 0)) {
         // Spawn Firework, at random location in the sky, randomly big or small.
         Task *t;
         CasinoParadiseFirework *firework;
         Sprite *s;
-        s32 randX = (((u32)PseudoRandom32() & 0xFF00) >> 8) - 8; // 0 - +256 ---> -8 - +248
-        s32 randY = (((u32)PseudoRandom32() & 0x7F00) >> 8) - (BG_LINE_WATER_END - BG_LINE_SKY_END);
-        u8 fireworkType = (((u32)PseudoRandom32() & 0x0100) >> 8);
+        s32 randX = (((u32)PSEUDO_RANDOM_32() & 0xFF00) >> 8) - 8; // 0 - +256 ---> -8 - +248
+        s32 randY = (((u32)PSEUDO_RANDOM_32() & 0x7F00) >> 8) - (BG_LINE_WATER_END - BG_LINE_SKY_END);
+        u8 fireworkType = (((u32)PSEUDO_RANDOM_32() & 0x0100) >> 8);
         const TileInfoFirework *tileInfo = &gTileInfoZone3Fireworks[fireworkType];
 
         t = CreateMultiplayerSpriteTask(randX, randY, 0, 0, Task_UpdateFireworkAnimation, TaskDestructor_MultiplayerSpriteTask);

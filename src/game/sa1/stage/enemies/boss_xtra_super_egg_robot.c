@@ -3,6 +3,8 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "bg_triangles.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/shared/stage/entity.h"
 #include "game/sa1/stage/enemies/bosses_shared.h" // CreatePreBossCameraPan
@@ -270,7 +272,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8050194.inc", s
         var_sl = temp_sb;
     }
     if ((var_sl <= 0) && (sp4->unk6E != 1) && (gStageTime & 1)) {
-        if (!(PseudoRandom32() & 0x30000)) {
+        if (!(PSEUDO_RANDOM_32() & 0x30000)) {
             s32 var = I(temp_r8->unk0.qUnk50);
             var_r0_2 = temp_r4;
             if (var_r0_2 < temp_r6) {
@@ -301,7 +303,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8050194.inc", s
         var_r6 = temp_sb_2;
     }
     if ((var_r6 <= 0) && (sp4->unk6E != 1) && !(gStageTime & 1)) {
-        if (!(PseudoRandom32() & 0x30000)) {
+        if (!(PSEUDO_RANDOM_32() & 0x30000)) {
             s32 var = I(temp_r8_2->unk0.qUnk50);
             var_r0_3 = temp_r4_2;
             if (var_r0_3 < temp_r5_3) {
@@ -937,7 +939,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8051344.inc", v
             break;
         case 9:
             v_r1 = 0x4000;
-            v_r1 -= ((u32)(PseudoRandom32() << 0xC) >> 0x14);
+            v_r1 -= ((u32)(PSEUDO_RANDOM_32() << 0xC) >> 0x14);
             sub_804CFE0((&strc->unk76), v_r1, 0x1000U);
             break;
         case 13:
@@ -1023,7 +1025,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_xtra__sub_8051604.inc", v
                 s32 qX = strc->unk0.qUnk50;
                 s32 qY = strc->unk0.qUnk54 + 0x1700;
                 bool32 var_r2_2 = 0;
-                if (!(PseudoRandom32() & 0x30000)) {
+                if (!(PSEUDO_RANDOM_32() & 0x30000)) {
                     var_r2_2 = 1;
                 }
                 sub_804A8A8(qX, qY, var_r2_2);
@@ -1285,8 +1287,8 @@ bool32 sub_80520B8(SuperEggRobo *boss)
 
     if (!(0xF & gStageTime) || ((boss->unk6E == 0xE) && !(gStageTime & 7))) {
         s32 a, b;
-        temp_r0 = (((u32)PseudoRandom32() << 10) >> 18) - Q(32);
-        temp_r3 = (((u32)PseudoRandom32() << 9) >> 17) - Q(64);
+        temp_r0 = (((u32)PSEUDO_RANDOM_32() << 10) >> 18) - Q(32);
+        temp_r3 = (((u32)PSEUDO_RANDOM_32() << 9) >> 17) - Q(64);
         a = boss->qUnk44 + Q(boss->unk60) + temp_r0;
         b = boss->qUnk48 + Q(boss->qUnk64) + temp_r3;
         bolts = TASK_DATA(sub_8017540(a, b));

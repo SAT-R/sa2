@@ -1,4 +1,12 @@
 #include "core.h"
+#include "sprite.h"
+#include "background.h"
+#include "task.h"
+
+#include "lib/m4a/m4a.h"
+
+#include "game/sa2/title_screen.h"
+#include "game/sa2/save.h"
 #include "game/sa2/special_stage/main.h"
 #include "game/sa2/special_stage/utils.h"
 #include "game/sa2/special_stage/player.h"
@@ -8,15 +16,10 @@
 #include "game/sa2/special_stage/guard_robo.h"
 #include "game/sa2/special_stage/physics.h"
 #include "game/sa2/special_stage/tables.h"
-#include "game/shared/stage/stage.h"
-#include "game/sa2/save.h"
-#include "sprite.h"
 #include "game/sa2/stage/screen_fade.h"
-#include "lib/m4a/m4a.h"
-#include "task.h"
-#include "game/sa2/title_screen.h"
-#include "constants/zones.h"
+#include "game/shared/stage/stage.h"
 
+#include "constants/zones.h"
 #include "constants/sa2/songs.h"
 #include "constants/sa2/tilemaps.h"
 

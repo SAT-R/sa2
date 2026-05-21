@@ -4,6 +4,7 @@
 #include "core.h"
 #include "flags.h"
 #include "malloc_vram.h"
+#include "sprite.h"
 
 #include "game/globals.h"
 

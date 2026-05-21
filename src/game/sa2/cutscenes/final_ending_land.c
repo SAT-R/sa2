@@ -1,15 +1,18 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/sa2/stage/screen_fade.h"
-#include "task.h"
-#include "game/sa2/cutscenes/credits.h"
-#include "game/sa2/cutscenes/missing_emeralds.h"
-#include "lib/m4a/m4a.h"
+#include "background.h"
 #include "trig.h"
+#include "task.h"
+
+#include "lib/m4a/m4a.h"
+
+#include "game/math.h"
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
-#include "game/math.h"
+#include "game/sa2/stage/screen_fade.h"
+#include "game/sa2/cutscenes/credits.h"
+#include "game/sa2/cutscenes/missing_emeralds.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"
@@ -658,7 +661,7 @@ void sub_8093740(struct FinalEndingLandCutScene *scene)
     for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
         s32 sin, temp, unused;
         if (scene->unk4DC[i][1] == ((0xBE - gBgScrollRegs[1][1]) * 0x100)) {
-            if (PseudoRandom32() < 0) {
+            if (PSEUDO_RANDOM_32() < 0) {
                 scene->unk4DC[i][4] = -1;
             } else {
                 scene->unk4DC[i][4] = 1;

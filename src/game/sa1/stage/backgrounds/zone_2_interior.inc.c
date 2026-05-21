@@ -1,7 +1,6 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
-#include "animation_commands_bg.h"
 #include "game/globals.h"
 #include "game/shared/stage/camera.h"
 #include "game/sa1/stage/backgrounds/zone_5.h"

@@ -6,7 +6,6 @@
 #include "trig.h"
 #include "lib/m4a/m4a.h"
 
-#include "animation_commands.h"
 #include "platform/platform.h"
 
 #if !PLATFORM_GBA && (RENDERER != RENDERER_SOFTWARE)
@@ -195,7 +194,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 
 #if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
             if (frame != -1) {
-                const struct SpriteTables *sprTables = gRefSpriteTables;
+                const SpriteTables *sprTables = gRefSpriteTables;
 
                 s->dimensions = &sprTables->dimensions[GET_SPRITE_ANIM(s)][frame];
             } else {

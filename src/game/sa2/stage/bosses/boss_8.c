@@ -7,9 +7,11 @@
 #include "flags.h"
 #include "task.h"
 #include "trig.h"
+#include "background.h"
 #include "bg_triangles.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
+
 #include "game/globals.h"
 #include "game/shared/stage/camera.h"
 #include "game/shared/stage/collision.h"
@@ -1124,7 +1126,7 @@ void sub_804AE40(SuperEggRoboZ *boss)
                     InitHBlankBgOffsets(0);
 
                     sub_80075D0(0, 0, DISPLAY_HEIGHT, r8, r6, ({
-                                    rand = PseudoRandom32();
+                                    rand = PSEUDO_RANDOM_32();
                                     I(SIN(((boss->unk12 - 90) * 8) % 256u))
                                     +(rand % 8u);
                                 }));
@@ -1145,7 +1147,7 @@ void sub_804AE40(SuperEggRoboZ *boss)
                     // _0804B02A
 
                     if (boss->unk12 < 70) {
-                        s32 rand = (PseudoRandom32());
+                        s32 rand = (PSEUDO_RANDOM_32());
                         r4 = (boss->unk12 >> 1) + ((rand % 8u) + 8);
 
                         if (boss->unk12 > 60) {
@@ -1153,7 +1155,7 @@ void sub_804AE40(SuperEggRoboZ *boss)
                         }
                     } else {
                         // _0804B074
-                        s32 rand = PseudoRandom32();
+                        s32 rand = PSEUDO_RANDOM_32();
                         r4 = ((116 - boss->unk12) >> 2) + ((rand % 8u) + 30);
                     }
                     // _0804B096
@@ -1644,9 +1646,9 @@ static void sub_804C080(SuperEggRoboZ *boss)
     ExplosionPartsInfo info;
 
     if ((gStageTime & 0x7) == 0) {
-        s32 rand = PseudoRandom32();
+        s32 rand = PSEUDO_RANDOM_32();
         info.spawnX = gCamera.x + (rand & 0xFF);
-        info.spawnY = gCamera.y + (PseudoRandom32() & 0xFF);
+        info.spawnY = gCamera.y + (PSEUDO_RANDOM_32() & 0xFF);
         info.velocity = Q(18. / 256.);
         info.rotation = (PseudoRandBetween(0, SIN_PERIOD));
         // '= rand =' needed for matching
@@ -1669,15 +1671,15 @@ static void sub_804C080(SuperEggRoboZ *boss)
 
     if (((gStageTime + 3) & 0x7) == 0) {
         s32 rand;
-        u8 r4 = PseudoRandom32();
+        u8 r4 = PSEUDO_RANDOM_32();
         r4 &= 0xF;
         r4 -= Div(r4, 6) * 6;
 
-        rand = PseudoRandom32();
+        rand = PSEUDO_RANDOM_32();
         info.spawnX = gCamera.x + (rand & 0xFF);
-        info.spawnY = gCamera.y + (PseudoRandom32() & 0xFF);
+        info.spawnY = gCamera.y + (PSEUDO_RANDOM_32() & 0xFF);
         info.velocity = Q(0.125);
-        info.rotation = (PseudoRandom32() & ONE_CYCLE);
+        info.rotation = (PSEUDO_RANDOM_32() & ONE_CYCLE);
         info.speed = Q(2);
 
         info.vram = (OBJ_VRAM0 + (gTileInfoBossScrews[r4][0] * TILE_SIZE_4BPP));
@@ -1721,7 +1723,7 @@ void sub_804C240(SuperEggRoboZ *boss, u8 arm)
         info.velocity = 0;
         info.rotation = sub_8004418(-(boss->qUnk34[arm][1] >> 3), -(boss->qUnk34[arm][0] >> 3));
 
-        info.rotation = ({ ((PseudoRandom32() & chance) + info.rotation) - 0x10; })
+        info.rotation = ({ ((PSEUDO_RANDOM_32() & chance) + info.rotation) - 0x10; })
 #ifndef NON_MATCHING
             & (SIN_PERIOD - one);
 #else

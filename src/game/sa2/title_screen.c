@@ -6,6 +6,7 @@
 #include "trig.h"
 #include "task.h"
 #include "sprite.h"
+#include "background.h"
 #include "input_recorder.h"
 #include "lib/m4a/m4a.h"
 

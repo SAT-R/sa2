@@ -1,8 +1,9 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
-#include "animation_commands_bg.h"
 #include "trig.h"
+
+#include "background.h"
 
 #include "game/globals.h"
 
@@ -1134,7 +1135,7 @@ UNUSED void SA2_LABEL(sub_801E3F0)(void)
     Camera *cam = &gCamera;
 
     if (gStageTime & 0x1) {
-        cam->shiftY = ((u32)(PseudoRandom32() & 0x70000) >> 16) - 8;
+        cam->shiftY = ((u32)(PSEUDO_RANDOM_32() & 0x70000) >> 16) - 8;
     }
 }
 

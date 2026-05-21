@@ -4,6 +4,8 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "bg_triangles.h"
+#include "background.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/character_select.h"
 #include "game/shared/stage/entity.h"

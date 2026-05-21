@@ -49,8 +49,8 @@ void Task_ShrubberyMain(void)
             && (worldY <= I(PLAYER(i).qWorldY)) && (worldY + (me->d.uData[3] * TILE_WIDTH) >= I(PLAYER(i).qWorldY))) {
             if (!(PLAYER(i).moveState & MOVESTATE_DEAD)) {
                 if (!GetBit(shrubbery->unk3C, i)) {
-                    CreateShrubberyParticles(I(PLAYER(i).qWorldX) + (((u32)PseudoRandom32() & 0x1F00) >> 8) - 16,
-                                             I(PLAYER(i).qWorldY) + (((u32)PseudoRandom32() & 0x0F00) >> 8) - 8);
+                    CreateShrubberyParticles(I(PLAYER(i).qWorldX) + (((u32)PSEUDO_RANDOM_32() & 0x1F00) >> 8) - 16,
+                                             I(PLAYER(i).qWorldY) + (((u32)PSEUDO_RANDOM_32() & 0x0F00) >> 8) - 8);
                     m4aSongNumStart(SE_SHRUBBERY);
                 }
 

@@ -252,7 +252,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
 
         case ITEM__RINGS_RANDOM: {
-            s32 rnd = ItemBox_ringAmountTable[(u32)PseudoRandom32() % ARRAY_COUNT(ItemBox_ringAmountTable)];
+            s32 rnd = ItemBox_ringAmountTable[(u32)PSEUDO_RANDOM_32() % ARRAY_COUNT(ItemBox_ringAmountTable)];
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             // There are points in the game where the TAS depends on the RNG
             // giving specific values. Because widescreen runs different code

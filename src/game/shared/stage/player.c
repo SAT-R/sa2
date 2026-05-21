@@ -4385,7 +4385,7 @@ void Player_HandleWater(Player *p)
             }
             p->framesUntilDrownCountDecrement = 60;
         }
-        if (!(gStageTime % 16u) && !(PseudoRandom32() & 0x300)) {
+        if (!(gStageTime % 16u) && !(PSEUDO_RANDOM_32() & 0x300)) {
             s32 qDX = ((p->moveState & MOVESTATE_FACING_LEFT) ? -Q(4) : +Q(4));
             SpawnAirBubbles(p->qWorldX + qDX, p->qWorldY - Q(4), 0, 0);
         }

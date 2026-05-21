@@ -747,7 +747,7 @@ void Task_802EA8C(void)
         Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
-        s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
+        s32 rndIndex = PSEUDO_RANDOM_32() % ARRAY_COUNT(gUnknown_080BB41C);
         s32 rndTheta;
         s32 a0, a1;
         s32 rnd;
@@ -761,11 +761,11 @@ void Task_802EA8C(void)
         sprBolts->oamFlags = SPRITE_OAM_ORDER(17);
         bolts->qUnk3E = Q(40. / 256.);
         bolts->qUnk40 = Q(32. / 256.);
-        rndTheta = PseudoRandom32();
+        rndTheta = PSEUDO_RANDOM_32();
         bolts->qUnk3A = (-(SIN(rndTheta & 0x1FF) * 0x600)) >> 0xE;
         bolts->qUnk38 = (-(COS(rndTheta & 0x1FF) * 0x600)) >> 0xE;
 
-        rnd = PseudoRandom32();
+        rnd = PSEUDO_RANDOM_32();
         sub_8017540(Q((worldX + (0x3F & rnd)) - 32), Q(worldY - ((rnd & 0x3F0000) >> 0x10)));
     }
 
@@ -801,7 +801,7 @@ void sub_802ECFC(void)
         Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
-        s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
+        s32 rndIndex = PSEUDO_RANDOM_32() % ARRAY_COUNT(gUnknown_080BB41C);
         s32 rndTheta;
         s32 a0, a1;
         s32 rnd;
@@ -815,11 +815,11 @@ void sub_802ECFC(void)
         sprBolts->oamFlags = SPRITE_OAM_ORDER(17);
         bolts->qUnk3E = Q(40. / 256.);
         bolts->qUnk40 = Q(32. / 256.);
-        rndTheta = PseudoRandom32();
+        rndTheta = PSEUDO_RANDOM_32();
         bolts->qUnk3A = (-(SIN(rndTheta & 0x1FF) * 0x600)) >> 0xE;
         bolts->qUnk38 = (-(COS(rndTheta & 0x1FF) * 0x600)) >> 0xE;
 
-        rnd = PseudoRandom32();
+        rnd = PSEUDO_RANDOM_32();
         sub_8017540(Q((worldX + (0x3F & rnd)) - 32), Q(worldY - ((rnd & 0x3F0000) >> 0x10)));
     }
 

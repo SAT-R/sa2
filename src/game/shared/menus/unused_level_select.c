@@ -1,8 +1,11 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
-#include "lib/m4a/m4a.h"
 #include "task.h"
+#include "sprite.h"
+#include "background.h"
+
+#include "lib/m4a/m4a.h"
 
 #include "game/globals.h"
 #include "game/shared/stage/stage.h"
@@ -29,8 +32,6 @@
 #include "constants/sa2/songs.h"
 #include "data/sa2/tileset_debug_ascii.h"
 #endif
-
-#include "animation_commands_bg.h"
 
 #if (GAME == GAME_SA1)
 #define LEFT_INPUT(value)  (value)++

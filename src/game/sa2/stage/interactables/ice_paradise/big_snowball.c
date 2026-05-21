@@ -178,46 +178,46 @@ void sub_8078E48(Sprite_IA69 *ia69)
 
     for (i = 0; i < 2; i++, unk178++) {
         if (i & 1) {
-            u32 temp = ((u32)PseudoRandom32() >> 0x14);
+            u32 temp = ((u32)PSEUDO_RANDOM_32() >> 0x14);
             temp += 0x1000;
             unk178->unk0 = temp;
-            unk178->unk2 = -((u32)PseudoRandom32() >> 0x14);
+            unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x14);
         } else {
-            u32 temp = -((u32)PseudoRandom32() >> 0x14);
+            u32 temp = -((u32)PSEUDO_RANDOM_32() >> 0x14);
             temp -= 0x1000;
             unk178->unk0 = temp;
-            unk178->unk2 = -((u32)PseudoRandom32() >> 0x14);
+            unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x14);
         }
     }
 
     for (i = 0; i < 2; i++, unk178++) {
         if (i & 1) {
             u32 temp;
-            temp = ((u32)PseudoRandom32() >> 0x14);
+            temp = ((u32)PSEUDO_RANDOM_32() >> 0x14);
             temp += 0x800;
             unk178->unk0 = temp;
-            unk178->unk2 = -((u32)PseudoRandom32() >> 0x13) - 0x1000;
+            unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x13) - 0x1000;
         } else {
             u32 temp;
-            temp = -((u32)PseudoRandom32() >> 0x14);
+            temp = -((u32)PSEUDO_RANDOM_32() >> 0x14);
             temp -= 0x800;
             unk178->unk0 = temp;
-            unk178->unk2 = -((u32)PseudoRandom32() >> 0x13) - 0x1000;
+            unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x13) - 0x1000;
         }
     }
 
     for (i = 0; i < 4; i++, unk178++) {
-        u32 temp = ((u32)PseudoRandom32() >> 0x12);
+        u32 temp = ((u32)PSEUDO_RANDOM_32() >> 0x12);
         temp -= 0x2000;
         unk178->unk0 = temp;
-        unk178->unk2 = -((u32)PseudoRandom32() >> 0x12);
+        unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x12);
     }
 
     for (i = 0; i < 4; i++, unk178++) {
-        u32 temp = ((u32)PseudoRandom32() >> 0x12);
+        u32 temp = ((u32)PSEUDO_RANDOM_32() >> 0x12);
         temp -= 0x2000;
         unk178->unk0 = temp;
-        unk178->unk2 = -((u32)PseudoRandom32() >> 0x12);
+        unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x12);
     }
 
     unkF0 = ia69->unkF0;
@@ -230,39 +230,39 @@ void sub_8078E48(Sprite_IA69 *ia69)
 
     for (i = 0; i < 2; i++, unkF0++) {
         if (i & 1) {
-            u32 temp = ((u32)PseudoRandom32() & 0x7FF);
+            u32 temp = ((u32)PSEUDO_RANDOM_32() & 0x7FF);
             temp -= 0x400;
             unkF0->unk0 = temp;
             unkF0->unk2 = 0;
-            unkF0->unk4 = (PseudoRandom32() & 0x1F) + 0x20;
+            unkF0->unk4 = (PSEUDO_RANDOM_32() & 0x1F) + 0x20;
             unkF0->unk6 = -0x2C0;
         } else {
-            u32 temp = ((u32)PseudoRandom32() & 0x7FF);
+            u32 temp = ((u32)PSEUDO_RANDOM_32() & 0x7FF);
             u32 temp2 = 0x400;
             temp2 -= temp;
             unkF0->unk0 = temp2;
             unkF0->unk2 = 0;
-            unkF0->unk4 = -(((u32)PseudoRandom32() & 0x1F) + 0x20);
+            unkF0->unk4 = -(((u32)PSEUDO_RANDOM_32() & 0x1F) + 0x20);
             unkF0->unk6 = -0x2C0;
         }
     }
 
     for (i = 0; i < 2; i++, unkF0++) {
         if (i & 1) {
-            u32 temp = ((u32)PseudoRandom32() & 0x1FFF);
+            u32 temp = ((u32)PSEUDO_RANDOM_32() & 0x1FFF);
             temp -= 0x1000;
             unkF0->unk0 = temp;
             unkF0->unk2 = 0;
-            unkF0->unk4 = (PseudoRandom32() & 0x3F) + 0x30;
+            unkF0->unk4 = (PSEUDO_RANDOM_32() & 0x3F) + 0x30;
             unkF0->unk6 = -0x280;
 
         } else {
-            u32 temp = ((u32)PseudoRandom32() & 0x1FFF);
+            u32 temp = ((u32)PSEUDO_RANDOM_32() & 0x1FFF);
             u32 temp2 = 0x1000;
             temp2 -= temp;
             unkF0->unk0 = temp2;
             unkF0->unk2 = 0;
-            unkF0->unk4 = -((PseudoRandom32() & 0x3F) + 0x30);
+            unkF0->unk4 = -((PSEUDO_RANDOM_32() & 0x3F) + 0x30);
             unkF0->unk6 = -0x280;
         }
     }
@@ -270,16 +270,16 @@ void sub_8078E48(Sprite_IA69 *ia69)
     for (i = 0; i < 8; i++, unkF0++) {
         u32 temp2, temp;
 
-        temp = ((u32)PseudoRandom32() & 0x3FFF) - 0x2000;
+        temp = ((u32)PSEUDO_RANDOM_32() & 0x3FFF) - 0x2000;
         unkF0->unk0 = temp;
-        temp2 = ((u32)PseudoRandom32() & 0xFFF);
+        temp2 = ((u32)PSEUDO_RANDOM_32() & 0xFFF);
         unkF0->unk2 = temp2;
 
         if (unkF0->unk0 > 0) {
-            unkF0->unk4 = ((u32)PseudoRandom32() & 0x3F) + 0x40;
+            unkF0->unk4 = ((u32)PSEUDO_RANDOM_32() & 0x3F) + 0x40;
             unkF0->unk6 = -0x240;
         } else {
-            unkF0->unk4 = -(((u32)PseudoRandom32() & 0x3F) + 0x40);
+            unkF0->unk4 = -(((u32)PSEUDO_RANDOM_32() & 0x3F) + 0x40);
             unkF0->unk6 = -0x240;
         }
     }
@@ -314,10 +314,10 @@ void sub_80791B4(Sprite_IA69 *ia69)
         for (i = 0; i < 8; i++, unk178++) {
             unk178->unk2 -= 0x200;
             if (unk178->unk2 < -0x6000) {
-                u32 temp = ((u32)PseudoRandom32() >> 0x12);
+                u32 temp = ((u32)PSEUDO_RANDOM_32() >> 0x12);
                 temp -= 0x2000;
                 unk178->unk0 = temp;
-                unk178->unk2 = -((u32)PseudoRandom32() >> 0x12);
+                unk178->unk2 = -((u32)PSEUDO_RANDOM_32() >> 0x12);
             }
         }
     }

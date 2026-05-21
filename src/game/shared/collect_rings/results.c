@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "sprite.h"
+#include "background.h"
 #include "bg_triangles.h"
 #include "multi_sio.h"
 #include "sio32_multi_load.h" // for SIO32ML_BLOCK_SIZE
@@ -218,7 +220,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gTilemapsRef = *((Tilemap ***)(EWRAM_START + 0x33000));
 #if (GAME == GAME_SA2)
 #if COLLECT_RINGS_ROM
-    gRefSpriteTables = (const struct SpriteTables *)(EWRAM_START + 0x20000);
+    gRefSpriteTables = (const SpriteTables *)(EWRAM_START + 0x20000);
     gMultiplayerLanguage = 0;
 #else
     gMultiplayerLanguage = LOADED_SAVE->language;

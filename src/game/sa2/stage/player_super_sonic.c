@@ -654,8 +654,8 @@ static void sub_802C55C(struct SuperSonic *sonic)
 
         if (++sonic->unk22 > 4) {
             sonic->unk22 = 0;
-            sonic->unk10 = (PseudoRandom32() % 0x1000u) - (0x800 - 1);
-            sonic->unk14 = (PseudoRandom32() % 0x1000u) - (0x800 - 1);
+            sonic->unk10 = (PSEUDO_RANDOM_32() % 0x1000u) - (0x800 - 1);
+            sonic->unk14 = (PSEUDO_RANDOM_32() % 0x1000u) - (0x800 - 1);
         }
     }
 }

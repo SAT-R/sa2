@@ -348,7 +348,7 @@ static void Task_TransitionToEscapeSequence(void)
     UpdateBomberTankPalette(boss);
     CreateDestructionExplosions(boss);
 
-    rand = PseudoRandom32();
+    rand = PSEUDO_RANDOM_32();
 
     if (Mod(gStageTime + rand, 0x11) == 0) {
         m4aSongNumStart(SE_EXPLOSION);
@@ -746,7 +746,7 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
             boss->timer = 12;
             gCurTask->main = Task_BomberTankCannonReload;
             m4aSongNumStart(SE_241);
-            CreateBomberTankBomb(boss, x, y, boss->cannonAngle, 64, sExplosionTimes[PseudoRandom32() & 0xF]);
+            CreateBomberTankBomb(boss, x, y, boss->cannonAngle, 64, sExplosionTimes[PSEUDO_RANDOM_32() & 0xF]);
 
         } else {
             boss->timer--;
@@ -892,9 +892,9 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
         if ((0x103U - boss->timer) >> 5 > boss->unk76) {
             u32 rand;
             ExplosionPartsInfo init;
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             init.spawnX = (I(boss->qWorldX) - gCamera.x) + ((rand * 0x22) & 63) - 0x34;
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             init.spawnY = (I(boss->qWorldY) - gCamera.y) + ((rand * 0x34) & 63) - 0x30;
             init.velocity = 0;
 
@@ -907,7 +907,7 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
             CreateBossParticleWithExplosionUpdate(&init, &boss->unk76);
         }
     } else {
-        if ((PseudoRandom32() & 5) == 0 && (0x103U - boss->timer) >> 5 > boss->unk74) {
+        if ((PSEUDO_RANDOM_32() & 5) == 0 && (0x103U - boss->timer) >> 5 > boss->unk74) {
             u32 rand;
             ExplosionPartsInfo init;
             boss->unk75++;
@@ -915,14 +915,14 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
                 boss->unk75 = 0;
             }
 
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             init.spawnX = (I(boss->qWorldX) - gCamera.x) + (rand & 63) - 0x20;
 
-            rand = PseudoRandom32();
+            rand = PSEUDO_RANDOM_32();
             init.spawnY = (I(boss->qWorldY) - gCamera.y) + (rand & 63) - 0x20;
             init.velocity = 0x40;
 
-            init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
+            init.rotation = PSEUDO_RANDOM_32() & (SIN_PERIOD - 1);
             init.speed = 0x600;
             init.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[boss->unk75][0] * TILE_SIZE_4BPP);
             init.anim = gTileInfoBossScrews[boss->unk75][1];
@@ -1001,7 +1001,7 @@ static void Task_StartBossDestruction(void)
     UpdateBomberTankPalette(boss);
     CreateDestructionExplosions(boss);
 
-    rand = PseudoRandom32();
+    rand = PSEUDO_RANDOM_32();
     if (Mod(gStageTime + rand, 21) == 0) {
         m4aSongNumStart(SE_EXPLOSION);
     }
@@ -1024,7 +1024,7 @@ static void Task_WaitForBossOffScreen(void)
     UpdateBomberTankPalette(boss);
     CreateDestructionExplosions(boss);
 
-    rand = PseudoRandom32();
+    rand = PSEUDO_RANDOM_32();
 
     if (Mod(gStageTime + rand, 13) == 0) {
         m4aSongNumStart(SE_EXPLOSION);
@@ -1067,7 +1067,7 @@ static void HandleCannonlessBombTrigger(EggBomberTank *boss)
     RenderCannon(boss);
     if (boss->timer == 0) {
         CreateBomberTankBomb(boss, boss->qWorldX - Q(8), boss->qWorldY - Q(22), DEG_TO_SIN(180), 8,
-                             sExplosionTimes[PseudoRandom32() & 0xF]);
+                             sExplosionTimes[PSEUDO_RANDOM_32() & 0xF]);
         boss->timer = 113;
     } else {
         if (boss->timer > 150) {

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "trig.h"
+#include "sprite.h"
 
 #include "game/globals.h"
 

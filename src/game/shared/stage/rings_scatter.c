@@ -3,6 +3,7 @@
 #include "trig.h"
 #include "lib/m4a/m4a.h"
 #include "rect.h"
+#include "sprite.h"
 
 #include "game/globals.h"
 
@@ -235,7 +236,7 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
             ring->unk10 = 0;
 #endif
 
-            if (!(PseudoRandom32() & 0x10000)) {
+            if (!(PSEUDO_RANDOM_32() & 0x10000)) {
                 ring->unk10 = 0x4;
             }
 
@@ -281,7 +282,7 @@ void InitScatteringRings_ExtraBossCapsule(s32 x, s32 y, s32 numRings)
         numRings = MAX_SCATTERING_RINGS_COUNT_MP;
     }
 
-    r7 = (((u32)PseudoRandom32() & 0xFF000) >> 12) | 0x10;
+    r7 = (((u32)PSEUDO_RANDOM_32() & 0xFF000) >> 12) | 0x10;
 
     for (i = 0, ip = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
         if (ring->unkC == 0) {
@@ -291,7 +292,7 @@ void InitScatteringRings_ExtraBossCapsule(s32 x, s32 y, s32 numRings)
             ring->x = Q(x);
             ring->y = Q(y);
 
-            r3 = (((u32)PseudoRandom32() & 0x1000) >> 12) + 5;
+            r3 = (((u32)PSEUDO_RANDOM_32() & 0x1000) >> 12) + 5;
             {
                 s32 r0;
 
@@ -314,7 +315,7 @@ void InitScatteringRings_ExtraBossCapsule(s32 x, s32 y, s32 numRings)
             ring->velY = velY;
 
             {
-                u32 rand = PseudoRandom32();
+                u32 rand = PSEUDO_RANDOM_32();
                 r7 += ((rand & 0x3F000) >> 12) + 16;
             }
             velX = -velX;

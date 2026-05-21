@@ -3,6 +3,6 @@
 
 #include "core.h"
 
-extern const struct SpriteTables gSpriteTables;
+extern const SpriteTables gSpriteTables;
 
 #endif

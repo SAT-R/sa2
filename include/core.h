@@ -6,12 +6,29 @@
 #endif
 
 #include "global.h"
-#include "sprite.h"
+#include "rect.h"
 #include "task.h"
 #include "flags.h"
 #include "tilemap.h"
 #include "input_recorder.h"
-#include "animation_commands.h"
+
+#define VRAM_HEAP_TILE_SIZE         TILE_SIZE_4BPP
+#define VRAM_HEAP_SEGMENT_SIZE      (4 * VRAM_HEAP_TILE_SIZE)
+#define VRAM_TILE_SLOTS_PER_SEGMENT (VRAM_HEAP_SEGMENT_SIZE / VRAM_HEAP_TILE_SIZE)
+
+// TODO: Find out where these numbers come from
+#if (ENGINE == ENGINE_1)
+#define VRAM_TILE_SEGMENTS   156
+#define VRAM_HEAP_TILE_COUNT 112
+#elif (ENGINE == ENGINE_2)
+#if COLLECT_RINGS_ROM
+#define VRAM_TILE_SEGMENTS   128
+#define VRAM_HEAP_TILE_COUNT 0
+#else
+#define VRAM_TILE_SEGMENTS   140
+#define VRAM_HEAP_TILE_COUNT 48
+#endif
+#endif
 
 struct MultiSioData_0_0 {
     // id
@@ -147,6 +164,19 @@ typedef u16 collPxDim_t;
 typedef u32 collPxDim_t;
 #endif
 
+typedef struct {
+    u16 bldCnt;
+    u16 bldAlpha;
+    u16 bldY;
+} BlendRegs;
+
+// Values to be passed top the affine registers
+// (used by BG2/BG3 in affine screen modes)
+typedef struct {
+    /* 0x00 */ u16 pa, pb, pc, pd;
+    /* 0x08 */ u32 x, y;
+} BgAffineReg;
+
 // Thanks @MainMemory_ for figuring out how collision is stored!
 typedef struct {
     /* 0x00 */ const s8 *height_map;
@@ -185,25 +215,311 @@ struct Unk_03003674 {
     const s32 *unk18;
 }; /* size = 0x1C */
 
-struct SpriteTables {
+typedef u16 AnimId;
+
+typedef struct {
+    /* 0x00 */ const void *src;
+    /* 0x04 */ void *dest;
+    /* 0x08 */ u16 size;
+    /* 0x0A */ AnimId anim;
+} GraphicsData;
+
+typedef struct {
+    /* 0x00 */ GraphicsData graphics;
+
+    // 'tilesVram' points to tile-index array in VRAM, telling the GBA which tiles to
+    // draw on this BG
+    //
+    // (!!! Data likely different depending on type of Background (Affine vs. Text). !!!)
+    //
+    // Data-Structure (16 bits): MSB > PPPPYXTTTTTTTTTT < LSB
+    // P = Palette Index
+    // Y = Y-Flip
+    // X = X-Flip
+    // T = Tile-Index
+    //
+    // NOTE: It does NOT point to the tileset!
+    /* 0x0C */ u16 *layoutVram;
+
+    // Stage-Map: Metatiles
+    // Common Tilemaps: Tilemap-Tiles
+    /* 0x10 */ const u16 *layout;
+
+    // Tile-count on each axis
+    // - Stage maps: should be 12 (# per metatile)
+    // - Common Tilemaps: should be .targetTilesX/Y
+    /* 0x14 */ u16 xTiles;
+    /* 0x16 */ u16 yTiles;
+
+    /* 0x18 */ u16 unk18;
+    /* 0x1A */ u16 unk1A;
+    /* 0x1C */ u16 tilemapId;
+    /* 0x1E */ u16 unk1E;
+
+    /* 0x20 */ u16 unk20;
+    /* 0x22 */ u16 unk22;
+    /* 0x24 */ u16 unk24;
+
+    /* Tile-Dimensions for the rendering target */
+    /* - Stage maps: DISPLAY_WIDTH/_HEIGHT + 1*TILE_WIDTH */
+    /* - Common Tilemaps: full image dimensions */
+    /* 0x26 */ u16 targetTilesX;
+    /* 0x28 */ u16 targetTilesY;
+
+    /* 0x2A */ u8 paletteOffset;
+    /* 0x2B */ u8 animFrameCounter;
+    /* 0x2C */ u8 animDelayCounter;
+
+    /* 0x2E */ u16 flags;
+
+    // apparently NOT signed?
+    /* 0x30 */ u16 scrollX;
+    /* 0x32 */ u16 scrollY;
+    /* 0x34 */ u16 prevScrollX;
+    /* 0x36 */ u16 prevScrollY;
+
+    /* Only used by stage maps (they are encoded as Tilemaps) */
+    /* 0x38 */ const MetatileIndexType *metatileMap;
+    /* 0x3C */ u16 mapWidth;
+    /* 0x3E */ u16 mapHeight;
+} Background; /* size = 0x40 */
+
+typedef struct {
+#if (ENGINE >= ENGINE_3)
+    // In SA3 flip-bits are integrated into the oamIndex.
+    // X-Flip: Bit 14
+    // Y-Flip: Bit 15
+    /* 0x00 */ u16 oamIndex;
+#else
+    /* 0x00 */ u8 flip;
+
+    // every animation has an associated oamData pointer, oamIndex starts at
+    // 0 for every new animation and ends at variantCount-1
+    /* 0x01 */ u8 oamIndex;
+#endif
+
+    // some sprite frames consist of multiple images (of the same size
+    // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
+    /* 0x02 */ u16 numSubframes;
+
+    // In pixels
+    /* 0x04 */ u16 width;
+    // In pixels
+    /* 0x06 */ u16 height;
+
+    /* 0x08 */ s16 offsetX;
+    /* 0x0A */ s16 offsetY;
+} SpriteOffset;
+
+typedef struct {
+    // index: -1 on init; lower 4 bits = index (in anim-cmds)
+    /* 0x00 */ s32 index;
+    /* 0x04 */ Rect8 b;
+} Hitbox;
+
+typedef struct {
+    /* 0x00 */ GraphicsData graphics;
+    /* 0x0C */ const SpriteOffset *dimensions;
+
+    // Bitfield description from KATAM decomp
+    /* 0x10 */ u32 frameFlags; // bit 0-4: affine-index / rotscale param selection
+                               // bit 5: rotscale enable
+                               // bit 6: rotscale double-size
+                               // bit 7-8: obj mode
+                               // bit 9
+                               // bit 10 X-Flip
+                               // bit 11 Y-Flip
+                               // bit 12-13: priority
+                               // bit 14
+                               // bit 15-16: Background ID
+                               // bit 17
+                               // bit 18
+                               // bit 19-25(?)
+                               // bit 26
+                               // bit 27-29(?)
+                               // bit 30
+                               // bit 31
+
+    /* 0x14 */ u16 animCursor;
+
+    /* 0x16 */ s16 x;
+    /* 0x18 */ s16 y;
+
+    /* 0x1A */ u16 oamFlags; // bit 6-10: OAM order index
+
+    /* 0x1C */ s16 qAnimDelay; // Q_8_8, in frames
+    /* 0x1E */ u16 prevAnim;
+    /* 0x20 */ u8 variant;
+    /* 0x21 */ u8 prevVariant;
+
+    // 0x08 = 0.5x, 0x10 = 1.0x, 0x20 = 2.0x ...
+    /* 0x22 */ u8 animSpeed;
+
+    /* 0x23 */ u8 oamBaseIndex;
+    /* 0x24 */ u8 numSubFrames;
+    /* 0x25 */ u8 palId;
+    /* 0x28 */ Hitbox hitboxes[1];
+} Sprite /* size = 0x30 */;
+
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+} Sprite2;
+
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+    Hitbox hb2;
+} Sprite3;
+
+typedef struct {
+    /* 0x00 */ u16 rotation;
+    /* 0x02 */ s16 qScaleX;
+    /* 0x04 */ s16 qScaleY;
+    /* 0x06 */ s16 x;
+    /* 0x08 */ s16 y;
+} SpriteTransform; /* size 0xA */
+
+#define AnimCommandSizeInWords(_structType) ((sizeof(_structType)) / sizeof(s32))
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -2
+
+    // Note(Jace): This needs to be signed, since a
+    //             negative value infers that it's using 8bit-colors
+    /* 0x04 */ s32 tileIndex;
+
+    /* 0x08 */ u32 numTilesToCopy;
+} ACmd_GetTiles;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -2
+
+    /* 0x04 */ s32 palId;
+    /* 0x06 */ u16 numColors;
+    /* 0x08 */ u16 insertOffset;
+} ACmd_GetPalette;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -3
+
+    /* 0x04 */ s32 offset;
+} ACmd_JumpBack;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -4
+} ACmd_4;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -5
+
+    /* 0x04 */ u16 songId;
+} ACmd_PlaySoundEffect;
+
+// TODO: param types unknown
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -6
+
+    /* 0x04 */ Hitbox hitbox;
+} ACmd_Hitbox;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -7
+
+    /* 0x04 */ u16 x;
+    /* 0x06 */ u16 y;
+} ACmd_TranslateSprite;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -8
+
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 unk8;
+} ACmd_8;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -9
+
+    /* 0x04 */ AnimId animId;
+    /* 0x06 */ u16 variant;
+} ACmd_SetIdAndVariant;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -10
+
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ s32 unkC;
+} ACmd_10;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -11
+
+    /* 0x04 */ s32 priority;
+} ACmd_SetSpritePriority;
+
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -12
+
+    /* 0x04 */ s32 orderIndex;
+} ACmd_SetOamOrder;
+
+typedef struct {
+    // number of frames this will be displayed
+    s32 delay;
+
+    // frameId of this animation that should be displayed
+    s32 index;
+} ACmd_ShowFrame;
+
+typedef union {
+    s32 id;
+
+    ACmd_GetTiles tiles;
+    ACmd_GetPalette pal;
+    ACmd_JumpBack jump;
+    ACmd_4 end;
+    ACmd_PlaySoundEffect sfx;
+    ACmd_Hitbox _6;
+    ACmd_TranslateSprite translate;
+    ACmd_8 _8;
+    ACmd_SetIdAndVariant setAnimId;
+    ACmd_10 _10;
+    ACmd_SetSpritePriority _11;
+    ACmd_SetOamOrder setOamOrder;
+
+    ACmd_ShowFrame show;
+} ACmd;
+
+typedef enum {
+    ACMD_RESULT__ANIM_CHANGED = -1,
+    ACMD_RESULT__ENDED = 0,
+    ACMD_RESULT__RUNNING = +1,
+} AnimCmdResult;
+
+typedef AnimCmdResult (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
+
+typedef struct {
     /* 0x00 */ const ACmd **const *animations;
     /* 0x04 */ const SpriteOffset *const *dimensions;
     /* 0x08 */ const u16 **const oamData;
     /* 0x0C */ const ColorRaw *const palettes;
     /* 0x10 */ const u8 *const tiles_4bpp;
     /* 0x14 */ const u8 *const tiles_8bpp;
-};
+} SpriteTables;
 
 // No idea why this exists when there is a
 // better random number generator in the math
 // module
-#define PseudoRandom32()                                                                                                                   \
+#define PSEUDO_RANDOM_32()                                                                                                                 \
     ({                                                                                                                                     \
         gPseudoRandom = (gPseudoRandom * 0x196225) + 0x3C6EF35F;                                                                           \
         gPseudoRandom;                                                                                                                     \
     })
 
-#define MultiplayerPseudoRandom32()                                                                                                        \
+#define MP_PSEUDO_RANDOM_32()                                                                                                              \
     ({                                                                                                                                     \
         gMultiplayerPseudoRandom = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;                                                     \
         gMultiplayerPseudoRandom;                                                                                                          \
@@ -211,9 +527,9 @@ struct SpriteTables {
 
 // TODO: align the usage of this between both games
 #if (GAME == GAME_SA1)
-#define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max))) + (min))
+#define PseudoRandBetween(min, max) ((PSEUDO_RANDOM_32() & ((-min) + (max))) + (min))
 #else
-#define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max - 1))) + (min))
+#define PseudoRandBetween(min, max) ((PSEUDO_RANDOM_32() & ((-min) + (max - 1))) + (min))
 #endif
 
 extern u32 gFlags;
@@ -294,7 +610,7 @@ extern u16 gDispCnt;
 #define SET_PALETTE_COLOR_BG(_paletteId, _colorId, _color)  GET_PALETTE_COLOR_BG(_paletteId, _colorId) = (_color);
 
 extern winreg_t gWinRegs[6];
-extern struct BlendRegs gBldRegs;
+extern BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
 extern ColorRaw gObjPalette[16 * PALETTE_LEN_4BPP];
 extern ColorRaw gBgPalette[16 * PALETTE_LEN_4BPP];
@@ -336,7 +652,7 @@ extern u8 gBgSprites_Unknown1[4];
 #else
 #define GFX_QUEUE_LOG_ADD(gfx)
 #endif
-extern struct GraphicsData *gVramGraphicsCopyQueue[32];
+extern GraphicsData *gVramGraphicsCopyQueue[32];
 extern u8 gVramGraphicsCopyQueueIndex;
 // Because the graphics in the queue only get copied if
 // (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex),
@@ -353,9 +669,9 @@ extern u8 gVramGraphicsCopyQueueIndex;
 // pointers we need to copy so that a race condition
 // happens where sprite has been freed but the copy
 // has not happened we don't get invalid memory access
-extern struct GraphicsData gVramGraphicsCopyQueueBuffer[32];
+extern GraphicsData gVramGraphicsCopyQueueBuffer[32];
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
-    memcpy(&gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex], gfx, sizeof(struct GraphicsData));                                  \
+    memcpy(&gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex], gfx, sizeof(GraphicsData));                                         \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex];                      \
     /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
     GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \
@@ -406,7 +722,7 @@ extern s32 gPseudoRandom;
 extern u8 gOamMallocCopiedOrder[128];
 extern struct MultiBootParam gMultiBootParam;
 
-extern const struct SpriteTables *gRefSpriteTables;
+extern const SpriteTables *gRefSpriteTables;
 
 void EngineInit(void);
 void EngineMainLoop(void);

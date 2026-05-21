@@ -1,11 +1,14 @@
 #include "core.h"
+#include "sprite.h"
+#include "background.h"
+#include "trig.h"
+
 #include "game/sa2/special_stage/main.h"
 #include "game/sa2/special_stage/world.h"
 #include "game/sa2/special_stage/utils.h"
 #include "game/sa2/special_stage/data.h"
-#include "sprite.h"
+
 #include "data/sa2/sprite_data.h"
-#include "trig.h"
 
 void *gSpecialStageSubMenuVramPointer = NULL;
 void *gSpecialStageVramPointer = NULL;

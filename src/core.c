@@ -4,6 +4,7 @@
 #include "malloc_vram.h"
 #include "multi_sio.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
 #include "flags.h"
 #include "input_recorder.h"
@@ -35,7 +36,7 @@ union MultiSioData gMultiSioRecv[4] = {};
 u32 gUnknown_03002BF0 = 0;
 #endif
 u8 gNumHBlankIntrs = 0;
-struct BlendRegs gBldRegs ALIGNED(8) = {};
+BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 Task gEmptyTask ALIGNED(16) = {};
 
@@ -75,9 +76,9 @@ u16 gRepeatedKeys ALIGNED(4) = 0;
 Task *gNextTask = NULL;
 #if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
 // Only here in SA3
-// struct GraphicsData *gVramGraphicsCopyQueue[];
+// GraphicsData *gVramGraphicsCopyQueue[];
 #else
-struct GraphicsData gVramGraphicsCopyQueue[] = {};
+GraphicsData gVramGraphicsCopyQueue[] = {};
 #endif
 #if (ENGINE == ENGINE_2)
 void *gBgOffsetsSecondary = NULL;
@@ -97,18 +98,18 @@ u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gOamMallocCopiedOrder[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
-/* 0x03002794 */ const struct SpriteTables *gRefSpriteTables = NULL;
+/* 0x03002794 */ const SpriteTables *gRefSpriteTables = NULL;
 
 #if PORTABLE
 // TODO: Once SA3 works in PORTABLE, it can just use
 // the regular gVramGraphicsCopyQueue[].
-struct GraphicsData gVramGraphicsCopyQueueBuffer[] = {};
+GraphicsData gVramGraphicsCopyQueueBuffer[] = {};
 #endif // PORTABLE
 #if ((ENGINE == ENGINE_1) || (ENGINE == ENGINE_2))
-struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
+GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 #else
 // NOT here in SA3
-// struct GraphicsData gVramGraphicsCopyQueue[32] = {};
+// GraphicsData gVramGraphicsCopyQueue[32] = {};
 #endif
 
 #if (ENGINE == ENGINE_3)
@@ -909,7 +910,7 @@ bool32 ProcessVramGraphicsCopyQueue(void)
 #ifndef NON_MATCHING
     struct GraphicsData_Hack *graphics;
 #else
-    struct GraphicsData *graphics;
+    GraphicsData *graphics;
 #endif
 
     while (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex) {

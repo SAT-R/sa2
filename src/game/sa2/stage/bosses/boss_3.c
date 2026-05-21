@@ -790,15 +790,15 @@ void sub_803FC14(EggTotem *totem)
     totem->qUnk90 += totem->qUnk98;
 
     if (Mod(gStageTime, 14) == 0) {
-        s32 rnd = PseudoRandom32();
+        s32 rnd = PSEUDO_RANDOM_32();
         info.spawnX = (I(totem->qUnk90) - gCamera.x) + (rnd % 64u) - 31;
 
-        rnd = PseudoRandom32();
+        rnd = PSEUDO_RANDOM_32();
         info.spawnY = ((I(totem->qUnk94) - gCamera.y) + (rnd % 32u)) - 75;
 
         info.velocity = 0;
-        info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
+        info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PSEUDO_RANDOM_32() % 512u); });
         info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
@@ -809,16 +809,16 @@ void sub_803FC14(EggTotem *totem)
     // _0803FD04
 
     if (Mod(gStageTime, 13) == 0) {
-        s32 rnd = PseudoRandom32();
+        s32 rnd = PSEUDO_RANDOM_32();
         info.spawnX = (I(totem->qUnk9C) - gCamera.x) + (rnd % 64u) - 31;
 
-        rnd = PseudoRandom32();
+        rnd = PSEUDO_RANDOM_32();
         info.spawnY = ((I(totem->qUnkA0) - gCamera.y) + (rnd % 32u)) - 0x10;
 
         info.velocity = 0;
-        info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
+        info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
 
-        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
+        info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PSEUDO_RANDOM_32() % 512u); });
         info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
@@ -842,13 +842,13 @@ void sub_803FC14(EggTotem *totem)
 
             // TODO: Check loop values
             for (j = 0; j < 4; j++) {
-                s32 rnd = PseudoRandom32();
+                s32 rnd = PSEUDO_RANDOM_32();
                 info.spawnX = ((I(t3c->qWorldX) - gCamera.x) + (rnd % 64u)) - 31;
-                rnd = PseudoRandom32();
+                rnd = PSEUDO_RANDOM_32();
                 info.spawnY = ((I(t3c->qWorldY) - gCamera.y) + (rnd % 8u)) - 3;
                 info.velocity = 0;
-                info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-                info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - Q(1.5) - (PseudoRandom32() % 512u); });
+                info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+                info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - Q(1.5) - (PSEUDO_RANDOM_32() % 512u); });
                 info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                 info.anim = SA2_ANIM_EXPLOSION;
                 info.variant = 0;
@@ -939,15 +939,15 @@ void sub_803FF44(EggTotem *totem)
         totem->qUnk94 = totem->qUnkA0 + Q(50);
 
         if (Mod(gStageTime, 6) == 0) {
-            s32 rnd32 = PseudoRandom32();
+            s32 rnd32 = PSEUDO_RANDOM_32();
             info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
 
-            rnd32 = PseudoRandom32();
+            rnd32 = PSEUDO_RANDOM_32();
             info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 64u) - 45;
 
             info.velocity = 0;
-            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
+            info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PSEUDO_RANDOM_32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -973,16 +973,16 @@ void sub_803FF44(EggTotem *totem)
             // _08040256
             if (--totem->unk38 == 0) {
                 for (j = 0; j < 9; j++) {
-                    s32 rnd32 = PseudoRandom32();
+                    s32 rnd32 = PSEUDO_RANDOM_32();
                     info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
 
-                    rnd32 = PseudoRandom32();
+                    rnd32 = PSEUDO_RANDOM_32();
                     info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 64u) - 45;
 
                     info.velocity = 0;
 
-                    info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-                    info.speed = ({ Q(6.0) - (PseudoRandom32() % 512u); });
+                    info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+                    info.speed = ({ Q(6.0) - (PSEUDO_RANDOM_32() % 512u); });
                     info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                     info.anim = SA2_ANIM_EXPLOSION;
                     info.variant = 0;
@@ -1005,16 +1005,16 @@ void sub_803FF44(EggTotem *totem)
         // _08040360
 
         if (Mod(gStageTime, 14) == 0) {
-            s32 rnd32 = PseudoRandom32();
+            s32 rnd32 = PSEUDO_RANDOM_32();
             info.spawnX = I(totem->qUnk90) - gCamera.x + (rnd32 % 64u) - 31;
 
-            rnd32 = PseudoRandom32();
+            rnd32 = PSEUDO_RANDOM_32();
             info.spawnY = I(totem->qUnk94) - gCamera.y + (rnd32 % 32u) - 75;
 
             info.velocity = 0;
 
-            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
+            info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PSEUDO_RANDOM_32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -1025,16 +1025,16 @@ void sub_803FF44(EggTotem *totem)
         // _08040400
 
         if (Mod(gStageTime, 13) == 0) {
-            s32 rnd32 = PseudoRandom32();
+            s32 rnd32 = PSEUDO_RANDOM_32();
             info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
 
-            rnd32 = PseudoRandom32();
+            rnd32 = PSEUDO_RANDOM_32();
             info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 32u) - 16;
 
             info.velocity = 0;
 
-            info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u); });
+            info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+            info.speed = ({ BOSS_EXPLOSION_VELOCITY_X - (PSEUDO_RANDOM_32() % 512u); });
             info.vram = (void *)(OBJ_VRAM0 + 0x2980);
             info.anim = SA2_ANIM_EXPLOSION;
             info.variant = 0;
@@ -1052,16 +1052,16 @@ void sub_803FF44(EggTotem *totem)
             t3c->qUnkA += Q(0.125);
         } else if (--t3c->unk18 == 0) {
             for (j = 0; j < 4; j++) {
-                s32 rnd32 = PseudoRandom32();
+                s32 rnd32 = PSEUDO_RANDOM_32();
                 info.spawnX = I(t3c->qWorldX) - gCamera.x + (rnd32 % 64u) - 31;
 
-                rnd32 = PseudoRandom32();
+                rnd32 = PSEUDO_RANDOM_32();
                 info.spawnY = I(t3c->qWorldY) - gCamera.y + (rnd32 % 8u) - 3;
 
                 info.velocity = 0;
 
-                info.rotation = ({ 1000 - (PseudoRandom32() % 64u); });
-                info.speed = ({ Q(4.0) - (PseudoRandom32() % 512u); });
+                info.rotation = ({ 1000 - (PSEUDO_RANDOM_32() % 64u); });
+                info.speed = ({ Q(4.0) - (PSEUDO_RANDOM_32() % 512u); });
                 info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                 info.anim = SA2_ANIM_EXPLOSION;
                 info.variant = 0;
@@ -1097,7 +1097,7 @@ void sub_804063C(EggTotem *totem)
     const u8 *bp;
     s8 r6;
 
-    u8 rnd = PseudoRandom32();
+    u8 rnd = PSEUDO_RANDOM_32();
     s8 v = Mod(rnd, 3);
     s8 r4 = gStageTime % 4u;
 
@@ -1108,7 +1108,7 @@ void sub_804063C(EggTotem *totem)
 
         r2 = r4 * 3 + v;
 
-        if ((PseudoRandom32() % 2u) != 0) {
+        if ((PSEUDO_RANDOM_32() % 2u) != 0) {
             if ((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
                 r2 = 12;
             } else if ((v == 1) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
@@ -1213,7 +1213,7 @@ void sub_80408C4(EggTotem *totem)
                     }
                 } else if ((u16)t3c->unkE == 30 && t3c->unk14 != 0) {
                     if (t3c->unk16 & 0x80) {
-                        if ((PseudoRandom32() % 2u) == 0) {
+                        if ((PSEUDO_RANDOM_32() % 2u) == 0) {
                             s32 qx = t3c->qWorldX;
                             s32 qy = t3c->qWorldY + Q(t3c->unk17);
                             qy -= Q(t3c->unk15 * 3);

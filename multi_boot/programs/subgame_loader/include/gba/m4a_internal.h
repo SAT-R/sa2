@@ -210,38 +210,6 @@ struct SongHeader
     u8 *part[1];
 };
 
-struct PokemonCrySong
-{
-    u8 trackCount;
-    u8 blockCount;
-    u8 priority;
-    u8 reverb;
-    struct ToneData *tone;
-    u8 *part[2];
-    u8 gap;
-    u8 part0; // 0x11
-    u8 tuneValue; // 0x12
-    u8 gotoCmd; // 0x13
-    u32 gotoTarget; // 0x14
-    u8 part1; // 0x18
-    u8 tuneValue2; // 0x19
-    u8 cont[2]; // 0x1A
-    u8 volCmd; // 0x1C
-    u8 volumeValue; // 0x1D
-    u8 unkCmd0D[2]; // 0x1E
-    u32 unkCmd0DParam; // 0x20
-    u8 xreleCmd[2]; // 0x24
-    u8 releaseValue; // 0x26
-    u8 panCmd;
-    u8 panValue; // 0x28
-    u8 tieCmd; // 0x29
-    u8 tieKeyValue; // 0x2A
-    u8 tieVelocityValue; // 0x2B
-    u8 unkCmd0C[2]; // 0x2C
-    u16 unkCmd0CParam; // 0x2E
-    u8 end[2]; // 0x30
-};
-
 #define MPT_FLG_VOLSET 0x01
 #define MPT_FLG_VOLCHG 0x03
 #define MPT_FLG_PITSET 0x04

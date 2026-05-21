@@ -39,7 +39,7 @@ void sub_808E8F8(s16 *ptr, s16 a, u8 b)
     if (*ptr != a) {
         *ptr = a;
     } else {
-        u16 rand = PseudoRandom32();
+        u16 rand = PSEUDO_RANDOM_32();
         if (rand >> 8 != 0) {
             *ptr += ((rand) >> ((16 - b)));
         } else {
@@ -53,7 +53,7 @@ void sub_808E95C(s32 *ptr, s32 a, u8 b)
     if (*ptr != a) {
         *ptr = a;
     } else {
-        u16 rand = PseudoRandom32();
+        u16 rand = PSEUDO_RANDOM_32();
         if (rand >> 8 != 0) {
             *ptr += ((rand) >> ((8 - b)));
         } else {

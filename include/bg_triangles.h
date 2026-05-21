@@ -31,4 +31,6 @@ extern void SA2_LABEL(sub_8007738)(u8 bg, int_vcount minY, int_vcount maxY, u16 
 extern void SA2_LABEL(sub_8007858)(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 param4);
 extern void SA2_LABEL(sub_80078D4)(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 offsetOdd);
 void SA2_LABEL(sub_8007958)(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4, u16 param5, u16 param6);
+void SA2_LABEL(sub_80064A8)(u8 p0, u8 p1, u8 p2, u8 p3, u8 p4, u8 p5);
+void SA2_LABEL(sub_8006228)(u8 p0, u8 p1, u8 p2, u8 p3, u8 p4, u8 p5);
 #endif

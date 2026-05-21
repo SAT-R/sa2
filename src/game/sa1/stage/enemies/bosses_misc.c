@@ -554,7 +554,7 @@ void Task_8016B6C(void)
     if ((strc->unk4++ & 0x3) == 0) {
         if (strc->unk4 != 5) {
             strc44 = TASK_DATA(sub_8016D80(strc->unk0, strc->unk2 - 32, gUnknown_080BB43C[LEVEL_TO_ZONE(gCurrentLevel)][0], 0));
-            var_r4 = PseudoRandom32();
+            var_r4 = PSEUDO_RANDOM_32();
             strc44->qUnk3E += var_r4 & 0xFF;
             if (1 & strc->unk8) {
                 strc44->qUnk3E = -strc44->qUnk3E;
@@ -564,7 +564,7 @@ void Task_8016B6C(void)
         }
 
         strc44 = TASK_DATA(sub_8016D80(strc->unk0, strc->unk2 - 32, gUnknown_080BB43C[LEVEL_TO_ZONE(gCurrentLevel)][1], 0));
-        var_r4 = PseudoRandom32();
+        var_r4 = PSEUDO_RANDOM_32();
         strc44->qUnk3E += var_r4 & 0xFF;
         if (!(1 & strc->unk8)) {
             strc44->qUnk3E = -strc44->qUnk3E;
@@ -573,7 +573,7 @@ void Task_8016B6C(void)
         strc44->qUnk40 = strc44->qUnk3C;
         if (strc->unk4 != 5) {
             strc54 = TASK_DATA(sub_8016F44(strc->unk0, strc->unk2 - 32, 0x1C0, 0));
-            var_r4 = PseudoRandom32();
+            var_r4 = PSEUDO_RANDOM_32();
             strc54->unk52 += (var_r4 & 7);
             if (1 & strc->unk8) {
                 strc54->unk52 = -strc54->unk52;
@@ -957,7 +957,7 @@ Task *sub_8017540(s32 qParam0, s32 qParam1)
     bolts->qUnk34 = qParam1;
     s->frameFlags = 0x2000;
     s->oamFlags = 0x500;
-    s->frameFlags |= ((PseudoRandom32() & 0xC00) | 0x2000);
+    s->frameFlags |= ((PSEUDO_RANDOM_32() & 0xC00) | 0x2000);
     return t;
 }
 

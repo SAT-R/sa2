@@ -4,9 +4,12 @@
 #include "malloc_vram.h"
 #include "multi_sio.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
 #include "trig.h"
+
 #include "lib/m4a/m4a.h"
+
 #include "game/sa2/multiplayer/mode_select.h"
 #include "game/sa2/multiplayer/multipak_connection.h"
 #include "game/sa2/collect_rings/singlepak_connection.h"

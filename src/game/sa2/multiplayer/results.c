@@ -3,7 +3,9 @@
 #include "flags.h"
 #include "multi_sio.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
+
 #include "game/shared/stage/stage.h"
 #include "game/sa2/ui/course_select.h"
 #include "game/sa2/multiplayer/results.h"

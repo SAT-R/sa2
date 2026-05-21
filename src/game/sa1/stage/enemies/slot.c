@@ -268,7 +268,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/Slot__Task_SlotProjectileMain.
 
         for (i = 0; i < 6; i++) {
             s32 r4 = qUnk4C * 10; // ???
-            s32 modRes = Mod(PseudoRandom32(), 4) + 0x10;
+            s32 modRes = Mod(PSEUDO_RANDOM_32(), 4) + 0x10;
             s32 r0 = Div(-r4, modRes);
 
             proj->qUnk4C[i] = (r0 * SIN(((sp08 * 4) & 0x7F) + 0x100)) / 20000;

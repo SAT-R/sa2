@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
 #include "game/shared/stage/dust_effect_braking.h"
@@ -77,7 +79,7 @@ Task *CreateBrakingDustEffect(s32 x, s32 y)
 #endif
             s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-            s->frameFlags |= ((u32)PseudoRandom32() & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
+            s->frameFlags |= ((u32)PSEUDO_RANDOM_32() & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
         }
 
 #if (GAME == GAME_SA2)

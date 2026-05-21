@@ -2,9 +2,12 @@
 #include "flags.h"
 #include "rect.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
 #include "trig.h"
+
 #include "lib/m4a/m4a.h"
+
 #include "game/math.h"
 #include "game/sa2/stage/bosses/common.h"
 #include "game/sa2/stage/bosses/boss_9.h"
@@ -1132,8 +1135,8 @@ void sub_804DEEC(s32 qX, s32 qY)
         if (unk594->unk4[i] == 0) {
             unk594->unk4[i] = 1;
             unk594->unkE[i] = 60;
-            unk594->unk18[i][0] = (PseudoRandom32() & 0xFF) - Q(2);
-            unk594->unk18[i][1] = (PseudoRandom32() & 0xFF) - Q(2);
+            unk594->unk18[i][0] = (PSEUDO_RANDOM_32() & 0xFF) - Q(2);
+            unk594->unk18[i][1] = (PSEUDO_RANDOM_32() & 0xFF) - Q(2);
 
             unk594->unk40[i].x = qX;
             unk594->unk40[i].y = qY;
@@ -1308,7 +1311,7 @@ void sub_804E15C(struct TA53_unk48 *unk48)
             gBldRegs.bldY = r5;
 
             // NOTE: Why would you call Mod() for % 8? *sigh*
-            r4 = (s8)Mod(PseudoRandom32(), 8);
+            r4 = (s8)Mod(PSEUDO_RANDOM_32(), 8);
             if (r4 < 0) {
                 r4 = -r4;
             }
@@ -2366,7 +2369,7 @@ void sub_804FE24(struct TA53_unk654 *unk654)
         unk654->callback = sub_804FEFC;
         unk654->unk8 = 101;
 
-        funcId = Mod((u8)PseudoRandom32(), ARRAY_COUNT(gUnknown_080D89AC));
+        funcId = Mod((u8)PSEUDO_RANDOM_32(), ARRAY_COUNT(gUnknown_080D89AC));
         unk654->func4 = gUnknown_080D89AC[funcId];
 
         s = &unk654->spr128;

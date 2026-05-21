@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 #include "task.h"
-#include "animation_commands_bg.h"
+#include "background.h"
 
 #if (GAME == GAME_SA1)
 #include "game/sa1/menus/title_screen.h"

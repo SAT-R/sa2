@@ -340,7 +340,7 @@ void Task_Itembox2(void)
             } break;
 
             case ITEM__RINGS_RANDOM: {
-                s16 rings = ItemBox_RingAmountTable[(u32)PseudoRandom32() % ARRAY_COUNT(ItemBox_RingAmountTable)];
+                s16 rings = ItemBox_RingAmountTable[(u32)PSEUDO_RANDOM_32() % ARRAY_COUNT(ItemBox_RingAmountTable)];
                 INCREMENT_RINGS(rings);
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

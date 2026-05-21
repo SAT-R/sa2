@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "sprite.h"
+
 #include "game/sa1/stage/ui_rendering.h"
 #include "game/sa1/stage/stage_ui.h"
 
@@ -719,7 +721,7 @@ IwramData UiGfxStackInit(void)
     return offset;
 }
 
-struct GraphicsData *UiGfxStackPop(void)
+GraphicsData *UiGfxStackPop(void)
 {
     Task_3006240 *strc = TASK_DATA(gTask_03006240);
     struct GfxSubstruct *curr;

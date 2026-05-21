@@ -1,9 +1,10 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
-#include "animation_commands_bg.h"
 #include "lib/m4a/m4a.h"
+
 #include "game/sa2/cutscenes/credits.h"
 #include "game/sa2/cutscenes/credits_end.h"
 #include "game/sa2/cutscenes/missing_emeralds.h"

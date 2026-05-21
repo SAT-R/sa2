@@ -2,6 +2,7 @@
 #include "core.h"
 #include "task.h"
 #include "sprite.h"
+#include "background.h"
 #include "multi_sio.h"
 
 #include "game/sa2/multiplayer/multipak_connection.h"

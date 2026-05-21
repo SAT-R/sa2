@@ -106,7 +106,7 @@ void Task_KyuraMain(void)
             u32 randomBool;
             kyura->framesUntilProjectile = 12;
 
-            randomBool = PseudoRandom32() & 1;
+            randomBool = PSEUDO_RANDOM_32() & 1;
             init.numTiles = 3;
             init.anim = SA2_ANIM_KYURA_PROJ;
             init.variant = randomBool;

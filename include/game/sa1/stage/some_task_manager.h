@@ -1,6 +1,8 @@
 #ifndef GUARD_SOME_TASK_MANAGER_H
 #define GUARD_SOME_TASK_MANAGER_H
 
+#include "sprite.h"
+
 typedef struct GfxInfo {
     TileInfoBitfield tileInfo;
     u8 *vram;

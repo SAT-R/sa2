@@ -1,5 +1,7 @@
 #include "global.h"
 #include "task.h"
+#include "sprite.h"
+
 #include "lib/m4a/m4a.h"
 
 #include "game/globals.h"

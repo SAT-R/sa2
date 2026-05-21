@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+
 #include "lib/m4a/m4a.h"
 #include "game/sa1/stage/ui_rendering.h"
 #include "game/sa1/ui/collect_chaos_emeralds_msg.h"

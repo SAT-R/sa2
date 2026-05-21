@@ -506,7 +506,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/enemies/boss_6__Task_8032370.inc", voi
                 s2->variant = 0;
                 s->prevVariant = -1;
                 boss->unkAA = 0;
-                boss->unk98 = gUnknown_084ACF08[(PseudoRandom32() + gStageTime) & 3];
+                boss->unk98 = gUnknown_084ACF08[(PSEUDO_RANDOM_32() + gStageTime) & 3];
                 boss->unk9B = boss->unk9A;
                 boss->unkA9++;
                 break;
@@ -703,7 +703,7 @@ void Task_8032AF8(void)
         Task *t;
         NutsAndBolts *bolts;
         Sprite *sprBolts;
-        s32 rndIndex = PseudoRandom32() % ARRAY_COUNT(gUnknown_080BB41C);
+        s32 rndIndex = PSEUDO_RANDOM_32() % ARRAY_COUNT(gUnknown_080BB41C);
         s32 rndTheta;
         s32 a0, a1;
         s32 rnd;
@@ -717,11 +717,11 @@ void Task_8032AF8(void)
         sprBolts->oamFlags = SPRITE_OAM_ORDER(17);
         bolts->qUnk3E = Q(5. / 256.);
         bolts->qUnk40 = Q(32. / 256.);
-        rndTheta = PseudoRandom32();
+        rndTheta = PSEUDO_RANDOM_32();
         bolts->qUnk3A = (-(SIN(rndTheta & 0x1FF) * 0x600)) >> 0xE;
         bolts->qUnk38 = (-(COS(rndTheta & 0x1FF) * 0x600)) >> 0xE;
 
-        rnd = PseudoRandom32();
+        rnd = PSEUDO_RANDOM_32();
         sub_8017540(Q((worldX + (0x3F & rnd)) - 32), Q(worldY + 32 - ((rnd & 0x3F0000) >> 0x10)));
     }
 

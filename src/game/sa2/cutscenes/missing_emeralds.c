@@ -1,12 +1,14 @@
 #include "global.h"
 #include "core.h"
-#include "game/sa2/cutscenes/missing_emeralds.h"
-#include "game/sa2/stage/screen_fade.h"
 #include "sprite.h"
+#include "background.h"
 #include "task.h"
 #include "lib/m4a/m4a.h"
+
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
+#include "game/sa2/cutscenes/missing_emeralds.h"
+#include "game/sa2/stage/screen_fade.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"

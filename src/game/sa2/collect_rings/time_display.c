@@ -1,6 +1,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "flags.h"
+#include "sprite.h"
 
 #include "game/globals.h"
 #include "game/sa2/collect_rings/time_display.h"

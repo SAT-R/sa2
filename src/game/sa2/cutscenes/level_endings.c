@@ -1,14 +1,17 @@
 #include "global.h"
-#include "game/sa2/cutscenes/level_endings.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/sa2/stage/screen_fade.h"
+#include "background.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "lib/m4a/m4a.h"
 #include "trig.h"
-#include "game/sa2/ui/course_select.h"
+
+#include "lib/m4a/m4a.h"
+
 #include "game/sa2/save.h"
+#include "game/sa2/cutscenes/level_endings.h"
+#include "game/sa2/stage/screen_fade.h"
+#include "game/sa2/ui/course_select.h"
 
 #include "game/shared/stage/terrain_collision.h"
 #include "game/shared/stage/player.h"

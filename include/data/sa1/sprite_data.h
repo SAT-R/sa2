@@ -2,7 +2,6 @@
 #define GUARD_DATA_ANIMATIONS_H
 
 #include "gba/types.h"
-#include "animation_commands.h"
 #include "sprite.h"
 
 #define NUM_SPRITE_ANIMATIONS 908
