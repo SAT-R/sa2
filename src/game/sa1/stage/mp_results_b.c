@@ -3,6 +3,7 @@
 #include "trig.h"
 #include "sprite.h"
 #include "background.h"
+#include "bg_triangles.h"
 
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/character_select.h"

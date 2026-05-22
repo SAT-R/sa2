@@ -5,6 +5,7 @@
 #include <math.h> // sinf/cosf
 #include "global.h" // TEMP for PLTT
 #include "core.h" // temp?
+#include "background.h" // For bg flags
 #include "tilemap.h" // struct Tile
 #include "platform/shared/opengl.h"
 #include "trig.h" // ONE_CYCLE
