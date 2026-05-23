@@ -596,6 +596,10 @@ void sub_8054068(void)
 
 void CreateStageUI(void)
 {
+#ifndef NON_MATCHING
+    // why would anyone init a ptr to NULL, only to unconditionally
+    // set it with a proper address, right after? possibly stripped
+    // debug behavior? perhaps DEBUG would fit better in these...
     Task *t = NULL;
 
     StageUI *ui;
@@ -604,11 +608,19 @@ void CreateStageUI(void)
     t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, NULL);
 
     ui = TASK_DATA(t);
+#else
+    Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, NULL);
+
+    StageUI *ui = TASK_DATA(t);
+    StageUI_20 *unk20 = &ui->unk20;
+#endif
     ui->unk40 = 0;
 
     // Colons
-    ui = TASK_DATA(t);
+#ifndef NON_MATCHING
+    ui = TASK_DATA(t); // copy-paste?
     unk20 = &ui->unk20;
+#endif
     unk20->unk1 = UI_DIGIT(10);
     unk20->unk4 = UI_DIGIT(10);
 
@@ -618,16 +630,25 @@ void CreateStageUI(void)
 
 void CreateSpecialStageUI(void)
 {
+#ifndef NON_MATCHING
     StageUI *ui;
 
+    // read the comment from CreateStageUI's initialization section
     Task *t = NULL;
     t = TaskCreate(Task_SpecialStageUIMain, sizeof(StageUI), 0x1180, 0, NULL);
 
     ui = TASK_DATA(t);
+#else
+    Task *t = TaskCreate(Task_SpecialStageUIMain, sizeof(StageUI), 0x1180, 0, NULL);
+
+    StageUI *ui = TASK_DATA(t);
+#endif
     ui->unk40 = 0;
 
     // Colons
-    ui = TASK_DATA(t);
+#ifndef NON_MATCHING
+    ui = TASK_DATA(t); // copy-paste?
+#endif
     ui->unk4C = 0;
 
     UiGfxStackInit();
