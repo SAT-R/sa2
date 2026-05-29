@@ -8,10 +8,10 @@
 typedef struct {
     /* 0x00 */ Sprite spring;
     /* 0x30 */ Sprite propellor;
-    /* 0x60 */ u16 unk60;
-    /* 0x62 */ u16 unk62;
-} Sprite_OnInit_SkyCanyon;
+    /* 0x60 */ u16 visibleFlyingSprings;
+    /* 0x62 */ u16 visiblePropellers;
+} SkyCanyonLevelTask;
 
-Task *sub_80807CC(void);
+Task *CreateLevelTask_SkyCanyon(void);
 
 #endif

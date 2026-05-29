@@ -596,51 +596,39 @@ void sub_8054068(void)
 
 void CreateStageUI(void)
 {
-#ifndef NON_MATCHING
-    register void *dtor asm("r1") = 0;
-    StageUI_20 *unk20 = NULL;
-    register Task *t asm("r1") = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
-#else
-    void *dtor = 0;
-    StageUI_20 *unk20 = NULL;
-    Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, dtor);
-#endif
-    StageUI *ui = TASK_DATA(t);
+    Task *t = NULL;
 
+    StageUI *ui;
+    StageUI_20 *unk20 = NULL;
+
+    t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2180, 0, NULL);
+
+    ui = TASK_DATA(t);
     ui->unk40 = 0;
 
     // Colons
-    ui = TASK_DATA(t);
+    ui = TASK_DATA(t); // copy-paste?
     unk20 = &ui->unk20;
-    unk20->unk1 = 42;
-    unk20->unk4 = 42;
+    unk20->unk1 = UI_DIGIT(10);
+    unk20->unk4 = UI_DIGIT(10);
 
     UiGfxStackInit();
     sub_80538BC();
 }
 
-// https://decomp.me/scratch/3QSHy
 void CreateSpecialStageUI(void)
 {
-#ifndef NON_MATCHING
-    register void *dtor asm("r1") = 0;
-    register Task *t asm("r1");
-#else
-    void *dtor = 0;
-    Task *t;
-#endif
-    s32 zero;
     StageUI *ui;
 
-    t = TaskCreate(Task_SpecialStageUIMain, sizeof(StageUI), 0x1180, (zero = 0), dtor);
+    Task *t = NULL;
+    t = TaskCreate(Task_SpecialStageUIMain, sizeof(StageUI), 0x1180, 0, NULL);
 
     ui = TASK_DATA(t);
-    ui->unk40 = zero;
+    ui->unk40 = 0;
 
-#ifndef NON_MATCHING
-    ui = TASK_DATA(t);
-#endif
-    ui->unk4C = zero;
+    // Colons
+    ui = TASK_DATA(t); // copy-paste?
+    ui->unk4C = 0;
 
     UiGfxStackInit();
     sub_8054068();

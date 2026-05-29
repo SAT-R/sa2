@@ -275,7 +275,7 @@ SECTIONS
         src/game/sa2/stage/interactables/techno_base/light_globe.o(.text);
         src/game/sa2/stage/interactables/sky_canyon/propeller.o(.text);
         src/game/sa2/stage/interactables/sky_canyon/small_windmill.o(.text);
-        src/game/sa2/stage/interactables/sky_canyon/propeller_spring.o(.text);
+        src/game/sa2/stage/interactables/sky_canyon/flying_spring.o(.text);
         src/game/sa2/stage/interactables/sky_canyon/whirlwind.o(.text);
         src/game/sa2/stage/interactables/sky_canyon/fan.o(.text);
         src/game/sa2/stage/interactables/egg_utopia/launcher.o(.text);
@@ -286,7 +286,7 @@ SECTIONS
         src/game/sa2/stage/interactables/egg_utopia/speeding_platform.o(.text);
         src/game/sa2/stage/interactables/egg_utopia/gravity_toggle.o(.text);
         src/game/sa2/stage/interactables/collect_rings_lap_trigger.o(.text);
-        src/game/sa2/stage/interactables/sky_canyon_init.o(.text);
+        src/game/sa2/stage/interactables/sky_canyon_level_task.o(.text);
         src/game/sa2/stage/interactables/105.o(.text);
         src/game/sa2/stage/interactables/note_particle.o(.text);
         src/game/sa2/stage/interactables/special_ring.o(.text);

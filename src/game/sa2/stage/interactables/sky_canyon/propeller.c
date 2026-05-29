@@ -13,7 +13,7 @@
 #include "game/shared/stage/camera.h"
 
 #include "game/sa2/stage/interactables/sky_canyon/propeller.h"
-#include "game/sa2/stage/interactables/sky_canyon_init.h"
+#include "game/sa2/stage/interactables/sky_canyon_level_task.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/char_states.h"
@@ -43,7 +43,7 @@ static void Render(Sprite_Propeller *);
 static void StartPlayerFloatingTask(Sprite_Propeller *);
 static bool32 ShouldDespawn(Sprite_Propeller *);
 static void DestroyPropeller(Sprite_Propeller *);
-Sprite_OnInit_SkyCanyon *sub_807BA54(void);
+SkyCanyonLevelTask *sub_807BA54(void);
 static void TaskDestructor_GiantPropeller(Task *);
 static bool32 sub_807B9F0(Sprite_Propeller *);
 
@@ -314,18 +314,18 @@ static void DestroyPropeller(Sprite_Propeller *propeller)
     TaskDestroy(gCurTask);
 }
 
-Sprite_OnInit_SkyCanyon *sub_807BA54(void)
+SkyCanyonLevelTask *sub_807BA54(void)
 {
     EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
-    return TASK_DATA(em->preInit);
+    return TASK_DATA(em->levelTask);
 }
 
 static void sub_807BA70(void)
 {
     EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
-    Sprite_OnInit_SkyCanyon *level = TASK_DATA(em->preInit);
+    SkyCanyonLevelTask *level = TASK_DATA(em->levelTask);
 
-    level->unk62++;
+    level->visiblePropellers++;
 }
 
 void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)

@@ -89,7 +89,7 @@
 #define IA__PROPELLER                       82
 #define IA__SLIDY_ICE                       83
 #define IA__SMALL_WINDMILL                  84
-#define IA__PROPELLER_SPRING                85
+#define IA__FLYING_SPRING                   85
 #define IA__WHIRLWIND__A                    86
 #define IA__FAN__LEFT                       87
 #define IA__FAN__RIGHT                      88

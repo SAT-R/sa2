@@ -2,26 +2,20 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "game/sa2/stage/interactables/sky_canyon_init.h"
+#include "game/sa2/stage/interactables/sky_canyon_level_task.h"
 
 #include "constants/sa2/animations.h"
 
-static void Task_80808DC(void);
+static void Task_UpdateAnimations(void);
 
-/* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside collision.s
- * Which itself is referenced by 'CreateStageEntitiesManager'
- * It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
- * the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.
- */
-
-Task *sub_80807CC(void)
+Task *CreateLevelTask_SkyCanyon(void)
 {
-    Task *t = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
-    Sprite_OnInit_SkyCanyon *init = TASK_DATA(t);
+    Task *t = TaskCreate(Task_UpdateAnimations, sizeof(SkyCanyonLevelTask), 0x2001, 0, NULL);
+    SkyCanyonLevelTask *init = TASK_DATA(t);
     Sprite *spring, *propellor;
 
-    init->unk60 = 0;
-    init->unk62 = 0;
+    init->visibleFlyingSprings = 0;
+    init->visiblePropellers = 0;
 
     spring = &init->spring;
     SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(spring, 18, 2, 0);
@@ -40,17 +34,17 @@ Task *sub_80807CC(void)
     return t;
 }
 
-static void Task_80808DC(void)
+static void Task_UpdateAnimations(void)
 {
-    Sprite_OnInit_SkyCanyon *init = TASK_DATA(gCurTask);
+    SkyCanyonLevelTask *init = TASK_DATA(gCurTask);
 
-    if (init->unk60) {
+    if (init->visibleFlyingSprings != 0) {
         UpdateSpriteAnimation(&init->spring);
     }
-    init->unk60 = 0;
+    init->visibleFlyingSprings = 0;
 
-    if (init->unk62 != 0) {
+    if (init->visiblePropellers != 0) {
         UpdateSpriteAnimation(&init->propellor);
     }
-    init->unk62 = 0;
+    init->visiblePropellers = 0;
 }

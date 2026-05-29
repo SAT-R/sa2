@@ -68,7 +68,7 @@
 #include "game/sa2/stage/interactables/sky_canyon/fan.h"
 #include "game/sa2/stage/interactables/sky_canyon/small_windmill.h"
 #include "game/sa2/stage/interactables/sky_canyon/whirlwind.h"
-#include "game/sa2/stage/interactables/sky_canyon/propeller_spring.h"
+#include "game/sa2/stage/interactables/sky_canyon/flying_spring.h"
 
 #include "game/sa2/stage/interactables/techno_base/light_globe.h"
 #include "game/sa2/stage/interactables/techno_base/light_bridge.h"
@@ -88,7 +88,7 @@
 #include "game/sa2/stage/interactables/105.h"
 #include "game/sa2/stage/interactables/special_ring.h"
 #include "game/sa2/stage/interactables/collect_rings_lap_trigger.h"
-#include "game/sa2/stage/interactables/sky_canyon_init.h"
+#include "game/sa2/stage/interactables/sky_canyon_level_task.h"
 
 #include "game/sa2/stage/mystery_itembox.h"
 
@@ -800,16 +800,23 @@ const MapEntityInit gSpriteInits_CollectRingsInteractables[] = {
 };
 
 #ifndef COLLECT_RINGS_ROM
-const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
-    NULL,        NULL,        NULL, NULL, // Leaf Forest
-    NULL,        NULL,        NULL, NULL, // Hot Crater
-    NULL,        NULL,        NULL, NULL, // Music Plant
-    NULL,        NULL,        NULL, NULL, // Ice Paradise
-    sub_80807CC, sub_80807CC, NULL, NULL, // Sky Canyon
-    NULL,        NULL,        NULL, NULL, // Techno Base
-    NULL,        NULL,        NULL, NULL, // Egg Utopia
-    NULL,        NULL,        NULL, NULL, // Final Zone
-    NULL,        NULL,
+const StagePreInitFunc sLevelTaskInits[] = {
+    // Leaf Forest
+    NULL, NULL, NULL, NULL,
+    // Hot Crater
+    NULL, NULL, NULL, NULL,
+    // Music Plant
+    NULL, NULL, NULL, NULL,
+    // Ice Paradise
+    NULL, NULL, NULL, NULL,
+    // Sky Canyon
+    CreateLevelTask_SkyCanyon, CreateLevelTask_SkyCanyon, NULL, NULL,
+    // Techno Base
+    NULL, NULL, NULL, NULL,
+    // Egg Utopia
+    NULL, NULL, NULL, NULL,
+    // Final Zone
+    NULL, NULL, NULL, NULL, NULL, NULL
 };
 #endif
 #endif
@@ -842,10 +849,10 @@ void CreateStageEntitiesManager(void)
         em->enemies = decompBuf;
 
 #if (GAME == GAME_SA2)
-        em->preInit = NULL;
+        em->levelTask = NULL;
 
-        if (gSpriteTileInits_PreStageEntry[gCurrentLevel]) {
-            em->preInit = gSpriteTileInits_PreStageEntry[gCurrentLevel]();
+        if (sLevelTaskInits[gCurrentLevel]) {
+            em->levelTask = sLevelTaskInits[gCurrentLevel]();
         }
 #endif
     } else {
