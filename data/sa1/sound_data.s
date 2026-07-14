@@ -9,6 +9,6 @@ mSectionRodata
 	.include "sound/sa1/voice_groups.inc"
 	.include "sound/sa1/keysplit_tables.inc"
 	.include "sound/sa1/programmable_wave_data.inc"
-	.include "sound/sa1/music_player_table.inc"
+	.include "sound/shared/music_player_table.inc"
 	.include "sound/sa1/song_table.inc"
 	.include "sound/sa1/direct_sound_data.inc"
