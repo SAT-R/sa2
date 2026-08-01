@@ -2,6 +2,9 @@
 Thumbs.db
 ehthumbs.db
 
+# RAD Debugger files
+*.rdi
+
 # Visual Studio folder
 .vs
 *.pdb
