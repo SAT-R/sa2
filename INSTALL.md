@@ -18,6 +18,9 @@ sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng
 
 # Optional, if you want to compile for the PS2 you'll need
 sudo apt install mkisofs
+
+# Optional, if you want to compile for the 3DS you'll need
+sudo apt install ffmpeg imagemagick
 ```
 #### On MacOS
 
@@ -34,6 +37,14 @@ For compiling for the PSP or PS2, ensure that you install the required SDK
 
 - [PS2DEV](https://github.com/ps2dev/ps2dev)
 - [PSPDEV](https://github.com/pspdev/pspdev)
+
+#### DEVKITPRO
+
+For compiling for the 3DS, ensure you install DEVKITPRO and the following libraries
+
+- [DEVKITPRO](https://devkitpro.org/wiki/Getting_Started)
+- [CITRO3D](https://github.com/devkitPro/citro3d)
+- [CITRO2D](https://github.com/devkitPro/citro2d)
 
 ## Building
 
@@ -75,6 +86,12 @@ Tip: On Linux and MacOS this can be opened with `wine sa2.sdl_win32.exe`
 
 1. Run `make ps2`
 1. `sa2.ps2.iso` will be created
+
+#### For 3DS
+
+1. Run `make 3DS_SDL2`
+1. Run `make 3ds`
+1. `sa2.3ds.cia` will be created
 
 ### GBA rom
 

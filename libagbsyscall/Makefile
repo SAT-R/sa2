@@ -45,6 +45,19 @@ else ifeq ($(PLATFORM),sdl_psp)
   PSPSDK    := $(PSPDEV)/psp/sdk
   export PATH := $(PSPDEV)/bin:$(PATH)
   PREFIX    := psp-
+else ifeq ($(PLATFORM),3ds)
+  PREFIX := arm-none-eabi-
+  TOOLCHAIN := $(DEVKITARM)
+  TOPDIR ?= $(CURDIR)
+include $(DEVKITARM)/3ds_rules
+	PORTLIBS    := $(DEVKITPRO)/portlibs/3ds
+  ifneq (,$(TOOLCHAIN))
+    ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+	  export PATH := $(TOOLCHAIN)/bin:$(PATH)
+    endif
+  endif
+include $(DEVKITARM)/3ds_rules
+	PORTLIBS    := $(DEVKITPRO)/portlibs/3ds
 else ifeq ($(PLATFORM),ps2)
   PREFIX := mips64r5900el-ps2-elf-
 else ifneq ($(PLATFORM),sdl)
@@ -102,6 +115,12 @@ ifneq ($(PLATFORM),gba)
         CPP := $(CC1) -E
     endif
     endif
+	
+	ifeq ($(PLATFORM), 3ds)
+      CC1FLAGS += -g -Wall -mword-relocations -ffunction-sections -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mfpu=vfp -fomit-frame-pointer
+      #CPPFLAGS += -fno-rtti -fno-exceptions -g -Wall -O2 -mword-relocations -ffunction-sections
+	endif
+	
 endif # PLATFORM != gba
 
 
@@ -109,6 +128,10 @@ ifeq ($(CPU_ARCH),arm)
 ifeq ($(PLATFORM),gba)
     ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 endif
+endif
+
+ifeq ($(PLATFORM),3ds)
+    ASFLAGS := -g -march=armv6k -mfloat-abi=hard  -mfpu=vfp
 endif
 
 ARFLAGS := rc 
