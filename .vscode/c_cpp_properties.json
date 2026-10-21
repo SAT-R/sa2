@@ -25,6 +25,22 @@
             "configurationProvider": "ms-vscode.makefile-tools"
         },
         {
+            "name": "SA2 Linux 3DS",
+            "includePath": [
+                "${workspaceFolder}/include/**",
+                "/opt/devkitpro/libctru/include/",
+                "/opt/devkitpro/portlibs/3ds/include/**",
+                "/opt/devkitpro/portlibs/3ds/include/SDL2/**",
+                "/opt/devkitpro/devkitARM/arm-none-eabi/include/**"
+            ],
+            "defines": ["PLATFORM_3DS=1", "__3DS__", "GAME=GAME_SA2", "PORTABLE"],
+            "compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-arm",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        },
+        {
             "name": "Linux portable",
             "includePath": [
                 "${workspaceFolder}/include/**"

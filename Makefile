@@ -60,6 +60,33 @@ else ifeq ($(PLATFORM),sdl_psp)
   PREFIX    := psp-
 else ifeq ($(PLATFORM),ps2)
   PREFIX := mips64r5900el-ps2-elf-
+else ifeq ($(PLATFORM),3ds)
+  PREFIX := arm-none-eabi-
+  TOOLCHAIN := $(DEVKITARM)
+  include $(DEVKITARM)/3ds_rules
+  PORTLIBS    := $(DEVKITPRO)/portlibs/3ds
+  ifneq (,$(TOOLCHAIN))
+    ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+	  export PATH := $(TOOLCHAIN)/bin:$(PATH)
+    endif
+  endif
+
+  ifeq ($(GAME), GAME_SA1)
+	APP_TITLE   := Sonic Advance
+	APP_DESCRIPTION := Decompilation of Sonic Advance
+	APP_AUTHOR  := SAT-R
+	ICON := graphics/sa1/obj_tiles/4bpp/a0805_f001.png
+	SCALE := 200%
+	FFMPEG_FLAGS := -t 1.4
+  else ifeq ($(GAME), GAME_SA2)
+	APP_TITLE   := Sonic Advance 2
+	APP_DESCRIPTION := Decompilation of Sonic Advance 2
+	APP_AUTHOR  := SAT-R
+	ICON := graphics/sa2/obj_tiles/4bpp/anim_1125/f000.png
+	SCALE := 300%
+  endif
+#   ICON := icon.png
+
 else
 # Native
   ifneq ($(PLATFORM),sdl)
@@ -116,6 +143,10 @@ SDL_MINGW_LIB     := $(SDL_MINGW_PKG)/lib
 SDL_MINGW_FLAGS   := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
 SDL_MINGW_LIBS    := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
 
+SDL_3DS_PKG 	  := $(ROOT_DIR)/ext/SDL/build
+SDL_3DS_INCLUDE   := $(SDL_3DS_PKG)/include/SDL2
+SDL_3DS_LIB     := $(SDL_3DS_PKG)
+
 LIBABGSYSCALL_LIBS := -L$(ROOT_DIR)/libagbsyscall/build/$(PLATFORM) -lagbsyscall
 
 ### FILES ###
@@ -137,6 +168,10 @@ else ifeq ($(PLATFORM),ps2)
 ROM      := $(BUILD_NAME).$(PLATFORM).iso
 ELF      := $(ROM:.iso=.elf)
 MAP      := $(ROM:.iso=.map)
+else ifeq ($(PLATFORM),3ds)
+ROM      := $(BUILD_NAME).$(PLATFORM).cia
+ELF      := $(ROM:.cia=.elf)
+MAP      := $(ROM:.cia=.map)
 else
 ROM      := $(BUILD_NAME).$(PLATFORM).exe
 ELF      := $(ROM:.exe=.elf)
@@ -180,15 +215,17 @@ endif
 ifeq ($(PLATFORM),gba)
 C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*" -not -path "*/platform/3ds/*")
 else ifeq ($(PLATFORM),sdl_psp)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*" -not -path "*/platform/3ds/*")
 else ifeq ($(PLATFORM),ps2)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*" -not -path "*/platform/3ds/*")
 else ifeq ($(PLATFORM),sdl_win32)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*" -not -path "*/platform/3ds/*")
 else ifeq ($(PLATFORM),win32)
-C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*")
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/pret_sdl/*" -not -path "*/platform/ps2/*" -not -path "*/platform/3ds/*")
+else ifeq ($(PLATFORM),3ds)
+C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS) -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*" -not -path "*/platform/pret_sdl/*")
 else
 C_SRCS_IN := $(shell find $(C_SUBDIR) -name "*.c" $(C_SRC_IGNORE_PATHS))
 endif
@@ -273,6 +310,9 @@ else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else ifeq ($(PLATFORM),win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
+	else ifeq ($(PLATFORM),3ds)
+		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value -g -mword-relocations -ffunction-sections -specs=3dsx.specs -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mfpu=vfp
+		CPPFLAGS += -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D __3DS__ -I$(SDL_3DS_INCLUDE) -I$(SDL_3DS_PKG)/include-config-release/SDL2 -I$(DEVKITPRO)/libctru/include 
 	endif
 
 	ifeq ($(CPU_ARCH),i386)
@@ -293,6 +333,8 @@ else
     # -O3 for PSP (Allegrex MIPS, small D-cache)
     CC1FLAGS += -O3 -funroll-loops -fomit-frame-pointer
   else ifeq ($(PLATFORM),ps2)
+    CC1FLAGS += -O3 -fomit-frame-pointer
+  else ifeq ($(PLATFORM),3ds)
     CC1FLAGS += -O3 -fomit-frame-pointer
   else
     CC1FLAGS += -O2
@@ -337,6 +379,8 @@ else
     CPP := $(CC1) -E
   else ifeq ($(PLATFORM), ps2)
     ASFLAGS  += -msingle-float
+  else ifeq ($(PLATFORM), 3ds)
+    ASFLAGS  += -g -march=armv6k -mfloat-abi=hard -mfpu=vfp
   endif
   # Allow file input through stdin on modern gcc/g++ and set it to "compile only"
   CC1FLAGS += -x c -S
@@ -356,6 +400,8 @@ else ifeq ($(PLATFORM),sdl)
         MAP_FLAG := -Xlinker -Map=
     endif
 # Win32, PSP, PS2
+else ifeq ($(PLATFORM),3ds)
+	MAP_FLAG := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mfpu=vfp -specs=3dsx.specs -g $(ARCH) -Xlinker -Map=
 else
     MAP_FLAG := -Xlinker -Map=
 endif
@@ -373,6 +419,8 @@ else ifeq ($(PLATFORM),sdl_win32)
     LIBS := -mwin32 -lkernel32 -lwinmm -lmingw32 -lxinput $(LIBABGSYSCALL_LIBS) $(SDL_MINGW_LIBS)
 else ifeq ($(PLATFORM), win32)
     LIBS := -mwin32 -lkernel32 -lwinmm -lgdi32 -lxinput -lopengl32 $(LIBABGSYSCALL_LIBS)
+else ifeq ($(PLATFORM), 3ds)
+    LIBS := -lSDL2main -lSDL2 -lm -lcitro2d -lcitro3d -lctru -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mfpu=vfp -L$(SDL_3DS_LIB) -L$(DEVKITPRO)/libctru/lib $(LIBABGSYSCALL_LIBS)
 endif
 
 #### MAIN TARGETS ####
@@ -456,6 +504,8 @@ ifneq ($(GAME_NAME),sa1)
 
 	@$(MAKE) clean GAME_NAME=sa1
 endif
+	$(RM) sa1.3ds.*
+	$(RM) sa2.3ds.*
 
 clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
@@ -484,6 +534,9 @@ tas_sdl: ; @$(MAKE) sdl TAS_TESTING=1
 
 sdl_win32:
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
+	
+3ds:
+	@$(MAKE) PLATFORM=3ds
 
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
@@ -563,6 +616,14 @@ else ifeq ($(PLATFORM),ps2)
 	@printf "BOOT2 = cdrom0:\\$(PS2_GAME_CODE);1\nVER = 1.00\nVMODE = NTSC" > $(OBJ_DIR)/iso/SYSTEM.CNF
 	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
 	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
+else ifeq ($(PLATFORM),3ds)
+	@arm-none-eabi-strip $(ELF) -o $(BUILD_NAME).3ds_strip.elf
+	@convert "$(ICON)" -filter point -resize $(SCALE) $(OBJ_DIR)/icon.png
+	@smdhtool --create "$(APP_TITLE)" "$(APP_DESCRIPTION)" "$(APP_AUTHOR)" "$(OBJ_DIR)/icon.png" $(OBJ_DIR)/$(BUILD_NAME).3ds.smdh
+	@ffmpeg -y -i sound/sa2/direct_sound_samples/voices/announcer/sonic_advance_2.aif $(FFMPEG_FLAGS) -ar 44100 -ac 2 -acodec pcm_s16le $(OBJ_DIR)/banner.wav
+	@./tools/bannertool-1.2.3-linux/bannertool makebanner -i banner.$(BUILD_NAME).png -a $(OBJ_DIR)/banner.wav -o $(OBJ_DIR)/$(BUILD_NAME).3ds.bnr
+	@makerom -f cia -rsf 3ds_$(BUILD_NAME).rsf -elf $(BUILD_NAME).3ds_strip.elf -banner $(OBJ_DIR)/$(BUILD_NAME).3ds.bnr -icon $(OBJ_DIR)/$(BUILD_NAME).3ds.smdh -o $(ROM)
+# 	@3dsxtool $(ELF) $(ROM)
 else
 	$(OBJCOPY) -O pei-x86-64 $< $@
 endif
@@ -694,6 +755,11 @@ $(SDL_MINGW_LIB):
 SDL2.dll: $(SDL_MINGW_LIB)
 	cp $(SDL_MINGW_SDL_DLL) SDL2.dll
 
+3DS_SDL2:
+	@mkdir -p ext
+	cd ext && git clone https://github.com/libsdl-org/SDL.git --branch SDL2
+	cd ext/SDL && cmake -S. -Bbuild -DCMAKE_TOOLCHAIN_FILE="$(DEVKITPRO)/cmake/3DS.cmake" -DCMAKE_BUILD_TYPE=Release && cmake --build build
+
 ### FORMATTER ###
 
 format:
@@ -711,3 +777,6 @@ ctx.c: $(C_HEADERS)
 	@for header in $(C_HEADERS); do echo "#include \"$$header\""; done > ctx.h
 	gcc -P -E -dD -undef -nostdinc -I include -D GEN_CTX=1 -D PLATFORM_GBA=1 -D GAME=GAME_SA2 ctx.h | sed '/^#define __STDC/d' | sed '1s|^|#include <stdint.h>\n|' > ctx.c
 	@rm ctx.h
+
+bannertool:
+	cd tools && wget -qO- https://github.com/carstene1ns/3ds-bannertool/releases/download/1.2.3/bannertool-1.2.3-linux.tar.gz | bsdtar -xvf-

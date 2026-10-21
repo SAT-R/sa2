@@ -32,6 +32,7 @@ It can also build:
 * :construction: **sa2.win32.exe** `make win32` (Win32 OpenGL port, not functional)
 * **sa2.ps2.iso** `make ps2` (PlayStation 2 port, requires [PS2DEV](https://github.com/ps2dev/ps2dev))
 * **EBOOT.PBP** `make sdl_psp` (PlayStation Portable SDL port, requires [PSPDEV](https://github.com/pspdev/pspdev))
+* **sa2.3ds.cia** `make 3ds` (3DS Citro2D + SDL port, requires [LIBCTRU](https://github.com/devkitPro/libctru))
 
 ## Current state (SA2)
 

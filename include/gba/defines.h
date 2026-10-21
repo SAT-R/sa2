@@ -48,6 +48,9 @@
 // Runs at 60fps with the "fast draw"
 #define DISPLAY_WIDTH  320
 #define DISPLAY_HEIGHT 180
+#elif defined(__3DS__)
+#define DISPLAY_WIDTH  400
+#define DISPLAY_HEIGHT 240
 #else
 #define DISPLAY_WIDTH  426
 #define DISPLAY_HEIGHT 240

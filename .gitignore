@@ -87,6 +87,8 @@ libagbsyscall/*.s
 *.dll
 *.sdl
 *.iso
+*.cia
+*.elf
 
 # PSP build outputs
 EBOOT.PBP
@@ -95,3 +97,6 @@ sa2_debug.log
 
 # third party deps
 /ext
+
+# downloaded tools
+/tools/bannertool-1.2.3-linux
