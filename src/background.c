@@ -904,7 +904,7 @@ NONMATCH("asm/non_matching/engine/sa2__sub_80039E4.inc", bool32 SA2_LABEL(sub_80
 
             if (dims != (void *)-1) {
                 u32 bgId = SPRITE_FLAG_GET(s, BG_ID);
-                void *bgVram = (void *)BG_CHAR_ADDR((gBgCntRegs[bgId] & BGCNT_CHARBASE(3)) >> 2);
+                void *bgVram = BG_CHAR_ADDR((gBgCntRegs[bgId] & BGCNT_CHARBASE(3)) >> 2);
                 void *bgBase = bgVram + ((gBgCntRegs[bgId] & BGCNT_SCREENBASE_MASK) << 3);
 
                 if (gBgCntRegs[bgId] & BGCNT_256COLOR) {
@@ -1246,7 +1246,7 @@ s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *te
 {
     u8 i = 0;
 
-    u16 *vramTiles = (void *)BG_CHAR_ADDR_FROM_BGCNT(bg);
+    u16 *vramTiles = BG_CHAR_ADDR_FROM_BGCNT(bg);
 
     u16 layoutBase = (gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3;
     u16 *vramLayout = ({ (u16 *)(VRAM + (layoutBase)); }) + y * 32 + x;
@@ -1367,7 +1367,7 @@ static AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
     s->graphics.anim = cmd->animId;
-    s->prevVariant = 0xFF;
+    s->prevVariant = -1;
     s->variant = cmd->variant;
 
     return -1;
