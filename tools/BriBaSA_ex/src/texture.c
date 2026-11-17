@@ -49,65 +49,65 @@ GetEntityTextureById(AppState *state, EntityType etype, unsigned char id)
 }
 
 static inline void
-LoadCharacterTextures(char *gameRoot, CharacterList *chars)
+LoadCharacterTextures(Game game, char *gameRoot, CharacterList *chars)
 {
     for(int c = 0; c < chars->count; c++) {
         Character *character = &chars->elements[c];
         int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, character->animIdle, frame);
+        const char *animPath = TextFormat("%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                          gameRoot, game, character->animIdle, frame);
         character->texture = LoadTexture(animPath);
     }
 }
 
 static inline void
-LoadEntityTextures(char *gameRoot, EntityMetaList *ents)
+LoadEntityTextures(Game game, char *gameRoot, EntityMetaList *ents)
 {
     for(int c = 0; c < ents->count; c++) {
         EntityMeta *ent = &ents->elements[c];
         int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, ent->anim, frame);
+        const char *animPath = TextFormat("%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                          gameRoot, game, ent->anim, frame);
         ent->texture = LoadTexture(animPath);
     }
 }
 
 static inline void
-LoadInteractableTextures(char *gameRoot, InteractableMetaList *ias)
+LoadInteractableTextures(Game game, char *gameRoot, InteractableMetaList *ias)
 {
     for(int c = 0; c < ias->count; c++) {
         InteractableMeta *ia = &ias->elements[c];
         int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, ia->anim, frame);
+        const char *animPath = TextFormat("%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                          gameRoot, game, ia->anim, frame);
         ia->texture = LoadTexture(animPath);
     }
 }
 
 static inline void
-LoadRingTexture(char *gameRoot, EntityMeta *ring)
+LoadRingTexture(Game game, char *gameRoot, EntityMeta *ring)
 {
     int frame = 0;
-    const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                        gameRoot, ring->anim, frame);
+    const char *animPath = TextFormat("%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                        gameRoot, game, ring->anim, frame);
     ring->texture = LoadTexture(animPath);
     
 }
 
 static inline void
-LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
+LoadItemTextures(Game game, char *gameRoot, ItemMetaList *items, short numCharacters)
 {
-    const char *pathFormat = "%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png";
+    const char *pathFormat = "%s/graphics/sa%d/obj_tiles/4bpp/anim_%04d/f%03d.png";
 
     // Itembox
     unsigned short animId = items->animItembox;
-    const char *itemboxPath   = TextFormat(pathFormat, gameRoot, animId, 0);
+    const char *itemboxPath   = TextFormat(pathFormat, gameRoot, game, animId, 0);
     items->txItembox = LoadTexture(itemboxPath);
 
     // 1-Up icons
     for(int c = 0; c < numCharacters; c++) {
         unsigned short animId = items->animItemType;
-        const char *iconPath = TextFormat(pathFormat, gameRoot, animId, c);
+        const char *iconPath = TextFormat(pathFormat, gameRoot, game, animId, c);
         Texture tx1Up  = LoadTexture(iconPath);
 
         da_append(&items->oneUpIcons, &tx1Up);
@@ -122,19 +122,19 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
                 ent->texture = items->oneUpIcons.elements[0];
             }
         } else {
-            const char *animPath = TextFormat(pathFormat, gameRoot, items->animItemType, (i - 1) + numCharacters);
+            const char *animPath = TextFormat(pathFormat, gameRoot, game, items->animItemType, (i - 1) + numCharacters);
             ent->texture = LoadTexture(animPath);
         }
     }
 }
 
 void
-LoadAllEntityTextures(char *gamePath, FileInfo *paths)
+LoadAllEntityTextures(Game game, char *gamePath, FileInfo *paths)
 {
-    LoadCharacterTextures(gamePath, &paths->characters);
-    LoadInteractableTextures(gamePath, &paths->interactables);
-    LoadEntityTextures(gamePath, &paths->enemies);
-    LoadItemTextures(gamePath,   &paths->items, paths->characters.count);
-    LoadRingTexture(gamePath,    &paths->ring);
+    LoadCharacterTextures(game, gamePath, &paths->characters);
+    LoadInteractableTextures(game, gamePath, &paths->interactables);
+    LoadEntityTextures(game, gamePath, &paths->enemies);
+    LoadItemTextures(game, gamePath,   &paths->items, paths->characters.count);
+    LoadRingTexture(game, gamePath,    &paths->ring);
 }
 

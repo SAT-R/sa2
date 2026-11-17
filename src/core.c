@@ -622,31 +622,31 @@ void UpdateScreenDma(void)
 {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
-    DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
+    DmaCopy32(3, gBgCntRegs, &REG_BG0CNT, sizeof(gBgCntRegs));
 
     if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
-        DmaCopy32(3, gBgPalette, (void *)BG_PLTT, sizeof(gBgPalette));
+        DmaCopy32(3, gBgPalette, BG_PLTT, sizeof(gBgPalette));
         gFlags ^= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 
     if (gFlags & FLAGS_UPDATE_SPRITE_PALETTES) {
-        DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, sizeof(gObjPalette));
+        DmaCopy32(3, gObjPalette, OBJ_PLTT, sizeof(gObjPalette));
         gFlags ^= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
-    DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
-    DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+    DmaCopy32(3, gWinRegs, &REG_WIN0H, sizeof(gWinRegs));
+    DmaCopy16(3, &gBldRegs, &REG_BLDCNT, 6);
 #if (GAME == GAME_SA2)
 #ifdef BUG_FIX
-    DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, sizeof(gMosaicReg));
+    DmaCopy16(3, &gMosaicReg, &REG_MOSAIC, sizeof(gMosaicReg));
 #else
     // BUG: For some reason, even though the var
     // is only 2 they chose to copy 4 bytes, oops
-    DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
+    DmaCopy16(3, &gMosaicReg, &REG_MOSAIC, 4);
 #endif
 #endif
-    DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
-    DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
+    DmaCopy16(3, gBgScrollRegs, &REG_BG0HOFS, sizeof(gBgScrollRegs));
+    DmaCopy32(3, &gBgAffineRegs, &REG_BG2PA, sizeof(gBgAffineRegs));
 
     if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;

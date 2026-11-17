@@ -166,19 +166,28 @@ LoadEntityNamesAndIDs(AppState *state)
                     }
 
                     if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX", state->game))) {
-                        items->animItembox = TextToInteger(tokenID->text);
+                        if(items->animItembox == 0) {
+                            items->animItembox = TextToInteger(tokenID->text);
+                        }
                     } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX_TYPE", state->game))) {
-                        items->animItemType = TextToInteger(tokenID->text);
+                        if(items->animItemType == 0) 
+                        {
+                            items->animItemType = TextToInteger(tokenID->text);
+                        }
                     } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_RING", state->game))) {
-                        ring->anim = TextToInteger(tokenID->text);
+                        if(ring->anim == 0) {
+                            ring->anim = TextToInteger(tokenID->text);
+                        }
                     } else if(foundEnemyAnims < enemies->count) {
                         for(int ei = 0; ei < enemies->count; ei++) {
                             unsigned short id = enemies->elements[ei].id;
                             EntityMeta *enemy = &enemies->elements[id];
                             const char *format = TextFormat("SA%d_ANIM_%s", state->game, enemy->name);
 
-                            if(TextIsEqual((char *)tokenName->text, format)) {                    
-                                enemy->anim = TextToInteger(tokenID->text);
+                            if(TextIsEqual((char *)tokenName->text, format)) {     
+                                if(enemy->anim == 0) {
+                                    enemy->anim = TextToInteger(tokenID->text);
+                                }
 
                                 foundEnemyAnims++;
                                 break;
@@ -192,7 +201,9 @@ LoadEntityNamesAndIDs(AppState *state)
 
                             if(TextIsEqual((char *)tokenName->text, format)) {
                                 do {
-                                    ia->anim = TextToInteger(tokenID->text);
+                                    if(ia->anim == 0) {
+                                        ia->anim = TextToInteger(tokenID->text);
+                                    }
 
                                     foundIAAnims++;
 

@@ -12,7 +12,7 @@
 static void SetupTilemapPaths(Tilemap *out, char *directory);
 
 void
-InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
+InitFilePaths(Game game, FileInfo *outInfo, char *gameDir, char *mapDir)
 {
     FileInfo info = {0};
 
@@ -20,11 +20,11 @@ InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     info.mapRoot  = mapDir;
     
     /* Global C Headers */
-    info.characters_h    = allocPath(gameDir, "include/constants/characters.h");
-    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
-    info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
-    info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
-    info.items_h         = allocPath(gameDir, "include/constants/items.h");
+    info.characters_h    = allocPath(gameDir, TextFormat("include/constants/sa%d/characters.h", game));
+    info.animations_h    = allocPath(gameDir, TextFormat("include/constants/sa%d/animations.h", game));
+    info.enemies_h       = allocPath(gameDir, TextFormat("include/constants/sa%d/enemies.h", game));
+    info.interactables_h = allocPath(gameDir, TextFormat("include/constants/sa%d/interactables.h", game));
+    info.items_h         = allocPath(gameDir, TextFormat("include/constants/sa%d/items.h", game));
 
 
     /* Map-specific */
